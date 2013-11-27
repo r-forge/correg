@@ -12,7 +12,7 @@ GM_Loglikelihood<-function(Y=Y,X=X,B=B,sigma=sigma,M=NULL,mixmod,log=T,intercept
     M[is.na(M)]=1
     X[is.na(X)]=0
   }
-  return(.Call( "GM_likelihood",Y,X,B,sigma,M,mixmodcpp$nbclust,mixmodcpp$details,log,intercept, package = "CorReg"))
+  return(.Call( "GM_likelihood",Y,X,B,sigma,M,mixmod$nbclust,mixmod$details,log,intercept, package = "CorReg"))
 #   res=0
 #   #on calcule d'abord la partie fixe qui sera commune (ajoutée) à toutes les classes
 #   quibon=which(!is.na(X))
@@ -35,7 +35,7 @@ GM_Loglikelihood<-function(Y=Y,X=X,B=B,sigma=sigma,M=NULL,mixmod,log=T,intercept
 #   if(log){
 #     res=log(res)
 #   }
-  return(res)
+#   return(res)
 }
 
 
