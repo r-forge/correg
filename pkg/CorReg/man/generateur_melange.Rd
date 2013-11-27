@@ -10,8 +10,46 @@
     tp2 = 1, tp3 = 1, pb = 2)
 }
 \arguments{
+  \item{n}{the number of individuals in the learning
+  dataset}
+
+  \item{p}{the number of covariates (without the response)}
+
+  \item{ratio}{the ratio of explained covariates
+  (dependent)}
+
+  \item{max_compl}{the number of covariates in each
+  subregression}
+
+  \item{valid}{the size of the validation sample}
+
+  \item{positif}{the ratio of positive coefficients in both
+  the regression and the subregressions}
+
+  \item{sigma_Y}{standard deviation for the noise of the
+  regression}
+
+  \item{sigma_sousreg}{standard deviation for the noise of
+  the subregression (all). ignored if gamma=T}
+
+  \item{meanvar}{vector of means for the covariates.}
+
+  \item{sigmavar}{standard deviation of the covariates.}
+
   \item{lambda}{paramater of the law that define the number
   of components in gaussian mixture models}
+
+  \item{Amax}{the maximum number of covariates with
+  non-zero coefficients in the regression}
+
+  \item{tp1}{the ratio of right-side covariates allowed to
+  have a non-zero coefficient in the regression}
+
+  \item{tp2}{the ratio of left-side covariates allowed to
+  have a non-zero coefficient in the regression}
+
+  \item{tp3}{the ratio of strictly independent covariates
+  allowed to have a non-zero coefficient in the regression}
 }
 \description{
   generateur de donnees en sous-regression par modele de

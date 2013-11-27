@@ -5,7 +5,7 @@
   showmiss(X)
 }
 \arguments{
-  \item{x}{the dataset to analyse}
+  \item{X}{the dataset to analyse}
 }
 \description{
   whow the missing values of a dataset
