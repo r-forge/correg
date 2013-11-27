@@ -25,7 +25,7 @@ hatY<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = T, expl = T,
   X = as.matrix(X)
   K = abs(K)
   K = min(K, nrow(X))
-  
+  Y=as.matrix(Y)
   if (is.null(groupe)) {
     groupe = rep(0:(K - 1), length.out = nrow(as.matrix(X)))
     groupe = sample(groupe)
@@ -130,6 +130,7 @@ hatY<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = T, expl = T,
       A_pred[I2 + intercept] = A_inj
       if(retour){
         Ytildebis=Y-as.matrix(X[,I2])%*%A_pred[I2 + intercept]
+        Ytildebis=as.matrix(Ytildebis)
         if (select != "elasticnet" & select != "ridge") {
           lars_retour=lars(x = as.matrix(X[,I1]), y = Ytildebis, type = select, 
                          intercept = intercept)
