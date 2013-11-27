@@ -16,8 +16,10 @@
 #' @param retour boolean : second predictive step
 #' @param final boolean : recompute estimators without selection on the remaining parameters of the predictive model
 hatY<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = T, expl = T, 
-                pred = T, select = c("lar", "lasso", "forward.stagewise", 
-                                     "stepwise", "elasticnet", "NULL","ridge"), criterion = c("MSE", "BIC"),
+                pred = T, 
+                select = c("lar", "lasso", "forward.stagewise", 
+                                     "stepwise", "elasticnet", "NULL","ridge"),
+                criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = T, 
                 K = 10, groupe = NULL, Amax = NULL, lambda = 1,retour=T,final=T) 
 {
