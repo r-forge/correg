@@ -10,7 +10,8 @@
 #' @param nbit number of iteration for SEM
 #' @param nbclustmax max number of cluster for mixmod (ignored if miss=0)
 #' @param result of calcul_BIC_mixmod2.0(X=X,nbclustmax=nbclustmax,details=T)
-#' 
+#' @param M binary matrix (size of X) with 1 where X is missing
+#' @param mixmod Gaussian Mixutre hypothesis if needed. Or result of calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,bla=F,details=T)
 OLS<- function(X=X,Y=Y,M=NULL,intercept=F,sigma=F,Bic=F,methode=1,miss=0,mixmod=NULL,nbit=100,nbclustmax=10){
   if(miss & nbit>0){
     if(is.null(mixmod)){
