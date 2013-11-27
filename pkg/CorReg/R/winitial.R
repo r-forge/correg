@@ -25,7 +25,7 @@ Winitial<-function(W=W,X=NULL,rmax=NULL,BIC=F,BIC_vide_vect=NULL,relax=T,random=
   list_j=sample(p)#melange les entiers de 1 a p
   if(BIC==T &  !is.null(X)){
     if(is.null(BIC_vide_vect)){
-      mixmod=calcul_BIC_mixmod2.0(X=X,nbclustmax=nbclustmax)
+      mixmod=calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax)
       BIC_vide_vect=mixmod$BIC_vect       
     }
     BIC_opt_vect=BIC_vide_vect
