@@ -1,0 +1,2 @@
+useDynLib(CorReg)
+exportPattern("^[[:alpha:]]+")
