@@ -1,6 +1,6 @@
 #'whow the missing values of a dataset
 #'
-#'@param x the dataset to analyse
+#'@param X the dataset to analyse
 
 showmiss<-function(X){
   M=which(is.na(X),arr.ind=T)
