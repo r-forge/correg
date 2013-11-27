@@ -5,7 +5,18 @@
 #' @param ratio the ratio of explained covariates (dependent)
 #' @param max_compl the number of covariates in each subregression
 #' @param valid the size of the validation sample
+#' @param positif the ratio of positive coefficients in both the regression and the subregressions
+#' @param sigma_Y standard deviation for the noise of the regression
+#' @param sigma_sousreg standard deviation for the noise of the subregression (all). ignored if gamma=T
+#' @param meanvar vector of means for the covariates.
+#' @param sigmavar standard deviation of the covariates.
 #' @param lambda paramater of the law that define the number of components in gaussian mixture models
+#' @param Amax the maximum number of covariates with non-zero coefficients in the regression
+#' @param tp1 the ratio of right-side covariates allowed to have a non-zero coefficient in the regression
+#' @param tp2 the ratio of left-side covariates allowed to have a non-zero coefficient in the regression
+#' @param tp3 the ratio of strictly independent covariates allowed to have a non-zero coefficient in the regression
+#' 
+#' 
 generateur_melange<-function(n=130,
                                 p=100,
                                 ratio=0.4,
