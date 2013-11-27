@@ -6,6 +6,7 @@
 #' @param M is the indicatrice vector (submatrix) of the missing values
 #' @param mixmod is result of calcul_BIC_mixmod2.0(X=dataset,nbclustmax=nbclustmax,details=T)
 #' @param log boolean to define if you want the likelihood or the log-likelihood
+#' @param intercept boolean to define if there is an intercept in the model (default=T)
 GM_Loglikelihood<-function(Y=Y,X=X,B=B,sigma=sigma,M=NULL,mixmod,log=T,intercept=T){
   if(is.null(M)){
     M=0*X
