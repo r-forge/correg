@@ -25,6 +25,9 @@
 
   \item{log}{boolean to define if you want the likelihood
   or the log-likelihood}
+
+  \item{intercept}{boolean to define if there is an
+  intercept in the model (default=T)}
 }
 \description{
   Compute the log-likelihood of a gaussian mixture value

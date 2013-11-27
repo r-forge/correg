@@ -32,6 +32,13 @@
 
   \item{result}{of
   calcul_BIC_mixmod2.0(X=X,nbclustmax=nbclustmax,details=T)}
+
+  \item{M}{binary matrix (size of X) with 1 where X is
+  missing}
+
+  \item{mixmod}{Gaussian Mixutre hypothesis if needed. Or
+  result of
+  calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,bla=F,details=T)}
 }
 \description{
   Ordinary Least Square efficiently computed with SEM for
