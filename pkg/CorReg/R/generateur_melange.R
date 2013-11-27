@@ -1,5 +1,10 @@
 #' generateur de donnees en sous-regression par modele de melange gaussien
 #utilise Matrix (matrices creuses) et generateurZ
+#' @param n the number of individuals in the learning dataset
+#' @param p the number of covariates (without the response)
+#' @param ratio the ratio of explained covariates (dependent)
+#' @param max_compl the number of covariates in each subregression
+#' @param valid the size of the validation sample
 #' @param lambda paramater of the law that define the number of components in gaussian mixture models
 generateur_melange<-function(n=130,
                                 p=100,
