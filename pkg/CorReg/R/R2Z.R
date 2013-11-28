@@ -1,5 +1,10 @@
 #' Estimates R2 of each subression
-#' 
+#' @param Z is the structure (binary matrix)
+#' @param X the dataset
+#' @param methode parameter for Ordinary Least square (don't change it)
+#' @param adj boolean to choose between adjusted R-squared and classical one
+#' @param crit to choose between the R-squared and the F statistic (p-value)
+#' @export 
 R2Z<-function(Z=Z,X=X,methode=1,adj=F,crit=c("R2","F")){
   p=ncol(Z)
   res=rep(0,times=p)
