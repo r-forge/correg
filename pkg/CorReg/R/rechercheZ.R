@@ -17,7 +17,7 @@
 #'@param Mixmod boolean. indicates wether gaussian mixture hypothesis is made (FALSE= gaussian hypothesis)
 #'@return etape 0:suppression,1 ajout,2 stationarite
 #'@export
-rechercheZ<-function(X=X,Z=NULL,bic_vide_vect=bic_vide_vect,methode_tirage=-1,rejet=0,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=Maxiter,plot=F,best=T,better=F,random=T,bla=1,nb_opt_max=NULL,Mixmod=T,exact=T){
+rechercheZ<-function(X=X,Z=NULL,bic_vide_vect=NULL,methode_tirage=-1,rejet=0,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=F,best=T,better=F,random=T,bla=1,nb_opt_max=NULL,Mixmod=T,exact=T){
   if(is.null(p2max)){
     p2max=ncol(X)+1 
   }
