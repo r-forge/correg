@@ -27,6 +27,9 @@ rechercheZ<-function(X=X,Z=NULL,bic_vide_vect=bic_vide_vect,methode_tirage=-1,re
   if(is.null(Z)){
     Z=matrix(0,ncol=ncol(X),nrow=ncol(X))
   }
+  if(is.null(bic_vide_vect)){
+     bic_vide_vect=calcul_BIC_mixmod(X=X,nbclustmax=10,bla=FALSE,details=FALSE,mclust=TRUE)$BIC_vect
+  }
   if(rejet==0){#mode relax
     res=.Call( "rechercheZ_relax",X,Z,bic_vide_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
     return(res)
