@@ -1,5 +1,7 @@
-#' compare les signes dans des vecteurs
+#' compare signs of the coefficients in two vectors
 #' @export
+#' @param vraiA first vector
+#' @param Aalgo second vector
 comparateursign_vect<-function(vraiA=vraiA,Aalgo=Aalgo){
   quivrai0=which(vraiA==0)
   nbbon0=length(which(Aalgo[quivrai0]==0))
@@ -10,7 +12,7 @@ comparateursign_vect<-function(vraiA=vraiA,Aalgo=Aalgo){
   #comptage des signes +
   quivraiplus=which(vraiA>0)
   quivraimoins=which(vraiA<0)
-  #attention , on n'a pas une partition (à cause des 0)
+  #attention , on n'a pas une partition (a cause des 0)
   nbbonplus=length(which(Aalgo[quivraiplus]>0))
   nbbonmoins=length(which(Aalgo[quivraimoins]<0))
   nbfauxplus=length(which(Aalgo[quivraimoins]>0))

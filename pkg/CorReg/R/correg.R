@@ -1,4 +1,5 @@
 #' Estimates the response variable using a structure
+#' @useDynLib CorReg
 #' @export
 #' @param B the (p+1)xp matrix assiated to Z and that contains the parameters of the sub-regressions
 #' @param lambda parameter for elasticnet (quadratic penalty)
@@ -15,6 +16,10 @@
 #' @param Amax the maximum number of covariates in the final model
 #' @param retour boolean : second predictive step
 #' @param final boolean : recompute estimators without selection on the remaining parameters of the predictive model
+#' @param X_test validation sample
+#' @param Y_test response for the validation sample
+#' @param intercept boolean. If FALSE intercept will be set to 0 in each model.
+#' 
 correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = T, expl = T, 
                 pred = T, 
                 select = c("lar", "lasso", "forward.stagewise", 

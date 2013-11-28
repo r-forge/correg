@@ -1,6 +1,5 @@
 #' simple MSE function
 #' @export
-#' @param intercept indicates wether A contains an intercept or not
 #' @param Y the response variable (vector)
 #' @param X the dataset (matrix of covariates)
 #' @param A the vector of coefficients

@@ -6,8 +6,9 @@
 #' @param varnames the names of the variables (same order)
 #' @param output indicates the content of the output
 #' @param X is a dataframe containing the dataset
+#' @param decr boolean. Define the order used (don't have to scroll to see the best subregresisons if many)
 #' @export
-readZ<-function(Z=Z,B=NULL,R2=T,varnames=NULL,output=c("index","names","all"),X=NULL,decr=T){
+readZ<-function(Z=Z,B=NULL,R2=T,varnames=NULL,output=c("index","names","all"),X=NULL,decr=TRUE){
   p=ncol(Z)
   output=output[1]
   res=list()

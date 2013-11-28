@@ -4,10 +4,12 @@
 #' @param BIC_vide_vect est le vecteur bic vide (issu de mixmod par exemple)
 #' @param relax indique si on fait la relaxation ou le rejet (booleen)
 #' @param rmax est le nombre max de 1 sur une colonne de Z
-#' @param W est la matrice des poids (entre 0 et 1)
 #' @param random indique si on fait le tirage au sort ou pas (si on utilise BIc on a moins besoin du tirage). sans tirage = sans tenir compte de W
 #' @param mode indique la strategie pour le choix des candidats a la mise a 1
 #' @param p2max est le nombre max de sous-reg
+#' @param sorted boolean to sort the candidates based on W (best first)
+#' @param BIC boolean to use BIC for probabilities.
+#' @param nbclustmax parameter for calcul_BIC_mixmod if needed
 #' @export
 
 Winitial<-function(W=W,X=NULL,rmax=NULL,BIC=F,BIC_vide_vect=NULL,relax=T,random=T,nbclustmax=5,sorted=T,mode=c("all","sorted","multinom"),p2max=NULL){

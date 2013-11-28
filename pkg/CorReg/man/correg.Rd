@@ -52,6 +52,13 @@
   \item{final}{boolean : recompute estimators without
   selection on the remaining parameters of the predictive
   model}
+
+  \item{X_test}{validation sample}
+
+  \item{Y_test}{response for the validation sample}
+
+  \item{intercept}{boolean. If FALSE intercept will be set
+  to 0 in each model.}
 }
 \description{
   Estimates the response variable using a structure
