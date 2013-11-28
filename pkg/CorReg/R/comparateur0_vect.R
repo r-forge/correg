@@ -1,4 +1,5 @@
 #' compare les 0 dans des vecteurs
+#' @export
 comparateur0_vect<-function(vraiA=vraiA,Aalgo=Aalgo,taux=F){
   quivrai0=which(vraiA==0)
   if(length(quivrai0)>0){

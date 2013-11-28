@@ -1,12 +1,12 @@
-#' Fill the missing values in the dataset
-#' 
-#' @param X the dataset (matrix) with missing values
-#' @param Z the structure associated to X. Can be a matrix of zeros if non structure.
-#' @param res_mixmod the best results found by mixmod if already computed
-#' @param mixmod boolean to say if the function has to use mixmod hypothesis or just the observed mean.
-#' @param nbclustmax the max number of cluster for mixmod.
-#' @param X1 booleant to say if dependent variables on the right will be filled based on the structure
-#' @param Bt the matrix used for X1 if X1=TRUE
+# ' Fill the missing values in the dataset
+# ' 
+# ' @param X the dataset (matrix) with missing values
+# ' @param Z the structure associated to X. Can be a matrix of zeros if non structure.
+# ' @param res_mixmod the best results found by mixmod if already computed
+# ' @param mixmod boolean to say if the function has to use mixmod hypothesis or just the observed mean.
+# ' @param nbclustmax the max number of cluster for mixmod.
+# ' @param X1 booleant to say if dependent variables on the right will be filled based on the structure
+# ' @param Bt the matrix used for X1 if X1=TRUE
 
 fillmiss<-function(X=X,Z=NULL,mixmod=F,B=NULL,Bt=NULL,res_mixmod=NULL,nbclustmax=10,X1=T){
    quimank=which(is.na(X),arr.ind=T)

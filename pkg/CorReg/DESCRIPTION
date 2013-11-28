@@ -1,7 +1,7 @@
 Package: CorReg
 Type: Package
 Title: Linear regression based on linear structure between covariates
-Version: 0.12.0
+Version: 0.12.1
 Date: 2013-11-28
 Author: THERY CLEMENT, WATRIN FLORIAN
 Maintainer: if you want to ask somebody <clement.thery@arcelormittal.com>
@@ -36,6 +36,7 @@ Collate:
     'comparateursign_vect.R'
     'compare_A_Z.R'
     'CompNoms.R'
+    'correg.R'
     'corXY.R'
     'CVMSE.R'
     'explicatif.R'
@@ -48,7 +49,6 @@ Collate:
     'generateurZ.R'
     'GM_Loglikelihood.R'
     'hatB.R'
-    'hatY.R'
     'initial_cor3.R'
     'Interpretor.R'
     'kroneckersum_vect.R'

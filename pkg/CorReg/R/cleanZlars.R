@@ -1,5 +1,5 @@
-#'cleanZ by lars
-#'
+# 'cleanZ by lars
+# '
 cleanZlars<-function(Z = Z, X = X, methode = 1, mode=c("MSE","BIC"),intercept=TRUE,K=NULL,groupe=NULL,select=c("lar", "lasso", "forward.stagewise", "stepwise",NULL)) 
 {
   select=select[1]

@@ -1,4 +1,4 @@
-#' extrait Xtilde
+# ' extrait Xtilde
 extract_Xtilde<-function(X=X,B=B){
   Z=B[-1,-1]
   Z=as.matrix(Z)
