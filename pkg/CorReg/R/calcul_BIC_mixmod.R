@@ -1,7 +1,7 @@
 #' calcul du BIC initial via package externe Mixmod (ou mclust)
 #' @export
 #' @param X the dataset (matrix)
-#' @param nbclsutmax max number of clusters in the gaussian mixtures
+#' @param nbclustmax max number of clusters in the gaussian mixtures
 #' @param bla verbose or not
 #' @param details boolean to give the details of the mixtures found
 #' @param max boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset
