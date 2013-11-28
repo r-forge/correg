@@ -1,5 +1,5 @@
-#'adapting mixmod object to be more efficient in C++
-#' @param list from calcul_mixmod 
+# 'adapting mixmod object to be more efficient in C++
+# ' @param list from calcul_mixmod 
 mixmod_adapter<-function(mixmod){
   res=mixmod
   if(!is.null(res$details)){
