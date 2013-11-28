@@ -57,7 +57,8 @@ readZ(Z=hatZ,R2=TRUE,X=X_appr,output="all",decr=FALSE)# <NA>line : name of subre
 
 compZ=comparaison_struct(vraiZ=TrueZ,Zalgo=hatZ)#qualitative comparison
 select="lar"#LASSO with the Least Angle Regression algorithm to find the best model
-resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,select=select,K=10,final=FALSE,retour=TRUE)
+resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,
+               select=select,K=10,final=FALSE,retour=TRUE)
 
 MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$compl$A)
 MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)
