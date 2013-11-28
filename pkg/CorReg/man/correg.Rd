@@ -1,0 +1,59 @@
+\name{correg}
+\alias{correg}
+\title{Estimates the response variable using a structure}
+\usage{
+  correg(X = X, Y = Y, Z = NULL, B = NULL, compl = T,
+    expl = T, pred = T,
+    select = c("lar", "lasso", "forward.stagewise", "stepwise", "elasticnet", "NULL", "ridge"),
+    criterion = c("MSE", "BIC"), X_test = NULL,
+    Y_test = NULL, intercept = T, K = 10, groupe = NULL,
+    Amax = NULL, lambda = 1, retour = T, final = T)
+}
+\arguments{
+  \item{B}{the (p+1)xp matrix assiated to Z and that
+  contains the parameters of the sub-regressions}
+
+  \item{lambda}{parameter for elasticnet (quadratic
+  penalty)}
+
+  \item{X}{the data matrix (covariates) without the
+  intercept}
+
+  \item{Y}{The response variable vector}
+
+  \item{Z}{The structure (adjacency matrix) between the
+  covariates}
+
+  \item{compl}{boolean to decide if the complete modele is
+  computed}
+
+  \item{expl}{boolean to decide if the explicative model is
+  in the output}
+
+  \item{pred}{boolean to decide if the predictive model is
+  computed}
+
+  \item{select}{the strategy used to select the covariates
+  ("NULL" keeps all the covariates)}
+
+  \item{criterion}{the criterion used to compare the
+  models}
+
+  \item{K}{the number of clusters for cross-validation}
+
+  \item{groupe}{a vector to define the groupes used for
+  cross-validation (to obtain a reproductible result)}
+
+  \item{Amax}{the maximum number of covariates in the final
+  model}
+
+  \item{retour}{boolean : second predictive step}
+
+  \item{final}{boolean : recompute estimators without
+  selection on the remaining parameters of the predictive
+  model}
+}
+\description{
+  Estimates the response variable using a structure
+}
+

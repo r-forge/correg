@@ -1,4 +1,4 @@
-#' calcul du vecteur BIC de la matrice Z
+#' Compute the BIC of a given structure
 #' @export
 
 BicZ<-function(X=X,Z=Z,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=NULL){

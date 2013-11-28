@@ -1,4 +1,4 @@
-#' cliquefaction d'un graphe
+# '  cliquefaction d'un graphe
 cliquefaction<-function(Z){
   Z=Matrix(Z)
   p=ncol(Z)

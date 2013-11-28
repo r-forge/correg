@@ -1,4 +1,4 @@
-#' extrait un des mod?les du lars
+# ' extrait un des mod?les du lars
 extract_lars<-function(lars=lars,qui=qui,X=X,Y=Y){
   coef=coef(lars)[qui,]
   qui=which(coef!=0)

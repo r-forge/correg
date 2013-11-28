@@ -1,5 +1,5 @@
 #' Cleaning based on R2
-#' 
+#' @export
 cleanZR2<-function(Z=Z,X=X,R2min=0.4,methode=1,adj=T){
   p=ncol(Z)
   res=double(p)

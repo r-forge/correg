@@ -1,4 +1,4 @@
-#' Selection method based on p-values (coefficients)
+# ' Selection method based on p-values (coefficients)
 cleanYtest<-function (Y = Y, X = X, pvalmin = 0.05, bonferroni=F,A=NULL) 
 {
   p=ncol(X)

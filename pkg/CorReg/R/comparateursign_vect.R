@@ -1,4 +1,5 @@
 #' compare les signes dans des vecteurs
+#' @export
 comparateursign_vect<-function(vraiA=vraiA,Aalgo=Aalgo){
   quivrai0=which(vraiA==0)
   nbbon0=length(which(Aalgo[quivrai0]==0))

@@ -1,4 +1,4 @@
-#' description de la repartition des A vis a vis de la structure
+# ' description de la repartition des A vis a vis de la structure
 compare_A_Z<-function (A = A, Z = Z) 
 {
   if(length(A)==ncol(Z)+1){A=A[-1]}

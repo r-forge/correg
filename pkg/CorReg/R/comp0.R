@@ -1,4 +1,5 @@
-#'coucou
+#' compare zero in two coefficient vector (same size)
+#'@export
 
 comparateur0_vect<-function(vraiA=vraiA,Aalgo=Aalgo,taux=F){
    quivrai0=which(vraiA==0)

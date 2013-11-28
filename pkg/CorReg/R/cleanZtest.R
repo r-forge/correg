@@ -1,4 +1,4 @@
-#' Clean Z's columns based on p-values (coefficients or global)
+# ' Clean Z's columns based on p-values (coefficients or global)
 cleanZtest<-function (Z = Z, X = X, pvalmin = 0.05, methode = 1, adj = T,global=F,bonferroni=F) 
 {
   if(global){

@@ -1,4 +1,5 @@
-#' nettoyage de Z
+#' cleanZ (if BIC improved)
+#' @export
 #'@param X the dataset
 #'@param Z matrice Z a nettoyer
 #'@param bic_vide_vect vecteur BIC de la matrice nulle
@@ -8,7 +9,8 @@
 #'@return etape 0:suppression,1 ajout,2 stationarite
 #'
 cleanZ<-function(X=X,Z=Z,bic_vide_vect=bic_vide_vect,methode_BIC=1,plot=F,bla=1){
-  res=.Call( "cleanZ",X,Z,bic_vide_vect,methode_BIC,plot,bla, PACKAGE = "CorReg")
+   res=.Call( "cleancolZ",X,Z,bic_vide_vect,methode_BIC,plot,bla, PACKAGE = "CorReg")
+  res=.Call( "cleanZ",X,res$Z,bic_vide_vect,methode_BIC,plot,bla, PACKAGE = "CorReg")
   return(res)
   
 }
