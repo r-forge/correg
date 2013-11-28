@@ -179,7 +179,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = T, expl = T,
           quifinal=which(A_pred!=0)
         }
         Zfinal=as.matrix(Z[quifinal,quifinal])
-        A_final=hatY(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),retour=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
+        A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),retour=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
         
         res$final$A=res$pred$A
         res$final$A[res$pred$A!=0]=A_final
