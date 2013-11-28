@@ -1,5 +1,5 @@
 #' simple MSE function
-#' 
+#' @export
 #' @param intercept indicates wether A contains an intercept or not
 MSE_loc<-function(Y=Y,X=X,A=A,intercept=T){
   if(intercept){

@@ -1,4 +1,5 @@
 #' comparaison de structures
+#' @export
 comparaison_struct<-function(vraiZ=vraiZ,Zalgo=Zalgo,tout=T,mode="NULL"){
   if(mode=="hybrid"){
     vraiZ=vraiZ+t(vraiZ)+t(vraiZ)%*%vraiZ#attention ? bien multiplier par la transpos?e ? gauche
