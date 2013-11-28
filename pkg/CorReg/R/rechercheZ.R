@@ -1,5 +1,5 @@
 #' recherche de structure
-#'@param X
+#'@param X the dataset
 #'@param Z Z est une matrice nulle si on ne lui a pas mis de valeur
 #'@param bic_vide_vect vecteur BIC de la matrice nulle
 #'@param methode_tirage 0:ligne et colonne,-1:seulement la colonne, entier>0:nombre aleatoire de candidats, -2 : tout le monde (hors diagonale), -3 : uniquement les non-nuls
@@ -14,7 +14,7 @@
 #'@param random F:permet de s'ameliorer ou de rester sur place
 #'@param bla 0:pas de messages, 1:affiche le BIC,le numero d'etape et la complexite de Z quand il y'a un meilleur BIC, 2:affiche le BIC,le numero d'etape,la complexite de Z,le nombre de candidats et le BIC minimum observe parmi les candidats quand il y'a un meilleur BIC, 3: affiche en plus de bla=1 la complexite locale et le BIC local
 #'@param nb_opt_max
-#'@param Mixmod
+#'@param Mixmod boolean. indicates wether gaussian mixture hypothesis is made (FALSE= gaussian hypothesis)
 #'@return etape 0:suppression,1 ajout,2 stationarite
 #'
 rechercheZ<-function(X=X,Z=NULL,bic_vide_vect=bic_vide_vect,methode_tirage=-1,rejet=0,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=Maxiter,plot=F,best=T,better=F,random=T,bla=1,nb_opt_max=NULL,Mixmod=T,exact=T){

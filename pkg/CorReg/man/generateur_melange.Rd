@@ -32,6 +32,15 @@
   \item{sigma_sousreg}{standard deviation for the noise of
   the subregression (all). ignored if gamma=T}
 
+  \item{gamma}{boolean to generate a p-sized vector
+  sigma_sousreg gamma-distributed}
+
+  \item{gammashape}{shape parameter of the gamma
+  distribution (if needed)}
+
+  \item{gammascale}{scale parameter of the gamma
+  distribution (if needed)}
+
   \item{meanvar}{vector of means for the covariates.}
 
   \item{sigmavar}{standard deviation of the covariates.}

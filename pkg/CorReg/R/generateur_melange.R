@@ -8,6 +8,9 @@
 #' @param positif the ratio of positive coefficients in both the regression and the subregressions
 #' @param sigma_Y standard deviation for the noise of the regression
 #' @param sigma_sousreg standard deviation for the noise of the subregression (all). ignored if gamma=T
+#' @param gamma boolean to generate a p-sized vector sigma_sousreg gamma-distributed
+#' @param gammashape shape parameter of the gamma distribution (if needed)
+#' @param gammascale scale parameter of the gamma distribution (if needed)
 #' @param meanvar vector of means for the covariates.
 #' @param sigmavar standard deviation of the covariates.
 #' @param lambda paramater of the law that define the number of components in gaussian mixture models
@@ -15,7 +18,7 @@
 #' @param tp1 the ratio of right-side covariates allowed to have a non-zero coefficient in the regression
 #' @param tp2 the ratio of left-side covariates allowed to have a non-zero coefficient in the regression
 #' @param tp3 the ratio of strictly independent covariates allowed to have a non-zero coefficient in the regression
-#' 
+#' @export
 #' 
 generateur_melange<-function(n=130,
                                 p=100,
