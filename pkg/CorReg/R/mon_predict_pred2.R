@@ -1,4 +1,4 @@
-#' reconstitution du predictif
+# ' reconstitution du predictif
 mon_predict_pred2<-function(mod_expl=mod_expl,mod_inj=mod_inj,newdata=newdata,B=B){
   coef=as.matrix(c(mod_expl$coefficients,mod_inj$coefficients))
   Atilde=mod_expl$coefficients

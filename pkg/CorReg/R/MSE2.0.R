@@ -1,4 +1,4 @@
-#'coucou
+# 'coucou
 
 MSE2.0<-function(X_appr=X_appr,B=B,Z=Z,X_test=X_test,Y_appr=Y_appr,Y_test=Y_test,A=A,type="lar",moyenne=T,compl_lars=T,expl_lars=T,pred_lars=T){
   #mod?le complet####

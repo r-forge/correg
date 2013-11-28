@@ -1,5 +1,5 @@
-#' Estimates B matrix
-#' 
+# ' Estimates B matrix
+# ' 
 hatB<-function(Z=Z,X=X,methode=1){
   p=ncol(Z)
   B=matrix(0,ncol=p,nrow=p+1)

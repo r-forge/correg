@@ -1,5 +1,5 @@
-#' generateur de Z aleatoire
-#MH seulement mais all?g? pour ?tre plus rapide
+# ' generateur de Z aleatoire
+# MH seulement mais all?g? pour ?tre plus rapide
 generateurZ<-function(p=p,maxit=NULL){
   if(is.null(maxit)){
     #maxit=round(p^2/4) 

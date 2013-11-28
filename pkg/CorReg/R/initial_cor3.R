@@ -1,5 +1,5 @@
-#' calcul d'une structure initiale bas?e sur les corr?lations
-#' correl=cor(X_appr)
+# ' calcul d'une structure initiale bas?e sur les corr?lations
+# ' correl=cor(X_appr)
 initial_cor3<-function(correl=correl,p2max=Inf,rmax=Inf){
   p=ncol(correl)
   Z=Matrix(0,nrow=p,ncol=p)

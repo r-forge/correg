@@ -1,4 +1,4 @@
-#'another way to interprete the structure
+# 'another way to interprete the structure
 Interpretor<-function (Z = Z, names = NULL, X = NULL,R2=T,R2_vect=NULL,adj=T) 
 {
   if(R2){
