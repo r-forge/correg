@@ -6,7 +6,7 @@
     methode_BIC = 1, plot = F, bla = 1)
 }
 \arguments{
-  \item{X}{}
+  \item{X}{the dataset}
 
   \item{Z}{matrice Z a nettoyer}
 

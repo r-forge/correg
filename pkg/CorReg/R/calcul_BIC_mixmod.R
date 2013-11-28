@@ -1,4 +1,5 @@
 #' calcul du BIC initial via package externe Mixmod (ou mclust)
+#' @export
 calcul_BIC_mixmod<-function(X=X,nbclustmax=10,bla=F,details=F,max=T,mclust=T){
   #X est la matrice sans constante
   n=nrow(X)
