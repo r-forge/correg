@@ -6,7 +6,7 @@
 #' @param varnames the names of the variables (same order)
 #' @param output indicates the content of the output
 #' @param X is a dataframe containing the dataset
-#' 
+#' @export
 readZ<-function(Z=Z,B=NULL,R2=T,varnames=NULL,output=c("index","names","all"),X=NULL,decr=T){
   p=ncol(Z)
   output=output[1]
