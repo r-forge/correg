@@ -1,9 +1,9 @@
-#' qui est qui  ?
-#' 
-#' @param Z the structure (square matrix)
-#' @param I1 (and others) wanted output
-#' 
-#' 
+# ' qui est qui  ?
+# ' 
+# ' @param Z the structure (square matrix)
+# ' @param I1 (and others) wanted output
+# ' 
+# ' 
 WhoIs<-function(Z=Z,I3=F,I2=T,I1=T){
   res=list()
   if(I2){

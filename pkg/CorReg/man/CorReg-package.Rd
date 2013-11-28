@@ -34,7 +34,7 @@ X_test=base$X_test
 TrueZ=base$Z#True generative structure (binary matrix)
 Trueclust=base$mixmod#classes of the gaussian mixtures (orthogonal covariates only)
 
-mixmod=calcul_BIC_mixmod(X=X_appr,nbclustmax=10,details=T,mclust=T)#mclust=TRUE is faster
+mixmod=calcul_BIC_mixmod(X=X_appr,nbclustmax=10,details=TRUE,mclust=TRUE)#mclust=TRUE is faster
 BIC_empty_vect=mixmod$BIC_vect
 BIC_empty=sum(BIC_empty_vect)
 
@@ -53,15 +53,15 @@ hatZ=res$Zopt
 hatBic=res$bic_opt
 sum(BicZ(X=X_appr,Z=hatZ,Bic_vide_vect=BIC_empty_vect))#same value
 
-readZ(Z=hatZ,R2=T,X=X_appr,output="all",decr=F)# <NA>line : name of subregressed covariate
+readZ(Z=hatZ,R2=TRUE,X=X_appr,output="all",decr=FALSE)# <NA>line : name of subregressed covariate
 
 compZ=comparaison_struct(vraiZ=TrueZ,Zalgo=hatZ)#qualitative comparison
 select="lar"#LASSO with the Least Angle Regression algorithm to find the best model
-resY=hatY(X=X_appr,Y=Y_appr,Z=hatZ,compl=T,expl=T,pred=T,select=select,K=10,final=F,retour=T)
+resY=hatY(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,select=select,K=10,final=FALSE,retour=TRUE)
 
-MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=T,A=resY$compl$A)
-MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=T,A=resY$expl$A)
-MSE_predictive=MSE_loc(Y=Y_test,X=X_test,intercept=T,A=resY$pred$A)
+MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$compl$A)
+MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)
+MSE_predictive=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$pred$A)
 
 MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive)
 MSE
