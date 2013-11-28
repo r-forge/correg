@@ -13,7 +13,7 @@
 #'@param better T:permet d'aller systematiquement au meilleur BIC si il est meilleur que l'etape precedente
 #'@param random F:permet de s'ameliorer ou de rester sur place
 #'@param bla 0:pas de messages, 1:affiche le BIC,le numero d'etape et la complexite de Z quand il y'a un meilleur BIC, 2:affiche le BIC,le numero d'etape,la complexite de Z,le nombre de candidats et le BIC minimum observe parmi les candidats quand il y'a un meilleur BIC, 3: affiche en plus de bla=1 la complexite locale et le BIC local
-#'@param nb_opt_max
+#'@param nb_opt_max stop criterion defining how many times the chain can stay at the max found
 #'@param Mixmod boolean. indicates wether gaussian mixture hypothesis is made (FALSE= gaussian hypothesis)
 #'@return etape 0:suppression,1 ajout,2 stationarite
 #'
