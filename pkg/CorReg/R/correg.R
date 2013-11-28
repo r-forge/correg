@@ -9,7 +9,7 @@
 #' @param compl boolean to decide if the complete modele is computed
 #' @param expl boolean to decide if the explicative model is in the output
 #' @param pred boolean to decide if the predictive model is computed
-#' @param select the strategy used to select the covariates ("NULL" keeps all the covariates)
+#' @param select selection method in ("lar","lasso","forward.stagewise","stepwise", "elasticnet", "NULL","ridge")
 #' @param criterion the criterion used to compare the models
 #' @param K the number of clusters for cross-validation
 #' @param groupe a vector to define the groupes used for cross-validation (to obtain a reproductible result)
@@ -22,8 +22,7 @@
 #' 
 correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = T, expl = T, 
                 pred = T, 
-                select = c("lar", "lasso", "forward.stagewise", 
-                                     "stepwise", "elasticnet", "NULL","ridge"),
+                select = "lar",
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = T, 
                 K = 10, groupe = NULL, Amax = NULL, lambda = 1,retour=T,final=T) 
