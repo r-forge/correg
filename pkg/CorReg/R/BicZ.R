@@ -1,5 +1,5 @@
 #' calcul du vecteur BIC de la matrice Z
-#' 
+#' @export
 
 BicZ<-function(X=X,Z=Z,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=NULL){
  if(is.null(Bic_vide_vect)){

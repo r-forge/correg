@@ -10,7 +10,7 @@
     exact = T)
 }
 \arguments{
-  \item{X}{}
+  \item{X}{the dataset}
 
   \item{Z}{Z est une matrice nulle si on ne lui a pas mis
   de valeur}
@@ -54,9 +54,11 @@
   les candidats quand il y'a un meilleur BIC, 3: affiche en
   plus de bla=1 la complexite locale et le BIC local}
 
-  \item{nb_opt_max}{}
+  \item{nb_opt_max}{stop criterion defining how many times
+  the chain can stay at the max found}
 
-  \item{Mixmod}{}
+  \item{Mixmod}{boolean. indicates wether gaussian mixture
+  hypothesis is made (FALSE= gaussian hypothesis)}
 }
 \value{
   etape 0:suppression,1 ajout,2 stationarite
