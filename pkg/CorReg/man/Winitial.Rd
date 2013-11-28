@@ -34,6 +34,9 @@
   (best first)}
 
   \item{BIC}{boolean to use BIC for probabilities.}
+
+  \item{nbclustmax}{parameter for calcul_BIC_mixmod if
+  needed}
 }
 \description{
   initialisation based on a wheight matrix (correlation or

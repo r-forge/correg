@@ -8,7 +8,7 @@
 \arguments{
   \item{X}{the dataset (matrix)}
 
-  \item{nbclsutmax}{max number of clusters in the gaussian
+  \item{nbclustmax}{max number of clusters in the gaussian
   mixtures}
 
   \item{bla}{verbose or not}
