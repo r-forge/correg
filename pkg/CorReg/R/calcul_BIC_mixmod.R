@@ -1,6 +1,12 @@
 #' calcul du BIC initial via package externe Mixmod (ou mclust)
 #' @export
-calcul_BIC_mixmod<-function(X=X,nbclustmax=10,bla=F,details=F,max=T,mclust=T){
+#' @param X the dataset (matrix)
+#' @param nbclsutmax max number of clusters in the gaussian mixtures
+#' @param bla verbose or not
+#' @param details boolean to give the details of the mixtures found
+#' @param max boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset
+#' @param mclust boolean. Use mclust instead of Rmixmod
+calcul_BIC_mixmod<-function(X=X,nbclustmax=10,bla=FALSE,details=FALSE,max=TRUE,mclust=TRUE){
   #X est la matrice sans constante
   n=nrow(X)
   if(max){

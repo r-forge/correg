@@ -14,10 +14,10 @@
 #'@param random F:permet de s'ameliorer ou de rester sur place
 #'@param bla 0:pas de messages, 1:affiche le BIC,le numero d'etape et la complexite de Z quand il y'a un meilleur BIC, 2:affiche le BIC,le numero d'etape,la complexite de Z,le nombre de candidats et le BIC minimum observe parmi les candidats quand il y'a un meilleur BIC, 3: affiche en plus de bla=1 la complexite locale et le BIC local
 #'@param nb_opt_max stop criterion defining how many times the chain can stay at the max found
-#'@param Mixmod boolean. indicates wether gaussian mixture hypothesis is made (FALSE= gaussian hypothesis)
+#'@param exact boolean. If exact subregression is found it gives its content.
 #'@return etape 0:suppression,1 ajout,2 stationarite
 #'@export
-rechercheZ<-function(X=X,Z=NULL,bic_vide_vect=NULL,methode_tirage=-1,rejet=0,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=F,best=T,better=F,random=T,bla=1,nb_opt_max=NULL,Mixmod=T,exact=T){
+rechercheZ<-function(X=X,Z=NULL,bic_vide_vect=NULL,methode_tirage=-1,rejet=0,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,bla=1,nb_opt_max=NULL,exact=TRUE){
   if(is.null(p2max)){
     p2max=ncol(X)+1 
   }

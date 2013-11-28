@@ -21,8 +21,6 @@
 
   \item{rmax}{est le nombre max de 1 sur une colonne de Z}
 
-  \item{W}{est la matrice des poids (entre 0 et 1)}
-
   \item{random}{indique si on fait le tirage au sort ou pas
   (si on utilise BIc on a moins besoin du tirage). sans
   tirage = sans tenir compte de W}
@@ -31,6 +29,11 @@
   candidats a la mise a 1}
 
   \item{p2max}{est le nombre max de sous-reg}
+
+  \item{sorted}{boolean to sort the candidates based on W
+  (best first)}
+
+  \item{BIC}{boolean to use BIC for probabilities.}
 }
 \description{
   initialisation based on a wheight matrix (correlation or

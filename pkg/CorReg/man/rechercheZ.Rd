@@ -4,9 +4,9 @@
 \usage{
   rechercheZ(X = X, Z = NULL, bic_vide_vect = NULL,
     methode_tirage = -1, rejet = 0, methode_BIC = 1,
-    Rmax = 5, p2max = NULL, Maxiter = 1, plot = F,
-    best = T, better = F, random = T, bla = 1,
-    nb_opt_max = NULL, Mixmod = T, exact = T)
+    Rmax = 5, p2max = NULL, Maxiter = 1, plot = FALSE,
+    best = TRUE, better = FALSE, random = TRUE, bla = 1,
+    nb_opt_max = NULL, exact = TRUE)
 }
 \arguments{
   \item{X}{the dataset}
@@ -56,8 +56,8 @@
   \item{nb_opt_max}{stop criterion defining how many times
   the chain can stay at the max found}
 
-  \item{Mixmod}{boolean. indicates wether gaussian mixture
-  hypothesis is made (FALSE= gaussian hypothesis)}
+  \item{exact}{boolean. If exact subregression is found it
+  gives its content.}
 }
 \value{
   etape 0:suppression,1 ajout,2 stationarite

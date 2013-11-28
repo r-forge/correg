@@ -4,7 +4,7 @@
 \usage{
   readZ(Z = Z, B = NULL, R2 = T, varnames = NULL,
     output = c("index", "names", "all"), X = NULL,
-    decr = T)
+    decr = TRUE)
 }
 \arguments{
   \item{Z}{is the binary structure}
@@ -19,6 +19,9 @@
   \item{output}{indicates the content of the output}
 
   \item{X}{is a dataframe containing the dataset}
+
+  \item{decr}{boolean. Define the order used (don't have to
+  scroll to see the best subregresisons if many)}
 }
 \description{
   read the structure and explain it

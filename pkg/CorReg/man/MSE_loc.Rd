@@ -5,9 +5,6 @@
   MSE_loc(Y = Y, X = X, A = A, intercept = T)
 }
 \arguments{
-  \item{intercept}{indicates wether A contains an intercept
-  or not}
-
   \item{Y}{the response variable (vector)}
 
   \item{X}{the dataset (matrix of covariates)}

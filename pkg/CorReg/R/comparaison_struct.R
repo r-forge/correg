@@ -1,6 +1,10 @@
 #' comparaison de structures
 #' @export
-comparaison_struct<-function(vraiZ=vraiZ,Zalgo=Zalgo,tout=T,mode="NULL"){
+#' @param vraiZ first structure
+#' @param Zalgo second structure
+#' @param tout boolean. Also compute the ratio for each stat.
+#' @param mode how to modify the structures before comparison. mode=c("NULL","hybrid","clique","sym")
+comparaison_struct<-function(vraiZ=vraiZ,Zalgo=Zalgo,tout=TRUE,mode="NULL"){
   if(mode=="hybrid"){
     vraiZ=vraiZ+t(vraiZ)+t(vraiZ)%*%vraiZ#attention ? bien multiplier par la transpos?e ? gauche
     vraiZ[vraiZ>1]=1     

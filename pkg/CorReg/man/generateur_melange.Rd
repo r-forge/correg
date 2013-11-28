@@ -59,6 +59,12 @@
 
   \item{tp3}{the ratio of strictly independent covariates
   allowed to have a non-zero coefficient in the regression}
+
+  \item{lambdapois}{parameter used to generate the
+  coefficient in the subregressions. poisson distribution.}
+
+  \item{pb}{boolean. If True, use an heuristic to generate
+  Y in a way that will give some issues with correlations.}
 }
 \description{
   generateur de donnees en sous-regression par modele de
