@@ -96,7 +96,7 @@ searchZmissR<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vra
 #         BIC_loc=sum(calcul_BIC2.2(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z))
         BIC_loc=sum(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z))
         BIC_loc_mat[candidat+1,]=c(BIC_loc,i,j)
-        if(is.na(BIC_loc)){print(paste("Sous-reg parfaite pour la variable",which(is.na(calcul_BIC_mixmod(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z)))))}
+        if(is.na(BIC_loc)){print(paste("Sous-reg parfaite pour la variable",which(is.na(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z)))))}
       }
     }         
     #on termine l'?tape
