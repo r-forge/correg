@@ -39,7 +39,7 @@ BIC_empty_vect=mixmod$BIC_vect
 BIC_empty=sum(BIC_empty_vect)
 
 TrueBIC_vect=BicZ(X=X_appr,Z=TrueZ,Bic_vide_vect=BIC_empty_vect)
-TrueBIC=sum(vraiBIC_vect)
+TrueBIC=sum(TrueBIC_vect)
 
 correl=cor(X_appr)#Correlations matrix will weight initialisation
 
