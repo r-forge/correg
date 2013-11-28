@@ -1,5 +1,5 @@
 #' nettoyage de Z
-#'@param X
+#'@param X the dataset
 #'@param Z matrice Z a nettoyer
 #'@param bic_vide_vect vecteur BIC de la matrice nulle
 #'@param methode_BIC 1:utilisation de la fonction householderQr, 2:utilisation de la fonction colPivHouseholderQr

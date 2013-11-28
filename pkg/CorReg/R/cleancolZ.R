@@ -1,5 +1,5 @@
 #' nettoyage de Z par colonne
-#'@param X
+#'@param X the dataset
 #'@param Z matrice Z a nettoyer
 #'@param bic_vide_vect vecteur BIC de la matrice nulle
 #'@param methode_BIC 1:utilisation de la fonction householderQr, 2:utilisation de la fonction colPivHouseholderQr
@@ -10,5 +10,4 @@
 cleancolZ<-function(X=X,Z=Z,bic_vide_vect=bic_vide_vect,methode_BIC=1,plot=F,bla=1){
   res=.Call( "cleancolZ",X,Z,bic_vide_vect,methode_BIC,plot,bla, PACKAGE = "CorReg")
   return(res)
-  
 }
