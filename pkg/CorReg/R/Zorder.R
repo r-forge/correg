@@ -1,4 +1,4 @@
-#' Extract best columns of Z in terms of R2
+# ' Extract best columns of Z in terms of R2
 Zorder<-function(Z=Z,X=NULL,orderZ=NULL,p2=1,adj=T,decreasing=T){
    if(is.null(orderZ)){
       R2vect=R2Z(Z=Z,X=X,adj=adj)
