@@ -1,1 +1,2 @@
+export(generateur_melange)
 useDynLib(CorReg)
