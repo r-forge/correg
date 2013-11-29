@@ -1,7 +1,7 @@
 #' initialisation based on a wheight matrix (correlation or other)
 #' @param W est la matrice des poids (entre 0 et 1)
 #' @param X est la matrice des donnees (ne sert que si BIC=T)
-#' @param BIC_vide_vect est le vecteur bic vide (issu de mixmod par exemple)
+#' @param Bic_null_vect est le vecteur bic vide (issu de mixmod par exemple)
 #' @param relax indique si on fait la relaxation ou le rejet (booleen)
 #' @param rmax est le nombre max de 1 sur une colonne de Z
 #' @param random indique si on fait le tirage au sort ou pas (si on utilise BIc on a moins besoin du tirage). sans tirage = sans tenir compte de W
@@ -12,10 +12,10 @@
 #' @param nbclustmax parameter for calcul_BIC_mixmod if needed
 #' @export
 
-Winitial<-function(W=W,X=NULL,rmax=NULL,BIC=F,BIC_vide_vect=NULL,relax=T,random=T,nbclustmax=5,sorted=T,mode=c("all","sorted","multinom"),p2max=NULL){
+Winitial<-function(W=W,X=NULL,rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=T,nbclustmax=5,sorted=T,mode=c("all","sorted","multinom"),p2max=NULL){
   #W est la matrice des poids (entre 0 et 1)
   #X est la matrice des donnees (ne sert que si BIC=T)
-  #BIC_vide_vect est le vecteur bic vide (issu de mixmod par exemple)
+  #Bic_null_vect est le vecteur bic vide (issu de mixmod par exemple)
   #relax indique si on fait la relaxation ou le rejet
   #rmax est le nombre max de 1 sur une colonne de Z
   #random indique si on fait le tirage au sort ou pas (si on utilise BIc on a moins besoin du tirage). sans tirage = sans tenir compte de W
@@ -27,12 +27,12 @@ Winitial<-function(W=W,X=NULL,rmax=NULL,BIC=F,BIC_vide_vect=NULL,relax=T,random=
   Z=matrix(0,ncol=p,nrow=p)
   list_j=sample(p)#melange les entiers de 1 a p
   if(BIC==T &  !is.null(X)){
-    if(is.null(BIC_vide_vect)){
+    if(is.null(Bic_null_vect)){
       mixmod=calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax)
-      BIC_vide_vect=mixmod$BIC_vect       
+      Bic_null_vect=mixmod$BIC_vect       
     }
-    BIC_opt_vect=BIC_vide_vect
-    BIC_opt=sum(BIC_vide_vect)#initialisation de l'optimum
+    BIC_opt_vect=Bic_null_vect
+    BIC_opt=sum(Bic_null_vect)#initialisation de l'optimum
   }else{
     BIC=F#soit il l'etait deja soit il manque de quoi le calculer
   }
@@ -65,7 +65,7 @@ Winitial<-function(W=W,X=NULL,rmax=NULL,BIC=F,BIC_vide_vect=NULL,relax=T,random=
                 if(length(which(colSums(Zloc)!=0))<=p2max){
                   if(BIC){#si on veut s'appuyer sur le bic
                     
-                    BICloc_vect=BicZ(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,BicOld=BIC_opt_vect,Zold=Z)
+                    BICloc_vect=BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,BicOld=BIC_opt_vect,Zold=Z)
                     BICloc=sum(BICloc_vect)
                     if(BICloc<BIC_opt){#modification effective
                       Z=Zloc
@@ -114,7 +114,7 @@ Winitial<-function(W=W,X=NULL,rmax=NULL,BIC=F,BIC_vide_vect=NULL,relax=T,random=
               if(length(which(colSums(Zloc)!=0))<=p2max){
                 if(BIC){#si on veut s'appuyer sur le bic
                   
-                  BICloc_vect=BicZ(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,BicOld=BIC_opt_vect,Zold=Z)
+                  BICloc_vect=BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,BicOld=BIC_opt_vect,Zold=Z)
                   BICloc=sum(BICloc_vect)
                   if(BICloc<BIC_opt){#modification effective
                     Z=Zloc
@@ -177,7 +177,7 @@ Winitial<-function(W=W,X=NULL,rmax=NULL,BIC=F,BIC_vide_vect=NULL,relax=T,random=
               if(length(which(colSums(Zloc)!=0))<=p2max){
                 if(BIC){#si on veut s'appuyer sur le bic
                   
-                  BICloc_vect=BicZ(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,BicOld=BIC_opt_vect,Zold=Z)
+                  BICloc_vect=BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,BicOld=BIC_opt_vect,Zold=Z)
                   BICloc=sum(BICloc_vect)
                   if(BICloc<BIC_opt){#modification effective
                     Z=Zloc
