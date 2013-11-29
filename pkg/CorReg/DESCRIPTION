@@ -4,7 +4,7 @@ Title: Linear regression based on linear structure between covariates
 Version: 0.12.3
 Date: 2013-11-29
 Author: THERY CLEMENT, WATRIN FLORIAN
-Maintainer: if you want to ask somebody <clement.thery@arcelormittal.com>
+Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Sequential linear regression based on a structural equation model
     (explicit correlations). It permits to face highly correlated datasets.
 License: CeCILL
