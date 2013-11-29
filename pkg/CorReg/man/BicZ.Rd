@@ -2,7 +2,7 @@
 \alias{BicZ}
 \title{Compute the BIC of a given structure}
 \usage{
-  BicZ(X = X, Z = Z, Bic_vide_vect = NULL, BicOld = NULL,
+  BicZ(X = X, Z = Z, Bic_null_vect = NULL, BicOld = NULL,
     methode = 1, Zold = NULL)
 }
 \arguments{
@@ -10,7 +10,7 @@
 
   \item{Z}{the structure}
 
-  \item{Bic_vide_vect}{the BIC of the null hypothesis (used
+  \item{Bic_null_vect}{the BIC of the null hypothesis (used
   for independent variables)}
 
   \item{BicOld}{BIC (vector) associated to Zold}
