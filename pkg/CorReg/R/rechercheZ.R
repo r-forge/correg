@@ -1,9 +1,9 @@
 #' recherche de structure
 #'@param X the dataset
 #'@param Z Z est une matrice nulle si on ne lui a pas mis de valeur
-#'@param bic_vide_vect vecteur BIC de la matrice nulle
+#'@param Bic_null_vect vecteur BIC de la matrice nulle
 #'@param methode_tirage 0:ligne et colonne,-1:seulement la colonne, entier>0:nombre aleatoire de candidats, -2 : tout le monde (hors diagonale), -3 : uniquement les non-nuls
-#'@param rejet 0:mode relax, 1:mode rejet
+#'@param reject 0:mode relax, 1:mode reject
 #'@param methode_BIC 1:utilisation de la fonction householderQr, 2:utilisation de la fonction colPivHouseholderQr
 #'@param Rmax complexite maximum d'une sous-regression
 #'@param p2max nombre maximal de sous-regressions
@@ -17,7 +17,7 @@
 #'@param exact boolean. If exact subregression is found it gives its content.
 #'@return etape 0:suppression,1 ajout,2 stationarite
 #'@export
-rechercheZ<-function(X=X,Z=NULL,bic_vide_vect=NULL,methode_tirage=-1,rejet=0,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,bla=1,nb_opt_max=NULL,exact=TRUE){
+rechercheZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=0,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,bla=1,nb_opt_max=NULL,exact=TRUE){
   if(is.null(p2max)){
     p2max=ncol(X)+1 
   }
@@ -27,14 +27,14 @@ rechercheZ<-function(X=X,Z=NULL,bic_vide_vect=NULL,methode_tirage=-1,rejet=0,met
   if(is.null(Z)){
     Z=matrix(0,ncol=ncol(X),nrow=ncol(X))
   }
-  if(is.null(bic_vide_vect)){
-     bic_vide_vect=calcul_BIC_mixmod(X=X,nbclustmax=10,bla=FALSE,details=FALSE,mclust=TRUE)$BIC_vect
+  if(is.null(Bic_null_vect)){
+     Bic_null_vect=calcul_BIC_mixmod(X=X,nbclustmax=10,bla=FALSE,details=FALSE,mclust=TRUE)$BIC_vect
   }
-  if(rejet==0){#mode relax
-    res=.Call( "rechercheZ_relax",X,Z,bic_vide_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
+  if(reject==0){#relax mode
+    res=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
     return(res)
-  }else{#mode rejet
-    res=.Call( "rechercheZ_rejet",X,Z,bic_vide_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
+  }else{# reject mode
+    res=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
     return(res)
   }
 
