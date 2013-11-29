@@ -13,8 +13,8 @@ Depends:
     RcppEigen (>= 0.3.1.2.1),
     Rmixmod,
     lars,
-    elasticnet,Matrix,mclust,stats,ridge
-LinkingTo: Rcpp, RcppEigen, Rmixmod, lars, elasticnet,Matrix, mclust,stats,ridge
+    elasticnet,Matrix,mclust,ridge
+LinkingTo: Rcpp, RcppEigen, Rmixmod, lars, elasticnet,Matrix, mclust,ridge
 Collate:
     'BicLoc.R'
     'BicTheta.R'

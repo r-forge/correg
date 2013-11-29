@@ -3,8 +3,7 @@
 \title{Estimates the response variable using a structure}
 \usage{
   correg(X = X, Y = Y, Z = NULL, B = NULL, compl = T,
-    expl = T, pred = T,
-    select = c("lar", "lasso", "forward.stagewise", "stepwise", "elasticnet", "NULL", "ridge"),
+    expl = T, pred = T, select = "lar",
     criterion = c("MSE", "BIC"), X_test = NULL,
     Y_test = NULL, intercept = T, K = 10, groupe = NULL,
     Amax = NULL, lambda = 1, retour = T, final = T)
@@ -33,8 +32,9 @@
   \item{pred}{boolean to decide if the predictive model is
   computed}
 
-  \item{select}{the strategy used to select the covariates
-  ("NULL" keeps all the covariates)}
+  \item{select}{selection method in
+  ("lar","lasso","forward.stagewise","stepwise",
+  "elasticnet", "NULL","ridge")}
 
   \item{criterion}{the criterion used to compare the
   models}
