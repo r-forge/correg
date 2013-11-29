@@ -14,7 +14,7 @@
 #' @param K the number of clusters for cross-validation
 #' @param groupe a vector to define the groupes used for cross-validation (to obtain a reproductible result)
 #' @param Amax the maximum number of covariates in the final model
-#' @param retour boolean : second predictive step
+#' @param retour boolean : second predictive step (selection on I1 knowing I2 coefficients)
 #' @param final boolean : recompute estimators without selection on the remaining parameters of the predictive model
 #' @param X_test validation sample
 #' @param Y_test response for the validation sample

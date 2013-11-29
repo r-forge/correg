@@ -47,7 +47,8 @@
   \item{Amax}{the maximum number of covariates in the final
   model}
 
-  \item{retour}{boolean : second predictive step}
+  \item{retour}{boolean : second predictive step (selection
+  on I1 knowing I2 coefficients)}
 
   \item{final}{boolean : recompute estimators without
   selection on the remaining parameters of the predictive
