@@ -2,8 +2,8 @@
 \alias{rechercheZ}
 \title{recherche de structure}
 \usage{
-  rechercheZ(X = X, Z = NULL, bic_vide_vect = NULL,
-    methode_tirage = -1, rejet = 0, methode_BIC = 1,
+  rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL,
+    methode_tirage = -1, reject = 0, methode_BIC = 1,
     Rmax = 5, p2max = NULL, Maxiter = 1, plot = FALSE,
     best = TRUE, better = FALSE, random = TRUE, bla = 1,
     nb_opt_max = NULL, exact = TRUE)
@@ -14,14 +14,14 @@
   \item{Z}{Z est une matrice nulle si on ne lui a pas mis
   de valeur}
 
-  \item{bic_vide_vect}{vecteur BIC de la matrice nulle}
+  \item{Bic_null_vect}{vecteur BIC de la matrice nulle}
 
   \item{methode_tirage}{0:ligne et colonne,-1:seulement la
   colonne, entier>0:nombre aleatoire de candidats, -2 :
   tout le monde (hors diagonale), -3 : uniquement les
   non-nuls}
 
-  \item{rejet}{0:mode relax, 1:mode rejet}
+  \item{reject}{0:mode relax, 1:mode reject}
 
   \item{methode_BIC}{1:utilisation de la fonction
   householderQr, 2:utilisation de la fonction

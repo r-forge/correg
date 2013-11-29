@@ -20,12 +20,12 @@
 #' @param Y_test response for the validation sample
 #' @param intercept boolean. If FALSE intercept will be set to 0 in each model.
 #' 
-correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = T, expl = T, 
-                pred = T, 
+correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, 
+                pred = TRUE, 
                 select = "lar",
                 criterion = c("MSE", "BIC"),
-                X_test = NULL, Y_test = NULL, intercept = T, 
-                K = 10, groupe = NULL, Amax = NULL, lambda = 1,retour=T,final=T) 
+                X_test = NULL, Y_test = NULL, intercept = TRUE, 
+                K = 10, groupe = NULL, Amax = NULL, lambda = 1,retour=TRUE,final=FALSE) 
 {
   res = list()
   X = as.matrix(X)
