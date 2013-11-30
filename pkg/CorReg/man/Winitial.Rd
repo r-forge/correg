@@ -3,7 +3,7 @@
 \title{initialisation based on a wheight matrix (correlation or other)}
 \usage{
   Winitial(W = W, X = NULL, rmax = NULL, BIC = F,
-    BIC_vide_vect = NULL, relax = T, random = T,
+    Bic_null_vect = NULL, relax = T, random = T,
     nbclustmax = 5, sorted = T,
     mode = c("all", "sorted", "multinom"), p2max = NULL)
 }
@@ -13,7 +13,7 @@
   \item{X}{est la matrice des donnees (ne sert que si
   BIC=T)}
 
-  \item{BIC_vide_vect}{est le vecteur bic vide (issu de
+  \item{Bic_null_vect}{est le vecteur bic vide (issu de
   mixmod par exemple)}
 
   \item{relax}{indique si on fait la relaxation ou le rejet
