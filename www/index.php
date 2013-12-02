@@ -47,6 +47,6 @@ echo $contents; } ?>
 <p> No content added. </p>
 
 <p> The <strong>project summary page</strong> you can find <a href="http://<?php echo $domain; ?>/projects/<?php echo $group_name; ?>/"><strong>here</strong></a>. </p>
-
+<p> This project is developped under the <a href="http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html">CeCILL</a> license</p>
 </body>
 </html>
