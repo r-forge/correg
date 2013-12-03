@@ -2,7 +2,7 @@
 \alias{Winitial}
 \title{initialisation based on a wheight matrix (correlation or other)}
 \usage{
-  Winitial(W = W, X = NULL, rmax = NULL, BIC = F,
+  Winitial(W = W, X = NULL, Rmax = NULL, BIC = F,
     Bic_null_vect = NULL, relax = T, random = T,
     nbclustmax = 5, sorted = T,
     mode = c("all", "sorted", "multinom"), p2max = NULL)
@@ -19,7 +19,7 @@
   \item{relax}{indique si on fait la relaxation ou le rejet
   (booleen)}
 
-  \item{rmax}{est le nombre max de 1 sur une colonne de Z}
+  \item{Rmax}{est le nombre max de 1 sur une colonne de Z}
 
   \item{random}{indique si on fait le tirage au sort ou pas
   (si on utilise BIc on a moins besoin du tirage). sans
