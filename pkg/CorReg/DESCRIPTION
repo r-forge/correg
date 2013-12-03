@@ -1,7 +1,7 @@
 Package: CorReg
 Type: Package
 Title: Linear regression based on linear structure between covariates
-Version: 0.12.4
+Version: 0.12.5
 Date: 2013-11-30
 Author: THERY CLEMENT, WATRIN FLORIAN
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
