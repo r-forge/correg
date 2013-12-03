@@ -1,5 +1,8 @@
-# ' Estimates B matrix
-# ' 
+#' Estimates B matrix
+#' @param Z the binary structure (matrix pxp)
+#' @param X the dataset
+#' @param methode for OLS
+#' @export 
 hatB<-function(Z=Z,X=X,methode=1){
   p=ncol(Z)
   B=matrix(0,ncol=p,nrow=p+1)
