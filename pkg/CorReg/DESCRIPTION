@@ -1,8 +1,8 @@
 Package: CorReg
 Type: Package
 Title: Linear regression based on linear structure between covariates
-Version: 0.12.3
-Date: 2013-11-29
+Version: 0.12.4
+Date: 2013-11-30
 Author: THERY CLEMENT, WATRIN FLORIAN
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Sequential linear regression based on a structural equation model
