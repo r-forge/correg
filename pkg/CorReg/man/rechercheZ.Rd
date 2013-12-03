@@ -6,7 +6,7 @@
     methode_tirage = -1, reject = 0, methode_BIC = 1,
     Rmax = 5, p2max = NULL, Maxiter = 1, plot = FALSE,
     best = TRUE, better = FALSE, random = TRUE, bla = 1,
-    nb_opt_max = NULL, exact = TRUE)
+    nb_opt_max = NULL, exact = TRUE, nbini = NULL, ...)
 }
 \arguments{
   \item{X}{the dataset}
@@ -58,6 +58,12 @@
 
   \item{exact}{boolean. If exact subregression is found it
   gives its content.}
+
+  \item{nbini}{Number of initialisations (using Winitial).
+  if NULL and Zini is NULL : only one chain beginning with
+  zero matrix.}
+
+  \item{...}{parameters to be passed (for Winitial).}
 }
 \value{
   etape 0:suppression,1 ajout,2 stationarite
