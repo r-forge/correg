@@ -19,7 +19,7 @@
 #' @param tp2 the ratio of left-side covariates allowed to have a non-zero coefficient in the regression
 #' @param tp3 the ratio of strictly independent covariates allowed to have a non-zero coefficient in the regression
 #' @param lambdapois parameter used to generate the coefficient in the subregressions. poisson distribution.
-#' @param pb boolean. If True, use an heuristic to generate Y in a way that will give some issues with correlations.
+#' @param pb Defines an heuristic to generate Y in a way that will give some issues with correlations.
 #' @export
 generateur_melange<-function(n=130,
                                 p=100,
@@ -41,6 +41,7 @@ generateur_melange<-function(n=130,
   max_compl=min(max_compl,p)
   Amax=min(p+1,Amax) # min entre p+1 et Amax  why?
   R=round(ratio*p) # R : entier nombre de personne a gauche
+  if(R==0){pb=0}
   if(is.null(Amax) | Amax>p){Amax=p}
   #lmabda param?tre le nombre de composantes des m?langes gaussiens   
   valid=max(valid,n)
