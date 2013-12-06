@@ -2,9 +2,9 @@
 \alias{readZ}
 \title{read the structure and explain it}
 \usage{
-  readZ(Z = Z, B = NULL, R2 = T, varnames = NULL,
+  readZ(Z = Z, B = NULL, R2 = TRUE, varnames = NULL,
     output = c("index", "names", "all"), X = NULL,
-    decr = TRUE)
+    order = 1)
 }
 \arguments{
   \item{Z}{is the binary structure}
@@ -20,8 +20,8 @@
 
   \item{X}{is a dataframe containing the dataset}
 
-  \item{decr}{boolean. Define the order used (don't have to
-  scroll to see the best subregresisons if many)}
+  \item{order}{Define the order used (0: none, -1:
+  decreasing, 1: growing)}
 }
 \description{
   read the structure and explain it

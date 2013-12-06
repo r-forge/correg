@@ -6,9 +6,9 @@
 #' @param varnames the names of the variables (same order)
 #' @param output indicates the content of the output
 #' @param X is a dataframe containing the dataset
-#' @param decr boolean. Define the order used (don't have to scroll to see the best subregresisons if many)
+#' @param order Define the order used (0: none, -1: decreasing, 1: growing)
 #' @export
-readZ<-function(Z=Z,B=NULL,R2=T,varnames=NULL,output=c("index","names","all"),X=NULL,decr=TRUE){
+readZ<-function(Z=Z,B=NULL,R2=TRUE,varnames=NULL,output=c("index","names","all"),X=NULL,order=1){
   p=ncol(Z)
   output=output[1]
   res=list()
@@ -23,10 +23,18 @@ readZ<-function(Z=Z,B=NULL,R2=T,varnames=NULL,output=c("index","names","all"),X=
      B=hatB(Z=Z,X=X)
   }
   if(R2){
-    R2vect=R2Z(Z=Z,X=X,adj=T,crit="R2")
+    R2vect=R2Z(Z=Z,X=X,adj=TRUE,crit="R2")
     R2vect=R2vect[R2vect!=0]
     quiI2=which(colSums(Z)!=0)
-    neworder=order(R2vect,decreasing=decr)
+    if(order==1){#increasing order
+       neworder=order(R2vect,decreasing=FALSE)
+       
+    }else if(order==-1){
+       neworder=order(R2vect,decreasing=TRUE)
+       
+    }else{
+       neworder=1:length(quiI2)     
+    }
     if(output=="index"){
       for(i in 1:length(quiI2)){
         res[[i]]=c(quiI2[neworder[i]],which(Z[,quiI2[neworder[i]]]!=0))
