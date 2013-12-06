@@ -1,0 +1,9 @@
+#'@export
+readY<-function(A=A,labels=NULL,X=NULL,intercept=TRUE){
+   if(is.null(labels)){
+      labels=names(X)
+   }
+   if(intercept){labels=c("intercept",labels)}
+   interp=cbind(A[A!=0],labels[A!=0])
+   return(interp)
+}
