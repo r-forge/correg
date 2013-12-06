@@ -1,3 +1,4 @@
+#' Computes the MSE on the joint distribution of the dataset
 #'@export
 MSEZ<-function(X=X,X_appr=NULL,B=NULL,Z=Z,scale=TRUE){
    X=scale(X)
