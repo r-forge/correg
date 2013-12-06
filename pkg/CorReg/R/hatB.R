@@ -28,3 +28,7 @@ hatB<-function(Z=Z,X=X,methode=1){
   }
   return(B)
 }
+
+
+
+
