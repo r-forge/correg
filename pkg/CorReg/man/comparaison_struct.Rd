@@ -2,8 +2,8 @@
 \alias{comparaison_struct}
 \title{comparaison de structures}
 \usage{
-  comparaison_struct(vraiZ = vraiZ, Zalgo = Zalgo,
-    tout = TRUE, mode = "NULL")
+comparaison_struct(vraiZ = vraiZ, Zalgo = Zalgo, tout = TRUE,
+  mode = "NULL")
 }
 \arguments{
   \item{vraiZ}{first structure}
@@ -17,6 +17,6 @@
   comparison. mode=c("NULL","hybrid","clique","sym")}
 }
 \description{
-  comparaison de structures
+comparaison de structures
 }
 

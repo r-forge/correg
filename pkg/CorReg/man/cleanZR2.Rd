@@ -2,8 +2,7 @@
 \alias{cleanZR2}
 \title{Cleaning based on R2}
 \usage{
-  cleanZR2(Z = Z, X = X, R2min = 0.4, methode = 1,
-    adj = TRUE)
+cleanZR2(Z = Z, X = X, R2min = 0.4, methode = 1, adj = TRUE)
 }
 \arguments{
   \item{Z}{the structure}
@@ -19,6 +18,6 @@
   (if FALSE).}
 }
 \description{
-  Cleaning based on R2
+Cleaning based on R2
 }
 

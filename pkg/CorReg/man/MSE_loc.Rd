@@ -2,7 +2,7 @@
 \alias{MSE_loc}
 \title{simple MSE function}
 \usage{
-  MSE_loc(Y = Y, X = X, A = A, intercept = T)
+MSE_loc(Y = Y, X = X, A = A, intercept = T)
 }
 \arguments{
   \item{Y}{the response variable (vector)}
@@ -15,6 +15,6 @@
   contains an intercept and X don't)}
 }
 \description{
-  simple MSE function
+simple MSE function
 }
 

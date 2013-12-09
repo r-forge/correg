@@ -1,8 +1,8 @@
 Package: CorReg
 Type: Package
 Title: Linear regression based on linear structure between covariates
-Version: 0.12.7
-Date: 2013-12-06
+Version: 0.12.8
+Date: 2013-12-09
 Author: THERY CLEMENT, WATRIN FLORIAN
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Sequential linear regression based on a structural equation model
@@ -15,64 +15,3 @@ Depends:
     lars,
     elasticnet,Matrix,mclust,ridge
 LinkingTo: Rcpp, RcppEigen, Rmixmod, lars, elasticnet,Matrix, mclust,ridge
-Collate:
-    'BicLoc.R'
-    'BicTheta.R'
-    'BicZ.R'
-    'BICZmiss.R'
-    'BICZsparse.R'
-    'calcul_BIC_mixmod.R'
-    'calcul_BIC_theta.R'
-    'cleancolZ.R'
-    'cleanYtest.R'
-    'cleanZ.R'
-    'cleanZlars.R'
-    'cleanZR2.R'
-    'cleanZtest.R'
-    'cliquefaction.R'
-    'comp0.R'
-    'comparaison_struct.R'
-    'comparateur0_vect.R'
-    'comparateursign_vect.R'
-    'compare_A_Z.R'
-    'CompNoms.R'
-    'correg.R'
-    'corXY.R'
-    'CVMSE.R'
-    'explicatif.R'
-    'extract_lars.R'
-    'extract_Xtilde.R'
-    'fillmiss.R'
-    'generateur_melange.R'
-    'generateur_Y.R'
-    'generateurA_ou.R'
-    'generateurZ.R'
-    'GM_Loglikelihood.R'
-    'hatB.R'
-    'initial_cor3.R'
-    'Interpretor.R'
-    'kroneckersum_vect.R'
-    'log_likelihood.R'
-    'meilleur_lars.R'
-    'mixmod_adapter.R'
-    'modsparse_cpp.R'
-    'mon_predict_pred2.R'
-    'MSE_loc.R'
-    'MSE2.0.R'
-    'OLS.R'
-    'qui_nom.R'
-    'R2Z.R'
-    'readZ.R'
-    'rechercheZ.R'
-    'rechercheZ_rejet.R'
-    'rechercheZ_relax.R'
-    'rechercheZ_sparse_relax.R'
-    'renet.R'
-    'searchZmissR.R'
-    'showmiss.R'
-    'WhoIs.R'
-    'winitial.R'
-    'Zorder.R'
-    'MSEZ.R'
-    'confint.coef.R'
-    'readY.R'

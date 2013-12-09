@@ -2,8 +2,8 @@
 \alias{BicZ}
 \title{Compute the BIC of a given structure}
 \usage{
-  BicZ(X = X, Z = Z, Bic_null_vect = NULL, BicOld = NULL,
-    methode = 1, Zold = NULL)
+BicZ(X = X, Z = Z, Bic_null_vect = NULL, BicOld = NULL, methode = 1,
+  Zold = NULL)
 }
 \arguments{
   \item{X}{the dataset}
@@ -21,6 +21,6 @@
   \item{methode}{parameter for OLS}
 }
 \description{
-  Compute the BIC of a given structure
+Compute the BIC of a given structure
 }
 

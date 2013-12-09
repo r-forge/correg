@@ -2,8 +2,8 @@
 \alias{calcul_BIC_mixmod}
 \title{calcul du BIC initial via package externe Mixmod (ou mclust)}
 \usage{
-  calcul_BIC_mixmod(X = X, nbclustmax = 10, bla = FALSE,
-    details = FALSE, max = TRUE, mclust = TRUE)
+calcul_BIC_mixmod(X = X, nbclustmax = 10, bla = FALSE, details = FALSE,
+  max = TRUE, mclust = TRUE)
 }
 \arguments{
   \item{X}{the dataset (matrix)}
@@ -22,7 +22,7 @@
   \item{mclust}{boolean. Use mclust instead of Rmixmod}
 }
 \description{
-  calcul du BIC initial via package externe Mixmod (ou
-  mclust)
+calcul du BIC initial via package externe Mixmod (ou
+mclust)
 }
 
