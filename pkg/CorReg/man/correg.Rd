@@ -2,11 +2,11 @@
 \alias{correg}
 \title{Estimates the response variable using a structure}
 \usage{
-  correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE,
-    expl = TRUE, pred = TRUE, select = "lar",
-    criterion = c("MSE", "BIC"), X_test = NULL,
-    Y_test = NULL, intercept = TRUE, K = 10, groupe = NULL,
-    Amax = NULL, lambda = 1, retour = TRUE, final = FALSE)
+correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
+  pred = TRUE, select = "lar", criterion = c("MSE", "BIC"),
+  X_test = NULL, Y_test = NULL, intercept = TRUE, K = 10,
+  groupe = NULL, Amax = NULL, lambda = 1, retour = TRUE,
+  final = FALSE)
 }
 \arguments{
   \item{B}{the (p+1)xp matrix assiated to Z and that
@@ -62,6 +62,6 @@
   to 0 in each model.}
 }
 \description{
-  Estimates the response variable using a structure
+Estimates the response variable using a structure
 }
 

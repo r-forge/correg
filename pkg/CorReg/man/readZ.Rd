@@ -2,9 +2,8 @@
 \alias{readZ}
 \title{read the structure and explain it}
 \usage{
-  readZ(Z = Z, B = NULL, R2 = TRUE, varnames = NULL,
-    output = c("index", "names", "all"), X = NULL,
-    order = 1)
+readZ(Z = Z, B = NULL, R2 = TRUE, varnames = NULL, output = c("index",
+  "names", "all"), X = NULL, order = 1)
 }
 \arguments{
   \item{Z}{is the binary structure}
@@ -24,6 +23,6 @@
   decreasing, 1: growing)}
 }
 \description{
-  read the structure and explain it
+read the structure and explain it
 }
 

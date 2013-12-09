@@ -2,11 +2,10 @@
 \alias{rechercheZ}
 \title{recherche de structure}
 \usage{
-  rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL,
-    methode_tirage = -1, reject = 0, methode_BIC = 1,
-    Rmax = 5, p2max = NULL, Maxiter = 1, plot = FALSE,
-    best = TRUE, better = FALSE, random = TRUE, bla = 1,
-    nb_opt_max = NULL, exact = TRUE, nbini = NULL, ...)
+rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
+  reject = 0, methode_BIC = 1, Rmax = 5, p2max = NULL, Maxiter = 1,
+  plot = FALSE, best = TRUE, better = FALSE, random = TRUE, bla = 1,
+  nb_opt_max = NULL, exact = TRUE, nbini = NULL, ...)
 }
 \arguments{
   \item{X}{the dataset}
@@ -66,9 +65,9 @@
   \item{...}{parameters to be passed (for Winitial).}
 }
 \value{
-  etape 0:suppression,1 ajout,2 stationarite
+etape 0:suppression,1 ajout,2 stationarite
 }
 \description{
-  recherche de structure
+recherche de structure
 }
 

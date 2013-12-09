@@ -2,10 +2,9 @@
 \alias{Winitial}
 \title{initialisation based on a wheight matrix (correlation or other)}
 \usage{
-  Winitial(W = W, X = NULL, Rmax = NULL, BIC = F,
-    Bic_null_vect = NULL, relax = T, random = T,
-    nbclustmax = 5, sorted = T,
-    mode = c("all", "sorted", "multinom"), p2max = NULL)
+Winitial(W = W, X = NULL, Rmax = NULL, BIC = F, Bic_null_vect = NULL,
+  relax = T, random = T, nbclustmax = 5, sorted = T, mode = c("all",
+  "sorted", "multinom"), p2max = NULL)
 }
 \arguments{
   \item{W}{est la matrice des poids (entre 0 et 1)}
@@ -39,7 +38,7 @@
   needed}
 }
 \description{
-  initialisation based on a wheight matrix (correlation or
-  other)
+initialisation based on a wheight matrix (correlation or
+other)
 }
 
