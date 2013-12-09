@@ -1,11 +1,11 @@
-#fonction qui évalue la qualité (efficacité) d'une régression linéaire
+#confidence intervals on the coefficients estimated in a model
 confint.coef<-function(modele){   
    confint=confint.default(modele)
    coef=cbind(modele$coefficients,confint)
-   colnames(coef)=c("valeurs","borne inf IC", "borne sup IC")
-   plot(rstudent(modele),type="p",cex=0.5,ylab="Résidus studentisés",main="analyse des residus",sub="95% des points doivent se trouver entre les lignes horizontales")
+   colnames(coef)=c("values","borne inf IC", "borne sup IC")
+   plot(rstudent(modele),type="p",cex=0.5,ylab="standardized residuals",main="analyse des residus",sub="95% des points doivent se trouver entre les lignes horizontales")
    abline(h=c(-2,2),col="red")
-   barplot(modele$coefficients,ylim=c(min(coef[,2]),max(coef[,3])),col="cyan",main="Intervalle de confiance des coefficients",sub="Interprétation : ils ne doivent pas contenir 0")
+   barplot(modele$coefficients,ylim=c(min(coef[,2]),max(coef[,3])),col="cyan",main="Intervalle de confiance des coefficients",sub="Interpretation : ils ne doivent pas contenir 0")
    x0=seq(from=1,length.out=nrow(coef),by=1.2)-0.3
    y0=coef[,2]
    x1=x0
