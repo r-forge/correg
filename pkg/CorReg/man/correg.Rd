@@ -3,8 +3,8 @@
 \title{Estimates the response variable using a structure}
 \usage{
 correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
-  pred = TRUE, select = "lar", criterion = c("MSE", "BIC"),
-  X_test = NULL, Y_test = NULL, intercept = TRUE, K = 10,
+  pred = TRUE, pred2 = FALSE, select = "lar", criterion = c("MSE",
+  "BIC"), X_test = NULL, Y_test = NULL, intercept = TRUE, K = 10,
   groupe = NULL, Amax = NULL, lambda = 1, retour = TRUE,
   final = FALSE)
 }
@@ -31,6 +31,9 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
 
   \item{pred}{boolean to decide if the predictive model is
   computed}
+
+  \item{pred2}{boolean to define if the new predictive
+  model is computed}
 
   \item{select}{selection method in
   ("lar","lasso","forward.stagewise","stepwise",
