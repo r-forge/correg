@@ -1,4 +1,9 @@
-# ' Selection method based on p-values (coefficients)
+#' Selection method based on p-values (coefficients)
+#' @param Y the response variable
+#' @param X the dataset of the covariates (without the response)
+#' @param pvalmin the maximal bound for p-value associated to remaining coefficients
+#' @param bonferroni boolean defining wether a Bonferroni correction is applied or not
+#' @param A optional vector of coefficients to coerce some zeros
 #' @export
 cleanYtest<-function (Y = Y, X = X, pvalmin = 0.05, bonferroni=F,A=NULL) 
 {
