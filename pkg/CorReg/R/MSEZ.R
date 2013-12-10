@@ -1,4 +1,9 @@
 #' Computes the MSE on the joint distribution of the dataset
+#' @param X the dataset to predict
+#' @param X_appr an optional learning set
+#' @param B the structure tested (if known)
+#' @param Z the binary structure 
+#' @param scale boolean defining wether the dataset has to be scaled or not
 #'@export
 MSEZ<-function(X=X,X_appr=NULL,B=NULL,Z=Z,scale=TRUE){
    X=scale(X)
