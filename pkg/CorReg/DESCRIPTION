@@ -13,5 +13,5 @@ Depends:
     RcppEigen (>= 0.3.1.2.1),
     Rmixmod,
     lars,
-    elasticnet,Matrix,mclust,ridge
-LinkingTo: Rcpp, RcppEigen, Rmixmod, lars, elasticnet,Matrix, mclust,ridge
+    elasticnet,Matrix,mclust,ridge,MASS
+LinkingTo: Rcpp, RcppEigen, Rmixmod, lars, elasticnet,Matrix, mclust,ridge,MASS
