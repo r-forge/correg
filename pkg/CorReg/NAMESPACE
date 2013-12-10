@@ -1,6 +1,7 @@
 export(BicZ)
 export(MSEZ)
 export(MSE_loc)
+export(OLS)
 export(R2Z)
 export(Winitial)
 export(calcul_BIC_mixmod)

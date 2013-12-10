@@ -1,17 +1,18 @@
-# ' Ordinary Least Square efficiently computed with SEM for missing values
-# ' 
-# ' @param X the covariates (double)
-# ' @param Y the response
-# ' @param intercept (boolean) is an intercept intended ?
-# ' @param sigma (boolean) is it necessary to compute the standard deviation of errors ?
-# ' @param Bic (boolean) is the BIC criterion computation intended ?
-# ' @param methode how to compute the least squares ?
-# ' @param miss to indicate wether there are missing values in X (miss=1) or not (miss=0) next version would allow missing values in Y
-# ' @param nbit number of iteration for SEM
-# ' @param nbclustmax max number of cluster for mixmod (ignored if miss=0)
-# ' @param result of calcul_BIC_mixmod2.0(X=X,nbclustmax=nbclustmax,details=T)
-# ' @param M binary matrix (size of X) with 1 where X is missing
-# ' @param mixmod Gaussian Mixture hypothesis if needed. Or result of calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,bla=F,details=T)
+#' Ordinary Least Square efficiently computed with SEM for missing values
+#' 
+#' @param X the covariates (double)
+#' @param Y the response
+#' @param intercept (boolean) is an intercept intended ?
+#' @param sigma (boolean) is it necessary to compute the standard deviation of errors ?
+#' @param Bic (boolean) is the BIC criterion computation intended ?
+#' @param methode how to compute the least squares ?
+#' @param miss to indicate wether there are missing values in X (miss=1) or not (miss=0) next version would allow missing values in Y
+#' @param nbit number of iteration for SEM
+#' @param nbclustmax max number of cluster for mixmod (ignored if miss=0)
+#' @param result of calcul_BIC_mixmod2.0(X=X,nbclustmax=nbclustmax,details=T)
+#' @param M binary matrix (size of X) with 1 where X is missing
+#' @param mixmod Gaussian Mixture hypothesis if needed. Or result of calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,bla=F,details=T)
+#' @export
 OLS<- function(X=X,Y=Y,M=NULL,intercept=F,sigma=F,Bic=F,methode=1,miss=0,mixmod=NULL,nbit=100,nbclustmax=10){
   if(miss & nbit>0){
     if(is.null(mixmod)){
