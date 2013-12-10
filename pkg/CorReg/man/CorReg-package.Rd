@@ -65,6 +65,6 @@ MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)
 MSE_predictive=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$pred$A)
 
 MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive)
-MSE
-barplot(as.matrix(MSE),main="MSE on validation dataset", sub=paste("select=",select))
+#MSE
+#barplot(as.matrix(MSE),main="MSE on validation dataset", sub=paste("select=",select))
 }
