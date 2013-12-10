@@ -200,7 +200,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
          I1star=which(rowSums(Z)!=0)
          I2=which(colSums(Z)!=0)
          R=matrix(0,ncol=ncol(Z),nrow=length(I1star))
-         R[cbind(I1star,I1star)]=1
+         R[cbind(1:length(I1star),I1star)]=1
          R[,I2]=B[I1star+1,I2]      
         
          beta_OLS=as.matrix(OLS(X=X,Y=Y,intercept=intercept)$beta)
@@ -215,7 +215,17 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
          }else{
             r=res$expl$A[I1star]
          }
-         beta_cc=beta_OLS+solve(t(Xloc)%*%Xloc)%*%t(R)%*%solve(R%*%solve(t(Xloc)%*%Xloc)%*%t(R))%*%(r-R%*%beta_OLS)
+         if(ncol(X)>nrow(X)){
+            id=diag(ncol(Xloc))
+            beta_cc=beta_OLS+ginv(t(Xloc)%*%Xloc)%*%t(R)%*%solve(R%*%ginv(t(Xloc)%*%Xloc)%*%t(R))%*%(r-R%*%beta_OLS)
+            nb0=ncol(X)-nrow(X)
+            if(nb0<=length(I1star)){
+               qui0=I1star[1:nb0]
+               Xloc=Xloc[,-(qui0+intercept)]
+            }
+         }else{
+            beta_cc=beta_OLS+solve(t(Xloc)%*%Xloc)%*%t(R)%*%solve(R%*%solve(t(Xloc)%*%Xloc)%*%t(R))%*%(r-R%*%beta_OLS)
+         }
          res$pred2$A=beta_cc
          res$pred2$BIC=BicTheta(X=X,Y=Y,intercept=intercept,beta=beta_cc)
       }
