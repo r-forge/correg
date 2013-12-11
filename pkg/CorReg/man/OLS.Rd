@@ -29,9 +29,6 @@ OLS(X = X, Y = Y, M = NULL, intercept = F, sigma = F, Bic = F,
   \item{nbclustmax}{max number of cluster for mixmod
   (ignored if miss=0)}
 
-  \item{result}{of
-  calcul_BIC_mixmod2.0(X=X,nbclustmax=nbclustmax,details=T)}
-
   \item{M}{binary matrix (size of X) with 1 where X is
   missing}
 

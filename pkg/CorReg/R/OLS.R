@@ -9,7 +9,6 @@
 #' @param miss to indicate wether there are missing values in X (miss=1) or not (miss=0) next version would allow missing values in Y
 #' @param nbit number of iteration for SEM
 #' @param nbclustmax max number of cluster for mixmod (ignored if miss=0)
-#' @param result of calcul_BIC_mixmod2.0(X=X,nbclustmax=nbclustmax,details=T)
 #' @param M binary matrix (size of X) with 1 where X is missing
 #' @param mixmod Gaussian Mixture hypothesis if needed. Or result of calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,bla=F,details=T)
 #' @export
