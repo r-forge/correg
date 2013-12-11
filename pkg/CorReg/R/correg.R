@@ -196,7 +196,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
       if(pred2){
          if (is.null(B)) {
             B = hatB(Z = Z, X = X)
-         }
+         }else{B=as.matrix(B)}
          I1star=which(rowSums(Z)!=0)
          I2=which(colSums(Z)!=0)
          R=matrix(0,ncol=ncol(Z),nrow=length(I1star))
