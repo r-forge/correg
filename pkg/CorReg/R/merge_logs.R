@@ -8,6 +8,7 @@ merge_logs<-function(logdirectory="CRANlogs",packages="CorReg",destdir=NULL){
    #start=as.Date('2012-10-01'),today=format(Sys.Date(), "%Y-%m-%d")
    file_list <- list.files(logdirectory, full.names=TRUE,pattern=".csv.gz")
    logs <- list()
+   print(length(file_list))
    for (file in file_list){
       print(paste("Reading", file, "..."))
       logs[[file]] <- read.table(file, header = TRUE, sep = ",", quote = "\"",

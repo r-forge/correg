@@ -7,7 +7,7 @@
 #' @param packages vector of the names of the packages to keep in the global file(NULL will keep every packages)
 #' @export
 #logdirectory="L:/packages/CRANlogs"
-log_manager<-function(start=as.Date('2012-10-01'),today=format(Sys.Date(), "%Y-%m-%d"),logdirectory="CRANlogs", global=FALSE,packages=NULL){   
+log_manager<-function(start=as.Date('2012-10-01'),today=format(Sys.Date()-1, "%Y-%m-%d"),logdirectory="CRANlogs", global=FALSE,packages=NULL){   
    today=as.Date(today)
    start=as.Date(start)
    print(start)
