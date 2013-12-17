@@ -2,7 +2,7 @@
 \alias{log_manager}
 \title{managing CRAN logs.}
 \usage{
-log_manager(start = as.Date("2012-10-01"), today = format(Sys.Date(),
+log_manager(start = as.Date("2012-10-01"), today = format(Sys.Date() - 1,
   "\%Y-\%m-\%d"), logdirectory = "CRANlogs", global = FALSE,
   packages = NULL)
 }
