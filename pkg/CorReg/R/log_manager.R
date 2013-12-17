@@ -1,0 +1,59 @@
+#'managing CRAN logs. code from http://www.r-bloggers.com/finally-tracking-cran-packages-downloads/
+#' @param start starting date
+#' @param today last date
+#' @param logdirectory the path where files will be placed
+#' @param global boolean to define wether a global file will be created or not
+#' @param packages vector of the names of the packages to keep in the global file(NULL will keep every packages)
+#' @export
+#logdirectory="L:/packages/CRANlogs"
+log_manager<-function(start=as.Date('2012-10-01'),today=format(Sys.Date(), "%a %b %d"),logdirectory="CRANlogs", global=TRUE,packages=NULL){
+   
+
+
+start=as.Date(start)
+# Here's an easy way to get all the URLs in R
+today <- as.Date('2013-06-10')
+format(Sys.time(), "%a %b %d %H:%M:%S %Y")
+all_days <- seq(start, today, by = 'day')
+
+year <- as.POSIXlt(all_days)$year + 1900
+urls <- paste0('http://cran-logs.rstudio.com/', year, '/', all_days, '.csv.gz')
+
+# only download the files you don't have:
+missing_days <- setdiff(as.character(all_days), tools::file_path_sans_ext(dir(logdirectory), TRUE))
+
+dir.create(logdirectory)
+for (i in 1:length(missing_days)) {
+   print(paste0(i, "/", length(missing_days)))
+   download.file(urls[i], paste0(logdirectory,'/', missing_days[i], '.csv.gz'))
+   
+}
+if(global){#we reduce the file
+   
+   file_list <- list.files(logdirectory, full.names=TRUE)
+   
+   logs <- list()
+   for (file in file_list) {
+      print(paste("Reading", file, "..."))
+      logs[[file]] <- read.table(file, header = TRUE, sep = ",", quote = "\"",
+                                 dec = ".", fill = TRUE, comment.char = "", as.is=TRUE)
+      logs[[file]]=logs[[file]][logs[[file]]$package%in%packages,]
+   }
+   
+   # rbind together all files
+   require(data.table)
+   dat <- rbindlist(logs)
+   
+   # add some keys and define variable types
+   dat[, date:=as.Date(date)]
+   dat[, package:=factor(package)]
+   dat[, country:=factor(country)]
+   dat[, weekday:=weekdays(date)]
+   dat[, week:=strftime(as.POSIXlt(date),format="%Y-%W")]
+   
+   setkey(dat, package, date, week, country)
+   
+   save(dat, file=paste(logdirectory,packages,"/CRANlogs.RData",sep=""))
+}
+
+}
