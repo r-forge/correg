@@ -1,4 +1,5 @@
-#'managing CRAN logs. code from http://www.r-bloggers.com/finally-tracking-cran-packages-downloads/
+#'managing CRAN logs. 
+#' @description code adapted from http://www.r-bloggers.com/finally-tracking-cran-packages-downloads/ (original code is under the FreeBSD license)
 #' @param start starting date
 #' @param today last date
 #' @param logdirectory the path where files will be placed
