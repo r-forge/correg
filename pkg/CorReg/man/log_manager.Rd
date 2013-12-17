@@ -3,7 +3,7 @@
 \title{managing CRAN logs.}
 \usage{
 log_manager(start = as.Date("2012-10-01"), today = format(Sys.Date(),
-  "\%a \%b \%d"), logdirectory = "CRANlogs", global = TRUE,
+  "\%Y-\%m-\%d"), logdirectory = "CRANlogs", global = TRUE,
   packages = NULL)
 }
 \arguments{
@@ -21,7 +21,8 @@ log_manager(start = as.Date("2012-10-01"), today = format(Sys.Date(),
 }
 \description{
 code adapted from
-http://www.r-bloggers.com/finally-tracking-cran-packages-downloads/
-(original code is under the FreeBSD license)
+http://www.nicebread.de/finally-tracking-cran-packages-downloads/
+(original code is under the FreeBSD license, by Felix
+Schönbrodt)
 }
 
