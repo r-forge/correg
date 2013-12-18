@@ -23,6 +23,6 @@ log_manager(start = as.Date("2012-10-01"), today = format(Sys.Date() - 1,
 code adapted from
 http://www.nicebread.de/finally-tracking-cran-packages-downloads/
 (original code is under the FreeBSD license, by Felix
-Schönbrodt)
+Schonbrodt)
 }
 

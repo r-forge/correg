@@ -1,5 +1,5 @@
 #'managing CRAN logs. 
-#' @description code adapted from http://www.nicebread.de/finally-tracking-cran-packages-downloads/ (original code is under the FreeBSD license, by Felix Schönbrodt)
+#' @description code adapted from http://www.nicebread.de/finally-tracking-cran-packages-downloads/ (original code is under the FreeBSD license, by Felix Schonbrodt)
 #' @param start starting date
 #' @param today last date
 #' @param logdirectory the path where files will be placed
