@@ -47,7 +47,10 @@ Zini=Winitial(W=correl,X=X_appr)#generates initial Z for the Markov chain
 BIC_ini_vect=BicZ(X=X_appr,Z=Zini,Bic_null_vect=BIC_empty_vect)
 Bic_ini=sum(BIC_ini_vect)
 
+#one chain
 res=rechercheZ(X=X_appr,Z=Zini,Maxiter=100,Bic_null_vect=BIC_empty_vect,methode_tirage=-1)
+#multiple chain
+res=rechercheZ(X=X_appr,Z=NULL,nbini=20,Maxiter=100,Bic_null_vect=BIC_empty_vect,methode_tirage=-1)
 
 hatZ=res$Zopt
 hatBic=res$bic_opt
