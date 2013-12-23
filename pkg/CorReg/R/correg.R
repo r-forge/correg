@@ -209,9 +209,10 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
          if(intercept){
             Xloc=cbind(1,X)
             R=rbind(0,R)
-            R[1,1]=1
             R[1,I2]=B[1,I2]
             r=res$expl$A[c(1,I1star+1)]
+            R=cbind(0,R)
+            R[1,1]=1
          }else{
             r=res$expl$A[I1star]
          }
