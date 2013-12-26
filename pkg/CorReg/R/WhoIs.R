@@ -3,7 +3,7 @@
 # ' @param Z the structure (square matrix)
 # ' @param I1 (and others) wanted output
 # ' 
-# ' 
+#'@export 
 WhoIs<-function(Z=Z,I3=F,I2=T,I1=T){
   res=list()
   if(I2){
