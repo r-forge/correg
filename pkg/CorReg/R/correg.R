@@ -328,18 +328,24 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
           if(nbit==152){
              print(B)
           }
-          
-          if(deltaobs>deltamin & nbit<nbalter){#on continue
-            #on estime un nouveau B
-             A_old=res$prednew$A
-            newB=newhatB(Z=Z,A=res$prednew$A,Atilde=res$expl$A,Bold=B,intercept=intercept)
-            if(prod(B==newB)){#rien n'a changé dans B
-               nbit=nbalter+1
-               print("same B : stop")
-            }else{
-               B=newB;print(paste("new B",nbit))
-            }
+          if(!is.nan(deltaobs)){
+             if(deltaobs>deltamin & nbit<nbalter){#on continue
+                #on estime un nouveau B
+                A_old=res$prednew$A
+                newB=newhatB(Z=Z,A=res$prednew$A,Atilde=res$expl$A,Bold=B,intercept=intercept)
+                if(prod(B==newB)){#rien n'a changé dans B
+                   nbit=nbalter+1
+                   print("same B : stop")
+                }else{
+                   B=newB;print(paste("new B",nbit))
+                }
+             }
+          }else{
+             nbit=nbalter+1
+             print("numerical explosion : stop")
+             res$prednew$A=A_old
           }
+          
           
        } #fin de la boucle d'optimisation alternée 
        res$B=B
