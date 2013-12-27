@@ -15,7 +15,7 @@ newhatB<-function(X,Z,A,Atilde,Bold,intercept=TRUE){
          I1loc=c(1,which(Z[,j]!=0)+1)
          if(sum(Atilde[I1loc]!=A[I1loc])!=0){#A et Atilde sont égaux donc A2 est nul, on ne peut utiliser la formule et donc on garde Bold
             Xloc=X[,I1loc]
-            B[I1loc,j]=solve(t(Xloc)%*%Xloc)%*%t(Xloc)%*%(1/as.numeric(A[j+intercept])*Xloc%*%(Atilde[I1loc]-A[I1loc]))              
+            B[I1loc,j]=(1/as.numeric(A[j+intercept])(Atilde[I1loc]-A[I1loc]))              
             #print("calcul effectif")
          }
       }
