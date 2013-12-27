@@ -333,6 +333,10 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
                 if(prod(B==newB)){#rien n'a changé dans B
                    nbit=nbalter+1
                    print("same B : stop")
+                }else if(any(newB==Inf)){
+                   nbit=nbalter+1
+                   print("numerical explosion of B: stop")
+                   res$prednew$A=A_old
                 }else{
                    B=newB;print(paste("new B",nbit))
                 }
