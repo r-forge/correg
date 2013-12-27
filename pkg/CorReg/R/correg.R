@@ -324,15 +324,25 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
              }
           #une fois A calculé, on regarde si on doit continuer
           deltaobs=sum(abs(A_old-res$prednew$A))
-          if(deltaobs>deltamin & nbit<nbalter){#on continue
-            #on estime un nouveau B
-             print(deltaobs)
-             A_old=res$prednew$A
-            B=newhatB(X=X,Z=Z,A=res$prednew$A,Atilde=res$expl$A,Bold=B,intercept=intercept)
-          
+          print(deltaobs)
+          if(nbit==152){
+             print(B)
           }
           
-       } #fin de la boucle d'optimisation alternée     
+          if(deltaobs>deltamin & nbit<nbalter){#on continue
+            #on estime un nouveau B
+             A_old=res$prednew$A
+            newB=newhatB(Z=Z,A=res$prednew$A,Atilde=res$expl$A,Bold=B,intercept=intercept)
+            if(prod(B==newB)){#rien n'a changé dans B
+               nbit=nbalter+1
+               print("same B : stop")
+            }else{
+               B=newB;print(paste("new B",nbit))
+            }
+          }
+          
+       } #fin de la boucle d'optimisation alternée 
+       res$B=B
     }
   }else if (sum(Z) == 0 & (expl | pred)) {
     res$expl$A = res$compl$A
