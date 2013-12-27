@@ -325,9 +325,6 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
           #une fois A calculé, on regarde si on doit continuer
           deltaobs=sum(abs(A_old-res$prednew$A))
           print(deltaobs)
-          if(nbit==152){
-             print(B)
-          }
           if(!is.nan(deltaobs)){
              if(deltaobs>deltamin & nbit<nbalter){#on continue
                 #on estime un nouveau B
