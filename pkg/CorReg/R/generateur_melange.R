@@ -34,7 +34,7 @@ generateur_melange<-function(n=130,
                                 lambda=5,#pour l enombre de composantes des m?langes gaussiens
                                 Amax=15,
                                 lambdapois=5,#pour les valeurs des coefs
-                                gamma=T,
+                                gamma=F,
                                 gammashape=1,
                                 gammascale=0.5,tp1=1,tp2=1,tp3=1,pb=2
 ){
