@@ -163,18 +163,15 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
         }
       }else{
         if(intercept){
-          A_pred[c(intercept, I1 + intercept)] = A_expl[c(intercept,I1 + intercept)] 
-          - B[c(1, I1 + 1), I2] %*% as.matrix(A_inj)
+          A_pred[c(intercept, I1 + intercept)] = A_expl[c(intercept,I1 + intercept)] - B[c(1, I1 + 1), I2] %*% as.matrix(A_inj)
         }else{
-          A_pred[ I1 ] = A_expl[I1] 
-          - B[c(1, I1 + 1), I2] %*% as.matrix(A_inj)
+          A_pred[ I1 ] = A_expl[I1] - B[c(1, I1 + 1), I2] %*% as.matrix(A_inj)
         }
         
       }
          
       res$pred$A = A_pred
-      res$pred$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 
-                                             0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
+      res$pred$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
       res$pred$BIC = BicTheta(X = X, Y = Y, intercept = intercept, 
                               beta = A_pred)
       if(final){
@@ -232,6 +229,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
       }
       
     }
+    #nouveau prédictif####
     if (prednew) {
        if (is.null(B)) {
           B = hatB(Z = Z, X = X)
@@ -298,18 +296,15 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
                 }
              }else{
                 if(intercept){
-                   A_pred[c(intercept, I1 + intercept)] = A_expl[c(intercept,I1 + intercept)] 
-                   - B[c(1, I1 + 1), I2] %*% as.matrix(A_inj)
+                   A_pred[c(intercept, I1 + intercept)] = A_expl[c(intercept,I1 + intercept)]- B[c(1, I1 + 1), I2] %*% as.matrix(A_inj)
                 }else{
-                   A_pred[ I1 ] = A_expl[I1] 
-                   - B[c(1, I1 + 1), I2] %*% as.matrix(A_inj)
+                   A_pred[ I1 ] = A_expl[I1]-B[c(1, I1 + 1), I2] %*% as.matrix(A_inj)
                 }
                 
              }
              
              res$prednew$A = A_pred
-             res$prednew$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 
-                                                     0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
+             res$prednew$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
              res$prednew$BIC = BicTheta(X = X, Y = Y, intercept = intercept, 
                                      beta = A_pred)
              if(final){
