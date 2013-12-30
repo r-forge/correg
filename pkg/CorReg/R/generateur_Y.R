@@ -1,5 +1,5 @@
-# ' generateur Y aleatoire
-# ' 
+#' generateur Y aleatoire
+#'@export 
 generateur_Y<-function(X=X,Amax=NULL,sigma_Y=10,positif=0.6){
   p=ncol(X)
   taille=nrow(X)
