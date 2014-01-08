@@ -59,7 +59,7 @@ rechercheZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=0,me
         nbini=nbini-1
      }
      for(i in 1:nbini){
-        Z=Winitial(W=W,X=X,Rmax=Rmax,Bic_null_vect=Bic_null_vect)
+        Z=Winitial(W=W,X=X,Rmax=Rmax,Bic_null_vect=Bic_null_vect,p2max=p2max)
         if(reject==0){#relax mode
            resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
         }else{# reject mode
