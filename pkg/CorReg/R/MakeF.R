@@ -19,7 +19,7 @@ MakeF<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=lambda,Atilde=Atilde){
       debcolj=nrow(barZ[barZ[,2]<I2[j],])
       colonne=(debcolj+1):(debcolj+sum(Z[,I2[j]])) #sous-reg precedentes+
       Fvect[colonne]=(1/Sigma[j]^2)*t(X[,I1j])%*%(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])+A[I2[j]+1]*lambda[which(Z[-I2,I2[j]]!=0)]     
-      
+      Fvect[pz+p1+j]=Sigma[j]^2-(1/n)*t(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])%*%(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])
       
    }  
    Fvect[(pz+1):pz+p1]=A[-I2]+B[-I2,I2]%*%A[I2]-Atilde
