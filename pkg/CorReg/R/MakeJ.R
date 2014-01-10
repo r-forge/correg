@@ -19,9 +19,9 @@ MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
       debcolj=nrow(barZ[barZ[,2]<I2[j],])
       colonne=(debcolj+1):(debcolj+sum(Z[,I2[j]])) #sous-reg precedentes+
       J[pz+p1+j,colonne]=(2/n)*t(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])%*%X[,I1j]#bloc J7
-      J[pz+I1j,which(barZ[,2]==I2[j])]=A[j+1]#attention on compte l'intercept #blocJ4
+      J[pz+I1j,which(barZ[,2]==I2[j])]=A[I2[j]+1]#attention on compte l'intercept #blocJ4
       J[colonne,pz+p1+j]=(-2/(Sigma[j]^3))*t(X[,I1j])%*%(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]]) #bloc J3 
-      J[which(barZ[,2]==I2[j]),pz+I1j]=A[j+1]#attention on compte l'intercept #bloc J2
+      J[which(barZ[,2]==I2[j]),pz+I1j]=A[I2[j]+1]#attention on compte l'intercept #bloc J2
       diag(J[I1j,I1j])=(-1/(Sigma[j]^2))*t(X[,I1j])%*%(X[,I1j])#bloc J1
    }    
    return(J)
