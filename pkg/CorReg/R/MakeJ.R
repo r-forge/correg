@@ -1,4 +1,4 @@
-# 'B matrice p+1 x p   
+# 'B matrice p+1 x p+1   
 # ' Sigma vecteur de taille p2 des sigma ssreg
 MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
    X=cbind(1,X)
