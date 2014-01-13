@@ -13,7 +13,6 @@ MakeF<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=lambda,Atilde=Atilde){
    n=nrow(X)
    Fvect=rep(0,times=(p1+p2+pz))
    barZ=which(Z!=0,arr.ind=T)
-   lambda
    for(j in 1:p2){
       I1j=barZ[barZ[,2]==I2[j],1]
       debcolj=nrow(barZ[barZ[,2]<I2[j],])
@@ -22,6 +21,6 @@ MakeF<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=lambda,Atilde=Atilde){
       Fvect[pz+p1+j]=Sigma[j]^2-(1/n)*t(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])%*%(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])
       
    }  
-   Fvect[(pz+1):pz+p1]=A[-I2]+B[-I2,I2]%*%A[I2]-Atilde
+   Fvect[(pz+1):(pz+p1)]=A[-I2]+B[-I2,I2]%*%A[I2]-Atilde
    return(Fvect)
 }
