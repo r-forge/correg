@@ -22,7 +22,7 @@ MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
       J[pz+I1j,which(barZ[,2]==I2[j])]=A[I2[j]+1]#attention on compte l'intercept #blocJ4
       J[colonne,pz+p1+j]=(-2/(Sigma[j]^3))*t(X[,I1j])%*%(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]]) #bloc J3 
       J[which(barZ[,2]==I2[j]),pz+I1j]=A[I2[j]+1]#attention on compte l'intercept #bloc J2
-      diag(J[I1j,I1j])=(-1/(Sigma[j]^2))*t(X[,I1j])%*%(X[,I1j])#bloc J1
+      diag(J[I1j,I1j])=(-1/(Sigma[j]^2))*diag(t(X[,I1j])%*%(X[,I1j]))#bloc J1
    }    
    return(J)
 }
