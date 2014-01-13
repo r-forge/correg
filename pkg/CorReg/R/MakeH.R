@@ -9,8 +9,9 @@ MakeH<-function(X=X,Z=Z,B=B,Sigma=Sigma){
    I2=I2+1
    p2=length(I2)
    pz=sum(Z!=0)
+   p1=ncol(X)-p2#prendre donc en compte la constante
    n=nrow(X)
-   H=matrix(0,ncol=(p2+pz),nrow=(p2+pz))
+   H=matrix(0,ncol=(p1+p2+pz),nrow=(p1+p2+pz))
    barZ=which(Z!=0,arr.ind=T)
    for(j in 1:p2){
       I1j=barZ[barZ[,2]==I2[j],1]
