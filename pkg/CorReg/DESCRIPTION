@@ -9,10 +9,9 @@ Description: Sequential linear regression based on a structural equation model
     (explicit correlations). It permits to face highly correlated datasets.
 License: CeCILL
 Depends:
-    Rcpp (>= 0.10.3),
-    RcppEigen (>= 0.3.1.2.1),
+    Rcpp,
+    RcppEigen,
     Rmixmod,
     lars,
     elasticnet,Matrix,mclust,ridge,MASS,data.table
-LinkingTo: Rcpp, RcppEigen, Rmixmod, lars, elasticnet,Matrix,
-    mclust,ridge,MASS,data.table
+LinkingTo: Rcpp, RcppEigen
