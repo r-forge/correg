@@ -1,5 +1,6 @@
 \name{newtheta}
 \alias{newtheta}
+\title{newtheta for Newton}
 \usage{
 newtheta(X = X, Z = Z, B = B, Sigma = Sigma, A = A, lambda = NULL,
   Atilde = Atilde, nbit = 1)
@@ -10,5 +11,8 @@ newtheta(X = X, Z = Z, B = B, Sigma = Sigma, A = A, lambda = NULL,
   \item{Z}{the structure (square without intercept)}
 
   \item{B}{the wheighted structure}
+}
+\description{
+newtheta for Newton
 }
 

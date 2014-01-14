@@ -1,3 +1,4 @@
+#' newtheta for Newton
 #' @param X dataset without intercept
 #' @param Z the structure (square without intercept)
 #' @param B the wheighted structure
