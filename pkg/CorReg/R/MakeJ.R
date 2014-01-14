@@ -1,10 +1,11 @@
 # 'B matrice p+1 x p+1   
 # ' Sigma vecteur de taille p2 des sigma ssreg
+#'@export
 MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
    X=cbind(1,X)
    I2=which(colSums(Z)!=0)
    p2=length(I2)
-   p1=ncol(X)-p2#prendre donc en compte la constante
+   p1=ncol(X)-p2#prend donc en compte la constante
    Z=rbind(0,Z)
    Z[1,I2]=1#on ajoute une constante à chaque ssreg
    Z=cbind(0,Z)
@@ -19,10 +20,10 @@ MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
       debcolj=nrow(barZ[barZ[,2]<I2[j],])
       colonne=(debcolj+1):(debcolj+sum(Z[,I2[j]])) #sous-reg precedentes+
       J[pz+p1+j,colonne]=(2/n)*t(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])%*%X[,I1j]#bloc J7
-      J[pz+I1j,which(barZ[,2]==I2[j])]=A[I2[j]+1]#attention on compte l'intercept #blocJ4
+      diag(J[pz+(1:p1),which(barZ[,2]==I2[j])])=A[I2[j]+1]#attention on compte l'intercept #blocJ4
       J[colonne,pz+p1+j]=(-2/(Sigma[j]^3))*t(X[,I1j])%*%(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]]) #bloc J3 
-      J[which(barZ[,2]==I2[j]),pz+I1j]=A[I2[j]+1]#attention on compte l'intercept #bloc J2
-      diag(J[I1j,I1j])=(-1/(Sigma[j]^2))*diag(t(X[,I1j])%*%(X[,I1j]))#bloc J1
+      diag(J[which(barZ[,2]==I2[j]),pz+(1:p1)])=A[I2[j]+1]#attention on compte l'intercept #bloc J2
+      diag(J[colonne,colonne])=(-1/(Sigma[j]^2))*diag(t(X[,I1j])%*%(X[,I1j]))#bloc J1
    }    
    return(J)
 }

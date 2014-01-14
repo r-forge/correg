@@ -45,7 +45,7 @@ generateur_melange<-function(n=130,
   if(is.null(Amax) | Amax>p){Amax=p}
   #lmabda param?tre le nombre de composantes des m?langes gaussiens   
   valid=max(valid,n)
-  B=Matrix(0,nrow=(p+1),ncol=(p+1)) #B matrice creuse
+  B=matrix(0,nrow=(p+1),ncol=(p+1)) #B matrice creuse
   taille=n+valid
   qui=2:(p+1)  # vecteur de taille p qui contient les valeurs allant de 2 à p+1 avec un pas de 1
   if(R>0){
@@ -55,13 +55,13 @@ generateur_melange<-function(n=130,
       B[sample(qui[-c(list_X2-1)],size=max_compl),j]=(1/max_compl)*rpois(max_compl,5)*(rep(-1,max_compl)+2*rbinom(max_compl,1,positif))
     }
     #ajout de G
-    G=Diagonal(p+1)
+    G=diag(p+1)
     G[,list_X2]=0
     B=B+G  
   }
   vraiZ=B
-  vraiZ[vraiZ!=0]=1
   vraiZ=as.matrix(vraiZ)
+  vraiZ[vraiZ!=0]=1
   vraiZ=vraiZ-diag(diag(vraiZ))
   vraiZ=vraiZ[-1,-1]
   if(sum(c(tp1,tp2,tp3))==0){

@@ -1,10 +1,13 @@
 # Atilde de taille p1
-MakeF<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=lambda,Atilde=Atilde){
-   
+#' @export
+MakeF<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde){
    X=cbind(1,X)
    I2=which(colSums(Z)!=0)
    p2=length(I2)
    p1=ncol(X)-p2#prendre donc en compte la constante
+   if(is.null(lambda)){
+      lambda=rep(1,times=p1)
+   }
    Z=rbind(0,Z)
    Z[1,I2]=1#on ajoute une constante à chaque ssreg
    Z=cbind(0,Z)
