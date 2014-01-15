@@ -69,6 +69,9 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
   bicvect=BicZ_cpp(matX,matZ,Bic_vide_vect,Bic_vide_vect,imet_BIC[0],Zopt);
 //somme a la main
   sumbic=bicvect.sum();
+   if(star){
+      sumbic=sumbic-ProbaZ_cpp(matZ);
+   }
   if (ibla[0]>0)
   {
     Rcout<<sumbic<<"\n";
@@ -287,6 +290,9 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
         }
         
         Sum_BIC_cand=BIC_cand.sum();
+        if(star){
+           Sum_BIC_cand=Sum_BIC_cand-ProbaZ_cpp(Zcand);
+        }
       }
     //stockage des valeurs (bic,changement)
       stock_bool.resize(nbcand);
@@ -310,10 +316,10 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
     NumericVector ran;
     Eigen::VectorXd bicweight(nb_cand_retenu);
     double sumexp=0;
-    double BIC_min=sumbic;
+    double BIC_min=sumbic;//valeur pour le Z actuel
     station=false;
     stockBIC1(0)=sumbic;
-    for (i=0;i<stock_BIC.size();i++)//on garde que les individus retunus
+    for (i=0;i<stock_BIC.size();i++)//on garde que les individus retenus
     {
       if(stock_bool(i,0)==1)
       {
@@ -409,7 +415,7 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
     {
       station=true;
     }
-    else//tirage au sort (on a pas de saut systématique)
+    else//tirage au sort (pas de saut systématique)
     {
       bicweight=stockBIC1;
       for (int v=0;v<nb_cand_retenu;v++)
