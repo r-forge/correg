@@ -6,7 +6,8 @@
 #' @param BicOld BIC (vector) associated to Zold
 #' @param Zold another structure with some common parts with Z (allows to compute only the differences)
 #' @param methode parameter for OLS 
-BicZ<-function(X=X,Z=Z,Bic_null_vect=NULL,BicOld=NULL,methode=1,Zold=NULL){
+#' @param star boolean defining wether classical BIC or BIC* is computed
+BicZ<-function(X=X,Z=Z,Bic_null_vect=NULL,BicOld=NULL,methode=1,Zold=NULL,star=TRUE){
  if(is.null(Bic_null_vect)){
    val=calcul_BIC_mixmod(X=X)
    Bic_null_vect=val$BIC_vect
@@ -16,6 +17,9 @@ BicZ<-function(X=X,Z=Z,Bic_null_vect=NULL,BicOld=NULL,methode=1,Zold=NULL){
    BicOld=Bic_null_vect
  }
     res=.Call( "BicZ",X,Z,Bic_null_vect,BicOld,methode,Zold, PACKAGE = "CorReg")
+   if(star){
+      res$BIC=res$BIC-ProbaZ(Z,star=TRUE)
+   }
     return(res$BIC)
 
 }

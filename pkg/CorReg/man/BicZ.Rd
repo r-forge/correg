@@ -3,7 +3,7 @@
 \title{Compute the BIC of a given structure}
 \usage{
 BicZ(X = X, Z = Z, Bic_null_vect = NULL, BicOld = NULL, methode = 1,
-  Zold = NULL)
+  Zold = NULL, star = TRUE)
 }
 \arguments{
   \item{X}{the dataset}
@@ -19,6 +19,9 @@ BicZ(X = X, Z = Z, Bic_null_vect = NULL, BicOld = NULL, methode = 1,
   Z (allows to compute only the differences)}
 
   \item{methode}{parameter for OLS}
+
+  \item{star}{boolean defining wether classical BIC or BIC*
+  is computed}
 }
 \description{
 Compute the BIC of a given structure
