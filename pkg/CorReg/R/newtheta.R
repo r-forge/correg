@@ -20,7 +20,8 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
    if(is.null(lambda)){
       lambda=rep(1,times=p1)
    }
-   for (it in 1:nbit){       
+   for (it in 1:nbit){   
+      print(it)
       for(j in 1:p2){
          I1j=barZ[barZ[,2]==I2[j],1]
          debcolj=nrow(barZ[barZ[,2]<I2[j],])
