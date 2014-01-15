@@ -14,9 +14,11 @@ ProbaZ<-function(Z=NULL,p=NULL,proba=FALSE,star=TRUE){
       p1j=p1j[I2]
       p2=length(I2)
       logproba=0
-      logproba=logproba-log(p2)-p2*log(p-p2)-log(choose(p,p2))
-      for (j in 1:p2){
-         logproba=logproba-log(choose((p-p2),p1j[j]))
+      if(p2>0){
+         logproba=logproba-log(p2)-p2*log(p-p2)-log(choose(p,p2))
+         for (j in 1:p2){
+            logproba=logproba-log(choose((p-p2),p1j[j]))
+         }
       }
       return(logproba)
    }else{
