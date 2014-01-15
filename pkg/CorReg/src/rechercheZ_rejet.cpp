@@ -1,6 +1,7 @@
 #include "rechercheZ_rejet.h"
 #include "BicZ_cpp.h"
 #include "BicZ_j_cpp.h"
+#include "ProbaZ_cpp.h"
 #include <iostream>
 #include <string>
 #include <math.h>
@@ -12,7 +13,7 @@ using Eigen::Map;
 using Eigen::MatrixXd;
 using Rcpp::as;
 
-SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP methode_BIC,SEXP Rmax,SEXP p2max,SEXP Maxiter,SEXP plot,SEXP best,SEXP better,SEXP random,SEXP bla,SEXP nb_opt_max,SEXP Rexact)
+SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP methode_BIC,SEXP Rmax,SEXP p2max,SEXP Maxiter,SEXP plot,SEXP best,SEXP better,SEXP random,SEXP bla,SEXP nb_opt_max,SEXP Rexact,SEXP Rstar)
 {
  
   BEGIN_RCPP
@@ -21,6 +22,7 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
   const Map<MatrixXd> matX(as<Map<MatrixXd> >(X));//X
   const Map<VectorXd> Bic_vide_vect(as<Map<VectorXd> >(bic_vide_vect));//bic_vide_vect
   bool Exact = Rcpp::as<bool>(Rexact);     // length vector 
+  bool star = Rcpp::as<bool>(Rstar);     // BICstar
 
   Rcpp::NumericVector met_tirage(methode_tirage),met_BIC(methode_BIC),rmax(Rmax),P2max(p2max),maxiter(Maxiter),Plot(plot),Best(best),Better(better),Random(random),Bla(bla),Nb_opt_max(nb_opt_max);
   typedef Rcpp::NumericVector::iterator vec_iterator;
@@ -116,6 +118,7 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
   }
   
   nb_opt=0;
+    
   
   while(step<imaxiter[0])
   // initialisation des variables
@@ -280,8 +283,8 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
               }//fin for i
               Rcout<<"\n";
               step=imaxiter[0];
-            }
           }
+        }
         
         Sum_BIC_cand=BIC_cand.sum();
       }
