@@ -134,7 +134,7 @@ generateur_melange<-function(n=130,
   X_test=as.matrix(X[(n+1):taille,-1])
   Y_appr=as.matrix(Y[1:n])
   Y_test=as.matrix(Y[(n+1):taille]) 
-  return(list(X_appr=X_appr,Y_appr=Y_appr,A=A,B=B,Z=vraiZ,
+  return(list(X_appr=X_appr,Y_appr=Y_appr,A=A,B=B[,-1],Z=vraiZ,
               X_test=data.frame(X_test),Y_test=Y_test,sigma_sousreg=sigma_sousreg,mixmod=composantes))   
 }
 
