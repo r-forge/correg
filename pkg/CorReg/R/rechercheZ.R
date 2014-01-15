@@ -16,10 +16,11 @@
 #'@param nb_opt_max stop criterion defining how many times the chain can stay at the max found
 #'@param exact boolean. If exact subregression is found it gives its content.
 #'@param nbini Number of initialisations (using Winitial). if NULL and Zini is NULL : only one chain beginning with zero matrix.
+#'@param star boolean to compute BIC* instead of BIC (stronger penalization of the complexity)
 #'@param ... parameters to be passed (for Winitial).
 #'@return etape 0:suppression,1 ajout,2 stationarite
 #'@export
-rechercheZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=0,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,bla=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,...){
+rechercheZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=0,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,bla=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,...){
   params=match.call()
   if(is.null(p2max)){
     p2max=ncol(X)+1 
@@ -35,10 +36,10 @@ rechercheZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=0,me
   }
   if(is.null(nbini)){
      if(reject==0){#relax mode
-        res=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
+        res=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
         return(res)
      }else{# reject mode
-        res=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
+        res=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
         return(res)
      }
   }else{
@@ -49,9 +50,9 @@ rechercheZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=0,me
      res=list()
      if(nbini>1){#first try with zero matrix
         if(reject==0){#relax mode
-           resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
+           resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }else{# reject mode
-           resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
+           resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }
         if(resloc$bic_opt<=min(res$bic_opt,BICnull)){
            res=resloc
@@ -61,9 +62,9 @@ rechercheZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=0,me
      for(i in 1:nbini){
         Z=Winitial(W=W,X=X,Rmax=Rmax,Bic_null_vect=Bic_null_vect,p2max=p2max)
         if(reject==0){#relax mode
-           resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
+           resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }else{# reject mode
-           resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact, PACKAGE = "CorReg")
+           resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }
         if(resloc$bic_opt<=min(res$bic_opt,BICnull)){
            res=resloc

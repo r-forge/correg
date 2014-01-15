@@ -5,7 +5,7 @@
 rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
   reject = 0, methode_BIC = 1, Rmax = 5, p2max = NULL, Maxiter = 1,
   plot = FALSE, best = TRUE, better = FALSE, random = TRUE, bla = 1,
-  nb_opt_max = NULL, exact = TRUE, nbini = NULL, ...)
+  nb_opt_max = NULL, exact = TRUE, nbini = NULL, star = TRUE, ...)
 }
 \arguments{
   \item{X}{the dataset}
