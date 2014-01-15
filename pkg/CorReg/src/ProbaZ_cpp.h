@@ -2,7 +2,9 @@
 #define _CorReg_BicLoc_cpp_H
 
 #include <RcppEigen.h>
+#include <math.h>
+#include <Rmath.h>
 using namespace Rcpp ;
-RcppExport double BicLoc_cpp(Eigen::MatrixXd X,Eigen::MatrixXd Y,bool intercept,int methode) ;
+double ProbaZ_cpp(Eigen::MatrixXd Z) ;
 
 #endif
