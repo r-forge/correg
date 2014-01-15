@@ -62,6 +62,9 @@ rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
   if NULL and Zini is NULL : only one chain beginning with
   zero matrix.}
 
+  \item{star}{boolean to compute BIC* instead of BIC
+  (stronger penalization of the complexity)}
+
   \item{...}{parameters to be passed (for Winitial).}
 }
 \value{

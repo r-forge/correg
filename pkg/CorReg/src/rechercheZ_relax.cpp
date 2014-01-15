@@ -45,7 +45,7 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
   int j_loc;//duexième coordonnée du candidat (modification Z)
   int realisable;//booléen qui permet de savoir si on peut effectuer un changement dans Z (modification Z)
   Eigen::MatrixXd Zcand;//matrice Z du candidat (modification Z)
-  Eigen::ArrayXXd SumCol(1,Zcand.cols());//k est un vecteur qui contient la somme de chaque colonne de Zcand (modification Z)
+  Eigen::ArrayXXd SumCol(1,Zcand.cols());//SumCol est un vecteur qui contient la somme de chaque colonne de Zcand (modification Z)
   int val;//permet de mettre une colonne et une ligne a 0 (modification Z)
   Eigen::VectorXd BIC_cand;//vecteur qui contient les BIC de chaque colonne des la matrice Zcand (calcul du BIC)
   double Sum_BIC_cand;//somme des BIC de BIC_cand (calcul BIC)
