@@ -65,6 +65,9 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
   bicvect=BicZ_cpp(matX,matZ,Bic_vide_vect,Bic_vide_vect,imet_BIC[0],Zopt);
 //somme a la main
   sumbic=bicvect.sum();
+  if(star){
+      sumbic=sumbic-ProbaZ_cpp(matZ);
+   }
   if (ibla[0]>0)
   {
     Rcout<<sumbic<<"\n";
@@ -237,8 +240,8 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
       }
       else
       {
-        SumCol=Zcand.colwise().sum();//k est un vecteur qui contient la somme de chaque colonne de Zcand
-        if ((SumCol > 0).count()>ip2max[0])//si k a plus de p2max valeur > 0 alors on ne modifiera pas la matrice
+        SumCol=Zcand.colwise().sum();//SumCol est un vecteur qui contient la somme de chaque colonne de Zcand
+        if ((SumCol > 0).count()>ip2max[0])//si SumCol a plus de p2max valeur > 0 alors on ne modifiera pas la matrice
         {
           realisable=0;
         }
@@ -270,6 +273,9 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
           }
         }
         Sum_BIC_cand=BIC_cand.sum();
+        if(star){
+           Sum_BIC_cand=Sum_BIC_cand-ProbaZ_cpp(Zcand);
+        }
       }
     //stockage des valeurs (bic,changement)
       stock_bool.resize(nbcand);
