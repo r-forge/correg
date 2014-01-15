@@ -1,4 +1,5 @@
-# 'B matrice p+1 x p+1   
+#'  Constructs the jacobian for the constrained likelihood  
+#'@param B matrice p+1 x p
 # ' Sigma vecteur de taille p2 des sigma ssreg
 #'@export
 MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
@@ -19,10 +20,10 @@ MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
       J[pz+p1+j,pz+p1+j]=2*Sigma[j]#bloc J9
       debcolj=nrow(barZ[barZ[,2]<I2[j],])
       colonne=(debcolj+1):(debcolj+sum(Z[,I2[j]])) #sous-reg precedentes+
-      J[pz+p1+j,colonne]=(2/n)*t(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])%*%X[,I1j]#bloc J7
-      diag(J[pz+(1:p1),which(barZ[,2]==I2[j])])=A[I2[j]+1]#attention on compte l'intercept #blocJ4
-      J[colonne,pz+p1+j]=(-2/(Sigma[j]^3))*t(X[,I1j])%*%(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]]) #bloc J3 
-      diag(J[which(barZ[,2]==I2[j]),pz+(1:p1)])=A[I2[j]+1]#attention on compte l'intercept #bloc J2
+      J[pz+p1+j,colonne]=(2/n)*t(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]-1])%*%X[,I1j]#bloc J7
+      diag(J[pz+(1:p1),which(barZ[,2]==I2[j])])=A[I2[j]]#attention on compte l'intercept #blocJ4
+      J[colonne,pz+p1+j]=(-2/(Sigma[j]^3))*t(X[,I1j])%*%(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]-1]) #bloc J3 
+      diag(J[which(barZ[,2]==I2[j]),pz+(1:p1)])=A[I2[j]]#attention on compte l'intercept #bloc J2
       diag(J[colonne,colonne])=(-1/(Sigma[j]^2))*diag(t(X[,I1j])%*%(X[,I1j]))#bloc J1
    }    
    return(J)

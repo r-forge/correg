@@ -22,8 +22,7 @@ ProbaZ<-function(Z=NULL,p=NULL,proba=FALSE,star=TRUE){
    }else{
       if(is.null(p)){
          if(!is.null(Z)){
-            p=ncol(Z)
-            
+            p=ncol(Z)       
          }else{
             print("missing parameters")
          }
