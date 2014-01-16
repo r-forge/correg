@@ -7,7 +7,7 @@ Author: THERY CLEMENT, WATRIN FLORIAN
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Sequential linear regression based on a structural equation model
     (explicit correlations). It permits to face highly correlated datasets.
-License: CeCILL
+License: CeCILL (http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html)
 Depends:
     Rcpp,
     RcppEigen,
