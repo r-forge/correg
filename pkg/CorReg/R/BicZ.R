@@ -18,7 +18,7 @@ BicZ<-function(X=X,Z=Z,Bic_null_vect=NULL,BicOld=NULL,methode=1,Zold=NULL,star=T
  }
     res=.Call( "BicZ",X,Z,Bic_null_vect,BicOld,methode,Zold, PACKAGE = "CorReg")
    if(star){
-      res$BIC=res$BIC-ProbaZ(Z,star=TRUE)
+      res$BIC=sum(res$BIC)-ProbaZ(Z,star=TRUE)
    }
     return(res$BIC)
 
