@@ -45,10 +45,10 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
             I1j=barZ[barZ[,2]==I2[j],1]
             debcolj=nrow(barZ[barZ[,2]<I2[j],])
             colonne=(debcolj+1):(debcolj+sum(Z[,I2[j]])) #sous-reg precedentes+
-            B[I1j,I2[j]-1]=matint[colonne]
+            B[I1j,I2[j]-1]=B[I1j,I2[j]-1]-matint[colonne]
          }
-         Sigma=matint[-c(1:(pz+p1))]
-         lambda=matint[c((pz+1):(pz+p1))]
+         Sigma=Sigma-matint[-c(1:(pz+p1))]
+         lambda=lambda-matint[c((pz+1):(pz+p1))]
       }else{
          print(it)
          print("numerically singular matrix J")
