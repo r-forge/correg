@@ -2,6 +2,7 @@
 #' @param X dataset without intercept
 #' @param Z the structure (square without intercept)
 #' @param B the wheighted structure (p+1)xp
+#' @param Atilde p-sized vector of explicative coeffcients
 #' @export
 newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1){
    X=cbind(1,X)
@@ -22,7 +23,7 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
    barZ=which(Z!=0,arr.ind=T)   
    Fvect=rep(0,times=(p1+p2+pz))   
    for (it in 1:nbit){   
-      print(it)
+#       print(it)
       for(j in 1:p2){
          I1j=barZ[barZ[,2]==I2[j],1]
          debcolj=nrow(barZ[barZ[,2]<I2[j],])
@@ -37,7 +38,7 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
          diag(J[which(barZ[,2]==I2[j]),pz+(1:p1)])=A[I2[j]]#attention on compte l'intercept #bloc J2
          diag(J[colonne,colonne])=(-1/(Sigma[j]^2))*diag(t(X[,I1j])%*%(X[,I1j]))#bloc J1
       }  
-      Fvect[(pz+1):(pz+p1)]=A[-I2]+as.matrix(B[-I2,I2-1])%*%A[I2]-Atilde   
+      Fvect[(pz+1):(pz+p1)]=A[quidroite]+as.matrix(B[quidroite,I2-1])%*%A[I2]-Atilde[quidroite]
       if(rcond(J)>10^(-16)){
          matint=solve(J)%*%Fvect
          for (j in 1:p2){
@@ -49,6 +50,7 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
          Sigma=matint[-c(1:(pz+p1))]
          lambda=matint[c((pz+1):(pz+p1))]
       }else{
+         print(it)
          print("numerically singular matrix J")
         break
       }    

@@ -11,6 +11,8 @@ newtheta(X = X, Z = Z, B = B, Sigma = Sigma, A = A, lambda = NULL,
   \item{Z}{the structure (square without intercept)}
 
   \item{B}{the wheighted structure (p+1)xp}
+
+  \item{Atilde}{p-sized vector of explicative coeffcients}
 }
 \description{
 newtheta for Newton
