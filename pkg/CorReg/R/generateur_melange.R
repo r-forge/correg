@@ -42,7 +42,7 @@ generateur_melange<-function(n=130,
   Amax=min(p+1,Amax) # min entre p+1 et Amax  why?
   R=round(ratio*p) # R : entier nombre de personne a gauche
   if(R==0){pb=0}
-  if(is.null(Amax) | Amax>p){Amax=p}
+  if(is.null(Amax) | Amax>p){Amax=p+1}
   #lmabda param?tre le nombre de composantes des m?langes gaussiens   
   valid=max(valid,n)
   B=matrix(0,nrow=(p+1),ncol=(p+1)) #B matrice creuse
