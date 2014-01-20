@@ -1,0 +1,15 @@
+\name{WhoIs}
+\alias{WhoIs}
+\title{Give the partition implied by a structure}
+\usage{
+WhoIs(Z = Z, I3 = F, I2 = T, I1 = T)
+}
+\arguments{
+  \item{Z}{the structure (square matrix)}
+
+  \item{I1,I2,I3}{wanted outputs}
+}
+\description{
+Give the partition implied by a structure
+}
+
