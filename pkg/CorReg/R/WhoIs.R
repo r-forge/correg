@@ -1,7 +1,7 @@
-# ' qui est qui  ?
+#' Give the partition implied by a structure
 # ' 
-# ' @param Z the structure (square matrix)
-# ' @param I1 (and others) wanted output
+#' @param Z the structure (square matrix)
+#' @param I1,I2,I3 wanted outputs
 # ' 
 #'@export 
 WhoIs<-function(Z=Z,I3=F,I2=T,I1=T){
