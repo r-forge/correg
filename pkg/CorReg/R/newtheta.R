@@ -7,19 +7,19 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
    X=cbind(1,X)
    I2=which(colSums(Z)!=0)
    p2=length(I2)
-   p1=ncol(X)-p2#prendre donc en compte la constante
    Z=rbind(0,Z)
    Z[1,I2]=1#on ajoute une constante à chaque ssreg
    Z=cbind(0,Z)
    I2=I2+1
    pz=sum(Z!=0)
+   p1=length(which(rowSums(Z[-I2,])!=0))#I3 ne doit pas intervenir
+   if(is.null(lambda)){
+      lambda=rep(1,times=p1)
+   }
    n=nrow(X)
    J=matrix(0,ncol=(p1+p2+pz),nrow=(p1+p2+pz))
    barZ=which(Z!=0,arr.ind=T)   
    Fvect=rep(0,times=(p1+p2+pz))   
-   if(is.null(lambda)){
-      lambda=rep(1,times=p1)
-   }
    for (it in 1:nbit){   
       print(it)
       for(j in 1:p2){
