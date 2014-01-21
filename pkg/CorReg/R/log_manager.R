@@ -39,7 +39,7 @@ log_manager<-function(start=as.Date('2012-10-01'),today=format(Sys.Date()-1, "%Y
          }
          
          # rbind together all files
-         require(data.table)
+#          require(data.table)
          dat <- rbindlist(logs)
          
          # add some keys and define variable types
