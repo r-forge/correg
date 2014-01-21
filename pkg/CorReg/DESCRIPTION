@@ -10,7 +10,7 @@ Description: Sequential linear regression based on a structural equation model
     datasets.Package license :
     (http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html)
 License: CeCILL
-URL : http://www.correg.org
+URL: http://www.correg.org
 Depends:
     Rcpp,
     RcppEigen,
