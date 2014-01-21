@@ -24,8 +24,8 @@ MakeH<-function(X=X,Z=Z,B=B,Sigma=Sigma){
       H[colonne,colonne]=(-1/(Sigma[j]^2)) * t(X[,I1j])%*%X[,I1j]
    }
    
-   require(matrixcalc)
-   print(is.negative.definite(H))
-   print(is.positive.definite(H))
+#    require(matrixcalc)
+#    print(is.negative.definite(H))
+#    print(is.positive.definite(H))
    return(H)
 }
