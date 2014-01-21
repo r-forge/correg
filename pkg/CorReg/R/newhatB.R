@@ -1,4 +1,9 @@
-
+#' Computes B based on A and Atilde under the constraint of the subregressions
+#' @param Z the structure p x p binary matrix
+#' @param A the vector of coefficients
+#' @param Atilde the explicative model
+#' @param Bold the old B
+#' @param intercept boolean to define an intercept
 #' @export
 newhatB<-function(Z=Z,A=A,Atilde=Atilde,Bold=B,intercept=TRUE){
    qui=WhoIs(Z=Z,I3=F,I2=T,I1=T)
