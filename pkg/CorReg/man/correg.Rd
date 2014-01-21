@@ -68,6 +68,12 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   \item{Atilde}{Coefficients of the explicative model to
   coerce the predictive step. if not NULL explicative step
   is not computed.}
+
+  \item{prednew}{alternate optimisation for predictive}
+
+  \item{nbalter}{number of alternance for prednew}
+
+  \item{deltamin}{criterion to stop alternance}
 }
 \description{
 Estimates the response variable using a structure

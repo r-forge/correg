@@ -31,6 +31,9 @@
 #' @param Y_test response for the validation sample
 #' @param intercept boolean. If FALSE intercept will be set to 0 in each model.
 #' @param Atilde Coefficients of the explicative model to coerce the predictive step. if not NULL explicative step is not computed.
+#' @param prednew alternate optimisation for predictive
+#' @param nbalter number of alternance for prednew
+#' @param deltamin criterion to stop alternance
 #' 
 correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, 
                 pred = TRUE, pred2=FALSE,prednew=FALSE,
