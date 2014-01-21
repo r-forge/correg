@@ -1,4 +1,8 @@
 #' generateur Y aleatoire
+#' @param X the dataset
+#' @param Amax maximum number of non-zero coefficients
+#' @param sigma_Y the standard deviation of the noise
+#' @param positif the ratio of positive coefficients
 #'@export 
 generateur_Y<-function(X=X,Amax=NULL,sigma_Y=10,positif=0.6){
   p=ncol(X)

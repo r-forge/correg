@@ -1,5 +1,5 @@
-#' generateur de param?tres selon la structure
-#' @export
+#' generateur de parametres selon la structure
+# ' @export
 # ' @param pb kind of problem : 0=none, 1=simple, 2=strong
 generateurA_ou<-function (Z = Z, tp1 = 1, tp2 = 1, tp3 = 1, positif = 0.6, lambdapois = 5,pb=2,Amax=NULL,B=NULL) 
 {
