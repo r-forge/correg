@@ -1,7 +1,6 @@
 export(BicZ)
 export(MSEZ)
 export(MSE_loc)
-export(MakeF)
 export(MakeJ)
 export(OLS)
 export(ProbaZ)

@@ -1,5 +1,5 @@
 # Atilde de taille p1
-#' @export
+# ' @export
 MakeF<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde){
    X=cbind(1,X)
    I2=which(colSums(Z)!=0)
