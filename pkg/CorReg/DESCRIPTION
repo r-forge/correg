@@ -5,9 +5,9 @@ Version: 0.13.2
 Date: 2014-01-21
 Author: THERY CLEMENT, WATRIN FLORIAN
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
-Description: Sequential linear regression based on a structural equation model
-    (explicit correlations). It permits to face highly correlated
-    datasets.Package license :
+Description: Sequential linear regression based on a recursive structural
+    equation model (explicit correlations). It permits to face highly
+    correlated datasets.Package license :
     (http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html)
 License: CeCILL
 URL: http://www.correg.org
