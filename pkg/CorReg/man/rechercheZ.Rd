@@ -5,7 +5,8 @@
 rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
   reject = 1, methode_BIC = 1, Rmax = 5, p2max = NULL, Maxiter = 1,
   plot = FALSE, best = TRUE, better = FALSE, random = TRUE, bla = 1,
-  nb_opt_max = NULL, exact = TRUE, nbini = NULL, star = TRUE, ...)
+  nb_opt_max = NULL, exact = TRUE, nbini = NULL, star = TRUE,
+  nett = TRUE, ...)
 }
 \arguments{
   \item{X}{the dataset}
@@ -64,6 +65,8 @@ rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
 
   \item{star}{boolean to compute BIC* instead of BIC
   (stronger penalization of the complexity)}
+
+  \item{nett}{cleaning steps at the ends}
 
   \item{...}{parameters to be passed (for Winitial).}
 }

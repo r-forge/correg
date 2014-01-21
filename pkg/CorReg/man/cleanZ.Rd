@@ -3,7 +3,7 @@
 \title{cleanZ (if BIC improved)}
 \usage{
 cleanZ(X = X, Z = Z, bic_vide_vect = bic_vide_vect, methode_BIC = 1,
-  plot = F, bla = 1)
+  plot = F, bla = 1, star = FALSE)
 }
 \arguments{
   \item{X}{the dataset}
@@ -15,6 +15,8 @@ cleanZ(X = X, Z = Z, bic_vide_vect = bic_vide_vect, methode_BIC = 1,
   \item{methode_BIC}{1:utilisation de la fonction
   householderQr, 2:utilisation de la fonction
   colPivHouseholderQr}
+
+  \item{star}{to use BIC*}
 
   \item{plot}{T:retourne le BIC de chaque etapes}
 
