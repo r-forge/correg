@@ -6,7 +6,8 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   pred = TRUE, pred2 = FALSE, prednew = FALSE, select = "lar",
   criterion = c("MSE", "BIC"), X_test = NULL, Y_test = NULL,
   intercept = TRUE, K = 10, groupe = NULL, Amax = NULL, lambda = 1,
-  retour = TRUE, final = FALSE, nbalter = 10, deltamin = 0.01)
+  retour = TRUE, final = FALSE, nbalter = 10, deltamin = 0.01,
+  Atilde = NULL)
 }
 \arguments{
   \item{B}{the (p+1)xp matrix assiated to Z and that
@@ -63,6 +64,10 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
 
   \item{intercept}{boolean. If FALSE intercept will be set
   to 0 in each model.}
+
+  \item{Atilde}{Coefficients of the explicative model to
+  coerce the predictive step. if not NULL explicative step
+  is not computed.}
 }
 \description{
 Estimates the response variable using a structure
