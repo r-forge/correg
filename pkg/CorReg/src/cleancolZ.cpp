@@ -54,7 +54,8 @@ SEXP cleancolZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP 
   bicvect=BicZ_cpp2(matX,matZ,Bic_vide_vect,imet_BIC[0]);
 //somme a la main
   sumbic=bicvect.sum();
-  if(star){
+  if(star)
+  {
       sumbic=sumbic-ProbaZ_cpp(matZ);
    }
   if (ibla[0]>0)
@@ -100,7 +101,8 @@ SEXP cleancolZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP 
     //calcul du bic (du nouveau Z généré)
       BIC_cand=BicZ_cpp(matX,Zcand,Bic_vide_vect,bicvect,imet_BIC[0],newZ);//calcul du vecteur BIC du candidat
       Sum_BIC_cand=BIC_cand.sum();
-      if(star){
+      if (star)
+      {
          Sum_BIC_cand=Sum_BIC_cand-ProbaZ_cpp(Zcand);
       }
     //stockage du BIC
