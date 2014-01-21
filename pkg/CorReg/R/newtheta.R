@@ -3,6 +3,10 @@
 #' @param Z the structure (square without intercept)
 #' @param B the wheighted structure (p+1)xp
 #' @param Atilde p-sized vector of explicative coeffcients
+#' @param Sigma vector of the standard deviations of the subregressions (p2 long)
+#' @param A vector of the coefficient for the main regression
+#' @param lambda lagrange multiplicators
+#' @param nbit number of iteration for Newton
 #' @export
 newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1){
    X=cbind(1,X)
