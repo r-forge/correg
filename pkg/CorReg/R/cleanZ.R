@@ -10,8 +10,8 @@
 #'@return etape 0:suppression,1 ajout,2 stationarite
 #'
 cleanZ<-function(X=X,Z=Z,bic_vide_vect=bic_vide_vect,methode_BIC=1,plot=F,bla=1,star=FALSE){
-   res=.Call( "cleancolZ",X,Z,bic_vide_vect,methode_BIC,plot,bla,star, PACKAGE = "CorReg")
-  res=.Call( "cleanZ",X,res$Z,bic_vide_vect,methode_BIC,plot,bla,star, PACKAGE = "CorReg")
+   res=.Call( "cleancolZ",X,Z,bic_vide_vect,methode_BIC,plot,bla, PACKAGE = "CorReg")
+  res=.Call( "cleanZ",X,res$Z,bic_vide_vect,methode_BIC,plot,bla, PACKAGE = "CorReg")
   return(res)
   
 }
