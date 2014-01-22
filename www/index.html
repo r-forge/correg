@@ -16,24 +16,53 @@
 </head>
 
 <body>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
+  ga('create', 'UA-46273352-1', 'correg.org');
+  ga('send', 'pageview');
+
+</script>
 <!-- R-Forge Logo -->
-<div id="Rforgelogo">
-<a href="http://r-forge.r-project.org/"><img src="http://r-forge.r-project.org/themes/rforge//imagesrf/logo.png" border="0" alt="R-Forge Logo" /> </a> </div>
+<div id="CorReglogo">
+<a href="http://www.correg.org/"><img src="CorReg.gif"  alt="R-Forge Logo" /> </a> </div>
 
 
 <!-- get project title  -->
 <!-- own website starts here, the following may be changed as you like -->
 
 <h1>Welcome to CorReg project!</h1>
-<p>Find a structure explaining correlations between covariates and use it to compute linear regression.
+
+This R package Find a structure explaining correlations between covariates and use it to compute linear regression.
+The correg function computes the linear regression under the constraint of the found structure. It helps to face dimension and correlations issues.
+CorReg stands for Correlations in Regression.
 <!-- end of project description -->
 
-<p> No content added. </p>
 
 <p> The <strong>project summary page</strong> you can find <a href="http://r-forge.r-project.org/projects/correg/"><strong>here</strong></a>. </p>
-<p> This project is developped under the <a href="http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html">CeCILL</a> license</p>
+<p> This project is developped under the <a href="http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html">CeCILL</a> license (open-source).</p>
+<p>Dependencies : install.packages(c("Rcpp","RcppEigen","Rmixmod","lars","elasticnet","Matrix","mclust","ridge","MASS","data.table"),repos="http://cran.univ-lyon1.fr/")</p>
 <p></p>
+<p>From <a href="http://xkcd.com/">XKCD</a>:<img src="jokes/correlation.png" alt="Joke about correlations and causality"> </p>
+<p><img src="jokes/confidence.png" alt="joke about confidence intervals"> </p>
+<a href="http://www.smbc-comics.com/"><img src="jokes/20110805.gif" alt="joke about extrapolation"></a>
 
+<div id="webutation-badge">
+<script type="text/javascript">
+(function() {
+window.domain = 'correg.org';
+function async_load(){
+ var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true;
+ var p = ('https:' == document.location.protocol ? 'https://' : 'http://');
+ s.src = p+'www.webutations.net/js/load_badge.js';
+ var x = document.getElementById('webutation-link'); x.parentNode.insertBefore(s, x); }
+if (window.attachEvent) window.attachEvent('onload', async_load); else window.addEventListener('load', async_load, false);
+})();
+</script>
+<a id="webutation-link"  href="http://www.webutations.net/go/review/correg.org">correg.org Webutation</a>
+</div>
 </body>
 </html>
