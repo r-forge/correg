@@ -16,5 +16,5 @@ Depends:
     RcppEigen,
     Rmixmod,
     lars,
-    elasticnet,Matrix,mclust,ridge,MASS,data.table
+    elasticnet,Matrix,mclust,ridge,MASS
 LinkingTo: Rcpp, RcppEigen
