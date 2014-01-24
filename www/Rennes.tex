@@ -16,6 +16,10 @@
 \setlength{\hoffset}{-1.4cm}
 %
 %
+\usepackage{graphicx}
+
+ \graphicspath{{figures/}}
+
 \begin{document}
 
 
@@ -85,9 +89,7 @@ Where $B_{I_1^j}^j$ is the $p_1^j$-sized vector of the coefficients of the subre
 We note that (\ref{MainR}) and (\ref{SR}) also give :
 \begin{eqnarray}
 	Y&=&X^{I_2^c} (A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y \\
-					&=& X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}=X\tilde{A}+ \tilde{\varepsilon}\label{Trueexpl} \\
-			\textrm{where }		\tilde{A}_{I_2}&=&0 \\
-					\tilde{A}_{I_2^c}&=&A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j} 
+					&=& X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}=X\tilde{A}+ \tilde{\varepsilon}\label{Trueexpl} 			
 \end{eqnarray}
 \section{Estimateur}
 	Classical methods like Ordinary Least Squares (OLS) estimate $Y|X$ and obtain (Maximum Likelihood Estimation): 
@@ -126,7 +128,7 @@ We note that (\ref{MainR}) and (\ref{SR}) also give :
 			
 			When we use a variable selection method on it we obtain two kinds of 0 :
 			\begin{enumerate}
-			\item Because of the structure we coerce $\hat{\tilde{A}}^{I_2} = 0 $. This kind of zero means redundant information but the covariate can be correlated with the response variable. So we don't have the grouping effect (so we are more parsimonious ) and we don't suffer from false interpretation (LASSO would).
+			\item Because of the structure we coerce $\hat{\tilde{A}}^{I_2} = 0 $. This kind of zero means redundant information but the covariate can be correlated with the response variable. So we don't have the grouping effect (so we are more parsimonious ) and we don't suffer from false interpretation (LASSO would~\cite{Zhao2006MSC}).
 			\item Variable selection methods can lead to get some exact zeros in $\hat{\tilde{A}}^{I_1}$. This kind of zero means that implied covariate has no significant effect on the response variable. And because variables in $X^{I_1}$ are orthogonal, we know that it is not misleading interpretation due to correlations.
 			\end{enumerate}
 \section{Recherche de structure}
@@ -226,6 +228,36 @@ We want
 
 
 \section{Résultats}	
+
+
+Some observed correlations with physical meaning :
+			\begin{itemize}
+				\item Width and Weight : 0.905
+				\item Temperature before and after a tool : 0.983 
+				\item Roughness of both faces : 0.919
+				\item Mean \& Max of a curve : 0.911
+			\end{itemize}
+			
+Some found subregressions with physical meaning :
+			\begin{itemize}
+				\item Mean.weight = f (Min.weight , Max.weight , Sigma.weight ) and other same-shaped subregressions.
+				\item Width = f (Mean.flow , Mean.speed.CC)
+				
+True Physical model (not linear) :\begin{itemize}
+\item Width = flow / (speed * thickness) (thickness is constant)
+\end{itemize} 
+			\end{itemize}
+			
+			Some of the other subregression represent physical models used to regulate the process and that were forgotten by the metallurgist we worked with.
+
+Exemple détaillé :
+
+		\begin{figure}	
+		\centering		
+			\includegraphics[width=100px]{figures/histcor_auchan.JPG} 
+			\caption{Histogramme des corrélations observées (117 individus pour 168 variables)}
+		\end{figure}
+
 \section{Conclusion et perspectives}
 	CorReg est fonctionnel et disponible
 	Besoin d'élargir à la gestion des valeurs manquantes très présentes dans l'industrie
