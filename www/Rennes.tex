@@ -27,7 +27,7 @@
 
 \begin{center}
 {\Large
-	{\sc  CorReg : Régression sur variables corrélées\\ et Application à l'industrie Sidérurgique}
+	{\sc  CorReg : Régression sur variables Corrélées\\ et Application à l'industrie Sidérurgique}
 }
 \bigskip
 
@@ -43,23 +43,23 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.the
 
 %--------------------------------------------------------------------------
 
-{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives indépendantes. Les variables présentes dans les bases de données d'origine industrielle sont souvent très fortement corrélées (de par le process, diverses lois physiques, etc). Le modèle génératif proposé consiste à expliciter les corrélations présentes sous la forme d'une de sous-régressions linéaires. La structure est ensuite utilisée pour obtenir un modèle libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (CorReg) permet la mise en oeuvre de cette méthode. 
+{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives indépendantes. Les variables présentes dans les bases de données d'origine industrielle sont souvent très fortement corrélées (de par le process, diverses lois physiques, etc). Le modèle génératif proposé consiste à expliciter les corrélations présentes sous la forme d'une structure de sous-régressions linéaires. La structure est ensuite utilisée pour obtenir un modèle libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (CorReg) permet la mise en oeuvre de cette méthode. 
 \smallskip
 
-{\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs, SEM (Structural Equation Model) \ldots
+{\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs, SEM (Structural Equation Model), \ldots
 \bigskip\bigskip
 
 {\bf Abstract.} Linear regression generally suppose independence between the covariates. Datasets found in industrial context often contains many highly correlated covariates (due to the process, physcial laws, etc). The proposed generative model consists in explicit modeling of the correlations with a structure of sub-regressions between the covariates. This structure is then used to obtain a model with independent covariates, easily interpreted, and compatible with any variable selection method. The structure of correlations is found with an MCMC algorithm. A R package (CorReg) implements this new method.  
 \smallskip
 
-{\bf Keywords.} Regression, correlations, industry, variable selection, generative models, Structural Equation Model \ldots
+{\bf Keywords.} Regression, correlations, industry, variable selection, generative models, Structural Equation Model, \ldots
 
 %--------------------------------------------------------------------------
 
 \section{Le contexte}
-	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent des problèmes.
+	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs.
 	\begin{eqnarray}
-		Y&=&XA+\varepsilon \ \ \ \varepsilon\sim \mathcal{N}(0,\sigma^2) \\
+		Y&=&XA+\varepsilon \ \ \textrm{ avec } \ \varepsilon\sim \mathcal{N}(0,\sigma^2) \\
 		Var(\hat{A}|X)&=& \sigma^2(X'X)^{-1} \textrm{ explose si les colonnes de x sont linéairement corrélées}
 	\end{eqnarray}
 			
@@ -75,10 +75,10 @@ On rend explicite les corrélations au sein de $X$ sous la forme d'une structure
 		p_2&=& \sharp I_2 \\
 		p_1&=&(p_1^1,\dots,p_1^{p_2}) \textrm{ avec }p_1^j=\sharp I_1^j 
 	\end{eqnarray}
-	On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendentes dans $X$ n'en expliquent pas d'autres. 
+	On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendantes dans $X$ n'en expliquent pas d'autres. 
 	
 	On note $I_2^c=\{1,\dots,p\}\setminus I_2$
-Then our generative model can be written :
+Le modèle génératif s'écrit alors :
 \begin{eqnarray}
 	Y_{|X,S}=Y_{|X}&=&XA+\varepsilon_Y= X^{I_2^c}A_{I_2^c}+X^{I_2}A_{I_2}+\varepsilon_Y \textrm{ with } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}\\
 	\forall j \in I_2 : \  X^j_{|X^{I_1^j},S}&=&X^{I_1^j}B_{I_1^j}^j + \varepsilon_{j} \textrm{ with } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2) \label{SR}\\
@@ -189,7 +189,7 @@ We note that (\ref{MainR}) and (\ref{SR}) also give :
 		\item Sinon ( $i \in I_1^j$ (suppression)): $I_1^j=I_1^j\setminus \{i\}$
 	\end{itemize}
 	
-	On a donc $p$ candidats à chaque étape. Mais CorReg (notre package) permet à l'utilisateur de modifier ce voisinage.
+	On a donc $p$ candidats à chaque étape. Mais le package CorReg permet à l'utilisateur de modifier ce voisinage.
 	
 		
 	We make a first approximation (\ref{Bicstar}) : 
