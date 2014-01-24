@@ -32,7 +32,7 @@
 \bigskip
 
 {\it
-$^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.thery@arcelormittal.com
+$^{1}$ ArcelorMittal Dunkerque, Inria Lille, Universit\'e de Lille 1, clement.thery@arcelormittal.com
  
 }
 \end{center}
@@ -54,7 +54,7 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.the
 %--------------------------------------------------------------------------
 
 \section{Le contexte}
-	La régression linéaire classique suppose l'indépendance des covariables. Les corr\'elations posent des probl \`emes.
+	La r\'egression lin\'eaire classique suppose l'ind\'ependance des covariables. Les corr\'elations posent des probl\`emes.
 	\begin{eqnarray}
 		Y&=&XA+\varepsilon \ \ \ \varepsilon\sim \mathcal{N}(0,\sigma^2) \\
 		Var(\hat{A}|X)&=& \sigma^2(X'X)^{-1} \textrm{ explose si les colonnes de x sont lin\'eairement corr\'el\'ees}
@@ -62,17 +62,17 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.the
 			
 	
 	
-\section{Le mod \`ele g\'en\'eratif}
-On dispose de $p$ variables $X$ fortement corrélées pour expliquer une variable réponse $Y$.
-On rend explicite les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$ définie ainsi :
+\section{Le mod\`ele g\'en\'eratif}
+On dispose de $p$ variables $X$ fortement corr\'el\'ees pour expliquer une variable r\'eponse $Y$.
+On rend explicite les corr\'elations au sein de $X$ sous la forme d'une structure de sous-r\'egressions lin\'eaires $S=(p_2,I_2,p_1,I_1)$ d\'efinie ainsi :
 	\begin{eqnarray}
 		I_1&=&(I_1^1,\dots,I_1^{p_2}) \textrm{ avec}		\\
 		I_1^j &=& \{i |Z_{i,j}=1 \} \textrm{ indices des covariables qui expliquent $X^j$} \\
-		I_2&=&\{j |\sharp I_1^j>0 \}  \textrm{ indices des variables dépendantes} \\
+		I_2&=&\{j |\sharp I_1^j>0 \}  \textrm{ indices des variables d\'ependantes} \\
 		p_2&=& \sharp I_2 \\
 		\forall 1\leq j\leq p :  p_1^j&=&\sharp I_1^j
 	\end{eqnarray}
-	On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendentes dans $X$ n'en expliquent pas d'autres. 
+	On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables d\'ependentes dans $X$ n'en expliquent pas d'autres. 
 	
 	On note $I_2^c=\{1,\dots,p\}\setminus I_2$
 Then our generative model can be written :
@@ -88,8 +88,7 @@ We note that (\ref{MainR}) and (\ref{SR}) also give :
 	Y&=&X^{I_2^c} (A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y \\
 					&=& X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}=X\tilde{A}+ \tilde{\varepsilon}\label{Trueexpl} \\
 			\textrm{where }		\tilde{A}_{I_2}&=&0 \\
-					\tilde{A}_{I_2^c}&=&A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j} \\
-					\tilde{\varepsilon}&=&\sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y 
+					\tilde{A}_{I_2^c}&=&A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j} 
 \end{eqnarray}
 \section{Estimateur}
 	Classical methods like Ordinary Least Squares (OLS) estimate $Y|X$ and obtain (Maximum Likelihood Estimation): 
@@ -215,13 +214,13 @@ We note that (\ref{MainR}) and (\ref{SR}) also give :
 
 
  \subsubsection{initialisation}
-L'intialisation peut par exemple utiliser la matrice des corrélations et/ou la méthode du Graphical Lasso\cite{friedman2008sparse}.		
-La grande dimension de l'espace parcouru rend préférable l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (pour un temps de calcul égal). Accessoirement, les multiples chaînes permettent de paralléliser la recherche, ce qui peut être très appréciable.
+L'intialisation peut par exemple utiliser la matrice des corr\'elations et/ou la m\'ethode du Graphical Lasso\cite{friedman2008sparse}.		
+La grande dimension de l'espace parcouru rend pr\'ef\'erable l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (pour un temps de calcul \'egal). Accessoirement, les multiples chaînes permettent de parall\'eliser la recherche, ce qui peut être très appr\'eciable.
 
 
 	\subsubsection{properties}
 	The algorithm follows a time-homogeneous markov chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}|$ rows and columns (combinatory so we'll just compute the probabilities when we need them).
-	And $\mathcal{S}$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
+	And $\mathcal{S}$ is a finite state space.%la relaxation rend P non sym\'etrique mais ne remets  pas en cause l'homog\'en\'eit\'e	
 	
 %	if 	$\forall k, \tilde{Z} \not\in \mathcal{V}_{Z,k} $ then 
 We want 
@@ -234,18 +233,18 @@ We want
 \section{R\'esultats}	
 \section{Conclusion et perspectives}
 	CorReg est fonctionnel et disponible
-	Besoin d'\'elargir à la gestion des valeurs manquantes tr \`es pr\'esentes dans l'industrie
+	Besoin d'\'elargir à la gestion des valeurs manquantes tr\`es pr\'esentes dans l'industrie
 \section{Exemple de r\'ef\'erences bibliographiques}
 La n\'ecessit\'e de produire des r\'esum\'es clairs et bien
-r\'ef\'erenc\'es a \'et\'e d\'emontr\'ee par Achin et Quidont~(2000). Le
-r\'ecent article de Noteur~(2003) met en \'evidence \dots
+r\'ef\'erenc\'es a\'et\'e d\'emontr\'ee par Achin et Quidont~(2000). Le
+r\'ecent article de Noteur~(2003) met en\'evidence \dots
 %Quelques rappels :
 %%
 %\begin{center}
 %%
 %\begin{tabular}{lr} \hline
 %%
-%Accent aigu :              &  \'e; \\
+%Accent aigu :              & \'e; \\
 %Accent grave :             &  \`a;\\
 %Accent circonflexe :       &  \^o mais \^{\i};\\
 %Tr\'emas :                 &  \"o mais \"{\i};\\
