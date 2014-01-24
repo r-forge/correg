@@ -129,9 +129,10 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 
 		En ajoutant une étape de sélection de variable on obtient deux types de $0$ :
 			\begin{enumerate}
-			\item Because of the structure we coerce $\hat{\tilde{A}}^{I_2} = 0 $. This kind of zero means redundant information but the covariate can be correlated with the response variable. So we don't have the grouping effect (so we are more parsimonious ) and we don't suffer from false interpretation (LASSO would~\cite{Zhao2006MSC}).
-			\item Variable selection methods can lead to get some exact zeros in $\hat{\tilde{A}}^{I_1}$. This kind of zero means that implied covariate has no significant effect on the response variable. And because variables in $X^{I_1}$ are orthogonal, we know that it is not misleading interpretation due to correlations.
+			\item La structure implique $\hat{\tilde{A}}^{I_2} = 0 $. Ce type de 0 est à interpréter comme une redondance d'information, mais la variable associée n'est pas pour autant jugée indépendante de $Y$. On obtient un modèle parcimonieux sans effet groupe, mais sans erreur d'interprétation, contrairement au LASSO ~\cite{Zhao2006MSC} car on connaît la signification de ce type de $0$.
+			\item Une phase de sélection de variables peut également produire des coefficients nuls dans $\hat{\tilde{A}}^{I_1}$. Ces $0$ sont alors des $0$ d'indépendance vis-à-vis de la réponse qui s'interprètent donc classiquement.Et comme les variables de $X^{I_1}$ sont orthogonales, on peut avoir confiance dans cette interprétation.
 			\end{enumerate}
+		Le modèle obtenu est donc sans biais de prédiction, parcimonieux, et consistant en interprétation.	
 \section{Recherche de structure}
 	 	
 	%	\subsection{Pénalisation de la vraisemblance}
@@ -193,7 +194,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 	On a donc $p$ candidats à chaque étape. Mais le package CorReg permet à l'utilisateur de modifier ce voisinage.
 	
 		
-	We make a first approximation (\ref{Bicstar}) : 
+	On fait l'approximation suivante  (\ref{Bicstar}) : 
 	\begin{equation}
 		P(S|X)\approx exp(BIC^*(S))
 	\end{equation}
@@ -201,10 +202,10 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		q(\tilde{S},\mathcal{V}_{S,j})=\mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{exp(\frac{-1}{2}\Delta BIC(\tilde{S},\mathcal{V}_{S,j}))}{\sum_{S_l\in \mathcal{V}_{S,j}}exp(\frac{-1}{2}\Delta BIC(S_l,\mathcal{V}_{S,j}))}
 	\end{equation}
 	
-	Where $\Delta BIC(S,\mathcal{V}_{S,j})=BIC(S)-\min\{BIC(\tilde{S})| \tilde{S} \in \mathcal{V}_{S,j} \} $.
+	où $\Delta BIC(S,\mathcal{V}_{S,j})=BIC(S)-\min\{BIC(\tilde{S})| \tilde{S} \in \mathcal{V}_{S,j} \} $.
 	\newline
 	
-	 And then we can note $\forall (S,\tilde{S}) \in \mathcal{S}^2 $ :
+	 Ce qui donne enfin $\forall (S,\tilde{S}) \in \mathcal{S}^2 $ :
 		\begin{displaymath}
 			\mathcal{P}(S,\tilde{S})= \frac{1}{p} \sum_{j=1}^p q(\tilde{S},\mathcal{V}_{S,j})
 		\end{displaymath}
