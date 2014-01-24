@@ -1,0 +1,268 @@
+\documentclass[12pt]{article}
+%
+%
+% Retirez le caractere "%" au debut de la ligne ci--dessous si votre
+% editeur de texte utilise des caracteres accentues
+% \usepackage[latin1]{inputenc}
+
+%
+% Retirez le caractere "%" au debut des lignes ci--dessous si vous
+% utiisez les symboles et macros de l'AMS
+\usepackage{amsmath}
+\usepackage{amsfonts}
+%
+%
+\setlength{\textwidth}{16cm}
+\setlength{\textheight}{21cm}
+\setlength{\hoffset}{-1.4cm}
+%
+%
+\begin{document}
+
+
+%--------------------------------------------------------------------------
+
+\begin{center}
+{\Large
+	{\sc  Regression for correlated variables :\\ Application in steel industry}
+}
+\bigskip
+
+ Cl\'ement Th\'ery $^{1}$
+\bigskip
+
+{\it
+$^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.thery@arcelormittal.com
+ 
+}
+\end{center}
+\bigskip
+
+%--------------------------------------------------------------------------
+
+{\bf R\'esum\'e.} La r\'egression lin\'eaire suppose en g\'en\'eral l'usage de variables explicatives ind\'ependantes. Les variables pr\'esentes dans les bases de donn\'ees d'origine industrielle sont souvent tr\`es fortement corr\'el\'ees (de par le process, diverses lois physiques, etc). Le mod\`ele g\'en\'eratif propos\'e consiste à expliciter les corr\'elations pr\'esentes sous la forme d'une de sous-r\'egressions lin\'eaires. La structure est ensuite utilis\'ee pour obtenir un mod\`ele lib\'er\'e des corr\'elations, facilement interpr\'etable et compatible avec les m\'ethodes de s\'election de variables. La structure de corr\'elations est d\'etermin\'ee à l'aide d'un algorithme de type MCMC. Un package R (CorReg) permet la mise en oeuvre de cette m\'ethode. 
+\smallskip
+
+{\bf Mots-cl\'es.} R\'egression, corr\'elations, industrie, s\'election de variables, mod\`eles g\'en\'eratifs, SEM (Structural Equation Model) \ldots
+\bigskip\bigskip
+
+{\bf Abstract.} Linear regression generally suppose independence between the covariates. Datasets found in industrial context often contains many highly correlated covariates (due to the process, physcial laws, etc). The proposed generative model consists in explicit modeling of the correlations with a structure of sub-regressions between the covariates. This structure is then used to obtain a model with independent covariates, easily interpreted, and compatible with any variable selection method. The structure of correlations is found with an MCMC algorithm. A R package (CorReg) implements this new method.  
+\smallskip
+
+{\bf Keywords.} Regression, correlations, industry, variable selection, generative models, Structural Equation Model \ldots
+
+%--------------------------------------------------------------------------
+
+\section{Le contexte}
+	La régression linéaire classique suppose l'indépendance des covariables. Les corr\'elations posent des probl \`emes.
+	\begin{eqnarray}
+		Y&=&XA+\varepsilon \ \ \ \varepsilon\sim \mathcal{N}(0,\sigma^2) \\
+		Var(\hat{A}|X)&=& \sigma^2(X'X)^{-1} \textrm{ explose si les colonnes de x sont lin\'eairement corr\'el\'ees}
+	\end{eqnarray}
+			
+	
+	
+\section{Le mod \`ele g\'en\'eratif}
+On dispose de $p$ variables $X$ fortement corrélées pour expliquer une variable réponse $Y$.
+On rend explicite les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$ définie ainsi :
+	\begin{eqnarray}
+		I_1&=&(I_1^1,\dots,I_1^{p_2}) \textrm{ avec}		\\
+		I_1^j &=& \{i |Z_{i,j}=1 \} \textrm{ indices des covariables qui expliquent $X^j$} \\
+		I_2&=&\{j |\sharp I_1^j>0 \}  \textrm{ indices des variables dépendantes} \\
+		p_2&=& \sharp I_2 \\
+		\forall 1\leq j\leq p :  p_1^j&=&\sharp I_1^j
+	\end{eqnarray}
+	On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendentes dans $X$ n'en expliquent pas d'autres. 
+	
+	On note $I_2^c=\{1,\dots,p\}\setminus I_2$
+Then our generative model can be written :
+\begin{eqnarray}
+	Y_{|X,S}=Y_{|X}&=&XA+\varepsilon_Y= X^{I_2^c}A_{I_2^c}+X^{I_2}A_{I_2}+\varepsilon_Y \textrm{ with } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}\\
+	\forall j \in I_2 : \  X^j_{|X^{I_1^j},S}&=&X^{I_1^j}B_{I_1^j}^j + \varepsilon_{j} \textrm{ with } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2) \label{SR}\\
+    \forall j \notin I_2 : \ X^j &=& f(\theta_j) \textrm{ free law}	
+\end{eqnarray}
+Where $B_{I_1^j}^j$ is the $p_1^j$-sized vector of the coefficients of the subregression.
+
+We note that (\ref{MainR}) and (\ref{SR}) also give :
+\begin{eqnarray}
+	Y&=&X^{I_2^c} (A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y \\
+					&=& X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}=X\tilde{A}+ \tilde{\varepsilon}\label{Trueexpl} \\
+			\textrm{where }		\tilde{A}_{I_2}&=&0 \\
+					\tilde{A}_{I_2^c}&=&A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j} \\
+					\tilde{\varepsilon}&=&\sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y 
+\end{eqnarray}
+\section{Estimateur}
+	Classical methods like Ordinary Least Squares (OLS) estimate $Y|X$ and obtain (Maximum Likelihood Estimation): 
+		\begin{equation}
+			\hat A = (X'X)^{-1}X'Y \textrm{ (ill-conditoned matrix to inverse)}
+		\end{equation}
+		With following properties :
+		\begin{eqnarray}
+			E[\hat{A}|X]&=&A \\
+			Var[\hat{A}|X]&=& \sigma_Y^2(X'X)^{-1}
+		\end{eqnarray}				
+		And when correlations are strong, the matrix to invert is ill-conditioned and the variance explodes.
+ 			
+		Our idea is to reduce the variance so we explain $Y$ only with $X^{I_1}$ knowing (\ref{SR}) and (\ref{Trueexpl})
+			\begin{equation}
+				Y= X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}\label{explicatif}
+			\end{equation}							
+		So the new estimator simply is : 
+		\begin{eqnarray}
+			\hat{\tilde{A}}_{I_2^c} &=& (X'_{I_2^c} X^{I_2^c})^{-1}X'_{I_2^c}Y \\
+			\hat{\tilde{A}}_{I_2} &=& 0
+		\end{eqnarray}
+		and we get the following properties :
+		\begin{eqnarray}
+			E[\hat{\tilde{A}}|X]&=&\tilde{A} \\
+			Var[\hat{\tilde{A}}_{I_2^c}|X]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{I_2^c} X^{I_2^c})^{-1} \\
+			Var[\hat{\tilde{A}}_{I_2}|X]&=& 0 
+		\end{eqnarray}
+		We see that the variance is reduced (no correlations and smaller matrix give better conditioning) for small values of $\sigma_j$ $i.e.$ strong correlations.					
+		
+		Both classical and our new estimators of $Y$ are unbiased (true model)\cite{saporta2006probabilites}.
+	\\	
+			This new model is reduced even without variable selection and is just a linear regression so every method for variable selection in linear regression can be used. 
+		 \\				
+			The explicit structure between the covariates helps to understand the model and the complex link between the covariate and the response variable so we call this model explicative.	
+			
+			When we use a variable selection method on it we obtain two kinds of 0 :
+			\begin{enumerate}
+			\item Because of the structure we coerce $\hat{\tilde{A}}^{I_2} = 0 $. This kind of zero means redundant information but the covariate can be correlated with the response variable. So we don't have the grouping effect (so we are more parsimonious ) and we don't suffer from false interpretation (LASSO would).
+			\item Variable selection methods can lead to get some exact zeros in $\hat{\tilde{A}}^{I_1}$. This kind of zero means that implied covariate has no significant effect on the response variable. And because variables in $X^{I_1}$ are orthogonal, we know that it is not misleading interpretation due to correlations.
+			\end{enumerate}
+\section{Recherche de structure}
+	 	
+		\subsection{Comparaison des structures}
+	On utilise le Bayesian Information criterion (BIC)~\cite{BIChuard}. But BIC tends to give too complex structures because we test a great range of models. Thus we choose to penalise the complexity a bit more with specific a priori laws(uniform laws for the number of subregression and the complexity of each subregression instead of uniform law on S) :
+	\begin{eqnarray}
+		P(S)&=&P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2) \\
+		P(I_1 | p_1,I_2,p_2)&=&\prod_{j =1}^{p_2}P(I_1^j|p_1^j,I_2,p_2) \\
+		P(I_1^j|p_1^j,I_2,p_2)&=&\left(\begin{array}{c}
+			p-p_2 \\ 
+			p_1^j
+			\end{array}  \right)^{-1} =\frac{p_1^j ! (p-p_2-p_1^j)!}{(p-p_2)!}\\
+		P(p_1|I_2,p_2)&=&\prod_{j =1}^{p_2}P(p_1^j|I_2,p_2)		\\
+		P(p_1^j|I_2,p_2)&=&\frac{1}{p-p_2}  \\
+		P(I_2|p_2)&=&\left(\begin{array}{c}
+			p \\ 
+			p_2
+			\end{array}  \right)^{-1}=\frac{p_2!(p-p_2)!}{p!}\\
+		P(p_2) &=&\frac{1}{p_2} \\
+		P(S)&=&\left(\prod_{j =1}^{p_2}\left(\begin{array}{c}
+			p-p_2 \\ 
+			p_1^j
+			\end{array}  \right)^{-1}\right) \left(\frac{1}{p-p_2}\right)^{p_2}\frac{p_2!(p-p_2)!}{p!}\frac{1}{p_2} \\
+			\ln P(S) &=& -\sum_{j=1}^{p_2}	\ln\left(\begin{array}{c}
+			p-p_2 \\ 
+			p_1^j
+			\end{array}  \right)
+			-p_2\ln (p-p_2)
+			-\ln\left(\begin{array}{c}
+			p \\ 
+			p_2
+			\end{array}  \right)
+			-\ln( p_2	)
+	\end{eqnarray}
+	Then we have 
+	\begin{eqnarray}
+		P(S|X)&\propto &P(X|S)P(S) \\
+		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
+		%&=&BIC +\ln(P(S))+cste \\
+		BIC^*&=&BIC +\ln(P(S))
+	\end{eqnarray}		
+	It increases penalty on complexity for $p_2<\frac{p}{2}$ thus in the following we will use $BIC*$ under this hypothesis (that becomes a constraint in the MCMC).			
+	\subsection{The Markov chain}
+	First we remember that $S$ is completely described with $I_1$ :
+	So we will only describe the variations in $I_1$ at each step and other parts of $S$ will follow according to the previous definition.
+	for each step, starting from $S \in \mathcal{S}$ we define a neighbourhood $\mathcal{V}_{S,j}$ with $j \sim \mathcal{U}(\{1,\dots,p\}) $ like this  :	
+	\begin{eqnarray}
+		\mathcal{V}_{S,j}&=&\{ S^{(i,j)} | 1\leq i\leq p \} \cup\{S \}
+	\end{eqnarray}	
+	With $S^{(i,j)}$ defined by the following algorithm :
+	\begin{itemize}
+		\item if $i \notin I_i^j$ (add): 
+			\begin{itemize}
+				\item $I_1^j=I_1^j\cup \{i\}$
+				\item $I_1^i=\emptyset$ (explicative variables can't depend on others : column-wise relaxation)
+				\item $I_1=I_1 \setminus \{j\}$ (dependent variables can't explain others : row-wise relaxation) 
+			\end{itemize}			 
+		\item if $i \in I_1^j$ (remove): $I_1^j=I_1^j\setminus \{i\}$
+	\end{itemize}
+	And then :
+	
+	We have $|\mathcal{V}_{S,j}|=p$ but some other constraints can be added on the definition of $\mathcal{S}$ and will consequently modify the size of the neighbourhood (for example a maximum complexity for the subregressions or the whole structure, a maximum number of sub-regressions, etc). CorReg allows to modify this neighbourhood to better fit users constraints. 
+	
+		
+	We make a first approximation (\ref{Bicstar}) : 
+	\begin{equation}
+		P(S|X)\approx exp(BIC^*(S))
+	\end{equation}
+	We define ~\cite{BIChuard}, :
+	\begin{equation}
+		q(\tilde{S},\mathcal{V}_{S,j})=\mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{exp(\frac{-1}{2}\Delta BIC(\tilde{S},\mathcal{V}_{S,j}))}{\sum_{S_l\in \mathcal{V}_{S,j}}exp(\frac{-1}{2}\Delta BIC(S_l,\mathcal{V}_{S,j}))}
+	\end{equation}
+	
+	Where $\Delta BIC(S,\mathcal{V}_{S,j})=BIC(S)-\min\{BIC(\tilde{S})| \tilde{S} \in \mathcal{V}_{S,j} \} $ is the gap between a structure and the worst structure in the neighbourhood in terms of BIC.
+	\newline
+	
+	 And then we can note $\forall (S,\tilde{S}) \in \mathcal{S}^2 $ :
+		\begin{displaymath}
+			\mathcal{P}(S,\tilde{S})= \frac{1}{p} \sum_{j=1}^p q(\tilde{S},\mathcal{V}_{S,j})
+		\end{displaymath}
+	The output will be the best structure seen in terms of BIC. If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found structure. So the model is really expert-friendly.
+
+
+
+ \subsubsection{initialisation}
+L'intialisation peut par exemple utiliser la matrice des corrélations et/ou la méthode du Graphical Lasso\cite{friedman2008sparse}.		
+La grande dimension de l'espace parcouru rend préférable l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (pour un temps de calcul égal). Accessoirement, les multiples chaînes permettent de paralléliser la recherche, ce qui peut être très appréciable.
+
+
+	\subsubsection{properties}
+	The algorithm follows a time-homogeneous markov chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}|$ rows and columns (combinatory so we'll just compute the probabilities when we need them).
+	And $\mathcal{S}$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
+	
+%	if 	$\forall k, \tilde{Z} \not\in \mathcal{V}_{Z,k} $ then 
+We want 
+		\begin{equation}
+			\mathcal{P}(S,\tilde{S})=\mathbf{1}_{[\exists j, \tilde{S} \in \mathcal{V}_{S,j} ]} P(\tilde{S}|X)
+		\end{equation}
+			Because the walk follows a regular and thus ergodic markov chain with a finite state space, it has exactly one stationary distribution \cite{grinstead1997introduction} : $\pi$ and every rows of $\operatorname{lim}_{k\rightarrow \infty}\mathcal{P}^k=W$ equals $\pi$.
+
+
+\section{R\'esultats}	
+\section{Conclusion et perspectives}
+	CorReg est fonctionnel et disponible
+	Besoin d'\'elargir à la gestion des valeurs manquantes tr \`es pr\'esentes dans l'industrie
+\section{Exemple de r\'ef\'erences bibliographiques}
+La n\'ecessit\'e de produire des r\'esum\'es clairs et bien
+r\'ef\'erenc\'es a \'et\'e d\'emontr\'ee par Achin et Quidont~(2000). Le
+r\'ecent article de Noteur~(2003) met en \'evidence \dots
+%Quelques rappels :
+%%
+%\begin{center}
+%%
+%\begin{tabular}{lr} \hline
+%%
+%Accent aigu :              &  \'e; \\
+%Accent grave :             &  \`a;\\
+%Accent circonflexe :       &  \^o mais \^{\i};\\
+%Tr\'emas :                 &  \"o mais \"{\i};\\
+%C\'edille :                &  \c{c}. \\ \hline
+%\end{tabular}
+%%
+%\end{center}
+%--------------------------------------------------------------------------
+\section*{Bibliographie}
+\cite{marquardt1975ridge}
+\bibliography{biblio}{}
+\bibliographystyle{plain}
+à recopier dans le bon ordre comme demand\'e ci-dessous.
+\noindent [1] Auteurs (ann\'ee), Titre, revue, localisation.
+\noindent [2] Achin, M. et Quidont, C. (2000), {\it Th\'eorie des
+Catalogues}, Editions du Soleil, Montpellier.
+\noindent [3] Noteur, U. N. (2003), Sur l'int\'er\^et des
+r\'esum\'es, {\it Revue des Organisateurs de Congr\`es}, 34, 67--89.
+\end{document}
+
