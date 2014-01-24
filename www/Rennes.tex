@@ -22,6 +22,7 @@
 
 \begin{document}
 
+     \def\Var{{\rm Var}\,}
 
 %--------------------------------------------------------------------------
 
@@ -60,7 +61,7 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.the
 	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs.
 	\begin{eqnarray}
 		Y&=&XA+\varepsilon \ \ \textrm{ avec } \ \varepsilon\sim \mathcal{N}(0,\sigma^2) \\
-		Var(\hat{A}|X)&=& \sigma^2(X'X)^{-1} \textrm{ explose si les colonnes de x sont linéairement corrélées}
+		\Var(\hat{A}|X)&=& \sigma^2(X'X)^{-1} \textrm{ explose si les colonnes de x sont linéairement corrélées}
 	\end{eqnarray}
 			
 	
@@ -92,41 +93,41 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 					&=& X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}=X\tilde{A}+ \tilde{\varepsilon}\label{Trueexpl} 			
 \end{eqnarray}
 \section{Estimateur}
-	Classical methods like Ordinary Least Squares (OLS) estimate $Y|X$ and obtain (Maximum Likelihood Estimation): 
+	Les Moindres Carrés Ordinaires (MCO) donnent (maximum de vraisemblance): 
 		\begin{equation}
-			\hat A = (X'X)^{-1}X'Y \textrm{ (ill-conditoned matrix to inverse)}
+			\hat A = (X'X)^{-1}X'Y \textrm{ (matrice à inverser mal conditionnée)}
 		\end{equation}
-		With following properties :
+		avec les propriétés suivantes :
 		\begin{eqnarray}
-			E[\hat{A}|X]&=&A \\
-			Var[\hat{A}|X]&=& \sigma_Y^2(X'X)^{-1}
+			\rm{E}[\hat{A}|X]&=&A \\
+			\Var[\hat{A}|X]&=& \sigma_Y^2(X'X)^{-1}
 		\end{eqnarray}				
-		And when correlations are strong, the matrix to invert is ill-conditioned and the variance explodes.
+		La variance de l'estimateur explose quand les corrélations sont fortes (matrice quasi-singulière).
  			
-		Our idea is to reduce the variance so we explain $Y$ only with $X^{I_1}$ knowing (\ref{SR}) and (\ref{Trueexpl})
+		CorReg réduit la variance de en estimant $Y$ seulement avec $X^{I_1}$, sachant (\ref{SR}) et (\ref{Trueexpl}).
 			\begin{equation}
 				Y= X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}\label{explicatif}
 			\end{equation}							
-		So the new estimator simply is : 
+		Ainsi, l'estimateur devient : 
 		\begin{eqnarray}
 			\hat{\tilde{A}}_{I_2^c} &=& (X'_{I_2^c} X^{I_2^c})^{-1}X'_{I_2^c}Y \\
 			\hat{\tilde{A}}_{I_2} &=& 0
 		\end{eqnarray}
-		and we get the following properties :
+		avec les propriétés suivantes :
 		\begin{eqnarray}
-			E[\hat{\tilde{A}}|X]&=&\tilde{A} \\
-			Var[\hat{\tilde{A}}_{I_2^c}|X]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{I_2^c} X^{I_2^c})^{-1} \\
-			Var[\hat{\tilde{A}}_{I_2}|X]&=& 0 
+			\rm{E}[\hat{\tilde{A}}|X]&=&\tilde{A} \\
+			\Var[\hat{\tilde{A}}_{I_2^c}|X]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{I_2^c} X^{I_2^c})^{-1} \\
+			\Var[\hat{\tilde{A}}_{I_2}|X]&=& 0 
 		\end{eqnarray}
-		We see that the variance is reduced (no correlations and smaller matrix give better conditioning) for small values of $\sigma_j$ $i.e.$ strong correlations.					
+		La variance est réduite(retrait des corrélations et réduction de la dimension améliorent drastiquement le conditionnement) pour les faibles valeurs de $\sigma_j$ $i.e.$ les fortes corrélations.					
 		
-		Both classical and our new estimators of $Y$ are unbiased (true model)\cite{saporta2006probabilites}.
+		Le modèle complet et le nôtre prédisent tous les deux $Y$ sans biais (vrai modèle)\cite{saporta2006probabilites}.
 	\\	
-			This new model is reduced even without variable selection and is just a linear regression so every method for variable selection in linear regression can be used. 
-		 \\				
-			The explicit structure between the covariates helps to understand the model and the complex link between the covariate and the response variable so we call this model explicative.	
-			
-			When we use a variable selection method on it we obtain two kinds of 0 :
+	Ce nouveau modèle est de dimension réduite et consiste en une régression linéaire classique qui peut donc bénéficier des outils de sélection de variables au même titre que le modèle complet.			
+		 \\		
+		 La structure explicite entre les variables permet de mieux comprendre les phénomènes en jeu et la parsimonie du modèle facilite son interprétation.		
+
+		En ajoutant une étape de sélection de variable on obtient deux types de $0$ :
 			\begin{enumerate}
 			\item Because of the structure we coerce $\hat{\tilde{A}}^{I_2} = 0 $. This kind of zero means redundant information but the covariate can be correlated with the response variable. So we don't have the grouping effect (so we are more parsimonious ) and we don't suffer from false interpretation (LASSO would~\cite{Zhao2006MSC}).
 			\item Variable selection methods can lead to get some exact zeros in $\hat{\tilde{A}}^{I_1}$. This kind of zero means that implied covariate has no significant effect on the response variable. And because variables in $X^{I_1}$ are orthogonal, we know that it is not misleading interpretation due to correlations.
