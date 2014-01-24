@@ -27,7 +27,7 @@
 
 \begin{center}
 {\Large
-	{\sc  Regression for correlated variables :\\ Application in steel industry}
+	{\sc  CorReg : Régression sur variables corrélées\\ et Application à l'industrie Sidérurgique}
 }
 \bigskip
 
@@ -215,56 +215,50 @@ L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la
 La grande dimension de l'espace parcouru rend préférable l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (pour un temps de calcul égal). Accessoirement, les multiples chaînes permettent de paralléliser la recherche, ce qui peut être très appréciable.
 
 
-	\subsubsection{properties}
-	The algorithm follows a time-homogeneous markov chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}|$ rows and columns (combinatory so we'll just compute the probabilities when we need them).
-	And $\mathcal{S}$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
-	
-%	if 	$\forall k, \tilde{Z} \not\in \mathcal{V}_{Z,k} $ then 
-We want 
-		\begin{equation}
-			\mathcal{P}(S,\tilde{S})=\mathbf{1}_{[\exists j, \tilde{S} \in \mathcal{V}_{S,j} ]} P(\tilde{S}|X)
-		\end{equation}
-			Because the walk follows a regular and thus ergodic markov chain with a finite state space, it has exactly one stationary distribution \cite{grinstead1997introduction} : $\pi$ and every rows of $\operatorname{lim}_{k\rightarrow \infty}\mathcal{P}^k=W$ equals $\pi$.
-
 
 \section{Résultats}	
+Les données industrielles sont fortement corrélées de manière naturelle : Largeur et poids d'une brame d'acier ($\rho=0.905$), Température avant et après un outil (($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
+			
+Certaines des sous-régressions obtenues par CorReg ont une interprétation physique:
+\begin{itemize}
+	\item Moyenne = f (Min , Max , Sigma ) pour des données courbes
+	\item Largeur du produit= f (débit de fonte , vitesse de la coulée continue)	
+Vrai modèle physique (non linéaire) :
 
-
-Some observed correlations with physical meaning :
-			\begin{itemize}
-				\item Width and Weight : 0.905
-				\item Temperature before and after a tool : 0.983 
-				\item Roughness of both faces : 0.919
-				\item Mean \& Max of a curve : 0.911
+	 Largeur = $\frac{\textrm{débit}}{\textrm{vitesse } \times \textrm{ épaisseur}}$ (Mais dans ce cas précis l'épaisseur est constante)
 			\end{itemize}
 			
-Some found subregressions with physical meaning :
-			\begin{itemize}
-				\item Mean.weight = f (Min.weight , Max.weight , Sigma.weight ) and other same-shaped subregressions.
-				\item Width = f (Mean.flow , Mean.speed.CC)
-				
-True Physical model (not linear) :\begin{itemize}
-\item Width = flow / (speed * thickness) (thickness is constant)
-\end{itemize} 
-			\end{itemize}
-			
-			Some of the other subregression represent physical models used to regulate the process and that were forgotten by the metallurgist we worked with.
+			D'autres sous-régressions traduisent des modèles physiques (modèles ballistiques, etc) utilisés pour réguler le process.
+\\
 
-Exemple détaillé :
-
-		\begin{figure}	
-		\centering		
-			\includegraphics[width=100px]{figures/histcor_auchan.JPG} 
-			\caption{Histogramme des corrélations observées (117 individus pour 168 variables)}
-		\end{figure}
-
+Exemple de régression finale :
+\begin{figure}[!h]
+	\begin{minipage}[c]{.40\linewidth}
+			\includegraphics[width=200px]{figures/histcor_auchan.JPG} 
+	\end{minipage} \hfill
+   \begin{minipage}[c]{.52\linewidth}
+		\begin{tabular}{|c|c|c|}
+		\hline 
+		  & MSE  & nombre de régresseurs  \\ 
+		\hline
+		LASSO (lars) & 0.80 & 54 \\ 
+		\hline 
+		CorReg (et lars) & 0.53 & 24  \\ 
+		\hline 
+		\end{tabular} 
+   \end{minipage}
+   \caption{résultats obtenus sur données réelles : $n=117$ et $p=168$.    A gauche les corrélations entre variables explicatives, à droite les MSE et la complexité (nombre de variables explicatives) des modèles obtenus pour expliquer $Y$ }
+\end{figure}   
+	
 \section{Conclusion et perspectives}
-	CorReg est fonctionnel et disponible
-	Besoin d'élargir à la gestion des valeurs manquantes très présentes dans l'industrie
+	CorReg est fonctionnel et disponible. L'outil a d'ores et déjà montré son efficacité sur de vraies problématiques de régression en entreprise.
+	La force de CorReg est la grande interprétabilité du modèle proposé, qui est constitué de plusieurs modèles simples (parsimonieux) et facilement accessibles aux non statisticiens (régressions linéaires) tout en luttant efficacement contre les problématiques de corrélations, omniprésentes dans l'industrie.
+	On note néanmoins le besoin d'élargir le champ d'application à la gestion des valeurs manquantes, très présentes dans l'industrie. Cet aspect est envisagé sérieusement pour la prochaine version de CorReg.
+	
 \section{Exemple de références bibliographiques}
 La nécessité de produire des résumés clairs et bien
-référencés aété démontrée par Achin et Quidont~(2000). Le
-récent article de Noteur~(2003) met enévidence \dots
+référencés a été démontrée par Achin et Quidont~(2000). Le
+récent article de Noteur~(2003) met en évidence \dots
 
 \section*{Bibliographie}
 \bibliography{biblio}{}
