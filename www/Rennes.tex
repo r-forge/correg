@@ -3,8 +3,7 @@
 %
 % Retirez le caractere "%" au debut de la ligne ci--dessous si votre
 % editeur de texte utilise des caracteres accentues
-% \usepackage[latin1]{inputenc}
-
+\usepackage[utf8]{inputenc}
 %
 % Retirez le caractere "%" au debut des lignes ci--dessous si vous
 % utiisez les symboles et macros de l'AMS
@@ -28,11 +27,11 @@
 }
 \bigskip
 
- Cl\'ement Th\'ery $^{1}$
+ Clément Théry $^{1}$
 \bigskip
 
 {\it
-$^{1}$ ArcelorMittal Dunkerque, Inria Lille, Universit\'e de Lille 1, clement.thery@arcelormittal.com
+$^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.thery@arcelormittal.com
  
 }
 \end{center}
@@ -40,10 +39,10 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Universit\'e de Lille 1, clement.th
 
 %--------------------------------------------------------------------------
 
-{\bf R\'esum\'e.} La r\'egression lin\'eaire suppose en g\'en\'eral l'usage de variables explicatives ind\'ependantes. Les variables pr\'esentes dans les bases de donn\'ees d'origine industrielle sont souvent tr\`es fortement corr\'el\'ees (de par le process, diverses lois physiques, etc). Le mod\`ele g\'en\'eratif propos\'e consiste à expliciter les corr\'elations pr\'esentes sous la forme d'une de sous-r\'egressions lin\'eaires. La structure est ensuite utilis\'ee pour obtenir un mod\`ele lib\'er\'e des corr\'elations, facilement interpr\'etable et compatible avec les m\'ethodes de s\'election de variables. La structure de corr\'elations est d\'etermin\'ee à l'aide d'un algorithme de type MCMC. Un package R (CorReg) permet la mise en oeuvre de cette m\'ethode. 
+{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives indépendantes. Les variables présentes dans les bases de données d'origine industrielle sont souvent très fortement corrélées (de par le process, diverses lois physiques, etc). Le modèle génératif proposé consiste à expliciter les corrélations présentes sous la forme d'une de sous-régressions linéaires. La structure est ensuite utilisée pour obtenir un modèle libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (CorReg) permet la mise en oeuvre de cette méthode. 
 \smallskip
 
-{\bf Mots-cl\'es.} R\'egression, corr\'elations, industrie, s\'election de variables, mod\`eles g\'en\'eratifs, SEM (Structural Equation Model) \ldots
+{\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs, SEM (Structural Equation Model) \ldots
 \bigskip\bigskip
 
 {\bf Abstract.} Linear regression generally suppose independence between the covariates. Datasets found in industrial context often contains many highly correlated covariates (due to the process, physcial laws, etc). The proposed generative model consists in explicit modeling of the correlations with a structure of sub-regressions between the covariates. This structure is then used to obtain a model with independent covariates, easily interpreted, and compatible with any variable selection method. The structure of correlations is found with an MCMC algorithm. A R package (CorReg) implements this new method.  
@@ -54,25 +53,25 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Universit\'e de Lille 1, clement.th
 %--------------------------------------------------------------------------
 
 \section{Le contexte}
-	La r\'egression lin\'eaire classique suppose l'ind\'ependance des covariables. Les corr\'elations posent des probl\`emes.
+	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent des problèmes.
 	\begin{eqnarray}
 		Y&=&XA+\varepsilon \ \ \ \varepsilon\sim \mathcal{N}(0,\sigma^2) \\
-		Var(\hat{A}|X)&=& \sigma^2(X'X)^{-1} \textrm{ explose si les colonnes de x sont lin\'eairement corr\'el\'ees}
+		Var(\hat{A}|X)&=& \sigma^2(X'X)^{-1} \textrm{ explose si les colonnes de x sont linéairement corrélées}
 	\end{eqnarray}
 			
 	
 	
-\section{Le mod\`ele g\'en\'eratif}
-On dispose de $p$ variables $X$ fortement corr\'el\'ees pour expliquer une variable r\'eponse $Y$.
-On rend explicite les corr\'elations au sein de $X$ sous la forme d'une structure de sous-r\'egressions lin\'eaires $S=(p_2,I_2,p_1,I_1)$ d\'efinie ainsi :
+\section{Le modèle génératif}
+On dispose de $p$ variables $X$ fortement corrélées pour expliquer une variable réponse $Y$.
+On rend explicite les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$ définie ainsi :
 	\begin{eqnarray}
 		I_1&=&(I_1^1,\dots,I_1^{p_2}) \textrm{ avec}		\\
 		I_1^j &=& \{i |Z_{i,j}=1 \} \textrm{ indices des covariables qui expliquent $X^j$} \\
-		I_2&=&\{j |\sharp I_1^j>0 \}  \textrm{ indices des variables d\'ependantes} \\
+		I_2&=&\{j |\sharp I_1^j>0 \}  \textrm{ indices des variables dépendantes} \\
 		p_2&=& \sharp I_2 \\
 		p_1&=&(p_1^1,\dots,p_1^{p_2}) \textrm{ avec }p_1^j=\sharp I_1^j 
 	\end{eqnarray}
-	On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables d\'ependentes dans $X$ n'en expliquent pas d'autres. 
+	On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendentes dans $X$ n'en expliquent pas d'autres. 
 	
 	On note $I_2^c=\{1,\dots,p\}\setminus I_2$
 Then our generative model can be written :
@@ -132,15 +131,15 @@ We note that (\ref{MainR}) and (\ref{SR}) also give :
 			\end{enumerate}
 \section{Recherche de structure}
 	 	
-		\subsection{P\'enalisation de la vraisemblance}
-		On va s'appuie sur la vraisemblance p\'enalis\'ee de la structure à la manière du critère BIC~\cite{BIChuard}. 
+	%	\subsection{Pénalisation de la vraisemblance}
+		On va s'appuie sur la vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}. 
 		\begin{eqnarray}
 		P(S|X)&\propto &P(X|S)P(S) \\
 		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
 		%&=&BIC +\ln(P(S))+cste \\
 		BIC^*&=&BIC +\ln(P(S)) \label{Bicstar}
 	\end{eqnarray}	
-	Pour \'eviter une surcomplexit\'e de la structure trouv\'ee, on peut alors faire des hypothèses a priori sur $P(S)$. Par exemple, au lieu de supposer l'\'equiprobabilit\'e pour tous les $S$, on peut supposer l'\'equiprobabilit\'e des $p_2$ et $p_1^j$, ce qui vient p\'enaliser davantage la compl\'exit\'e sous l'hypothèse $p_2<\frac{p}{2}$ (qui devient alors une contrainte suppl\'ementaire dans l'algorithme de recherche). 
+	Pour éviter une surcomplexité de la structure trouvée, on peut alors faire des hypothèses a priori sur $P(S)$. Par exemple, au lieu de supposer l'équiprobabilité pour tous les $S$, on peut supposer l'équiprobabilité des $p_2$ et $p_1^j$, ce qui vient pénaliser davantage la compléxité sous l'hypothèse $p_2<\frac{p}{2}$ (qui devient alors une contrainte supplémentaire dans l'algorithme de recherche). 
 	On a
 	\begin{eqnarray}
 		P(S)&=&P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2) % \\
@@ -172,9 +171,9 @@ We note that (\ref{MainR}) and (\ref{SR}) also give :
 %			-\ln( p_2	)
 	\end{eqnarray}		
 %	It increases penalty on complexity for $p_2<\frac{p}{2}$ thus in the following we will use $BIC*$ under this hypothesis (that becomes a constraint in the MCMC).			
-	\subsection{Parcours Markovien de saut}
-	$S$ est entièrement d\'efini à partir de $I_1$ donc on se contente ici de modifier $I_1$ (les autres \'el\'ements de $S$ seront ensuite recalcul\'es selon leur d\'efinition).
-	A chaque \'etape, pour $S \in \mathcal{S}$ on d\'efinit un voisinage $\mathcal{V}_{S,j}$ avec $j \sim \mathcal{U}(\{1,\dots,p\}) $ de la manière suivante  :	
+%	\subsection{Parcours Markovien de saut}
+	$S$ est entièrement défini à partir de $I_1$ donc on se contente ici de modifier $I_1$. %(les autres éléments de $S$ seront ensuite recalculés selon leur définition).
+	A chaque étape, pour $S \in \mathcal{S}$ on définit un voisinage $\mathcal{V}_{S,j}$ avec $j \sim \mathcal{U}(\{1,\dots,p\}) $ :% de la manière suivante  :	
 	\begin{eqnarray}
 		\mathcal{V}_{S,j}&=&\{ S^{(i,j)} | 1\leq i\leq p \} \cup\{S \}
 	\end{eqnarray}	
@@ -182,44 +181,41 @@ We note that (\ref{MainR}) and (\ref{SR}) also give :
 	\begin{itemize}
 		\item Si $i \notin I_i^j$ (ajout): 
 			\begin{itemize}
-				\item $I_1^j=I_1^j\cup \{i\}$
-				\item $I_1^i=\emptyset$ (explicative variables can't depend on others : relaxation colonne)
-				\item $I_1=I_1 \setminus \{j\}$ (dependent variables can't explain others : relaxation ligne) 
+				\item $I_1^j :=I_1^j\cup \{i\}$, et pour garder $I_1\cap I_2=\emptyset$ :
+				\item $I_1^i :=\emptyset$ et $I_1:=I_1 \setminus \{j\}$
 			\end{itemize}			 
 		\item Sinon ( $i \in I_1^j$ (suppression)): $I_1^j=I_1^j\setminus \{i\}$
 	\end{itemize}
 	
-	We have $|\mathcal{V}_{S,j}|=p$ but some other constraints can be added on the definition of $\mathcal{S}$ and will consequently modify the size of the neighbourhood (for example a maximum complexity for the subregressions or the whole structure, a maximum number of sub-regressions, etc). CorReg allows to modify this neighbourhood to better fit users constraints. 
+	On a donc $p$ candidats à chaque étape. Mais CorReg (notre package) permet à l'utilisateur de modifier ce voisinage.
 	
 		
 	We make a first approximation (\ref{Bicstar}) : 
 	\begin{equation}
 		P(S|X)\approx exp(BIC^*(S))
 	\end{equation}
-	We define ~\cite{BIChuard}, :
 	\begin{equation}
 		q(\tilde{S},\mathcal{V}_{S,j})=\mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{exp(\frac{-1}{2}\Delta BIC(\tilde{S},\mathcal{V}_{S,j}))}{\sum_{S_l\in \mathcal{V}_{S,j}}exp(\frac{-1}{2}\Delta BIC(S_l,\mathcal{V}_{S,j}))}
 	\end{equation}
 	
-	Where $\Delta BIC(S,\mathcal{V}_{S,j})=BIC(S)-\min\{BIC(\tilde{S})| \tilde{S} \in \mathcal{V}_{S,j} \} $ is the gap between a structure and the worst structure in the neighbourhood in terms of BIC.
+	Where $\Delta BIC(S,\mathcal{V}_{S,j})=BIC(S)-\min\{BIC(\tilde{S})| \tilde{S} \in \mathcal{V}_{S,j} \} $.
 	\newline
 	
 	 And then we can note $\forall (S,\tilde{S}) \in \mathcal{S}^2 $ :
 		\begin{displaymath}
 			\mathcal{P}(S,\tilde{S})= \frac{1}{p} \sum_{j=1}^p q(\tilde{S},\mathcal{V}_{S,j})
 		\end{displaymath}
-	The output will be the best structure seen in terms of BIC. If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found structure. So the model is really expert-friendly.
+		La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire.
+		Le résultat obtenu est la meilleur structure rencontrée en termes de $BIC^*$ (vraisemblance pénalisée). Certaines parties de $S$ peuvent être contraintes pour insérer par exemple des modèles physiques. De ce fait, la méthode permet de tenir compte d'éventuels modèles experts.
 
-
-
- \subsubsection{initialisation}
-L'intialisation peut par exemple utiliser la matrice des corr\'elations et/ou la m\'ethode du Graphical Lasso\cite{friedman2008sparse}.		
-La grande dimension de l'espace parcouru rend pr\'ef\'erable l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (pour un temps de calcul \'egal). Accessoirement, les multiples chaînes permettent de parall\'eliser la recherche, ce qui peut être très appr\'eciable.
+ 
+L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la méthode du Graphical Lasso\cite{friedman2008sparse}.		
+La grande dimension de l'espace parcouru rend préférable l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (pour un temps de calcul égal). Accessoirement, les multiples chaînes permettent de paralléliser la recherche, ce qui peut être très appréciable.
 
 
 	\subsubsection{properties}
 	The algorithm follows a time-homogeneous markov chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}|$ rows and columns (combinatory so we'll just compute the probabilities when we need them).
-	And $\mathcal{S}$ is a finite state space.%la relaxation rend P non sym\'etrique mais ne remets  pas en cause l'homog\'en\'eit\'e	
+	And $\mathcal{S}$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
 	
 %	if 	$\forall k, \tilde{Z} \not\in \mathcal{V}_{Z,k} $ then 
 We want 
@@ -229,38 +225,26 @@ We want
 			Because the walk follows a regular and thus ergodic markov chain with a finite state space, it has exactly one stationary distribution \cite{grinstead1997introduction} : $\pi$ and every rows of $\operatorname{lim}_{k\rightarrow \infty}\mathcal{P}^k=W$ equals $\pi$.
 
 
-\section{R\'esultats}	
+\section{Résultats}	
 \section{Conclusion et perspectives}
 	CorReg est fonctionnel et disponible
-	Besoin d'\'elargir à la gestion des valeurs manquantes tr\`es pr\'esentes dans l'industrie
-\section{Exemple de r\'ef\'erences bibliographiques}
-La n\'ecessit\'e de produire des r\'esum\'es clairs et bien
-r\'ef\'erenc\'es a\'et\'e d\'emontr\'ee par Achin et Quidont~(2000). Le
-r\'ecent article de Noteur~(2003) met en\'evidence \dots
-%Quelques rappels :
-%%
-%\begin{center}
-%%
-%\begin{tabular}{lr} \hline
-%%
-%Accent aigu :              & \'e; \\
-%Accent grave :             &  \`a;\\
-%Accent circonflexe :       &  \^o mais \^{\i};\\
-%Tr\'emas :                 &  \"o mais \"{\i};\\
-%C\'edille :                &  \c{c}. \\ \hline
-%\end{tabular}
-%%
-%\end{center}
-%--------------------------------------------------------------------------
+	Besoin d'élargir à la gestion des valeurs manquantes très présentes dans l'industrie
+\section{Exemple de références bibliographiques}
+La nécessité de produire des résumés clairs et bien
+référencés aété démontrée par Achin et Quidont~(2000). Le
+récent article de Noteur~(2003) met enévidence \dots
+
 \section*{Bibliographie}
-\cite{marquardt1975ridge}
 \bibliography{biblio}{}
 \bibliographystyle{plain}
-à recopier dans le bon ordre comme demand\'e ci-dessous.
-\noindent [1] Auteurs (ann\'ee), Titre, revue, localisation.
-\noindent [2] Achin, M. et Quidont, C. (2000), {\it Th\'eorie des
+à recopier dans le bon ordre comme demandé ci-dessous.
+
+\noindent [1] Auteurs (année), Titre, revue, localisation.
+
+\noindent [2] Achin, M. et Quidont, C. (2000), {\it Théorie des
 Catalogues}, Editions du Soleil, Montpellier.
-\noindent [3] Noteur, U. N. (2003), Sur l'int\'er\^et des
-r\'esum\'es, {\it Revue des Organisateurs de Congr\`es}, 34, 67--89.
+
+\noindent [3] Noteur, U. N. (2003), Sur l'intér\^et des
+résumés, {\it Revue des Organisateurs de Congrès}, 34, 67--89.
 \end{document}
 
