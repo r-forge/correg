@@ -9,7 +9,6 @@
 #' @import mclust 
 #' @import ridge
 #' @import MASS
-#' @import data.table
 #' @export
 #' @param B the (p+1)xp matrix assiated to Z and that contains the parameters of the sub-regressions
 #' @param lambda parameter for elasticnet (quadratic penalty)
