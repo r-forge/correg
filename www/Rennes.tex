@@ -132,63 +132,62 @@ We note that (\ref{MainR}) and (\ref{SR}) also give :
 			\end{enumerate}
 \section{Recherche de structure}
 	 	
-		\subsection{Comparaison des structures}
-	On utilise le Bayesian Information criterion (BIC)~\cite{BIChuard}. But BIC tends to give too complex structures because we test a great range of models. Thus we choose to penalise the complexity a bit more with specific a priori laws(uniform laws for the number of subregression and the complexity of each subregression instead of uniform law on S) :
-	\begin{eqnarray}
-		P(S)&=&P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2) \\
-		P(I_1 | p_1,I_2,p_2)&=&\prod_{j =1}^{p_2}P(I_1^j|p_1^j,I_2,p_2) \\
-		P(I_1^j|p_1^j,I_2,p_2)&=&\left(\begin{array}{c}
-			p-p_2 \\ 
-			p_1^j
-			\end{array}  \right)^{-1} =\frac{p_1^j ! (p-p_2-p_1^j)!}{(p-p_2)!}\\
-		P(p_1|I_2,p_2)&=&\prod_{j =1}^{p_2}P(p_1^j|I_2,p_2)		\\
-		P(p_1^j|I_2,p_2)&=&\frac{1}{p-p_2}  \\
-		P(I_2|p_2)&=&\left(\begin{array}{c}
-			p \\ 
-			p_2
-			\end{array}  \right)^{-1}=\frac{p_2!(p-p_2)!}{p!}\\
-		P(p_2) &=&\frac{1}{p_2} \\
-		P(S)&=&\left(\prod_{j =1}^{p_2}\left(\begin{array}{c}
-			p-p_2 \\ 
-			p_1^j
-			\end{array}  \right)^{-1}\right) \left(\frac{1}{p-p_2}\right)^{p_2}\frac{p_2!(p-p_2)!}{p!}\frac{1}{p_2} \\
-			\ln P(S) &=& -\sum_{j=1}^{p_2}	\ln\left(\begin{array}{c}
-			p-p_2 \\ 
-			p_1^j
-			\end{array}  \right)
-			-p_2\ln (p-p_2)
-			-\ln\left(\begin{array}{c}
-			p \\ 
-			p_2
-			\end{array}  \right)
-			-\ln( p_2	)
-	\end{eqnarray}
-	Then we have 
-	\begin{eqnarray}
+		\subsection{P\'enalisation de la vraisemblance}
+		On va s'appuie sur la vraisemblance p\'enalis\'ee de la structure à la manière du critère BIC~\cite{BIChuard}. 
+		\begin{eqnarray}
 		P(S|X)&\propto &P(X|S)P(S) \\
 		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
 		%&=&BIC +\ln(P(S))+cste \\
-		BIC^*&=&BIC +\ln(P(S))
+		BIC^*&=&BIC +\ln(P(S)) \label{Bicstar}
+	\end{eqnarray}	
+	Pour \'eviter une surcomplexit\'e de la structure trouv\'ee, on peut alors faire des hypothèses a priori sur $P(S)$. Par exemple, au lieu de supposer l'\'equiprobabilit\'e pour tous les $S$, on peut supposer l'\'equiprobabilit\'e des $p_2$ et $p_1^j$, ce qui vient p\'enaliser davantage la compl\'exit\'e sous l'hypothèse $p_2<\frac{p}{2}$ (qui devient alors une contrainte suppl\'ementaire dans l'algorithme de recherche). 
+	On a
+	\begin{eqnarray}
+		P(S)&=&P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2) % \\
+%		P(I_1 | p_1,I_2,p_2)&=&\prod_{j =1}^{p_2}P(I_1^j|p_1^j,I_2,p_2) \\
+%		P(I_1^j|p_1^j,I_2,p_2)&=&\left(\begin{array}{c}
+%			p-p_2 \\ 
+%			p_1^j
+%			\end{array}  \right)^{-1} =\frac{p_1^j ! (p-p_2-p_1^j)!}{(p-p_2)!}\\
+%		P(p_1|I_2,p_2)&=&\prod_{j =1}^{p_2}P(p_1^j|I_2,p_2)		\\
+%		P(p_1^j|I_2,p_2)&=&\frac{1}{p-p_2}  \\
+%		P(I_2|p_2)&=&\left(\begin{array}{c}
+%			p \\ 
+%			p_2
+%			\end{array}  \right)^{-1}=\frac{p_2!(p-p_2)!}{p!}\\
+%		P(p_2) &=&\frac{1}{p_2} \\
+%		P(S)&=&\left(\prod_{j =1}^{p_2}\left(\begin{array}{c}
+%			p-p_2 \\ 
+%			p_1^j
+%			\end{array}  \right)^{-1}\right) \left(\frac{1}{p-p_2}\right)^{p_2}\frac{p_2!(p-p_2)!}{p!}\frac{1}{p_2} \\
+%			\ln P(S) &=& -\sum_{j=1}^{p_2}	\ln\left(\begin{array}{c}
+%			p-p_2 \\ 
+%			p_1^j
+%			\end{array}  \right)
+%			-p_2\ln (p-p_2)
+%			-\ln\left(\begin{array}{c}
+%			p \\ 
+%			p_2
+%			\end{array}  \right)
+%			-\ln( p_2	)
 	\end{eqnarray}		
-	It increases penalty on complexity for $p_2<\frac{p}{2}$ thus in the following we will use $BIC*$ under this hypothesis (that becomes a constraint in the MCMC).			
-	\subsection{The Markov chain}
-	First we remember that $S$ is completely described with $I_1$ :
-	So we will only describe the variations in $I_1$ at each step and other parts of $S$ will follow according to the previous definition.
-	for each step, starting from $S \in \mathcal{S}$ we define a neighbourhood $\mathcal{V}_{S,j}$ with $j \sim \mathcal{U}(\{1,\dots,p\}) $ like this  :	
+%	It increases penalty on complexity for $p_2<\frac{p}{2}$ thus in the following we will use $BIC*$ under this hypothesis (that becomes a constraint in the MCMC).			
+	\subsection{Parcours Markovien de saut}
+	$S$ est entièrement d\'efini à partir de $I_1$ donc on se contente ici de modifier $I_1$ (les autres \'el\'ements de $S$ seront ensuite recalcul\'es selon leur d\'efinition).
+	A chaque \'etape, pour $S \in \mathcal{S}$ on d\'efinit un voisinage $\mathcal{V}_{S,j}$ avec $j \sim \mathcal{U}(\{1,\dots,p\}) $ de la manière suivante  :	
 	\begin{eqnarray}
 		\mathcal{V}_{S,j}&=&\{ S^{(i,j)} | 1\leq i\leq p \} \cup\{S \}
 	\end{eqnarray}	
-	With $S^{(i,j)}$ defined by the following algorithm :
+	avec $S^{(i,j)}$ obtenu selon l'algorithme :
 	\begin{itemize}
-		\item if $i \notin I_i^j$ (add): 
+		\item Si $i \notin I_i^j$ (ajout): 
 			\begin{itemize}
 				\item $I_1^j=I_1^j\cup \{i\}$
-				\item $I_1^i=\emptyset$ (explicative variables can't depend on others : column-wise relaxation)
-				\item $I_1=I_1 \setminus \{j\}$ (dependent variables can't explain others : row-wise relaxation) 
+				\item $I_1^i=\emptyset$ (explicative variables can't depend on others : relaxation colonne)
+				\item $I_1=I_1 \setminus \{j\}$ (dependent variables can't explain others : relaxation ligne) 
 			\end{itemize}			 
-		\item if $i \in I_1^j$ (remove): $I_1^j=I_1^j\setminus \{i\}$
+		\item Sinon ( $i \in I_1^j$ (suppression)): $I_1^j=I_1^j\setminus \{i\}$
 	\end{itemize}
-	And then :
 	
 	We have $|\mathcal{V}_{S,j}|=p$ but some other constraints can be added on the definition of $\mathcal{S}$ and will consequently modify the size of the neighbourhood (for example a maximum complexity for the subregressions or the whole structure, a maximum number of sub-regressions, etc). CorReg allows to modify this neighbourhood to better fit users constraints. 
 	
