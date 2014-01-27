@@ -44,13 +44,13 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.the
 
 %--------------------------------------------------------------------------
 
-{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives indépendantes. Les variables présentes dans les bases de données d'origine industrielle sont souvent très fortement corrélées (de par le process, diverses lois physiques, etc). Le modèle génératif proposé consiste à expliciter les corrélations présentes sous la forme d'une structure de sous-régressions linéaires. La structure est ensuite utilisée pour obtenir un modèle libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (\texttt{CorReg}) permet la mise en oeuvre de cette méthode. 
+{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives indépendantes. Les variables présentes dans les bases de données d'origine industrielle sont souvent très fortement corrélées (de par le process, diverses lois physiques, etc). Le modèle génératif proposé ici consiste à expliciter les corrélations présentes sous la forme d'une structure de sous-régressions linéaires. La structure est ensuite utilisée pour obtenir un modèle parcimonieux libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (\textsc{CorReg}) permet la mise en oeuvre de cette méthode. 
 \smallskip
 
 {\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs, SEM (Structural Equation Model), \ldots
 \bigskip\bigskip
 
-{\bf Abstract.} Linear regression generally suppose independence between the covariates. Datasets found in industrial context often contains many highly correlated covariates (due to the process, physcial laws, etc). The proposed generative model consists in explicit modeling of the correlations with a structure of sub-regressions between the covariates. This structure is then used to obtain a model with independent covariates, easily interpreted, and compatible with any variable selection method. The structure of correlations is found with an MCMC algorithm. An R package (\texttt{CorReg}) implements this new method.  
+{\bf Abstract.} Linear regression generally suppose independence between the covariates. Datasets found in industrial context often contains many highly correlated covariates (due to the process, physcial laws, etc). The proposed generative model consists in explicit modeling of the correlations with a structure of sub-regressions between the covariates. This structure is then used to obtain a reduced model with independent covariates, easily interpreted, and compatible with any variable selection method. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) implements this new method.  
 \smallskip
 
 {\bf Keywords.} Regression, correlations, industry, variable selection, generative models, Structural Equation Model, \ldots
@@ -68,9 +68,9 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.the
 	
 \section{Le modèle génératif}
 On dispose de $X=(X^1,\dots,X^p)$ variables fortement corrélées pour expliquer une variable réponse $Y$.
-On rend explicite les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$ définie ainsi :
+On rend explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$ définie ainsi :
 	\begin{eqnarray}
-		I_1&=&(I_1^1,\dots,I_1^{p_2}) \textrm{ avec}		\\
+		I_1&=&(I_1^1,\dots,I_1^{p}) \textrm{ avec}		\\
 		I_1^j &=& \{i |Z_{i,j}=1 \} \textrm{ indices des covariables qui expliquent $X^j$} \\
 		I_2&=&\{j |\sharp I_1^j>0 \}  \textrm{ indices des variables dépendantes} \\
 		p_2&=& \sharp I_2 \\
@@ -191,7 +191,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		\item Sinon ( $i \in I_1^j$ (suppression)): $I_1^j=I_1^j\setminus \{i\}$
 	\end{itemize}
 	
-	On a donc $p$ candidats à chaque étape. Mais le package \texttt{CorReg} permet à l'utilisateur de modifier ce voisinage.
+	On a donc $p$ candidats à chaque étape. Mais le package \textsc{CorReg} permet à l'utilisateur de modifier ce voisinage.
 	
 		
 	On fait l'approximation suivante  (\ref{Bicstar}) : 
@@ -201,7 +201,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 	\begin{eqnarray}
 			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=& \frac{1}{p} \sum_{j=1}^p q(\tilde{S},\mathcal{V}_{S,j}) \\
 	\textrm{où }	q(\tilde{S},\mathcal{V}_{S,j})&=&\mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{\exp(\frac{-1}{2}\Delta BIC(\tilde{S},\mathcal{V}_{S,j}))}{\sum_{S_l\in \mathcal{V}_{S,j}}\exp(\frac{-1}{2}\Delta BIC(S_l,\mathcal{V}_{S,j}))} \\
-	\textrm{ avec} \Delta BIC(S,\mathcal{V}_{S,j})&=&BIC(S)-\min\{BIC(\tilde{S})| \tilde{S} \in \mathcal{V}_{S,j} \}
+	\textrm{ avec } \Delta BIC(S,\mathcal{V}_{S,j})&=&BIC(S)-\min\{BIC(\tilde{S})| \tilde{S} \in \mathcal{V}_{S,j} \}
 	\end{eqnarray}
 	
 		La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire.
@@ -213,7 +213,7 @@ La grande dimension de l'espace parcouru rend préférable  (pour un temps de ca
 \section{Résultats}	
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
 			
-Certaines des sous-régressions obtenues par CorReg ont une interprétation physique :
+Sous-régressions obtenues par \textsc{CorReg} ayant interprétation physique :
 \begin{itemize}
 	\item Moyenne = f (Min , Max , Sigma ) pour des données courbes
 	\item Largeur du produit = f (débit de fonte , vitesse de la coulée continue)	
@@ -246,9 +246,9 @@ Exemple de régression sur une variable réponse dans le cadre des données rée
 	
 
 \section{Conclusion et perspectives}
-	CorReg est fonctionnel et disponible. L'outil a d'ores et déjà montré son efficacité sur de vraies problématiques de régression en entreprise.
-	La force de CorReg est la grande interprétabilité du modèle proposé, qui est constitué de plusieurs modèles simples (parcimonieux) et facilement accessibles aux non statisticiens (régressions linéaires) tout en luttant efficacement contre les problématiques de corrélations, omniprésentes dans l'industrie.
-	On note néanmoins le besoin d'élargir le champ d'application à la gestion des valeurs manquantes, très présentes dans l'industrie. Cet aspect est envisagé sérieusement pour la prochaine version de CorReg.
+	\textsc{CorReg} est fonctionnel et disponible. L'outil a d'ores et déjà montré son efficacité sur de vraies problématiques de régression en entreprise.
+	La force de \textsc{CorReg} est la grande interprétabilité du modèle proposé, qui est constitué de plusieurs modèles simples (parcimonieux) et facilement accessibles aux non statisticiens (régressions linéaires) tout en luttant efficacement contre les problématiques de corrélations, omniprésentes dans l'industrie.
+	On note néanmoins le besoin d'élargir le champ d'application à la gestion des valeurs manquantes, très présentes dans l'industrie. Cet aspect est envisagé sérieusement pour la prochaine version de \textsc{CorReg}.
 	
 
 \section*{Bibliographie}
