@@ -137,7 +137,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 \section{Recherche de structure}
 	 	
 	%	\subsection{Pénalisation de la vraisemblance}
-		Le choix de structure s'appuie sur la vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}. 
+		Le choix de structure s'appuie sur $BIC^*$, vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}. 
 		\begin{eqnarray}
 		P(S|X)&\propto &P(X|S)P(S) \\
 		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
@@ -178,7 +178,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 %	It increases penalty on complexity for $p_2<\frac{p}{2}$ thus in the following we will use $BIC*$ under this hypothesis (that becomes a constraint in the MCMC).			
 %	\subsection{Parcours Markovien de saut}
 	
-	A chaque étape, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S,j}$ avec $j \sim \mathcal{U}(\{1,\dots,p\}) $ :% de la manière suivante  :	
+	A chaque étape de l'algorithme MCMC, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S,j}$ avec $j \sim \mathcal{U}(\{1,\dots,p\}) $ :% de la manière suivante  :	
 	\begin{eqnarray}
 		\mathcal{V}_{S,j}&=&\{ S^{(i,j)} | 1\leq i\leq p \} \cup\{S \}
 	\end{eqnarray}	
