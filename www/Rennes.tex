@@ -44,13 +44,13 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.the
 
 %--------------------------------------------------------------------------
 
-{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives indépendantes. Les variables présentes dans les bases de données d'origine industrielle sont souvent très fortement corrélées (de par le process, diverses lois physiques, etc). Le modèle génératif proposé consiste à expliciter les corrélations présentes sous la forme d'une structure de sous-régressions linéaires. La structure est ensuite utilisée pour obtenir un modèle libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (CorReg) permet la mise en oeuvre de cette méthode. 
+{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives indépendantes. Les variables présentes dans les bases de données d'origine industrielle sont souvent très fortement corrélées (de par le process, diverses lois physiques, etc). Le modèle génératif proposé consiste à expliciter les corrélations présentes sous la forme d'une structure de sous-régressions linéaires. La structure est ensuite utilisée pour obtenir un modèle libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (\texttt{CorReg}) permet la mise en oeuvre de cette méthode. 
 \smallskip
 
 {\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs, SEM (Structural Equation Model), \ldots
 \bigskip\bigskip
 
-{\bf Abstract.} Linear regression generally suppose independence between the covariates. Datasets found in industrial context often contains many highly correlated covariates (due to the process, physcial laws, etc). The proposed generative model consists in explicit modeling of the correlations with a structure of sub-regressions between the covariates. This structure is then used to obtain a model with independent covariates, easily interpreted, and compatible with any variable selection method. The structure of correlations is found with an MCMC algorithm. An R package (CorReg) implements this new method.  
+{\bf Abstract.} Linear regression generally suppose independence between the covariates. Datasets found in industrial context often contains many highly correlated covariates (due to the process, physcial laws, etc). The proposed generative model consists in explicit modeling of the correlations with a structure of sub-regressions between the covariates. This structure is then used to obtain a model with independent covariates, easily interpreted, and compatible with any variable selection method. The structure of correlations is found with an MCMC algorithm. An R package (\texttt{CorReg}) implements this new method.  
 \smallskip
 
 {\bf Keywords.} Regression, correlations, industry, variable selection, generative models, Structural Equation Model, \ldots
@@ -104,7 +104,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		\end{eqnarray}				
 		La variance de l'estimateur explose quand les corrélations sont fortes (matrice quasi-singulière).
  			
-		CorReg réduit la variance de l'estimateur en estimant $Y$ seulement avec $X^{I_1}$, sachant (\ref{SR}) et (\ref{Trueexpl}).
+		\textsc{CorReg} réduit la variance de l'estimateur en estimant $Y$ seulement avec $X^{I_1}$, sachant (\ref{SR}) et (\ref{Trueexpl}).
 			\begin{equation}
 				Y= X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}\label{explicatif}
 			\end{equation}							
@@ -223,9 +223,9 @@ Vrai modèle physique (non linéaire) :
 			\end{itemize}
 			
 			D'autres sous-régressions traduisent des modèles physiques qui régulent le process.
+\\
 
-
-%Exemple de régression finale :
+Exemple de régression sur une variable réponse dans le cadre des données réelles :
 \begin{figure}[!h]
 	\begin{minipage}[c]{.40\linewidth}
 			\includegraphics[width=200px]{figures/histcor_auchan.JPG} 
