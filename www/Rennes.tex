@@ -125,18 +125,18 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 	\\	
 	Ce nouveau modèle est de dimension réduite et consiste en une régression linéaire classique qui peut donc bénéficier des outils de sélection de variables au même titre que le modèle complet.			
 		 \\		
-		 La structure explicite entre les variables permet de mieux comprendre les phénomènes en jeu et la parsimonie du modèle facilite son interprétation.		
+		 La structure explicite entre les variables permet de mieux comprendre les phénomènes en jeu et la parcimonie du modèle facilite son interprétation.		
 
 		En ajoutant une étape de sélection de variable on obtient deux types de $0$ :
 			\begin{enumerate}
 			\item La structure implique $\hat{\tilde{A}}^{I_2} = 0 $. Ce type de 0 est à interpréter comme une redondance d'information, mais la variable associée n'est pas pour autant jugée indépendante de $Y$. On obtient un modèle parcimonieux sans effet groupe, mais sans erreur d'interprétation, contrairement au LASSO ~\cite{Zhao2006MSC} car on connaît la signification de ce type de $0$.
-			\item Une phase de sélection de variables peut également produire des coefficients nuls dans $\hat{\tilde{A}}^{I_1}$. Ces $0$ sont alors des $0$ d'indépendance vis-à-vis de la réponse qui s'interprètent donc classiquement.Et comme les variables de $X^{I_1}$ sont orthogonales, on peut avoir confiance dans cette interprétation.
+			\item Une phase de sélection de variables peut également produire des coefficients nuls dans $\hat{\tilde{A}}^{I_1}$. Ces $0$ sont alors des $0$ d'indépendance vis-à-vis de la réponse qui s'interprètent donc classiquement. Et comme les variables de $X^{I_1}$ sont orthogonales, on peut avoir confiance dans cette interprétation.
 			\end{enumerate}
-		Le modèle obtenu est donc sans biais de prédiction, parcimonieux, et consistant en interprétation.	
+		Le modèle obtenu est donc sans biais de prédiction, parcimonieux et consistant en interprétation.	
 \section{Recherche de structure}
 	 	
 	%	\subsection{Pénalisation de la vraisemblance}
-		On va s'appuier sur la vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}. 
+		On va s'appuyer sur la vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}. 
 		\begin{eqnarray}
 		P(S|X)&\propto &P(X|S)P(S) \\
 		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
@@ -247,7 +247,7 @@ Vrai modèle physique (non linéaire) :
 
 \section{Conclusion et perspectives}
 	CorReg est fonctionnel et disponible. L'outil a d'ores et déjà montré son efficacité sur de vraies problématiques de régression en entreprise.
-	La force de CorReg est la grande interprétabilité du modèle proposé, qui est constitué de plusieurs modèles simples (parsimonieux) et facilement accessibles aux non statisticiens (régressions linéaires) tout en luttant efficacement contre les problématiques de corrélations, omniprésentes dans l'industrie.
+	La force de CorReg est la grande interprétabilité du modèle proposé, qui est constitué de plusieurs modèles simples (parcimonieux) et facilement accessibles aux non statisticiens (régressions linéaires) tout en luttant efficacement contre les problématiques de corrélations, omniprésentes dans l'industrie.
 	On note néanmoins le besoin d'élargir le champ d'application à la gestion des valeurs manquantes, très présentes dans l'industrie. Cet aspect est envisagé sérieusement pour la prochaine version de CorReg.
 	
 
