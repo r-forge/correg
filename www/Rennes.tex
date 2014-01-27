@@ -191,32 +191,32 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		\item Sinon ( $i \in I_1^j$ (suppression)): $I_1^j=I_1^j\setminus \{i\}$
 	\end{itemize}
 	
-	On a donc $p$ candidats à chaque étape. Mais le package CorReg permet à l'utilisateur de modifier ce voisinage.
+	On a donc $p$ candidats à chaque étape. Mais le package \texttt{CorReg} permet à l'utilisateur de modifier ce voisinage.
 	
 		
 	On fait l'approximation suivante  (\ref{Bicstar}) : 
 	\begin{equation}
-		P(S|X)\approx exp(BIC^*(S))
+		P(S|X)\approx \exp(BIC^*(S))
 	\end{equation}
 	\begin{eqnarray}
 			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=& \frac{1}{p} \sum_{j=1}^p q(\tilde{S},\mathcal{V}_{S,j}) \\
-	\textrm{où }	q(\tilde{S},\mathcal{V}_{S,j})&=&\mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{exp(\frac{-1}{2}\Delta BIC(\tilde{S},\mathcal{V}_{S,j}))}{\sum_{S_l\in \mathcal{V}_{S,j}}exp(\frac{-1}{2}\Delta BIC(S_l,\mathcal{V}_{S,j}))} \\
+	\textrm{où }	q(\tilde{S},\mathcal{V}_{S,j})&=&\mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{\exp(\frac{-1}{2}\Delta BIC(\tilde{S},\mathcal{V}_{S,j}))}{\sum_{S_l\in \mathcal{V}_{S,j}}\exp(\frac{-1}{2}\Delta BIC(S_l,\mathcal{V}_{S,j}))} \\
 	\textrm{ avec} \Delta BIC(S,\mathcal{V}_{S,j})&=&BIC(S)-\min\{BIC(\tilde{S})| \tilde{S} \in \mathcal{V}_{S,j} \}
 	\end{eqnarray}
 	
 		La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire.
-		Le résultat obtenu est la meilleur structure rencontrée en termes de $BIC^*$ (vraisemblance pénalisée). 
+		Le résultat obtenu est la meilleure structure rencontrée en termes de $BIC^*$ (vraisemblance pénalisée). 
  
 L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la méthode du Graphical Lasso\cite{friedman2008sparse}.		
 La grande dimension de l'espace parcouru rend préférable  (pour un temps de calcul égal) l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (permet aussi la parallélisation).
 
 \section{Résultats}	
-Les données industrielles sont fortement corrélées de manière naturelle : Largeur et poids d'une brame ($\rho=0.905$), Température avant et après un outil (($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
+Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
 			
-Certaines des sous-régressions obtenues par CorReg ont une interprétation physique:
+Certaines des sous-régressions obtenues par CorReg ont une interprétation physique :
 \begin{itemize}
 	\item Moyenne = f (Min , Max , Sigma ) pour des données courbes
-	\item Largeur du produit= f (débit de fonte , vitesse de la coulée continue)	
+	\item Largeur du produit = f (débit de fonte , vitesse de la coulée continue)	
 Vrai modèle physique (non linéaire) :
 
 	 Largeur = $\frac{\textrm{débit}}{\textrm{vitesse } \times \textrm{ épaisseur}}$ (Mais dans ce cas précis l'épaisseur est constante)
