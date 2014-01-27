@@ -70,8 +70,8 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.the
 On dispose de $X=(X^1,\dots,X^p)$ variables fortement corrélées pour expliquer une variable réponse $Y$.
 On rend explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$ définie ainsi :
 	\begin{eqnarray}
-		I_1&=&\{I_1^1,\dots,I_1^{p}\} \textrm{ avec}		\\
-		I_1^j &=&\{ \textrm{ indices des covariables qui expliquent $X^j$} \} \\ % \{i |Z_{i,j}=1 \} 
+		I_1&=&\{I_1^1,\dots,I_1^{p}\} \textrm{ avec $I_1^j$ l'ensemble des indices des covariables qui expliquent $X^j$ \ }		\\
+%		I_1^j &=&\{ \textrm{ indices des covariables qui expliquent $X^j$} \} \\ % \{i |Z_{i,j}=1 \} 
 		I_2&=&\{j |\sharp I_1^j>0 \}  \textrm{ indices des variables dépendantes} \\
 		p_2&=& \sharp I_2 \\
 		p_1&=&(p_1^1,\dots,p_1^{p_2}) \textrm{ avec }p_1^j=\sharp I_1^j 
@@ -86,7 +86,7 @@ Le modèle génératif s'écrit alors :
 	\forall j \in I_2 : \  X^j_{|X^{I_1^j},S}&=&X^{I_1^j}B_{I_1^j}^j + \varepsilon_{j} \textrm{ avec } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2) \label{SR}\\
     \forall j \notin I_2 : \ X^j &=& f(\theta_j) \textrm{ loi quelconque}	
 \end{eqnarray}
-Où $B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression de $X^j$.
+Où $B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$.
 
 On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 \begin{eqnarray}
@@ -105,7 +105,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		\end{eqnarray}				
 		La variance de l'estimateur explose quand les corrélations sont fortes (matrice quasi-singulière).
  			
-		\textsc{CorReg} réduit la variance de l'estimateur en estimant $Y$ seulement avec $X^{I_1}$, sachant (\ref{SR}) et (\ref{Trueexpl}).
+		\textsc{CorReg} réduit la variance de l'estimateur en estimant $Y$ seulement à partir de $X^{I_1}$, sachant (\ref{SR}) et (\ref{Trueexpl}).
 			\begin{equation}
 				Y= X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}\label{explicatif}
 			\end{equation}							
@@ -137,7 +137,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 \section{Recherche de structure}
 	 	
 	%	\subsection{Pénalisation de la vraisemblance}
-		On va s'appuyer sur la vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}. 
+		Le choix de structure s'appuie sur la vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}. 
 		\begin{eqnarray}
 		P(S|X)&\propto &P(X|S)P(S) \\
 		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
@@ -177,8 +177,8 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 	\end{eqnarray}		
 %	It increases penalty on complexity for $p_2<\frac{p}{2}$ thus in the following we will use $BIC*$ under this hypothesis (that becomes a constraint in the MCMC).			
 %	\subsection{Parcours Markovien de saut}
-	$S$ est entièrement défini à partir de $I_1$ donc on se contente ici de modifier $I_1$. %(les autres éléments de $S$ seront ensuite recalculés selon leur définition).
-	A chaque étape, pour $S \in \mathcal{S}$ on définit un voisinage $\mathcal{V}_{S,j}$ avec $j \sim \mathcal{U}(\{1,\dots,p\}) $ :% de la manière suivante  :	
+	
+	A chaque étape, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S,j}$ avec $j \sim \mathcal{U}(\{1,\dots,p\}) $ :% de la manière suivante  :	
 	\begin{eqnarray}
 		\mathcal{V}_{S,j}&=&\{ S^{(i,j)} | 1\leq i\leq p \} \cup\{S \}
 	\end{eqnarray}	
@@ -191,9 +191,8 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 			\end{itemize}			 
 		\item Sinon ( $i \in I_1^j$ (suppression)): $I_1^j=I_1^j\setminus \{i\}$
 	\end{itemize}
-	
 	On a donc $p$ candidats à chaque étape. Mais le package \textsc{CorReg} permet à l'utilisateur de modifier ce voisinage.
-	
+	$S$ est entièrement défini à partir de $I_1$ donc on se contente ici de modifier $I_1$. %(les autres éléments de $S$ seront ensuite recalculés selon leur définition).
 		
 	On fait l'approximation suivante  (\ref{Bicstar}) : 
 	\begin{equation}
