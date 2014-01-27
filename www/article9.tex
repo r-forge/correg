@@ -123,15 +123,14 @@ The idea is to hope that this mixture will have few enough components to have a 
 	  
 	We can use any variable selection method on the reduced dataset with improved efficiency (reduced variance) due to dimension reduction and correlation suppression. So we obtain two kinds of zeros in our first model : coerced zeros due to correlations (redundant information) and estimated ones with classical variable selection methods applied on remaining variables. This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
  	
- 	We then observe that the reduced model only uses the partition given by the structure (who is explained and who explains) but not the structure itself (how they interacts). We also notice that even if variables are highly correlated, each can have a specific effect ($\varepsilon_X$) on the response variable.
- 	
- 	So in a second step we propose further usage of the structure, taking back correlated variables to estimate the residuals of the reduced model. This estimation is also a linear regression that can take profit from any variable selection method. The idea is to estimate the complete model under the constraint of the structure. It can be done with Constrained Least Squares \cite{amemiya1985advanced} or sequentially with classical OLS (non optimal but easier to use selection methods).
- 	
- 	
+% 	We then observe that the reduced model only uses the partition given by the structure (who is explained and who explains) but not the structure itself (how they interacts). We also notice that even if variables are highly correlated, each can have a specific effect ($\varepsilon_X$) on the response variable.
+% 	
+% 	So in a second step we propose further usage of the structure, taking back correlated variables to estimate the residuals of the reduced model. This estimation is also a linear regression that can take profit from any variable selection method. The idea is to estimate the complete model under the constraint of the structure. It can be done with Constrained Least Squares \cite{amemiya1985advanced} or sequentially with classical OLS (non optimal but easier to use selection methods).
+% 	
+% 	
  	
 But to work, we need an explicit structure between the covariates. SEM are often used in social sciences and economy where a structure is supposed "by hand" but here we want to be able to find a structure without any a priori (possibility to include some known structure remains). Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented graph for our SEM. So we developped an MCMC algorithm to find it (R package CorReg on Rforge). However, Graphical LASSO can be used in the initialization step of our MCMC. This structure is based on gaussian mixture models to fit better real datasets and to allow identifiability of the structure in terms of complexity (number of parameters).
- 	
- 	~\\
+ 	\\
  	
  	%plan
  	This paper will first present the reduced model, its properties and the algorithm used to find the structure. Then we talk about further usage of the method, both estimating residuals of the reduced model and managing missing values in the dataset. 

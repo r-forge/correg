@@ -71,11 +71,12 @@ On dispose de $X=(X^1,\dots,X^p)$ variables fortement corrélées pour expliquer
 On rend explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$ définie ainsi :
 	\begin{eqnarray}
 		I_1&=&\{I_1^1,\dots,I_1^{p}\} \textrm{ avec}		\\
-		I_1^j &=& \{i |Z_{i,j}=1 \} \textrm{ indices des covariables qui expliquent $X^j$} \\
+		I_1^j &=&\{ \textrm{ indices des covariables qui expliquent $X^j$} \} \\ % \{i |Z_{i,j}=1 \} 
 		I_2&=&\{j |\sharp I_1^j>0 \}  \textrm{ indices des variables dépendantes} \\
 		p_2&=& \sharp I_2 \\
 		p_1&=&(p_1^1,\dots,p_1^{p_2}) \textrm{ avec }p_1^j=\sharp I_1^j 
 	\end{eqnarray}
+%	Où $Z$ est la matrice d'adjacence du graphe qui définit les dépendances entres variables (SEM récursif).
 	On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendantes dans $X$ n'en expliquent pas d'autres. 
 	
 	On note $I_2^c=\{1,\dots,p\}\setminus I_2$
