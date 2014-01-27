@@ -33,9 +33,6 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   \item{pred}{boolean to decide if the predictive model is
   computed}
 
-  \item{pred2}{boolean to define if the new predictive
-  model is computed}
-
   \item{select}{selection method in
   ("lar","lasso","forward.stagewise","stepwise",
   "elasticnet", "NULL","ridge")}

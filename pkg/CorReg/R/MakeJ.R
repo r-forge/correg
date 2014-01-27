@@ -4,7 +4,7 @@
 #' @param A Fixed p+1 coefficient vector for the main regression
 #' @param Z p squared binary matrix describing the structure (adjacency matrix)
 #' @param Sigma p2 vector of standard deviations for each subregression
-#'@export
+# '@export
 MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
    X=cbind(1,X)
    I2=which(colSums(Z)!=0)

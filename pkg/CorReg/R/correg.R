@@ -18,7 +18,6 @@
 #' @param compl boolean to decide if the complete modele is computed
 #' @param expl boolean to decide if the explicative model is in the output
 #' @param pred boolean to decide if the predictive model is computed
-#' @param pred2 boolean to define if the new predictive model is computed
 #' @param select selection method in ("lar","lasso","forward.stagewise","stepwise", "elasticnet", "NULL","ridge")
 #' @param criterion the criterion used to compare the models
 #' @param K the number of clusters for cross-validation
@@ -212,44 +211,6 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
                                  beta = A_final)
         
       }
-      if(pred2){
-         if (is.null(B)) {
-            B = hatB(Z = Z, X = X)
-         }else{B=as.matrix(B)}
-         I1star=which(rowSums(Z)!=0)
-         I2=which(colSums(Z)!=0)
-         R=matrix(0,ncol=ncol(Z),nrow=length(I1star))
-         R[cbind(1:length(I1star),I1star)]=1
-         R[,I2]=B[I1star+1,I2]      
-        
-         beta_OLS=as.matrix(OLS(X=X,Y=Y,intercept=intercept)$beta)
-         R=as.matrix(R)
-         Xloc=X
-         if(intercept){
-            Xloc=cbind(1,X)
-            R=rbind(0,R)
-            R[1,I2]=B[1,I2]
-            r=res$expl$A[c(1,I1star+1)]
-            R=cbind(0,R)
-            R[1,1]=1
-         }else{
-            r=res$expl$A[I1star]
-         }
-         if(ncol(X)>nrow(X)){
-            id=diag(ncol(Xloc))
-            beta_cc=beta_OLS+ginv(t(Xloc)%*%Xloc)%*%t(R)%*%solve(R%*%ginv(t(Xloc)%*%Xloc)%*%t(R))%*%(r-R%*%beta_OLS)
-            nb0=ncol(X)-nrow(X)
-            if(nb0<=length(I1star)){
-               qui0=I1star[1:nb0]
-               Xloc=Xloc[,-(qui0+intercept)]
-            }
-         }else{
-            beta_cc=beta_OLS+solve(t(Xloc)%*%Xloc)%*%t(R)%*%solve(R%*%solve(t(Xloc)%*%Xloc)%*%t(R))%*%(r-R%*%beta_OLS)
-         }
-         res$pred2$A=beta_cc
-         res$pred2$BIC=BicTheta(X=X,Y=Y,intercept=intercept,beta=beta_cc)
-      }
-      
     }
     #nouveau prédictif####
     if (prednew) {
