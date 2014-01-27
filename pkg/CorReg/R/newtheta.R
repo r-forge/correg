@@ -7,7 +7,7 @@
 #' @param A vector of the coefficient for the main regression
 #' @param lambda lagrange multiplicators
 #' @param nbit number of iteration for Newton
-#' @export
+# ' @export
 newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1){
    X=cbind(1,X)
    I2=which(colSums(Z)!=0)
