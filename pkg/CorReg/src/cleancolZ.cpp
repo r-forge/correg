@@ -15,9 +15,8 @@ using Rcpp::as;
 
 SEXP cleancolZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP bla,SEXP Rstar)
 {
- 
   BEGIN_RCPP
-  //déclaration des varibles
+  //déclaration des variables
   const Map<MatrixXd> matZ(as<Map<MatrixXd> >(Z));//Z
   const Map<MatrixXd> matX(as<Map<MatrixXd> >(X));//X
   const Map<VectorXd> Bic_vide_vect(as<Map<VectorXd> >(bic_vide_vect));//bic_vide_vect
@@ -37,7 +36,7 @@ SEXP cleancolZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP 
   int numcand;//numero du candidat
   int i_loc;//premiere coordonnée du candidat (modification Z)
   Eigen::MatrixXd Zcand;//matrice Z du candidat (modification Z)
-  Eigen::ArrayXXd SumCol(1,p);//k est un vecteur qui contient la somme de chaque colonne de Zcand (modification Z)
+  Eigen::ArrayXXd SumCol(1,p);//SumCol est un vecteur qui contient la somme de chaque colonne de Zcand (modification Z)
   Eigen::VectorXd BIC_cand;//vecteur qui contient les BIC de chaque colonne des la matrice Zcand (calcul du BIC)
   double Sum_BIC_cand;//somme des BIC de BIC_cand (calcul BIC)
   Eigen::VectorXd stock_BIC;//vecteur qui contient le BIC de tout les candidats (stock)

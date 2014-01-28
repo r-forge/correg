@@ -52,6 +52,7 @@ SEXP cleanZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP bla
   Eigen::VectorXd complexite_etape(nbcand);//vecteur qui stock la compléxité de Z a chaque etapes
   Eigen::VectorXd BIC_step;//vecteur qui stock le BIC de chaque etapes
   Eigen::VectorXd complexite_step ;//vecteur qui stock la compléxité de Z a chaque etapes
+//  Eigen::ArrayXXd SumCol(1,p);//SumCol est un vecteur qui contient la somme de chaque colonne de Zcand (modification Z)
 
     
   //initialisation
