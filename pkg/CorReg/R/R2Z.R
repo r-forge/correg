@@ -5,7 +5,7 @@
 #' @param adj boolean to choose between adjusted R-squared and classical one
 #' @param crit to choose between the R-squared and the F statistic (p-value)
 #' @export 
-R2Z<-function(Z=Z,X=X,methode=1,adj=F,crit=c("R2","F")){
+R2Z<-function(Z=Z,X=X,methode=1,adj=F,crit=c("R2","F","sigmaX")){
   p=ncol(Z)
   res=rep(0,times=p)
   crit=crit[1]
@@ -27,8 +27,10 @@ R2Z<-function(Z=Z,X=X,methode=1,adj=F,crit=c("R2","F")){
       }else{
         res[i]=as.numeric(summar[8])
       }
-    }else{#p-value du test F global de Fisher
+    }else if(crit=="F"){#p-value du test F global de Fisher
       res[i]= pf(summar$fstatistic[1],summar$fstatistic[2],summar$fstatistic[3],lower.tail=FALSE)   
+    }else{#sigmaX
+       res[i]=sd(summar[[3]])
     }
   }
   return(res)
