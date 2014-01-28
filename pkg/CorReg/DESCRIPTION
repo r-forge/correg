@@ -1,8 +1,8 @@
 Package: CorReg
 Type: Package
 Title: Linear regression based on linear structure between covariates
-Version: 0.13.3
-Date: 2014-01-27
+Version: 0.13.4
+Date: 2014-01-28
 Author: THERY CLEMENT, WATRIN FLORIAN
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Sequential linear regression based on a recursive structural
@@ -16,5 +16,5 @@ Depends:
     RcppEigen,
     Rmixmod,
     lars,
-    elasticnet,Matrix,mclust,ridge,MASS
+    elasticnet,Matrix,mclust,ridge,MASS,parcor
 LinkingTo: Rcpp, RcppEigen
