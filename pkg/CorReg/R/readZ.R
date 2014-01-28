@@ -2,13 +2,13 @@
 #' 
 #' @param Z is the binary structure
 #' @param B is the complete structure (if known)
-#' @param R2 boolean. Indicates wether you want to order Z by R2 (adjusted)
+#' @param crit define the criterion to use c("none","R2","F","sigmaX")
 #' @param varnames the names of the variables (same order)
-#' @param output indicates the content of the output
+#' @param output indicates the content of the output output=c("index","names","all")
 #' @param X is a dataframe containing the dataset
 #' @param order Define the order used (0: none, -1: decreasing, 1: growing)
 #' @export
-readZ<-function(Z=Z,B=NULL,R2=TRUE,varnames=NULL,output=c("index","names","all"),X=NULL,order=1){
+readZ<-function(Z=Z,B=NULL,crit=c("none","R2","F","sigmaX"),varnames=NULL,output=c("index","names","all"),X=NULL,order=1){
   p=ncol(Z)
   output=output[1]
   res=list()
@@ -19,11 +19,11 @@ readZ<-function(Z=Z,B=NULL,R2=TRUE,varnames=NULL,output=c("index","names","all")
       varnames=names(X)
     }
   }
-  if(is.null(B) & (R2| output=="all")){#if B needed but unknown
+  if(is.null(B) & (crit!="none"| output=="all")){#if B needed but unknown
      B=hatB(Z=Z,X=X)
   }
-  if(R2){
-    R2vect=R2Z(Z=Z,X=X,adj=TRUE,crit="R2")
+  if(crit!="none"){
+    R2vect=R2Z(Z=Z,X=X,adj=TRUE,crit=crit)
     R2vect=R2vect[R2vect!=0]
     quiI2=which(colSums(Z)!=0)
     if(order==1){#increasing order
@@ -46,7 +46,7 @@ readZ<-function(Z=Z,B=NULL,R2=TRUE,varnames=NULL,output=c("index","names","all")
     }else{#all
       for(i in 1:length(quiI2)){
         beta=B[,quiI2[neworder[i]]]
-        ssreg=data.frame(cbind(c(R2vect[neworder[i]],NA,beta[beta!=0]),c("R2adj",varnames[quiI2[neworder[i]]],"intercept",varnames[which(Z[,quiI2[neworder[i]]]!=0)])))
+        ssreg=data.frame(cbind(c(R2vect[neworder[i]],NA,beta[beta!=0]),c(crit,varnames[quiI2[neworder[i]]],"intercept",varnames[which(Z[,quiI2[neworder[i]]]!=0)])))
         names(ssreg)=c("coefs","var")
         res[[i]]=ssreg
       }

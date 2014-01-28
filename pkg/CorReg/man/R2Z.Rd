@@ -2,7 +2,7 @@
 \alias{R2Z}
 \title{Estimates R2 of each subression}
 \usage{
-R2Z(Z = Z, X = X, methode = 1, adj = F, crit = c("R2", "F"))
+R2Z(Z = Z, X = X, methode = 1, adj = F, crit = c("R2", "F", "sigmaX"))
 }
 \arguments{
   \item{Z}{is the structure (binary matrix)}
