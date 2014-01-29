@@ -56,7 +56,7 @@ hatZ=res$Zopt
 hatBic=res$bic_opt
 sum(BicZ(X=X_appr,Z=hatZ,Bic_null_vect=BIC_empty_vect))#same value
 
-readZ(Z=hatZ,R2=TRUE,X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
+readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
 
 compZ=comparaison_struct(vraiZ=TrueZ,Zalgo=hatZ)#qualitative comparison
 select="lar"#LASSO with the Least Angle Regression algorithm to find the best model
