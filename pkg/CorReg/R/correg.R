@@ -34,7 +34,7 @@
 #' @param deltamin criterion to stop alternance
 #' 
 correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, 
-                pred = TRUE, pred2=FALSE,prednew=FALSE,
+                pred = TRUE,prednew=FALSE,
                 select = "lar",
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
