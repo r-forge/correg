@@ -74,6 +74,7 @@ On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendantes dans $X$ n
 On note $p_2= \sharp I_2$, $p_1=(p_1^1,\dots,p_1^{p_2})$ et $I_2^c=\{1,\dots,p\}\setminus I_2$.
 	
 On a donc rendu explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$.	
+Cette structure est identifiable au sens de la complexité de la structure et des mélanges gaussiens via un critère de type BIC sous certaines conditions simples. Du point de vue de l'interprétation, les cas non identifiables (triviaux) sont équivalents et ne posent pas de problème.
 
 On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 \begin{eqnarray}
@@ -88,7 +89,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		\end{equation}
 		estimateur sans biais \cite{saporta2006probabilites} avec :
 		\begin{eqnarray}
-			\Var[\hat{\tilde{A}}_{I_2^c}|X]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{I_2^c} X^{I_2^c})^{-1} \\
+			\Var[\hat{\alpha}_{I_2^c}|X,S]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{I_2^c} X^{I_2^c})^{-1} \\
 		\end{eqnarray}
 		La variance est réduite (retrait des corrélations et réduction de la dimension améliorent drastiquement le conditionnement) pour les faibles valeurs de $\sigma_j$ $i.e.$ les fortes corrélations.					
 		
@@ -138,21 +139,23 @@ La grande dimension de l'espace parcouru rend préférable  (pour un temps de ca
 
 
 
-\begin{tabular}{|c|c|c|c|c|}
+\begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_2$ & Complet & CORREG & meilleur \\ 
+$n$ & $p_2$ & $\sharp$ complet & $\sharp$ \textsc{CorReg} &Complet & \textsc{CorReg} & meilleur \\ 
+\hline  
+30 & 0 & • & • & • &&\\
 \hline 
-30 & 0 & • & • & • \\ 
+30 & 8 & • & • & • &&\\ 
 \hline 
-30 & 8 & • & • & • \\ 
+30 & 16 & 22.16 & 18.84 & 65 033.19 & 1 202.52 & 0.69\\ 
 \hline 
-30 & 24 & • & • & • \\ 
+30 & 24 & 23.05 (3.7) & 17.29 (2.1) & 1 723.67 (9 300) & 987.75 (6 994)& 0.86 (0.34)\\ 
 \hline 
-50 & 0 & • & • & • \\ 
+50 & 0 & • & • & •&& \\ 
 \hline 
-50 & 8 & • & • & • \\ 
+50 & 8 & • & • & • &&\\ 
 \hline 
-50 & 24 & • & • & • \\ 
+50 & 24 & • & • & • && \\ 
 \hline 
 \end{tabular} 
 
