@@ -24,7 +24,7 @@
 generateur_melange<-function(n=130,
                                 p=100,
                                 ratio=0.4,
-                                max_compl=3,
+                                max_compl=1,
                                 valid=1000,
                                 positif=0.6,
                                 sigma_Y=10,
