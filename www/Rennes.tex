@@ -99,9 +99,10 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		 \\		
 		 La structure explicite entre les variables permet de mieux comprendre les phénomènes en jeu et la parcimonie du modèle facilite son interprétation.		
 
-		En ajoutant une étape de sélection de variable on obtient deux types de $0$ : les $0$ de corrélation issus de la structure et qui sont à interpréter comme des $0$ de redondance d'information (qui ne signifient donc en rien l'indépendance avec $Y$) et les $0$ de sélection issus de l'éventuelle méthode de sélection de variables (type LASSO) et qui sont à interpréter comme l'indépendance entre la variable explicative concernée et la variable réponse.
+		En ajoutant une étape de sélection de variable on obtient deux types de $0$ : ceux de corrélation, issus de la structure et qui sont à interpréter comme des $0$ de redondance d'information (qui ne signifient donc en rien l'indépendance avec $Y$) et les $0$ de sélection, issus de l'éventuelle méthode de sélection de variables (type LASSO) et qui sont à interpréter comme l'indépendance entre la variable explicative concernée et la variable réponse.
 			\\
-		Le modèle obtenu est donc sans biais de prédiction, parcimonieux et consistant en interprétation.	
+		Le modèle obtenu est donc sans biais de prédiction pour $Y$, parcimonieux et consistant en interprétation.	
+		
 \section{Recherche de structure}
 	 	
 	%	\subsection{Pénalisation de la vraisemblance}
@@ -131,7 +132,8 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
  
 L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la méthode du Graphical Lasso\cite{friedman2008sparse}.		
 La grande dimension de l'espace parcouru rend préférable  (pour un temps de calcul égal) l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (permet aussi la parallélisation).
-
+	
+	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien. On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC.
 \section{Résultats}	
 
 
