@@ -61,13 +61,13 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 %--------------------------------------------------------------------------
 
 \section{Décorrélation par modèle génératif}
-	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs. La régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ qui explose si les colonnes de $X$ sont linéairement corrélées
+	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs. La régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ qui explose si les colonnes de $X$ sont linéairement corrélées.
 		
 		On suppose le modèle génératif suivant :
 	\begin{eqnarray}
-	Y_{|X,S}&=&XA+\varepsilon_Y= X^{I_2^c}A_{1}+X^{I_2}A_{2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}\\
+	Y_{|X,S}&=&XA+\varepsilon_Y= X^{I_2^c}A_{I_2^c}+X^{I_2}A_{I_2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}\\
 	\forall j \in I_2 : \  X^j_{|X^{I_1^j},S}&=&X^{I_1^j}B_{I_1^j}^j + \varepsilon_{j} \textrm{ avec } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2) \label{SR}\\
-    \forall j \notin I_2 : \ X^j &=& f(\theta_j) \textrm{ loi quelconque}	
+    \forall j \notin I_2 : \ X^j &=& f(\theta_j) \textrm{ mélanges gaussiens orthogonaux à $k_j$ composantes} 	
 \end{eqnarray}
 Où $B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$, $I_1=\{I_1^1,\dots,I_1^{p}\}$, $I_2=\{j |\sharp I_1^j>0 \}$.
 On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendantes dans $X$ n'en expliquent pas d'autres.
@@ -78,95 +78,43 @@ On a donc rendu explicites les corrélations au sein de $X$ sous la forme d'une 
 On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 \begin{eqnarray}
 	Y_{|X,S}&=&X^{I_2^c} (A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y \\
-					&=& X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}=X\tilde{A}+ \tilde{\varepsilon}\label{Trueexpl} 			
+					&=& X^{I_2^c}\alpha_{I_2^c}+ \varepsilon_{\alpha}=X\alpha+ \varepsilon_{\alpha} \label{Trueexpl} 			
 \end{eqnarray}
 \section{Estimateur}
-	Les Moindres Carrés Ordinaires (MCO) donnent (maximum de vraisemblance): 
-		\begin{equation}
-			\hat A = (X'X)^{-1}X'Y \textrm{ (matrice à inverser mal conditionnée)}
-		\end{equation}
-		avec les propriétés suivantes :
-		\begin{eqnarray}
-			\rm{E}[\hat{A}|X]&=&A \\
-			\Var[\hat{A}|X]&=& \sigma_Y^2(X'X)^{-1}
-		\end{eqnarray}				
-		La variance de l'estimateur explose quand les corrélations sont fortes (matrice quasi-singulière).
- 			
 		\textsc{CorReg} réduit la variance de l'estimateur en estimant $Y$ seulement à partir de $X^{I_1}$, sachant (\ref{SR}) et (\ref{Trueexpl}).
-			\begin{equation}
-				Y= X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}\label{explicatif}
-			\end{equation}							
-		Ainsi, l'estimateur devient : 
+			On a ainsi : 
+		\begin{equation}
+			\hat{\alpha}_{I_2^c} = (X'_{I_2^c} X^{I_2^c})^{-1}X'_{I_2^c}Y \textrm{ et } \hat{\alpha}_{I_2} = 0
+		\end{equation}
+		estimateur sans biais \cite{saporta2006probabilites} avec :
 		\begin{eqnarray}
-			\hat{\tilde{A}}_{I_2^c} &=& (X'_{I_2^c} X^{I_2^c})^{-1}X'_{I_2^c}Y \\
-			\hat{\tilde{A}}_{I_2} &=& 0
-		\end{eqnarray}
-		avec les propriétés suivantes :
-		\begin{eqnarray}
-			\rm{E}[\hat{\tilde{A}}|X]&=&\tilde{A} \\
 			\Var[\hat{\tilde{A}}_{I_2^c}|X]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{I_2^c} X^{I_2^c})^{-1} \\
-			\Var[\hat{\tilde{A}}_{I_2}|X]&=& 0 
 		\end{eqnarray}
 		La variance est réduite (retrait des corrélations et réduction de la dimension améliorent drastiquement le conditionnement) pour les faibles valeurs de $\sigma_j$ $i.e.$ les fortes corrélations.					
 		
-		Le modèle complet et le nôtre prédisent tous les deux $Y$ sans biais (vrai modèle)\cite{saporta2006probabilites}.
+		Le modèle complet et le nôtre prédisent tous les deux $Y$ sans biais (vrai modèle). La décorrélation se fait au prix d'un bruit blanc supplémentaire $\sum_{j \in I_2}\varepsilon_{j}A_{j} $ qui est d'autant plus faible que les corrélations sont fortes.
 	\\	
-	Ce nouveau modèle est de dimension réduite et consiste en une régression linéaire classique qui peut donc bénéficier des outils de sélection de variables au même titre que le modèle complet.			
+	Ce nouveau modèle consiste en une régression linéaire classique qui peut donc bénéficier des outils de sélection de variables au même titre que le modèle complet.			
 		 \\		
 		 La structure explicite entre les variables permet de mieux comprendre les phénomènes en jeu et la parcimonie du modèle facilite son interprétation.		
 
-		En ajoutant une étape de sélection de variable on obtient deux types de $0$ :
-			\begin{enumerate}
-			\item La structure implique $\hat{\tilde{A}}^{I_2} = 0 $. Ce type de 0 est à interpréter comme une redondance d'information, mais la variable associée n'est pas pour autant jugée indépendante de $Y$. On obtient un modèle parcimonieux sans effet groupe, mais sans erreur d'interprétation, contrairement au LASSO ~\cite{Zhao2006MSC} car on connaît la signification de ce type de $0$.
-			\item Une phase de sélection de variables peut également produire des coefficients nuls dans $\hat{\tilde{A}}^{I_1}$. Ces $0$ sont alors des $0$ d'indépendance vis-à-vis de la réponse qui s'interprètent donc classiquement. Et comme les variables de $X^{I_1}$ sont orthogonales, on peut avoir confiance dans cette interprétation.
-			\end{enumerate}
+		En ajoutant une étape de sélection de variable on obtient deux types de $0$ : les $0$ de corrélation issus de la structure et qui sont à interpréter comme des $0$ de redondance d'information (qui ne signifient donc en rien l'indépendance avec $Y$) et les $0$ de sélection issus de l'éventuelle méthode de sélection de variables (type LASSO) et qui sont à interpréter comme l'indépendance entre la variable explicative concernée et la variable réponse.
+			\\
 		Le modèle obtenu est donc sans biais de prédiction, parcimonieux et consistant en interprétation.	
 \section{Recherche de structure}
 	 	
 	%	\subsection{Pénalisation de la vraisemblance}
-		Le choix de structure s'appuie sur $BIC^*$, vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}. 
+		Le choix de structure s'appuie sur $BIC^*$, vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}, mais en prenant comme loi a priori sur $S$ une loi uniforme hiérarchique $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$ plutôt qu'une loi uniforme simple. 
 		\begin{eqnarray}
 		P(S|X)&\propto &P(X|S)P(S) \\
-		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
+%		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
 		%&=&BIC +\ln(P(S))+cste \\
 		BIC^*&=&BIC +\ln(P(S)) \label{Bicstar}
 	\end{eqnarray}	
-	Pour éviter une surcomplexité de la structure trouvée, on peut alors faire des hypothèses a priori sur $P(S)$. Par exemple, au lieu de supposer l'équiprobabilité pour tous les $S$, on peut supposer l'équiprobabilité des $p_2$ et $p_1^j$, ce qui vient pénaliser davantage la compléxité sous l'hypothèse $p_2<\frac{p}{2}$ (qui devient alors une contrainte supplémentaire dans l'algorithme de recherche). 
+	L'équiprobabilité ainsi supposée des $p_2$ et $p_1^j$ vient pénaliser davantage la compléxité sous l'hypothèse $p_2<\frac{p}{2}$ (qui devient alors une contrainte supplémentaire dans l'algorithme de recherche). 
 	On a
-	\begin{eqnarray}
-		P(S)&=&P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2) % \\
-%		P(I_1 | p_1,I_2,p_2)&=&\prod_{j =1}^{p_2}P(I_1^j|p_1^j,I_2,p_2) \\
-%		P(I_1^j|p_1^j,I_2,p_2)&=&\left(\begin{array}{c}
-%			p-p_2 \\ 
-%			p_1^j
-%			\end{array}  \right)^{-1} =\frac{p_1^j ! (p-p_2-p_1^j)!}{(p-p_2)!}\\
-%		P(p_1|I_2,p_2)&=&\prod_{j =1}^{p_2}P(p_1^j|I_2,p_2)		\\
-%		P(p_1^j|I_2,p_2)&=&\frac{1}{p-p_2}  \\
-%		P(I_2|p_2)&=&\left(\begin{array}{c}
-%			p \\ 
-%			p_2
-%			\end{array}  \right)^{-1}=\frac{p_2!(p-p_2)!}{p!}\\
-%		P(p_2) &=&\frac{1}{p_2} \\
-%		P(S)&=&\left(\prod_{j =1}^{p_2}\left(\begin{array}{c}
-%			p-p_2 \\ 
-%			p_1^j
-%			\end{array}  \right)^{-1}\right) \left(\frac{1}{p-p_2}\right)^{p_2}\frac{p_2!(p-p_2)!}{p!}\frac{1}{p_2} \\
-%			\ln P(S) &=& -\sum_{j=1}^{p_2}	\ln\left(\begin{array}{c}
-%			p-p_2 \\ 
-%			p_1^j
-%			\end{array}  \right)
-%			-p_2\ln (p-p_2)
-%			-\ln\left(\begin{array}{c}
-%			p \\ 
-%			p_2
-%			\end{array}  \right)
-%			-\ln( p_2	)
-	\end{eqnarray}		
-%	It increases penalty on complexity for $p_2<\frac{p}{2}$ thus in the following we will use $BIC*$ under this hypothesis (that becomes a constraint in the MCMC).			
-%	\subsection{Parcours Markovien de saut}
-	
-	A chaque étape de l'algorithme MCMC, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S}$ de $p$ candidats , mais le package \textsc{CorReg} permet à l'utilisateur de modifier ce voisinage.
-	$S$ est entièrement défini à partir de $I_1$ donc on se contente ici de décrire les modifications dans $I_1$. %(les autres éléments de $S$ seront ensuite recalculés selon leur définition).
+
+	A chaque étape de l'algorithme MCMC, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S}$ de $p$ candidats (le package \textsc{CorReg} permet à l'utilisateur de choisir parmi plusieurs types de voisinage).
 		
 	On fait l'approximation suivante : 
 	\begin{equation}
@@ -174,9 +122,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 	\end{equation}
 	On définit alors
 	\begin{eqnarray}
-			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=& \frac{1}{p} \sum_{j=1}^p q(\tilde{S},\mathcal{V}_{S,j}) \\
-	\textrm{où }	q(\tilde{S},\mathcal{V}_{S,j})&=&\mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{\exp(\frac{-1}{2}\Delta BIC(\tilde{S},\mathcal{V}_{S,j}))}{\sum_{S_l\in \mathcal{V}_{S,j}}\exp(\frac{-1}{2}\Delta BIC(S_l,\mathcal{V}_{S,j}))} \\
-	\textrm{ avec } \Delta BIC(S,\mathcal{V}_{S,j})&=&BIC(S)-\min\{BIC(\tilde{S})| \tilde{S} \in \mathcal{V}_{S,j} \}
+			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=& \frac{1}{p} \sum_{j=1}^p \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S}\} }\frac{\exp(\frac{-1}{2} BIC(\tilde{S}))}{\sum_{S_l\in \mathcal{V}_{S}}\exp(\frac{-1}{2} BIC(S_l))} \\
 	\end{eqnarray}
 	
 		La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire.
@@ -188,6 +134,27 @@ La grande dimension de l'espace parcouru rend préférable  (pour un temps de ca
 \section{Résultats}	
 
 
+
+
+
+
+\begin{tabular}{|c|c|c|c|c|}
+\hline 
+$n$ & $p_2$ & Complet & CORREG & meilleur \\ 
+\hline 
+30 & 0 & • & • & • \\ 
+\hline 
+30 & 8 & • & • & • \\ 
+\hline 
+30 & 24 & • & • & • \\ 
+\hline 
+50 & 0 & • & • & • \\ 
+\hline 
+50 & 8 & • & • & • \\ 
+\hline 
+50 & 24 & • & • & • \\ 
+\hline 
+\end{tabular} 
 
 
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
