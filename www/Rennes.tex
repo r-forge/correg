@@ -32,12 +32,15 @@
 }
 \bigskip
 
- Clément Théry $^{1}$
+  Clément Théry$^{1}$ \& Christophe Biernacki$^{2}$ \& Gaétan Loridant$^{3}$
 \bigskip
 
 {\it
-$^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.thery@arcelormittal.com
+$^{1}$ ArcelorMittal, Université Lille 1, Inria, CNRS, clement.thery@inria.fr
  
+$^{2}$ Université Lille 1, Inria, CNRS, christophe.biernacki@math.univ-lille1.fr
+
+$^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormittal.com\textbf{}
 }
 \end{center}
 \bigskip
@@ -57,40 +60,24 @@ $^{1}$ ArcelorMittal Dunkerque, Inria Lille, Université de Lille 1, clement.the
 
 %--------------------------------------------------------------------------
 
-\section{Le contexte}
-	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs.
+\section{Décorrélation par modèle génératif}
+	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs. La régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ qui explose si les colonnes de $X$ sont linéairement corrélées
+		
+		On suppose le modèle génératif suivant :
 	\begin{eqnarray}
-		Y&=&XA+\varepsilon \ \ \textrm{ avec } \ \varepsilon\sim \mathcal{N}(0,\sigma^2) \\
-		\Var(\hat{A}|X)&=& \sigma^2(X'X)^{-1} \textrm{ explose si les colonnes de x sont linéairement corrélées}
-	\end{eqnarray}
-			
-	
-	
-\section{Le modèle génératif}
-On dispose de $X=(X^1,\dots,X^p)$ variables fortement corrélées pour expliquer une variable réponse $Y$.
-On rend explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$ définie ainsi :
-	\begin{eqnarray}
-		I_1&=&\{I_1^1,\dots,I_1^{p}\} \textrm{ avec $I_1^j$ l'ensemble des indices des covariables qui expliquent $X^j$ \ }		\\
-%		I_1^j &=&\{ \textrm{ indices des covariables qui expliquent $X^j$} \} \\ % \{i |Z_{i,j}=1 \} 
-		I_2&=&\{j |\sharp I_1^j>0 \}  \textrm{ indices des variables dépendantes} \\
-		p_2&=& \sharp I_2 \\
-		p_1&=&(p_1^1,\dots,p_1^{p_2}) \textrm{ avec }p_1^j=\sharp I_1^j 
-	\end{eqnarray}
-%	Où $Z$ est la matrice d'adjacence du graphe qui définit les dépendances entres variables (SEM récursif).
-	On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendantes dans $X$ n'en expliquent pas d'autres. 
-	
-	On note $I_2^c=\{1,\dots,p\}\setminus I_2$
-Le modèle génératif s'écrit alors :
-\begin{eqnarray}
-	Y_{|X,S}&=&XA+\varepsilon_Y= X^{I_2^c}A_{I_2^c}+X^{I_2}A_{I_2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}\\
+	Y_{|X,S}&=&XA+\varepsilon_Y= X^{I_2^c}A_{1}+X^{I_2}A_{2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}\\
 	\forall j \in I_2 : \  X^j_{|X^{I_1^j},S}&=&X^{I_1^j}B_{I_1^j}^j + \varepsilon_{j} \textrm{ avec } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2) \label{SR}\\
     \forall j \notin I_2 : \ X^j &=& f(\theta_j) \textrm{ loi quelconque}	
 \end{eqnarray}
-Où $B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$.
+Où $B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$, $I_1=\{I_1^1,\dots,I_1^{p}\}$, $I_2=\{j |\sharp I_1^j>0 \}$.
+On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendantes dans $X$ n'en expliquent pas d'autres.
+On note $p_2= \sharp I_2$, $p_1=(p_1^1,\dots,p_1^{p_2})$ et $I_2^c=\{1,\dots,p\}\setminus I_2$.
+	
+On a donc rendu explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$.	
 
 On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 \begin{eqnarray}
-	Y&=&X^{I_2^c} (A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y \\
+	Y_{|X,S}&=&X^{I_2^c} (A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y \\
 					&=& X^{I_2^c}\tilde{A}_{I_2^c}+ \tilde{\varepsilon}=X\tilde{A}+ \tilde{\varepsilon}\label{Trueexpl} 			
 \end{eqnarray}
 \section{Estimateur}
@@ -178,20 +165,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 %	It increases penalty on complexity for $p_2<\frac{p}{2}$ thus in the following we will use $BIC*$ under this hypothesis (that becomes a constraint in the MCMC).			
 %	\subsection{Parcours Markovien de saut}
 	
-	A chaque étape de l'algorithme MCMC, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S,j}$ avec $j \sim \mathcal{U}(\{1,\dots,p\}) $ :% de la manière suivante  :	
-	\begin{eqnarray}
-		\mathcal{V}_{S,j}&=&\{ S^{(i,j)} | 1\leq i\leq p \} \cup\{S \}
-	\end{eqnarray}	
-	avec $S^{(i,j)}$ obtenu selon l'algorithme :
-	\begin{itemize}
-		\item Si $i \notin I_i^j$ (ajout): 
-			\begin{itemize}
-				\item $I_1^j :=I_1^j\cup \{i\}$, et pour garder $I_1\cap I_2=\emptyset$ :
-				\item $I_1^i :=\emptyset$ et $I_1:=I_1 \setminus \{j\}$
-			\end{itemize}			 
-		\item Sinon ( $i \in I_1^j$ (suppression)): $I_1^j=I_1^j\setminus \{i\}$
-	\end{itemize}
-	On a donc $p$ candidats à chaque étape. Mais le package \textsc{CorReg} permet à l'utilisateur de modifier ce voisinage.
+	A chaque étape de l'algorithme MCMC, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S}$ de $p$ candidats , mais le package \textsc{CorReg} permet à l'utilisateur de modifier ce voisinage.
 	$S$ est entièrement défini à partir de $I_1$ donc on se contente ici de décrire les modifications dans $I_1$. %(les autres éléments de $S$ seront ensuite recalculés selon leur définition).
 		
 	On fait l'approximation suivante : 
@@ -212,6 +186,10 @@ L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la
 La grande dimension de l'espace parcouru rend préférable  (pour un temps de calcul égal) l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (permet aussi la parallélisation).
 
 \section{Résultats}	
+
+
+
+
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
 Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant interprétation physique :
 \begin{itemize}
@@ -241,7 +219,7 @@ Exemple de régression sur une variable réponse dans le cadre des données rée
 		\hline 
 		\end{tabular} 
    \end{minipage}
-   \caption{résultats obtenus sur données réelles : $n=117$ et $p=168$.    }
+   \caption{résultats obtenus sur données réelles : $n=117$ et $p=168$. l'erreur est réduite d'un tiers alors que la complexité du modèle est divisée par $2,5$.   }
 \end{figure}   
 	
 
