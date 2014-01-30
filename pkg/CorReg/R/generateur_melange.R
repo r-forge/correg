@@ -52,7 +52,7 @@ generateur_melange<-function(n=130,
     list_X2=sample(qui,R) # melange R individus pri au hasard 
     B[1,list_X2]=rpois(R,lambdapois)*(rep(-1,R)+2*rbinom(R,1,positif)) # 1ere ligne de B = ?????
     for(j in list_X2){#remplissage aléatoire de max_compl éléments de B sur chaque colonne à gauche
-      B[sample(qui[-c(list_X2-1)],size=max_compl),j]=(1/max_compl*lambdapois)*rpois(max_compl,lambdapois)*(rep(-1,max_compl)+2*rbinom(max_compl,1,positif))
+      B[sample(qui[-c(list_X2-1)],size=max_compl),j]=(1/max_compl)*rpois(max_compl,lambdapois)*(rep(-1,max_compl)+2*rbinom(max_compl,1,positif))
     }
     #ajout de G
     G=diag(p+1)
