@@ -10,6 +10,7 @@ Description: Sequential linear regression based on a recursive structural
     correlated datasets.Package license :
     (http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html)
 License: CeCILL
+Copyright: ArcelorMittal
 URL: http://www.correg.org
 Depends:
     Rcpp,
