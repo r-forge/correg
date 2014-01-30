@@ -174,8 +174,8 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
       }else if(select=="adalasso"){
          resada=adalasso(X=Xtilde,y=Ytilde,k=K)    
          A_inj=c(resada$coefficients.adalasso)
-         Xloc=X[,resada$coefficients.adalasso!=0]
          if(length(A_inj[A_inj!=0])>0){
+            Xloc=Xtilde[,A_inj!=0]
             A_inj[A_inj!=0]=c(OLS(X=Xloc,Y=Y,intercept=F)$beta)
          }
       }else{#ridge
@@ -288,8 +288,8 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
              }else if(select=="adalasso"){
                 resada=adalasso(X=Xtilde,y=Ytilde,k=K)    
                 A_inj=c(resada$coefficients.adalasso)
-                Xloc=X[,resada$coefficients.adalasso!=0]
                 if(length(A_inj[A_inj!=0])>0){
+                   Xloc=Xtilde[,A_inj!=0]
                    A_inj[A_inj!=0]=c(OLS(X=Xloc,Y=Y,intercept=F)$beta)
                 }  
              }else{#ridge
