@@ -135,23 +135,21 @@ La grande dimension de l'espace parcouru rend préférable  (pour un temps de ca
 	
 	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien. On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC.
 \section{Résultats}	
+Pour chaque simulation présentée ci-dessous, chacune des configurations à été simulée $100$ fois. Les tableaux affichent les moyennes observées et écarts-types. Pour l'ensemble des simulations $p=40$, les $X$ indépendants suivent des lois normales dont la moyenne suit une loi de poisson de paramètre $\lambda=5$ et d'écart-type $\lambda$. Les $B_{i,j}$ suivent la même loi mais sont ensuite divisés par le produit $\lambda \times p_1^j$ pour que les moyennes des variables dépendantes ne trahissent pas leur dépendance. On cherche ici à se comparer à la méthode $LASSO$ dans les cas où celle-ci est en difficulté (corrélations 2 à 2) donc les $p_1^j$ valent tous 1 et \textsc{CorReg} a été contraint à ne chercher que des sous-régressions 2 à 2. Cependant, la normalité des variables à été cachée à 
+\textsc{CorReg} qui a donc travaillé avec $K$ libre.
 
-
-
-
-
-
+\begin{table}
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_2$ & $\sharp$ complet & $\sharp$ \textsc{CorReg} &Complet & \textsc{CorReg} & meilleur \\ 
+$n$ & $p_2$ & $\sharp$ LARS & $\sharp$ \textsc{CorReg} &LARS & \textsc{CorReg} & meilleur \\ 
 \hline  
 30 & 0 & • & • & • &&\\
 \hline 
 30 & 8 & • & • & • &&\\ 
 \hline 
-30 & 16 & 22.16 & 18.84 & 65 033.19 & 1 202.52 & 0.69\\ 
+30 & 23.98 (4.1) & 20.12 (3.8) & 18.84 & 204 896.03 & 497.97 (484.3) & 0.77 \\ 
 \hline 
-30 & 24 & 23.05 (3.7) & 17.29 (2.1) & 1 723.67 (9 300) & 987.75 (6 994)& 0.86 (0.34)\\ 
+30 & 24 & 23.05 (3.7) & 17.29 (2.1) & 1 723.67 (9 300) & 987.75 (6 994)& 0.86 \\ 
 \hline 
 50 & 0 & • & • & •&& \\ 
 \hline 
@@ -159,8 +157,11 @@ $n$ & $p_2$ & $\sharp$ complet & $\sharp$ \textsc{CorReg} &Complet & \textsc{Cor
 \hline 
 50 & 24 & • & • & • && \\ 
 \hline 
+50 & 32 & 15.4 (6.2) & 11.06 (1.6) & 179.81 (105.7) & 133.49 (18.8) & 0.78 (0.4) \\ 
+\hline 
 \end{tabular} 
-
+\caption{Efficacité en prédiction de \textsc{CorReg} par rapport au LASSO suivant le LARS. $\sigma_j=0.01$}
+\end{table}
 
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
 Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant interprétation physique :
