@@ -65,31 +65,31 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 		
 		On suppose le modèle génératif suivant :
 	\begin{eqnarray}
-	Y_{|X,S}&=&XA+\varepsilon_Y= X^{I_2^c}A_{I_2^c}+X^{I_2}A_{I_2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}\\
+	Y_{|X,S}&=&XA+\varepsilon_Y= X_1A_{1}+X_2A_{2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}\\
 	\forall j \in I_2 : \  X^j_{|X^{I_1^j},S}&=&X^{I_1^j}B_{I_1^j}^j + \varepsilon_{j} \textrm{ avec } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2) \label{SR}\\
     \forall j \notin I_2 : \ X^j &=& f(\theta_j) \textrm{ mélanges gaussiens orthogonaux à $k_j$ composantes} 	
 \end{eqnarray}
-Où $B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$, $I_1=\{I_1^1,\dots,I_1^{p}\}$, $I_2=\{j |\sharp I_1^j>0 \}$.
-On suppose $I_1\cap I_2=\emptyset$, $i.e.$ Les variables dépendantes dans $X$ n'en expliquent pas d'autres.
-On note $p_2= \sharp I_2$, $p_1=(p_1^1,\dots,p_1^{p_2})$ et $I_2^c=\{1,\dots,p\}\setminus I_2$.
+Où $B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$,\\ $I_1=\{I_1^1,\dots,I_1^{p}\}$, $I_2=\{j |\sharp I_1^j>0 \}$, $X=(X^1,\dots,X^p)=(X_1,X_2)$ où $X_2=X^{I_2}$, $A=(A^1,\dots,A^p)=(A_1,A_2)$ où $A_2=A^{I_2}$.\\
+On suppose $I_1\cap I_2=\emptyset$, $i.e.$ les variables dépendantes dans $X$ n'en expliquent pas d'autres.
+On note $p_2= \sharp I_2$ et $p_1=(p_1^1,\dots,p_1^{p_2})$.
 	
 On a donc rendu explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$.	
 Cette structure est identifiable au sens de la complexité de la structure et des mélanges gaussiens via un critère de type BIC sous certaines conditions simples. Du point de vue de l'interprétation, les cas non identifiables (triviaux) sont équivalents et ne posent pas de problème.
 
 On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 \begin{eqnarray}
-	Y_{|X,S}&=&X^{I_2^c} (A_{I_2^c}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y \\
-					&=& X^{I_2^c}\alpha_{I_2^c}+ \varepsilon_{\alpha}=X\alpha+ \varepsilon_{\alpha} \label{Trueexpl} 			
+	Y_{|X,S}&=&X_1 (A_{1}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y 
+					= X_1\alpha_{1}+ \varepsilon_{\alpha}=X\alpha+ \varepsilon_{\alpha} \label{Trueexpl} 			
 \end{eqnarray}
 \section{Estimateur}
 		\textsc{CorReg} réduit la variance de l'estimateur en estimant $Y$ seulement à partir de $X^{I_1}$, sachant (\ref{SR}) et (\ref{Trueexpl}).
 			On a ainsi : 
 		\begin{equation}
-			\hat{\alpha}_{I_2^c} = (X'_{I_2^c} X^{I_2^c})^{-1}X'_{I_2^c}Y \textrm{ et } \hat{\alpha}_{I_2} = 0
+			\hat{\alpha}_{1} = (X'_{1} X_1)^{-1}X'_{1}Y \textrm{ et } \hat{\alpha}_{2} = 0
 		\end{equation}
 		estimateur sans biais \cite{saporta2006probabilites} avec :
 		\begin{eqnarray}
-			\Var[\hat{\alpha}_{I_2^c}|X,S]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{I_2^c} X^{I_2^c})^{-1} \\
+			\Var[\hat{\alpha}_{1}|X,S]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{1} X_{1})^{-1} \\
 		\end{eqnarray}
 		La variance est réduite (retrait des corrélations et réduction de la dimension améliorent drastiquement le conditionnement) pour les faibles valeurs de $\sigma_j$ $i.e.$ les fortes corrélations.					
 		
@@ -106,6 +106,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 \section{Recherche de structure}
 	 	
 	%	\subsection{Pénalisation de la vraisemblance}
+	
 		Le choix de structure s'appuie sur $BIC^*$, vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}, mais en prenant comme loi a priori sur $S$ une loi uniforme hiérarchique $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$ plutôt qu'une loi uniforme simple. 
 		\begin{eqnarray}
 		P(S|X)&\propto &P(X|S)P(S) \\
@@ -135,11 +136,39 @@ La grande dimension de l'espace parcouru rend préférable  (pour un temps de ca
 	
 	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien. On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC.
 \section{Résultats}	
-Pour chaque simulation présentée ci-dessous, chacune des configurations à été simulée $100$ fois. Les tableaux affichent les moyennes observées et écarts-types. Pour l'ensemble des simulations $p=40$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{i,j}$ suivent la même loi de poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode $LASSO$ dans les cas où celle-ci est en difficulté (corrélations 2 à 2) donc les $p_1^j$ valent tous 1 et \textsc{CorReg} a été contraint à ne chercher que des sous-régressions 2 à 2. Cependant, la normalité des variables à été cachée à \textsc{CorReg} qui a donc travaillé avec $K$ libre. $Y$ dépend de $15$ variables choisies uniformément dans $X$ sans tenir compte de la structure.
+Pour chaque simulation présentée ci-dessous, chacune des configurations à été simulée $100$ fois. Les tableaux affichent les moyennes observées et écarts-types. Pour l'ensemble des simulations $p=40$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{i,j}$ suivent la même loi de poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode $LASSO$ dans les cas où celle-ci est en difficulté (corrélations 2 à 2) donc les $p_1^j$ non nuls valent tous 1. \textsc{CorReg}  a  travaillé avec $K$ et $p_1$ libres. $Y$ dépend de $15$ variables choisies uniformément dans $X$ sans tenir compte de la structure.
 
 \begin{table}
 \centering
-
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline 
+$n$ & $p_2$ & $\sum_{j=1}^{p}\sharp(I_1^j \cap \hat{I_1^j})$ & $\sum_{j=1}^{p}\sharp(\hat{I_1^j} \setminus I_1^j)$ & $\sum_{j=1}^{p}\sharp(I_1^j \setminus \hat{I_1^j})$ & $p_2-\hat{p_2}$ & $\sharp(I_2 \cap \hat{I_2})$ & $\sharp(\hat{I_2} \setminus I_2)$ \\ 
+\hline  
+30 & 0 & 0 (0) & 0 (0) & 0 (0) & 0 (0) & 0 (0) & 0 (0) \\
+\hline 
+30 & 8 & 7.1 (3) & 15.13 (7.8) & 16.74 (3.1) & 3.44 (1) & 2.64 (1.2) & 1.92 (1.1)\\ 
+\hline 
+30 & 16 &  11.41 (4.2) & 28.39 (11.1) & 36.25 (4.2) & 8.77 (1.2) & 4.72 (1.5) & 2.51 (1.4)\\ 
+\hline 
+30 & 24 & 17.49 (5) & 42.69 (16.1) & 54.07 (5.1) & 14.03 (1.3) & 7.78 (2) & 2.19 (1.5)\\ 
+\hline 
+30 & 32 &19.89 (5.6) & 69.28 (14.8) & 75.5 (5.6) & 18.48 (1.3) & 12.35 (1.4) & 1.17 (1) \\ 
+\hline 
+\hline 
+50 & 0 &   &&&&&\\ 
+\hline 
+50 & 8 & &&&&&\\ 
+\hline 
+50 & 16 & &&&&&\\ 
+\hline 
+50 & 24 & &&&&&\\ 
+\hline 
+50 & 32 & &&&&&\\ 
+\hline 
+400 & 32 & &&&&&\\ 
+\hline 
+\end{tabular} 
+\caption{Comparaison de la vraie structure et de celle proposée par \textsc{CorReg}. Les variables dépendentes sont bien choisies mais les sous-régressions sont bruitées. Ici, les $p_1^j$ non nuls valent tous 3}
 \end{table}
 
 
@@ -160,6 +189,7 @@ $n$ & $p_2$ & $\sharp$ LARS & $\sharp$ \textsc{CorReg} &LARS & \textsc{CorReg} &
 \hline 
 30 & 32 & 17.83 (6.4) & 12.1 (2.5) & 779.32 (1494.9) & \textbf{201.41 (95.5)} & \textbf{0.81}\\ 
 \hline 
+\hline 
 50 & 0 & 24.53 (4.7) & 24.53 (4.7) & \textbf{247.05 (121.9)} & \textbf{247.05 (121.9)} & \textbf{1}  \\ 
 \hline 
 50 & 8 & 16.31 (6.1) & 13.71 (3.9) & \textbf{183.38 (73.1)} & 1808.79 (14 178.1) & \textbf{0.66}\\ 
@@ -169,6 +199,7 @@ $n$ & $p_2$ & $\sharp$ LARS & $\sharp$ \textsc{CorReg} &LARS & \textsc{CorReg} &
 50 & 24 &20.61 (4) & 16.57 (2.5) & \textbf{199.36 (99.6)} & 242.14 (842.3) & \textbf{0.83} \\ 
 \hline 
 50 & 32 & 15.58 (6) & 11.46 (1.9) & 185.48 (127.3) & \textbf{137.85 (25.6)} & \textbf{0.76 } \\ 
+\hline 
 \hline 
 400 & 32 & 14.01 (3.6) & 11.22 (1.8) & 104.96 (4.8) & \textbf{103.51 (4.7)} & \textbf{0.76}\\ 
 \hline 
