@@ -139,29 +139,44 @@ Pour chaque simulation présentée ci-dessous, chacune des configurations à ét
 
 \begin{table}
 \centering
+
+\end{table}
+
+
+
+\begin{table}[h!]
+\centering 
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_2$ & $\sharp$ LARS & $\sharp$ \textsc{CorReg} &LARS & \textsc{CorReg} & meilleur \\ 
+$n$ & $p_2$ & $\sharp$ LARS & $\sharp$ \textsc{CorReg} &LARS & \textsc{CorReg} & $\tau$ \\ 
 \hline  
-30 & 0 & 25.49 (3) & 25.49 (3) & 472 385 (1 327 228) & 472 385 (1 327 228) & 1 \\
+30 & 0 & 25.49 (3) & 25.49 (3) & \textbf{472 385 (1 327 228)} & \textbf{472 385 (1 327 228)} & \textbf{1} \\
 \hline 
-30 & 8 & 21.03 (6.5) & 16.65 (5.8) & 640.61 (837.6) & 177271.56 (882162.4) & 0.61 \\ 
+30 & 8 & 20.88 (6.3) & 19.4 (6.8) & \textbf{519.18 (401.4)} & 864.18 (2093.9) &\textbf{ 0.57}  \\ 
 \hline 
-30 & 16 & 23.4 (4.4) & 18.57 (3.8) & 11083.81 (94368.9) & 381154.09 (1932655.1) & 0.66 \\ 
+30 & 16 & 23.83 (3.8) & 18.81 (3.6) & 25 671.62 (191 415.1) & \textbf{18 843.54 (184 681.9)} & \textbf{0.82} \\ 
 \hline 
-30 & 24 & 23.05 (3.7) & 17.29 (2.1) & 1 723.67 (9 300) & 987.75 (6 994)& 0.86 \\ 
+30 & 24 & 22.34 (4.3) & 16.91 (2.3) & 1 163.62 (3 944.4) & \textbf{920.79 (4 206.2)} & \textbf{0.8} \\ 
 \hline 
-50 & 0 & • & • & •&& \\ 
+30 & 32 & 17.83 (6.4) & 12.1 (2.5) & 779.32 (1494.9) & \textbf{201.41 (95.5)} & \textbf{0.81}\\ 
 \hline 
-50 & 8 & • & • & • &&\\ 
+50 & 0 & 24.53 (4.7) & 24.53 (4.7) & \textbf{247.05 (121.9)} & \textbf{247.05 (121.9)} & \textbf{1}  \\ 
 \hline 
-50 & 24 & • & • & • && \\ 
+50 & 8 & 16.31 (6.1) & 13.71 (3.9) & \textbf{183.38 (73.1)} & 1808.79 (14 178.1) & \textbf{0.66}\\ 
 \hline 
-50 & 32 & 15.4 (6.2) & 11.06 (1.6) & 179.81 (105.7) & 133.49 (18.8) & 0.78 (0.4) \\ 
+50 & 16 & 20.11 (4) & 16.71 (2.8) & \textbf{201.11 (81.3)} & 268.63 (1021.1) & \textbf{0.77}\\ 
+\hline 
+50 & 24 &20.61 (4) & 16.57 (2.5) & \textbf{199.36 (99.6)} & 242.14 (842.3) & \textbf{0.83} \\ 
+\hline 
+50 & 32 & 15.58 (6) & 11.46 (1.9) & 185.48 (127.3) & \textbf{137.85 (25.6)} & \textbf{0.76 } \\ 
+\hline 
+400 & 32 & 14.01 (3.6) & 11.22 (1.8) & 104.96 (4.8) & \textbf{103.51 (4.7)} & \textbf{0.76}\\ 
 \hline 
 \end{tabular} 
-\caption{Efficacité en prédiction de \textsc{CorReg} par rapport au LASSO suivant le LARS. $\sigma_j=0.01$}
+\caption{Efficacité en prédiction (echantillons de validation de 1 000 individus) de \textsc{CorReg} par rapport au LASSO suivant le LARS. $\tau$ est le taux de victoires (ou égalité) de \textsc{CorReg}, $\sigma_j=0.01$ et $\sigma_Y=10$.} \label{tableMSEsim}
 \end{table}
+Le tableau \ref{tableMSEsim} montre que \textsc{CorReg} est égal au LASSO en l'absence de structure et le bat quand les corrélations sont fortes. On note également que les modèles proposés par 
+\textsc{CorReg} sont parfois plus simples que le vrai modèle (15 variables) car celui-ci possède une forme réduite (estimée par \textsc{CorReg}). ON retrouve également le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle, comme pour le LASSO.
 
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
 Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant interprétation physique :
