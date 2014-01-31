@@ -78,7 +78,7 @@ SEXP OLS(SEXP X,SEXP Y,SEXP intercept,SEXP sigma,SEXP Bic,SEXP methode){
         
         float log_likelihood = (-vecY.rows()/2)*log(2*PI*sumc*sumc)-nbsum/(2*sumc*sumc);
         
-        BicTheta=(-2*log_likelihood+(k*log(vecY.rows())));
+        BicTheta=(-2*log_likelihood+(k*float(log(vecY.rows()))));
         
       }
 
