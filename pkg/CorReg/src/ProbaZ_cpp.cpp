@@ -26,10 +26,10 @@ double ProbaZ_cpp(Eigen::MatrixXd Z){
    if(p2>0){
       for (int j = 0; j < p; j++){//pour chaque colonne de Z
         if(SumCol(j)>0){// si variable à gauche
-            logproba=logproba-log(R::choose((p-p2),SumCol(j)));
+            logproba=logproba-log(double(R::choose((p-p2),SumCol(j))));
         }
       }
-      logproba=logproba-log(p2)-p2*log(p-p2)-log(R::choose(p,p2));
+      logproba=logproba-log(double(p2))-double(p2)*log(double(p-p2))-log(double(R::choose(p,p2)));
    }  
    return logproba;
 }
