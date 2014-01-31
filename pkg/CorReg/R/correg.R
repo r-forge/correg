@@ -1,7 +1,5 @@
 #' Estimates the response variable using a structure
-#' @useDynLib CorReg
-#' @import Rcpp
-#' @import RcppEigen 
+#'  @import Rcpp
 #' @import Rmixmod
 #' @import lars
 #' @import elasticnet
@@ -9,6 +7,9 @@
 #' @import mclust 
 #' @import ridge
 #' @import MASS
+#' @import parcor
+# ' @import RcppEigen
+#' @useDynLib CorReg
 #' @export
 #' @param B the (p+1)xp matrix assiated to Z and that contains the parameters of the sub-regressions
 #' @param lambda parameter for elasticnet (quadratic penalty)
@@ -32,6 +33,7 @@
 #' @param prednew alternate optimisation for predictive
 #' @param nbalter number of alternance for prednew
 #' @param deltamin criterion to stop alternance
+#' 
 #' 
 correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, 
                 pred = TRUE,prednew=FALSE,

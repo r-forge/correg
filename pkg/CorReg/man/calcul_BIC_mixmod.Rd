@@ -3,7 +3,7 @@
 \title{calcul du BIC initial via package externe Mixmod (ou mclust)}
 \usage{
 calcul_BIC_mixmod(X = X, nbclustmax = 10, bla = FALSE, details = FALSE,
-  max = TRUE, mclust = TRUE)
+  max = TRUE, mclust = TRUE, nbini = 50)
 }
 \arguments{
   \item{X}{the dataset (matrix)}
@@ -20,6 +20,8 @@ calcul_BIC_mixmod(X = X, nbclustmax = 10, bla = FALSE, details = FALSE,
   according to the number of individuals in the dataset}
 
   \item{mclust}{boolean. Use mclust instead of Rmixmod}
+
+  \item{nbini}{number of initial points for Rmixmod}
 }
 \description{
 calcul du BIC initial via package externe Mixmod (ou
