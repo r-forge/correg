@@ -61,7 +61,7 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 %--------------------------------------------------------------------------
 
 \section{Décorrélation par modèle génératif}
-	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs. La régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ qui explose si les colonnes de $X$ sont linéairement corrélées.
+	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs. La régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ qui explose si les colonnes de $X$ sont linéairement corrélées. Les méthodes de sélection comme le LASSO~\cite{tibshiranilasso} muni du LAR~\cite{efron2004least} sont également touchées par ce problème de corrélation~\cite{Zhao2006MSC}.
 		
 		On suppose le modèle génératif suivant :
 	\begin{eqnarray}
