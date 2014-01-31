@@ -73,7 +73,7 @@ Où $B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-r
 On suppose $I_1\cap I_2=\emptyset$, $i.e.$ les variables dépendantes dans $X$ n'en expliquent pas d'autres.
 On note $p_2= \sharp I_2$ et $p_1=(p_1^1,\dots,p_1^{p_2})$.
 	
-On a donc rendu explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(p_2,I_2,p_1,I_1)$.	
+On a donc rendu explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(I_1,I_2,p_1,p_2)$.	
 Cette structure est identifiable au sens de la complexité de la structure et des mélanges gaussiens via un critère de type BIC sous certaines conditions simples. Du point de vue de l'interprétation, les cas non identifiables (triviaux) sont équivalents et ne posent pas de problème.
 
 On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
@@ -89,7 +89,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		\end{equation}
 		estimateur sans biais \cite{saporta2006probabilites} avec :
 		\begin{eqnarray}
-			\Var[\hat{\alpha}_{1}|X,S]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{1} X_{1})^{-1} \\
+			\Var[\hat{\alpha}_{1}|X,S]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{1} X_{1})^{-1}
 		\end{eqnarray}
 		La variance est réduite (retrait des corrélations et réduction de la dimension améliorent drastiquement le conditionnement) pour les faibles valeurs de $\sigma_j$ $i.e.$ les fortes corrélations.					
 		
@@ -142,70 +142,29 @@ Pour chaque simulation présentée ci-dessous, chacune des configurations à ét
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_2$ & $\sum_{j=1}^{p}\sharp(I_1^j \cap \hat{I_1^j})$ & $\sum_{j=1}^{p}\sharp(\hat{I_1^j} \setminus I_1^j)$ & $\sum_{j=1}^{p}\sharp(I_1^j \setminus \hat{I_1^j})$ & $p_2-\hat{p_2}$ & $\sharp(I_2 \cap \hat{I_2})$ & $\sharp(\hat{I_2} \setminus I_2)$ \\ 
+$n$ & $p_2$ & bon gauche & faux gauche    & MSEcompl  &    MSEexpl & MSEexplvraiZ\\ 
 \hline  
-30 & 0 & 0 (0) & 0 (0) & 0 (0) & 0 (0) & 0 (0) & 0 (0) \\
+30 & 0 & 0 (0) & 0.06 (0.2) & 2.6084e+07 (1.5e+07) & 2.616e+07  (1.5e+07) &  2.6084e+07  (1.5e+07) \\
 \hline 
-30 & 8 & 7.1 (3) & 15.13 (7.8) & 16.74 (3.1) & 3.44 (1) & 2.64 (1.2) & 1.92 (1.1)\\ 
+30 & 16 &  9.8 (1.7) & 6.17 (1.7) & 3019282.1 (4.5e+06) & 10688.46 (5.8e+04) & 663.35 (5.2e+02)\\ 
 \hline 
-30 & 16 &  11.41 (4.2) & 28.39 (11.1) & 36.25 (4.2) & 8.77 (1.2) & 4.72 (1.5) & 2.51 (1.4)\\ 
-\hline 
-30 & 24 & 17.49 (5) & 42.69 (16.1) & 54.07 (5.1) & 14.03 (1.3) & 7.78 (2) & 2.19 (1.5)\\ 
-\hline 
-30 & 32 &19.89 (5.6) & 69.28 (14.8) & 75.5 (5.6) & 18.48 (1.3) & 12.35 (1.4) & 1.17 (1) \\ 
+30 & 32 &22.21 (1.4e+00) & 5.21 (1.4e+00) & 466.81 (6.1e+02) & 160.46 (4.0e+01) & 143.55 (2.6e+01) \\ 
 \hline 
 \hline 
 50 & 0 &   &&&&&\\ 
 \hline 
-50 & 8 & &&&&&\\ 
-\hline 
 50 & 16 & &&&&&\\ 
 \hline 
-50 & 24 & &&&&&\\ 
-\hline 
 50 & 32 & &&&&&\\ 
-\hline 
+\hline \hline
 400 & 32 & &&&&&\\ 
-\hline 
-\end{tabular} 
-\caption{Comparaison de la vraie structure et de celle proposée par \textsc{CorReg}. Les variables dépendentes sont bien choisies mais les sous-régressions sont bruitées. Ici, les $p_1^j$ non nuls valent tous 3}
-\end{table}
-
-
-
-\begin{table}[h!]
-\centering 
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline 
-$n$ & $p_2$ & $\sharp$ LARS & $\sharp$ \textsc{CorReg} &LARS & \textsc{CorReg} & $\tau$ \\ 
-\hline  
-30 & 0 & 25.49 (3) & 25.49 (3) & \textbf{472 385 (1 327 228)} & \textbf{472 385 (1 327 228)} & \textbf{1} \\
-\hline 
-30 & 8 & 20.88 (6.3) & 19.4 (6.8) & \textbf{519.18 (401.4)} & 864.18 (2093.9) &\textbf{ 0.57}  \\ 
-\hline 
-30 & 16 & 23.83 (3.8) & 18.81 (3.6) & 25 671.62 (191 415.1) & \textbf{18 843.54 (184 681.9)} & \textbf{0.82} \\ 
-\hline 
-30 & 24 & 22.34 (4.3) & 16.91 (2.3) & 1 163.62 (3 944.4) & \textbf{920.79 (4 206.2)} & \textbf{0.8} \\ 
-\hline 
-30 & 32 & 17.83 (6.4) & 12.1 (2.5) & 779.32 (1494.9) & \textbf{201.41 (95.5)} & \textbf{0.81}\\ 
-\hline 
-\hline 
-50 & 0 & 24.53 (4.7) & 24.53 (4.7) & \textbf{247.05 (121.9)} & \textbf{247.05 (121.9)} & \textbf{1}  \\ 
-\hline 
-50 & 8 & 16.31 (6.1) & 13.71 (3.9) & \textbf{183.38 (73.1)} & 1808.79 (14 178.1) & \textbf{0.66}\\ 
-\hline 
-50 & 16 & 20.11 (4) & 16.71 (2.8) & \textbf{201.11 (81.3)} & 268.63 (1021.1) & \textbf{0.77}\\ 
-\hline 
-50 & 24 &20.61 (4) & 16.57 (2.5) & \textbf{199.36 (99.6)} & 242.14 (842.3) & \textbf{0.83} \\ 
-\hline 
-50 & 32 & 15.58 (6) & 11.46 (1.9) & 185.48 (127.3) & \textbf{137.85 (25.6)} & \textbf{0.76 } \\ 
-\hline 
-\hline 
-400 & 32 & 14.01 (3.6) & 11.22 (1.8) & 104.96 (4.8) & \textbf{103.51 (4.7)} & \textbf{0.76}\\ 
 \hline 
 \end{tabular} 
 \caption{Efficacité en prédiction (echantillons de validation de 1 000 individus) de \textsc{CorReg} par rapport au LASSO suivant le LARS. $\tau$ est le taux de victoires (ou égalité) de \textsc{CorReg}, $\sigma_j=0.01$ et $\sigma_Y=10$.} \label{tableMSEsim}
 \end{table}
+
+
+
 Le tableau \ref{tableMSEsim} montre que \textsc{CorReg} est égal au LASSO en l'absence de structure et le bat quand les corrélations sont fortes. On note également que les modèles proposés par 
 \textsc{CorReg} sont parfois plus simples que le vrai modèle (15 variables) car celui-ci possède une forme réduite (estimée par \textsc{CorReg}). ON retrouve également le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle, comme pour le LASSO.
 
