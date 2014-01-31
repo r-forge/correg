@@ -155,10 +155,10 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$& 
 \hline 
 50 & 32 & 19.13 & 2.24 & 179.89 & 138.96 & 120.21 \\ 
 \hline \hline
-400 & 32 &23.62 & 1.17 & 105 & 103.68 & 102.52 \\ 
+400 & 32 & 23.66 & 1.13 & 105.38 & 103.88 & 102.81\\ 
 \hline 
 \end{tabular} 
-\caption{$Y$ ne dépend pas de $X_2$.\textsc{CorReg} gagne même en se trompant un peu sur $S$.} \label{tableMSEsimp20}
+\caption{$Y$ ne dépend pas de $X_2$.\textsc{CorReg} gagne même en se trompant un peu sur $S$.} \label{tableMSEsimdroite}
 \end{table}
 
 \begin{table}
@@ -167,23 +167,44 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$& 
 \hline 
 $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} vrai $S$\\ 
 \hline 
-30 & 16 &  &  & &   &  \\ 
+30 & 16 & 8.48 & 4.88 & 3 511 185.23 & 10 686.62 & 738.89 \\ 
 \hline 
-30 & 32 &  &  & &   & \\ 
+30 & 32 & 16.89 & 2.78 & 565.51 & 189.54 & 139.24\\ 
 \hline 
 \hline 
-50 & 0 &  &  & &   & \\ 
+50 & 0 & 0 & 0 & 529.94 & 529.94 & 529.94 \\ 
 \hline 
-50 & 16 &  &  & &   &\\ 
+50 & 16 & 8.89 & 5.4 & 347.59 & 233.99 & 197.95\\ 
 \hline 
-50 & 32 &  &  & &   &\\ 
+50 & 32 & 18.95 & 2.44 & 163.7 & 139.39 & 121.56 \\ 
 \hline \hline
-400 & 32 &  &  & &   & \\ 
+400 & 32 & 23.49 & 1.06 & 104.52 & 103.6 & 102.67\\ 
 \hline 
 \end{tabular} 
 \caption{$Y$  dépend  de $X$ entier.} \label{tableMSEsimtout}
 \end{table}
 
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|}
+\hline 
+$n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ & \textsc{CorReg} vrai $S$\\ 
+\hline 
+30 & 16 & 8.29 & 5 & 5 851.45 & 559.58 & 340.29\\ 
+\hline 
+30 & 32 & 17 & 2.59 & 893 & 196.01 & 135.78 \\ 
+\hline 
+\hline 
+50 & 16 &  8.98 & 5.19 & 201.56 & 164.58 & 162.49\\ 
+\hline 
+50 & 32 & 19.05 & 2.32 & 172.93 & 136.77 & 121.19\\ 
+\hline \hline
+400 & 32 & 23.51 & 1.09 & 104.49 & 103.02 & 102.26 \\ 
+\hline 
+\end{tabular} 
+\caption{$Y$  dépend  de $X_2$ uniquement. cas normalement défavorable à \textsc{CorReg}.} \label{tableMSEsimgauche}
+\end{table}
 
 
 Les tableaux \ref{tableMSEsimp20} et \ref{tableMSEsimtout} montrent que \textsc{CorReg} est égal au LASSO en l'absence de structure et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle, comme pour le LASSO.
