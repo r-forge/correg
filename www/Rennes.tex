@@ -61,7 +61,7 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 %--------------------------------------------------------------------------
 
 \section{Décorrélation par modèle génératif}
-	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs. La régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ qui explose si les colonnes de $X$ sont linéairement corrélées. Les méthodes de sélection comme le LASSO~\cite{tibshiranilasso} muni du LAR~\cite{efron2004least} sont également touchées par ce problème de corrélation~\cite{Zhao2006MSC}.
+	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs. La régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ qui explose si les colonnes de $X$ sont linéairement corrélées. Les méthodes de sélection comme le LASSO [5] muni du LAR [1] sont également touchées par ce problème de corrélation [6].
 		
 		On suppose le modèle génératif suivant :
 	\begin{eqnarray}
@@ -87,7 +87,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		\begin{equation}
 			\hat{\alpha}_{1} = (X'_{1} X_1)^{-1}X'_{1}Y \textrm{ et } \hat{\alpha}_{2} = 0
 		\end{equation}
-		estimateur sans biais \cite{saporta2006probabilites} avec :
+		estimateur sans biais [4] avec :
 		\begin{eqnarray}
 			\Var[\hat{\alpha}_{1}|X,S]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{1} X_{1})^{-1}
 		\end{eqnarray}
@@ -107,7 +107,7 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 	 	
 	%	\subsection{Pénalisation de la vraisemblance}
 	
-		Le choix de structure s'appuie sur $BIC^*$, vraisemblance pénalisée de la structure à la manière du critère BIC~\cite{BIChuard}, mais en prenant comme loi a priori sur $S$ une loi uniforme hiérarchique $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$ plutôt qu'une loi uniforme simple. 
+		Le choix de structure s'appuie sur $BIC^*$, vraisemblance pénalisée de la structure à la manière du critère BIC [3], mais en prenant comme loi a priori sur $S$ une loi uniforme hiérarchique $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$ plutôt qu'une loi uniforme simple. 
 		\begin{eqnarray}
 		P(S|X)&\propto &P(X|S)P(S) \\
 %		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
@@ -131,12 +131,12 @@ On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 		La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire.
 		Le résultat obtenu est la meilleure structure rencontrée en termes de $BIC^*$ (vraisemblance pénalisée). 
  
-L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la méthode du Graphical Lasso\cite{friedman2008sparse}.		
+L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la méthode du Graphical Lasso [2].		
 La grande dimension de l'espace parcouru rend préférable  (pour un temps de calcul égal) l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (permet aussi la parallélisation).
 	
 	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien. On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC.
 \section{Résultats}	
-Pour chaque simulation présentée ci-dessous, chacune des configurations à été simulée $100$ fois. Les tableaux affichent les moyennes observées et écarts-types. Pour l'ensemble des simulations $p=40$, $\sigma_Y=10$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{i,j}$ suivent la même loi de poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode $LASSO$ dans les cas où celle-ci est en difficulté (corrélations 2 à 2) donc les $p_1^j$ non nuls valent tous 1. \textsc{CorReg}  a  travaillé avec $K$ et $p_1$ libres. $Y$ dépend de $15$ variables choisies uniformément dans $X$ sans tenir compte de la structure.
+Pour les simulations présentées dans les tableaux \ref{tableMSEsimdroite}, \ref{tableMSEsimtout} et \ref{tableMSEsimgauche}, chacune des configurations à été simulée $100$ fois. Les tableaux affichent le nombre de variable dépendantes trouvées, le nombre de variables jugées dépendantes à tort et les erreures moyennes en prédiction (MSE) sur $Y$ à partir d'échantillons de validation de 1 000 individus. Pour l'ensemble des simulations $p=40$, $\sigma_Y=10$, $\sigma=0.001$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{i,j}$ suivent la même loi de poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode $LASSO$ dans les cas où celle-ci est en difficulté (corrélations 2 à 2) donc les $p_1^j$ non nuls valent tous 1 dans le vrai modèle. \textsc{CorReg}  a  travaillé avec $K$,$p_2$ et $p_1$ libres. 
 
 \begin{table}
 \centering
@@ -207,7 +207,7 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ &
 \end{table}
 
 
-Les tableaux \ref{tableMSEsimp20} et \ref{tableMSEsimtout} montrent que \textsc{CorReg} est égal au LASSO en l'absence de structure et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle, comme pour le LASSO.
+Les résultats (tableaux 1 à 3) montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle, comme pour le LASSO.
 
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
 Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant interprétation physique :
@@ -219,7 +219,7 @@ Vrai modèle physique (non linéaire) :
 	 Largeur = $\frac{\textrm{débit}}{\textrm{vitesse } \times \textrm{ épaisseur}}$ (Mais dans ce cas précis l'épaisseur est constante)
 			\end{itemize}
 			
-			D'autres sous-régressions traduisent des modèles physiques qui régulent le process...
+			D'autres sous-régressions traduisent des modèles physiques qui régulent le process industriel sur la base d'expertises métallurgiques.
 \\
 
 Exemple de régression sur une variable réponse dans le cadre des données réelles :
@@ -249,16 +249,34 @@ Exemple de régression sur une variable réponse dans le cadre des données rée
 	
 
 \section*{Bibliographie}
-\bibliography{biblio}{}
-\bibliographystyle{plain}
-à recopier dans le bon ordre comme demandé ci-dessous.
+%\bibliography{biblio}{}
+%\bibliographystyle{plain}
+%à recopier dans le bon ordre comme demandé ci-dessous.
 
-\noindent [1] Auteurs (année), Titre, revue, localisation.
+\noindent [1] B. Efron, T. Hastie, I. Johnstone, and R. Tibshirani (2004). Least angle regression. {\it The
+Annals of statistics}, 32(2):407-499.
 
-\noindent [2] Achin, M. et Quidont, C. (2000), {\it Théorie des
-Catalogues}, Editions du Soleil, Montpellier.
+\noindent [2] J. Friedman, T. Hastie, and R. Tibshirani (2008). Sparse inverse covariance estimation with
+the graphical lasso.  {\it Biostatistics}, 9(3):432-441 .
 
-\noindent [3] Noteur, U. N. (2003), Sur l'intér\^et des
-résumés, {\it Revue des Organisateurs de Congrès}, 34, 67--89.
+\noindent [3] E. Lebarbier and T. Mary-Huard (2006). Une introduction au critère bic: fondements
+théoriques et interprétation.  {\it Journal de la SFdS }, 147(1):39-57.
+
+\noindent [4] G. Saporta (2006). Probabilités, analyse des données et statistique.  {\it Editions Technip}.
+
+\noindent[5] R. Tibshirani (1996). Regression shrinkage and selection via the lasso.  {\it Journal of the Royal
+Statistical Society}. Series B (Methodological), pages 267-288.
+
+\noindent [6] Peng Zhao and Bin Yu (December 2006). On model selection consistency of lasso. {\it J. Mach. Learn.
+Res.} 7:2541-2563.
+
+%
+%\noindent [1] Auteurs (année), Titre, revue, localisation.
+%
+%\noindent [2] Achin, M. et Quidont, C. (2000), {\it Théorie des
+%Catalogues}, Editions du Soleil, Montpellier.
+%
+%\noindent [3] Noteur, U. N. (2003), Sur l'intér\^et des
+%résumés, {\it Revue des Organisateurs de Congrès}, 34, 67--89.
 \end{document}
 
