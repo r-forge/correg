@@ -8,7 +8,7 @@
 #' @import ridge
 #' @import MASS
 #' @import parcor
-# ' @import RcppEigen
+#' @import RcppEigen
 #' @useDynLib CorReg
 #' @export
 #' @param B the (p+1)xp matrix assiated to Z and that contains the parameters of the sub-regressions
