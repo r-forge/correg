@@ -6,7 +6,8 @@
 #' @param details boolean to give the details of the mixtures found
 #' @param max boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset
 #' @param mclust boolean. Use mclust instead of Rmixmod
-calcul_BIC_mixmod<-function(X=X,nbclustmax=10,bla=FALSE,details=FALSE,max=TRUE,mclust=TRUE){
+#' @param nbini number of initial points for Rmixmod
+calcul_BIC_mixmod<-function(X=X,nbclustmax=10,bla=FALSE,details=FALSE,max=TRUE,mclust=TRUE,nbini=50){
   #X est la matrice sans constante
   n=nrow(X)
   if(max){
@@ -21,7 +22,7 @@ calcul_BIC_mixmod<-function(X=X,nbclustmax=10,bla=FALSE,details=FALSE,max=TRUE,m
   if(mclust==F){#si on veut utiliser mixmod
     for (i in 1:p){
       vect=X[!is.na(X[,i]),i]#donnees observees seulement
-      res=mixmodCluster(data=vect,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
+      res=mixmodCluster(data=vect,criterion="BIC",nbCluster=c(1:nbclustmax),strategy=mixmodStrategy(nbTryInInit=nbini))["bestResult"]
       if(bla){print(res)}
       nbclust[i]=res[1]
       BIC_vect[i]=res[3]

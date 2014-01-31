@@ -16,5 +16,5 @@ Imports:
     Rcpp,
     Rmixmod,
     lars,
-    elasticnet,Matrix,mclust,ridge,MASS,parcor
+    elasticnet,Matrix,mclust,ridge,MASS,parcor,RcppEigen
 LinkingTo: Rcpp, RcppEigen
