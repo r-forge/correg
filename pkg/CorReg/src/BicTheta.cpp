@@ -60,7 +60,7 @@ BEGIN_RCPP
         
     float log_likelihood = (-vecY.rows()/2)*log(2*PI*sumc*sumc)-nbsum/(2*sumc*sumc);
         
-    float BicTheta=(-2*log_likelihood+(k*log(vecY.rows())));
+    float BicTheta=(-2*log_likelihood+(k*log(float(vecY.rows()))));
   
   
     return List::create(

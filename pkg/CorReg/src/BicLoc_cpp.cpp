@@ -68,7 +68,7 @@ double BicLoc_cpp(Eigen::MatrixXd X,Eigen::MatrixXd Y,bool intercept,int methode
         double nbsum=Sum(0,0);
         
         double log_likelihood = (-Y.rows()/2)*log(2*PI*sumc*sumc)-nbsum/(2*sumc*sumc);
-        BicTheta=(-2*log_likelihood+(k*log(Y.rows())));
+        BicTheta=(-2*log_likelihood+(k*log(double(Y.rows()))));
       }   
 return BicTheta;
 }
