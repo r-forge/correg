@@ -47,16 +47,16 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 
 %--------------------------------------------------------------------------
 
-{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives indépendantes. Les variables présentes dans les bases de données d'origine industrielle sont souvent très fortement corrélées (de par le process, diverses lois physiques, etc). Le modèle génératif proposé ici consiste à expliciter les corrélations présentes sous la forme d'une structure de sous-régressions linéaires. La structure est ensuite utilisée pour obtenir un modèle parcimonieux libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (\textsc{CorReg}) permet la mise en oeuvre de cette méthode. 
+{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives décorrélées, hypothèse souvent irréaliste pour les bases de données d'origine industrielle où de nombreuses corrélations sont dues au process, à des lois physiques, {\it etc}. Le modèle  proposé explicite les corrélations présentes sous la forme d'une famille de régressions linéaires entre covariables, permettant d'obtenir par marginalisation un modèle de régression parcimonieux libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (\textsc{CorReg}) permet la mise en oeuvre de cette méthode qui sera illustrée sur données simulées et sur données réelles issues de l'industrie sidérurgique.
 \smallskip
 
-{\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs, SEM (Structural Equation Model), \ldots
+{\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs, \ldots
 \bigskip\bigskip
 
 {\bf Abstract.} Linear regression generally suppose independence between the covariates. Datasets found in industrial context often contains many highly correlated covariates (due to the process, physcial laws, etc). The proposed generative model consists in explicit modeling of the correlations with a structure of sub-regressions between the covariates. This structure is then used to obtain a reduced model with independent covariates, easily interpreted, and compatible with any variable selection method. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) implements this new method.  
 \smallskip
 
-{\bf Keywords.} Regression, correlations, industry, variable selection, generative models, Structural Equation Model, \ldots
+{\bf Keywords.} Regression, correlations, industry, variable selection, generative models,  \ldots
 
 %--------------------------------------------------------------------------
 
@@ -203,7 +203,7 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ &
 400 & 32 & 23.51 & 1.09 & 104.49 & 103.02 & 102.26 \\ 
 \hline 
 \end{tabular} 
-\caption{$Y$  dépend  de $X_2$ uniquement. cas normalement défavorable à \textsc{CorReg}.} \label{tableMSEsimgauche}
+\caption{$Y$  dépend  de $X_2$ uniquement (cas normalement défavorable à \textsc{CorReg} ).} \label{tableMSEsimgauche}
 \end{table}
 
 
@@ -222,7 +222,7 @@ Vrai modèle physique (non linéaire) :
 			D'autres sous-régressions traduisent des modèles physiques qui régulent le process industriel sur la base d'expertises métallurgiques.
 \\
 
-Exemple de régression sur une variable réponse dans le cadre des données réelles :
+Exemple de régression sur une variable réponse dans le cadre de données réelles :
 \begin{figure}[!h]
 	\begin{minipage}[c]{.40\linewidth}
 			\includegraphics[width=200px]{figures/histcor_auchan.JPG} 
@@ -243,9 +243,9 @@ Exemple de régression sur une variable réponse dans le cadre des données rée
 	
 
 \section{Conclusion et perspectives}
-	\textsc{CorReg} est fonctionnel et disponible. L'outil a d'ores et déjà montré son efficacité sur de vraies problématiques de régression en entreprise.
-	La force de \textsc{CorReg} est la grande interprétabilité du modèle proposé, qui est constitué de plusieurs modèles simples (parcimonieux) et facilement accessibles aux non statisticiens (régressions linéaires) tout en luttant efficacement contre les problématiques de corrélations, omniprésentes dans l'industrie.
-	On note néanmoins le besoin d'élargir le champ d'application à la gestion des valeurs manquantes, très présentes dans l'industrie. Cet aspect est envisagé sérieusement pour la prochaine version de \textsc{CorReg}.
+	\textsc{CorReg} est fonctionnel et disponible sur R-forge. L'outil a d'ores et déjà montré son efficacité sur de vraies problématiques de régression en entreprise.
+	La force de \textsc{CorReg} est la grande interprétabilité du modèle proposé, qui est constitué de plusieurs modèles de régression simples et donc facilement accessibles aux non statisticiens (régressions linéaires) tout en luttant efficacement contre les problématiques de corrélations, omniprésentes dans l'industrie.
+	On note néanmoins le besoin d'élargir le champ d'application à la gestion des valeurs manquantes, très présentes dans l'industrie. Cet aspect est envisagé sérieusement pour la prochaine version de \textsc{CorReg}. En effet, le modèle génératif actuel permettrait cette nouvelle fonctionnalité sans hypothèse supplémentaire.
 	
 
 \section*{Bibliographie}
@@ -261,8 +261,6 @@ the graphical lasso.  {\it Biostatistics}, 9(3):432-441 .
 
 \noindent [3] E. Lebarbier and T. Mary-Huard (2006). Une introduction au critère bic: fondements
 théoriques et interprétation.  {\it Journal de la SFdS }, 147(1):39-57.
-
-\noindent [4] G. Saporta (2006). Probabilités, analyse des données et statistique.  {\it Editions Technip}.
 
 \noindent[5] R. Tibshirani (1996). Regression shrinkage and selection via the lasso.  {\it Journal of the Royal
 Statistical Society}. Series B (Methodological), pages 267-288.
