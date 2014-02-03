@@ -209,7 +209,7 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ &
 
 Les résultats (tableaux 1 à 3) montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle de régression en $Y$, comme pour le LASSO.
 
-On remarque que quand $p_2$ augmente le LASSO commence à se ressaisir car il y a de plus en plus de faux modèles proches du vrai en termes de prédiction. Le LASSO trouve donc par moment des modèles inconsistants en interprétation mais relativement corrects en prédiction. ATTENTION : dans le cadre industriel, l'interprétation du modèle mène à des actions sur le process et donc un modèle inconsistant en interprétation peut mener à des actions contre-productives (d'où l'importance de l'interprétabilité de \textsc{CorReg}). 
+On remarque que quand $p_2$ augmente le LASSO commence à se ressaisir car il y a de plus en plus de faux modèles proches du vrai en termes de prédiction. Le LASSO trouve donc par moment des modèles inconsistants en interprétation mais relativement corrects en prédiction. %ATTENTION : dans le cadre industriel, l'interprétation du modèle mène à des actions sur le process et donc un modèle inconsistant en interprétation peut mener à des actions contre-productives (d'où l'importance de l'interprétabilité de \textsc{CorReg}). 
 \section{Résultats sur données réelles}
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
 Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant une interprétation physique :
@@ -224,7 +224,7 @@ Vrai modèle physique (non linéaire) :
 			D'autres sous-régressions traduisent des modèles physiques qui régulent le process industriel sur la base d'expertises métallurgiques.
 \\
 
-Exemple de régression sur une variable réponse dans le cadre de données réelles :
+%Exemple de régression sur une variable réponse dans le cadre de données réelles :
 \begin{figure}[!h]
 	\begin{minipage}[c]{.40\linewidth}
 			\includegraphics[width=200px]{figures/histcor_auchan.JPG} 
@@ -273,6 +273,7 @@ Res.} 7:2541-2563.
 \noindent [6] Biernacki, C., Celeux, G., Govaert, G., \& Langrognet, F. (2006), Model-based cluster and discriminant analysis with the MIXMOD software, Computational Statistics \& Data Analysis, 51(2), 587-600.
 
 \noindent [7] McLachlan, G. J., et Basford, K. E. (1988), Mixture models : Inference and applications to clustering. {\it Statistics: Textbooks and Monographs, New York: Dekker }, 1988, 1.
+
 %
 %\noindent [1] Auteurs (année), Titre, revue, localisation.
 %
