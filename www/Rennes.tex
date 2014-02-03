@@ -142,7 +142,9 @@ L'ensemble de la méthode à été programmé dans un package R dénommé \texts
 %\begin{table}
 %\centering
 %\begin{tabular}{|c|c|c|c|c|c|c|c|}
-%\hline
+%\cline{3-7}
+% \multicolumn{2}{c|}{}  & \multicolumn{2}{c|}{Qualité de $\hat S$} & \multicolumn{3}{c|}{Qualité de prédiction (MSE)} \\
+%\hline 
 % \multicolumn{2}{c}{}  & \multicolumn{2}{|c |}{Qualité de $S$} & \multicolumn{3}{c|}{Qualité de prédiction (MSE)} \\
 %\hline 
 %$n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} vrai $S$\\ 
@@ -168,7 +170,7 @@ L'ensemble de la méthode à été programmé dans un package R dénommé \texts
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \cline{3-7}
- \multicolumn{2}{c|}{}  & \multicolumn{2}{c|}{Qualité de $S$} & \multicolumn{3}{c|}{Qualité de prédiction (MSE)} \\
+ \multicolumn{2}{c|}{}  & \multicolumn{2}{c|}{Qualité de $\hat S$} & \multicolumn{3}{c|}{Qualité de prédiction (MSE)} \\
 \hline 
 $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} vrai $S$\\ 
 \hline 
@@ -193,7 +195,7 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$& 
 \begin{table}
 \begin{tabular}{|c|c|c|c|c|c|c|c|}
 \cline{3-7}
- \multicolumn{2}{c|}{}  & \multicolumn{2}{c|}{Qualité de $S$} & \multicolumn{3}{c|}{Qualité de prédiction (MSE)} \\
+ \multicolumn{2}{c|}{}  & \multicolumn{2}{c|}{Qualité de $\hat S$} & \multicolumn{3}{c|}{Qualité de prédiction (MSE)} \\
 \hline 
 $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ & \textsc{CorReg} vrai $S$\\ 
 \hline 
@@ -209,16 +211,16 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ &
 400 & 32 & 23.51 & 1.09 & 104.49 & 103.02 & 102.26 \\ 
 \hline 
 \end{tabular} 
-\caption{$Y$  dépend  de $X_2$ uniquement (cas normalement défavorable à \textsc{CorReg}). Les corrélations suffisent à faire gagner \textsc{CorReg}} \label{tableMSEsimgauche}
+\caption{$Y$  dépend  de $X_2$ uniquement (cas normalement défavorable à \textsc{CorReg}). } \label{tableMSEsimgauche}
 \end{table}
 
 
-Les résultats (tableaux 1 et 2) montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle de régression en $Y$, comme pour le LASSO.
+Les résultats (tableaux 1 et 2) montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle de régression.% en $Y$, comme pour le LASSO.
 
 On remarque que quand $p_2$ augmente le LASSO commence à se ressaisir car il y a de plus en plus de faux modèles proches du vrai en termes de prédiction. Le LASSO trouve donc par moment des modèles inconsistants en interprétation mais relativement corrects en prédiction. %ATTENTION : dans le cadre industriel, l'interprétation du modèle mène à des actions sur le process et donc un modèle inconsistant en interprétation peut mener à des actions contre-productives (d'où l'importance de l'interprétabilité de \textsc{CorReg}). 
 \section{Résultats sur données réelles}
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
-Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant une interprétation physique :
+Certaines régressions obtenues décrivent des règles process, d'autres sont plus évidentes :
 \begin{itemize}
 	\item Moyenne = f (Min , Max , Sigma ) pour des données courbes
 	\item Largeur du produit = f (débit de fonte , vitesse de la coulée continue)	\\
@@ -226,27 +228,17 @@ Vrai modèle physique (non linéaire) :
 
 	 Largeur = $\frac{\textrm{débit}}{\textrm{vitesse } \times \textrm{ épaisseur}}$ (Mais dans ce cas précis l'épaisseur est constante)
 			\end{itemize}
-			
-			D'autres sous-régressions traduisent des modèles physiques qui régulent le process industriel sur la base d'expertises métallurgiques.
-\\
-
+		La figure 1 illustre (Corrélations et $R^2$ des régressions en $X$) les résultats obtenus lors d'une étude qualité chez ArcelorMittal. Le MSE obtenu par \textsc{CorReg} est $\mathbf{6.47\%}$ meilleur que celui du LASSO. Pour un échantillon d'apprentissage de 3 000 individus et un échantillon de validation (postérieur) de 847 individus. L'étude a été menée dans le cadre de la qualité produit. L'enjeu de ces quelques pourcents de gain se chiffre en dizaine de milliers d'euros annuels sans compter l'impact sur les parts de marché (non chiffrable mais bien plus considérable).
+	
 %Exemple de régression sur une variable réponse dans le cadre de données réelles :
-\begin{figure}[!h]
-	\begin{minipage}[c]{.40\linewidth}
-			\includegraphics[width=200px]{figures/histcor_auchan.JPG} 
+\begin{figure}[h!]
+	\begin{minipage}[c]{.5\linewidth}
+			\includegraphics[width=200px]{figures/correlexfoshist.png} 
 	\end{minipage} \hfill
-   \begin{minipage}[c]{.52\linewidth}
-		\begin{tabular}{|c|c|c|}
-		\hline 
-		  & MSE  & Variables retenues  \\ 
-		\hline
-		LASSO (lars) & 0.80 & 54 \\ 
-		\hline 
-		CorReg (et lars) & 0.53 & 24  \\ 
-		\hline 
-		\end{tabular} 
+   \begin{minipage}[c]{.5\linewidth}
+			\includegraphics[width=200px]{figures/histR2exfos.png} 
    \end{minipage}
-   \caption{Résultats obtenus sur données réelles : $n=117$ et $p=168$. L'erreur est réduite d'un tiers alors que la complexité du modèle est divisée par $2.5$.   }
+  \caption{Etude qualité ArcelorMittal avec $205$ variables process. $\hat{p_2}=82$.    }
 \end{figure}   
 	
 
