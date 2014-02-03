@@ -60,28 +60,43 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 
 %--------------------------------------------------------------------------
 
-\section{Décorrélation par modèle génératif}
-	La régression linéaire classique suppose l'indépendance des covariables. Les corrélations posent en effet des problèmes, tant au niveau de l'interprétation qu'en termes de variance des estimateurs. La régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ qui explose si les colonnes de $X$ sont linéairement corrélées. Les méthodes de sélection comme le LASSO [5] muni du LAR [1] sont également touchées par ce problème de corrélation [6].
+\section{Introduction}
+	La régression linéaire classique suppose la décorrélation des covariables, source de problèmes en termes de variance des estimateurs.En effet, pour une variable réponse$Y$ et un ensemble de covariables $X \in \mathcal{R}^p$, la régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ dégénéré si les colonnes de $X$ sont linéairement corrélées. Les méthodes de sélection comme le LASSO [4] muni du LAR [1] sont elles-mêmes touchées par ce problème de corrélation [5].
+		\\
 		
-		On suppose le modèle génératif suivant :
-	\begin{eqnarray}
-	Y_{|X,S}&=&XA+\varepsilon_Y= X_1A_{1}+X_2A_{2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}\\
-	\forall j \in I_2 : \  X^j_{|X^{I_1^j},S}&=&X^{I_1^j}B_{I_1^j}^j + \varepsilon_{j} \textrm{ avec } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2) \label{SR}\\
-    \forall j \notin I_2 : \ X^j &=& f(\theta_j) \textrm{ mélanges gaussiens orthogonaux à $k_j$ composantes} 	
-\end{eqnarray}
-Où $B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$,\\ $I_1=\{I_1^1,\dots,I_1^{p}\}$, $I_2=\{j |\sharp I_1^j>0 \}$, $X=(X^1,\dots,X^p)=(X_1,X_2)$ où $X_2=X^{I_2}$, $A=(A^1,\dots,A^p)=(A_1,A_2)$ où $A_2=A^{I_2}$.\\
-On suppose $I_1\cap I_2=\emptyset$, $i.e.$ les variables dépendantes dans $X$ n'en expliquent pas d'autres.
-On note $p_2= \sharp I_2$ et $p_1=(p_1^1,\dots,p_1^{p_2})$.
+		Notre idée est de modéliser explicitement les corrélations présentes entre covariables sous la forme d'une famille de régression entre celles-ci. Nous présenterons donc le modèle génératif associé et l'algorithme MCMC permettant de choisir la famille de régression à utiliser avant d'illustrer l'efficacité de la méthode sur des données simulées puis sur des données réelles.
+		
+\section{Modèle supprimant les co-variables corrélées}		
+	On suppose le modèle génératif suivant :
 	
-On a donc rendu explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(I_1,I_2,p_1,p_2)$.	
-Cette structure est identifiable au sens de la complexité de la structure et des mélanges gaussiens via un critère de type BIC sous certaines conditions simples. Du point de vue de l'interprétation, les cas non identifiables (triviaux) sont équivalents et ne posent pas de problème.
+	\begin{itemize}
+		\item Régression principale :
+			 \begin{equation}
+			 	Y_{|X,S}=XA+\varepsilon_Y= X_1A_{1}+X_2A_{2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}
+			 \end{equation}
+		\item Famille de $p_2$ régressions entre covariables corrélées :
+			\begin{equation}
+			\forall j \in I_2 : \  X^j_{|X_1,S}=X_1B_{1}^j + \varepsilon_{j} \textrm{ avec } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2) \label{SR}
+			\end{equation}
+		\item Mélanges gaussiens indépendants pour les covariables non corrélées :
+			\begin{equation}
+				\forall j \notin I_2 : \ X^j \sim \sum_{k=1}^{k_j}\pi_k\mathcal{N}(\mu_{k_j},\sigma_{k_j}^2)
+			\end{equation}
+	\end{itemize}
+	
+Où %$B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$,\\ 
+$I_1=\{I_1^1,\dots,I_1^{p}\}$ est le vecteur des indices des variables à droite dans (\ref{SR}) , $I_2=\{j |\sharp I_1^j>0 \}$ est l'ensemble des indices des variables corrélées à gauche dans (\ref{SR}). On a donc une partition des données $X=(X_1,X_2)$ où $X_2=X^{I_2}$ et $X_1=X\setminus X_2$(pour alléger les notations).\\
+On suppose $I_1\cap I_2=\emptyset$, $i.e.$ les variables dépendantes dans $X$ n'en expliquent pas d'autres.
+On note $p_2= \sharp I_2$ le nombre de régressions entre covariables et $p_1=(p_1^1,\dots,p_1^{p_2})$.
+	
+On a ainsi rendu explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(I_1,I_2,p_1,p_2)$.	
+Ce modèle génératif est identifiable sous certaines conditions simples (sur les $k_i$) non détaillées ici.
 
 On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
 \begin{eqnarray}
 	Y_{|X,S}&=&X_1 (A_{1}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y 
 					= X_1\alpha_{1}+ \varepsilon_{\alpha}=X\alpha+ \varepsilon_{\alpha} \label{Trueexpl} 			
 \end{eqnarray}
-\section{Estimateur}
 		\textsc{CorReg} réduit la variance de l'estimateur en estimant $Y$ seulement à partir de $X^{I_1}$, sachant (\ref{SR}) et (\ref{Trueexpl}).
 			On a ainsi : 
 		\begin{equation}
