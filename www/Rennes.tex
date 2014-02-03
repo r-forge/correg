@@ -47,13 +47,13 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 
 %--------------------------------------------------------------------------
 
-{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives décorrélées, hypothèse souvent irréaliste pour les bases de données d'origine industrielle où de nombreuses corrélations sont dues au process, à des lois physiques, {\it etc}. Le modèle  proposé explicite les corrélations présentes sous la forme d'une famille de régressions linéaires entre covariables, permettant d'obtenir par marginalisation un modèle de régression parcimonieux libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est déterminée à l'aide d'un algorithme de type MCMC. Un package R (\textsc{CorReg}) permet la mise en oeuvre de cette méthode qui sera illustrée sur données simulées et sur données réelles issues de l'industrie sidérurgique.
+{\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives décorrélées, hypothèse souvent irréaliste pour les bases de données d'origine industrielle où de nombreuses corrélations sont dues au process, à des lois physiques, {\it etc}. Le modèle  proposé explicite les corrélations présentes sous la forme d'une famille de régressions linéaires entre covariables, permettant d'obtenir par marginalisation un modèle de régression parcimonieux libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est estimée à l'aide d'un algorithme de type MCMC. Un package R (\textsc{CorReg}) permet la mise en oeuvre de cette méthode qui sera illustrée sur données simulées et sur données réelles issues de l'industrie sidérurgique.
 \smallskip
 
 {\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs, \ldots
 \bigskip\bigskip
 
-{\bf Abstract.} Linear regression generally suppose independence between the covariates. Datasets found in industrial context often contains many highly correlated covariates (due to the process, physcial laws, etc). The proposed generative model consists in explicit modeling of the correlations with a structure of sub-regressions between the covariates. This structure is then used to obtain a reduced model with independent covariates, easily interpreted, and compatible with any variable selection method. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) implements this new method.  
+{\bf Abstract.} Linear regression generally suppose to have decorrelated covariates. This hypothesis is often irrealist with industrial datasets that contains many highly correlated covariates (due to the process, physcial laws,  {\it etc}). The proposed generative model consists in explicit modeling of the correlations with a family of linear regressions between the covariates permitting to obtain by marginalization a parsimonious correlation-free regression model, easily understandable and compatible with variable selection methods. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) implements this new method which will be illustrated on both simulated datasets and real-life datasets from steel industry.
 \smallskip
 
 {\bf Keywords.} Regression, correlations, industry, variable selection, generative models,  \ldots
@@ -92,66 +92,55 @@ On note $p_2= \sharp I_2$ le nombre de régressions entre covariables et $p_1=(p
 On a ainsi rendu explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(I_1,I_2,p_1,p_2)$.	
 Ce modèle génératif est identifiable sous certaines conditions simples (sur les $k_i$) non détaillées ici.
 
-On remarque que (\ref{MainR}) et (\ref{SR}) impliquent :
+On remarque que (\ref{MainR}) et (\ref{SR}) impliquent par simple intégration sur $X_2$, un modèle de régression en $Y$ s'exprimant uniquement en fonction des variables non corrélées $X_1$ :
 \begin{eqnarray}
 	Y_{|X,S}&=&X_1 (A_{1}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y 
-					= X_1\alpha_{1}+ \varepsilon_{\alpha}=X\alpha+ \varepsilon_{\alpha} \label{Trueexpl} 			
+					= X_1\alpha_{1}+ \varepsilon_{\alpha} \label{Trueexpl} 			
 \end{eqnarray}
-		\textsc{CorReg} réduit la variance de l'estimateur en estimant $Y$ seulement à partir de $X^{I_1}$, sachant (\ref{SR}) et (\ref{Trueexpl}).
-			On a ainsi : 
-		\begin{equation}
-			\hat{\alpha}_{1} = (X'_{1} X_1)^{-1}X'_{1}Y \textrm{ et } \hat{\alpha}_{2} = 0
-		\end{equation}
-		estimateur sans biais [4] avec :
-		\begin{eqnarray}
-			\Var[\hat{\alpha}_{1}|X,S]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{1} X_{1})^{-1}
-		\end{eqnarray}
-		La variance est réduite (retrait des corrélations et réduction de la dimension améliorent drastiquement le conditionnement) pour les faibles valeurs de $\sigma_j$ $i.e.$ les fortes corrélations.					
 		
-		Le modèle complet et le nôtre prédisent tous les deux $Y$ sans biais (vrai modèle). La décorrélation se fait au prix d'un bruit blanc supplémentaire $\sum_{j \in I_2}\varepsilon_{j}A_{j} $ qui est d'autant plus faible que les corrélations sont fortes.
-	\\	
-	Ce nouveau modèle consiste en une régression linéaire classique qui peut donc bénéficier des outils de sélection de variables au même titre que le modèle complet.			
+L'estimateur classique du Maximum de Vraisemblance de $\alpha$ est sans biais et s'exprime par	
+\begin{eqnarray}
+	\hat{\alpha}_{1}&=& (X'_{1} X_1)^{-1}X'_{1}Y \textrm{ et sa matrice de variance} \\
+	\Var[\hat{\alpha}_{1}|X,S]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{1} X_{1})^{-1}
+\end{eqnarray}
+		peut être notablement mieux conditionnée que celle de $\hat A$ initial.				
+		
+		
+	En outre, ce nouveau modèle réduit consiste en une régression linéaire classique qui peut donc bénéficier des outils de sélection de variables au même titre que le modèle complet.			
 		 \\		
-		 La structure explicite entre les variables permet de mieux comprendre les phénomènes en jeu et la parcimonie du modèle facilite son interprétation.		
+		 Notons enfin que la structure explicite entre les variables permet de mieux comprendre les phénomènes en jeu et la parcimonie du modèle facilite son interprétation. 
+\\ 
 
-		En ajoutant une étape de sélection de variable on obtient deux types de $0$ : ceux de corrélation, issus de la structure et qui sont à interpréter comme des $0$ de redondance d'information (qui ne signifient donc en rien l'indépendance avec $Y$) et les $0$ de sélection, issus de l'éventuelle méthode de sélection de variables (type LASSO) et qui sont à interpréter comme l'indépendance entre la variable explicative concernée et la variable réponse.
-			\\
-		Le modèle obtenu est donc sans biais de prédiction pour $Y$, parcimonieux et consistant en interprétation.	
+		\textbf{\underline{Remarque}} : En ajoutant une étape de sélection de variables on obtient ainsi deux types de $0$ : ceux issus de l'étape de décorrélation et ceux issus de cette éventuelle étape de sélection de type LASSO.
 		
-\section{Recherche de structure}
+\section{Estimation de la structure de corrélation}
 	 	
 	%	\subsection{Pénalisation de la vraisemblance}
 	
-		Le choix de structure s'appuie sur $BIC^*$, vraisemblance pénalisée de la structure à la manière du critère BIC [3], mais en prenant comme loi a priori sur $S$ une loi uniforme hiérarchique $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$ plutôt qu'une loi uniforme simple. 
+		Le choix de structure s'appuie sur un critère noté $BIC^*$ et qui correspond à la vraisemblance pénalisée de la structure à la manière du critère BIC [3], mais en prenant comme loi {\it a priori} sur $S$ une loi uniforme hiérarchique $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$ plutôt qu'une loi uniforme simple. On a donc :
 		\begin{eqnarray}
-		P(S|X)&\propto &P(X|S)P(S) \\
+		%P(S|X)&\propto &P(X|S)P(S) \\
 %		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
 		%&=&BIC +\ln(P(S))+cste \\
 		BIC^*&=&BIC +\ln(P(S)) \label{Bicstar}
 	\end{eqnarray}	
-	L'équiprobabilité ainsi supposée des $p_2$ et $p_1^j$ vient pénaliser davantage la compléxité sous l'hypothèse $p_2<\frac{p}{2}$ (qui devient alors une contrainte supplémentaire dans l'algorithme de recherche). 
+	L'équiprobabilité ainsi supposée des $p_2$ et $p_1^j$ vient pénaliser davantage la compléxité sous l'hypothèse $p_2<\frac{p}{2}$ , hypothèse réaliste sur le nombre de régressions entre covariables. La recherche du meilleur $S$ selon $BIC^*$ n'est pas un problème simple et on va s'appuyer sur un algorithme MCMC.
 	On a
 
-	A chaque étape de l'algorithme MCMC, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S}$ de $p$ candidats (le package \textsc{CorReg} permet à l'utilisateur de choisir parmi plusieurs types de voisinage).
-		
-	On fait l'approximation suivante : 
-	\begin{equation}
-		P(S|X)\approx \exp(BIC^*(S))
-	\end{equation}
-	On définit alors
+	A chaque étape de l'algorithme, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S}$ %de $p$ candidats (le package \textsc{CorReg} permet à l'utilisateur de choisir parmi plusieurs types de voisinage).
+		et donc la fonction de transition est guidée par $BIC^*$ de la façon suivante :	
 	\begin{eqnarray}
-			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=& \frac{1}{p} \sum_{j=1}^p \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S}\} }\frac{\exp(\frac{-1}{2} BIC(\tilde{S}))}{\sum_{S_l\in \mathcal{V}_{S}}\exp(\frac{-1}{2} BIC(S_l))} \\
+			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=& \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S}\} }\frac{\exp(\frac{-1}{2} BIC^*(\tilde{S}))}{\sum_{S_l\in \mathcal{V}_{S}}\exp(\frac{-1}{2} BIC^*(S_l))} 
 	\end{eqnarray}
 	
-		La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire.
-		Le résultat obtenu est la meilleure structure rencontrée en termes de $BIC^*$ (vraisemblance pénalisée). 
+		La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire dont le mode correspond à la structure de plus grande valeur de $BIC^*$
  
 L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la méthode du Graphical Lasso [2].		
-La grande dimension de l'espace parcouru rend préférable  (pour un temps de calcul égal) l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (permet aussi la parallélisation).
+La grande dimension de l'espace parcouru rend préférable  (pour un temps de calcul égal) l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (permettant aussi la parallélisation).
 	
-	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien. On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC.
-\section{Résultats}	
-Pour les simulations présentées dans les tableaux \ref{tableMSEsimdroite}, \ref{tableMSEsimtout} et \ref{tableMSEsimgauche}, chacune des configurations à été simulée $100$ fois. Les tableaux affichent le nombre de variable dépendantes trouvées, le nombre de variables jugées dépendantes à tort et les erreures moyennes en prédiction (MSE) sur $Y$ à partir d'échantillons de validation de 1 000 individus. Pour l'ensemble des simulations $p=40$, $\sigma_Y=10$, $\sigma=0.001$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{i,j}$ suivent la même loi de poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode $LASSO$ dans les cas où celle-ci est en difficulté (corrélations 2 à 2) donc les $p_1^j$ non nuls valent tous 1 dans le vrai modèle. \textsc{CorReg}  a  travaillé avec $K$,$p_2$ et $p_1$ libres. 
+	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien (avec Mixmod [6]). On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC. Sans cette hypothèse générative supplémentaire sur $X_1$, l'utilisation de $BIC^*$ serait compromise. Notons cependant la souplesse de cette hypothèse due à la grande flexibilité des mélanges gaussiens.
+\section{Résultats sur données simulées}	
+L'ensemble de la méthode à été programmé dans un package R dénommé \textsc{CorReg}.Pour les simulations présentées dans les tableaux \ref{tableMSEsimdroite}, \ref{tableMSEsimtout} et \ref{tableMSEsimgauche}, chacune des configurations à été simulée $100$ fois. Les tableaux affichent le nombre de variable dépendantes trouvées, le nombre de variables jugées dépendantes à tort et les erreurs moyennes en prédiction (MSE) sur $Y$ à partir d'échantillons de validation de 1 000 individus. Pour l'ensemble des simulations $p=40$, $\sigma_Y=10$, $\sigma=0.001$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{1}^j$ suivent la même loi de poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode $LASSO$ dans les cas où celle-ci est en difficulté (fortes corrélations 2 à 2) donc les $p_1^j$ non nuls valent tous 1 dans le vrai modèle. \textsc{CorReg}  a  travaillé avec, $p_2$ et $p_1$ libres et a utilisé Mixmod pour estimer les densités dans $X_1$. 
 
 \begin{table}
 \centering
@@ -222,10 +211,10 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ &
 \end{table}
 
 
-Les résultats (tableaux 1 à 3) montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle, comme pour le LASSO.
+Les résultats (tableaux 1 à 3) montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle de régression en $Y$, comme pour le LASSO.
 
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
-Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant interprétation physique :
+Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant une interprétation physique :
 \begin{itemize}
 	\item Moyenne = f (Min , Max , Sigma ) pour des données courbes
 	\item Largeur du produit = f (débit de fonte , vitesse de la coulée continue)	\\
@@ -253,7 +242,7 @@ Exemple de régression sur une variable réponse dans le cadre de données réel
 		\hline 
 		\end{tabular} 
    \end{minipage}
-   \caption{résultats obtenus sur données réelles : $n=117$ et $p=168$. l'erreur est réduite d'un tiers alors que la complexité du modèle est divisée par $2,5$.   }
+   \caption{Résultats obtenus sur données réelles : $n=117$ et $p=168$. L'erreur est réduite d'un tiers alors que la complexité du modèle est divisée par $2.5$.   }
 \end{figure}   
 	
 
@@ -268,20 +257,23 @@ Exemple de régression sur une variable réponse dans le cadre de données réel
 %\bibliographystyle{plain}
 %à recopier dans le bon ordre comme demandé ci-dessous.
 
-\noindent [1] B. Efron, T. Hastie, I. Johnstone, and R. Tibshirani (2004). Least angle regression. {\it The
+\noindent [1] Efron, B., Hastie, T., Johnstone,I. et Tibshirani, R. (2004), Least angle regression. {\it The
 Annals of statistics}, 32(2):407-499.
 
-\noindent [2] J. Friedman, T. Hastie, and R. Tibshirani (2008). Sparse inverse covariance estimation with
+\noindent [2] Friedman, J., Hastie, T. et Tibshirani, R. (2008), Sparse inverse covariance estimation with
 the graphical lasso.  {\it Biostatistics}, 9(3):432-441 .
 
-\noindent [3] E. Lebarbier and T. Mary-Huard (2006). Une introduction au critère bic: fondements
+\noindent [3] Lebarbier, E. et Mary-Huard,T. (2006), Une introduction au critère bic: fondements
 théoriques et interprétation.  {\it Journal de la SFdS }, 147(1):39-57.
 
-\noindent[5] R. Tibshirani (1996). Regression shrinkage and selection via the lasso.  {\it Journal of the Royal
+\noindent[4] Tibshirani, R. (1996). Regression shrinkage and selection via the lasso,  {\it Journal of the Royal
 Statistical Society}. Series B (Methodological), pages 267-288.
 
-\noindent [6] Peng Zhao and Bin Yu (December 2006). On model selection consistency of lasso. {\it J. Mach. Learn.
+\noindent [5] Zhao,P. et Yu,B. (2006), On model selection consistency of lasso, {\it J. Mach. Learn.
 Res.} 7:2541-2563.
+
+\noindent [6] Biernacki, C., Celeux, G., Govaert, G., \& Langrognet, F. (2006), Model-based cluster and discriminant analysis with the MIXMOD software, Computational Statistics \& Data Analysis, 51(2), 587-600.
+
 
 %
 %\noindent [1] Auteurs (année), Titre, revue, localisation.
