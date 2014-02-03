@@ -85,33 +85,31 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 	\end{itemize}
 	
 où %$B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$,\\ 
-$I_1=\{I_1^1,\dots,I_1^{p}\}$ est le vecteur des indices des variables à droite dans (\ref{SR}) , $I_2=\{j |\sharp I_1^j>0 \}$ est l'ensemble des indices des variables corrélées à gauche dans (\ref{SR}). On a donc une partition des données $X=(X_1,X_2)$ où $X_2=X^{I_2}$ et $X_1=X\setminus X_2$(pour alléger les notations).\\
+$I_1=\{I_1^1,\dots,I_1^{p}\}$ est le vecteur des indices des variables à droite dans (\ref{SR}) , $I_2=\{j |\sharp I_1^j>0 \}$ est l'ensemble des indices des variables corrélées à gauche dans (\ref{SR}). Les $B_1^j$ sont les coefficients des régressions entre covariables. On a donc une partition des données $X=(X_1,X_2)$ où $X_2=X^{I_2}$ et $X_1=X\setminus X_2$.\\
 On suppose $I_1\cap I_2=\emptyset$, $i.e.$ les variables dépendantes dans $X$ n'en expliquent pas d'autres.
-On note $p_2= \sharp I_2$ le nombre de régressions entre covariables et $p_1=(p_1^1,\dots,p_1^{p_2})$.
+On note $p_2= \sharp I_2$ le nombre de régressions entre covariables et $p_1=(p_1^1,\dots,p_1^{p_2})$ qui est le vecteur des longueurs des régressions au sein de $X$.
 	
 On a ainsi rendu explicites les corrélations au sein de $X$ sous la forme d'une structure de sous-régressions linéaires $S=(I_1,I_2,p_1,p_2)$.	
-Ce modèle génératif est identifiable sous certaines conditions simples (sur les $k_i$) non détaillées ici.
+Ce modèle génératif est identifiable sous certaines conditions simples (sur les $k_j$) non détaillées ici.
 
-On remarque que (\ref{MainR}) et (\ref{SR}) impliquent par simple intégration sur $X_2$, un modèle de régression en $Y$ s'exprimant uniquement en fonction des variables non corrélées $X_1$ :
+On remarque que alors (\ref{MainR}) et (\ref{SR}) impliquent par simple intégration sur $X_2$, un modèle de régression en $Y$ s'exprimant {\it uniquement en fonction des variables non corrélées $X_1$} :
 \begin{eqnarray}
-	Y_{|X,S}&=&X_1 (A_{1}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y 
-					= X_1\alpha_{1}+ \varepsilon_{\alpha} \label{Trueexpl} 			
-\end{eqnarray}
-		
+	Y_{|X_1,S}&=&X_1 (A_{1}+ \sum_{j \in I_2}B^{j}_{I_1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y 
+					= X_1\alpha_{1}+ \varepsilon_{\alpha}. \label{Trueexpl} 			
+\end{eqnarray}		
 L'estimateur classique du Maximum de Vraisemblance de $\alpha$ est sans biais et s'exprime par	
 \begin{eqnarray}
-	\hat{\alpha}_{1}&=& (X'_{1} X_1)^{-1}X'_{1}Y \textrm{ et sa matrice de variance} \\
+	\hat{\alpha}_{1}&=& (X'_{1} X_1)^{-1}X'_{1}Y  \\
+\textrm{et sa matrice de variance } && \nonumber \\
 	\Var[\hat{\alpha}_{1}|X,S]&=& (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{1} X_{1})^{-1}
 \end{eqnarray}
-		peut être notablement mieux conditionnée que celle de $\hat A$ initial.				
-		
-		
+		peut être notablement mieux conditionnée que celle de $\hat A$ initial.						
 	En outre, ce nouveau modèle réduit consiste en une régression linéaire classique qui peut donc bénéficier des outils de sélection de variables au même titre que le modèle complet.			
 		 \\		
 		 Notons enfin que la structure explicite entre les variables permet de mieux comprendre les phénomènes en jeu et la parcimonie du modèle facilite son interprétation. 
 \\ 
 
-		\textbf{\underline{Remarque}} : En ajoutant une étape de sélection de variables on obtient ainsi deux types de $0$ : ceux issus de l'étape de décorrélation et ceux issus de cette éventuelle étape de sélection de type LASSO.
+		\textbf{\underline{Remarque}} : En ajoutant une étape de sélection de variables on obtient ainsi deux  ``types de $0$"  : ceux issus de l'étape de décorrélation et ceux issus de cette éventuelle étape de sélection de type LASSO.
 		
 \section{Estimation de la structure de corrélation}
 	 	
@@ -125,22 +123,20 @@ L'estimateur classique du Maximum de Vraisemblance de $\alpha$ est sans biais et
 		BIC^*&=&BIC +\ln(P(S)) \label{Bicstar} .
 	\end{eqnarray}	
 	L'équiprobabilité ainsi supposée des $p_2$ et $p_1^j$ vient pénaliser davantage la compléxité sous l'hypothèse $p_2<\frac{p}{2}$ , hypothèse réaliste sur le nombre de régressions entre covariables. La recherche du meilleur $S$ selon $BIC^*$ n'est pas un problème simple et on va s'appuyer sur un algorithme MCMC.
-	On a
 
 	A chaque étape de l'algorithme, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S}$ %de $p$ candidats (le package \textsc{CorReg} permet à l'utilisateur de choisir parmi plusieurs types de voisinage).
-		et donc la fonction de transition est guidée par $BIC^*$ de la façon suivante :	
+		et ensuite la fonction de transition est guidée par $BIC^*$ de la façon suivante :	
 	\begin{eqnarray}
 			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=& \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S}\} }\frac{\exp(\frac{-1}{2} BIC^*(\tilde{S}))}{\sum_{S_l\in \mathcal{V}_{S}}\exp(\frac{-1}{2} BIC^*(S_l))} .
 	\end{eqnarray}
-	
-		La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire dont le mode correspond à la structure de plus grande valeur de $BIC^*$
+La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire dont le mode correspond à la structure de plus grande valeur de $BIC^*$.
  
 L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la méthode du Graphical Lasso [2].		
 La grande dimension de l'espace parcouru rend préférable  (pour un temps de calcul égal) l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (permettant aussi la parallélisation).
 	
-	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien (avec Mixmod [6]). On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC. Sans cette hypothèse générative supplémentaire sur $X_1$, l'utilisation de $BIC^*$ serait compromise. Notons cependant la souplesse de cette hypothèse due à la grande flexibilité des mélanges gaussiens.
+	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien (avec le package Rmixmod de Mixmod [6]). On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC. Sans cette hypothèse générative supplémentaire sur $X_1$, l'utilisation de $BIC^*$ serait compromise. Notons cependant la souplesse de cette hypothèse due à la grande flexibilité des mélanges gaussiens [7].
 \section{Résultats sur données simulées}	
-L'ensemble de la méthode à été programmé dans un package R dénommé \textsc{CorReg}.Pour les simulations présentées dans les tableaux \ref{tableMSEsimdroite}, \ref{tableMSEsimtout} et \ref{tableMSEsimgauche}, chacune des configurations à été simulée $100$ fois. Les tableaux affichent le nombre de variable dépendantes trouvées, le nombre de variables jugées dépendantes à tort et les erreurs moyennes en prédiction (MSE) sur $Y$ à partir d'échantillons de validation de 1 000 individus. Pour l'ensemble des simulations $p=40$, $\sigma_Y=10$, $\sigma=0.001$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{1}^j$ suivent la même loi de poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode $LASSO$ dans les cas où celle-ci est en difficulté (fortes corrélations 2 à 2) donc les $p_1^j$ non nuls valent tous 1 dans le vrai modèle. \textsc{CorReg}  a  travaillé avec, $p_2$ et $p_1$ libres et a utilisé Mixmod pour estimer les densités dans $X_1$. 
+L'ensemble de la méthode à été programmé dans un package R dénommé \textsc{CorReg}. Pour les simulations présentées dans les tableaux \ref{tableMSEsimdroite}, \ref{tableMSEsimtout} et \ref{tableMSEsimgauche}, chacune des configurations à été simulée $100$ fois. Les tableaux affichent le nombre de variables dépendantes trouvées (``bon gauche"), le nombre de variables jugées dépendantes à tort (``faux gauche") et les erreurs moyennes en prédiction (MSE) sur $Y$ à partir d'échantillons de validation de 1 000 individus. Pour l'ensemble des simulations $p=40$, $\sigma_Y=10$, $\sigma=0.001$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de Poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{1}^j$ suivent la même loi de Poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode LASSO dans les cas où celle-ci est en difficulté (fortes corrélations 2 à 2) donc les $p_1^j$ non nuls valent tous 1 dans le vrai modèle. \textsc{CorReg}  a  travaillé avec $p_2$ et $p_1$ libres et a utilisé Mixmod pour estimer les densités dans $X_1$. 
 
 \begin{table}
 \centering
@@ -212,6 +208,8 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ &
 
 
 Les résultats (tableaux 1 à 3) montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle de régression en $Y$, comme pour le LASSO.
+
+On remarque que quand $p_2$ augmente le LASSO commence à se ressaisir car il y a de plus en plus de faux modèles proches du vrai en termes de prédiction. Le LASSO trouve donc par moment des modèles inconsistants en interprétation mais relativement corrects en prédiction. ATTENTION : dans le cadre industriel, l'interprétation du modèle mène à des actions sur le process et donc un modèle inconsistant en interprétation peut mener à des actions contre-productives (d'où l'importance de l'interprétabilité de \textsc{CorReg}). 
 \section{Résultats sur données réelles}
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
 Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant une interprétation physique :
@@ -274,7 +272,7 @@ Res.} 7:2541-2563.
 
 \noindent [6] Biernacki, C., Celeux, G., Govaert, G., \& Langrognet, F. (2006), Model-based cluster and discriminant analysis with the MIXMOD software, Computational Statistics \& Data Analysis, 51(2), 587-600.
 
-
+\noindent [7] McLachlan, G. J., et Basford, K. E. (1988), Mixture models : Inference and applications to clustering. {\it Statistics: Textbooks and Monographs, New York: Dekker }, 1988, 1.
 %
 %\noindent [1] Auteurs (année), Titre, revue, localisation.
 %
