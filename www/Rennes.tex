@@ -122,7 +122,7 @@ L'estimateur classique du Maximum de Vraisemblance de $\alpha$ est sans biais et
 		%P(S|X)&\propto &P(X|S)P(S) \\
 %		\ln(P(S|X))&=&\ln(P(X|S))+\ln(P(S))+cste \\
 		%&=&BIC +\ln(P(S))+cste \\
-		BIC^*&=&BIC +\ln(P(S)) \label{Bicstar}
+		BIC^*&=&BIC +\ln(P(S)) \label{Bicstar} .
 	\end{eqnarray}	
 	L'équiprobabilité ainsi supposée des $p_2$ et $p_1^j$ vient pénaliser davantage la compléxité sous l'hypothèse $p_2<\frac{p}{2}$ , hypothèse réaliste sur le nombre de régressions entre covariables. La recherche du meilleur $S$ selon $BIC^*$ n'est pas un problème simple et on va s'appuyer sur un algorithme MCMC.
 	On a
@@ -130,7 +130,7 @@ L'estimateur classique du Maximum de Vraisemblance de $\alpha$ est sans biais et
 	A chaque étape de l'algorithme, pour $S \in \mathcal{S}$ (ensemble des structures réalisables) on définit un voisinage $\mathcal{V}_{S}$ %de $p$ candidats (le package \textsc{CorReg} permet à l'utilisateur de choisir parmi plusieurs types de voisinage).
 		et donc la fonction de transition est guidée par $BIC^*$ de la façon suivante :	
 	\begin{eqnarray}
-			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=& \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S}\} }\frac{\exp(\frac{-1}{2} BIC^*(\tilde{S}))}{\sum_{S_l\in \mathcal{V}_{S}}\exp(\frac{-1}{2} BIC^*(S_l))} 
+			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=& \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S}\} }\frac{\exp(\frac{-1}{2} BIC^*(\tilde{S}))}{\sum_{S_l\in \mathcal{V}_{S}}\exp(\frac{-1}{2} BIC^*(S_l))} .
 	\end{eqnarray}
 	
 		La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire dont le mode correspond à la structure de plus grande valeur de $BIC^*$
@@ -162,7 +162,7 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$& 
 400 & 32 & 23.66 & 1.13 & 105.38 & 103.88 & 102.81\\ 
 \hline 
 \end{tabular} 
-\caption{$Y$ ne dépend pas de $X_2$.\textsc{CorReg} gagne même en se trompant un peu sur $S$.} \label{tableMSEsimdroite}
+\caption{$Y$ ne dépend pas de $X_2$.} \label{tableMSEsimdroite}
 \end{table}
 
 \begin{table}
