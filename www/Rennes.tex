@@ -50,41 +50,41 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 {\bf Résumé.} La régression linéaire suppose en général l'usage de variables explicatives décorrélées, hypothèse souvent irréaliste pour les bases de données d'origine industrielle où de nombreuses corrélations sont dues au process, à des lois physiques, {\it etc}. Le modèle  proposé explicite les corrélations présentes sous la forme d'une famille de régressions linéaires entre covariables, permettant d'obtenir par marginalisation un modèle de régression parcimonieux libéré des corrélations, facilement interprétable et compatible avec les méthodes de sélection de variables. La structure de corrélations est estimée à l'aide d'un algorithme de type MCMC. Un package R (\textsc{CorReg}) permet la mise en oeuvre de cette méthode qui sera illustrée sur données simulées et sur données réelles issues de l'industrie sidérurgique.
 \smallskip
 
-{\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs, \ldots
+{\bf Mots-clés.} Régression, corrélations, industrie, sélection de variables, modèles génératifs
 \bigskip\bigskip
 
-{\bf Abstract.} Linear regression generally suppose to have decorrelated covariates. This hypothesis is often irrealist with industrial datasets that contains many highly correlated covariates (due to the process, physcial laws,  {\it etc}). The proposed generative model consists in explicit modeling of the correlations with a family of linear regressions between the covariates permitting to obtain by marginalization a parsimonious correlation-free regression model, easily understandable and compatible with variable selection methods. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) implements this new method which will be illustrated on both simulated datasets and real-life datasets from steel industry.
+{\bf Abstract.} Linear regression generally suppose to have decorrelated covariates. This hypothesis is often irrealist with industrial datasets that contains many highly correlated covariates due to the process, physcial laws,  {\it etc}. The proposed generative model consists in explicit modeling of the correlations with a family of linear regressions between the covariates permitting to obtain by marginalization a parsimonious correlation-free regression model, easily understandable and compatible with variable selection methods. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) implements this new method which will be illustrated on both simulated datasets and real-life datasets from steel industry.
 \smallskip
 
-{\bf Keywords.} Regression, correlations, industry, variable selection, generative models,  \ldots
+{\bf Keywords.} Regression, correlations, industry, variable selection, generative models
 
 %--------------------------------------------------------------------------
 
 \section{Introduction}
-	La régression linéaire classique suppose la décorrélation des covariables, source de problèmes en termes de variance des estimateurs.En effet, pour une variable réponse$Y$ et un ensemble de covariables $X \in \mathcal{R}^p$, la régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2)$ donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ dégénéré si les colonnes de $X$ sont linéairement corrélées. Les méthodes de sélection comme le LASSO [4] muni du LAR [1] sont elles-mêmes touchées par ce problème de corrélation [5].
+	La régression linéaire classique suppose la décorrélation des covariables, source de problèmes en termes de variance des estimateurs. En effet, pour une variable réponse $Y$ et un ensemble de covariables $X \in \mathcal{R}^{n \times p}$, la régression $Y=XA+\varepsilon$ avec $ \varepsilon\sim \mathcal{N}(0,\sigma^2I_n)$ et $A$ vecteur des $p$ coefficients donne un estimateur de variance $ \Var(\hat{A}|X)= \sigma^2(X'X)^{-1}$ dégénéré si les colonnes de $X$ sont linéairement corrélées. Les méthodes de sélection comme le LASSO [4] muni du LAR [1] sont elles-mêmes touchées par ce problème de corrélation [5].
 		\\
 		
-		Notre idée est de modéliser explicitement les corrélations présentes entre covariables sous la forme d'une famille de régression entre celles-ci. Nous présenterons donc le modèle génératif associé et l'algorithme MCMC permettant de choisir la famille de régression à utiliser avant d'illustrer l'efficacité de la méthode sur des données simulées puis sur des données réelles.
+		Notre idée est de modéliser explicitement les corrélations présentes entre covariables sous la forme d'une famille de régression entre celles-ci. Nous présenterons donc en première partie le modèle génératif associé puis l'algorithme MCMC permettant d'estimer la famille de régression à utiliser avant d'illustrer dans les parties 3 et 4 l'efficacité de la méthode sur des données simulées puis sur des données réelles avant de conclure.
 		
-\section{Modèle supprimant les co-variables corrélées}		
+\section{Modèle supprimant les covariables corrélées}		
 	On suppose le modèle génératif suivant :
 	
 	\begin{itemize}
-		\item Régression principale :
+		\item Régression principale entre $Y$ et $X$:
 			 \begin{equation}
-			 	Y_{|X,S}=XA+\varepsilon_Y= X_1A_{1}+X_2A_{2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2) \label{MainR}
+			 	Y_{|X,S}=XA+\varepsilon_Y= X_1A_{1}+X_2A_{2}+\varepsilon_Y \textrm{ avec } \varepsilon_Y \sim \mathcal{N}(0,\sigma_Y^2I_n) \label{MainR}
 			 \end{equation}
-		\item Famille de $p_2$ régressions entre covariables corrélées :
+		\item Famille de $p_2$ régressions entre covariables de $X$ corrélées :
 			\begin{equation}
-			\forall j \in I_2 : \  X^j_{|X_1,S}=X_1B_{1}^j + \varepsilon_{j} \textrm{ avec } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2) \label{SR}
+			\forall j \in I_2 : \  X^j_{|X_1,S}=X_1B_{1}^j + \varepsilon_{j} \textrm{ avec } \varepsilon_j \sim \mathcal{N}(0,\sigma_j^2I_n) \label{SR}
 			\end{equation}
 		\item Mélanges gaussiens indépendants pour les covariables non corrélées :
 			\begin{equation}
-				\forall j \notin I_2 : \ X^j \sim \sum_{k=1}^{k_j}\pi_k\mathcal{N}(\mu_{k_j},\sigma_{k_j}^2)
+				\forall j \notin I_2 : \ X^j \sim \sum_{k=1}^{k_j}\pi_k\mathcal{N}(\mu_{k_j},\sigma_{k_j}^2I_n)
 			\end{equation}
 	\end{itemize}
 	
-Où %$B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$,\\ 
+où %$B_{I_1^j}^j$ est le vecteur de taille $p_1^j$ des coefficients de la sous-régression en $X^j$,\\ 
 $I_1=\{I_1^1,\dots,I_1^{p}\}$ est le vecteur des indices des variables à droite dans (\ref{SR}) , $I_2=\{j |\sharp I_1^j>0 \}$ est l'ensemble des indices des variables corrélées à gauche dans (\ref{SR}). On a donc une partition des données $X=(X_1,X_2)$ où $X_2=X^{I_2}$ et $X_1=X\setminus X_2$(pour alléger les notations).\\
 On suppose $I_1\cap I_2=\emptyset$, $i.e.$ les variables dépendantes dans $X$ n'en expliquent pas d'autres.
 On note $p_2= \sharp I_2$ le nombre de régressions entre covariables et $p_1=(p_1^1,\dots,p_1^{p_2})$.
@@ -212,7 +212,7 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ &
 
 
 Les résultats (tableaux 1 à 3) montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle de régression en $Y$, comme pour le LASSO.
-
+\section{Résultats sur données réelles}
 Les données industrielles sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), Moyenne et maximum d'une courbe ($\rho=0.911$).
 Exemples de Sous-régressions obtenues par \textsc{CorReg} ayant une interprétation physique :
 \begin{itemize}
