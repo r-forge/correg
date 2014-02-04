@@ -82,7 +82,7 @@ SEXP OLS(SEXP X,SEXP Y,SEXP intercept,SEXP sigma,SEXP Bic,SEXP methode){
       }
 
   }
-  //retour des objets demandés
+  //retour des objets demandes
   if (isigma[0]==1){
     if (iBic[0]==1){
           return List::create(

@@ -4,7 +4,7 @@ using namespace Rcpp ;
 using namespace Eigen;
 using namespace std;
 
-//V1 and V2 are column vectors from matrices (sub-matrices)
+//V1 and V2 are column vectors from matrices (sub matrices)
 RcppExport Rcpp::NumericVector kronecker_sum_cpp(const Rcpp::NumericVector &V1,const Rcpp::NumericVector &V2){
     int size1=V1.size();
     int size2=V2.size();

@@ -51,7 +51,7 @@ double BicLoc_cpp(Eigen::MatrixXd X,Eigen::MatrixXd Y,bool intercept,int methode
       Eigen::MatrixXd residus = temp*inverse;
       Eigen::MatrixXd sig = (Y-residus);
       
-      //calcul de l'ecart type (sigma)
+      //calcul de ecart type (sigma)
       for (int i = 0; i < sig.rows(); i++){
         sumc=sumc+(sig(i,0)-sig.mean())*(sig(i,0)-sig.mean());
       }
@@ -60,7 +60,7 @@ double BicLoc_cpp(Eigen::MatrixXd X,Eigen::MatrixXd Y,bool intercept,int methode
       sumc=sqrt(sumc);
       if(sumc==0){//modele exact
         BicTheta=0;
-       Rcout<<"exact model found, please delete one variable \n";
+       Rcpp::Rcout<<"exact model found, please delete one variable \n";
       }else{
       //calcul du BIC
         int k=inverse.rows()+1;

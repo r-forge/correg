@@ -96,13 +96,16 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
     Zopt_si = Z_si;
     Zopt_sj = Z_sj;
   }
-  Rcout<<"Bicbest :"<<Bicbest<<"\n";
+  if (ibla[0]>0)
+  {
+   Rcout<<"Bicbest :"<<Bicbest<<"\n";
+  }
   newZ_zi=Z_zi;
   newZ_zj=Z_zj;
   newZ_si=Z_si;
   newZ_sj=Z_sj;
   int step =0;
-  Rcout<<"ici";
+  //Rcout<<"ici";
   if (imet_tirage[0]==0)//methode de changement de la ligne et de la colonne
   {
     nbcand=2*p-2;
@@ -136,23 +139,23 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
   nb_opt=0;
   stock_bool.resize(nbcand);
   stock_BIC.resize(nbcand);
-  for(v=0;v<newZ_sj.size();v++)
-  {
-    Rcout<<newZ_sj(v)<<" ";
-  }
-  Rcout<<"\n\n";
-  for(v=0;v<newZ_zj.size();v++)
-  {
-    Rcout<<newZ_zj(v)<<" ";
-  }
-
-  Rcout<<"\n";
-  for(v=0;v<newZ_zi.size();v++)
-  {
-    Rcout<<newZ_zi(v)<<" ";
-  }
-          
-  Rcout<<"\n\n";
+//  for(v=0;v<newZ_sj.size();v++)
+//  {
+//    Rcout<<newZ_sj(v)<<" ";
+//  }
+//  Rcout<<"\n\n";
+//  for(v=0;v<newZ_zj.size();v++)
+//  {
+//    Rcout<<newZ_zj(v)<<" ";
+//  }
+//
+//  Rcout<<"\n";
+//  for(v=0;v<newZ_zi.size();v++)
+//  {
+//    Rcout<<newZ_zi(v)<<" ";
+//  }
+//          
+//  Rcout<<"\n\n";
   while(step<imaxiter[0])
   // initialisation des variables
   
@@ -1046,7 +1049,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
       if(nb_opt==inb_opt_max[0])//si on a atteint le nombre maximum de fois ou on a retrouvé BICbest
       {
         step=imaxiter[0];//alors on sort du while
-        Rcout<<"convergence atteinte";
+        Rcout<<"convergence reached";
       }
     }
     
@@ -1074,7 +1077,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
     }
     if(ibla[0]>2)//commentaires lors des etapes
     {
-      Rcout<<step<<" BIC local: "<<sumbic<<" compléxité local: "<<complexite<<"\n";
+      Rcout<<step<<" local BIC: "<<sumbic<<" local complexity: "<<complexite<<"\n";
     }
     step=step+1; 
   }//fin des étapes (while)
