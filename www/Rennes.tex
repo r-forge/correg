@@ -130,7 +130,7 @@ En particulier sa matrice de variance
 La chaîne de Markov ainsi constituée est ergodique dans un espace d'états finis et possède une unique loi stationnaire dont le mode correspond à la structure de plus grande valeur de $BIC^*$.
  
 L'intialisation peut se faire en utilisant la matrice des corrélations et/ou la méthode du Graphical Lasso [2].		
-La grande dimension de l'espace parcouru rend préférable  (pour un temps de calcul égal) l'utilisation de multiples chaînes courtes plutôt qu'une seule très longue (permettant aussi la parallélisation).
+La grande dimension de l'espace parcouru rend préférable [8]  (pour un temps de calcul égal) l'utilisation de multiples chaînes courtes  plutôt qu'une seule très longue (permettant aussi la parallélisation).
 	
 	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien (avec le package Rmixmod de Mixmod [6]). On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC. Sans cette hypothèse générative supplémentaire sur $X_1$, l'utilisation de $BIC^*$ serait compromise. Notons cependant la souplesse de cette hypothèse due à la grande flexibilité des mélanges gaussiens [7].
 \section{Résultats sur données simulées}\label{secressim}	
@@ -272,6 +272,7 @@ Res.} 7:2541-2563.
 
 \noindent [7] McLachlan, G. J., et Basford, K. E. (1988), Mixture models : Inference and applications to clustering. {\it Statistics: Textbooks and Monographs, New York: Dekker }, 1.
 
+\noindent [8] Gilks, W. R., Richardson, S., \& Spiegelhalter, D. J. (Eds.). (1996). Markov chain Monte Carlo in practice (Vol. 2). CRC press.
 %
 %\noindent [1] Auteurs (année), Titre, revue, localisation.
 %
