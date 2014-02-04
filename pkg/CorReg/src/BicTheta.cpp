@@ -22,7 +22,7 @@ BEGIN_RCPP
   Eigen::MatrixXd temp(size,sizecol+1);
   
   
-  //ajout de la constance si demandé
+  //ajout de la constance si demande
   if (iinter[0]==1){
     Eigen::ArrayXd vec1(size); 
      

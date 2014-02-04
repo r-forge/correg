@@ -59,23 +59,23 @@ extern "C" SEXP GM_likelihood(SEXP RY,SEXP RX,SEXP RBeta,SEXP RSigma,SEXP RM,SEX
         j++;
       }
     }
-    //on sait maintenant précisément qui manque et où trouver les paramètres associés
+    //on sait maintenant précisément qui manque et ou trouver les paramètres associés
     if(nbclass==1){// la loi est normale quand-même
       sigma=sigma*sigma;//on passe au carré car on va ajouter les variances
       for(int i=0;i<nbmank;i++){//pour chaque manquant
-        meanfix=meanfix+detailsmixmod(nbclustcumsum(quimank(i))-1,1)*beta(quimank(i)+inter);//colonne 1 est la deuxième colonne donc la moyenne
+        meanfix=meanfix+detailsmixmod(nbclustcumsum(quimank(i))-1,1)*beta(quimank(i)+inter);//colonne 1 est la deuxieme colonne donc la moyenne
         sigma=sigma+detailsmixmod(nbclustcumsum(quimank(i))-1,2)*beta(quimank(i)+inter)*beta(quimank(i)+inter);
       }
-      res=Rcpp::wrap(dnorm(Y,meanfix,sqrt(sigma)));//on a des variances donc on passe à la racine
+      res=Rcpp::wrap(dnorm(Y,meanfix,sqrt(sigma)));//on a des variances donc on passe a la racine
     }else{//plusieurs classes
       NumericVector proptot(1);
       NumericVector vartot(1);
-      NumericVector meantot(1);//en deux temps pour qu'il crée bien des vecteurs
+      NumericVector meantot(1);//en deux temps pour qu'il cree bien des vecteurs
       meantot(0)=meanfix;
       proptot(0)=1;
       vartot(0)=sigma*sigma;      
       for(int i=0;i<nbmank;i++){//pour chaque manquant
-        //on crée les vecteurs des paramètres
+        //on cree les vecteurs des paramètres
         NumericVector proploc(nbclustmixmod(quimank(i)));
         NumericVector meanloc(nbclustmixmod(quimank(i)));
         NumericVector varloc(nbclustmixmod(quimank(i)));
@@ -91,7 +91,7 @@ extern "C" SEXP GM_likelihood(SEXP RY,SEXP RX,SEXP RBeta,SEXP RSigma,SEXP RM,SEX
       double resloc;
       for(int i=0;i<nbclass;i++){
         resloc=Rcpp::as<double>(Rcpp::wrap(dnorm(Y,meantot(i),sqrt(vartot(i)))));
-        res=res+proptot(i)*resloc;//on a des variances donc on passe à la racine
+        res=res+proptot(i)*resloc;//on a des variances donc on passe a la racine
       }
     }//fin du if plusieurs classes
   }else{//il ne manque rien donc loi normale

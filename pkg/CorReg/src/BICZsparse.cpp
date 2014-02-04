@@ -39,7 +39,7 @@ SEXP BICZsparse(SEXP X,SEXP Z_Zi,SEXP Z_Sj,SEXP Bic_vide_vect,SEXP BicOld,SEXP m
     {
       if(Z_sj(k)!=0)
       {
-        //on créé X_loc et y_loc
+        //on fait X_loc et y_loc
         X_loc.resize(inrow[0],(Z_sj(k)));
         
         debut_colj=0;

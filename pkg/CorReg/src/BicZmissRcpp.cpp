@@ -66,10 +66,10 @@ SEXP BicZmissRcpp(SEXP X,SEXP Z,SEXP M,SEXP Bic_vide_vect,SEXP BicOld,SEXP metho
           }//fin if
         }//fin for j
   
-        //calcul de son BIC en appellant OLS (les parametres sont : Y=X[,colonne],X=X[,matrice des variables Ã  droite])
+        //calcul de son BIC en appellant OLS (les parametres sont : Y=X[,colonne],X=X[,matrice des variables a  droite])
         BicCol=BicLoc_cpp(mat_var_a_droite,matX.block(0,i,sizerow,1),"T",method);
         if(BicCol==0){//a priori on a un modele exact (peu probable que le BIC soit vraiment nul)
-        Rcout <<i+1<< " depends on";
+        Rcpp::Rcout <<i+1<< " depends on";
         //on recherche l'emplacement des 1 dans le vecteur colonne (variables a droite)
         for(int j=0;j<=size-1;j++)
         {

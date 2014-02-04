@@ -69,7 +69,7 @@ SEXP modsparse_cpp(SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP complexite,SEXP p,SEXP i
         {
           if(ajout==false && (zj(k)>iJ[0] ||(zj(k)==iJ[0] && zi(k)>iI[0]) ))//on ajoute
           {            
-            zj_loc<<zj_loc,iJ[0];//on passe par zj_loc
+            zj_loc<<zj_loc,iJ[0];//on passe par zjloc
             zi_loc<<zi_loc,iI[0];
             ajout=true;
           }
@@ -96,7 +96,7 @@ SEXP modsparse_cpp(SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP complexite,SEXP p,SEXP i
           {
             if(ajout==false && (zj(k)>iJ[0] ||(zj(k)==iJ[0] && zi(k)>iI[0]) ))//on ajoute
             {            
-              zj_loc<<zj_loc,iJ[0];//on passe par zj_loc
+              zj_loc<<zj_loc,iJ[0];//on passe par zjloc
               zi_loc<<zi_loc,iI[0];
               ajout=true;
             }
