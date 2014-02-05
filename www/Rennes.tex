@@ -226,19 +226,20 @@ La figure 1 illustre les résultats obtenus lors d'une étude qualité chez Arce
 %
 %	 Largeur = $\frac{\textrm{débit}}{\textrm{vitesse } \times \textrm{ épaisseur}}$ (Mais dans ce cas précis l'épaisseur est constante)
 %			\end{itemize}
-\textsc{CorReg} retrouve ($p_2=82$) en plus des corrélations ci-dessus des modèles de régulation du process et certains modèles physiques naturels.
+\textsc{CorReg} retrouve ($p_2=82$) en plus des corrélations ci-dessus des modèles de régulation du process et certains modèles physiques naturels. Les valeurs absolues des corrélations dans $X_1$ sont $5,45\%$ plus faibles que dans $X$, ce qui est significatif vue la dimension de la matrice des corrélations et sa moyenne très faible malgré de fortes corrélations. Le nombre de corrélations supérieures à $0.8$ en valeur absolue est réduit de $\mathbf{77,9\%}$ (respectivement $86$ et $19$ paires).
 \\
-		Le MSE (sur l'échantillon de validation) obtenu par \textsc{CorReg} est $\mathbf{6.47\%}$ meilleur que celui du LASSO.  \textsc{CorReg} donne un modèle à 34 variables contre 21 pour le LASSO avec 14 variables communes. L'étude a été menée dans le cadre de la qualité produit. L'enjeu de ces quelques pourcents de gain se chiffre en dizaine de milliers d'euros annuels sans compter l'impact sur les parts de marché (non chiffrable mais bien plus considérable).
+		Le MSE (sur l'échantillon de validation) obtenu par \textsc{CorReg} est $\mathbf{6.47\%}$ meilleur que celui du LASSO.  \textsc{CorReg} donne un modèle à 38 variables contre 20 pour le LASSO avec 13 variables communes. Le LASSO propose 7 variables différentes du modèle  \textsc{CorReg} mais elles sont toutes dans $X_2$ et expliquées par des variables du modèle  \textsc{CorReg} qui s'interdit l'usage de $X_2$.
+		 L'étude a été menée dans le cadre de la qualité produit. L'enjeu de ces quelques pourcents de gain se chiffre en dizaine de milliers d'euros annuels sans compter l'impact sur les parts de marché (non chiffrable mais bien plus considérable).
 	
-%Exemple de régression sur une variable réponse dans le cadre de données réelles :
+%%Exemple de régression sur une variable réponse dans le cadre de données réelles :
 \begin{figure}[h!]
 	\begin{minipage}[c]{.5\linewidth}
-			\includegraphics[width=200px]{figures/correlexfoshist.png} 
+			\includegraphics[width=300px]{figures/boxplotXX1.png} 
 	\end{minipage} \hfill
-   \begin{minipage}[c]{.5\linewidth}
-			\includegraphics[width=200px]{figures/histR2exfos.png} 
+   \begin{minipage}[c]{.35\linewidth}
+			\includegraphics[width=165px]{figures/histR2exfos.png} 
    \end{minipage}
-  \caption{Histogrammes des corrélations et des $R^2_{adj}$ des régressions obtenues par \textsc{CorReg} }
+  \caption{Corrélations dans $X$ et $X_1$ et $R^2_{adj}$ des régressions obtenues par \textsc{CorReg} }
 \end{figure}   
 	
 
@@ -268,11 +269,11 @@ Statistical Society}. Series B (Methodological), pages 267-288.
 \noindent [5] Zhao,P. et Yu,B. (2006), On model selection consistency of lasso, {\it J. Mach. Learn.
 Res.} 7:2541-2563.
 
-\noindent [6] Biernacki, C., Celeux, G., Govaert, G., \& Langrognet, F. (2006), Model-based cluster and discriminant analysis with the MIXMOD software, Computational Statistics \& Data Analysis, 51(2), 587-600.
+\noindent [6] Biernacki, C., Celeux, G., Govaert, G., et Langrognet, F. (2006), Model-based cluster and discriminant analysis with the MIXMOD software, Computational Statistics \& Data Analysis, 51(2), 587-600.
 
-\noindent [7] McLachlan, G. J., et Basford, K. E. (1988), Mixture models : Inference and applications to clustering. {\it Statistics: Textbooks and Monographs, New York: Dekker }, 1.
+\noindent [7] McLachlan, G., et Peel, D. (2004). Finite mixture models. Wiley. com.
 
-\noindent [8] Gilks, W. R., Richardson, S., \& Spiegelhalter, D. J. (Eds.). (1996). Markov chain Monte Carlo in practice (Vol. 2). CRC press.
+\noindent [8] Gilks, W. R., Richardson, S., et Spiegelhalter, D. J. (Eds.). (1996). Markov chain Monte Carlo in practice (Vol. 2). CRC press.
 %
 %\noindent [1] Auteurs (année), Titre, revue, localisation.
 %
