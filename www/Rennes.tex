@@ -135,7 +135,7 @@ La grande dimension de l'espace parcouru rend préférable [8]  (pour un temps d
 	En pratique, on commence par estimer pour chaque variable de $X$ sa densité sous l'hypothèse d'un mélange gaussien (avec le package Rmixmod de Mixmod [6]). On peut alors calculer la loi jointe de $X$ pour chaque structure réalisable rencontrée durant l'algorithme MCMC. Sans cette hypothèse générative supplémentaire sur $X_1$, l'utilisation de $BIC^*$ serait compromise. Notons cependant la souplesse de cette hypothèse due à la grande flexibilité des mélanges gaussiens [7].
 \section{Résultats sur données simulées}\label{secressim}	
 L'ensemble de la méthode à été programmé dans un package R dénommé \textsc{CorReg}. Pour les simulations présentées dans les tableaux %\ref{tableMSEsimdroite},
- \ref{tableMSEsimtout} et \ref{tableMSEsimgauche}, chacune des configurations à été simulée $100$ fois. Les tableaux affichent le nombre de variables dépendantes trouvées (``bon gauche"), le nombre de variables jugées dépendantes à tort (``faux gauche") et les erreurs moyennes en prédiction (MSE) sur $Y$ à partir d'échantillons de validation de 1 000 individus. Pour l'ensemble des simulations $p=40$, $\sigma_Y=10$, $\sigma=0.001$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de Poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{1}^j$ suivent la même loi de Poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode LASSO dans les cas où celle-ci est en difficulté (fortes corrélations 2 à 2) donc les $p_1^j$ non nuls valent tous 1 dans le vrai modèle. \textsc{CorReg}  a  travaillé avec $p_2$ et $p_1$ libres et a utilisé Mixmod pour estimer les densités dans $X_1$. 
+ \ref{tableMSEsimtout} et \ref{tableMSEsimgauche}, chacune des configurations à été simulée $100$ fois. Les tableaux affichent le nombre de variables dépendantes trouvées (``bon gauche"), le nombre de variables jugées dépendantes à tort (``faux gauche") et les erreurs moyennes en prédiction (MSE) sur $Y$ à partir d'échantillons de validation de 1 000 individus. Pour l'ensemble des simulations $p=40$, $\sigma_Y=10$, $\sigma=0.001$, les $X$ indépendants suivent des mélanges gaussiens à $\lambda=5$ classes de moyenne selon une loi de Poisson de paramètre $\lambda$ et d'écart-type $\lambda$. Les $B_{1}^j$ suivent la même loi de Poisson mais avec un signe aléatoire. On cherche ici à se comparer à la méthode LASSO dans les cas où celle-ci est en difficulté le vrai modèle est constitué de corrélations 2 à 2. \textsc{CorReg}  a  travaillé avec $p_2$ et $p_1$ libres et a utilisé Rmixmod pour estimer les densités dans $X_1$. 
 %
 %\begin{table}
 %\centering
@@ -213,11 +213,26 @@ $n$ & $p_2$ & bon gauche & faux gauche    & LAR  &    \textsc{CorReg} $\hat S$ &
 \end{table}
 
 
-Les résultats (tableaux 1 et 2) montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle de régression.% en $Y$, comme pour le LASSO.
+Les tableaux 1 et 2 montrent que \textsc{CorReg} est équivalent au LASSO en l'absence de corrélations et le bat quand les corrélations sont fortes. On retrouve le phénomène attendu du LASSO moins impacté par les corrélations quand $n$ grandit. On constate enfin la convergence asymptotique de \textsc{CorReg} vers le vrai modèle de régression.% en $Y$, comme pour le LASSO.
 
-On remarque que quand $p_2$ augmente le LASSO commence à se ressaisir car il y a de plus en plus de faux modèles proches du vrai en termes de prédiction. Le LASSO trouve donc par moment des modèles inconsistants en interprétation mais relativement corrects en prédiction. %ATTENTION : dans le cadre industriel, l'interprétation du modèle mène à des actions sur le process et donc un modèle inconsistant en interprétation peut mener à des actions contre-productives (d'où l'importance de l'interprétabilité de \textsc{CorReg}). 
-\section{Résultats sur données réelles}\label{secresrel}
-La figure 1 illustre les résultats obtenus lors d'une étude qualité chez ArcelorMittal.  Les données sidérurgiques sont fortement corrélées de manière naturelle : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), moyenne et maximum d'une courbe ($\rho=0.911$). La base analysée ici comportait $205$ variables et 3 847 individus (apprentissage du modèle sur les 3 000 premiers et validation sur les 847 autres).
+On remarque que quand $p_2$ augmente le LASSO commence à se ressaisir car il y a de plus en plus de faux modèles proches du vrai en termes de prédiction donc le LASSO trouve des modèles inconsistants en interprétation mais relativement corrects en prédiction. %ATTENTION : dans le cadre industriel, l'interprétation du modèle mène à des actions sur le process et donc un modèle inconsistant en interprétation peut mener à des actions contre-productives (d'où l'importance de l'interprétabilité de \textsc{CorReg}). 
+\section{Résultats d'une Etude qualité chez ArcelorMittal}\label{secresrel}
+%%Exemple de régression sur une variable réponse dans le cadre de données réelles :
+\begin{figure}[h!]
+	\begin{minipage}[l]{.30\linewidth}
+			\includegraphics[height=150px,width=150px]{figures/correlXX1.png} 
+			\caption{Valeurs de $\rho$ pour $X$ (haut) et $X_1$ (bas).}
+	\end{minipage} \hfill
+	\begin{minipage}[c]{.30\linewidth}
+			\includegraphics[height=150px, width=150px]{figures/histR2exfos.png} 
+			\caption{$R^2_{adj}$ des 82 régressions obtenues.}
+	\end{minipage} \hfill
+   \begin{minipage}[r]{.30\linewidth}
+			\includegraphics[height=150px,width=150px]{figures/p1exfos.png} 
+			\caption{Longueur des régressions obtenues ($p_1$).}
+   \end{minipage}
+\end{figure}   	
+On note $\rho$ la valeur absolue des corrélations. Les données sidérurgiques étudiées ($p=205$ et $n=3000$) sont fortement corrélées de manière naturelle (Figure 1 : en haut) : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), moyenne et maximum d'une courbe ($\rho=0.911$).
 %Certaines régressions obtenues décrivent des règles process, d'autres sont plus évidentes :
 %\begin{itemize}
 %	\item Moyenne = f (Min , Max , Sigma ) pour des données courbes
@@ -226,27 +241,21 @@ La figure 1 illustre les résultats obtenus lors d'une étude qualité chez Arce
 %
 %	 Largeur = $\frac{\textrm{débit}}{\textrm{vitesse } \times \textrm{ épaisseur}}$ (Mais dans ce cas précis l'épaisseur est constante)
 %			\end{itemize}
-\textsc{CorReg} retrouve ($p_2=82$) en plus des corrélations ci-dessus des modèles de régulation du process et certains modèles physiques naturels. Les valeurs absolues des corrélations dans $X_1$ sont $5,45\%$ plus faibles que dans $X$, ce qui est significatif vue la dimension de la matrice des corrélations et sa moyenne très faible malgré de fortes corrélations. Le nombre de corrélations supérieures à $0.7$ en valeur absolue est réduit de $\mathbf{79,33\%}$ (respectivement $150$ et $31$ paires).
+\textsc{CorReg} trouve  en plus des corrélations ci-dessus des modèles de régulation du process et des modèles physiques naturels pour un total de $p_2=82$ régressions (Figure 2) de longueur moyenne $\bar p_1=5$ (Figure 3). 
+%Les valeurs absolues des corrélations dans $X_1$ sont $5,45\%$ plus faibles que dans $X$, ce qui est significatif vue la dimension de la matrice des corrélations et sa moyenne très faible malgré de fortes corrélations. 
+Entre $X$ et $X_1$ le nombre de $\rho > 0.7$ est réduit de $\mathbf{79,33\%}$  avec respectivement $150$ et $31$ paires de variables (Figure 1 en bas).
 \\
-		Le MSE (sur l'échantillon de validation) obtenu par \textsc{CorReg} est $\mathbf{6.47\%}$ meilleur que celui du LASSO.  \textsc{CorReg} donne un modèle à 38 variables contre 20 pour le LASSO avec 13 variables communes. Le LASSO propose 7 variables différentes du modèle  \textsc{CorReg} mais elles sont toutes dans $X_2$ et expliquées par des variables du modèle  \textsc{CorReg} qui s'interdit l'usage de $X_2$.
+		Ici $Y$ est un indicateur qualité (confidentiel). Le MSE (sur échantillon de validation de 847 nouveaux individus) obtenu par \textsc{CorReg} est $\mathbf{1.55\%}$ meilleur que celui du LASSO, avec respectivement 31 et 20 variables dont 13 communes. LASSO propose 7 variables différentes de  \textsc{CorReg} mais elles sont toutes dans $X_2$ et expliquées par des variables du modèle  \textsc{CorReg} avec un $R^2_{adj}$ moyen de $0.82$.De plus $\rho$ est $13.9\%$ plus faible pour les variables de \textsc{CorReg} que pour LASSO malgré davantage de variables.
+		\\
+		En termes d'interprétation, accompagner la régression en $Y$ avec la famille de régressions permet de mieux comprendre les conséquences d'éventuelles mesures correctives sur l'ensemble du process. Cela perment aussi de déterminer les {\it actionneurs } qui influent sur $Y$ quand le LASSO fait ressortir des variables {\it subies}. On peut donc plus facilement corriger le process pour atteindre l'objectif fixé.
 		 L'étude a été menée dans le cadre de la qualité produit. L'enjeu de ces quelques pourcents de gain se chiffre en dizaine de milliers d'euros annuels sans compter l'impact sur les parts de marché (non chiffrable mais bien plus considérable).
 	
-%%Exemple de régression sur une variable réponse dans le cadre de données réelles :
-\begin{figure}[h!]
-	\begin{minipage}[c]{.5\linewidth}
-			\includegraphics[width=300px]{figures/boxplotXX1.png} 
-	\end{minipage} \hfill
-   \begin{minipage}[c]{.35\linewidth}
-			\includegraphics[width=165px]{figures/histR2exfos.png} 
-   \end{minipage}
-  \caption{Corrélations dans $X$ et $X_1$ et $R^2_{adj}$ des régressions obtenues par \textsc{CorReg} }
-\end{figure}   
-	
+
 
 \section{Conclusion et perspectives}\label{secconcl}
-	\textsc{CorReg} est fonctionnel et disponible sur R-forge. L'outil a d'ores et déjà montré son efficacité sur de vraies problématiques de régression en entreprise.
-	La force de \textsc{CorReg} est la grande interprétabilité du modèle proposé, qui est constitué de plusieurs modèles de régression simples et donc facilement accessibles aux non statisticiens (régressions linéaires) tout en luttant efficacement contre les problématiques de corrélations, omniprésentes dans l'industrie.
-	On note néanmoins le besoin d'élargir le champ d'application à la gestion des valeurs manquantes, très présentes dans l'industrie. Cet aspect est envisagé sérieusement pour la prochaine version de \textsc{CorReg}. En effet, le modèle génératif actuel permettrait cette nouvelle fonctionnalité sans hypothèse supplémentaire. Enfin, la famille de régressions pourrait être utilisée dans domaines autres que celui de la régression linéaire. La connaissance de la structure interne des données possède en effet une valeur intrinsèque que d'autres méthodes pourraient tenter de mettre à profit.
+	\textsc{CorReg} est disponible sur R-forge et a d'ores et déjà montré son efficacité sur de vraies problématiques de régression en entreprise.
+	Sa force est la grande interprétabilité du modèle proposé, qui est constitué de plusieurs modèles de régression simples et donc facilement accessibles aux non statisticiens (régressions linéaires) tout en luttant efficacement contre les problématiques de corrélations, omniprésentes dans l'industrie.
+	On note néanmoins le besoin d'élargir le champ d'application à la gestion des valeurs manquantes, très présentes dans l'industrie. D'ailleurs le modèle génératif actuel permettrait cette nouvelle fonctionnalité sans hypothèse supplémentaire. Enfin, le principe de \textsc{CorReg} qui est l'explicitation des régressions latentes entre covariables pourrai être appliqué à d'autres méthodes prédictives (régression logistique, {\it etc}). %La connaissance de la structure interne des données possède en effet une valeur intrinsèque que d'autres méthodes pourraient tenter de mettre à profit.
 	
 
 \section*{Bibliographie}
