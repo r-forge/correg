@@ -232,7 +232,7 @@ On remarque que quand $p_2$ augmente le LASSO commence à se ressaisir car il y 
 			\caption{Longueur des régressions obtenues ($p_1$).}
    \end{minipage}
 \end{figure}   	
-On note $\rho$ la valeur absolue des corrélations. Les données sidérurgiques étudiées ($p=205$ et $n=3000$) sont fortement corrélées de manière naturelle (Figure 1 : en haut) : largeur et poids d'une brame ($\rho=0.905$), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho=0.919$), moyenne et maximum d'une courbe ($\rho=0.911$).
+On note $\rho$ la valeur absolue des corrélations. Les données sidérurgiques étudiées ($p$=205 et $n$=3000) sont fortement corrélées de manière naturelle (Figure 1 : en haut) : largeur et poids d'une brame ($\rho$=0.905), température avant et après un outil ($\rho=0.983$), rugosité des deux faces du produit ($\rho$=0.919), moyenne et maximum d'une courbe ($\rho$=0.911).
 %Certaines régressions obtenues décrivent des règles process, d'autres sont plus évidentes :
 %\begin{itemize}
 %	\item Moyenne = f (Min , Max , Sigma ) pour des données courbes
@@ -245,7 +245,7 @@ On note $\rho$ la valeur absolue des corrélations. Les données sidérurgiques 
 %Les valeurs absolues des corrélations dans $X_1$ sont $5,45\%$ plus faibles que dans $X$, ce qui est significatif vue la dimension de la matrice des corrélations et sa moyenne très faible malgré de fortes corrélations. 
 Entre $X$ et $X_1$ le nombre de $\rho > 0.7$ est réduit de $\mathbf{79,33\%}$  avec respectivement $150$ et $31$ paires de variables (Figure 1 en bas).
 \\
-		Ici $Y$ est un indicateur qualité (confidentiel). Le MSE (sur échantillon de validation de 847 nouveaux individus) obtenu par \textsc{CorReg} est $\mathbf{1.55\%}$ meilleur que celui du LASSO, avec respectivement 31 et 20 variables dont 13 communes. LASSO propose 7 variables différentes de  \textsc{CorReg} mais elles sont toutes dans $X_2$ et expliquées par des variables du modèle  \textsc{CorReg} avec un $R^2_{adj}$ moyen de $0.82$.De plus $\rho$ est $13.9\%$ plus faible pour les variables de \textsc{CorReg} que pour LASSO malgré davantage de variables.
+		Ici $Y$ est un indicateur qualité (confidentiel). Le MSE (sur échantillon de validation de 847 nouveaux individus) obtenu par \textsc{CorReg} est $\mathbf{1.55\%}$ meilleur que celui du LASSO, avec respectivement 31 et 20 variables dont 13 communes. LASSO propose 7 variables différentes de  \textsc{CorReg} mais elles sont toutes dans $X_2$ et \textsc{CorReg} reprend les variables explicatives des régressions correspondantes ($R^2_{adj}$ moyen de $0.82$). De plus $\rho$ est $13.9\%$ plus faible pour les variables de \textsc{CorReg} que pour LASSO malgré davantage de variables.
 		\\
 		En termes d'interprétation, accompagner la régression en $Y$ avec la famille de régressions permet de mieux comprendre les conséquences d'éventuelles mesures correctives sur l'ensemble du process. Cela perment aussi de déterminer les {\it actionneurs } qui influent sur $Y$ quand le LASSO fait ressortir des variables {\it subies}. On peut donc plus facilement corriger le process pour atteindre l'objectif fixé.
 		 L'étude a été menée dans le cadre de la qualité produit. L'enjeu de ces quelques pourcents de gain se chiffre en dizaine de milliers d'euros annuels sans compter l'impact sur les parts de marché (non chiffrable mais bien plus considérable).
