@@ -12,7 +12,7 @@ cleanZR2(Z = Z, X = X, R2min = 0.4, methode = 1, adj = TRUE)
   \item{R2min}{lower boundary for the structure (on
   R-squared value)}
 
-  \item{methode}{OLS parameter}
+  \item{methode}{OLS parameter for matricial inversion}
 
   \item{adj}{boolean. Adjusted R-squared or classical one
   (if FALSE).}
