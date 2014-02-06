@@ -1,6 +1,6 @@
 \name{cleanZR2}
 \alias{cleanZR2}
-\title{Cleaning based on R2}
+\title{To clean Z based on R2}
 \usage{
 cleanZR2(Z = Z, X = X, R2min = 0.4, methode = 1, adj = TRUE)
 }
@@ -18,6 +18,6 @@ cleanZR2(Z = Z, X = X, R2min = 0.4, methode = 1, adj = TRUE)
   (if FALSE).}
 }
 \description{
-Cleaning based on R2
+To clean Z based on R2
 }
 

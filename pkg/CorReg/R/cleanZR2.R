@@ -1,4 +1,4 @@
-#' Cleaning based on R2
+#' To clean Z based on R2
 #' @export
 #' @param Z the structure
 #' @param X the dataset

@@ -1,6 +1,6 @@
 \name{calcul_BIC_mixmod}
 \alias{calcul_BIC_mixmod}
-\title{calcul du BIC initial via package externe Mixmod (ou mclust)}
+\title{BIC of the marginal densities}
 \usage{
 calcul_BIC_mixmod(X = X, nbclustmax = 10, bla = FALSE, details = FALSE,
   max = TRUE, mclust = TRUE, nbini = 50)
@@ -24,7 +24,7 @@ calcul_BIC_mixmod(X = X, nbclustmax = 10, bla = FALSE, details = FALSE,
   \item{nbini}{number of initial points for Rmixmod}
 }
 \description{
-calcul du BIC initial via package externe Mixmod (ou
-mclust)
+Estimates the density of each covariates with gaussian
+mixture models and then gives the associated BIC.
 }
 

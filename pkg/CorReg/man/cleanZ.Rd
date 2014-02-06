@@ -1,6 +1,6 @@
 \name{cleanZ}
 \alias{cleanZ}
-\title{cleanZ (if BIC improved)}
+\title{clean Z (if BIC improved)}
 \usage{
 cleanZ(X = X, Z = Z, bic_vide_vect = bic_vide_vect, methode_BIC = 1,
   plot = F, bla = 1, star = FALSE)
@@ -30,6 +30,6 @@ cleanZ(X = X, Z = Z, bic_vide_vect = bic_vide_vect, methode_BIC = 1,
 etape 0:suppression,1 ajout,2 stationarite
 }
 \description{
-cleanZ (if BIC improved)
+clean Z (if BIC improved)
 }
 

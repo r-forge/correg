@@ -1,4 +1,4 @@
-#' cleanZ (if BIC improved)
+#' clean Z (if BIC improved)
 #' @export
 #'@param X the dataset
 #'@param Z matrice Z a nettoyer
