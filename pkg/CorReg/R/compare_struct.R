@@ -4,7 +4,7 @@
 #' @param Zalgo second structure
 #' @param all boolean. Also compute the ratio for each stat.
 #' @param mode how to modify the structures before comparison. mode=c("NULL","hybrid","clique","sym")
-comparaison_struct<-function(trueZ=trueZ,Zalgo=Zalgo,all=TRUE,mode="NULL"){
+compare_struct<-function(trueZ=trueZ,Zalgo=Zalgo,all=TRUE,mode="NULL"){
   if(mode=="hybrid"){
     trueZ=trueZ+t(trueZ)+t(trueZ)%*%trueZ#attention ? bien multiplier par la transpos?e ? gauche
     trueZ[trueZ>1]=1     

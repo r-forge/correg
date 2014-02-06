@@ -1,10 +1,10 @@
 #' compare 0 values in two vectors
 #' @export
-#' @param vraiA first vector
+#' @param trueA first vector
 #' @param Aalgo second vector
 #' @param taux boolean. Computes the ratio of each statistic or not.
-comparateur0_vect<-function(vraiA=vraiA,Aalgo=Aalgo,taux=FALSE){
-  quivrai0=which(vraiA==0)
+compare_zero<-function(trueA=trueA,Aalgo=Aalgo,taux=FALSE){
+  quivrai0=which(trueA==0)
   if(length(quivrai0)>0){
     nbbon0=length(which(Aalgo[quivrai0]==0))
     nbbon1=length(which(Aalgo[-quivrai0]!=0))

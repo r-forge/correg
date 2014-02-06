@@ -1,11 +1,11 @@
-\name{comparateursign_vect}
-\alias{comparateursign_vect}
+\name{compare_sign}
+\alias{compare_sign}
 \title{compare signs of the coefficients in two vectors}
 \usage{
-comparateursign_vect(vraiA = vraiA, Aalgo = Aalgo)
+compare_sign(trueA = trueA, Aalgo = Aalgo)
 }
 \arguments{
-  \item{vraiA}{first vector}
+  \item{trueA}{first vector}
 
   \item{Aalgo}{second vector}
 }

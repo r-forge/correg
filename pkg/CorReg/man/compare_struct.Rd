@@ -1,9 +1,8 @@
-\name{comparaison_struct}
-\alias{comparaison_struct}
+\name{compare_struct}
+\alias{compare_struct}
 \title{To compare structures (Z)}
 \usage{
-comparaison_struct(trueZ = trueZ, Zalgo = Zalgo, all = TRUE,
-  mode = "NULL")
+compare_struct(trueZ = trueZ, Zalgo = Zalgo, all = TRUE, mode = "NULL")
 }
 \arguments{
   \item{trueZ}{first structure}

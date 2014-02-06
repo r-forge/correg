@@ -1,0 +1,18 @@
+\name{compare_zero}
+\alias{compare_zero}
+\title{compare 0 values in two vectors}
+\usage{
+compare_zero(trueA = trueA, Aalgo = Aalgo, taux = FALSE)
+}
+\arguments{
+  \item{trueA}{first vector}
+
+  \item{Aalgo}{second vector}
+
+  \item{taux}{boolean. Computes the ratio of each statistic
+  or not.}
+}
+\description{
+compare 0 values in two vectors
+}
+
