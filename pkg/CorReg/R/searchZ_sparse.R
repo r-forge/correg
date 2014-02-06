@@ -16,10 +16,10 @@
 #' @param bla 0:pas de messages, 1:affiche le BIC,le numero d'etape et la complexite de Z quand il y'a un meilleur BIC, 2:affiche le BIC,le numero d'etape,la complexite de Z,le nombre de candidats et le BIC minimum observe parmi les candidats quand il y'a un meilleur BIC, 3: affiche en plus de bla=1 la complexite locale et le BIC local
 #' @param nb_opt_max convergence criterion (number of step at the optimum)
 # ' @param Mixmod
-# ' @export
+#' @export
 #' @return etape 0:suppression,1 ajout,2 stationarite
 # '
-rechercheZ_sparse_relax<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,bic_vide_vect=bic_vide_vect,methode_tirage=2,methode_BIC=1,Rmax=5,Maxiter=1,plot=F,best=T,better=F,random=T,bla=1,nb_opt_max=NULL){
+searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,bic_vide_vect=bic_vide_vect,methode_tirage=2,methode_BIC=1,Rmax=5,Maxiter=1,plot=F,best=T,better=F,random=T,bla=1,nb_opt_max=NULL){
   if(is.null(nb_opt_max)){
     nb_opt_max=Maxiter
   }

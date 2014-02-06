@@ -1,4 +1,4 @@
-#' recherche de structure
+#' MCMC algo to find a structure between the covariates
 #'@param X the dataset
 #'@param Z binary adjacency matrix of size p. if NULL zero matrix is used
 #'@param Bic_null_vect vector of the BIC for each covariate
@@ -21,7 +21,7 @@
 #'@param ... parameters to be passed (for Winitial).
 #'@return etape 0:suppression,1 ajout,2 stationarite
 #'@export
-rechercheZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=1,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,bla=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,nett=TRUE,...){
+searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=1,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,bla=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,nett=TRUE,...){
   params=match.call()
   if(is.null(p2max)){
     p2max=ncol(X)+1 

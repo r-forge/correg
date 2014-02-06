@@ -1,9 +1,9 @@
-#'  Constructs the jacobian for the constrained likelihood  
-#' @param B matrice p+1 x p
-#' @param X dataset n x p
-#' @param A Fixed p+1 coefficient vector for the main regression
-#' @param Z p squared binary matrix describing the structure (adjacency matrix)
-#' @param Sigma p2 vector of standard deviations for each subregression
+#  '  Constructs the jacobian for the constrained likelihood  
+#  ' @param B matrice p+1 x p
+# ' @param X dataset n x p
+# ' @param A Fixed p+1 coefficient vector for the main regression
+#  ' @param Z p squared binary matrix describing the structure (adjacency matrix)
+# ' @param Sigma p2 vector of standard deviations for each subregression
 # '@export
 MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
    X=cbind(1,X)
