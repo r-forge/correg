@@ -1,14 +1,14 @@
-#' generateur de parametres selon la structure
-#' @export
-#' @param pb kind of problem : 0=none, 1=simple, 2=strong
-#' @param Z the structure adjacency matrix
-#' @param tp1 ratio of the right-side covariates in A
-#' @param tp2 ratio of the left-side covariates in A
-#' @param tp3 ratio of the totally independent covariates (if exists) in A
-#' @param positif ratio of positive coefficients in A
-#' @param lambdapois parameter of the poisson law to generate the coefficients
-#' @param Amax max number of non-zero coefficients
-#' @param B weighted structure used to coerce some problems in the complete model
+# ' generateur de parametres selon la structure
+# ' @export
+# ' @param pb kind of problem : 0=none, 1=simple, 2=strong
+# ' @param Z the structure adjacency matrix
+# ' @param tp1 ratio of the right-side covariates in A
+# ' @param tp2 ratio of the left-side covariates in A
+# ' @param tp3 ratio of the totally independent covariates (if exists) in A
+# ' @param positif ratio of positive coefficients in A
+# ' @param lambdapois parameter of the poisson law to generate the coefficients
+# ' @param Amax max number of non-zero coefficients
+# ' @param B weighted structure used to coerce some problems in the complete model
 generateurA_ou<-function (Z = Z, tp1 = 1, tp2 = 1, tp3 = 1, positif = 0.6, lambdapois = 5,pb=2,Amax=NULL,B=NULL) 
 {
   Z = as.matrix(Z)
