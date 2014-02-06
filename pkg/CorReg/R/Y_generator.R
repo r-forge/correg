@@ -1,10 +1,10 @@
-#' generateur Y aleatoire
+#' Response variable generator with a linear model
 #' @param X the dataset
 #' @param Amax maximum number of non-zero coefficients
 #' @param sigma_Y the standard deviation of the noise
 #' @param positif the ratio of positive coefficients
 #'@export 
-generateur_Y<-function(X=X,Amax=NULL,sigma_Y=10,positif=0.6){
+Y_generator<-function(X=X,Amax=NULL,sigma_Y=10,positif=0.6){
   p=ncol(X)
   taille=nrow(X)
   A=rpois(p+1,5)*(rep(-1,p+1)+2*rbinom(p+1,1,positif)) 

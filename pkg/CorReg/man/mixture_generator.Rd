@@ -1,8 +1,8 @@
-\name{generateur_melange}
-\alias{generateur_melange}
-\title{generateur de donnees en sous-regression par modele de melange gaussien}
+\name{mixture_generator}
+\alias{mixture_generator}
+\title{Gaussiam mixture dataset generator with regression between the covariates}
 \usage{
-generateur_melange(n = 130, p = 100, ratio = 0.4, max_compl = 1,
+mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
   valid = 1000, positif = 0.6, sigma_Y = 10, sigma_sousreg = 0.25,
   meanvar = NULL, sigmavar = NULL, lambda = 0, Amax = 15,
   lambdapois = 5, gamma = F, gammashape = 1, gammascale = 0.5,
@@ -66,7 +66,7 @@ generateur_melange(n = 130, p = 100, ratio = 0.4, max_compl = 1,
   that will give some issues with correlations.}
 }
 \description{
-generateur de donnees en sous-regression par modele de
-melange gaussien
+Gaussiam mixture dataset generator with regression between
+the covariates
 }
 

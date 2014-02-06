@@ -1,4 +1,4 @@
-#' generateur de donnees en sous-regression par modele de melange gaussien
+#' Gaussiam mixture dataset generator with regression between the covariates
 #utilise Matrix (matrices creuses) et generateurZ
 #' @param n the number of individuals in the learning dataset
 #' @param p the number of covariates (without the response)
@@ -21,7 +21,7 @@
 #' @param lambdapois parameter used to generate the coefficient in the subregressions. poisson distribution.
 #' @param pb Defines an heuristic to generate Y in a way that will give some issues with correlations.
 #' @export
-generateur_melange<-function(n=130,
+mixture_generator<-function(n=130,
                                 p=100,
                                 ratio=0.4,
                                 max_compl=1,
