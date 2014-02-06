@@ -1,8 +1,8 @@
-\name{generateur_Y}
-\alias{generateur_Y}
-\title{generateur Y aleatoire}
+\name{Y_generator}
+\alias{Y_generator}
+\title{Response variable generator with a linear model}
 \usage{
-generateur_Y(X = X, Amax = NULL, sigma_Y = 10, positif = 0.6)
+Y_generator(X = X, Amax = NULL, sigma_Y = 10, positif = 0.6)
 }
 \arguments{
   \item{X}{the dataset}
@@ -14,6 +14,6 @@ generateur_Y(X = X, Amax = NULL, sigma_Y = 10, positif = 0.6)
   \item{positif}{the ratio of positive coefficients}
 }
 \description{
-generateur Y aleatoire
+Response variable generator with a linear model
 }
 
