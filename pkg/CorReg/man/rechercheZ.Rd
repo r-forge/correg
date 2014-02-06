@@ -11,15 +11,15 @@ rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
 \arguments{
   \item{X}{the dataset}
 
-  \item{Z}{Z est une matrice nulle si on ne lui a pas mis
-  de valeur}
+  \item{Z}{binary adjacency matrix of size p. if NULL zero
+  matrix is used}
 
-  \item{Bic_null_vect}{vecteur BIC de la matrice nulle}
+  \item{Bic_null_vect}{vector of the BIC for each
+  covariate}
 
-  \item{methode_tirage}{0:ligne et colonne,-1:seulement la
-  colonne, entier>0:nombre aleatoire de candidats, -2 :
-  tout le monde (hors diagonale), -3 : uniquement les
-  non-nuls}
+  \item{methode_tirage}{0:row and column,-1:column only,
+  int>0:random int candidates, -2 : all (but the diag), -3
+  : non-zeros}
 
   \item{reject}{0:mode relax, 1:mode reject}
 

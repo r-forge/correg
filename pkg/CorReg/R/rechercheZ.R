@@ -1,8 +1,8 @@
 #' recherche de structure
 #'@param X the dataset
-#'@param Z Z est une matrice nulle si on ne lui a pas mis de valeur
-#'@param Bic_null_vect vecteur BIC de la matrice nulle
-#'@param methode_tirage 0:ligne et colonne,-1:seulement la colonne, entier>0:nombre aleatoire de candidats, -2 : tout le monde (hors diagonale), -3 : uniquement les non-nuls
+#'@param Z binary adjacency matrix of size p. if NULL zero matrix is used
+#'@param Bic_null_vect vector of the BIC for each covariate
+#'@param methode_tirage 0:row and column,-1:column only, int>0:random int candidates, -2 : all (but the diag), -3 : non-zeros
 #'@param reject 0:mode relax, 1:mode reject
 #'@param methode_BIC 1:utilisation de la fonction householderQr, 2:utilisation de la fonction colPivHouseholderQr
 #'@param Rmax complexite maximum d'une sous-regression
