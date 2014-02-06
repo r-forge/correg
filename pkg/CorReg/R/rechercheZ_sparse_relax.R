@@ -2,7 +2,7 @@
 #' @param X the dataset
 #' @param Zi indices of the rows of the 1
 #' @param Zj indices of the columns of the 1
-#' @param Sj nombre de 1 dans chaque lignes
+#' @param Si nombre de 1 dans chaque lignes
 #' @param Sj nombre de 1 dans chaque colonnes
 #' @param bic_vide_vect vecteur BIC de la matrice nulle
 #' @param methode_tirage 0:ligne et colonne,-1:seulement la colonne, entier>0:nombre aleatoire de candidats

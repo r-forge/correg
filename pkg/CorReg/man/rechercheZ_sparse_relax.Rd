@@ -14,7 +14,7 @@ rechercheZ_sparse_relax(X = X, Zi = NULL, Zj = NULL, Si = NULL,
 
   \item{Zj}{indices of the columns of the 1}
 
-  \item{Sj}{nombre de 1 dans chaque lignes}
+  \item{Si}{nombre de 1 dans chaque lignes}
 
   \item{Sj}{nombre de 1 dans chaque colonnes}
 
