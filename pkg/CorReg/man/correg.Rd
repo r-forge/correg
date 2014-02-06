@@ -5,8 +5,8 @@
 correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   pred = TRUE, prednew = FALSE, select = "lar", criterion = c("MSE",
   "BIC"), X_test = NULL, Y_test = NULL, intercept = TRUE, K = 10,
-  groupe = NULL, Amax = NULL, lambda = 1, retour = TRUE,
-  final = FALSE, nbalter = 10, deltamin = 0.01, Atilde = NULL)
+  groupe = NULL, Amax = NULL, lambda = 1, retour = TRUE, nbalter = 10,
+  deltamin = 0.01, Atilde = NULL)
 }
 \arguments{
   \item{B}{the (p+1)xp matrix assiated to Z and that
@@ -49,10 +49,6 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
 
   \item{retour}{boolean : second predictive step (selection
   on I1 knowing I2 coefficients)}
-
-  \item{final}{boolean : recompute estimators without
-  selection on the remaining parameters of the predictive
-  model}
 
   \item{X_test}{validation sample}
 

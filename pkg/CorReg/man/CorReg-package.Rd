@@ -58,10 +58,10 @@ sum(BicZ(X=X_appr,Z=hatZ,Bic_null_vect=BIC_empty_vect))#same value
 
 readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
 
-compZ=comparaison_struct(vraiZ=TrueZ,Zalgo=hatZ)#qualitative comparison
+compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
 select="lar"#LASSO with the Least Angle Regression algorithm to find the best model
 resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,
-               select=select,K=10,final=FALSE,retour=TRUE)
+               select=select,K=10,retour=TRUE)
 
 MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$compl$A)
 MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)

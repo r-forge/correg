@@ -35,7 +35,7 @@ searchZmissR<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vra
   pas=0
   etape_max=round(maxit/(2*p-2))
   if(plot){
-    compare=comparaison_struct(vraiZ=Z_vrai,Zalgo=Z)
+    compare=compare_struct(trueZ=Z_vrai,Zalgo=Z)
     courbe_BIC=rep(0,times=round(etape_max))
     courbe_BIC[1]=BIC
     courbe_BIC_opt=rep(0,times=round(etape_max))
@@ -161,7 +161,7 @@ searchZmissR<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vra
 
 #     BIC_vect=calcul_BIC2.2(Zloc=Z,X_appr=X,BIC_ini=BIC_vide_vect)#voir si pas pr?f?rable de stocker l'?tape pr?c?dente pour l'utiliser ici
     if(plot){
-      compare=comparaison_struct(vraiZ=Z_vrai,Zalgo=Z)
+      compare=compare_struct(trueZ=Z_vrai,Zalgo=Z)
       courbe_BIC[pas]=BIC
       courbe_BIC_opt[pas]=BIC_opt
       courbe_compl[pas]=sum(Z)

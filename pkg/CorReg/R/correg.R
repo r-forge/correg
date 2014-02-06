@@ -25,7 +25,7 @@
 #' @param groupe a vector to define the groupes used for cross-validation (to obtain a reproductible result)
 #' @param Amax the maximum number of covariates in the final model
 #' @param retour boolean : second predictive step (selection on I1 knowing I2 coefficients)
-#' @param final boolean : recompute estimators without selection on the remaining parameters of the predictive model
+# ' @param final boolean : recompute estimators without selection on the remaining parameters of the predictive model
 #' @param X_test validation sample
 #' @param Y_test response for the validation sample
 #' @param intercept boolean. If FALSE intercept will be set to 0 in each model.
@@ -40,7 +40,8 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
                 select = "lar",
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
-                K = 10, groupe = NULL, Amax = NULL, lambda = 1,retour=TRUE,final=FALSE,nbalter=10,deltamin=0.01,Atilde=NULL) 
+                K = 10, groupe = NULL, Amax = NULL, lambda = 1,retour=TRUE,#final=FALSE,
+                nbalter=10,deltamin=0.01,Atilde=NULL) 
 {
   res = list()
   X = as.matrix(X)
@@ -54,7 +55,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   select = select[1]
   if(select=="NULL"){
     retour=F
-    final=F
+#     final=F
   }
   criterion = criterion[1]
   if (is.null(Amax)) {
@@ -234,22 +235,22 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
       res$pred$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
       res$pred$BIC = BicTheta(X = X, Y = Y, intercept = intercept, 
                               beta = A_pred)
-      if(final){
-        if(intercept){
-          quifinal=which(A_pred[-1]!=0)
-        }else{
-          quifinal=which(A_pred!=0)
-        }
-        Zfinal=as.matrix(Z[quifinal,quifinal])
-        A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),retour=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
-        
-        res$final$A=res$pred$A
-        res$final$A[res$pred$A!=0]=A_final
-        res$final$CVMSE = CVMSE(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, K = K, groupe = groupe)
-        res$final$BIC = BicTheta(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, 
-                                 beta = A_final)
-        
-      }
+#       if(final){
+#         if(intercept){
+#           quifinal=which(A_pred[-1]!=0)
+#         }else{
+#           quifinal=which(A_pred!=0)
+#         }
+#         Zfinal=as.matrix(Z[quifinal,quifinal])
+#         A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),retour=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
+#         
+#         res$final$A=res$pred$A
+#         res$final$A[res$pred$A!=0]=A_final
+#         res$final$CVMSE = CVMSE(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, K = K, groupe = groupe)
+#         res$final$BIC = BicTheta(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, 
+#                                  beta = A_final)
+#         
+#       }
     }
     #nouveau prédictif####
     if (prednew) {
@@ -348,21 +349,21 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
              res$prednew$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
              res$prednew$BIC = BicTheta(X = X, Y = Y, intercept = intercept, 
                                      beta = A_pred)
-             if(final){
-                if(intercept){
-                   quifinal=which(A_pred[-1]!=0)
-                }else{
-                   quifinal=which(A_pred!=0)
-                }
-                Zfinal=as.matrix(Z[quifinal,quifinal])
-                A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),retour=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
-                
-                res$finalnew$A=res$prednew$A
-                res$finalnew$A[res$prednew$A!=0]=A_final
-                res$finalnew$CVMSE = CVMSE(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, K = K, groupe = groupe)
-                res$finalnew$BIC = BicTheta(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, 
-                                         beta = A_final)
-             }
+#              if(final){
+#                 if(intercept){
+#                    quifinal=which(A_pred[-1]!=0)
+#                 }else{
+#                    quifinal=which(A_pred!=0)
+#                 }
+#                 Zfinal=as.matrix(Z[quifinal,quifinal])
+#                 A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),retour=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
+#                 
+#                 res$finalnew$A=res$prednew$A
+#                 res$finalnew$A[res$prednew$A!=0]=A_final
+#                 res$finalnew$CVMSE = CVMSE(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, K = K, groupe = groupe)
+#                 res$finalnew$BIC = BicTheta(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, 
+#                                          beta = A_final)
+#              }
           #une fois A calculé, on regarde si on doit continuer
           deltaobs=sum(abs(A_old-res$prednew$A))
           print(deltaobs)
