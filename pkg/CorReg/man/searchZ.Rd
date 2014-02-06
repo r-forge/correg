@@ -1,8 +1,8 @@
-\name{rechercheZ}
-\alias{rechercheZ}
-\title{recherche de structure}
+\name{searchZ}
+\alias{searchZ}
+\title{MCMC algo to find a structure between the covariates}
 \usage{
-rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
+searchZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
   reject = 1, methode_BIC = 1, Rmax = 5, p2max = NULL, Maxiter = 1,
   plot = FALSE, best = TRUE, better = FALSE, random = TRUE, bla = 1,
   nb_opt_max = NULL, exact = TRUE, nbini = NULL, star = TRUE,
@@ -74,6 +74,6 @@ rechercheZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
 etape 0:suppression,1 ajout,2 stationarite
 }
 \description{
-recherche de structure
+MCMC algo to find a structure between the covariates
 }
 

@@ -1,11 +1,11 @@
-\name{rechercheZ_sparse_relax}
-\alias{rechercheZ_sparse_relax}
+\name{searchZ_sparse}
+\alias{searchZ_sparse}
 \title{Sparse structure research}
 \usage{
-rechercheZ_sparse_relax(X = X, Zi = NULL, Zj = NULL, Si = NULL,
-  Sj = NULL, bic_vide_vect = bic_vide_vect, methode_tirage = 2,
-  methode_BIC = 1, Rmax = 5, Maxiter = 1, plot = F, best = T,
-  better = F, random = T, bla = 1, nb_opt_max = NULL)
+searchZ_sparse(X = X, Zi = NULL, Zj = NULL, Si = NULL, Sj = NULL,
+  bic_vide_vect = bic_vide_vect, methode_tirage = 2, methode_BIC = 1,
+  Rmax = 5, Maxiter = 1, plot = F, best = T, better = F, random = T,
+  bla = 1, nb_opt_max = NULL)
 }
 \arguments{
   \item{X}{the dataset}
