@@ -51,7 +51,8 @@ rechercheZ_sparse_relax(X = X, Zi = NULL, Zj = NULL, Si = NULL,
   les candidats quand il y'a un meilleur BIC, 3: affiche en
   plus de bla=1 la complexite locale et le BIC local}
 
-  \item{nb_opt_max}{}
+  \item{nb_opt_max}{convergence criterion (number of step
+  at the optimum)}
 }
 \value{
 etape 0:suppression,1 ajout,2 stationarite
