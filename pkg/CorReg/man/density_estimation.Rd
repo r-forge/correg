@@ -1,8 +1,8 @@
-\name{calcul_BIC_mixmod}
-\alias{calcul_BIC_mixmod}
-\title{BIC of the marginal densities}
+\name{density_estimation}
+\alias{density_estimation}
+\title{BIC of estimated  marginal gaussian mixture densities}
 \usage{
-calcul_BIC_mixmod(X = X, nbclustmax = 10, bla = FALSE, details = FALSE,
+density_estimation(X = X, nbclustmax = 10, bla = FALSE, details = FALSE,
   max = TRUE, mclust = TRUE, nbini = 50)
 }
 \arguments{

@@ -1,4 +1,4 @@
-#' BIC of the marginal densities
+#' BIC of estimated  marginal gaussian mixture densities
 #' @export
 #' @description Estimates the density of each covariates with gaussian mixture models and then gives the associated BIC.
 #' @param X the dataset (matrix)
@@ -8,7 +8,7 @@
 #' @param max boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset
 #' @param mclust boolean. Use mclust instead of Rmixmod
 #' @param nbini number of initial points for Rmixmod
-calcul_BIC_mixmod<-function(X=X,nbclustmax=10,bla=FALSE,details=FALSE,max=TRUE,mclust=TRUE,nbini=50){
+density_estimation<-function(X=X,nbclustmax=10,bla=FALSE,details=FALSE,max=TRUE,mclust=TRUE,nbini=50){
   #X est la matrice sans constante
   n=nrow(X)
   if(max){

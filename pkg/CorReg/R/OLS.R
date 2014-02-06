@@ -15,7 +15,7 @@
 OLS<- function(X=X,Y=Y,M=NULL,intercept=F,sigma=F,Bic=F,methode=1,miss=0,mixmod=NULL,nbit=100,nbclustmax=10){
   if(miss & nbit>0){
     if(is.null(mixmod)){
-      mixmod=calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,bla=F,details=T)
+      mixmod=density_estimation(X=X,nbclustmax=nbclustmax,bla=F,details=T)
       mixmod=mixmod_adapter(mixmod=mixmod)
     }
     if(is.null(M)){

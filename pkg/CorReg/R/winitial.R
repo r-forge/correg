@@ -27,10 +27,9 @@ Winitial<-function(W=W,X=NULL,Rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=
   Z=matrix(0,ncol=p,nrow=p)
   list_j=sample(p)#melange les entiers de 1 a p
   if(BIC==T &  !is.null(X)){
-    if(is.null(Bic_null_vect)){
-      mixmod=calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax)
-      Bic_null_vect=mixmod$BIC_vect       
-    }
+     if(is.null(Bic_null_vect)){
+        Bic_null_vect=density_estimation(X=X)$BIC_vect 
+     }
     BIC_opt_vect=Bic_null_vect
     BIC_opt=sum(Bic_null_vect)#initialisation de l'optimum
   }else{

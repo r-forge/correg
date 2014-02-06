@@ -1,5 +1,5 @@
 #confidence intervals on the coefficients estimated in a model
-confint.coef<-function(modele){   
+confint_coef<-function(modele){   
    confint=confint.default(modele)
    coef=cbind(modele$coefficients,confint)
    colnames(coef)=c("values","borne inf IC", "borne sup IC")
