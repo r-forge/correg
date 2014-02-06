@@ -1,5 +1,6 @@
-#' calcul du BIC initial via package externe Mixmod (ou mclust)
+#' BIC of the marginal densities
 #' @export
+#' @description Estimates the density of each covariates with gaussian mixture models and then gives the associated BIC.
 #' @param X the dataset (matrix)
 #' @param nbclustmax max number of clusters in the gaussian mixtures
 #' @param bla verbose or not
