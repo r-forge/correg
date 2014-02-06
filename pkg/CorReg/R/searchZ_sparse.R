@@ -19,9 +19,12 @@
 #' @export
 #' @return etape 0:suppression,1 ajout,2 stationarite
 # '
-searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,bic_vide_vect=bic_vide_vect,methode_tirage=2,methode_BIC=1,Rmax=5,Maxiter=1,plot=F,best=T,better=F,random=T,bla=1,nb_opt_max=NULL){
+searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,bic_vide_vect=NULL,methode_tirage=2,methode_BIC=1,Rmax=5,Maxiter=1,plot=F,best=T,better=F,random=T,bla=1,nb_opt_max=NULL){
   if(is.null(nb_opt_max)){
     nb_opt_max=Maxiter
+  }
+  if(is.null(bic_vide_vect)){
+     bic_vide_vect=density_estimation(X=X)$BIC_vect 
   }
   if(is.null(Zi) | is.null(Zj) ){
      Zi=as.vector(0)

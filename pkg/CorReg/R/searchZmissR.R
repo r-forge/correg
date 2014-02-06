@@ -20,7 +20,7 @@ searchZmissR<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vra
   }
   Z_opt=Z
   if(is.null(mixmod)){
-    mixmod=calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,details=T)
+    mixmod=density_estimation(X=X,nbclustmax=nbclustmax,details=T)
     mixmod=mixmod_adapter(mixmod)
     BIC_vide_vect=mixmod$BIC_vect  
   }

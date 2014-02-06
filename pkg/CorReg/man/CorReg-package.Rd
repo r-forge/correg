@@ -34,7 +34,7 @@ X_test=base$X_test
 TrueZ=base$Z#True generative structure (binary matrix)
 Trueclust=base$mixmod#classes of the gaussian mixtures (orthogonal covariates only)
 
-mixmod=calcul_BIC_mixmod(X=X_appr,nbclustmax=10,details=TRUE,mclust=TRUE)#mclust=TRUE is faster
+mixmod=density_estimation(X=X_appr,nbclustmax=10,details=TRUE,mclust=TRUE)#mclust=TRUE is faster
 BIC_empty_vect=mixmod$BIC_vect
 BIC_empty=sum(BIC_empty_vect)
 

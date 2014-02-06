@@ -8,10 +8,9 @@
 #' @param methode parameter for OLS 
 #' @param star boolean defining wether classical BIC or BIC* is computed
 BicZ<-function(X=X,Z=Z,Bic_null_vect=NULL,BicOld=NULL,methode=1,Zold=NULL,star=TRUE){
- if(is.null(Bic_null_vect)){
-   val=calcul_BIC_mixmod(X=X)
-   Bic_null_vect=val$BIC_vect
- }
+   if(is.null(Bic_null_vect)){
+      Bic_null_vect=density_estimation(X=X)$BIC_vect 
+   }
  if(is.null(Zold)| is.null(BicOld)){
    Zold=0*Z
    BicOld=Bic_null_vect

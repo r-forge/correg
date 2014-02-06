@@ -21,8 +21,7 @@ BICZmiss<-function(X=X,Z=Z,M=NULL,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=
         Bic_vide_vect[i]=mixmod$BIC_vect[i]
       }
     }else{
-      val=calcul_BIC_mixmod(X=X)
-      Bic_vide_vect=val$BIC_vect
+       Bic_vide_vect=density_estimation(X=X)$BIC_vect
     }
   }
   if(is.null(Zold)| is.null(BicOld)){

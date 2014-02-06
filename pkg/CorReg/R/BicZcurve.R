@@ -8,6 +8,9 @@
 #' @export
 BicZcurve<-function(X=X,Z=Z,Bic_null_vect=Bic_null_vect,plot=T,star=F,trunc=NULL){
    p2=sum(colSums(Z)!=0)
+   if(is.null(Bic_null_vect)){
+      Bic_null_vect=density_estimation(X=X)$BIC_vect 
+   }
    curve=sum(BicZ(X=X,Z=0*Z,Bic_null_vect=Bic_null_vect,star=star))
    
    if(p2>0){
