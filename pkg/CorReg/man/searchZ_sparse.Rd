@@ -14,9 +14,9 @@ searchZ_sparse(X = X, Zi = NULL, Zj = NULL, Si = NULL, Sj = NULL,
 
   \item{Zj}{indices of the columns of the 1}
 
-  \item{Si}{nombre de 1 dans chaque lignes}
+  \item{Si}{rowSums vector}
 
-  \item{Sj}{nombre de 1 dans chaque colonnes}
+  \item{Sj}{colSums vector}
 
   \item{Bic_null_vect}{the BIC of the null hypothesis (used
   for independent variables)}

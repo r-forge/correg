@@ -18,16 +18,13 @@ Winitial(W = W, X = NULL, p1max = NULL, BIC = F, Bic_null_vect = NULL,
   \item{relax}{TRUE: constraint relaxation, FALSE: reject
   mode}
 
-  \item{p1max}{est le nombre max de 1 sur une colonne de Z}
+  \item{p1max}{maximum complexity for a regression}
 
-  \item{random}{indique si on fait le tirage au sort ou pas
-  (si on utilise BIc on a moins besoin du tirage). sans
-  tirage = sans tenir compte de W}
+  \item{random}{if FALSE W is not used.}
 
-  \item{mode}{indique la strategie pour le choix des
-  candidats a la mise a 1}
+  \item{mode}{candidates strategy}
 
-  \item{p2max}{est le nombre max de sous-reg}
+  \item{p2max}{maximum number of regressions}
 
   \item{sorted}{boolean to sort the candidates based on W
   (best first)}

@@ -3,10 +3,10 @@
 #' @param X the dataset (if BIC=TRUE)
 #' @param Bic_null_vect the BIC of the null hypothesis (used for independent variables)
 #'@param relax TRUE: constraint relaxation, FALSE: reject mode
-#' @param p1max est le nombre max de 1 sur une colonne de Z
-#' @param random indique si on fait le tirage au sort ou pas (si on utilise BIc on a moins besoin du tirage). sans tirage = sans tenir compte de W
-#' @param mode indique la strategie pour le choix des candidats a la mise a 1
-#' @param p2max est le nombre max de sous-reg
+#'@param p1max maximum complexity for a regression
+#' @param random if FALSE W is not used.
+#' @param mode candidates strategy
+#'@param p2max maximum number of regressions 
 #' @param sorted boolean to sort the candidates based on W (best first)
 #' @param BIC boolean to use BIC for probabilities.
 #' @param nbclustmax parameter for calcul_BIC_mixmod if needed
