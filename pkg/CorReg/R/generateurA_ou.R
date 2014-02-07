@@ -5,18 +5,18 @@
 # ' @param tp1 ratio of the right-side covariates in A
 # ' @param tp2 ratio of the left-side covariates in A
 # ' @param tp3 ratio of the totally independent covariates (if exists) in A
-# ' @param positif ratio of positive coefficients in A
+# ' @param positive ratio of positive coefficients in A
 # ' @param lambdapois parameter of the poisson law to generate the coefficients
 # ' @param Amax max number of non-zero coefficients
 # ' @param B weighted structure used to coerce some problems in the complete model
-generateurA_ou<-function (Z = Z, tp1 = 1, tp2 = 1, tp3 = 1, positif = 0.6, lambdapois = 5,pb=2,Amax=NULL,B=NULL) 
+generateurA_ou<-function (Z = Z, tp1 = 1, tp2 = 1, tp3 = 1, positive = 0.6, lambdapois = 5,pb=2,Amax=NULL,B=NULL) 
 {
   Z = as.matrix(Z)
   p = ncol(Z)
   quip1 = which(rowSums(Z) != 0)
   quip2 = which(colSums(Z) != 0)
   quip3 = (1:p)[-c(quip1, quip2)]
-  A = 1+rpois(p + 1, lambdapois) * (rep(-1, p + 1) + 2 * rbinom(p +1, 1, positif))
+  A = 1+rpois(p + 1, lambdapois) * (rep(-1, p + 1) + 2 * rbinom(p +1, 1, positive))
   if(pb>0 & !is.null(B)){
     Apb=as.vector((B-diag(diag(as.matrix(B))))%*%A)#on fait une combinaison linéaire des sous-régressions pour mettre le lasso en défaut 
     qui0=which(Apb==0)

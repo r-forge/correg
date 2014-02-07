@@ -5,10 +5,10 @@
 #' @param ratio the ratio of explained covariates (dependent)
 #' @param max_compl the number of covariates in each subregression
 #' @param valid the size of the validation sample
-#' @param positif the ratio of positive coefficients in both the regression and the subregressions
+#' @param positive the ratio of positive coefficients in both the regression and the subregressions
 #' @param sigma_Y standard deviation for the noise of the regression
-#' @param sigma_sousreg standard deviation for the noise of the subregression (all). ignored if gamma=T
-#' @param gamma boolean to generate a p-sized vector sigma_sousreg gamma-distributed
+#' @param sigma_X standard deviation for the noise of the subregression (all). ignored if gamma=T
+#' @param gamma boolean to generate a p-sized vector sigma_X gamma-distributed
 #' @param gammashape shape parameter of the gamma distribution (if needed)
 #' @param gammascale scale parameter of the gamma distribution (if needed)
 #' @param meanvar vector of means for the covariates.
@@ -19,16 +19,16 @@
 #' @param tp2 the ratio of left-side covariates allowed to have a non-zero coefficient in the regression
 #' @param tp3 the ratio of strictly independent covariates allowed to have a non-zero coefficient in the regression
 #' @param lambdapois parameter used to generate the coefficient in the subregressions. poisson distribution.
-#' @param pb Defines an heuristic to generate Y in a way that will give some issues with correlations.
+#' @param pb generates Y in an heuristic way that will give some issues with correlations.
 #' @export
 mixture_generator<-function(n=130,
                                 p=100,
                                 ratio=0.4,
                                 max_compl=1,
                                 valid=1000,
-                                positif=0.6,
+                                positive=0.6,
                                 sigma_Y=10,
-                                sigma_sousreg=0.25,
+                                sigma_X=0.25,
                                 meanvar=NULL,
                                 sigmavar=NULL,
                                 lambda=0,#pour l enombre de composantes des m?langes gaussiens
@@ -50,9 +50,9 @@ mixture_generator<-function(n=130,
   qui=2:(p+1)  # vecteur de taille p qui contient les valeurs allant de 2 Ã  p+1 avec un pas de 1
   if(R>0){
     list_X2=sample(qui,R) # melange R individus pri au hasard 
-    B[1,list_X2]=rpois(R,lambdapois)*(rep(-1,R)+2*rbinom(R,1,positif)) # 1ere ligne de B = ?????
+    B[1,list_X2]=rpois(R,lambdapois)*(rep(-1,R)+2*rbinom(R,1,positive)) # 1ere ligne de B = ?????
     for(j in list_X2){#remplissage aléatoire de max_compl éléments de B sur chaque colonne à gauche
-      B[sample(qui[-c(list_X2-1)],size=max_compl),j]=(1/max_compl)*rpois(max_compl,lambdapois)*(rep(-1,max_compl)+2*rbinom(max_compl,1,positif))
+      B[sample(qui[-c(list_X2-1)],size=max_compl),j]=(1/max_compl)*rpois(max_compl,lambdapois)*(rep(-1,max_compl)+2*rbinom(max_compl,1,positive))
     }
     #ajout de G
     G=diag(p+1)
@@ -65,11 +65,11 @@ mixture_generator<-function(n=130,
   vraiZ=vraiZ-diag(diag(vraiZ))
   vraiZ=vraiZ[-1,-1]
   if(sum(c(tp1,tp2,tp3))==0){
-    A=rpois(p+1,lambdapois)*(rep(-1,p+1)+2*rbinom(p+1,1,positif)) 
+    A=rpois(p+1,lambdapois)*(rep(-1,p+1)+2*rbinom(p+1,1,positive)) 
     #on vient maintenant tailler dans A en fonction des param?tres
     A[-sample(p+1,size=Amax)]=0
   }else{
-    A=generateurA_ou(Z=vraiZ,tp1=tp1,tp2=tp2,tp3=tp3,positif=positif,lambdapois=lambdapois,pb=pb,Amax=Amax,B=B)
+    A=generateurA_ou(Z=vraiZ,tp1=tp1,tp2=tp2,tp3=tp3,positive=positive,lambdapois=lambdapois,pb=pb,Amax=Amax,B=B)
   }
 
   composantes=rpois(p-R,lambda=lambda)
@@ -79,7 +79,7 @@ mixture_generator<-function(n=130,
   meanvar=NULL
   sigmavar=NULL
   if(is.null(meanvar)){
-    meanvar=rpois(ploc,ploc)*(rep(-1,ploc)+2*rbinom(ploc,1,positif))
+    meanvar=rpois(ploc,ploc)*(rep(-1,ploc)+2*rbinom(ploc,1,positive))
   }
   if(is.null(sigmavar)){
     sigmavar=5
@@ -119,9 +119,9 @@ mixture_generator<-function(n=130,
   if(R>0){ 
     X[,-list_X2]=X1
     if(gamma){
-      sigma_sousreg=rgamma(R,shape=gammashape,scale=gammascale)
+      sigma_X=rgamma(R,shape=gammashape,scale=gammascale)
     }
-    epsX[,list_X2]=matrix(rnorm(taille*R,mean=rep(0,times=R),sd=sigma_sousreg),ncol=R,nrow=taille,byrow=T)
+    epsX[,list_X2]=matrix(rnorm(taille*R,mean=rep(0,times=R),sd=sigma_X),ncol=R,nrow=taille,byrow=T)
     X=X%*%B+epsX
   }else{
     X=X1
@@ -135,7 +135,7 @@ mixture_generator<-function(n=130,
   Y_appr=as.matrix(Y[1:n])
   Y_test=as.matrix(Y[(n+1):taille]) 
   return(list(X_appr=X_appr,Y_appr=Y_appr,A=A,B=B[,-1],Z=vraiZ,
-              X_test=data.frame(X_test),Y_test=Y_test,sigma_sousreg=sigma_sousreg,mixmod=composantes))   
+              X_test=data.frame(X_test),Y_test=Y_test,sigma_X=sigma_X,mixmod=composantes))   
 }
 
 
