@@ -15,7 +15,8 @@ Winitial(W = W, X = NULL, p1max = NULL, BIC = F, Bic_null_vect = NULL,
   \item{Bic_null_vect}{the BIC of the null hypothesis (used
   for independent variables)}
 
-  \item{reject}{0: constraint relaxation, 1: reject mode}
+  \item{relax}{TRUE: constraint relaxation, FALSE: reject
+  mode}
 
   \item{p1max}{est le nombre max de 1 sur une colonne de Z}
 

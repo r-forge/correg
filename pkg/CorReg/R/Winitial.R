@@ -2,7 +2,7 @@
 #' @param W Weight matrix with values between 0 and 1 ( e.g. : abs(cor(X)) )
 #' @param X the dataset (if BIC=TRUE)
 #' @param Bic_null_vect the BIC of the null hypothesis (used for independent variables)
-#'@param reject 0: constraint relaxation, 1: reject mode
+#'@param relax TRUE: constraint relaxation, FALSE: reject mode
 #' @param p1max est le nombre max de 1 sur une colonne de Z
 #' @param random indique si on fait le tirage au sort ou pas (si on utilise BIc on a moins besoin du tirage). sans tirage = sans tenir compte de W
 #' @param mode indique la strategie pour le choix des candidats a la mise a 1
