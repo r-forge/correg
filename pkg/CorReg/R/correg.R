@@ -1,6 +1,6 @@
 #' Estimates the response variable using a structure
 #'  @import Rcpp
-# ' @import Rmixmod
+#' @import Rmixmod
 #' @import lars
 #' @import elasticnet
 #' @import Matrix
