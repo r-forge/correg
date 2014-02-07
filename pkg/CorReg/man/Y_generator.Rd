@@ -2,7 +2,7 @@
 \alias{Y_generator}
 \title{Response variable generator with a linear model}
 \usage{
-Y_generator(X = X, Amax = NULL, sigma_Y = 10, positif = 0.6)
+Y_generator(X = X, Amax = NULL, sigma_Y = 10, positive = 0.6)
 }
 \arguments{
   \item{X}{the dataset}
@@ -11,7 +11,7 @@ Y_generator(X = X, Amax = NULL, sigma_Y = 10, positif = 0.6)
 
   \item{sigma_Y}{the standard deviation of the noise}
 
-  \item{positif}{the ratio of positive coefficients}
+  \item{positive}{the ratio of positive coefficients}
 }
 \description{
 Response variable generator with a linear model
