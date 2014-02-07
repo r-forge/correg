@@ -19,7 +19,7 @@
 #' @export
 #'@return step 0:delete, 1: add, 2: stationnarity
 # '
-searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,Bic_null_vect=NULL,methode_tirage=2,methode_BIC=1,Rmax=5,Maxiter=1,plot=F,best=T,better=F,random=T,verbose=1,nb_opt_max=NULL){
+searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,Bic_null_vect=NULL,methode_tirage=2,methode_BIC=1,p1max=5,Maxiter=1,plot=F,best=T,better=F,random=T,verbose=1,nb_opt_max=NULL){
   if(is.null(nb_opt_max)){
     nb_opt_max=Maxiter
   }
@@ -42,6 +42,6 @@ searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,Bic_null_vect=NULL,
         Sj[i]=length(which(Zj==i))
      }
   }
-  res=.Call( "rechercheZ_sparse_relax",X,Zi,Zj,Si,Sj,Bic_null_vect,methode_tirage,methode_BIC,Rmax,Maxiter,plot,best,better,random,verbose,nb_opt_max, PACKAGE = "CorReg")
+  res=.Call( "rechercheZ_sparse_relax",X,Zi,Zj,Si,Sj,Bic_null_vect,methode_tirage,methode_BIC,p1max,Maxiter,plot,best,better,random,verbose,nb_opt_max, PACKAGE = "CorReg")
   return(res)
 }
