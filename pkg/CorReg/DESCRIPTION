@@ -13,10 +13,9 @@ License: CeCILL
 Copyright: ArcelorMittal
 URL: http://www.correg.org
 Depends:
-    Rcpp
-Imports:
     Rcpp,
-    Rmixmod,
+    Rmixmod
+Imports:
     lars,
-    elasticnet,Matrix,mclust,ridge,MASS,parcor,RcppEigen
+    elasticnet,Matrix,mclust,ridge,MASS,parcor
 LinkingTo: Rcpp, RcppEigen
