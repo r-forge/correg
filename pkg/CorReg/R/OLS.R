@@ -5,14 +5,14 @@
 #' @param intercept (boolean) is an intercept intended ?
 #' @param sigma (boolean) is it necessary to compute the standard deviation of errors ?
 #' @param Bic (boolean) is the BIC criterion computation intended ?
-#' @param methode how to compute the least squares ?
+#' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
 #' @param miss to indicate wether there are missing values in X (miss=1) or not (miss=0) next version would allow missing values in Y
 #' @param nbit number of iteration for SEM
 #' @param nbclustmax max number of cluster for mixmod (ignored if miss=0)
 #' @param M binary matrix (size of X) with 1 where X is missing
 #' @param mixmod Gaussian Mixture hypothesis if needed. Or result of calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,bla=F,details=T)
 #' @export
-OLS<- function(X=X,Y=Y,M=NULL,intercept=F,sigma=F,Bic=F,methode=1,miss=0,mixmod=NULL,nbit=100,nbclustmax=10){
+OLS<- function(X=X,Y=Y,M=NULL,intercept=FALSE,sigma=FALSE,Bic=FALSE,methode=1,miss=0,mixmod=NULL,nbit=100,nbclustmax=10){
   if(miss & nbit>0){
     if(is.null(mixmod)){
       mixmod=density_estimation(X=X,nbclustmax=nbclustmax,verbose=F,detailed=T)

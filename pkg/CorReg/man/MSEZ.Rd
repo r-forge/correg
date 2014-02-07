@@ -11,7 +11,8 @@ MSEZ(X = X, X_appr = NULL, B = NULL, Z = Z, scale = TRUE)
 
   \item{B}{the structure tested (if known)}
 
-  \item{Z}{the binary structure}
+  \item{Z}{binary adjacency matrix of the structure (size
+  p)}
 
   \item{scale}{boolean defining wether the dataset has to
   be scaled or not}

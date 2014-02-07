@@ -2,8 +2,9 @@
 \alias{OLS}
 \title{Ordinary Least Square efficiently computed with SEM for missing values}
 \usage{
-OLS(X = X, Y = Y, M = NULL, intercept = F, sigma = F, Bic = F,
-  methode = 1, miss = 0, mixmod = NULL, nbit = 100, nbclustmax = 10)
+OLS(X = X, Y = Y, M = NULL, intercept = FALSE, sigma = FALSE,
+  Bic = FALSE, methode = 1, miss = 0, mixmod = NULL, nbit = 100,
+  nbclustmax = 10)
 }
 \arguments{
   \item{X}{the covariates (double)}
@@ -18,7 +19,9 @@ OLS(X = X, Y = Y, M = NULL, intercept = F, sigma = F, Bic = F,
   \item{Bic}{(boolean) is the BIC criterion computation
   intended ?}
 
-  \item{methode}{how to compute the least squares ?}
+  \item{methode}{parameter for OLS (matrix inversion)
+  methode_BIC parameter for OLS (matrix inversion)
+  1:householderQr, 2:colPivHouseholderQr}
 
   \item{miss}{to indicate wether there are missing values
   in X (miss=1) or not (miss=0) next version would allow
