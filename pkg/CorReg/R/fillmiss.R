@@ -41,9 +41,9 @@ fillmiss<-function(X=X,Z=NULL,mixmod=F,B=NULL,Bt=NULL,res_mixmod=NULL,nbclustmax
           Xloc=Xloc[!is.na(Xloc)]
           
           if(mclust){
-             
+             res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
           }else{
-#              res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
+             res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
           }
         } 
           resmix=list()
