@@ -2,8 +2,8 @@
 \alias{density_estimation}
 \title{BIC of estimated  marginal gaussian mixture densities}
 \usage{
-density_estimation(X = X, nbclustmax = 10, bla = FALSE, details = FALSE,
-  max = TRUE, mclust = TRUE, nbini = 50)
+density_estimation(X = X, nbclustmax = 10, verbose = FALSE,
+  detailed = FALSE, max = TRUE, mclust = TRUE, nbini = 50)
 }
 \arguments{
   \item{X}{the dataset (matrix)}
@@ -11,9 +11,9 @@ density_estimation(X = X, nbclustmax = 10, bla = FALSE, details = FALSE,
   \item{nbclustmax}{max number of clusters in the gaussian
   mixtures}
 
-  \item{bla}{verbose or not}
+  \item{verbose}{verbose or not}
 
-  \item{details}{boolean to give the details of the
+  \item{detailed}{boolean to give the details of the
   mixtures found}
 
   \item{max}{boolean. Use an heuristic to shrink nbclustmax

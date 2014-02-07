@@ -24,7 +24,7 @@
 #' @param K the number of clusters for cross-validation
 #' @param groupe a vector to define the groupes used for cross-validation (to obtain a reproductible result)
 #' @param Amax the maximum number of covariates in the final model
-#' @param retour boolean : second predictive step (selection on I1 knowing I2 coefficients)
+#' @param returning boolean : second predictive step (selection on I1 knowing I2 coefficients)
 # ' @param final boolean : recompute estimators without selection on the remaining parameters of the predictive model
 #' @param X_test validation sample
 #' @param Y_test response for the validation sample
@@ -40,7 +40,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
                 select = "lar",
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
-                K = 10, groupe = NULL, Amax = NULL, lambda = 1,retour=TRUE,#final=FALSE,
+                K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=TRUE,#final=FALSE,
                 nbalter=10,deltamin=0.01,alpha=NULL) 
 {
   res = list()
@@ -54,7 +54,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   }
   select = select[1]
   if(select=="NULL"){
-    retour=F
+    returning=F
 #     final=F
   }
   criterion = criterion[1]
@@ -187,7 +187,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
       }
       A_pred = rep(0, times = ncol(X) + intercept)
       A_pred[I2 + intercept] = A_inj
-      if(retour){
+      if(returning){
         Ytildebis=Y-as.matrix(X[,I2])%*%A_pred[I2 + intercept]
         Ytildebis=as.matrix(Ytildebis)
         if (select != "elasticnet" & select != "ridge" & select != "adalasso") {
@@ -242,7 +242,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
 #           quifinal=which(A_pred!=0)
 #         }
 #         Zfinal=as.matrix(Z[quifinal,quifinal])
-#         A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),retour=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
+#         A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
 #         
 #         res$final$A=res$pred$A
 #         res$final$A[res$pred$A!=0]=A_final
@@ -301,7 +301,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
              }
              A_pred = rep(0, times = ncol(X) + intercept)
              A_pred[I2 + intercept] = A_inj
-             if(retour){
+             if(returning){
                 Ytildebis=Y-as.matrix(X[,I2])%*%A_pred[I2 + intercept]
                 Ytildebis=as.matrix(Ytildebis)
                 if (select != "elasticnet" & select != "ridge" & select != "adalasso") {
@@ -356,7 +356,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
 #                    quifinal=which(A_pred!=0)
 #                 }
 #                 Zfinal=as.matrix(Z[quifinal,quifinal])
-#                 A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),retour=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
+#                 A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
 #                 
 #                 res$finalnew$A=res$prednew$A
 #                 res$finalnew$A[res$prednew$A!=0]=A_final
