@@ -38,8 +38,8 @@ compare_struct<-function(trueZ=trueZ,Zalgo=Zalgo,all=TRUE,mode="NULL"){
   bon_gauche=sum(duplicated(c(vraissreg,ssregalgo)))
   faux_gauche=length(ssregalgo)-bon_gauche
   if(all){
-    return(list(taux_bon1=taux_bon1,taux_bon0=taux_bon0,taux_faux1=taux_faux1,taux_faux0=taux_faux0,nbbon1=nbbon1,nbtrop=nbtrop,nbmank=nbmank,deltap2=deltap2,bon_gauche=bon_gauche,faux_gauche=faux_gauche))
+    return(list(ratio_true1=taux_bon1,ratio_true0=taux_bon0,ratio_false1=taux_faux1,ratio_false0=taux_faux0,true1=nbbon1,false1=nbtrop,false0=nbmank,deltap2=deltap2,true_left=bon_gauche,false_left=faux_gauche))
   }else{
-    return(list(verite_decouverte=taux_bon1,taux_faux1=taux_faux1))
+    return(list(ratio_true1=taux_bon1,ratio_false1=taux_faux1))
   }
 }

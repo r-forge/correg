@@ -5,14 +5,17 @@
 cleanZR2(Z = Z, X = X, R2min = 0.4, methode = 1, adj = TRUE)
 }
 \arguments{
-  \item{Z}{the structure}
+  \item{Z}{binary adjacency matrix of the structure (size
+  p)}
 
   \item{X}{the dataset}
 
   \item{R2min}{lower boundary for the structure (on
   R-squared value)}
 
-  \item{methode}{OLS parameter for matricial inversion}
+  \item{methode}{parameter for OLS (matrix inversion)
+  methode_BIC parameter for OLS (matrix inversion)
+  1:householderQr, 2:colPivHouseholderQr}
 
   \item{adj}{boolean. Adjusted R-squared or classical one
   (if FALSE).}

@@ -72,7 +72,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=1,metho
         }
      }
      if(nett){
-        resclean=cleanZ(X=X,Z=res$Zopt,bic_vide_vect=Bic_null_vect,star=star)#nettoyage colonnes puis ponctuel
+        resclean=cleanZ(X=X,Z=res$Z_opt,Bic_null_vect=Bic_null_vect,star=star)#nettoyage colonnes puis ponctuel
         res$Zopt=resclean$Zopt
         res$bic_opt=resclean$bic_opt
      }

@@ -2,7 +2,7 @@
 \alias{cleancolZ}
 \title{clean Z columns (if BIC improved)}
 \usage{
-cleancolZ(X = X, Z = Z, Bic_null_vect = bic_vide_vect, methode_BIC = 1,
+cleancolZ(X = X, Z = Z, Bic_null_vect = Bic_null_vect, methode_BIC = 1,
   plot = F, verbose = 1, star = FALSE)
 }
 \arguments{
@@ -17,7 +17,7 @@ cleancolZ(X = X, Z = Z, Bic_null_vect = bic_vide_vect, methode_BIC = 1,
   \item{methode_BIC}{parameter for OLS (matrix inversion)
   1:householderQr, 2:colPivHouseholderQr}
 
-  \item{star}{to use BIC*}
+  \item{star}{if TRUE BIC* is used instead of bic}
 
   \item{plot}{if TRUE returns the vector of BIC for each
   step}

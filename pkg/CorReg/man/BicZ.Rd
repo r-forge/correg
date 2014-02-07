@@ -8,7 +8,8 @@ BicZ(X = X, Z = Z, Bic_null_vect = NULL, Bic_old = NULL, methode = 1,
 \arguments{
   \item{X}{the dataset}
 
-  \item{Z}{the structure}
+  \item{Z}{binary adjacency matrix of the structure (size
+  p)}
 
   \item{Bic_null_vect}{the BIC of the null hypothesis (used
   for independent variables)}

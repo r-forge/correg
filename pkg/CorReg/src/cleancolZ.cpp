@@ -174,7 +174,7 @@ SEXP cleancolZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP 
     }
     return List::create(
       Named("Z")=  newZ,
-      Named("Z_opt")=  Zopt,
+ //     Named("Z_opt")=  Zopt,
       Named("bic_opt")=  Bicbest,
       Named("bic_step")=  BIC_step,
       Named("complexity_step")=  complexite_step
@@ -184,7 +184,7 @@ SEXP cleancolZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP 
   {
   return List::create(
       Named("Z")=  newZ,
-      Named("Z_opt")=  Zopt,
+ //     Named("Z_opt")=  Zopt,
       Named("bic_opt")=  Bicbest
     );
   }

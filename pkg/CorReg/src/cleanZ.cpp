@@ -175,17 +175,17 @@ SEXP cleanZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP bla
     }
     return List::create(
       Named("Z")=  newZ,
-      Named("Zopt")=  Zopt,
+      Named("Z_opt")=  Zopt,
       Named("bic_opt")=  Bicbest,
-      Named("bic_etape")=  BIC_step,
-      Named("complexite_etape")=  complexite_step
+      Named("bic_step")=  BIC_step,
+      Named("complexity_step")=  complexite_step
     );
   }
   else
   {
   return List::create(
       Named("Z")=  newZ,
-      Named("Zopt")=  Zopt,
+      Named("Z_opt")=  Zopt,
       Named("bic_opt")=  Bicbest
     );
   }
