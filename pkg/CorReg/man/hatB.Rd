@@ -5,11 +5,14 @@
 hatB(Z = Z, X = X, methode = 1)
 }
 \arguments{
-  \item{Z}{the binary structure (matrix pxp)}
+  \item{Z}{binary adjacency matrix of the structure (size
+  p)}
 
   \item{X}{the dataset}
 
-  \item{methode}{for OLS}
+  \item{methode}{parameter for OLS (matrix inversion)
+  methode_BIC parameter for OLS (matrix inversion)
+  1:householderQr, 2:colPivHouseholderQr}
 }
 \description{
 Estimates B matrix

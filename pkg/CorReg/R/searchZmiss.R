@@ -1,5 +1,5 @@
 # ' MCMC
-searchZmissR<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai=NULL,mixmod=mixmod,nbclustmax=10,BIC_vide_vect=NULL, nett=T,mode=c("relax","rejet"),MH=T,p2max=Inf,rmax=5,nbit=1){
+searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai=NULL,mixmod=mixmod,nbclustmax=10,BIC_vide_vect=NULL, nett=T,mode=c("relax","rejet"),MH=T,p2max=Inf,rmax=5,nbit=1){
   #X est la matrice X sans la constante
   #Z est la matrice Z du formalisme priv?e de sa premi?re ligne (constante sur 1) et de sa premi?re colonne (identit?)
   #MH dit si on fait le saut vers le meilleur strict ou si on se contente de l'enregistrer
@@ -20,7 +20,7 @@ searchZmissR<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vra
   }
   Z_opt=Z
   if(is.null(mixmod)){
-    mixmod=density_estimation(X=X,nbclustmax=nbclustmax,details=T)
+    mixmod=density_estimation(X=X,nbclustmax=nbclustmax,detailed=T)
     mixmod=mixmod_adapter(mixmod)
     BIC_vide_vect=mixmod$BIC_vect  
   }

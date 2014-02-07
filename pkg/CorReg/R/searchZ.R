@@ -33,7 +33,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=1,metho
     Z=matrix(0,ncol=ncol(X),nrow=ncol(X))
   }
   if(is.null(Bic_null_vect)){
-     Bic_null_vect=density_estimation(X=X,nbclustmax=10,bla=FALSE,details=FALSE,mclust=TRUE)$BIC_vect
+     Bic_null_vect=density_estimation(X=X,nbclustmax=10,verbose=FALSE,detailed=FALSE,mclust=TRUE)$BIC_vect
   }
   if(is.null(nbini)){
      if(reject==0){#relax mode
