@@ -515,11 +515,11 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
     return List::create(
       Named("Z")=  newZ,
       Named("bic_loc")=  sumbic,
-      Named("Zopt")=  Zopt,
+      Named("Z_opt")=  Zopt,
       Named("bic_opt")=  Bicbest,
-      Named("bic_etape")=  BIC_step,
-      Named("complexite_etape")=  complexite_step,
-      Named("etape")=  etape,
+      Named("bic_step")=  BIC_step,
+      Named("complexity_step")=  complexite_step,
+      Named("step")=  etape,
       Named("step_opt")=  step_opt
     );
   }
@@ -528,7 +528,7 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
   return List::create(
       Named("Z")=  newZ,
       Named("bic_loc")=  sumbic,
-      Named("Zopt")=  Zopt,
+      Named("Z_opt")=  Zopt,
       Named("bic_opt")=  Bicbest,
       Named("step_opt")=  step_opt
     );

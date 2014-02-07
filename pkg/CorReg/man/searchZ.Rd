@@ -71,7 +71,7 @@ searchZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
   \item{...}{parameters to be passed (for Winitial).}
 }
 \value{
-etape 0:suppression,1 ajout,2 stationarite
+step 0:delete, 1: add, 2: stationnarity
 }
 \description{
 MCMC algo to find a structure between the covariates
