@@ -3,7 +3,7 @@
 \title{Sparse structure research}
 \usage{
 searchZ_sparse(X = X, Zi = NULL, Zj = NULL, Si = NULL, Sj = NULL,
-  Bic_null_vect = NULL, methode_tirage = 2, methode_BIC = 1, Rmax = 5,
+  Bic_null_vect = NULL, methode_tirage = 2, methode_BIC = 1, p1max = 5,
   Maxiter = 1, plot = F, best = T, better = F, random = T,
   verbose = 1, nb_opt_max = NULL)
 }
