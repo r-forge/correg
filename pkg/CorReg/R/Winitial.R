@@ -1,9 +1,9 @@
-#' initialisation based on a wheight matrix (correlation or other)
-#' @param W est la matrice des poids (entre 0 et 1)
-#' @param X est la matrice des donnees (ne sert que si BIC=T)
-#' @param Bic_null_vect est le vecteur bic vide (issu de mixmod par exemple)
-#' @param relax indique si on fait la relaxation ou le rejet (booleen)
-#' @param Rmax est le nombre max de 1 sur une colonne de Z
+#' initialization based on a wheight matrix (correlation or other)
+#' @param W Weight matrix with values between 0 and 1 ( e.g. : abs(cor(X)) )
+#' @param X the dataset (if BIC=TRUE)
+#' @param Bic_null_vect the BIC of the null hypothesis (used for independent variables)
+#'@param reject 0: constraint relaxation, 1: reject mode
+#' @param p1max est le nombre max de 1 sur une colonne de Z
 #' @param random indique si on fait le tirage au sort ou pas (si on utilise BIc on a moins besoin du tirage). sans tirage = sans tenir compte de W
 #' @param mode indique la strategie pour le choix des candidats a la mise a 1
 #' @param p2max est le nombre max de sous-reg
@@ -12,12 +12,12 @@
 #' @param nbclustmax parameter for calcul_BIC_mixmod if needed
 #' @export
 
-Winitial<-function(W=W,X=NULL,Rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=T,nbclustmax=5,sorted=T,mode=c("all","sorted","multinom"),p2max=NULL){
+Winitial<-function(W=W,X=NULL,p1max=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=T,nbclustmax=5,sorted=T,mode=c("all","sorted","multinom"),p2max=NULL){
   #W est la matrice des poids (entre 0 et 1)
   #X est la matrice des donnees (ne sert que si BIC=T)
   #Bic_null_vect est le vecteur bic vide (issu de mixmod par exemple)
   #relax indique si on fait la relaxation ou le rejet
-  #Rmax est le nombre max de 1 sur une colonne de Z
+  #p1max est le nombre max de 1 sur une colonne de Z
   #random indique si on fait le tirage au sort ou pas (si on utilise BIc on a moins besoin du tirage). sans tirage = sans tenir compte de W
   p=ncol(W)
   if(is.null(p2max)){p2max=p}
@@ -36,7 +36,7 @@ Winitial<-function(W=W,X=NULL,Rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=
     BIC=F#soit il l'etait deja soit il manque de quoi le calculer
   }
   lambda=0
-  if(is.null(Rmax)){Rmax=p+1}#pour etre tranquille, revient a une borne infinie
+  if(is.null(p1max)){p1max=p+1}#pour etre tranquille, revient a une borne infinie
   
   if(mode=="all"){#on teste tous les points
     for (j in 1:p){
@@ -48,7 +48,7 @@ Winitial<-function(W=W,X=NULL,Rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=
           
           if(random){lambda=runif(1)}#on tire un nombre aleatoire entre 0 et 1
           if(!random | lambda<W[iloc,jloc] ){#si le poids est interessant ou bien pas d'alea
-            if(sum(Z[,jloc])<Rmax){#si on respecte la contrainte de complexite
+            if(sum(Z[,jloc])<p1max){#si on respecte la contrainte de complexite
               croisement=F
               if(sum(Z[jloc,])!=0 | sum(Z[,iloc])!=0){
                 croisement=T
@@ -97,7 +97,7 @@ Winitial<-function(W=W,X=NULL,Rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=
         list_i=list_i[order(W[-jloc,jloc],decreasing=T)]#on ordonne selon les poids
         while(go & length(list_i)>0){
           iloc=list_i[1]#on choisit le meilleur
-          if(sum(Z[,jloc])<Rmax){#si on respecte la contrainte de complexite
+          if(sum(Z[,jloc])<p1max){#si on respecte la contrainte de complexite
             croisement=F
             if(sum(Z[jloc,])!=0 | sum(Z[,iloc])!=0){
               croisement=T
@@ -160,7 +160,7 @@ Winitial<-function(W=W,X=NULL,Rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=
           wloc=wloc/wloc
           qui=which(rmultinom(1,1,wloc)==1)
           iloc=list_i[qui]#on choisit selon une multinomiale ponderee par les poids normalises
-          if(sum(Z[,jloc])<Rmax){#si on respecte la contrainte de complexite
+          if(sum(Z[,jloc])<p1max){#si on respecte la contrainte de complexite
             croisement=F
             if(sum(Z[jloc,])!=0 | sum(Z[,iloc])!=0){
               croisement=T

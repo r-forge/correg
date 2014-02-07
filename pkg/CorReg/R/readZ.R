@@ -1,11 +1,11 @@
 #' read the structure and explain it
 #' 
-#' @param Z is the binary structure
-#' @param B is the complete structure (if known)
+#'@param Z binary adjacency matrix of the structure (size p)
+#' @param B is the complete structure (wheighted)
 #' @param crit define the criterion to use c("none","R2","F","sigmaX")
 #' @param varnames the names of the variables (same order)
 #' @param output indicates the content of the output output=c("index","names","all")
-#' @param X is a dataframe containing the dataset
+#' @param X is a dataframe or matrix containing the dataset
 #' @param order Define the order used (0: none, -1: decreasing, 1: growing)
 #' @export
 readZ<-function(Z=Z,B=NULL,crit=c("none","R2","F","sigmaX"),varnames=NULL,output=c("index","names","all"),X=NULL,order=1){

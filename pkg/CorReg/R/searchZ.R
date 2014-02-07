@@ -1,30 +1,33 @@
 #' MCMC algo to find a structure between the covariates
 #'@param X the dataset
 #'@param Z binary adjacency matrix of size p. if NULL zero matrix is used
-#'@param Bic_null_vect vector of the BIC for each covariate
-#'@param methode_tirage 0:row and column,-1:column only, int>0:random int candidates, -2 : all (but the diag), -3 : non-zeros
-#'@param reject 0:mode relax, 1:mode reject
-#'@param methode_BIC 1:utilisation de la fonction householderQr, 2:utilisation de la fonction colPivHouseholderQr
-#'@param Rmax complexite maximum d'une sous-regression
-#'@param p2max nombre maximal de sous-regressions
-#'@param Maxiter nombre d'etapes
-#'@param plot T:retourne le type de changement, la complexite et le BIC de chaque etapes
-#'@param best T:permet d'aller systematiquement au meilleur BIC si il est meilleur que tout les autres deja rencontres 
-#'@param better T:permet d'aller systematiquement au meilleur BIC si il est meilleur que l'etape precedente
-#'@param random F:permet de s'ameliorer ou de rester sur place
-#'@param bla 0:pas de messages, 1:affiche le BIC,le numero d'etape et la complexite de Z quand il y'a un meilleur BIC, 2:affiche le BIC,le numero d'etape,la complexite de Z,le nombre de candidats et le BIC minimum observe parmi les candidats quand il y'a un meilleur BIC, 3: affiche en plus de bla=1 la complexite locale et le BIC local
-#'@param nb_opt_max stop criterion defining how many times the chain can stay at the max found
-#'@param exact boolean. If exact subregression is found it gives its content.
+#' @param Bic_null_vect the BIC of the null hypothesis (used for independent variables)
+#'@param candidates 0:row and column,-1:column only, int>0:random int candidates, -2 : all (but the diag), -3 : non-zeros
+#'@param reject 0: constraint relaxation, 1: reject mode
+#' @param methode  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
+#'@param p1max maximum complexity for a regression
+#'@param p2max maximum number of regressions 
+#'@param Maxiter number of steps
+#'@param plot TRUE: returns for each step the type of move, complexity and BIC
+#'@param best TRUE: systematically jumps to the best BIC seen ever when seen (it is stored even if best=FALSE)
+#'@param better TRUE: systematically jumps to the best candidate if better than stationnarity (random wheighted jump otherwise)
+#'@param random if FALSE:moves only to improve and only to the best
+#'@param verbose 0:none, 1:BIC,step and complexity when best BIC found 2:BIC, step, complexity, nb candidates and best candidate when best BIC found
+#'@param nb_opt_max stop criterion defining how many times the chain can walk (or stay) on the max found
+#'@param exact boolean. If exact subregression is found it gives its content (another verbose mode).
 #'@param nbini Number of initialisations (using Winitial). if NULL and Zini is NULL : only one chain beginning with zero matrix.
-#'@param star boolean to compute BIC* instead of BIC (stronger penalization of the complexity)
-#'@param nett cleaning steps at the ends
+#'@param star boolean to compute BIC* instead of BIC (stronger penalization of the complexity). WARNING : star=TRUE implies p2max<=p/2
+#'@param clean cleaning steps at the end of the walk (testing each remainging 1 for removal)
 #'@param ... parameters to be passed (for Winitial).
 #'@return step 0:delete, 1: add, 2: stationnarity
 #'@export
-searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=1,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,bla=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,nett=TRUE,...){
+searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=1,methode=1,p1max=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,verbose=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,clean=TRUE,...){
   params=match.call()
   if(is.null(p2max)){
     p2max=ncol(X)+1 
+  }
+  if(star){
+     p2max=min(p2max,ncol(X)/2)
   }
   if(is.null(nb_opt_max)){
     nb_opt_max=Maxiter
@@ -37,10 +40,10 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=1,metho
   }
   if(is.null(nbini)){
      if(reject==0){#relax mode
-        res=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
+        res=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         return(res)
      }else{# reject mode
-        res=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
+        res=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         return(res)
      }
   }else{
@@ -51,9 +54,9 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=1,metho
      res=list()
      if(nbini>1){#first try with zero matrix
         if(reject==0){#relax mode
-           resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
+           resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }else{# reject mode
-           resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
+           resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }
         if(resloc$bic_opt<=min(res$bic_opt,BICnull)){
            res=resloc
@@ -61,17 +64,17 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=1,metho
         nbini=nbini-1
      }
      for(i in 1:nbini){
-        Z=Winitial(W=W,X=X,Rmax=Rmax,Bic_null_vect=Bic_null_vect,p2max=p2max)
+        Z=Winitial(W=W,X=X,p1max=p1max,Bic_null_vect=Bic_null_vect,p2max=p2max)
         if(reject==0){#relax mode
-           resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
+           resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }else{# reject mode
-           resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,methode_tirage,methode_BIC,Rmax,p2max,Maxiter,plot,best,better,random,bla,nb_opt_max,exact,star, PACKAGE = "CorReg")
+           resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }
         if(resloc$bic_opt<=min(res$bic_opt,BICnull)){
            res=resloc
         }
      }
-     if(nett){
+     if(clean){
         resclean=cleanZ(X=X,Z=res$Z_opt,Bic_null_vect=Bic_null_vect,star=star)#nettoyage colonnes puis ponctuel
         res$Zopt=resclean$Zopt
         res$bic_opt=resclean$bic_opt

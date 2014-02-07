@@ -2,11 +2,11 @@
 \alias{searchZ}
 \title{MCMC algo to find a structure between the covariates}
 \usage{
-searchZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
-  reject = 1, methode_BIC = 1, Rmax = 5, p2max = NULL, Maxiter = 1,
-  plot = FALSE, best = TRUE, better = FALSE, random = TRUE, bla = 1,
-  nb_opt_max = NULL, exact = TRUE, nbini = NULL, star = TRUE,
-  nett = TRUE, ...)
+searchZ(X = X, Z = NULL, Bic_null_vect = NULL, candidates = -1,
+  reject = 1, methode = 1, p1max = 5, p2max = NULL, Maxiter = 1,
+  plot = FALSE, best = TRUE, better = FALSE, random = TRUE,
+  verbose = 1, nb_opt_max = NULL, exact = TRUE, nbini = NULL,
+  star = TRUE, clean = TRUE, ...)
 }
 \arguments{
   \item{X}{the dataset}
@@ -14,59 +14,57 @@ searchZ(X = X, Z = NULL, Bic_null_vect = NULL, methode_tirage = -1,
   \item{Z}{binary adjacency matrix of size p. if NULL zero
   matrix is used}
 
-  \item{Bic_null_vect}{vector of the BIC for each
-  covariate}
+  \item{Bic_null_vect}{the BIC of the null hypothesis (used
+  for independent variables)}
 
-  \item{methode_tirage}{0:row and column,-1:column only,
+  \item{candidates}{0:row and column,-1:column only,
   int>0:random int candidates, -2 : all (but the diag), -3
   : non-zeros}
 
-  \item{reject}{0:mode relax, 1:mode reject}
+  \item{reject}{0: constraint relaxation, 1: reject mode}
 
-  \item{methode_BIC}{1:utilisation de la fonction
-  householderQr, 2:utilisation de la fonction
-  colPivHouseholderQr}
+  \item{methode}{parameter for OLS (matrix inversion)
+  1:householderQr, 2:colPivHouseholderQr}
 
-  \item{Rmax}{complexite maximum d'une sous-regression}
+  \item{p1max}{maximum complexity for a regression}
 
-  \item{p2max}{nombre maximal de sous-regressions}
+  \item{p2max}{maximum number of regressions}
 
-  \item{Maxiter}{nombre d'etapes}
+  \item{Maxiter}{number of steps}
 
-  \item{plot}{T:retourne le type de changement, la
-  complexite et le BIC de chaque etapes}
+  \item{plot}{TRUE: returns for each step the type of move,
+  complexity and BIC}
 
-  \item{best}{T:permet d'aller systematiquement au meilleur
-  BIC si il est meilleur que tout les autres deja
-  rencontres}
+  \item{best}{TRUE: systematically jumps to the best BIC
+  seen ever when seen (it is stored even if best=FALSE)}
 
-  \item{better}{T:permet d'aller systematiquement au
-  meilleur BIC si il est meilleur que l'etape precedente}
+  \item{better}{TRUE: systematically jumps to the best
+  candidate if better than stationnarity (random wheighted
+  jump otherwise)}
 
-  \item{random}{F:permet de s'ameliorer ou de rester sur
-  place}
+  \item{random}{if FALSE:moves only to improve and only to
+  the best}
 
-  \item{bla}{0:pas de messages, 1:affiche le BIC,le numero
-  d'etape et la complexite de Z quand il y'a un meilleur
-  BIC, 2:affiche le BIC,le numero d'etape,la complexite de
-  Z,le nombre de candidats et le BIC minimum observe parmi
-  les candidats quand il y'a un meilleur BIC, 3: affiche en
-  plus de bla=1 la complexite locale et le BIC local}
+  \item{verbose}{0:none, 1:BIC,step and complexity when
+  best BIC found 2:BIC, step, complexity, nb candidates and
+  best candidate when best BIC found}
 
   \item{nb_opt_max}{stop criterion defining how many times
-  the chain can stay at the max found}
+  the chain can walk (or stay) on the max found}
 
   \item{exact}{boolean. If exact subregression is found it
-  gives its content.}
+  gives its content (another verbose mode).}
 
   \item{nbini}{Number of initialisations (using Winitial).
   if NULL and Zini is NULL : only one chain beginning with
   zero matrix.}
 
   \item{star}{boolean to compute BIC* instead of BIC
-  (stronger penalization of the complexity)}
+  (stronger penalization of the complexity). WARNING :
+  star=TRUE implies p2max<=p/2}
 
-  \item{nett}{cleaning steps at the ends}
+  \item{clean}{cleaning steps at the end of the walk
+  (testing each remainging 1 for removal)}
 
   \item{...}{parameters to be passed (for Winitial).}
 }

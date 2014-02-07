@@ -5,12 +5,14 @@
 R2Z(Z = Z, X = X, methode = 1, adj = F, crit = c("R2", "F", "sigmaX"))
 }
 \arguments{
-  \item{Z}{is the structure (binary matrix)}
+  \item{Z}{binary adjacency matrix of the structure (size
+  p)}
 
   \item{X}{the dataset}
 
-  \item{methode}{parameter for Ordinary Least square (don't
-  change it)}
+  \item{methode}{parameter for OLS (matrix inversion)
+  methode_BIC parameter for OLS (matrix inversion)
+  1:householderQr, 2:colPivHouseholderQr}
 
   \item{adj}{boolean to choose between adjusted R-squared
   and classical one}
