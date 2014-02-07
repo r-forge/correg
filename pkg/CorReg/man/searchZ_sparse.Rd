@@ -3,9 +3,9 @@
 \title{Sparse structure research}
 \usage{
 searchZ_sparse(X = X, Zi = NULL, Zj = NULL, Si = NULL, Sj = NULL,
-  bic_vide_vect = NULL, methode_tirage = 2, methode_BIC = 1, Rmax = 5,
-  Maxiter = 1, plot = F, best = T, better = F, random = T, bla = 1,
-  nb_opt_max = NULL)
+  Bic_null_vect = NULL, methode_tirage = 2, methode_BIC = 1, Rmax = 5,
+  Maxiter = 1, plot = F, best = T, better = F, random = T,
+  verbose = 1, nb_opt_max = NULL)
 }
 \arguments{
   \item{X}{the dataset}
@@ -18,7 +18,8 @@ searchZ_sparse(X = X, Zi = NULL, Zj = NULL, Si = NULL, Sj = NULL,
 
   \item{Sj}{nombre de 1 dans chaque colonnes}
 
-  \item{bic_vide_vect}{vecteur BIC de la matrice nulle}
+  \item{Bic_null_vect}{the BIC of the null hypothesis (used
+  for independent variables)}
 
   \item{methode_tirage}{0:ligne et colonne,-1:seulement la
   colonne, entier>0:nombre aleatoire de candidats}
@@ -27,35 +28,32 @@ searchZ_sparse(X = X, Zi = NULL, Zj = NULL, Si = NULL, Sj = NULL,
   householderQr, 2:utilisation de la fonction
   colPivHouseholderQr}
 
-  \item{Rmax}{complexite maximum d'une sous-regression}
+  \item{p1max}{maximum complexity for a regression}
 
-  \item{Maxiter}{nombre d'etapes}
+  \item{Maxiter}{number of steps}
 
-  \item{plot}{T:retourne le type de changement, la
-  complexite et le BIC de chaque etapes}
+  \item{plot}{TRUE: returns for each step the type of move,
+  complexity and BIC}
 
-  \item{best}{T:permet d'aller systematiquement au meilleur
-  BIC si il est meilleur que tout les autres deja
-  rencontres}
+  \item{best}{TRUE: systematically jumps to the best BIC
+  seen ever when seen (it is stored even if best=FALSE)}
 
-  \item{better}{T:permet d'aller systematiquement au
-  meilleur BIC si il est meilleur que l'etape precedente}
+  \item{better}{TRUE: systematically jumps to the best
+  candidate if better than stationnarity (random wheighted
+  jump otherwise)}
 
-  \item{random}{F:permet de s'ameliorer ou de rester sur
-  place}
+  \item{random}{if FALSE:moves only to improve and only to
+  the best}
 
-  \item{bla}{0:pas de messages, 1:affiche le BIC,le numero
-  d'etape et la complexite de Z quand il y'a un meilleur
-  BIC, 2:affiche le BIC,le numero d'etape,la complexite de
-  Z,le nombre de candidats et le BIC minimum observe parmi
-  les candidats quand il y'a un meilleur BIC, 3: affiche en
-  plus de bla=1 la complexite locale et le BIC local}
+  \item{verbose}{0:none, 1:BIC,step and complexity when
+  best BIC found 2:BIC, step, complexity, nb candidates and
+  best candidate when best BIC found}
 
-  \item{nb_opt_max}{convergence criterion (number of step
-  at the optimum)}
+  \item{nb_opt_max}{stop criterion defining how many times
+  the chain can walk (or stay) on the max found}
 }
 \value{
-etape 0:suppression,1 ajout,2 stationarite
+step 0:delete, 1: add, 2: stationnarity
 }
 \description{
 Sparse structure research

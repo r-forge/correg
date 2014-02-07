@@ -1096,9 +1096,9 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
       Named("Zopt_sj")=  Zopt_sj,
       
       Named("bic_opt")=  Bicbest,
-      Named("bic_etape")=  bic_etape,
-      Named("complexite_etape")=  complexite_etape,
-      Named("etape")=  etape
+      Named("bic_step")=  bic_etape,
+      Named("complexity_step")=  complexite_etape,
+      Named("step")=  etape
     );
   }
   else

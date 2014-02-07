@@ -7,17 +7,17 @@
 #' @param Bic_null_vect the BIC of the null hypothesis (used for independent variables)
 #' @param methode_tirage 0:ligne et colonne,-1:seulement la colonne, entier>0:nombre aleatoire de candidats
 #' @param methode_BIC 1:utilisation de la fonction householderQr, 2:utilisation de la fonction colPivHouseholderQr
-#' @param Rmax complexite maximum d'une sous-regression
-#' @param Maxiter nombre d'etapes
-#' @param plot T:retourne le type de changement, la complexite et le BIC de chaque etapes
-#' @param best T:permet d'aller systematiquement au meilleur BIC si il est meilleur que tout les autres deja rencontres 
-#' @param better T:permet d'aller systematiquement au meilleur BIC si il est meilleur que l'etape precedente
-#' @param random F:permet de s'ameliorer ou de rester sur place
+#'@param p1max maximum complexity for a regression
+#'@param Maxiter number of steps
+#'@param plot TRUE: returns for each step the type of move, complexity and BIC
+#'@param best TRUE: systematically jumps to the best BIC seen ever when seen (it is stored even if best=FALSE)
+#'@param better TRUE: systematically jumps to the best candidate if better than stationnarity (random wheighted jump otherwise)
+#'@param random if FALSE:moves only to improve and only to the best
 #'@param verbose 0:none, 1:BIC,step and complexity when best BIC found 2:BIC, step, complexity, nb candidates and best candidate when best BIC found
-#' @param nb_opt_max convergence criterion (number of step at the optimum)
+#'@param nb_opt_max stop criterion defining how many times the chain can walk (or stay) on the max found
 # ' @param Mixmod
 #' @export
-#' @return etape 0:suppression,1 ajout,2 stationarite
+#'@return step 0:delete, 1: add, 2: stationnarity
 # '
 searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,Bic_null_vect=NULL,methode_tirage=2,methode_BIC=1,Rmax=5,Maxiter=1,plot=F,best=T,better=F,random=T,verbose=1,nb_opt_max=NULL){
   if(is.null(nb_opt_max)){
