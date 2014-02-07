@@ -3,7 +3,7 @@
 \title{Gaussiam mixture dataset generator with regression between the covariates}
 \usage{
 mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
-  valid = 1000, positif = 0.6, sigma_Y = 10, sigma_sousreg = 0.25,
+  valid = 1000, positive = 0.6, sigma_Y = 10, sigma_X = 0.25,
   meanvar = NULL, sigmavar = NULL, lambda = 0, Amax = 15,
   lambdapois = 5, gamma = F, gammashape = 1, gammascale = 0.5,
   tp1 = 1, tp2 = 1, tp3 = 1, pb = 2)
@@ -22,17 +22,17 @@ mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
 
   \item{valid}{the size of the validation sample}
 
-  \item{positif}{the ratio of positive coefficients in both
-  the regression and the subregressions}
+  \item{positive}{the ratio of positive coefficients in
+  both the regression and the subregressions}
 
   \item{sigma_Y}{standard deviation for the noise of the
   regression}
 
-  \item{sigma_sousreg}{standard deviation for the noise of
-  the subregression (all). ignored if gamma=T}
+  \item{sigma_X}{standard deviation for the noise of the
+  subregression (all). ignored if gamma=T}
 
-  \item{gamma}{boolean to generate a p-sized vector
-  sigma_sousreg gamma-distributed}
+  \item{gamma}{boolean to generate a p-sized vector sigma_X
+  gamma-distributed}
 
   \item{gammashape}{shape parameter of the gamma
   distribution (if needed)}
@@ -62,8 +62,8 @@ mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
   \item{lambdapois}{parameter used to generate the
   coefficient in the subregressions. poisson distribution.}
 
-  \item{pb}{Defines an heuristic to generate Y in a way
-  that will give some issues with correlations.}
+  \item{pb}{generates Y in an heuristic way that will give
+  some issues with correlations.}
 }
 \description{
 Gaussiam mixture dataset generator with regression between

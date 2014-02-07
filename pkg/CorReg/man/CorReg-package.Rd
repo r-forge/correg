@@ -26,7 +26,7 @@ Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 
 \examples{
 require(CorReg)
-base=mixture_generator(n=25,p=10,ratio=0.4,sigma_sousreg=0,tp1=1,tp2=0,tp3=0)
+base=mixture_generator(n=25,p=10,ratio=0.4,sigma_X=0.001,tp1=1,tp2=0,tp3=0)
 X_appr=base$X_appr
 Y_appr=base$Y_appr
 Y_test=base$Y_test
@@ -34,7 +34,7 @@ X_test=base$X_test
 TrueZ=base$Z#True generative structure (binary matrix)
 Trueclust=base$mixmod#classes of the gaussian mixtures (orthogonal covariates only)
 
-mixmod=density_estimation(X=X_appr,nbclustmax=10,details=TRUE,mclust=TRUE)#mclust=TRUE is faster
+mixmod=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE,mclust=TRUE)#mclust=TRUE is faster
 BIC_empty_vect=mixmod$BIC_vect
 BIC_empty=sum(BIC_empty_vect)
 
