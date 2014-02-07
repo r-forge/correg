@@ -1,7 +1,7 @@
 #' Compute the BIC of a given structure
 #' @export
 #' @param X the dataset
-#' @param Z the structure
+#'@param Z binary adjacency matrix of the structure (size p)
 #' @param Bic_null_vect the BIC of the null hypothesis (used for independent variables)
 #' @param Bic_old BIC (vector) associated to Zold
 #' @param Zold another structure with some common parts with Z (allows to compute only the differences)

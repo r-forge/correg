@@ -18,5 +18,5 @@ compare_sign<-function(trueA=trueA,Aalgo=Aalgo){
   nbfauxplus=length(which(Aalgo[quivraimoins]>0))
   nbfauxmoins=length(which(Aalgo[quivraiplus]<0))
  
-  return(list(nbbonplus=nbbonplus,nbbonmoins=nbbonmoins,nbfauxplus=nbfauxplus,nbfauxmoins=nbfauxmoins))    
+  return(list(truepositive=nbbonplus,truenegative=nbbonmoins,falsepositive=nbfauxplus,falsenegative=nbfauxmoins))    
 }

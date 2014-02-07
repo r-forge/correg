@@ -8,10 +8,10 @@
 #' @import ridge
 #' @import MASS
 #' @import parcor
-#' @import RcppEigen
+# ' @import RcppEigen
 #' @useDynLib CorReg
 #' @export
-#' @param B the (p+1)xp matrix assiated to Z and that contains the parameters of the sub-regressions
+#' @param B the (p+1)xp matrix associated to Z and that contains the parameters of the sub-regressions
 #' @param lambda parameter for elasticnet (quadratic penalty)
 #' @param X the data matrix (covariates) without the intercept
 #' @param Y The response variable vector
@@ -29,10 +29,10 @@
 #' @param X_test validation sample
 #' @param Y_test response for the validation sample
 #' @param intercept boolean. If FALSE intercept will be set to 0 in each model.
-#' @param Atilde Coefficients of the explicative model to coerce the predictive step. if not NULL explicative step is not computed.
+#' @param alpha Coefficients of the explicative model to coerce the predictive step. if not NULL explicative step is not computed.
 #' @param prednew alternate optimisation for predictive
 #' @param nbalter number of alternance for prednew
-#' @param deltamin criterion to stop alternance
+#' @param deltamin criterion to stop alternance 
 #' 
 #' 
 correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, 
@@ -41,7 +41,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
                 K = 10, groupe = NULL, Amax = NULL, lambda = 1,retour=TRUE,#final=FALSE,
-                nbalter=10,deltamin=0.01,Atilde=NULL) 
+                nbalter=10,deltamin=0.01,alpha=NULL) 
 {
   res = list()
   X = as.matrix(X)
@@ -64,7 +64,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   if (sum(Z) == 0) {
     compl = T
   }
-  if(!is.null(Atilde)){
+  if(!is.null(alpha)){
      expl=TRUE
   }
   if (compl) {
@@ -103,8 +103,8 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
     qui = WhoIs(Z = Z)
     I1 = qui$I1
     I2 = qui$I2
-    if(!is.null(Atilde)){
-       res$expl$A=Atilde
+    if(!is.null(alpha)){
+       res$expl$A=alpha
     }else if (select == "NULL") {
       res$expl$A = OLS(X = as.matrix(X[, I1]), Y = Y, intercept = intercept)$beta
     }else if (select != "elasticnet" & select != "ridge" & select != "adalasso") {
@@ -133,7 +133,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
       lars_expl = linearRidge(Y~.,data=data.frame(X[,I1]))
       res$expl$A=coef(lars_expl)
     }
-    if(is.null(Atilde)){
+    if(is.null(alpha)){
        A_expl = rep(0, times = ncol(X) + intercept)
        if(intercept){
           A_expl[c(intercept, I1 + intercept)] = res$expl$A
@@ -142,7 +142,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
        }
        res$expl$A = A_expl
     }else{
-       A_expl=Atilde
+       A_expl=alpha
     }
     res$expl$BIC = BicTheta(X = X, Y = Y, intercept = intercept, beta = A_expl)
     if (pred) {

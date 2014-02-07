@@ -482,7 +482,7 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
     }
     if(ibla[0]>2)
     {
-      Rcout<<step<<" BIC local: "<<sumbic<<" compléxité local: "<<newZ.sum()<<"\n";
+      Rcout<<step<<" BIC local: "<<sumbic<<" local complexity: "<<newZ.sum()<<"\n";
     }
     step=step+1; 
   }//fin des étapes (while)

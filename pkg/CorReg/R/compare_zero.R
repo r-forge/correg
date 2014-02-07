@@ -19,8 +19,8 @@ compare_zero<-function(trueA=trueA,Aalgo=Aalgo,taux=FALSE){
   if(taux){
     tauxbon0=nbbon0/length(quivrai0)
     tauxfaux0=nbfaux0/length(which(Aalgo==0))
-    return(list(nbbon0=nbbon0,nbbon1=nbbon1,nbfaux0=nbfaux0,nb0mank=nb0mank,tauxbon0=tauxbon0,tauxfaux0=tauxfaux0))
+    return(list(true0=nbbon0,true1=nbbon1,false0=nbfaux0,false1=nb0mank,ratio_true0=tauxbon0,ratio_false0=tauxfaux0))
   }else{
-    return(list(nbbon0=nbbon0,nbbon1=nbbon1,nbfaux0=nbfaux0,nb0mank=nb0mank))    
+    return(list(true0=nbbon0,true1=nbbon1,false0=nbfaux0,false1=nb0mank))    
   }
 }
