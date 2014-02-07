@@ -1,7 +1,7 @@
 #' Estimates R2 of each subression
-#' @param Z is the structure (binary matrix)
+#'@param Z binary adjacency matrix of the structure (size p)
 #' @param X the dataset
-#' @param methode parameter for Ordinary Least square (don't change it)
+#' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
 #' @param adj boolean to choose between adjusted R-squared and classical one
 #' @param crit to choose between the R-squared and the F statistic (p-value)
 #' @export 

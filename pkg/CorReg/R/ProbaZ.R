@@ -1,8 +1,8 @@
 #' Probability of Z without knowing the dataset. It also gives the exact number of binary nilpotent matrices of size p.
 #' @param p the number of covariates
-#' @param Z the structure
-#' @param star gives the log pra under uniform law for p2
-#' @param proba gives the proba under the uniform law for Z
+#'@param Z binary adjacency matrix of the structure (size p)
+#' @param star gives the log proba under uniform law for p2
+#' @param proba gives the proba under the uniform law for Z. i FALSE and star=FALSE it gives the number of p-sized binary nilpotent matrices
 #' @export
 #' 
 #'
