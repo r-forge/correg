@@ -12,9 +12,8 @@ Description: Sequential linear regression based on a recursive structural
 License: CeCILL
 Copyright: ArcelorMittal
 URL: http://www.correg.org
-Depends:
-    Rcpp,
 Imports:
+   Rcpp,
     lars,
     elasticnet,Matrix,mclust,ridge,MASS,parcor
 LinkingTo: Rcpp, RcppEigen
