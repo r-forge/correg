@@ -52,7 +52,7 @@ res=searchZ(X=X_appr,Z=Zini,Maxiter=100,Bic_null_vect=BIC_empty_vect,methode_tir
 #multiple chain
 #res=searchZ(X=X_appr,Z=NULL,nbini=20,Maxiter=100,Bic_null_vect=BIC_empty_vect,methode_tirage=-1)
 
-hatZ=res$Zopt
+hatZ=res$Z_opt
 hatBic=res$bic_opt
 sum(BicZ(X=X_appr,Z=hatZ,Bic_null_vect=BIC_empty_vect))#same value
 

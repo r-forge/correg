@@ -19,7 +19,7 @@
 #'@param star boolean to compute BIC* instead of BIC (stronger penalization of the complexity)
 #'@param nett cleaning steps at the ends
 #'@param ... parameters to be passed (for Winitial).
-#'@return etape 0:suppression,1 ajout,2 stationarite
+#'@return step 0:delete, 1: add, 2: stationnarity
 #'@export
 searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,methode_tirage=-1,reject=1,methode_BIC=1,Rmax=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,bla=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,nett=TRUE,...){
   params=match.call()

@@ -64,7 +64,7 @@ Winitial<-function(W=W,X=NULL,Rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=
                 if(length(which(colSums(Zloc)!=0))<=p2max){
                   if(BIC){#si on veut s'appuyer sur le bic
                     
-                    BICloc_vect=BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,BicOld=BIC_opt_vect,Zold=Z)
+                    BICloc_vect=BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,Bic_old=BIC_opt_vect,Zold=Z)
                     BICloc=sum(BICloc_vect)
                     if(BICloc<BIC_opt){#modification effective
                       Z=Zloc
@@ -113,7 +113,7 @@ Winitial<-function(W=W,X=NULL,Rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=
               if(length(which(colSums(Zloc)!=0))<=p2max){
                 if(BIC){#si on veut s'appuyer sur le bic
                   
-                  BICloc_vect=BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,BicOld=BIC_opt_vect,Zold=Z)
+                  BICloc_vect=BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,Bic_old=BIC_opt_vect,Zold=Z)
                   BICloc=sum(BICloc_vect)
                   if(BICloc<BIC_opt){#modification effective
                     Z=Zloc
@@ -176,7 +176,7 @@ Winitial<-function(W=W,X=NULL,Rmax=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=
               if(length(which(colSums(Zloc)!=0))<=p2max){
                 if(BIC){#si on veut s'appuyer sur le bic
                   
-                  BICloc_vect=BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,BicOld=BIC_opt_vect,Zold=Z)
+                  BICloc_vect=BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,Bic_old=BIC_opt_vect,Zold=Z)
                   BICloc=sum(BICloc_vect)
                   if(BICloc<BIC_opt){#modification effective
                     Z=Zloc

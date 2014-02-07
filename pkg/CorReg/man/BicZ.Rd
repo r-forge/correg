@@ -2,7 +2,7 @@
 \alias{BicZ}
 \title{Compute the BIC of a given structure}
 \usage{
-BicZ(X = X, Z = Z, Bic_null_vect = NULL, BicOld = NULL, methode = 1,
+BicZ(X = X, Z = Z, Bic_null_vect = NULL, Bic_old = NULL, methode = 1,
   Zold = NULL, star = TRUE)
 }
 \arguments{
@@ -13,12 +13,14 @@ BicZ(X = X, Z = Z, Bic_null_vect = NULL, BicOld = NULL, methode = 1,
   \item{Bic_null_vect}{the BIC of the null hypothesis (used
   for independent variables)}
 
-  \item{BicOld}{BIC (vector) associated to Zold}
+  \item{Bic_old}{BIC (vector) associated to Zold}
 
   \item{Zold}{another structure with some common parts with
   Z (allows to compute only the differences)}
 
-  \item{methode}{parameter for OLS}
+  \item{methode}{parameter for OLS (matrix inversion)
+  methode_BIC parameter for OLS (matrix inversion)
+  1:householderQr, 2:colPivHouseholderQr}
 
   \item{star}{boolean defining wether classical BIC or BIC*
   is computed}
