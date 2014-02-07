@@ -1,24 +1,23 @@
 \name{Winitial}
 \alias{Winitial}
-\title{initialisation based on a wheight matrix (correlation or other)}
+\title{initialization based on a wheight matrix (correlation or other)}
 \usage{
-Winitial(W = W, X = NULL, Rmax = NULL, BIC = F, Bic_null_vect = NULL,
+Winitial(W = W, X = NULL, p1max = NULL, BIC = F, Bic_null_vect = NULL,
   relax = T, random = T, nbclustmax = 5, sorted = T, mode = c("all",
   "sorted", "multinom"), p2max = NULL)
 }
 \arguments{
-  \item{W}{est la matrice des poids (entre 0 et 1)}
+  \item{W}{Weight matrix with values between 0 and 1 ( e.g.
+  : abs(cor(X)) )}
 
-  \item{X}{est la matrice des donnees (ne sert que si
-  BIC=T)}
+  \item{X}{the dataset (if BIC=TRUE)}
 
-  \item{Bic_null_vect}{est le vecteur bic vide (issu de
-  mixmod par exemple)}
+  \item{Bic_null_vect}{the BIC of the null hypothesis (used
+  for independent variables)}
 
-  \item{relax}{indique si on fait la relaxation ou le rejet
-  (booleen)}
+  \item{reject}{0: constraint relaxation, 1: reject mode}
 
-  \item{Rmax}{est le nombre max de 1 sur une colonne de Z}
+  \item{p1max}{est le nombre max de 1 sur une colonne de Z}
 
   \item{random}{indique si on fait le tirage au sort ou pas
   (si on utilise BIc on a moins besoin du tirage). sans
@@ -38,7 +37,7 @@ Winitial(W = W, X = NULL, Rmax = NULL, BIC = F, Bic_null_vect = NULL,
   needed}
 }
 \description{
-initialisation based on a wheight matrix (correlation or
+initialization based on a wheight matrix (correlation or
 other)
 }
 

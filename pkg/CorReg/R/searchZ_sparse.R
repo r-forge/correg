@@ -4,7 +4,7 @@
 #' @param Zj indices of the columns of the 1
 #' @param Si nombre de 1 dans chaque lignes
 #' @param Sj nombre de 1 dans chaque colonnes
-#' @param bic_vide_vect vecteur BIC de la matrice nulle
+#' @param Bic_null_vect the BIC of the null hypothesis (used for independent variables)
 #' @param methode_tirage 0:ligne et colonne,-1:seulement la colonne, entier>0:nombre aleatoire de candidats
 #' @param methode_BIC 1:utilisation de la fonction householderQr, 2:utilisation de la fonction colPivHouseholderQr
 #' @param Rmax complexite maximum d'une sous-regression
@@ -13,18 +13,18 @@
 #' @param best T:permet d'aller systematiquement au meilleur BIC si il est meilleur que tout les autres deja rencontres 
 #' @param better T:permet d'aller systematiquement au meilleur BIC si il est meilleur que l'etape precedente
 #' @param random F:permet de s'ameliorer ou de rester sur place
-#' @param bla 0:pas de messages, 1:affiche le BIC,le numero d'etape et la complexite de Z quand il y'a un meilleur BIC, 2:affiche le BIC,le numero d'etape,la complexite de Z,le nombre de candidats et le BIC minimum observe parmi les candidats quand il y'a un meilleur BIC, 3: affiche en plus de bla=1 la complexite locale et le BIC local
+#'@param verbose 0:none, 1:BIC,step and complexity when best BIC found 2:BIC, step, complexity, nb candidates and best candidate when best BIC found
 #' @param nb_opt_max convergence criterion (number of step at the optimum)
 # ' @param Mixmod
 #' @export
 #' @return etape 0:suppression,1 ajout,2 stationarite
 # '
-searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,bic_vide_vect=NULL,methode_tirage=2,methode_BIC=1,Rmax=5,Maxiter=1,plot=F,best=T,better=F,random=T,bla=1,nb_opt_max=NULL){
+searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,Bic_null_vect=NULL,methode_tirage=2,methode_BIC=1,Rmax=5,Maxiter=1,plot=F,best=T,better=F,random=T,verbose=1,nb_opt_max=NULL){
   if(is.null(nb_opt_max)){
     nb_opt_max=Maxiter
   }
-  if(is.null(bic_vide_vect)){
-     bic_vide_vect=density_estimation(X=X)$BIC_vect 
+  if(is.null(Bic_null_vect)){
+     Bic_null_vect=density_estimation(X=X)$BIC_vect 
   }
   if(is.null(Zi) | is.null(Zj) ){
      Zi=as.vector(0)
@@ -42,6 +42,6 @@ searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,bic_vide_vect=NULL,
         Sj[i]=length(which(Zj==i))
      }
   }
-  res=.Call( "rechercheZ_sparse_relax",X,Zi,Zj,Si,Sj,bic_vide_vect,methode_tirage,methode_BIC,Rmax,Maxiter,plot,best,better,random,bla,nb_opt_max, PACKAGE = "CorReg")
+  res=.Call( "rechercheZ_sparse_relax",X,Zi,Zj,Si,Sj,Bic_null_vect,methode_tirage,methode_BIC,Rmax,Maxiter,plot,best,better,random,verbose,nb_opt_max, PACKAGE = "CorReg")
   return(res)
 }
