@@ -3,7 +3,7 @@
 \title{Sparse structure research}
 \usage{
 searchZ_sparse(X = X, Zi = NULL, Zj = NULL, Si = NULL, Sj = NULL,
-  Bic_null_vect = NULL, methode_tirage = 2, methode_BIC = 1, p1max = 5,
+  Bic_null_vect = NULL, candidates = 2, methode = 1, p1max = 5,
   Maxiter = 1, plot = F, best = T, better = F, random = T,
   verbose = 1, nb_opt_max = NULL)
 }
@@ -21,12 +21,12 @@ searchZ_sparse(X = X, Zi = NULL, Zj = NULL, Si = NULL, Sj = NULL,
   \item{Bic_null_vect}{the BIC of the null hypothesis (used
   for independent variables)}
 
-  \item{methode_tirage}{0:ligne et colonne,-1:seulement la
-  colonne, entier>0:nombre aleatoire de candidats}
+  \item{candidates}{0:row and column,-1:column only,
+  int>0:random int candidates, -2 : all (but the diag), -3
+  : non-zeros}
 
-  \item{methode_BIC}{1:utilisation de la fonction
-  householderQr, 2:utilisation de la fonction
-  colPivHouseholderQr}
+  \item{methode}{parameter for OLS (matrix inversion)
+  1:householderQr, 2:colPivHouseholderQr}
 
   \item{p1max}{maximum complexity for a regression}
 
