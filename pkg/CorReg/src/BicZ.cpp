@@ -15,7 +15,7 @@ SEXP BicZ(SEXP X,SEXP Z,SEXP Bic_vide_vect,SEXP BicOld,SEXP methode,SEXP Zold)
   const Map<MatrixXd> matZ(as<Map<MatrixXd> >(Z));//Z
   const Map<MatrixXd> matZold(as<Map<MatrixXd> >(Zold));//Zold
   const Map<MatrixXd> matX(as<Map<MatrixXd> >(X));//X
-  const Map<MatrixXd> vide(as<Map<MatrixXd> >(Bic_vide_vect));//Bic_vide_vect
+  const Map<MatrixXd> vide(as<Map<MatrixXd> >(Bic_vide_vect));//Bic_null_vect
   const Map<MatrixXd> BicO(as<Map<MatrixXd> >(BicOld));//X
   
   Rcpp::NumericVector xmet(methode);
