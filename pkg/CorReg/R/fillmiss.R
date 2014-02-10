@@ -8,7 +8,7 @@
 # ' @param X1 booleant to say if dependent variables on the right will be filled based on the structure
 # ' @param Bt the matrix used for X1 if X1=TRUE
 
-fillmiss<-function(X=X,Z=NULL,mixmod=F,B=NULL,Bt=NULL,res_mixmod=NULL,nbclustmax=10,X1=T,mclust=F){
+fillmiss<-function(X=X,Z=NULL,mixmod=F,B=NULL,Bt=NULL,res_mixmod=res_mixmod,nbclustmax=10,X1=T,mclust=F){
    quimank=which(is.na(X),arr.ind=T)
    p=ncol(X)
    if(is.null(Z)){
@@ -40,11 +40,11 @@ fillmiss<-function(X=X,Z=NULL,mixmod=F,B=NULL,Bt=NULL,res_mixmod=NULL,nbclustmax
           Xloc=X[,quimank[miss,2]]
           Xloc=Xloc[!is.na(Xloc)]
           
-          if(mclust){
-             res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
-          }else{
-             res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
-          }
+#           if(mclust){
+#              res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
+#           }else{
+#              res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
+#           }
         } 
           resmix=list()
           resmix$nbclust=res_mixmod[1]

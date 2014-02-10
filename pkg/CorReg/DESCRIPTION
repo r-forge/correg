@@ -2,7 +2,7 @@ Package: CorReg
 Type: Package
 Title: Linear regression based on linear structure between covariates
 Version: 0.14.0
-Date: 2014-02-05
+Date: 2014-02-10
 Author: THERY CLEMENT, WATRIN FLORIAN
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Sequential linear regression based on a recursive structural
@@ -13,7 +13,7 @@ License: CeCILL
 Copyright: ArcelorMittal
 URL: http://www.correg.org
 Imports:
-    Rcpp,Rmixmod,
+    Rcpp,
     lars,
     elasticnet,Matrix,mclust,ridge,MASS,parcor
 LinkingTo: Rcpp, RcppEigen
