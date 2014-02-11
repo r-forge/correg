@@ -11,7 +11,7 @@ Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Sequential linear regression based on a recursive structural
     equation model (explicit correlations). It permits to face highly
     correlated datasets.
-License: CeCILL (http://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html)
+License: CeCILL
 Copyright: ArcelorMittal
 URL: http://www.correg.org
 Imports:
