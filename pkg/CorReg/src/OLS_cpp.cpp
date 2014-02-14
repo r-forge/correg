@@ -9,7 +9,7 @@ using Eigen::Map;
 using Eigen::MatrixXd;
 using Rcpp::as;
 
-MatrixXd OLS_cpp(MatrixXd X,MatrixXd Y,bool intercept,int methode){
+MatrixXd OLS_cpp(const MatrixXd &X,const MatrixXd &Y,const bool &intercept,const int &methode){
   
   int size = X.rows();
   int sizecol=X.cols(); 
