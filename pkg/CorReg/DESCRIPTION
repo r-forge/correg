@@ -1,8 +1,8 @@
 Package: CorReg
 Type: Package
 Title: Linear regression based on linear structure between covariates
-Version: 0.14.1
-Date: 2014-02-11
+Version: 0.14.2
+Date: 2014-02-14
 Authors@R: c(person("Clement", "THERY", role = c("aut", "cre"),
     email = "clement.thery@arcelormittal.com"),
     person("Florian", "WATRIN", role = "ctb"))
