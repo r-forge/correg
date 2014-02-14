@@ -17,14 +17,14 @@ using Eigen::VectorXd;
 SEXP CVMSE(SEXP RX,SEXP RY,SEXP RK,SEXP Rintercept,SEXP Rmethode,SEXP Rgroupe)
 {
   BEGIN_RCPP
-  //d√©claration des parametres
+  //declaration des parametres
   const Map<MatrixXd> X(as<Map<MatrixXd> >(RX));//on utilise le format EIgen pour la matrice pour beneficier des outils matriciels de base
   const Map<MatrixXd> Y(as<Map<MatrixXd> >(RY));
   const Map<VectorXi> groupe(as<Map<VectorXi> >(Rgroupe));
   
-  int K = Rcpp::as<int>(RK);     // length vector 
-  int methode = Rcpp::as<int>(Rmethode);     // length vector 
-  bool intercept = Rcpp::as<bool>(Rintercept);     // length vector 
+  int K = Rcpp::as<int>(RK);     // nb groupes
+  int methode = Rcpp::as<int>(Rmethode);     // pour OLS 
+  bool intercept = Rcpp::as<bool>(Rintercept);     // intercept or not
 
   //initialisations hors parametres
   int n = X.rows();
@@ -46,14 +46,14 @@ SEXP CVMSE(SEXP RX,SEXP RY,SEXP RK,SEXP Rintercept,SEXP Rmethode,SEXP Rgroupe)
   double MSEloc=0;
   int compt_test=0;
   int compt_appr=0;
-  for(int j=0;j<K;j++){//pour chaque groupe
+  for(int j=0;j<K;j++){//pour chaque groupe on le prend comme test et on apprend sur le reste
     //declarations locales
-    MatrixXd Xappr(n-compteur[j],p);
-    MatrixXd Xtest(compteur[j],p+inter);
+    MatrixXd Xappr(n-compteur[j],p);//ajoute la constante lui-mÍme (si besoin)
+    MatrixXd Xtest(compteur[j],p+inter);//on ajoute la contaste (si besoin)
     MatrixXd Yappr(n-compteur[j],1);
     MatrixXd Ytest(compteur[j],1);
-    MatrixXd residus(compteur[j],1);
-   
+   VectorXd residus(compteur[j],1);
+   residus << VectorXd::Zero(compteur[j],1);
     for(int i=0;i<n;i++){// on remplit les matrices
       if(groupe[i]==j){//echantillon test
         Ytest(compt_test,0)=Y(i,0);
@@ -76,7 +76,7 @@ SEXP CVMSE(SEXP RX,SEXP RY,SEXP RK,SEXP Rintercept,SEXP Rmethode,SEXP Rgroupe)
     compt_appr=0;
     beta=OLS_cpp(Xappr,Yappr, intercept, methode) ;
     residus=Ytest-Xtest*beta;
-    for(int i=0;i<compteur[groupe[j]];i++){//on fait la somme et on passe au carre en meme temps
+    for(int i=0;i<compteur[j];i++){//on fait la somme et on passe au carre en meme temps
       MSEloc=MSEloc+residus(i,0)*residus(i,0);
     }
     MSEloc=MSEloc/ (double) compteur[groupe[j]];
