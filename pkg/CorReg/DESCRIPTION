@@ -1,11 +1,14 @@
 Package: CorReg
 Type: Package
 Title: Linear regression based on linear structure between covariates
-Version: 0.14.2
-Date: 2014-02-14
+Version: 0.14.3
+Date: 2014-02-19
 Authors@R: c(person("Clement", "THERY", role = c("aut", "cre"),
     email = "clement.thery@arcelormittal.com"),
-    person("Florian", "WATRIN", role = "ctb"))
+    person("Christophe", "BIERNACKI", role = "ctb"),
+    person("Gaetan", "LORIDANT", role = "ctb"),
+    person("Florian", "WATRIN", role = "ctb")
+    )
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Sequential linear regression based on a recursive structural
     equation model (explicit correlations). It permits to face highly
