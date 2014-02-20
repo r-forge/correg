@@ -22,8 +22,8 @@ Imports:
     Rcpp(>= 0.11.0),
     lars(>= 1.2),
     elasticnet(>= 1.1),
-    clere(>=1.1)
-Matrix(>= 1.1),
+    clere(>= 1.1),
+    Matrix(>= 1.1),
     mclust(>= 4.2),
     Rmixmod(>= 2.0.1),
     ridge(>= 2.1),

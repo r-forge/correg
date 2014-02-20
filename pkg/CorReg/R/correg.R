@@ -19,7 +19,7 @@
 #' @param compl boolean to decide if the complete modele is computed
 #' @param expl boolean to decide if the explicative model is in the output
 #' @param pred boolean to decide if the predictive model is computed
-#' @param select selection method in ("lar","lasso","forward.stagewise","stepwise", "elasticnet", "NULL","ridge","adalasso")
+#' @param select selection method in ("lar","lasso","forward.stagewise","stepwise", "elasticnet", "NULL","ridge","adalasso","clere")
 #' @param criterion the criterion used to compare the models
 #' @param K the number of clusters for cross-validation
 #' @param groupe a vector to define the groupes used for cross-validation (to obtain a reproductible result)
@@ -92,6 +92,8 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
        Xloc=X[,resada$coefficients.adalasso!=0]
        res$compl$A[res$compl$A!=0]=c(OLS(X=Xloc,Y=Y,intercept=intercept)$beta)
        res$compl$A=c(res$compl$A)
+    }else if(select=="clere"){
+       res$compl$A=A_clere(y=Y,x=X)
     }else{#ridge
       res_ridge = linearRidge(Y~.,data=data.frame(X))
       res$compl$A=coef(res_ridge)
@@ -129,6 +131,8 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
        }
        Xloc=X[,I1][,resada$coefficients.adalasso!=0]
        res$expl$A[res$expl$A!=0]=c(OLS(X=Xloc,Y=Y,intercept=intercept)$beta)       
+    }else if(select=="clere"){
+       res$expl$A=A_clere(y=Y,x=X[,I1])
     }else{#ridge
       lars_expl = linearRidge(Y~.,data=data.frame(X[,I1]))
       res$expl$A=coef(lars_expl)
@@ -181,6 +185,9 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
             Xloc=Xtilde[,A_inj!=0]
             A_inj[A_inj!=0]=c(OLS(X=Xloc,Y=Y,intercept=F)$beta)
          }
+      }else if(select=="clere"){
+         A_inj=A_clere(y=Ytilde,x=Xtilde)
+         A_inj=A_inj[-1]#vraiment pas propre
       }else{#ridge
         ridge_pred = linearRidge(Ytilde~0+.,data=data.frame(Xtilde))
         A_inj=coef(ridge_pred)
