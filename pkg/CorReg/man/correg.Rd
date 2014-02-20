@@ -34,7 +34,7 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
 
   \item{select}{selection method in
   ("lar","lasso","forward.stagewise","stepwise",
-  "elasticnet", "NULL","ridge","adalasso")}
+  "elasticnet", "NULL","ridge","adalasso","clere")}
 
   \item{criterion}{the criterion used to compare the
   models}
