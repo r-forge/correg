@@ -10,6 +10,7 @@
 #' @param nbini number of initial points for Rmixmod
 density_estimation<-function(X=X,nbclustmax=10,verbose=FALSE,detailed=FALSE,max=TRUE,mclust=TRUE,nbini=50){
   #X est la matrice sans constante
+   X=1*as.matrix(X)
   n=nrow(X)
   if(max){
     nbclustmax=round(min(nbclustmax,1+n^(0.3)))

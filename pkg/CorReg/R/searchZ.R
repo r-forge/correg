@@ -15,7 +15,7 @@
 #'@param verbose 0:none, 1:BIC,step and complexity when best BIC found 2:BIC, step, complexity, nb candidates and best candidate when best BIC found
 #'@param nb_opt_max stop criterion defining how many times the chain can walk (or stay) on the max found
 #'@param exact boolean. If exact subregression is found it gives its content (another verbose mode).
-#'@param nbini Number of initialisations (using Winitial). if NULL and Zini is NULL : only one chain beginning with zero matrix.
+#'@param nbini Number of initialisations (using Winitial if Z is NULL). if NULL and Zini is NULL : only one chain beginning with zero matrix.
 #'@param star boolean to compute BIC* instead of BIC (stronger penalization of the complexity). WARNING : star=TRUE implies p2max<=p/2
 #'@param clean cleaning steps at the end of the walk (testing each remainging 1 for removal)
 #'@param ... parameters to be passed (for Winitial).
@@ -23,6 +23,8 @@
 #'@export
 searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=1,methode=1,p1max=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,verbose=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,clean=TRUE,...){
   params=match.call()
+  Wini=FALSE
+  X=1*as.matrix(X)
   if(is.null(p2max)){
     p2max=ncol(X)+1 
   }
@@ -32,13 +34,13 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=1,methode=1
   if(is.null(nb_opt_max)){
     nb_opt_max=Maxiter
   }
-  if(is.null(Z)){
-    Z=matrix(0,ncol=ncol(X),nrow=ncol(X))
-  }
   if(is.null(Bic_null_vect)){
      Bic_null_vect=density_estimation(X=X,nbclustmax=10,verbose=FALSE,detailed=FALSE,mclust=TRUE)$BIC_vect
   }
   if(is.null(nbini)){
+     if(is.null(Z)){
+        Z=matrix(0,ncol=ncol(X),nrow=ncol(X))
+     }
      if(reject==0){#relax mode
         res=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         return(res)
@@ -51,8 +53,12 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=1,methode=1
      if(!("W" %in% names(params))){
         W=cor(X)
      }
+     if(is.null(Z)){
+        Z=matrix(0,ncol=ncol(X),nrow=ncol(X))
+        Wini=TRUE
+     }
      res=list()
-     if(nbini>1){#first try with zero matrix
+     if(nbini>1){#first try with Zini matrix
         if(reject==0){#relax mode
            resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }else{# reject mode
@@ -63,8 +69,16 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=1,methode=1
         }
         nbini=nbini-1
      }
+     if(clean){
+        resclean=cleanZ(X=X,Z=res$Z_opt,Bic_null_vect=Bic_null_vect,star=star,verbose=verbose)#nettoyage colonnes puis ponctuel
+        res$Z_opt=resclean$Z_opt
+        res$bic_opt=resclean$bic_opt
+     }
+     
      for(i in 1:nbini){
-        Z=Winitial(W=W,X=X,p1max=p1max,Bic_null_vect=Bic_null_vect,p2max=p2max)
+        if(Wini){
+           Z=Winitial(W=W,X=X,p1max=p1max,Bic_null_vect=Bic_null_vect,p2max=p2max)
+        }
         if(reject==0){#relax mode
            resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }else{# reject mode
@@ -75,8 +89,8 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=1,methode=1
         }
      }
      if(clean){
-        resclean=cleanZ(X=X,Z=res$Z_opt,Bic_null_vect=Bic_null_vect,star=star)#nettoyage colonnes puis ponctuel
-        res$Zopt=resclean$Zopt
+        resclean=cleanZ(X=X,Z=res$Z_opt,Bic_null_vect=Bic_null_vect,star=star,verbose=verbose)#nettoyage colonnes puis ponctuel
+        res$Z_opt=resclean$Z_opt
         res$bic_opt=resclean$bic_opt
      }
      return(res)
