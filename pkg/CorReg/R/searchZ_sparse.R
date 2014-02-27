@@ -20,7 +20,8 @@
 #'@return step 0:delete, 1: add, 2: stationnarity
 # '
 searchZ_sparse<-function(X=X,Zi=NULL,Zj=NULL,Si=NULL,Sj=NULL,Bic_null_vect=NULL,candidates=2,methode=1,p1max=5,Maxiter=1,plot=F,best=T,better=F,random=T,verbose=1,nb_opt_max=NULL){
-  if(is.null(nb_opt_max)){
+   X=1*as.matrix(X)
+   if(is.null(nb_opt_max)){
     nb_opt_max=Maxiter
   }
   if(is.null(Bic_null_vect)){

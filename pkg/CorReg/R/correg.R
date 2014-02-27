@@ -8,7 +8,10 @@
 #' @import ridge
 #' @import MASS
 #' @import parcor
-# ' @import RcppEigen
+#' @import  clere
+#' @import spikeslab
+#' @import  rpart
+#' @import corrplot
 #' @useDynLib CorReg
 #' @export
 #' @param B the (p+1)xp matrix associated to Z and that contains the parameters of the sub-regressions
@@ -19,7 +22,7 @@
 #' @param compl boolean to decide if the complete modele is computed
 #' @param expl boolean to decide if the explicative model is in the output
 #' @param pred boolean to decide if the predictive model is computed
-#' @param select selection method in ("lar","lasso","forward.stagewise","stepwise", "elasticnet", "NULL","ridge","adalasso","clere")
+#' @param select selection method in ("lar","lasso","forward.stagewise","stepwise", "elasticnet", "NULL","ridge","adalasso","clere","spikeslab")
 #' @param criterion the criterion used to compare the models
 #' @param K the number of clusters for cross-validation
 #' @param groupe a vector to define the groupes used for cross-validation (to obtain a reproductible result)
@@ -33,6 +36,7 @@
 #' @param prednew alternate optimisation for predictive
 #' @param nbalter number of alternance for prednew
 #' @param deltamin criterion to stop alternance 
+#' @param g number of group of variables for clere
 #' 
 #' 
 correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, 
@@ -41,13 +45,13 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
                 K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=TRUE,#final=FALSE,
-                nbalter=10,deltamin=0.01,alpha=NULL) 
+                nbalter=10,deltamin=0.01,alpha=NULL,g=5) 
 {
   res = list()
-  X = as.matrix(X)
+  X = 1*as.matrix(X)
   K = abs(K)
   K = min(K, nrow(X))
-  Y=as.matrix(Y)
+  Y=1*as.matrix(Y)
   if (is.null(groupe)) {
     groupe = rep(0:(K - 1), length.out = nrow(as.matrix(X)))
     groupe = sample(groupe)
@@ -70,7 +74,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   if (compl) {
     if (select == "NULL") {
       res$compl$A = c(OLS(X = X, Y = Y, intercept = intercept)$beta)
-    }else if (select != "elasticnet" & select != "ridge" & select != "adalasso") {
+    }else if (select != "elasticnet" & select != "ridge" & select != "adalasso" & select!="clere" & select!="spikeslab") {
       lars_compl = lars(x = X, y = Y, type = select, intercept = intercept)
       res$compl = meilleur_lars(lars = lars_compl, X = X, 
                                 Y = Y, mode = criterion, intercept = intercept, 
@@ -85,6 +89,9 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
     }else if(select=="adalasso"){
        resada=adalasso(X=X,y=Y,k=K)    
        if(intercept){
+          if(is.null(resada$intercept.adalasso)){
+             resada$intercept.adalasso=0
+          }
           res$compl$A=c(resada$intercept.adalasso,resada$coefficients.adalasso)
        }else{
           res$compl$A=c(resada$coefficients.adalasso)
@@ -93,8 +100,16 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
        res$compl$A[res$compl$A!=0]=c(OLS(X=Xloc,Y=Y,intercept=intercept)$beta)
        res$compl$A=c(res$compl$A)
     }else if(select=="clere"){
-       res$compl$A=A_clere(y=Y,x=X)
-    }else{#ridge
+       res$compl$A=A_clere(y=as.numeric(Y),x=X,g=g)
+    }else if(select=="spikeslab"){
+       respike=spikeslab(x=X,y=Y)
+       res$compl$A=rep(0,times=ncol(X)+intercept)
+       if(intercept){
+          res$compl$A[c(1,1+which(respike$gnet.scale!=0))]=OLS(X=X[,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
+       }else{
+          res$compl$A[respike$gnet.scale!=0]=OLS(X=X[,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
+       }
+   }else{#ridge
       res_ridge = linearRidge(Y~.,data=data.frame(X))
       res$compl$A=coef(res_ridge)
     }
@@ -109,7 +124,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
        res$expl$A=alpha
     }else if (select == "NULL") {
       res$expl$A = OLS(X = as.matrix(X[, I1]), Y = Y, intercept = intercept)$beta
-    }else if (select != "elasticnet" & select != "ridge" & select != "adalasso") {
+    }else if (select != "elasticnet" & select != "ridge" & select != "adalasso"  & select!="clere" & select!="spikeslab") {
       lars_expl = lars(x = as.matrix(X[, I1]), y = Y, type = select, 
                        intercept = intercept)
       res$expl = meilleur_lars(lars = lars_expl, X = as.matrix(X[, I1]), Y = Y, 
@@ -125,6 +140,9 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
     }else if(select=="adalasso"){
        resada=adalasso(X=X[,I1],y=Y,k=K)    
        if(intercept){
+          if(is.null(resada$intercept.adalasso)){
+             resada$intercept.adalasso=0
+          }
           res$expl$A=c(resada$intercept.adalasso,resada$coefficients.adalasso)
        }else{
           res$expl$A=c(resada$coefficients.adalasso)
@@ -132,7 +150,15 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
        Xloc=X[,I1][,resada$coefficients.adalasso!=0]
        res$expl$A[res$expl$A!=0]=c(OLS(X=Xloc,Y=Y,intercept=intercept)$beta)       
     }else if(select=="clere"){
-       res$expl$A=A_clere(y=Y,x=X[,I1])
+       res$expl$A=A_clere(y=as.numeric(Y),x=X[,I1],g=g)
+    }else if(select=="spikeslab"){
+       respike=spikeslab(x=X[,I1],y=Y)
+       res$expl$A=rep(0,times=ncol(X[,I1])+intercept)
+       if(intercept){
+          res$expl$A[c(1,1+which(respike$gnet.scale!=0))]=OLS(X=X[,I1][,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
+       }else{
+          res$expl$A[respike$gnet.scale!=0]=OLS(X=X[,I1][,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
+       }
     }else{#ridge
       lars_expl = linearRidge(Y~.,data=data.frame(X[,I1]))
       res$expl$A=coef(lars_expl)
@@ -149,10 +175,11 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
        A_expl=alpha
     }
     res$expl$BIC = BicTheta(X = X, Y = Y, intercept = intercept, beta = A_expl)
-    if (pred) {
-      if(length(I2)<2 & select=="adalasso"){
+    if (pred & length(I2)>0) {
+      if(length(I2)<2 & select!="NULL"){
          select="lar"
       }
+      
       if (is.null(B)) {
         B = hatB(Z = Z, X = X)
       }
@@ -165,7 +192,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
       }
       if (select == "NULL") {
         A_inj = OLS(X = Xtilde, Y = Ytilde, intercept = F)$beta
-      }else if (select != "elasticnet"  & select != "ridge" & select != "adalasso") {
+      }else if (select != "elasticnet"  & select != "ridge" & select != "adalasso"  & select!="clere" & select!="spikeslab") {
         lars_inj = lars(x = Xtilde, y = Ytilde, type = select, 
                         intercept = F)
         A_inj = meilleur_lars(lars = lars_inj, X = Xtilde, 
@@ -183,11 +210,15 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
          A_inj=c(resada$coefficients.adalasso)
          if(length(A_inj[A_inj!=0])>0){
             Xloc=Xtilde[,A_inj!=0]
-            A_inj[A_inj!=0]=c(OLS(X=Xloc,Y=Y,intercept=F)$beta)
+            A_inj[A_inj!=0]=c(OLS(X=Xloc,Y=Ytilde,intercept=F)$beta)
          }
       }else if(select=="clere"){
-         A_inj=A_clere(y=Ytilde,x=Xtilde)
+         A_inj=A_clere(y=as.numeric(Ytilde),x=Xtilde,g=g)
          A_inj=A_inj[-1]#vraiment pas propre
+      }else if(select=="spikeslab"){
+         respike=spikeslab(x=X[,I1],y=Ytilde)
+         A_inj=rep(0,times=ncol(Xtilde))
+         A_inj[which(respike$gnet.scale!=0)]=OLS(X=Xtilde[,respike$gnet.scale!=0],Y=as.numeric(Ytilde),intercept=intercept)$beta 
       }else{#ridge
         ridge_pred = linearRidge(Ytilde~0+.,data=data.frame(Xtilde))
         A_inj=coef(ridge_pred)
@@ -197,7 +228,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
       if(returning){
         Ytildebis=Y-as.matrix(X[,I2])%*%A_pred[I2 + intercept]
         Ytildebis=as.matrix(Ytildebis)
-        if (select != "elasticnet" & select != "ridge" & select != "adalasso") {
+        if (select != "elasticnet" & select != "ridge" & select != "adalasso"  & select!="clere" & select!="spikeslab") {
           lars_retour=lars(x = as.matrix(X[,I1]), y = Ytildebis, type = select, 
                          intercept = intercept)
           A_retour = meilleur_lars(lars = lars_retour, X = as.matrix(X[,I1]), 
@@ -219,7 +250,17 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
            }
            Xloc=X[,I1][,resada$coefficients.adalasso!=0]
            A_retour[A_retour!=0]=c(OLS(X=Xloc,Y=Y,intercept=intercept)$beta)   
-        }else{#ridge
+         }else if(select=="clere"){
+            A_retour=A_clere(y=as.numeric(Y),x=X[,I1],g=g)
+         }else if(select=="spikeslab"){
+            respike=spikeslab(x=X[,I1],y=Y)
+            res$compl$A=rep(0,times=ncol(X[,I1])+intercept)
+            if(intercept){
+               res$compl$A[c(1,1+which(respike$gnet.scale!=0))]=OLS(X=X[,I1][,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
+            }else{
+               res$compl$A[respike$gnet.scale!=0]=OLS(X=X[,I1][,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
+            }
+         }else{#ridge
           ridge_pred = linearRidge(Ytildebis~.,data=data.frame(X[,I1]))
           A_retour=coef(ridge_pred)
         }
@@ -242,22 +283,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
       res$pred$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
       res$pred$BIC = BicTheta(X = X, Y = Y, intercept = intercept, 
                               beta = A_pred)
-#       if(final){
-#         if(intercept){
-#           quifinal=which(A_pred[-1]!=0)
-#         }else{
-#           quifinal=which(A_pred!=0)
-#         }
-#         Zfinal=as.matrix(Z[quifinal,quifinal])
-#         A_final=correg(X=X[,quifinal],Y=Y,Z=Zfinal,B=as.matrix(B[c(1,quifinal+1),quifinal]),returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select="NULL")$pred$A
-#         
-#         res$final$A=res$pred$A
-#         res$final$A[res$pred$A!=0]=A_final
-#         res$final$CVMSE = CVMSE(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, K = K, groupe = groupe)
-#         res$final$BIC = BicTheta(X = as.matrix(X[,quifinal]), Y = Y, intercept = intercept, 
-#                                  beta = A_final)
-#         
-#       }
+
     }
     #nouveau prédictif####
     if (prednew) {
@@ -282,7 +308,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
              }
              if (select == "NULL") {
                 A_inj = OLS(X = Xtilde, Y = Ytilde, intercept = F)$beta
-             }else if (select != "elasticnet"  & select != "ridge" & select != "adalasso") {
+             }else if (select != "elasticnet"  & select != "ridge" & select != "adalasso" & select!="clere" & select!="spikeslab") {
                 lars_inj = lars(x = Xtilde, y = Ytilde, type = select, 
                                 intercept = F)
                 A_inj = meilleur_lars(lars = lars_inj, X = Xtilde, 
@@ -311,7 +337,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
              if(returning){
                 Ytildebis=Y-as.matrix(X[,I2])%*%A_pred[I2 + intercept]
                 Ytildebis=as.matrix(Ytildebis)
-                if (select != "elasticnet" & select != "ridge" & select != "adalasso") {
+                if (select != "elasticnet" & select != "ridge" & select != "adalasso" & select!="clere" & select!="spikeslab") {
                    lars_retour=lars(x = as.matrix(X[,I1]), y = Ytildebis, type = select, 
                                     intercept = intercept)
                    A_retour = meilleur_lars(lars = lars_retour, X = as.matrix(X[,I1]), 

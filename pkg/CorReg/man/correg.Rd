@@ -6,7 +6,7 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   pred = TRUE, prednew = FALSE, select = "lar", criterion = c("MSE",
   "BIC"), X_test = NULL, Y_test = NULL, intercept = TRUE, K = 10,
   groupe = NULL, Amax = NULL, lambda = 1, returning = TRUE,
-  nbalter = 10, deltamin = 0.01, alpha = NULL)
+  nbalter = 10, deltamin = 0.01, alpha = NULL, g = 5)
 }
 \arguments{
   \item{B}{the (p+1)xp matrix associated to Z and that
@@ -34,7 +34,8 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
 
   \item{select}{selection method in
   ("lar","lasso","forward.stagewise","stepwise",
-  "elasticnet", "NULL","ridge","adalasso","clere")}
+  "elasticnet",
+  "NULL","ridge","adalasso","clere","spikeslab")}
 
   \item{criterion}{the criterion used to compare the
   models}
@@ -66,6 +67,8 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   \item{nbalter}{number of alternance for prednew}
 
   \item{deltamin}{criterion to stop alternance}
+
+  \item{g}{number of group of variables for clere}
 }
 \description{
 Estimates the response variable using a structure

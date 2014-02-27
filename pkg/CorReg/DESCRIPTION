@@ -23,10 +23,13 @@ Imports:
     lars(>= 1.2),
     elasticnet(>= 1.1),
     clere(>= 1.1),
+    spikeslab(>= 1.1.5),
+    corrplot(>= 0.73),
     Matrix(>= 1.1),
     mclust(>= 4.2),
     Rmixmod(>= 2.0.1),
     ridge(>= 2.1),
+    rpart(>= 4.1-5),
     MASS(>= 7.3),
     parcor(>= 0.2)
 LinkingTo: Rcpp, RcppEigen
