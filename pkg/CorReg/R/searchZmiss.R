@@ -4,6 +4,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
   #Z est la matrice Z du formalisme priv?e de sa premi?re ligne (constante sur 1) et de sa premi?re colonne (identit?)
   #MH dit si on fait le saut vers le meilleur strict ou si on se contente de l'enregistrer
   mode=mode[1]
+  X=1*as.matrix(X)
   p=ncol(X)
   n=nrow(X)
   if(is.null(M)){

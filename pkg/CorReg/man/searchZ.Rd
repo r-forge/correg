@@ -55,9 +55,9 @@ searchZ(X = X, Z = NULL, Bic_null_vect = NULL, candidates = -1,
   \item{exact}{boolean. If exact subregression is found it
   gives its content (another verbose mode).}
 
-  \item{nbini}{Number of initialisations (using Winitial).
-  if NULL and Zini is NULL : only one chain beginning with
-  zero matrix.}
+  \item{nbini}{Number of initialisations (using Winitial if
+  Z is NULL). if NULL and Zini is NULL : only one chain
+  beginning with zero matrix.}
 
   \item{star}{boolean to compute BIC* instead of BIC
   (stronger penalization of the complexity). WARNING :

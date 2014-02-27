@@ -2,7 +2,8 @@
 \alias{readY}
 \title{a summary-like function}
 \usage{
-readY(A = A, labels = NULL, X = NULL, intercept = TRUE)
+readY(A = A, labels = NULL, X = NULL, intercept = TRUE, ANOVA = FALSE,
+  print = TRUE, Y = NULL)
 }
 \arguments{
   \item{A}{coefficient vector}
@@ -13,6 +14,13 @@ readY(A = A, labels = NULL, X = NULL, intercept = TRUE)
 
   \item{intercept}{boolean defining wether A contains an
   intercept or not}
+
+  \item{ANOVA}{boolean to add Anova test for each
+  coefficient}
+
+  \item{print}{boolean to print ANOVA if computed}
+
+  \item{Y}{the response variable if ANOVA is computed}
 }
 \description{
 a summary-like function
