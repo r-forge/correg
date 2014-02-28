@@ -2,7 +2,8 @@
 \alias{Y_generator}
 \title{Response variable generator with a linear model}
 \usage{
-Y_generator(X = X, Amax = NULL, sigma_Y = 10, positive = 0.6)
+Y_generator(X = X, Amax = NULL, sigma_Y = 10, positive = 0.6,
+  Z = NULL, tp1 = 1, tp2 = 2, tp3 = 3)
 }
 \arguments{
   \item{X}{the dataset}
