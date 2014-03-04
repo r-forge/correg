@@ -9,7 +9,7 @@
 #' @param pb kind of problem : 0=none, 1=simple, 2=strong
 #' @param Z the structure adjacency matrix
 #'@export 
-Y_generator<-function(X=X,Amax=NULL,sigma_Y=10,positive=0.6,Z=NULL,tp1=1,tp2=2,tp3=3,pb=2){
+Y_generator<-function(X=X,Amax=NULL,sigma_Y=10,positive=0.6,Z=NULL,tp1=1,tp2=1,tp3=1,pb=0){
   p=ncol(X)
   taille=nrow(X)
 #   A=rpois(p+1,5)*(rep(-1,p+1)+2*rbinom(p+1,1,positive))
