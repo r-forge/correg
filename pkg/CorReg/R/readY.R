@@ -7,7 +7,7 @@
 #' @param print boolean to print ANOVA if computed
 #' @param Y the response variable if ANOVA is computed
 #'@export
-readY<-function(A=A,labels=NULL,X=NULL,intercept=TRUE,ANOVA=FALSE,print=TRUE,Y=NULL){
+readY<-function(A=A,labels=NULL,X=NULL,intercept=TRUE,ANOVA=FALSE,print=FALSE,Y=NULL){
    if(is.null(labels)){
       labels=names(X)
    }
