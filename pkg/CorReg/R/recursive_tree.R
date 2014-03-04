@@ -20,9 +20,9 @@ recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=
    formule=as.formula(paste(Y," ~",paste(modele,collapse="+")))
    arbre=rpart(formule,data);par( xpd=NA)
    if(plot){
-      sub="oui à gauche, non à droite. Moyenne et effectif"
-      ylab="la hauteur indique la significativité"
-      plot(arbre,sub=sub);text(arbre, use.n=TRUE)
+      sub=paste("oui à gauche, non à droite. Moyenne (global", round(arbre$frame$yval[1],digits=3),") et effectif (global ", arbre$frame$n[1],") \n la hauteur indique la significativité")
+      plot(arbre,sub=sub)
+      text(arbre, use.n=TRUE)
       #title(main = titre,ylab=vertical,xlab = paste(infos,"\n Oui Ã  gauche, non Ã  droite.",reponse), col.main = "red", col.lab = gray(.5),cex.main = 1.2, cex.lab = 1.0, font.main = 4, font.lab = 3
    }
    if(print){
