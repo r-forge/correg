@@ -6,7 +6,7 @@ mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
   valid = 1000, positive = 0.6, sigma_Y = 10, sigma_X = 0.25,
   meanvar = NULL, sigmavar = NULL, lambda = 0, Amax = 15,
   lambdapois = 5, gamma = F, gammashape = 1, gammascale = 0.5,
-  tp1 = 1, tp2 = 1, tp3 = 1, pb = 2)
+  tp1 = 1, tp2 = 1, tp3 = 1, pb = 0)
 }
 \arguments{
   \item{n}{the number of individuals in the learning

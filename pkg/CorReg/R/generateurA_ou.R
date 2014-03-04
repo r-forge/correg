@@ -9,7 +9,7 @@
 # ' @param lambdapois parameter of the poisson law to generate the coefficients
 # ' @param Amax max number of non-zero coefficients
 # ' @param B weighted structure used to coerce some problems in the complete model
-generateurA_ou<-function (Z = Z, tp1 = 1, tp2 = 1, tp3 = 1, positive = 0.6, lambdapois = 5,pb=2,Amax=NULL,B=NULL) 
+generateurA_ou<-function (Z = Z, tp1 = 1, tp2 = 1, tp3 = 1, positive = 0.6, lambdapois = 5,pb=0,Amax=NULL,B=NULL) 
 {
   Z = as.matrix(Z)
   p = ncol(Z)
@@ -36,16 +36,18 @@ generateurA_ou<-function (Z = Z, tp1 = 1, tp2 = 1, tp3 = 1, positive = 0.6, lamb
     }
   }
   A1=length(which(A!=0))
-  if(!is.null(Amax) & Amax<A1){#si on doit mettre une borne à Amax
-    nb0=A1-Amax#nombre de 0 à placer
-    if(pb<2){
-      A[A!=0][sample(A1,size=nb0)]=0
-    }else{#on conserve les pb
-      #mise à jour des indices des survivants
-      priorite=1+c(quip3,0,quip2,quip1order)
-      priorite=priorite[A[priorite]!=0]
-      A[priorite][1:nb0]=0
-    } 
+  if(!is.null(Amax)){#si on doit mettre une borne à Amax
+     if(Amax<A1){
+       nb0=A1-Amax#nombre de 0 à placer
+       if(pb<2){
+         A[A!=0][sample(A1,size=nb0)]=0
+       }else{#on conserve les pb
+         #mise à jour des indices des survivants
+         priorite=1+c(quip3,0,quip2,quip1order)
+         priorite=priorite[A[priorite]!=0]
+         A[priorite][1:nb0]=0
+       } 
+     }
   }
   return(A)
 }

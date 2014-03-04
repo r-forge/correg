@@ -36,7 +36,7 @@ mixture_generator<-function(n=130,
                                 lambdapois=5,#pour les valeurs des coefs
                                 gamma=F,
                                 gammashape=1,
-                                gammascale=0.5,tp1=1,tp2=1,tp3=1,pb=2
+                                gammascale=0.5,tp1=1,tp2=1,tp3=1,pb=0
 ){
   max_compl=min(max_compl,p)
   Amax=min(p+1,Amax) # min entre p+1 et Amax  why?
