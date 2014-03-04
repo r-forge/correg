@@ -13,9 +13,9 @@ readY<-function(A=A,labels=NULL,X=NULL,intercept=TRUE,ANOVA=FALSE,print=TRUE,Y=N
    }
    if(intercept){labels=c("intercept",labels)}
    interp=cbind(A[A!=0],labels[A!=0])
-   Xred=
-   reslm=lm(Y~.,data=Xred)
-   summar_red=summary(reslm_compl_red)   
-   
+   Xred=X[,A[-intercept]!=0]
+   reslm=lm(Y~.,data=data.frame(Xred))
+   interp=summary(reslm)  
+   if(print){print(interp)}
    return(interp)
 }
