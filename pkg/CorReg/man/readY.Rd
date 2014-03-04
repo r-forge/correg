@@ -3,7 +3,7 @@
 \title{a summary-like function}
 \usage{
 readY(A = A, labels = NULL, X = NULL, intercept = TRUE, ANOVA = FALSE,
-  print = TRUE, Y = NULL)
+  print = FALSE, Y = NULL)
 }
 \arguments{
   \item{A}{coefficient vector}
