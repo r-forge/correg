@@ -26,7 +26,7 @@ Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 
 \examples{
 require(CorReg)
-base=mixture_generator(n=25,p=10,ratio=0.4,sigma_X=0.001,tp1=1,tp2=0,tp3=0)
+base=mixture_generator(n=25,p=30,ratio=0.4,sigma_X=0.001,tp1=1,tp2=1,tp3=1)
 X_appr=base$X_appr
 Y_appr=base$Y_appr
 Y_test=base$Y_test

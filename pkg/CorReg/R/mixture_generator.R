@@ -156,7 +156,7 @@ mixture_generator<-function(n=130,
   X=as.matrix(X)
   #names(X)=c("cste",paste("X_",1:p, sep=""))
   if(scale){
-     X=scale(X)
+     X=cbind(1,scale(X[,-1]))
   }
   Y=X%*%A+rnorm(taille,mean=0,sd=sigma_Y)
   X_appr=as.matrix(X[1:n,-1])
