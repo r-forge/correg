@@ -5,6 +5,6 @@
 using namespace Rcpp ;
 using namespace Eigen;
 
-RcppExport MatrixXd OLS_cpp(const MatrixXd &X, const MatrixXd &Y,const bool &intercept,const int &methode) ;
+MatrixXd OLS_cpp(const MatrixXd &X, const MatrixXd &Y,const bool &intercept,const int &methode) ;
 
 #endif

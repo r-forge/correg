@@ -3,6 +3,6 @@
 
 #include <RcppEigen.h>
 using namespace Rcpp ;
-RcppExport Eigen::VectorXd BicZ_cpp(Eigen::MatrixXd X,Eigen::MatrixXd Z,Eigen::VectorXd Bic_vide_vect,Eigen::VectorXd BicOld,double methode,Eigen::MatrixXd Zold) ;
+Eigen::VectorXd BicZ_cpp(Eigen::MatrixXd X,Eigen::MatrixXd Z,Eigen::VectorXd Bic_vide_vect,Eigen::VectorXd BicOld,double methode,Eigen::MatrixXd Zold) ;
 
 #endif
