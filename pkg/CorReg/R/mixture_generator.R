@@ -20,6 +20,9 @@
 #' @param tp3 the ratio of strictly independent covariates allowed to have a non-zero coefficient in the regression
 #' @param lambdapois parameter used to generate the coefficient in the subregressions. poisson distribution.
 #' @param pb generates Y in an heuristic way that will give some issues with correlations.
+#' @param nonlin to use non linear structure (half squared , half log). if not null, it is the proba to use power pnonlin instead of log
+#' @param pnonlin the power used if non linear structure
+#' @param scale boolean to scale X before computing Y
 #' @export
 mixture_generator<-function(n=130,
                                 p=100,
@@ -31,12 +34,12 @@ mixture_generator<-function(n=130,
                                 sigma_X=0.25,
                                 meanvar=NULL,
                                 sigmavar=NULL,
-                                lambda=0,#pour l enombre de composantes des m?langes gaussiens
+                                lambda=3,#pour l enombre de composantes des m?langes gaussiens
                                 Amax=15,
                                 lambdapois=5,#pour les valeurs des coefs
                                 gamma=F,
                                 gammashape=1,
-                                gammascale=0.5,tp1=1,tp2=1,tp3=1,pb=0
+                                gammascale=0.5,tp1=1,tp2=1,tp3=1,pb=0,nonlin=0,pnonlin=2,scale=TRUE
 ){
   max_compl=min(max_compl,p)
   Amax=min(p+1,Amax) # min entre p+1 et Amax  why?
@@ -122,13 +125,39 @@ mixture_generator<-function(n=130,
       sigma_X=rgamma(R,shape=gammashape,scale=gammascale)
     }
     epsX[,list_X2]=matrix(rnorm(taille*R,mean=rep(0,times=R),sd=sigma_X),ncol=R,nrow=taille,byrow=T)
-    X=X%*%B+epsX
+    if(nonlin==0){
+       X=X%*%B+epsX
+    }else if (nonlin>0){
+       for (i in list_X2){
+          X[,i]=B[1,i]#on prend la constante
+          for (j in which(vraiZ[,i-1]!=0)){#pour chaque variable à droite
+             j=j+1
+             if(runif(1)<nonlin){
+                X[,i]= X[,i]+B[j,i]*X[,j]^pnonlin
+             }else{
+                X[,i]= X[,i]+B[j,i]*log(abs(X[,j]))
+             }
+          }
+       }
+       X=X+epsX
+    }else{
+       for (i in list_X2){
+          X[,i]=B[1,i]#on prend la constante
+          for (j in which(vraiZ[,i-1]!=0)){#pour chaque variable à droite
+             j=j+1
+                X[,i]= X[,i]*B[j,i]*X[,j]
+          }
+       }
+       X=X+epsX
+    }
   }else{
     X=X1
   }  
   X=as.matrix(X)
   #names(X)=c("cste",paste("X_",1:p, sep=""))
-
+  if(scale){
+     X=scale(X)
+  }
   Y=X%*%A+rnorm(taille,mean=0,sd=sigma_Y)
   X_appr=as.matrix(X[1:n,-1])
   X_test=as.matrix(X[(n+1):taille,-1])
