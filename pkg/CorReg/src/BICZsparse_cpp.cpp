@@ -11,7 +11,7 @@ using Eigen::MatrixXd;
 using Eigen::VectorXd;
 using Rcpp::as;
 
-Eigen::VectorXd BICZsparse_cpp(Eigen::MatrixXd X,NumericVector Z_Zi,Eigen::VectorXd Z_Sj,Eigen::VectorXd Bic_vide_vect,Eigen::VectorXd BicOld,int methode,Eigen::VectorXd Zold_Sj,int nrow)
+Eigen::VectorXd BICZsparse_cpp(Eigen::MatrixXd X,Rcpp::NumericVector Z_Zi,Eigen::VectorXd Z_Sj,Eigen::VectorXd Bic_vide_vect,Eigen::VectorXd BicOld,int methode,Eigen::VectorXd Zold_Sj,int nrow)
 {
   Eigen::VectorXd BIC_vect;
   int debut_colj;

@@ -7,7 +7,7 @@ using Eigen::Map;
 using Eigen::MatrixXd;
 using Rcpp::as;
 //V1 et V2 sont des vecteurs colonnes issus de matrices (sous matrices donc)
-RcppExport Rcpp::NumericVector kronecker_prod_cpp(const Rcpp::NumericVector &V1,const Rcpp::NumericVector &V2){
+Rcpp::NumericVector kronecker_prod_cpp(const Rcpp::NumericVector &V1,const Rcpp::NumericVector &V2){
     int size1=V1.size();
     int size2=V2.size();
     int size3=size1*size2;

@@ -6,11 +6,9 @@
 using namespace Rcpp ;
 using namespace Eigen;
 using namespace std;
-using Eigen::Map;
-using Eigen::MatrixXd;
-using Rcpp::as;
 
-Eigen::VectorXd BICZsparse2_cpp(Eigen::MatrixXd X,NumericVector Z_Zi,Eigen::VectorXd Z_Sj,Eigen::VectorXd Bic_vide_vect,int methode,int nrow)
+
+Eigen::VectorXd BICZsparse2_cpp(Eigen::MatrixXd X,Rcpp::NumericVector Z_Zi,Eigen::VectorXd Z_Sj,Eigen::VectorXd Bic_vide_vect,int methode,int nrow)
 {
   Eigen::VectorXd BIC_vect;
   int debut_colj;
