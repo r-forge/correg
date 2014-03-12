@@ -405,7 +405,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
                 #on estime un nouveau B
                 A_old=res$prednew$A
                 newB=newhatB(Z=Z,A=res$prednew$A,Atilde=res$expl$A,Bold=B,intercept=intercept)
-                if(prod(B==newB)){#rien n'a changé dans B
+                if(prod(B==newB)){#rien n'a change dans B
                    nbit=nbalter+1
                    print("same B : stop")
                 }else if(any(newB==Inf)){
@@ -423,7 +423,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
           }
           
           
-       } #fin de la boucle d'optimisation alternée 
+       } #fin de la boucle d'optimisation alternee 
        res$B=B
     }
   }else if (sum(Z) == 0 & (expl | pred)) {
