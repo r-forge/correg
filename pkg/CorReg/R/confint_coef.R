@@ -1,6 +1,6 @@
 #' confidence intervals on the coefficients estimated in a model or for proportions
 #' @export 
-confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,var=NULL,alpha=0.05){   
+confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,var=NULL,alpha=0.05,labels=NULL){   
     if(!is.null(modele)){
       confint=confint.default(modele)
       coef=cbind(modele$coefficients,confint)
@@ -21,7 +21,7 @@ confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,var=NULL,alpha=0.0
          coef=rbind(coef,c(prop[i],icproportion(prop=prop[i],n=n[i],alpha=alpha)))
       }
       colnames(coef)=c("values","borne inf IC", "borne sup IC")
-      barplot(coef[,1],ylim=c(min(coef[,2]),max(coef[,3])),col="cyan",main="Intervalle de confiance des proportions",sub="")
+      barplot(coef[,1],ylim=c(min(coef[,2]),max(coef[,3])),col="cyan",main="Intervalle de confiance des proportions",sub="",names.arg=labels)
       x0=seq(from=1,length.out=nrow(coef),by=1.2)-0.3
       y0=coef[,2]
       x1=x0

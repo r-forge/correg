@@ -1,5 +1,6 @@
 export(BicZ)
 export(BicZcurve)
+export(CVMSE)
 export(MSEZ)
 export(MSE_loc)
 export(OLS)

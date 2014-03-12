@@ -15,7 +15,7 @@ BicZ<-function(X=X,Z=Z,Bic_null_vect=NULL,Bic_old=NULL,methode=1,Zold=NULL,star=
    Zold=0*Z
    Bic_old=Bic_null_vect
  }
-    res=.Call( "BicZ",X,Z,Bic_null_vect,Bic_old,methode,Zold, PACKAGE = "CorReg")
+    res=.Call( "BicZ",as.matrix(X),Z,Bic_null_vect,Bic_old,methode,Zold, PACKAGE = "CorReg")
    if(star){
       res$BIC=sum(res$BIC)-ProbaZ(Z,star=TRUE)
    }

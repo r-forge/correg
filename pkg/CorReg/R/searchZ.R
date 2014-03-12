@@ -30,6 +30,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=1,methode=1
   }
   if(star){
      p2max=min(p2max,ncol(X)/2)
+     p1max=min(p1max,ncol(X)/2)
   }
   if(is.null(nb_opt_max)){
     nb_opt_max=Maxiter
