@@ -4,9 +4,10 @@
 \usage{
 mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
   valid = 1000, positive = 0.6, sigma_Y = 10, sigma_X = 0.25,
-  meanvar = NULL, sigmavar = NULL, lambda = 0, Amax = 15,
+  meanvar = NULL, sigmavar = NULL, lambda = 3, Amax = 15,
   lambdapois = 5, gamma = F, gammashape = 1, gammascale = 0.5,
-  tp1 = 1, tp2 = 1, tp3 = 1, pb = 0)
+  tp1 = 1, tp2 = 1, tp3 = 1, pb = 0, nonlin = 0, pnonlin = 2,
+  scale = TRUE)
 }
 \arguments{
   \item{n}{the number of individuals in the learning
@@ -64,6 +65,14 @@ mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
 
   \item{pb}{generates Y in an heuristic way that will give
   some issues with correlations.}
+
+  \item{nonlin}{to use non linear structure (half squared ,
+  half log). if not null, it is the proba to use power
+  pnonlin instead of log}
+
+  \item{pnonlin}{the power used if non linear structure}
+
+  \item{scale}{boolean to scale X before computing Y}
 }
 \description{
 Gaussiam mixture dataset generator with regression between
