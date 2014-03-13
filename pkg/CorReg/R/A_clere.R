@@ -1,5 +1,5 @@
 # '
-A_clere<-function(y=Y,x=X,g=NULL,analysis="aic"){
+A_clere<-function(y=y,x=x,g=NULL,analysis="aic"){
    x=1*as.matrix(x)
    if(is.null(g)){
       g=min(5,ncol(x))#ncol(x)
