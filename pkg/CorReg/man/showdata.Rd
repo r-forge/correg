@@ -2,7 +2,7 @@
 \alias{showdata}
 \title{show the missing values of a dataset}
 \usage{
-showdata(X = W, what = c("miss", "correl"))
+showdata(X = X, what = c("miss", "correl"))
 }
 \arguments{
   \item{X}{the dataset to analyse}

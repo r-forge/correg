@@ -42,7 +42,7 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
 
   \item{K}{the number of clusters for cross-validation}
 
-  \item{groupe}{a vector to define the groupes used for
+  \item{groupe}{a vector to define the groups used for
   cross-validation (to obtain a reproductible result)}
 
   \item{Amax}{the maximum number of covariates in the final

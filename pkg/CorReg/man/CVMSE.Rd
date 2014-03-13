@@ -15,6 +15,9 @@ CVMSE(X = X, Y = Y, K = K, intercept = T, methode = 1,
   \item{intercept}{(boolean) with or without an intercept}
 
   \item{methode}{the methode used by OLS.}
+
+  \item{groupe}{a vector to define the groups used for
+  cross-validation (to obtain a reproductible result)}
 }
 \description{
 Cross validation
