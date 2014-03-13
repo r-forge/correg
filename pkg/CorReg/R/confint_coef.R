@@ -1,6 +1,12 @@
-#' confidence intervals on the coefficients estimated in a model or for proportions
+#' plot and give confidence intervals on the coefficients estimated in a model or for proportions
+#' @param modele a model from lm on whoch to compute the confidence intervals
+#' @param n a vector of quantities associated to prop
+#' @param prop a vector of proportions (between 0 and 1)
+#' @param mean a mean value to plot
+#' @param alpha the risk (confidence 1-alpha)
+#' @param labels a vector of names to put below the bars.
 #' @export 
-confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,var=NULL,alpha=0.05,labels=NULL){   
+confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=NULL){   
     if(!is.null(modele)){
       confint=confint.default(modele)
       coef=cbind(modele$coefficients,confint)
