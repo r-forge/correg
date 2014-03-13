@@ -31,6 +31,6 @@ Imports:
     Rmixmod(>= 2.0.1),
     ridge(>= 2.1),
     rpart(>= 4.1-5),
-    MASS(>= 7.3),
+    MASS(>= 7.3-30),
     parcor(>= 0.2)
 LinkingTo: Rcpp, RcppEigen
