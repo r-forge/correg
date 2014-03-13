@@ -5,6 +5,8 @@
 #' @param K number of classes
 #' @param intercept (boolean) with or without an intercept
 #' @param methode the methode used by OLS.
+#' @param groupe a vector to define the groups used for cross-validation (to obtain a reproductible result)
+
 CVMSE<-function(X=X,Y=Y,K=K,intercept=T,methode=1,groupe=NULL){
   K=abs(K)
   K=min(K,nrow(X))
