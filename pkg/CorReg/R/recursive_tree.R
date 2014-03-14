@@ -28,5 +28,5 @@ recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=
    if(print){
       print(arbre)
    }
-   return(list(tree=arbre,modele=modele))
+   return(list(modele=modele,tree=arbre))
 }
