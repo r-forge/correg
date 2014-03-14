@@ -378,27 +378,16 @@ $n$ & $p_2$ & $\psi$ &  Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta
 \end{tabular} 
 \caption{Results of the Markov chain with  constraint $\hat{p}_1\leq 5$. Mean observed and standard deviation (sd). } \label{compZvrai}
 \end{table}
-With no constraints on $\hat{p}_1$ when $n<p$ we can have a perfect overlearning, so it is recommended to constrain each $\hat{p}_1^j <n$. Table \ref{compZvraip1max5} shows the impact on the research of such a constraint.
 
-
-For  \ref{compZnonlin} we have generated non linear structures. Variables in $X_2$ depends on the $\log$ or the square (randomly choosen with equiprobability) of a variable in $X_1$ . Dependencies are still real but non linear.
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-$n$ & $p_2$ &  $BIC(S)$ & $BIC(\emptyset)$ &$BIC(\hat{S})$  & $TL$ & $WL$ & $ML$ & $\Delta p_2$ & $\Delta compl$ \\
-\hline
-30 & 16 & ? & ? & ?  & ?  &?  & ?  & ? & ? \\
-& &(?) & (?) & (?) & (?) & (?) & (?) & (?) & (?) \\
-\hline
-\end{tabular} 
-\caption{Results of the Markov chain for non linear structure ($\log$ and square). Mean observed and standard deviation (sd). } \label{compZnonlin}
-\end{table}
 
 \clearpage
 
 	\subsection{$Y$ depends on all variables in $X$}	 \label{tableMSEsimtout}	
 We first try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). The datasets used here were those from \ref{compZvrai}.
+
+We observe that \textsc{CorReg} is better than classical methods especially whith the Hierarchical Uniform law. When the complexity of the true model is higher than $\frac{p}{2}$ Uniform hypothesis logically is better but (HU) still beats classical methods. We also observe that simple methods like stepwise (here from the package \textsc{lars}) give good results in prediction.
+
+It is also notable that (HU) has a greater computational cost than (U). But next versions of the package may optimize a bit more the penalization step and reduce this gap.
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -465,7 +454,7 @@ $n$ & $p_2$&  $\psi$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{C
 30 & 0 & U&MSE (sd) & 1246.35 (350.5) & 1433.98 (526.7) & 1246.35 (350.5) \\
 & & & cpl (sd) & 17.84 (5.5) & 15.79 (5.6) & 17.84 (5.5) \\
  &  &HU &MSE (sd) & 1246.35 (350.5) & 1248.84 (341.4) & 1246.35 (350.5) \\
-& & & cpl (sd) & 17.84 (5.5) & 17.63 (5.6) & 17.84 (5.5) \\ \\
+& & & cpl (sd) & 17.84 (5.5) & 17.63 (5.6) & 17.84 (5.5) \\ 
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
 30 &16& U & MSE (sd) & 712.79 (405.2) & 566.32 (226.4) & 554.01 (257.1) \\
 & & & cpl (sd) & 16.68 (4.4) & 15.35 (4.3) & 16.14 (4.5) \\
@@ -519,14 +508,14 @@ $n$ & $p_2$&  $\psi$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{C
 \hline 
 $n$ & $p_2$&  $\psi$ &indicator &Elasticnet  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
 \hline %global30p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_51_44.csv
-30 & 0 & U&MSE (sd) & 1326.54 (388.4) & 1356.98 (331.4) & 1326.54 (388.4) \\
+30 & 0 & U&MSE (sd) & 1 326.54 (388.4) & 1 356.98 (331.4) & 1 326.54 (388.4) \\
 & & & cpl (sd) & 12.14 (5.1) & 12.5 (5.2) & 12.14 (5.1) \\
  &  &HU & MSE (sd) & 1326.54 (388.4) & 1307.96 (356.6) & 1326.54 (388.4) \\
 & & & cpl (sd) & 12.14 (5.1) & 12.27 (5.1) & 12.14 (5.1) \\
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & U&MSE (sd) & 1400.56 (1598.2) & 668.57 (274.6) & 653.59 (283.7) \\
+30 & 16 & U&MSE (sd) & 1 400.56 (1598.2) & 668.57 (274.6) & 653.59 (283.7) \\
 & & & cpl (sd) & 13.86 (6.8) & 14.31 (5.7) & 14.83 (5.3) \\
- &  &HU &MSE (sd) & 1400.56 (1598.2) & 643.25 (277.9) & 653.59 (283.7) \\
+ &  &HU &MSE (sd) & 1 400.56 (1598.2) & 643.25 (277.9) & 653.59 (283.7) \\
 & & & cpl (sd) & 13.86 (6.8) & 14.83 (5.6) & 14.83 (5.3) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 855.74 (582.6) & 181.08 (51.9) & 146.79 (32.7) \\
@@ -567,7 +556,7 @@ $n$ & $p_2$&  $\psi$ &indicator &Elasticnet  &    \textsc{CorReg} $\hat S$& \tex
 & & &cpl (sd) & 30.78 (6.4) & 17.85 (2.7) & 8.67 (1) \\
 \hline
 \end{tabular} 
-\caption{Elasticnet (with Elasticnet) combined with constrained \textsc{CorReg}.$Y$  depends on all variables in $X$. \textsc{CorReg} logically wins}\label{YXlinenet}
+\caption{Elasticnet combined with constrained \textsc{CorReg}.$Y$  depends on all variables in $X$. \textsc{CorReg} logically wins}\label{YXlinenet}
 \end{table}
 
 
@@ -577,9 +566,9 @@ $n$ & $p_2$&  $\psi$ &indicator &Elasticnet  &    \textsc{CorReg} $\hat S$& \tex
 \hline 
 $n$ & $p_2$&  $\psi$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
 \hline %global30p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_51_44.csv
-30 & 0 & U& MSE (sd) & 1919.43 (861.8) & 2014.13 (683.6) & 1919.43 (861.8) \\
+30 & 0 & U& MSE (sd) & 1 919.43 (861.8) & 2 014.13 (683.6) & 1 919.43 (861.8) \\
 & & &cpl (sd) & 22.8 (3.3) & 19.34 (4.9) & 22.8 (3.3) \\
- &  &HU &MSE (sd) & 1919.43 (861.8) & 1885.39 (814) & 1919.43 (861.8) \\
+ &  &HU &MSE (sd) & 1 919.43 (861.8) & 1 885.39 (814) & 1 919.43 (861.8) \\
 & & & cpl (sd) & 22.8 (3.3) & 22.73 (3.1) & 22.8 (3.3) \\
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
 30 & 16 & U&MSE (sd) & 696.46 (492.9) & 662.07 (285.9) & 660.93 (354) \\
@@ -633,7 +622,7 @@ $n$ & $p_2$&  $\psi$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$& \texts
 \clearpage
 	\subsection{$Y$ depends only on covariates in $X_2$ (worst case for us)}	 \label{tableMSEsimgauche}
 We now try the method with a response depending only on variables in $X_2$. The datasets used here were still those from \ref{compZvrai}.
-Depending only on $X_2$ imply sparsity and impossibility to obtain the true model when using the true structure. 
+Depending only on $X_2$ imply sparsity and impossibility to obtain the true model when using the true structure. \textsc{CorReg} is still better than classical methods. 
 
 \begin{table}[h!]
 \centering
@@ -804,10 +793,44 @@ $n$ & $p_2$&  $\psi$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$& \texts
 \caption{Stepwise  combined with constrained \textsc{CorReg}. $Y$ depends on all variables in $X2$.}\label{YX2linstep}
 \end{table}
 
+\clearpage
+\subsection{Non linear case}
+ we have generated non linear structures (Tables \ref{compZnonlin} and \ref{resYnonlin}). Variables in $X_2$ depends on the $\log$ or the square (randomly choosen with equiprobability) of a variable in $X_1$ . Dependencies are still real but non linear. \textsc{CorReg} still found dependencies. One example of non-linear structure found with \textsc{CorReg} on real datasets is given in section \ref{sectionexfos}.
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+\hline
+$n$ & $p_2$ & $\psi$ &Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta p_2$ & $\Delta compl$ \\
+\hline
+30 & 16 & U& 0.4313 & 2.7769 & 9.96 & 2.45 & 5.95 & 3.5 & 29.42  \\
+& & &(0.0391) & (0.0883) & (1.3175) & (1.3808) & (1.3056) & (1.453) & (6.2639) \\
+ &  & HU & 0.4313 & 4.9079 & 7.28 & 1.25 & 8.63 & 7.38 & 5.77  \\ 
+& & &(0.0391) & (0.4353) & (1.5769) & (0.9987) & (1.5548) & (1.6316) & (6.1297) \\ 
+\hline
+\end{tabular} 
+\caption{Results of the Markov chain for non linear structure ($\log$ and square). Mean observed and standard deviation (sd). } \label{compZnonlin}
+\end{table}
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline 
+$n$ & $p_2$&  $\psi$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+\hline %nonlin0.5global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_55_33.csv
+30 & 0 & U&MSE (sd) & 996.06 (323.7) & 1100.17 (391.4) & 1501.25 (905.9) \\
+& & &cpl (sd) & 17.66 (5.4) & 14.7 (4.7) & 11.97 (4.9) \\
+ &  &HU &MSE (sd) & 996.06 (323.7) & 1094.5 (621.8) & 1501.25 (905.9) \\
+& & & cpl (sd) & 17.66 (5.4) & 16.98 (4.8) & 11.97 (4.9) \\ 
+\hline
+\end{tabular} 
+\caption{ $Y$ depends on all variables in $X$. \textsc{CorReg} is not too far from LASSO.} \label{resYnonlin}
+\end{table}
+
 
 	\clearpage	
 \section{Numerical results on real datasets}
-\subsection{Quality case study}
+\subsection{Quality case study} \label{sectionexfos}
 This work takes place in steel industry context, with quality oriented objective : to understand and prevent quality problems on finished product, knowing the whole process. 
 		
 We have :
