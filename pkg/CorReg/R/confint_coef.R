@@ -35,7 +35,7 @@ confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=
          coef$int=rbind(coef$int,c(prop[i],icproportion(prop=prop[i],n=n[i],alpha=alpha)))
       }
       colnames(coef$int)=c("values","borne inf IC", "borne sup IC")
-      barplot(coef$int[,1],ylim=c(min(coef$int[,2]),max(coef$int[,3])),col="cyan",main="Intervalle de confiance des proportions",sub="",names.arg=labels)
+      barplot(coef$int[,1],ylim=c(0,max(coef$int[,3])),col="cyan",main="Intervalle de confiance des proportions",sub="",names.arg=labels)
       x0=seq(from=1,length.out=nrow(coef$int),by=1.2)-0.3
       y0=coef$int[,2]
       x1=x0
