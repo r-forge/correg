@@ -13,7 +13,7 @@ confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=
       colnames(coef)=c("values","borne inf IC", "borne sup IC")
       plot(rstudent(modele),type="p",cex=0.5,ylab="standardized residuals",main="analyse des residus",sub="95pourcent des points doivent se trouver entre les lignes horizontales")
       abline(h=c(-2,2),col="red")
-      barplot(modele$coefficients,ylim=c(min(coef[,2]),max(coef[,3])),col="cyan",main="Intervalle de confiance des coefficients",sub="Interpretation : ils ne doivent pas contenir 0")
+      barplot(modele$coefficients,ylim=c(0,max(coef[,3])),col="cyan",main="Intervalle de confiance des coefficients",sub="Interpretation : ils ne doivent pas contenir 0")
       x0=seq(from=1,length.out=nrow(coef),by=1.2)-0.3
       y0=coef[,2]
       x1=x0
@@ -34,7 +34,7 @@ confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=
       for (i in 1:length(prop)){
          coef$int=rbind(coef$int,c(prop[i],icproportion(prop=prop[i],n=n[i],alpha=alpha)))
       }
-      colnames(coef)=c("values","borne inf IC", "borne sup IC")
+      colnames(coef$int)=c("values","borne inf IC", "borne sup IC")
       barplot(coef$int[,1],ylim=c(min(coef$int[,2]),max(coef$int[,3])),col="cyan",main="Intervalle de confiance des proportions",sub="",names.arg=labels)
       x0=seq(from=1,length.out=nrow(coef$int),by=1.2)-0.3
       y0=coef$int[,2]
