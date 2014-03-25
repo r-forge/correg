@@ -3,7 +3,8 @@
 \title{plot and give confidence intervals on the coefficients estimated in a model or for proportions}
 \usage{
 confint_coef(modele = NULL, n = NULL, prop = NULL, mean = NULL,
-  alpha = 0.05, labels = NULL)
+  alpha = 0.05, labels = NULL, subtitle = NULL, lang = "fr",
+  ylim = NULL)
 }
 \arguments{
   \item{modele}{a model from lm on whoch to compute the
@@ -18,6 +19,12 @@ confint_coef(modele = NULL, n = NULL, prop = NULL, mean = NULL,
   \item{alpha}{the risk (confidence 1-alpha)}
 
   \item{labels}{a vector of names to put below the bars.}
+
+  \item{subtitle}{a subtitle to identify the graph}
+
+  \item{lang}{if not "fr" then in english}
+
+  \item{ylim}{if needed, a vector c(ymin,ymax).}
 }
 \description{
 plot and give confidence intervals on the coefficients
