@@ -5,8 +5,11 @@
 #' @param mean a mean value to plot
 #' @param alpha the risk (confidence 1-alpha)
 #' @param labels a vector of names to put below the bars.
+#' @param subtitle a subtitle to identify the graph
+#' @param lang if not "fr" then in english
+#' @param ylim if needed, a vector c(ymin,ymax).
 #' @export 
-confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=NULL){   
+confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=NULL,subtitle=NULL,lang="fr",ylim=NULL){  
     if(!is.null(modele)){
       confint=confint.default(modele)
       coef=cbind(modele$coefficients,confint)
@@ -35,7 +38,8 @@ confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=
          coef$int=rbind(coef$int,c(prop[i],icproportion(prop=prop[i],n=n[i],alpha=alpha)))
       }
       colnames(coef$int)=c("values","borne inf IC", "borne sup IC")
-      barplot(coef$int[,1],ylim=c(0,max(coef$int[,3])),col="cyan",main="Intervalle de confiance des proportions",sub="",names.arg=labels)
+      barplot(coef$int[,1],ylim=c(0,max(coef$int[,3])),col="cyan",main="Intervalle de confiance des proportions",sub="",names.arg=labels,ylim=ylim)
+      title(sub=paste(subtitle," p=",coef$p.value))
       x0=seq(from=1,length.out=nrow(coef$int),by=1.2)-0.3
       y0=coef$int[,2]
       x1=x0
