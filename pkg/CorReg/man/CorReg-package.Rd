@@ -26,7 +26,7 @@ Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 
 \examples{
 require(CorReg)
-base=mixture_generator(n=25,p=30,ratio=0.4,sigma_X=0.001,tp1=1,tp2=1,tp3=1)
+base=mixture_generator(n=25,p=20,ratio=0.4,sigma_X=0.001,tp1=1,tp2=1,tp3=1,positive=1)
 X_appr=base$X_appr
 Y_appr=base$Y_appr
 Y_test=base$Y_test
@@ -48,7 +48,7 @@ BIC_ini_vect=BicZ(X=X_appr,Z=Zini,Bic_null_vect=BIC_empty_vect)
 Bic_ini=sum(BIC_ini_vect)
 
 #one chain
-res=searchZ(X=X_appr,Z=Zini,Maxiter=100,Bic_null_vect=BIC_empty_vect)
+res=searchZ(X=X_appr,Z=Zini,Maxiter=100,Bic_null_vect=BIC_empty_vect,star=TRUE,max_compl=5)
 #multiple chain
 #res=searchZ(X=X_appr,Z=NULL,nbini=20,Maxiter=100,Bic_null_vect=BIC_empty_vect)
 
@@ -60,14 +60,26 @@ readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subreg
 
 compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
 select="lar"#LASSO with the Least Angle Regression algorithm to find the best model
+K=10
+groupe = rep(0:(K - 1), length.out = nrow(as.matrix(X_appr)))
+groupe = sample(groupe)
 resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,
-               select=select,K=10,returning=TRUE)
+               select=select,K=10,returning=TRUE,groupe=groupe)
 
 MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$compl$A)
 MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)
 MSE_predictive=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$pred$A)
 
 MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive)
-#MSE
+MSE
+resY=correg(X=X_appr,Y=Y_appr,Z=TrueZ,compl=TRUE,expl=TRUE,pred=TRUE,
+               select=select,K=10,returning=TRUE,groupe=groupe)
+
+MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$compl$A)
+MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)
+MSE_predictive=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$pred$A)
+
+MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive)
+MSE
 #barplot(as.matrix(MSE),main="MSE on validation dataset", sub=paste("select=",select))
 }

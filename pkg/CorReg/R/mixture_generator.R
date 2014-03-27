@@ -7,7 +7,8 @@
 #' @param valid the size of the validation sample
 #' @param positive the ratio of positive coefficients in both the regression and the subregressions
 #' @param sigma_Y standard deviation for the noise of the regression
-#' @param sigma_X standard deviation for the noise of the subregression (all). ignored if gamma=T
+#' @param sigma_X standard deviation for the noise of the subregression (all). ignored if gamma=T or if R2 is not NULL
+#' @param R2 the strength of the subregressions
 #' @param gamma boolean to generate a p-sized vector sigma_X gamma-distributed
 #' @param gammashape shape parameter of the gamma distribution (if needed)
 #' @param gammascale scale parameter of the gamma distribution (if needed)
@@ -25,21 +26,22 @@
 #' @param scale boolean to scale X before computing Y
 #' @export
 mixture_generator<-function(n=130,
-                                p=100,
-                                ratio=0.4,
-                                max_compl=1,
-                                valid=1000,
-                                positive=0.6,
-                                sigma_Y=10,
-                                sigma_X=0.25,
-                                meanvar=NULL,
-                                sigmavar=NULL,
-                                lambda=3,#pour l enombre de composantes des m?langes gaussiens
-                                Amax=15,
-                                lambdapois=5,#pour les valeurs des coefs
-                                gamma=F,
-                                gammashape=1,
-                                gammascale=0.5,tp1=1,tp2=1,tp3=1,pb=0,nonlin=0,pnonlin=2,scale=TRUE
+                            p=100,
+                            ratio=0.4,
+                            max_compl=1,
+                            valid=1000,
+                            positive=0.6,
+                            sigma_Y=10,
+                            sigma_X=0.25,
+                            R2=0.99,
+                            meanvar=NULL,
+                            sigmavar=NULL,
+                            lambda=3,#pour l enombre de composantes des m?langes gaussiens
+                            Amax=15,
+                            lambdapois=5,#pour les valeurs des coefs
+                            gamma=F,
+                            gammashape=1,
+                            gammascale=0.5,tp1=1,tp2=1,tp3=1,pb=0,nonlin=0,pnonlin=2,scale=TRUE
 ){
   max_compl=min(max_compl,p)
   Amax=min(p+1,Amax) # min entre p+1 et Amax  why?
@@ -120,8 +122,13 @@ mixture_generator<-function(n=130,
   rm(X1g)
 
   if(R>0){ 
+     if(scale){
+        X1=cbind(1,scale(X1[,-1]))
+     }
     X[,-list_X2]=X1
-    if(gamma){
+    if(!is.null(R2)){
+       sigma_X=sqrt(((1-R2)*apply(X1%*%B[-list_X2,list_X2],2,var))/R2)
+    }else if(gamma){
       sigma_X=rgamma(R,shape=gammashape,scale=gammascale)
     }
     epsX[,list_X2]=matrix(rnorm(taille*R,mean=rep(0,times=R),sd=sigma_X),ncol=R,nrow=taille,byrow=T)
