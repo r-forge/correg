@@ -204,9 +204,8 @@ Moreover, the uncrossing constraint ($I_1\cap I_2=\emptyset$) guarantee to keep 
 		\end{equation}
 		We see that the variance is reduced compared to OLS described in equation (\ref{eqOLS})(no correlations and smaller matrix give better conditioning ) for small values of $\sigma_j$ $i.e.$ strong correlations.					
 			%There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. Therefore we made some simulations to compare both methods (see the end of this paper).
-			Moreover, 
 			 \\
-			  A last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}).
+			  
 		 
 	To better illustrate the bias-variance compromise, we look at a simple example with $p=3$ variables. $X_1$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $X_3=\frac{1}{2}x_1+\frac{1}{2}x_2+\varepsilon_3$ where $\varepsilon_3\sim{\mathcal{N}(0,\sigma_3^2)}$. We also have $\beta=(\frac{1}{3},\frac{1}{3},\frac{1}{3})$ and $\sigma_Y=10$. Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg} model: $MSE(\hat{\beta}|\beta,X)=Bias^2+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}))$ for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figures \ref{MQE1} to \ref{MQE3} show the theoretical MSE evolution with the strength of the sub-regression:
 	\begin{equation}
@@ -406,6 +405,7 @@ We first try the method with a response depending on all covariates (\textsc{Cor
 
 We observe that \textsc{CorReg} is better than classical methods especially whith the Hierarchical Uniform law. When the complexity of the true model is higher than $\frac{p}{2}$ Uniform hypothesis logically is better but (HU) still beats classical methods. We also observe in table \ref{YXlinstep} that simple methods like stepwise (here from the package \textsc{lars}) can give good results in prediction.
 
+When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}).
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
