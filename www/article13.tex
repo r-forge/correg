@@ -9,8 +9,8 @@
 \usepackage[table]{xcolor}
  \graphicspath{{figures/}}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
-\author{Clément THERY}
-\title{CorReg pretreatment : Regression for correlated variables and application in steel industry}
+\author{Clément THERY, Christophe BIERNACKI, Gaétan LORIDANT}
+\title{CorReg: model based pretreatment for regression with correlated variables. Application in steel industry}
 
 %%%% debut macro %%%%
 \newenvironment{changemargin}[2]{\begin{list}{}{%
@@ -42,34 +42,30 @@
 %la régression et ses problèmes
 
 
-When one wants to explain a phenomenon based on some covariates, the first statistical method tried frequently is the linear regression. It provides a predictive model with a good interpretability and is simple to learn for non-statistician. Therefore, linear regression is used in nearly all the fields where statistics are made, from industry (ballistic models to calibrate the process) to sociology (predicting some numerical properties of a population).
-Linear regression is a very classic situation that faces an also classical problem : the variance of the estimators.
-When estimating the parameters of the regression we have to compute the inverse of a matrix\cite{saporta2006probabilites} which will be ill-conditioned or even singular if some covariates depend linearly from each other. For a model defined by 
-	\begin{equation}
+When one wants to explain a phenomenon based on some covariates, the first statistical method tried frequently is the linear regression. It provides a predictive model with a good interpretability even  for non-statistician and is simple to learn. Therefore, linear regression is used in nearly all the fields where statistics are made, from industry (ballistic models to calibrate the process) to sociology (predicting some numerical properties of a population).
+Linear regression is a very classic situation but sometimes it has to face an also classical problem: the variance of the estimators, even whithout bias from modelisation. 
+We note the linear regression model:
+\begin{equation}
 		Y_{|X}=X\beta + \varepsilon
 	\end{equation}
-	where $X$ is the $n\times p$ matrix of the explicative variables, $Y$ the response vector and $\varepsilon \sim \mathcal{N}(0,\sigma_Y^2)$ 
-	we have the following Ordinary Least Squares (OLS) estimators :
+	where $X$ is the $n\times p$ matrix of the explicative variables, $Y$ the  $n\times 1$ response vector and $\varepsilon \sim \mathcal{N}(0,\sigma_Y^2I_n)$ the noise of the regression, with $I_n$ the $n$-sized identity matrix and $\sigma_Y \in \mathcal{R}$. The $p\times 1$ vector $\beta$ is the vector of the coefficients of the regression, estimated with Ordinary Least Squares (OLS) by \cite{saporta2006probabilites} 
 	\begin{equation}
-		\hat{\beta}=\left(X'X \right) ^{-1}X'Y
-	\end{equation}
-	With variance 
-	\begin{equation}
-		\operatorname{Var}(\hat{\beta})=\sigma_Y^2(X'X)^{-1}
-	\end{equation}
-	And when correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance explodes.
-This variance increases based on two aspects :
+		\hat{\beta}=(X'X)^{-1}X'Y.
+\end{equation}		
+
+When estimating the parameters of the regression we have to compute the inverse of a matrix which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
+Variance of $\hat{\beta}$ increases based on two aspects :
 \begin{itemize}
 	\item The dimension $p$ (number of covariates) of the model  : the more covariates you have the greater variance you get.
 	\item The correlations within the covariates : strongly correlated covariates give bad-conditioning and increase variance of the estimators .
 \end{itemize}
 
-	With the rise of informatic, datasets contains more and more covariates and thus more and more useless covariates. So dimension reduction becomes a necessity. Moreover, when you use more covariates, you increase the chance to have correlated ones. For example, this work takes place in an industrial (steel industry) context with a big set of covariates (many parameters of the whole process without any a priori) highly correlated (physical laws, process rules, etc). In such a context, variance of the estimators can lead to arbitrary results or even no results at all. Prediction and interpretation are both strongly needed, with a preference for interpretation in industrial context (better to improve the process when possible than to only predict defects).
+	With the rise of informatic, datasets contains more and more covariates and thus more and more useless covariates. So dimension reduction becomes a necessity. Moreover, when you use more covariates, you increase the chance to have correlated ones.  It will be illustrated with examples from steel industry in the last section of this paper with a big set of covariates (many parameters of the whole process without any a priori) highly correlated (physical laws, process rules, etc). In such a context, variance of the estimators can lead to arbitrary results or even no results at all. Prediction and interpretation are both strongly needed, depending on the context. For instance, in an industrial context interpretation could be favored to improve the process instead of only predict defects.
 		~\\	~\\
 		
 %bibliographie	
 	Because OLS is the minimum-variance unbiased estimator, penalized methods try to reduce the variance introducing some bias to improve the bias-variance trade-off and get better prediction.
-Moreover, real datasets implies many irrelevant variables (datasets based on the whole process without any a priori) so we have to use variable selection methods.
+Moreover, real datasets imply many irrelevant variables so we have to use variable selection methods.
 
 In the following we note classical norms: $\parallel\beta\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$ and $\parallel\beta \parallel_1=\sum_{i=1}^p|\beta_i| $.
 
@@ -77,22 +73,19 @@ In the following we note classical norms: $\parallel\beta\parallel_2^2=\sum_{i=1
 	\begin{equation}
 		 \hat{\beta}=\operatorname{argmin} \left\lbrace \parallel Y-X\beta\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\beta\parallel_2^2\leq k
 	\end{equation}
-	But Ridge regression is not efficient to select covariates (it's an assumed choice) because coefficients tends to 0 but don't reach 0.
-	So it gives difficult interpretations for large values of $p$ and is not adapted for our industrial context. We need to reduce the dimension of the model. Our goal is not just to predict but also to understand the response variable.
-	
-
-	
+	But Ridge regression do not aim at selecting covariates because coefficients tends to 0 but don't reach 0.
+	So it gives difficult interpretations for large values of $p$.	
 	
 	
 	The Least Absolute Shrinkage and Selection Operator (LASSO)\cite{tibshirani1996regression} consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty.
 		\begin{equation}
 		 \hat{\beta}=\operatorname{argmin} \left\lbrace \parallel Y-X\beta\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\beta\parallel_1\leq \lambda
 		\end{equation}	
-	 The Least Angle Regression\cite{efron2004least} (LAR) Algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as OLS applied to the full set of covariates. And it  really selects covariates with coeffients set exactly to 0.
+	 The Least Angle Regression\cite{efron2004least} (LAR) Algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as OLS applied to the full set of covariates. And it  really selects covariates with coefficients set exactly to 0.
 	 But LASSO also faces consistency problems \cite{Zhao2006MSC} when confronted  with correlated covariates. Another limitation of the LASSO is that it preserves at most $n$ predictors (troublesome when in high dimension). Some recent variants of the LASSO does exist for the choice of the penalization coefficient like the adaptative LASSO \cite{zou2006adaptive} or the random LASSO \cite{wang2011random}.
 	 \\
 	 
-	Elastic net\cite{zou2005regularization}	is a method developped to be a compromise between Ridge regression and the LASSO. 
+	Elastic net\cite{zou2005regularization}	is a method developed to be a compromise between Ridge regression and the LASSO. 
 %	Given data set $(Y,X)$ and two parameters $(\lambda_1,\lamda_2)$, define artificial data set $(Y^*,X^*)$ by :
 %	\begin{equation}
 %		X^*_{(n+p)\times p}=(1+\lambda_2)^{-1/2}\left( X  \sqrt{\lambda_2}I \right), \ \ \  Y^*_{(n+p)}=\left( Y 0 \right)
@@ -102,7 +95,8 @@ In the following we note classical norms: $\parallel\beta\parallel_2^2=\sum_{i=1
 		\hat{\beta}=(1+\lambda_2) \operatorname{argmin}\left\lbrace \parallel Y-X\beta \parallel_2^2 \right\rbrace, \textrm{ subject to } (1-\alpha)\parallel\beta\parallel_1+\alpha\parallel\beta\parallel_2^2\leq t \textrm{ for some } t
 	\end{equation}
 	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
-	It seems to give good predictions. But it is based on the grouping effect and if the dataset contains two identical variables they will obtain the same coefficient whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. 
+	%It seems to give good predictions. 
+	But it is based on the grouping effect and if the dataset contains two identical variables they will obtain the same coefficient whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. 
 	\\
 	
 	Another way of reducing the dimension is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (OSCAR) \cite{bondell2008simultaneous}.
@@ -112,7 +106,7 @@ The idea is to hope that the model have a small number of groups of covariates a
 	~\\	~\\
 % Principe de la méthode
 
- When some try to reduce the dimension and then just hope to have small correlations in the remaining dimensions,  we propose to focus on the correlations, giving a model with orthogonal covariates and an explicit structure between covariates. In fact we search the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint. This can be viewed as a pretreatment on the dataset allowing to use then other dimension reduction tools without suffering from correlations. We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
+ Where some try to reduce the dimension and then just hope to have small correlations in the remaining dimensions,  we propose to focus on the correlations, giving a model with orthogonal covariates and an explicit structure between covariates. In fact we search the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint. This can be viewed as a pretreatment on the dataset allowing to use then other dimension reduction tools without suffering from correlations. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
  %We will in a second time be able to use the remaining part of the information (sequential approach).	
  
 	Our work is based on the assumption that if we know that correlations are a problem and if we precisely know the correlations, we could use this knowledge to avoid the problem.
@@ -126,118 +120,162 @@ The idea is to hope that the model have a small number of groups of covariates a
 	  
 	We can use any variable selection method on the reduced dataset with improved efficiency (reduced variance) due to dimension reduction and correlation suppression. So we obtain two kinds of zeros in our first model : coerced zeros due to correlations (redundant information) and estimated ones with classical variable selection methods applied on remaining variables. This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
  	 	
-But to work, we need an explicit structure between the covariates. SEM are often used in social sciences and economy where a structure is supposed "by hand" but here we want to be able to find a structure without any a priori (possibility to include some known structure remains). Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented graph for our SEM. So we developped an MCMC algorithm to find it (R package CorReg on CRAN). However, Graphical LASSO can be used in the initialization step of our MCMC. This structure is based on gaussian mixture models to fit better real datasets and to allow identifiability of the structure in terms of complexity (number of parameters).
+But to work, we need an explicit structure between the covariates. SEM are often used in social sciences and economy where a structure is supposed "by hand" but here we want to be able to find a structure without any a priori (possibility to include some known structure remains). Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented graph for our SEM. So we developped an MCMC algorithm to find it (R package CorReg on CRAN). However, Graphical LASSO can be used in the initialization step of our MCMC. This structure is based on a generative model to be able to compare likelihood-based criterion	 in the MCMC.
  	\\
  	
  	%plan
  	This paper will first present the reduced model and its properties before describing in Section 3 the algorithm used to find the structure.
  	We will then look at some numerical results on simulated (Section 4) and real industrial datasets (Section 5) before concluding and giving some perspectives in the sixth part.
 	
-\section{Model to decorrelate the covariates}
-
+\section{Model to select decorrelated covariates}
+\subsection{The decorrelation problem in regression}
+For a model defined by 
+	\begin{equation}
+		Y_{|X}=X\beta + \varepsilon
+	\end{equation}
+	where $X$ is the $n\times p$ matrix of the explicative variables, $Y$ the response vector and $\varepsilon \sim \mathcal{N}(0,\sigma_Y^2I_n)$ with $I_n$ the $n$-sized identity matrix,
+	we have the following Ordinary Least Squares (OLS) estimators:
+	\begin{equation}
+		\hat{\beta}=\left(X'X \right) ^{-1}X'Y
+	\end{equation}
+	With variance 
+	\begin{equation}
+		\operatorname{Var}(\hat{\beta})=\sigma_Y^2(X'X)^{-1} \label{eqOLS}
+	\end{equation}
+	 The Mean Squared Error (MSE) on $\hat{\beta}$ is:
+	\begin{eqnarray}
+		MSE(\hat{\beta}|\beta,X)&=&Bias^2+\operatorname{Tr}(\operatorname{Var}(\hat{\beta})) \\
+			&=&0+\sigma_Y^2 \operatorname{Tr}((X'X)^{-1})
+	\end{eqnarray}	 
+	and when correlations between covariates are strong, the matrix to invert is ill-conditioned, the variance explodes and so does the MSE.
 \subsection{Modelisation of the correlations}
-Let $Y \in \mathcal{R}^n$ be a response variable we want to explain with a set $X \in \mathcal{R}^{n\times p}$ of $p$ correlated covariates.
+Let now $X \in \mathcal{R}^{n\times p}$ be a set of $p$ correlated covariates.
 We propose to explicitly define a family of $p_2$ internal regressions between covariates whith $I_2$ the set of indices of endogenous variables in $X$ (explained ones) and $I_1=\{I_1^1,\dots,I_1^p \}$ the set of the sets of indices of exogenous covariates (explaining ones) with $\forall j \notin I_2, I_1^j=\emptyset$. Then we have an explicit structure $S=(I_1,I_2,p_1,p_2)$ where $p_1=(p_1^1,\dots,p_1^{p_2})$ is the vector of the number of covariates in each internal regression. Thus we have $p_2=| I_2|$ and $p_1^j=|I_1^j|$ where $|.|$ represents the cardinal of an ensemble.
 
 In the following, we note $X^j$ the $j^{th}$ column of a matrix $X$.
 For lighter notation we define $X_2=X^{I_2}$ the matrix of the endogenous covariates and $X_1=X\setminus X_2$ the matrix of the remaining exogenous covariates. 
 
-
-We can now write the generative model:
-\begin{itemize}
-	\item Main regression between $Y$ and $X$:
-		\begin{equation}
-			Y_{|S}=XA+\varepsilon_Y =X_1A_1+X_2A_2+\varepsilon_Y \textrm{ whith } \varepsilon_Y \sim \mathcal{N}(0,\sigma^2_YI_n);	\label{MainR}
-		\end{equation}
-		where $A=(A_1,A_2) \in  \mathcal{R}^p$ is the vector of the regression coefficients and $I_n$ the identity matrix, 
-	\item Family of $p_2$ regressions within correlated covariates in $X$:
-		\begin{equation}
-			\forall j \in I_2: X^j_{|X_1,S}=X_1B^j_1+\varepsilon_j \textrm{ with } \varepsilon_j \sim(0,\sigma^2_jI_n); \label{SR}
-		\end{equation}
+We define a family of $p_2$ regressions within correlated covariates in $X$:
+	\begin{equation}
+		\forall j \in I_2: X^j_{|X_1,S}=X_1B^j_1+\varepsilon_j \textrm{ with } \varepsilon_j \sim(0,\sigma^2_jI_n) \label{SR}
+	\end{equation}
 		where $B_1^j \in \mathcal{R}^{(p-p_2)}$ are the vectors of the regression coefficients between the covariates (containing some zeros according to $I_1^j$).
-\end{itemize}
 It remains $p-p_2$ independent exogenous variables : $\forall j \notin I_2 : X^j_{|S} \sim f(\theta_j)$
 
 We make the hypothesis of the uncrossing rule $I_1\cap I_2=\emptyset$ {\it i.e.} endogenous variables don't explain other covariates, thus we have a partition $X=[X_1,X_2]$.
 
-
-This generative model is conditional to $S$, the discrete structure model that is identifiable because we can't permute some regressions in (\ref{SR}) and obtain the same joint distribution $P(X,Y)$, the residuals ($\varepsilon_j$) would not stay Gaussian. These residuals are in the following supposed independent but one can suppose dependencies between them and then use appropriate tools to estimate them and the $B_1^j$ like SUR with Feasible Generalized Least Squares (FGLS) by Zellner \cite{SURzellner} or SPRING \cite{chiquetconf} as mentioned in the introduction.
+This generative model is conditional to $S$, the discrete structure model that is identifiable because we can't permute some regressions in (\ref{SR}) and obtain the same joint distribution $P(X,Y)$, the residuals ($\varepsilon_j$) would not stay Gaussian (see the appendices). These residuals are in the following supposed independent but one can suppose dependencies between them and then use appropriate tools to estimate them and the $B_1^j$ like SUR with Feasible Generalized Least Squares (FGLS) by Zellner \cite{SURzellner} or SPRING \cite{chiquetconf} as mentioned in the introduction.
 \\
-If there are exact regressions ($\sigma^2_j=0$) in (\ref{SR}), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. \textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
+If there are exact regressions ($\sigma^2_j=0$) in (\ref{SR}), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. %\textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
 	
-
-
-\subsection{Estimator and properties}
-	We note that (\ref{MainR}) and (\ref{SR}) also give by simple integration on $X_2$ a regression model on $Y$ {\it depending only on uncorrelated covariates $X_1$}:
-	\begin{equation}
-		Y=X_1 (A_{1}+ \sum_{j \in I_2}B^{j}_{1}A_{j})+  \sum_{j \in I_2}\varepsilon_{j}A_{j}+\varepsilon_Y 
-		 = X_1\alpha_1+ \varepsilon_{\alpha}\label{Trueexpl}
-	\end{equation}			
-		So we have the unbiased estimator: 
+\subsection{Marginal regression model with decorrelated covariates}
+Let $Y \in \mathcal{R}^n$ be a response variable we want to explain with $X$.
+We note that (\ref{MainR}) and (\ref{SR}) also give by simple integration on $X_2$ a regression model on $Y$ {\it depending only on uncorrelated covariates $X_1$}:
 		\begin{equation}
-			\hat{\alpha}_{1} = (X'_{1} X^{1})^{-1}X'_{1}Y % \textrm{ and }\hat{\alpha}_{2} = 0
+			Y_{|S,X}=X\beta+\varepsilon_Y =X_1\beta_1+X_2\beta_2+\varepsilon_Y \textrm{ whith } \varepsilon_Y \sim \mathcal{N}(0,\sigma^2_YI_n);	\label{MainR}
+		\end{equation}
+		where $\beta=(\beta_1,\beta_2) \in  \mathcal{R}^p$ is the vector of the regression coefficients and $I_n$ the identity matrix. 
+Knowing (\ref{SR}) we then obtain a marginal regression model:
+\begin{eqnarray}
+	Y_{|X_1}&=&X_1 (\beta_{1}+ \sum_{j \in I_2}B^{j}_{1}\beta_{j})+  \sum_{j \in I_2}\varepsilon_{j}\beta_{j}+\varepsilon_Y \label{Trueexpl} \\
+		&=&X_1 \alpha_1 + X_2\alpha_2 + \varepsilon_{\alpha} \textrm{ where} \alpha_2  = 0.
+\end{eqnarray}
+We note that it simply is a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It isa variable pre-selection independent of the response $Y$. As a pretreatment, it allows usage of any method in a seconde time to estimate $\alpha$.
+\subsection{Estimator and properties}
+	The marginal regression model simply is
+	\begin{equation}
+		Y_{|X_1}= X_1\alpha_1+ \varepsilon_{\alpha}
+	\end{equation}			
+		So we have the unbiased estimator of $\alpha$: 
+		\begin{equation}
+			\hat{\alpha}_{1} = (X'_{1} X_{1})^{-1}X'_{1}Y  \textrm{ and }\hat{\alpha}_{2} = 0
+		\end{equation}
+		We see in (\ref{Trueexpl}) that it gives an unbiased estimation of $Y$ and $\alpha$
+		but in terms of $\beta$ this estimator is biased:
+		\begin{equation}
+			\operatorname{E}[\hat{\alpha_1}|X_1]=\beta_1+\sum_{j \in I_2}B^{j}_{1}\beta_{j}\textrm{ and }\operatorname{E}[\hat{\alpha_2}|X_1]=0
 		\end{equation}
 		with variance:
 		\begin{equation}
-			\operatorname{Var}[\hat{\alpha}_{1}|X]= (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}A_{j}^2 )(X'_{1} X^{1})^{-1} % \textrm{ and }\operatorname{Var}[\hat{\alpha}_{2}|X]= 0 
+			\operatorname{Var}[\hat{\alpha}_{1}|X_1]= (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 )(X'_{1} X_{1})^{-1}  \textrm{ and }\operatorname{Var}[\hat{\alpha}_{2}|X_1]= 0 
 		\end{equation}
-		We see that the variance is reduced (no correlations and smaller matrix give better conditioning) for small values of $\sigma_j$ $i.e.$ strong correlations.					
+		We see that the variance is reduced compared to OLS described in equation (\ref{eqOLS})(no correlations and smaller matrix give better conditioning ) for small values of $\sigma_j$ $i.e.$ strong correlations.					
 			%There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. Therefore we made some simulations to compare both methods (see the end of this paper).
 			Moreover, the explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset. Expert knowledge can even be added to the structure.
-			 This new model is reduced even without variable selection and is just a linear regression so every method for variable selection in linear regression can be used. Hence we hope to obtain a parsimonious model with { \it two kinds of zeros}: those from decorrelating step and those from selection step, with different meanings.
+			 This new model is reduced even without variable selection and is just a linear regression so every method for variable selection in linear regression can be used then,like LASSO or even stepwise \cite{seber2012linear}. Hence we hope to obtain a parsimonious model with { \it two kinds of zeros}: those from decorrelating step and those from selection step, with different meanings.
 			 \\
-			 The \textsc{CorReg} package proposes to make selection with both LASSO (with LAR), elasticnet, adaptative lasso, and others more classical methods. A last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}).
+			  A last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}).
 		 
+	To better illustrate the bias-variance compromise, we look at a simple example with $p=3$ variables. $X_1$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $X_3=\frac{1}{2}x_1+\frac{1}{2}x_2+\varepsilon_3$ where $\varepsilon_3\sim{\mathcal{N}(0,\sigma_3^2)}$. We also have $\beta=(\frac{1}{3},\frac{1}{3},\frac{1}{3})$ and $\sigma_Y=10$. Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg} model: $MSE(\hat{\beta}|\beta,X)=Bias^2+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}))$ for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figures \ref{MQE1} to \ref{MQE3} show the theoretical MSE evolution with the strength of the sub-regression:
+	\begin{equation}
+		1-\mathcal{R}^2=\frac{\operatorname{Var}(\varepsilon_3)}{\operatorname{Var}(x_3)}=\frac{\sigma_3^2}{\sigma_3^2+\frac{1}{2}}
+	\end{equation}
+	
+\begin{figure}[h!]
+	\begin{minipage}[l]{.32\linewidth}
+			\includegraphics[width=170px]{figures/MQEn15sigmaY10.png} 
+			\caption{For $n=15$. Dotted: \textsc{Correg}, plain: OLS}\label{MQE1}
+	\end{minipage} \hfill
+	\begin{minipage}[c]{.32\linewidth}
+			\includegraphics[ width=170px]{figures/MQEn100sigmaY10.png} 
+			\caption{For $n=100$. Dotted: \textsc{Correg}, plain: OLS}
+	\end{minipage} \hfill
+   \begin{minipage}[r]{.32\linewidth}
+			\includegraphics[width=170px]{figures/MQEn1000sigmaY10.png} 
+			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
+   \end{minipage} 
+\end{figure} 
+It is clear in Figures \ref{MQE1} to \ref{MQE3} that the reduced model is more robust than OLS. And even when sub-regression are week (small value of $1-\mathcal{R}^2$) it does not explode. We also see that the error implied by strong correlations shrinks whit the rise of $n$.  $MSE_{OLS}=0+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}))=\operatorname{Tr}(\operatorname{Var}(\hat{\beta}_{1}))+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}_{2}))$. both terms are multiplied by $\sigma_Y^2$ and so is $\operatorname{Tr}(\operatorname{Var}(\hat{\alpha}_{1}))$. Thus, as $\operatorname{Var}(\hat{\alpha}_{1})=0$ when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus OLS. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear).
+
 	\subsection{Advantages for interpretation}
 	
 		Grouping effect is the fact that correlated covariates get similar coefficient and are selected together. It's the case with elasticnet \cite{zou2005regularization} for example.	
-			If $X_2=X_1+e$ and we have the grouping effect, we will obtain a model like $\hat{Y}=\hat{a}X_1+\hat{a}X_2$. 
+			If $X_2=X_1+e$ and we have the grouping effect, we will obtain a model like $\hat{Y}=\hat{\beta}X_1+\hat{\beta}X_2$. 
 			Then, if you try to modify the response value, you will modify one of the covariates and both will change so you won't get expected results. 
 			
-		At the opposite, methods like the LASSO with LAR will only keep one covariate for each group of correlated covariates  so we get $\hat{Y}=2aX_1$ and think that $X_2 \perp Y$ but $Y$ depends on $X_2$ so it is worse than grouping effect for interpretation.
+		%At the opposite, methods like the LASSO with LAR will only keep one covariate for each group of correlated covariates  so we get $\hat{Y}=2aX_1$ and think that $X_2 \perp Y$ but $Y$ depends on $X_2$ so it is worse than grouping effect for interpretation.
 		
 		
-			Nothing constrains us to give only one equation. It is clearly better to give the user another equation (or system for more complex models) describing the correlations. 
-			So you get the following model : $Y=aX_1+aX_2$ and $X_1=X_2+e$. Then you have more information and are able to decide better actions. 
-			With such a model, grouping effect is no more useful because when saying $Y=2aX_1$ and $X_2=X_1+e$ with the information that $X_2$ has been removed locally because of its correlation with $X_1$, you don't get misleading interpretations anymore. In fact, we have two kinds of zeros (those from selection and those from correlations) and we know for each zero which kind is it.
+			Nothing constrains us to give only one equation. %It is clearly better to give the user another equation (or system for more complex models) describing the correlations. 
+			If you have the following model : $Y=\beta X_1+\beta X_2$ and $X_1=X_2+e$. Then you have more information and are able to decide better actions. 
+			With such a model, grouping effect is no more useful because when saying $Y=2\beta X_1$ and $X_2=X_1+e$ with the information that $X_2$ has been removed locally because of its correlation with $X_1$, you don't get misleading interpretations anymore. In fact, we have two kinds of zeros (those from selection and those from correlations) and we know for each zero which kind is it.
 			So it is possible to combine the advantages of grouping effect and selection just giving several equations. 
 			Each equation here is very simple (only linear regressions) so you don't really increase complexity of the model. 
-			Moreover, the uncrossing constraint ($I_1\cap I_2=\emptyset$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect).
+			Moreover, the uncrossing constraint ($I_1\cap I_2=\emptyset$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect) and straightforward readable.
 
 	
 	\section{Estimating structure of sub-regressions with a Markov chain}	
+\subsection{Detailed generative model}
+	To be able to compare structures with probabilistic criterions, we need a full generative model. We suppose that variables in $X_1$ follow Gaussian mixtures. 
+	\begin{equation}
+			\forall j \notin I_2 : X^j_{|S} \sim f(\theta_j)=\mathcal{GM}(\pi_j;\mu_j;\sigma^2_j) \textrm{ with } \pi_j,\mu_j,\sigma^2_j \textrm{ vectors of size } k_j; \label{mixtureX1}
+		\end{equation}
+		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust but one can use other laws if needed. Gaussian case is just a special case ($k_j=1$) of Gaussian mixture so it is included in our hypothesis.
 
+		Variables in $X_1$ are supposed to be independent.
+	Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
+	We now have a full generative model.
 	\subsection{Structure comparison} \label{compstruct}
-  All our work is based on $S$, the linear structure between the covariates.
-	Our generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood according to the complexity of the structure~\cite{BIChuard}. We will prefer this kind of comparison criterion instead of cross-validation that is very time-consuming and thus not friendly with combinatory problematics.
+  To obtain the marginal regression model we need $S$, the linear structure between the covariates.
+	Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood according to the complexity of the structure~\cite{BIChuard}. We will prefer this kind of comparison criterion instead of cross-validation that is very time-consuming and thus not friendly with combinatory problematics.
 	We note $\Theta$ the set of the parameters of the generative model
 	\begin{eqnarray}
 		P(S|X)&\propto& P(X|S)P(S) \\
-		BIC&=&-2\mathcal{L}(X,S,\Theta)+|\Theta|\log(n) \approx -2\log P(X|S)
+		-2\log P(X|S)&\approx & BIC=-2\mathcal{L}(X,S,\Theta)+|\Theta|\log(n)\\  
 	\end{eqnarray}
 	But $BIC$ tends to give too complex structures because we test a great range of models. 
-	Thus \mbox{\textsc{CorReg}} allows to choose to penalise the complexity a bit more with a hierarchical uniform {\it a priori} law $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$  instead of a simple uniform law on $S$.
+	Thus we choose to penalise the complexity a bit more with a hierarchical uniform {\it a priori} law $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$  instead of a simple uniform law on $S$.
 %	 Thus we have :
 %		\begin{eqnarray}
 %		BIC^*(X|S)&=&BIC(X|S) +\ln(P(S)) \label{Bicstar}
 %	\end{eqnarray}		
 	It increases penalty on complexity for $p_2<\frac{p}{2}$ and $p_1^j<\frac{p}{2}$ . Hence %when using $BIC*$ 
-	\textsc{CorReg} adds this constraint on $\hat{p}_2$ and $\hat{p}_1^j$ in the MCMC when hierarchical hypothesis is made (it will be the case in the followings).			
+	this constraint on $\hat{p}_2$ and $\hat{p}_1^j$ is made in the MCMC in the followings.
 	But we can imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
 \\	
+		We will now use the following notation: $\psi(S)=\psi(X|S)$	where $\psi(X|S)$ is the chosen criterion, that will be $BIC$ with hierarchical uniform hypothesis in our numerical results. We do not change $BIC$ but only $P(S)$ so the properties are the same as classical $BIC$ but we will obtain better results when our hypothesis is verified.
 	
-		We will now use the following notation: $\psi(S)=\psi(X|S)$	where $\psi(X|S)$ is the chosen criterion, that will be $BIC$ with hierarchical uniform hypothesis in our numerical results.
-\subsection{Detailed generative model}
-		
-	To better fit industrial variables (Figure \ref{graphMixmod}), we suppose  that variables in $X_1$ follow Gaussian mixtures. The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust. But one can use other laws if needed. Gaussian case is just a special case ($k_j=1$) of Gaussian mixture so it is included in our hypothesis.
-\begin{equation}
-			\forall j \notin I_2 : X^j_{|S} \sim f(\theta_j)=\mathcal{GM}(\pi_j;\mu_j;\sigma^2_j) \textrm{ with } \pi_j,\mu_j,\sigma^2_j \textrm{ vectors of size } k_j; \label{mixtureX1}
-		\end{equation}
-		Variables in $X_1$ are supposed to be independent.
-	Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to compute corresponding $\psi$ separately, give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
-		
 	\subsection{The neighbourhood}
-		\subsubsection{Definition}
 	Let's define $\mathcal{S}$ the ensemble of feasible structures (those with $I_1\cap I_2=\emptyset$).
 	\\
 	For each step, starting from $S \in \mathcal{S}$ we define a neighbourhood:
@@ -258,12 +296,7 @@ If there are exact regressions ($\sigma^2_j=0$) in (\ref{SR}), the structure won
 	
 	\smallskip
 	At every moment, coherence between $I_1$ and others parts of $S$ can be done by $\forall 1\leq j\leq p :  p_1^j=|I_1^j|$, $I_2=\{j |p_1^j>0 \}$, $p_2= |I_2|$, .
-		\subsubsection{Alternatives}
-	We have here at each step $|\mathcal{V}_{S,j}|=p$ candidates but some other constraints can be added on the definition of $\mathcal{S}$ and will consequently modify the size of the neighbourhood (for example a maximum complexity for the internal regressions or the whole structure, a maximum number of internal regressions, {\it etc.}). \textsc{CorReg} allows to modify this neighbourhood to better fit users constraints. Relaxation (column-wise and row-wise) is optional but gives more stability to the number of feasible candidates at each step and allows to modify several parts of $I_1$ in only one step when needed. Hence it improves efficiency by a significant reinforcement of the irreductibility of the Markov chain. Rejecting candidates instead of doing the relaxation steps will  however reduce the number of evaluated candidates and thus accelerate the walk. So it can be used for a warming phase when $n$ is great and time is missing.
-	
-	The hierchical uniform hypothesis made above for $P(S)$ implies $p_2<\frac{p}{2}$ and $p_1^j<\frac{p}{2}$ so candidates may be rejected to satisfy this hypothesis. Strongest constraints on $p_2$ and/or $p_1$ can be given in \textsc{CorReg} if relevant.
-	
-If the algorithm did not have time to converge, it can be continued with a few step for which the neighboorhood would only contain smaller candidates (in terms of complexity). It is equivalent to ask for each element in $I_1$ if the criterion $\psi$ would be better without it. Thus it can be seen as a final cleaning step. But in fact, it's just continuing the MCMC with a reduced neighbourhood.	
+		
 	\subsection{The walk}
 	\subsubsection{Transition probabilities}
 	We first make the approximation
@@ -293,7 +326,7 @@ Numerical results (Section 4) illustrates the efficiency of the walk when the tr
  \subsubsection{Initialisation(s)}
 
  If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found and/or initial structure. So the model is really expert-friendly.
-The initial structure can be based on a first warming algorithm taking the correlations into account. coefficients are randomly placed into $I_1$, weighted by the absolute value of the correlations. We do so in the followings. Then this structure can be reduced by the hadamard product with the binary matrix obtained by Graphical Lasso\cite{friedman2008sparse}. Graphical LASSO is time consuming so we only used it on real datasets (each simulation was computed 100 times).		
+The initial structure can be based on a first warming algorithm taking the correlations into account. coefficients are randomly placed into $I_1$, weighted by the absolute value of the correlations. We do so in the followings. Then this structure could be for example reduced by the hadamard product with the binary matrix obtained by Graphical Lasso\cite{friedman2008sparse} that makes selection in the precision matrix but it is time consuming.
 
 	One would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. It also helps to face local extrema. In the followings, the chain was launched with twenty initialisations.
 	
@@ -301,11 +334,11 @@ The initial structure can be based on a first warming algorithm taking the corre
 	\subsection{The datasets}	
 	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if \textsc{CorReg} 	keeps its promises.
 	The \textsc{CorReg} package has been tested on simulated datasets. 
-Section \ref{compZ} show the results obtained in terms of $\hat{S}$. Sections \ref{tableMSEsimtout} et \ref{tableMSEsimgauche} show the results obtained using only \textsc{CorReg}, or \textsc{CorReg} combined with other methods. Tables give both mean and standard deviation of the observed Mean Squared Errors (MSE) on a validation sample of $1 000$ individuals. For each simulation ,  $p=40$, $\sigma_Y=10$, $\sigma=0.001$, variables $X_1$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda$ and which standard deviation also is $\lambda$. The $B_1^j$ are generated according to the same Poisson law but with a random sign. $S$ only contains binary relationships but \textsc{CorReg} was only constrained to $\max (\hat{p}_1^j)=5$.  
+Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \ref{tableMSEsimtout} and \ref{tableMSEsimgauche} show the results obtained using only \textsc{CorReg}, or \textsc{CorReg} combined with other methods. Tables give both mean and standard deviation of the observed Mean Squared Errors (MSE) on a validation sample of $1 000$ individuals. For each simulation,  $p=40$, $\sigma_Y=10$, $\sigma=0.001$, variables $X_1$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda$ and which standard deviation also is $\lambda$. The $B_1^j$ and $\beta_j$ are generated according to the same Poisson law but with a random sign. $S$ only contains binary relationships but \textsc{CorReg} was only constrained to $\max (\hat{p}_1^j)=5$.  
 	We used \textsc{Rmixmod} to estimate the densities of each covariate. For each configuration, the walk was launched on $20$ initial structures with a maximum of 9 000 steps each time.
 	
 		\subsection{Finding the structure}
-		\subsubsection{How to evaluate found structure ?}
+		\subsubsection{How to evaluate found structure?}
 			The first criterion is $\psi$ which is minimised in the MCMC. But in our case, $\psi$ is based on the likelihood whose value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $S$ we define some indicators to compare the true model $S$ and the found one $\hat{S}$.
 			Global indicators :
 			\begin{itemize}
@@ -317,8 +350,11 @@ Section \ref{compZ} show the results obtained in terms of $\hat{S}$. Sections \r
 			\end{itemize}
 		\subsubsection{Results on $S$}	\label{compZ}
 In table \ref{compZvrai} we compare found structures in different contexts with both Uniform (U) and Hierarchical Uniform (HU) a priori law on $P(S)$. 
-We see that (HU) hypothesis gives sparser models even if $\max (\hat{p}_1^j)=5$. $p=40$ so the maximum value for $\hat{p_2}$ is $20$ in (HU) case and we see that this max is not reached. The stronger penalty implied by (HU) really is efficient. The datasets used for (U) and (HU) are the same to keep the comparison  meaningful.
+We see that (HU) hypothesis gives sparser models even if $\max (\hat{p}_1^j)=5$. $p=40$ so the maximum value for $\hat{p_2}$ is $20$ in (HU) case and we see that this max is not reached. The stronger penalty implied by (HU) really is efficient. The datasets used for (U) and (HU) are the same to keep the comparison  meaningful. These datasets and $\hat{S}$ are those used for tables 
+ \ref{YXlinOLS} to \ref{YX2linstep}.
  
+ It is also notable that (HU) has a greater computational cost than (U). But next versions of the package may optimize a bit more the penalization step and reduce this gap.
+	We also notice that the MCMC is faster when there are numerous correlations (rejecting more candidates). 
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
@@ -378,13 +414,12 @@ $n$ & $p_2$ & $\psi$ &  Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta
 
 
 \clearpage
-
-	\subsection{$Y$ depends on all variables in $X$}	 \label{tableMSEsimtout}	
+\subsection{Results on prediction}
+	\subsubsection{$Y$ depends on all variables in $X$}	 \label{tableMSEsimtout}	
 We first try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). The datasets used here were those from \ref{compZvrai}.
 
-We observe that \textsc{CorReg} is better than classical methods especially whith the Hierarchical Uniform law. When the complexity of the true model is higher than $\frac{p}{2}$ Uniform hypothesis logically is better but (HU) still beats classical methods. We also observe that simple methods like stepwise (here from the package \textsc{lars}) give good results in prediction.
+We observe that \textsc{CorReg} is better than classical methods especially whith the Hierarchical Uniform law. When the complexity of the true model is higher than $\frac{p}{2}$ Uniform hypothesis logically is better but (HU) still beats classical methods. We also observe in table \ref{YXlinstep} that simple methods like stepwise (here from the package \textsc{lars}) can give good results in prediction.
 
-It is also notable that (HU) has a greater computational cost than (U). But next versions of the package may optimize a bit more the penalization step and reduce this gap.
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
@@ -397,14 +432,14 @@ $n$ & $p_2$& $\psi$ & indicator &OLS  &    \textsc{CorReg} $\hat S$& \textsc{Cor
 & & & cpl (sd) & 30 (0) & 30 (0) & 30 (0) \\
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
 30 & 16 & U&MSE (sd) & 510747.53 (2287539.8) & 635.42 (335.2) & 610.32 (424.9) \\
-& & & cpl (sd) & 30 (0) & 24.11 (1) & 25.06 (0.2) \\
+& & & cpl (sd) & 30 (0) & 24.11 (1) & 25 (0) \\
  &  &HU &MSE (sd) & 510747.53 (2287539.8) & 603.24 (415.6) & 610.32 (424.9) \\
-& & & cpl (sd) & 30 (0) & 24.82 (0.6) & 25.06 (0.2) \\
+& & & cpl (sd) & 30 (0) & 24.82 (0.6) & 25 (0) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 178323.95 (1426610.2) & 180.02 (44.9) & 141.03 (27.8) \\
-& & & cpl (sd) & 30 (0) & 13.85 (0.9) & 9.27 (0.5) \\
+& & & cpl (sd) & 30 (0) & 13.85 (0.9) & 9 (0) \\
  &  & HU & MSE (sd) & 178323.95 (1426610.2) & 330.31 (134.8) & 141.03 (27.8) \\
-& & & MSE (sd) & 178323.95 (1426610.2) & 330.31 (134.8) & 141.03 (27.8) \\
+& & & cpl (sd) & 30 (0) & 21 (0) & 9 (0) \\
 \hline
 \hline %global50p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_02_25_40.csv
 50 & 0 & U&MSE (sd) & 528.08 (228.6) & 886.54 (364.3) & 528.08 (228.6) \\
@@ -413,14 +448,14 @@ $n$ & $p_2$& $\psi$ & indicator &OLS  &    \textsc{CorReg} $\hat S$& \textsc{Cor
 & & & cpl (sd) & 41 (0) & 40.87 (0.4) & 41 (0) \\
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
 50 & 16 & U&MSE (sd) & 612.72 (291.5) & 239.17 (89.4) & 200.32 (42.6) \\	
-& & & cpl (sd) & 41 (0) & 24.43 (0.7) & 25.13 (0.4) \\
+& & & cpl (sd) & 41 (0) & 24.43 (0.7) & 25 (0) \\
  &  &HU &MSE (sd) & 612.72 (291.5) & 207.6 (51.3) & 200.32 (42.6) \\
-& & & cpl (sd) & 41 (0) & 24.99 (0.5) & 25.13 (0.4) \\
+& & & cpl (sd) & 41 (0) & 24.99 (0.5) & 25 (0) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
 50 & 32 & U&MSE (sd) & 555.44 (262.5) & 128.98 (18.1) & 121.08 (11.9) \\
-& & & cpl (sd) & 41 (0) & 11.45 (0.9) & 9.13 (0.3) \\
+& & & cpl (sd) & 41 (0) & 11.45 (0.9) & 9 (0) \\
  &  &HU &MSE (sd) & 555.44 (262.5) & 171.9 (31.1) & 121.08 (11.9) \\
-& & &cpl (sd) & 41 (0) & 21 (0) & 9.13 (0.3) \\
+& & &cpl (sd) & 41 (0) & 21 (0) & 9 (0) \\
 \hline
 \hline %global100p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_10_47_32.csv
 100 & 0 & U& MSE (sd) & 167.71 (20.6) & 323.44 (124.1) & 167.71 (20.6) \\
@@ -429,14 +464,14 @@ $n$ & $p_2$& $\psi$ & indicator &OLS  &    \textsc{CorReg} $\hat S$& \textsc{Cor
 & & & cpl (sd) & 41 (0) & 40.99 (0.1) & 41 (0) \\
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
 100 & 16 & U&  MSE (sd) & 168.68 (22.4) & 158.51 (51.6) & 133.49 (12.2) \\
-& & & cpl (sd) & 41 (0) & 24.53 (0.7) & 25.08 (0.3) \\
+& & & cpl (sd) & 41 (0) & 24.53 (0.7) & 25 (0) \\
  &  &HU &  MSE (sd) & 168.68 (22.4) & 137.03 (20.3) & 133.49 (12.2) \\
-& & & cpl (sd) & 41 (0) & 25.01 (0.4) & 25.08 (0.3) \\
+& & & cpl (sd) & 41 (0) & 25.01 (0.4) & 25 (0) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U&  MSE (sd) & 173.25 (22.9) & 112.8 (10.7) & 110.63 (6.9) \\\\
-& & & cpl (sd) & 41 (0) & 10.02 (0.8) & 9.25 (0.5) \\
+100 & 32 & U&  MSE (sd) & 173.25 (22.9) & 112.8 (10.7) & 110.63 (6.9) \\
+& & & cpl (sd) & 41 (0) & 10.02 (0.8) & 9 (0) \\
  &  &HU & MSE (sd) & 173.25 (22.9) & 127.4 (11.9) & 110.63 (6.9) \\
-& & & cpl (sd) & 41 (0) & 21 (0) & 9.25 (0.5) \\
+& & & cpl (sd) & 41 (0) & 21 (0) & 9 (0) \\
 \hline
 \end{tabular} 
 \caption{OLS and OLS combined with constrained \textsc{CorReg}.$Y$  depends on all variables in $X$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
@@ -496,7 +531,7 @@ $n$ & $p_2$&  $\psi$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{C
 & & & cpl (sd) & 13.18 (5.9) & 11.02 (2.9) & 8.53 (1) \\
 \hline
 \end{tabular} 
-\caption{LASSO (with LAR) combined with constrained \textsc{CorReg}.$Y$  depends on all variables in $X$. \textsc{CorReg} logically wins}\label{YXlinLASSO}
+\caption{LASSO (with LAR) combined with constrained \textsc{CorReg}.$Y$  depends on all variables in $X$. \textsc{CorReg} logically wins. LASSO is better than OLS but is improved by \textsc{CorReg} even for large values of $n$.}\label{YXlinLASSO}
 \end{table}
 
 \begin{table}[h!]
@@ -553,7 +588,7 @@ $n$ & $p_2$&  $\psi$ &indicator &Elasticnet  &    \textsc{CorReg} $\hat S$& \tex
 & & &cpl (sd) & 30.78 (6.4) & 17.85 (2.7) & 8.67 (1) \\
 \hline
 \end{tabular} 
-\caption{Elasticnet combined with constrained \textsc{CorReg}.$Y$  depends on all variables in $X$. \textsc{CorReg} logically wins}\label{YXlinenet}
+\caption{Elasticnet combined with constrained \textsc{CorReg}.$Y$  depends on all variables in $X$. \textsc{CorReg} logically wins. LASSO was better.}\label{YXlinenet}
 \end{table}
 
 
@@ -611,13 +646,13 @@ $n$ & $p_2$&  $\psi$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$& \texts
 & & & cpl (sd) & 13.58 (5.2) & 10.75 (2.8) & 8.48 (1) \\
 \hline
 \end{tabular} 
-\caption{Stepwise  combined with constrained \textsc{CorReg}. $Y$ depends on all variables in $X$. \textsc{CorReg} logically wins}\label{YXlinstep}
+\caption{Stepwise  combined with constrained \textsc{CorReg}. $Y$ depends on all variables in $X$. \textsc{CorReg} logically wins but stepwise is quite good compared to elasticnet.}\label{YXlinstep}
 \end{table}
 
 
 
 \clearpage
-	\subsection{$Y$ depends only on covariates in $X_2$ (worst case for us)}	 \label{tableMSEsimgauche}
+	\subsubsection{$Y$ depends only on covariates in $X_2$ (worst case for us)}	 \label{tableMSEsimgauche}
 We now try the method with a response depending only on variables in $X_2$. The datasets used here were still those from \ref{compZvrai}.
 Depending only on $X_2$ imply sparsity and impossibility to obtain the true model when using the true structure. \textsc{CorReg} is still better than classical methods. 
 
@@ -628,39 +663,39 @@ Depending only on $X_2$ imply sparsity and impossibility to obtain the true mode
 $n$ & $p_2$&  $\psi$ &indicator &OLS  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
 30 & 16 & U&MSE (sd) & 81781.54 (247281.7) & 507.1 (269.2) & 593.03 (428.3) \\
-& & & cpl (sd) & 30 (0) & 24.11 (1) & 25.06 (0.2) \\
+& & & cpl (sd) & 30 (0) & 24.11 (1) & 25 (0) \\
  &  &HU &MSE (sd) & 81781.54 (247281.7) & 587.07 (425.6) & 593.03 (428.3) \\
-& & & cpl (sd) & 30 (0) & 24.82 (0.6) & 25.06 (0.2) \\
+& & & cpl (sd) & 30 (0) & 24.82 (0.6) & 25 (0) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 74136.81 (297716.1) & 189.45 (48.1) & 144.51 (31.4) \\
-& & & cpl (sd) & 30 (0) & 13.85 (0.9) & 9.27 (0.5) \\
+& & & cpl (sd) & 30 (0) & 13.85 (0.9) & 9 (0) \\
  &  & HU & MSE (sd) & 74136.81 (297716.1) & 340.53 (169.4) & 144.51 (31.4) \\
-& & & cpl (sd) & 30 (0) & 21 (0) & 9.27 (0.5) \\
+& & & cpl (sd) & 30 (0) & 21 (0) & 9 (0) \\
 \hline
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
 50 & 16 & U&	MSE (sd) & 684.04 (438.1) & 190.97 (37.7) & 197.32 (40) \\
-& & & cpl (sd) & 41 (0) & 24.43 (0.7) & 25.13 (0.4) \\
+& & & cpl (sd) & 41 (0) & 24.43 (0.7) & 25 (0) \\
  &  &HU &MSE (sd) & 684.04 (438.1) & 196.36 (40.5) & 197.32 (40) \\
-& & & cpl (sd) & 41 (0) & 24.99 (0.5) & 25.13 (0.4) \\
+& & & cpl (sd) & 41 (0) & 24.99 (0.5) & 25 (0) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
 50 & 32 & U&MSE (sd) & 596.32 (323) & 126.94 (15.5) & 119.39 (12.4) \\
-& & & cpl (sd) & 41 (0) & 11.45 (0.9) & 9.13 (0.3) \\
+& & & cpl (sd) & 41 (0) & 11.45 (0.9) & 9 (0) \\
  &  &HU &MSE (sd) & 596.32 (323) & 168.03 (27.7) & 119.39 (12.4) \\
-& & &cpl (sd) & 41 (0) & 21 (0) & 9.13 (0.3) \\
+& & &cpl (sd) & 41 (0) & 21 (0) & 9 (0) \\
 \hline
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
 100 & 16 & U&  MSE (sd) & 168.35 (20.1) & 133.75 (12.4) & 135.08 (13.1) \\
-& & & cpl (sd) & 41 (0) & 24.53 (0.7) & 25.08 (0.3) \\
+& & & cpl (sd) & 41 (0) & 24.53 (0.7) & 25 (0) \\
  &  &HU &  MSE (sd) & 168.35 (20.1) & 135.04 (13.1) & 135.08 (13.1) \\
-& & & cpl (sd) & 41 (0) & 25.01 (0.4) & 25.08 (0.3) \\
+& & & cpl (sd) & 41 (0) & 25.01 (0.4) & 25 (0) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
 100 & 32 & U&  MSE (sd) & 168.07 (21.4) & 109.61 (7.4) & 108.64 (7.2) \\
-& & &  cpl (sd) & 41 (0) & 10.02 (0.8) & 9.25 (0.5) \\
+& & &  cpl (sd) & 41 (0) & 10.02 (0.8) & 9 (0) \\
  &  &HU & MSE (sd) & 168.07 (21.4) & 124.23 (11.1) & 108.64 (7.2) \\
-& & & cpl (sd) & 41 (0) & 21 (0) & 9.25 (0.5) \\
+& & & cpl (sd) & 41 (0) & 21 (0) & 9 (0) \\
 \hline
 \end{tabular} 
-\caption{OLS and OLS combined with constrained \textsc{CorReg}.$Y$  depends on all variables in $X_2$. } \label{YX2linOLS}
+\caption{OLS and OLS combined with constrained \textsc{CorReg}.$Y$  depends on all variables in $X_2$. Sometimes $\hat{S}$ gives better results than $S$ because $S$ is penalized by the fact that it relies only on covariates not in the true model. } \label{YX2linOLS}
 \end{table}
 
 \begin{table}[h!]
@@ -791,8 +826,8 @@ $n$ & $p_2$&  $\psi$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$& \texts
 \end{table}
 
 \clearpage
-\subsection{Non linear case}
- we have generated non linear structures (Tables \ref{compZnonlin} and \ref{resYnonlin}). Variables in $X_2$ depends on the $\log$ or the square (randomly choosen with equiprobability) of a variable in $X_1$ . Dependencies are still real but non linear. \textsc{CorReg} still found dependencies. One example of non-linear structure found with \textsc{CorReg} on real datasets is given in section \ref{sectionexfos}.
+\subsection{Robustess of the model}
+ We have generated non linear structures (Tables \ref{compZnonlin} and \ref{resYnonlin}). Variables in $X_2$ depends on the $\log$ or the square (randomly choosen with equiprobability) of a variable in $X_1$ . Dependencies are still real but non linear. \textsc{CorReg} still found dependencies. One example of non-linear structure found with \textsc{CorReg} on real datasets is given in section \ref{sectionexfos}.
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
@@ -821,7 +856,7 @@ $n$ & $p_2$&  $\psi$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{C
 & & & cpl (sd) & 17.66 (5.4) & 16.98 (4.8) & 11.97 (4.9) \\ 
 \hline
 \end{tabular} 
-\caption{ $Y$ depends on all variables in $X$. \textsc{CorReg} is not too far from LASSO.} \label{resYnonlin}
+\caption{ $Y$ depends on all variables in $X$. \textsc{CorReg} is not too far from LASSO even if it stays behind. } \label{resYnonlin}
 \end{table}
 
 
@@ -900,8 +935,8 @@ We have :
 		
 \begin{figure}[h!]
 	\begin{minipage}[l]{.30\linewidth}
-			\includegraphics[width=150px]{figures/correl0BVBI.png} 
-			\caption{Correlations between the covariates}
+			\includegraphics[width=150px]{figures/correlbeforeafter.png} 
+			\caption{Correlations between the covariates in $X$ (upper) and $\hat{X}_1$ (lower).}
 	\end{minipage} \hfill
 	\begin{minipage}[c]{.30\linewidth}
 			\includegraphics[height=150px, width=150px]{figures/R2corregBVBI.png} 
@@ -912,8 +947,8 @@ We have :
 			\caption{Histogram of correlations in $X$.} 
    \end{minipage}
 \end{figure}   			
-	Here $n<p$ so we only have the leave one out cross-validation MSE.
-	\textsc{CorReg} improves LASSO by $5.24\%$ and elasticnet by $8.60\%$. \textsc{CorReg} combined with LASSO gives the best result but it is only a leave on out MSE.
+	Here $n<p$ so we only compare the leave-one-out cross-validation MSE.
+	\textsc{CorReg} improves LASSO by $5.24\%$ and elasticnet by $8.60\%$. \textsc{CorReg} combined with LASSO gives the best result but it is only a leave-on-out MSE.
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|}
@@ -947,5 +982,17 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 	
 \bibliography{biblio}{}
 \bibliographystyle{plain}
-
+\section{Appendices}
+	\subsection{Identifiability of the structure}
+	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure the MCMC will asymptotically find the true model. Identifiability of the discrete structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions ? The answer is no. Thus $S$ is identifiable.
+	
+\subsubsection{Alternative neighbourhoods for the MCMC}
+	We have here at each step $|\mathcal{V}_{S,j}|=p$ candidates but some other constraints can be added on the definition of $\mathcal{S}$ and will consequently modify the size of the neighbourhood (for example a maximum complexity for the internal regressions or the whole structure, a maximum number of internal regressions, {\it etc.}). \textsc{CorReg} allows to modify this neighbourhood to better fit users constraints. Relaxation (column-wise and row-wise) is optional but gives more stability to the number of feasible candidates at each step and allows to modify several parts of $I_1$ in only one step when needed. Hence it improves efficiency by a significant reinforcement of the irreductibility of the Markov chain. Rejecting candidates instead of doing the relaxation steps will  however reduce the number of evaluated candidates and thus accelerate the walk. So it can be used for a warming phase when $n$ is great and time is missing.
+	
+	The hierchical uniform hypothesis made above for $P(S)$ implies $p_2<\frac{p}{2}$ and $p_1^j<\frac{p}{2}$ so candidates may be rejected to satisfy this hypothesis. Stronger constraints on $p_2$ and/or $p_1$ can be given in \textsc{CorReg} if relevant.
+	
+If the algorithm did not have time to converge (stationnarity), it can be continued with a few step for which the neighboorhood would only contain smaller candidates (in terms of complexity). It is equivalent to ask for each element in $I_1$ if the criterion $\psi$ would be better without it. Thus it can be seen as a final cleaning step. But in fact, it's just continuing the MCMC with a reduced neighbourhood.	
+	
+	
+	
 \end{document}
