@@ -169,29 +169,24 @@ Let $Y \in \mathcal{R}^n$ be a response variable we want to explain with $X$:
 		\end{equation}
 		where $\beta=(\beta_1,\beta_2) \in  \mathcal{R}^p$ is the vector of the regression coefficients and $I_n$ the identity matrix. 
 We note that (\ref{MainR}) and (\ref{SR}) also give by simple integration on $X_2$ a regression model on $Y$ {\it depending only on uncorrelated covariates $X_1$}:
-		\begin{equation}
-			Y_{|S,X}=X\beta+\varepsilon_Y =X_1\beta_1+X_2\beta_2+\varepsilon_Y
-		\end{equation}
-		
-Knowing (\ref{SR}) we then obtain a marginal regression model:
 \begin{eqnarray}
-	Y_{|X_1}&=&X_1 (\beta_{1}+ \sum_{j \in I_2}B^{j}_{1}\beta_{j})+  \sum_{j \in I_2}\varepsilon_{j}\beta_{j}+\varepsilon_Y \label{Trueexpl} \\
+	Y_{|X_1}&=&X_1 (\beta_{1}+ \sum_{j \in I_2}\beta_{j}\delta_j)+  \sum_{j \in I_2}\beta_{j}\varepsilon_{j}+\varepsilon_Y \label{Trueexpl} \\
 		&=&X_1 \alpha_1 + X_2\alpha_2 + \varepsilon_{\alpha} \textrm{ where } \alpha_2  = 0.
 \end{eqnarray}
-We note that it simply is a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It isa variable pre-selection independent of the response $Y$. As a pretreatment, it allows usage of any method in a seconde time to estimate $\alpha$.
+We note that it simply is a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $Y$. As a pretreatment, it allows usage of any method in a seconde time to estimate $\alpha$.
 \subsection{Estimator and properties}
 	The marginal regression model simply is
 	\begin{equation}
 		Y_{|X_1}= X_1\alpha_1+ \varepsilon_{\alpha}
 	\end{equation}			
-		So we have the unbiased estimator of $\alpha$: 
+		So we have the \textsc{OLS} unbiased estimator of $\alpha$: 
 		\begin{equation}
 			\hat{\alpha}_{1} = (X'_{1} X_{1})^{-1}X'_{1}Y  \textrm{ and }\hat{\alpha}_{2} = 0
 		\end{equation}
 		We see in (\ref{Trueexpl}) that it gives an unbiased estimation of $Y$ and $\alpha$
 		but in terms of $\beta$ this estimator is biased:
 		\begin{equation}
-			\operatorname{E}[\hat{\alpha_1}|X_1]=\beta_1+\sum_{j \in I_2}B^{j}_{1}\beta_{j}\textrm{ and }\operatorname{E}[\hat{\alpha_2}|X_1]=0
+			\operatorname{E}[\hat{\alpha_1}|X_1]=\beta_1+\sum_{j \in I_2}\beta_{j}\delta_j \textrm{ and }\operatorname{E}[\hat{\alpha_2}|X_1]=0
 		\end{equation}
 		with variance:
 		\begin{equation}
