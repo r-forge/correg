@@ -48,19 +48,15 @@ We note the linear regression model:
 \begin{equation}
 		Y_{|X}=X\beta + \varepsilon
 	\end{equation}
-	where $X$ is the $n\times p$ matrix of the explicative variables, $Y$ the  $n\times 1$ response vector and $\varepsilon \sim \mathcal{N}(0,\sigma_Y^2I_n)$ the noise of the regression, with $I_n$ the $n$-sized identity matrix and $\sigma_Y \in \mathcal{R}$. The $p\times 1$ vector $\beta$ is the vector of the coefficients of the regression, estimated with Ordinary Least Squares (\textsc{OLS} \cite{saporta2006probabilites}) by  
-	\begin{equation}
-		\hat{\beta}=(X'X)^{-1}X'Y.
-\end{equation}		
-
-When estimating the parameters of the regression we have to compute the inverse of a matrix which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
+	where $X$ is the $n\times p$ matrix of the explicative variables, $Y$ the  $n\times 1$ response vector and $\varepsilon \sim \mathcal{N}(0,\sigma_Y^2I_n)$ the noise of the regression, with $I_n$ the $n$-sized identity matrix and $\sigma_Y \in \mathcal{R}$. The $p\times 1$ vector $\beta$ is the vector of the coefficients of the regression, estimated with Ordinary Least Squares (\textsc{OLS}). As shown in \ref{sectionOLS}, estimation of the parameters of the regression we have to compute the inverse of a matrix which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
 Variance of $\hat{\beta}$ increases based on two aspects :
 \begin{itemize}
 	\item The dimension $p$ (number of covariates) of the model  : the more covariates you have the greater variance you get.
 	\item The correlations within the covariates : strongly correlated covariates give bad-conditioning and increase variance of the estimators .
 \end{itemize}
 
-	With the rise of informatic, datasets contains more and more covariates and thus more and more useless covariates. So dimension reduction becomes a necessity. Moreover, when you use more covariates, you increase the chance to have correlated ones.  It will be illustrated with examples from steel industry in the last section of this paper with a big set of covariates (many parameters of the whole process without any a priori) highly correlated (physical laws, process rules, etc). In such a context, variance of the estimators can lead to arbitrary results or even no results at all. Prediction and interpretation are both strongly needed, depending on the context. For instance, in an industrial context interpretation could be favored to improve the process instead of only predict defects.
+	With the rise of informatic, datasets contains more and more covariates and thus more and more useless covariates. So dimension reduction becomes a necessity. Moreover, when you use more covariates, you increase the chance to have correlated ones. It will be illustrated with examples from steel industry in the last section of this paper (many parameters of the whole process without any a priori) highly correlated (physical laws, process rules, etc). 
+	 In such a context, variance of the estimators can lead to arbitrary results or even no results at all. Prediction and interpretation are both strongly needed, depending on the context. For instance, in an industrial context interpretation could be favored to improve the process instead of only predict defects.
 		~\\	~\\
 		
 %bibliographie	
@@ -81,8 +77,8 @@ In the following we note classical norms: $\parallel\beta\parallel_2^2=\sum_{i=1
 		\begin{equation}
 		 \hat{\beta}=\operatorname{argmin} \left\lbrace \parallel Y-X\beta\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\beta\parallel_1\leq \lambda
 		\end{equation}	
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) Algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as OLS applied to the full set of covariates. And it  really selects covariates with coefficients set exactly to 0.
-	 But LASSO also faces consistency problems \cite{Zhao2006MSC} when confronted  with correlated covariates. Another limitation of the \textsc{LASSO} is that it preserves at most $n$ predictors (troublesome when in high dimension). Some recent variants of the \textsc{LASSO} does exist for the choice of the penalization coefficient like the adaptative \textsc{LASSO} \cite{zou2006adaptive} or the random LASSO \cite{wang2011random}.
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) Algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. And it  really selects covariates with coefficients set exactly to 0.
+	 But \textsc{LASSO} also faces consistency problems \cite{Zhao2006MSC} when confronted  with correlated covariates. Another limitation of the \textsc{LASSO} is that it preserves at most $n$ predictors (troublesome when in high dimension). Some recent variants of the \textsc{LASSO} does exist for the choice of the penalization coefficient like the adaptative \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.
 	 \\
 	 
 	Elastic net\cite{zou2005regularization}	is a method developed to be a compromise between Ridge regression and the \textsc{LASSO}. 
@@ -111,13 +107,13 @@ The idea is to hope that the model have a small number of groups of covariates a
  
 	Our work is based on the assumption that if we know explicitly the source of correlations, we could use this knowledge to avoid the problem.
 	The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation}. Such a system is easy to interpret but estimation don't take advantage of the explicit structure \cite{TIMM} when the structure is straight forward (recursive \textsc{SEM}).
-  	Other methods take into account correlations but they only consider covariances between the residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) or the endogenous variables like \textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}).
+  	Other methods take into account correlations but they only consider covariances between residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) or  endogenous variables like \textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}).
 
  	
 	  We make the choice to distinguish the response variable from the other endogenous variables (that are on the left of a regression). Thus we don't have a system of regressions but one regression on our response variable and a system of sub-regressions (without the response variable). Then we consider correlations between the explicative covariates of the main regression, not between the residuals.
-	  The structure is supposed to be the source of the correlations and allows us to define a marginal regression model based on a reduced set of independent covariates without significant information loss. It can be seen as a pretreatment on the dataset because other regression methods can the be used on this reduced and correlation-free set covariates. So we may obtain two kinds of zeros in our first model : coerced zeros due to correlations (redundant information) and estimated ones with classical variable selection methods applied on remaining variables. This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
+	  The structure is supposed to be the source of the correlations and allows us to define a marginal regression model based on a reduced set of independent covariates without significant information loss. It can be seen as a pretreatment on the dataset because other regression methods can then be used. So we may obtain two kinds of zeros in our first model : coerced zeros due to correlations (redundant information) and estimated ones with classical variable selection methods applied on remaining variables. This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
  	 	
-SEM are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented graph for our SEM. So we developped an MCMC algorithm to find it (R package CorReg on CRAN). However, Graphical LASSO can be used in the initialization step of our MCMC. The structure is based on a full generative model to be able to compare likelihood-based criterion in the MCMC.
+\textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented structure for our \textsc{SEM}. So we developped an MCMC algorithm to find the structure (R package \textsc{CorReg} on CRAN). The structure is based on a full generative model on $X$ to be able to compare likelihood-based criterion in the \textsc{MCMC}.
  	\\
  	
  	%plan
@@ -125,13 +121,13 @@ SEM are often used in social sciences and economy where a structure is supposed 
  	We will then look at some numerical results on simulated (Section \ref{sectionsimul}) and real industrial datasets (Section \ref{sectionrealcase}) before concluding and giving some perspectives in the last part.
 	
 \section{Model to select decorrelated covariates}
-\subsection{The decorrelation problem in regression}
+\subsection{The decorrelation problem in regression}\label{sectionOLS}
 For a model defined by 
 	\begin{equation}
 		Y_{|X}=X\beta + \varepsilon
 	\end{equation}
 	where $X$ is the $n\times p$ matrix of the explicative variables, $Y$ the response vector and $\varepsilon \sim \mathcal{N}(0,\sigma_Y^2I_n)$ with $I_n$ the $n$-sized identity matrix,
-	we have the following Ordinary Least Squares (OLS) estimators:
+	we have the following Ordinary Least Squares (\textsc{OLS}) estimators \cite{saporta2006probabilites}:
 	\begin{equation}
 		\hat{\beta}=\left(X'X \right) ^{-1}X'Y
 	\end{equation}
@@ -139,9 +135,9 @@ For a model defined by
 	\begin{equation}
 		\operatorname{Var}(\hat{\beta})=\sigma_Y^2(X'X)^{-1} \label{eqOLS}
 	\end{equation}
-	 The Mean Squared Error (MSE) on $\hat{\beta}$ is:
+	 The Mean Squared Error (\textsc{MSE}) on $\hat{\beta}$ is:
 	\begin{eqnarray}
-		MSE(\hat{\beta}|\beta,X)&=&Bias^2+\operatorname{Tr}(\operatorname{Var}(\hat{\beta})) \\
+		\textsc{MSE}(\hat{\beta}|\beta,X)&=&\operatorname{Bias}^2+\operatorname{Tr}(\operatorname{Var}(\hat{\beta})) \\
 			&=&0+\sigma_Y^2 \operatorname{Tr}((X'X)^{-1})
 	\end{eqnarray}	 
 	and when correlations between covariates are strong, the matrix to invert is ill-conditioned, the variance explodes and so does the MSE.
