@@ -148,6 +148,7 @@ For a model defined by
 			&=&0+\sigma_Y^2 \operatorname{Tr}((X'X)^{-1})
 	\end{eqnarray}	 
 	and when correlations between covariates are strong, the matrix to invert is ill-conditioned, the variance explodes and so does the MSE.
+	Another problem is that matricial inversion requires $n\geq p$. When it is not the case, a frequently used alternative is the generalized inverse
 \subsection{Modelisation of the correlations}
 Let now $X \in \mathcal{R}^{n\times p}$ be a set of $p$ correlated covariates.
 We propose to explicitly define a family of $p_2$ internal regressions between covariates whith $I_2$ the set of indices of endogenous variables in $X$ (explained ones) and $I_1=\{I_1^1,\dots,I_1^p \}$ the set of the sets of indices of exogenous covariates (explaining ones) with $\forall j \notin I_2, I_1^j=\emptyset$. Then we have an explicit structure $S=(I_1,I_2,p_1,p_2)$ where $p_1=(p_1^1,\dots,p_1^{p_2})$ is the vector of the number of covariates in each internal regression. Thus we have $p_2=| I_2|$ and $p_1^j=|I_1^j|$ where $|.|$ represents the cardinal of an ensemble.
