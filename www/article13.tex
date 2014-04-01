@@ -232,8 +232,8 @@ It is clear in Figures \ref{MQE1} to \ref{MQE3} that the marginal model is more 
 
 	
 	
-	\section{Estimating structure of sub-regressions with a Markov chain}	
-\subsection{Detailed generative model}
+\section{Sub-regressions model selection}	
+	\subsection{Modeling the uncorrelated covariates: a full generative approach}
 	To be able to compare structures with probabilistic criterions, we need a full generative model. We suppose that variables in $X_1$ follow Gaussian mixtures. 
 	\begin{equation}
 			\forall j \notin I_2 : X^j_{|S} \sim f(\theta_j)=\mathcal{GM}(\pi_j;\mu_j;\sigma^2_j) \textrm{ with } \pi_j,\mu_j,\sigma^2_j \textrm{ vectors of size } k_j; \label{mixtureX1}
@@ -243,7 +243,7 @@ It is clear in Figures \ref{MQE1} to \ref{MQE3} that the marginal model is more 
 		Variables in $X_1$ are supposed to be independent.
 	Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
 	We now have a full generative model.
-	\subsection{Structure comparison} \label{compstruct}
+	\subsection{Penalization of the integrated likelihood} \label{compstruct}
   To obtain the marginal regression model we need $S$, the linear structure between the covariates.
 	Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood according to the complexity of the structure~\cite{BIChuard}. We will prefer this kind of comparison criterion instead of cross-validation that is very time-consuming and thus not friendly with combinatory problematics.
 	We note $\Theta$ the set of the parameters of the generative model
@@ -263,7 +263,8 @@ It is clear in Figures \ref{MQE1} to \ref{MQE3} that the marginal model is more 
 \\	
 		We will now use the following notation: $\psi(S)=\psi(X|S)$	where $\psi(X|S)$ is the chosen criterion, that will be $BIC$ with hierarchical uniform hypothesis in our numerical results. We do not change $BIC$ but only $P(S)$ so the properties are the same as classical $BIC$ but we will obtain better results when our hypothesis is verified.
 	
-	\subsection{The neighbourhood}
+\subsection{MCMC algorithm}
+	\subsubsection{The neighbourhood}
 	Let's define $\mathcal{S}$ the ensemble of feasible structures (those with $I_1\cap I_2=\emptyset$).
 	\\
 	For each step, starting from $S \in \mathcal{S}$ we define a neighbourhood:
@@ -285,7 +286,6 @@ It is clear in Figures \ref{MQE1} to \ref{MQE3} that the marginal model is more 
 	\smallskip
 	At every moment, coherence between $I_1$ and others parts of $S$ can be done by $\forall 1\leq j\leq p :  p_1^j=|I_1^j|$, $I_2=\{j |p_1^j>0 \}$, $p_2= |I_2|$, .
 		
-	\subsection{The walk}
 	\subsubsection{Transition probabilities}
 	We first make the approximation
 	\begin{equation}
@@ -320,7 +320,6 @@ The initial structure can be based on a first warming algorithm taking the corre
 	
 \section{Numerical results on simulated datasets} \label{sectionsimul}
 
-	
 
 	\subsection{The datasets}	
 	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if \textsc{CorReg} 	keeps its promises.
