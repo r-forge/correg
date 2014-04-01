@@ -92,7 +92,7 @@ In the following we note classical norms: $\parallel\beta\parallel_2^2=\sum_{i=1
 	\end{equation}
 	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
 	%It seems to give good predictions. 
-	But it is based on the grouping effect and if the dataset contains two identical variables they will obtain the same coefficient whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. 
+	But it is based on the grouping effect and if the dataset contains two identical variables they will obtain the same coefficient whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Grouping effect is the fact that correlated covariates get similar coefficient and are selected together.
 	\\
 	
 	Another way of reducing the dimension is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (\textsc{OSCAR} \cite{bondell2008simultaneous}).
@@ -173,7 +173,17 @@ We note that (\ref{MainR}) and (\ref{SR}) also give by simple integration on $X_
 	Y_{|X_1}&=&X_1 (\beta_{1}+ \sum_{j \in I_2}\beta_{j}\delta_j)+  \sum_{j \in I_2}\beta_{j}\varepsilon_{j}+\varepsilon_Y \label{Trueexpl} \\
 		&=&X_1 \alpha_1 + X_2\alpha_2 + \varepsilon_{\alpha} \textrm{ where } \alpha_2  = 0.
 \end{eqnarray}
-We note that it simply is a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $Y$. As a pretreatment, it allows usage of any method in a seconde time to estimate $\alpha$.
+We note that it simply is a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $Y$. As a pretreatment, it allows usage of any method in a second time to estimate $\alpha$like LASSO or even stepwise \cite{seber2012linear}.
+
+\subsection{Advantages for interpretation}\label{interpretation}
+The explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset. Expert knowledge can even be added to the structure.
+
+After selection and estimation we will obtain a model with { \it two kinds of zeros}: those from decorrelating step and those from selection step, with different meanings. 
+Thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
+
+Each equation here is very simple (only linear regressions). 
+Moreover, the uncrossing constraint ($I_1\cap I_2=\emptyset$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect) and straightforward readable.
+
 \subsection{Estimator and properties}
 	The marginal regression model simply is
 	\begin{equation}
@@ -194,8 +204,7 @@ We note that it simply is a linear regression on some of the original covariates
 		\end{equation}
 		We see that the variance is reduced compared to OLS described in equation (\ref{eqOLS})(no correlations and smaller matrix give better conditioning ) for small values of $\sigma_j$ $i.e.$ strong correlations.					
 			%There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. Therefore we made some simulations to compare both methods (see the end of this paper).
-			Moreover, the explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset. Expert knowledge can even be added to the structure.
-			 This new model is reduced even without variable selection and is just a linear regression so every method for variable selection in linear regression can be used then,like LASSO or even stepwise \cite{seber2012linear}. Hence we hope to obtain a parsimonious model with { \it two kinds of zeros}: those from decorrelating step and those from selection step, with different meanings.
+			Moreover, 
 			 \\
 			  A last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}).
 		 
@@ -219,22 +228,6 @@ We note that it simply is a linear regression on some of the original covariates
    \end{minipage} 
 \end{figure} 
 It is clear in Figures \ref{MQE1} to \ref{MQE3} that the reduced model is more robust than OLS. And even when sub-regression are week (small value of $1-\mathcal{R}^2$) it does not explode. We also see that the error implied by strong correlations shrinks whit the rise of $n$.  $MSE_{OLS}=0+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}))=\operatorname{Tr}(\operatorname{Var}(\hat{\beta}_{1}))+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}_{2}))$. both terms are multiplied by $\sigma_Y^2$ and so is $\operatorname{Tr}(\operatorname{Var}(\hat{\alpha}_{1}))$. Thus, as $\operatorname{Var}(\hat{\alpha}_{1})=0$ when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus OLS. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear).
-
-	\subsection{Advantages for interpretation}
-	
-		Grouping effect is the fact that correlated covariates get similar coefficient and are selected together. It's the case with elasticnet \cite{zou2005regularization} for example.	
-			If $X_2=X_1+e$ and we have the grouping effect, we will obtain a model like $\hat{Y}=\hat{\beta}X_1+\hat{\beta}X_2$. 
-			Then, if you try to modify the response value, you will modify one of the covariates and both will change so you won't get expected results. 
-			
-		%At the opposite, methods like the LASSO with LAR will only keep one covariate for each group of correlated covariates  so we get $\hat{Y}=2aX_1$ and think that $X_2 \perp Y$ but $Y$ depends on $X_2$ so it is worse than grouping effect for interpretation.
-		
-		
-			Nothing constrains us to give only one equation. %It is clearly better to give the user another equation (or system for more complex models) describing the correlations. 
-			If you have the following model : $Y=\beta X_1+\beta X_2$ and $X_1=X_2+e$. Then you have more information and are able to decide better actions. 
-			With such a model, grouping effect is no more useful because when saying $Y=2\beta X_1$ and $X_2=X_1+e$ with the information that $X_2$ has been removed locally because of its correlation with $X_1$, you don't get misleading interpretations anymore. In fact, we have two kinds of zeros (those from selection and those from correlations) and we know for each zero which kind is it.
-			So it is possible to combine the advantages of grouping effect and selection just giving several equations. 
-			Each equation here is very simple (only linear regressions) so you don't really increase complexity of the model. 
-			Moreover, the uncrossing constraint ($I_1\cap I_2=\emptyset$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect) and straightforward readable.
 
 	
 	\section{Estimating structure of sub-regressions with a Markov chain}	
