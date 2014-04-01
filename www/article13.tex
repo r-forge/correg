@@ -127,11 +127,11 @@ For a model defined by
 		Y_{|X}=X\beta + \varepsilon
 	\end{equation}
 	where $X$ is the $n\times p$ matrix of the explicative variables, $Y$ the response vector and $\varepsilon \sim \mathcal{N}(0,\sigma_Y^2I_n)$ with $I_n$ the $n$-sized identity matrix,
-	we have the following Ordinary Least Squares (\textsc{OLS}) estimators \cite{saporta2006probabilites}:
+	we have the following Ordinary Least Squares (\textsc{OLS}) estimator:
 	\begin{equation}
 		\hat{\beta}=\left(X'X \right) ^{-1}X'Y
 	\end{equation}
-	With variance 
+	With variance matrix
 	\begin{equation}
 		\operatorname{Var}(\hat{\beta})=\sigma_Y^2(X'X)^{-1} \label{eqOLS}
 	\end{equation}
@@ -149,18 +149,18 @@ We propose to explicitly define a family of $p_2$ internal regressions between c
 In the following, we note $X^j$ the $j^{th}$ column of a matrix $X$.
 For lighter notation we define $X_2=X^{I_2}$ the matrix of the endogenous covariates and $X_1=X\setminus X_2$ the matrix of the remaining exogenous covariates. 
 
-We define a family of $p_2$ regressions within correlated covariates in $X$:
+The family of $p_2$ regressions within correlated covariates in $X$ is noted:
 	\begin{equation}
-		\forall j \in I_2: X^j_{|X_1,S}=X_1B^j_1+\varepsilon_j \textrm{ with } \varepsilon_j \sim(0,\sigma^2_jI_n) \label{SR}
+		\forall j \in I_2: X^j_{|X_1,S}=X_1\delta_j+\varepsilon_j \textrm{ with } \varepsilon_j \sim(0,\sigma^2_jI_n) \label{SR}
 	\end{equation}
-		where $B_1^j \in \mathcal{R}^{(p-p_2)}$ are the vectors of the regression coefficients between the covariates (containing some zeros according to $I_1^j$).
-It remains $p-p_2$ independent exogenous variables : $\forall j \notin I_2 : X^j_{|S} \sim f(\theta_j)$
+		where $\delta_j \in \mathcal{R}^{(p-p_2)}$ are the vectors of the regression coefficients between the covariates (containing some zeros according to $I_1^j$).
+It remains $p-p_2$ independent exogenous variables $X_1$: $\forall j \notin I_2 : X^j \sim f(\theta_j)$
 
 We make the hypothesis of the uncrossing rule $I_1\cap I_2=\emptyset$ {\it i.e.} endogenous variables don't explain other covariates, thus we have a partition $X=[X_1,X_2]$.
 
-This generative model is conditional to $S$, the discrete structure model that is identifiable because we can't permute some regressions in (\ref{SR}) and obtain the same joint distribution $P(X,Y)$, the residuals ($\varepsilon_j$) would not stay Gaussian (see the appendices). These residuals are in the following supposed independent but one can suppose dependencies between them and then use appropriate tools to estimate them and the $B_1^j$ like SUR with Feasible Generalized Least Squares (FGLS) by Zellner \cite{SURzellner} or SPRING \cite{chiquetconf} as mentioned in the introduction.
+This generative model is conditional to $S$, the discrete structure model that is identifiable because we can't permute some regressions in (\ref{SR}) and obtain the same joint distribution $P(X,Y)$, the residuals ($\varepsilon_j$) would not stay Gaussian (see the appendices). These residuals are in the following supposed independent but one can suppose dependencies between them and then use appropriate tools to estimate them and the $\delta_j$ like SUR with Feasible Generalized Least Squares (FGLS) by Zellner \cite{SURzellner} or SPRING \cite{chiquetconf} as mentioned in the introduction.
 \\
-If there are exact regressions ($\sigma^2_j=0$) in (\ref{SR}), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. %\textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
+
 	
 \subsection{Marginal regression model with decorrelated covariates}
 Let $Y \in \mathcal{R}^n$ be a response variable we want to explain with $X$.
@@ -978,7 +978,12 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 \bibliographystyle{plain}
 \section{Appendices}
 	\subsection{Identifiability of the structure}
-	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure the MCMC will asymptotically find the true model. Identifiability of the discrete structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions ? The answer is no. Thus $S$ is identifiable.
+	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure the MCMC will asymptotically find the true model. Identifiability of the discrete structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? The answer is no. Thus $S$ is identifiable.
+	
+	
+	If there are exact regressions ($\sigma^2_j=0$) in (\ref{SR}), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. %\textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
+	In the followings we suppose $\sigma^2_j\neq 0$.
+	
 	
 \subsubsection{Alternative neighbourhoods for the MCMC}
 	We have here at each step $|\mathcal{V}_{S,j}|=p$ candidates but some other constraints can be added on the definition of $\mathcal{S}$ and will consequently modify the size of the neighbourhood (for example a maximum complexity for the internal regressions or the whole structure, a maximum number of internal regressions, {\it etc.}). \textsc{CorReg} allows to modify this neighbourhood to better fit users constraints. Relaxation (column-wise and row-wise) is optional but gives more stability to the number of feasible candidates at each step and allows to modify several parts of $I_1$ in only one step when needed. Hence it improves efficiency by a significant reinforcement of the irreductibility of the Markov chain. Rejecting candidates instead of doing the relaxation steps will  however reduce the number of evaluated candidates and thus accelerate the walk. So it can be used for a warming phase when $n$ is great and time is missing.
