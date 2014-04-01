@@ -159,19 +159,22 @@ The discrete structure $S$ is identifiable because we can't permute some regress
 
 	
 \subsection{A by-product model: marginal regression with decorrelated covariates}
-Let $\boldsymbol{Y} \in \mathcal{R}^n$ be a response variable we want to explain with $X$:
+Let $\boldsymbol{Y} \in \mathcal{R}^n$ be a response variable we want to explain with $\boldsymbol{X}$:
 	\begin{equation}
-			Y_{|S,X}=X\beta+\varepsilon_Y =X_1\beta_1+X_2\beta_2+\varepsilon_Y \textrm{ with } \varepsilon_Y \sim \mathcal{N}(0,\sigma^2_YI_n);	\label{MainR}
+			\boldsymbol{Y}_{|\boldsymbol{X_1},\boldsymbol{X_2},S}=\boldsymbol{X_1\beta_1}+\boldsymbol{X_2\beta_2}+\boldsymbol{\varepsilon_Y} \textrm{ with } \boldsymbol{\varepsilon_Y} \sim \mathcal{N}(\boldsymbol{0},\sigma^2_Y\boldsymbol{I_n});	\label{MainR}
 		\end{equation}
-		where $\beta=(\beta_1,\beta_2) \in  \mathcal{R}^p$ is the vector of the regression coefficients and $I_n$ the identity matrix. 
-We note that (\ref{MainR}) and (\ref{SR}) also give by simple integration on $X_2$ a regression model on $Y$ {\it depending only on uncorrelated covariates $X_1$}:
+		where $\boldsymbol{\beta}=(\boldsymbol{\beta_1},\boldsymbol{\beta_2}) \in  \mathcal{R}^p$ is the vector of the regression coefficients and $\boldsymbol{I_n}$ the identity matrix. 
+We note that (\ref{MainR}) and (\ref{SR}) also give by simple integration on $\boldsymbol{X_2}$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X_1}$}:
 \begin{eqnarray}
-	Y_{|X_1}&=&X_1 (\beta_{1}+ \sum_{j \in I_2}\beta_{j}\delta_j)+  \sum_{j \in I_2}\beta_{j}\varepsilon_{j}+\varepsilon_Y \label{Trueexpl} \\
-		&=&X_1 \alpha_1 + X_2\alpha_2 + \varepsilon_{\alpha} \textrm{ where } \alpha_2  = 0.
+	\boldsymbol{Y}_{|\boldsymbol{X_1},S}&=&\boldsymbol{X_1} (\boldsymbol{\beta_{1}}+ \sum_{j \in I_2}\beta_{j}\boldsymbol{\alpha_j})+  \sum_{j \in I_2}\beta_{j}\boldsymbol{\varepsilon_{j}}+\boldsymbol{\varepsilon_Y} \label{Trueexpl} \\
+	&=&\boldsymbol{X_1}\boldsymbol{\beta_1^*}+\boldsymbol{\varepsilon_Y^*}=\boldsymbol{X}\boldsymbol{\beta^*}+\boldsymbol{\varepsilon_Y^*} \textrm{ where }\boldsymbol{\beta^*}=(\boldsymbol{\beta_1^*},\boldsymbol{\beta_2^*}) \textrm{ and } \boldsymbol{\beta_2^*}=\boldsymbol{0}
 \end{eqnarray}
-We note that it simply is a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $Y$. As a pretreatment, it allows usage of any method in a second time to estimate $\alpha$like LASSO or even stepwise \cite{seber2012linear}.
+We note that it simply is a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $\boldsymbol{Y}$. 
 
 \subsection{Strategy of use: pretreatment before classical selection methods}\label{interpretation}
+As a pretreatment, it allows usage of any method in a second time to estimate $\alpha$like LASSO or even stepwise \cite{seber2012linear}.
+
+
 The explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset. Expert knowledge can even be added to the structure.
 
 After selection and estimation we will obtain a model with { \it two kinds of zeros}: those from decorrelating step and those from selection step, with different meanings. 
@@ -968,7 +971,9 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 	
 	This paper only treats linear regression but such a pretreatment could be used for logistic regression, {\it etc.}
 	So the subject is still wide opened.	
-	
+
+\section{Acknowledgements}
+	We want to thanks ArcelorMittal Atlantique \& Lorraine that has granted this work, given the chance to use \textsc{CorReg} on real dataset and authorized the package to be open-sourced licensed (\textsc{CeCILL}), especially Dunkerque's site where most of the work has been done.
 \bibliography{biblio}{}
 \bibliographystyle{plain}
 \section{Appendices}
