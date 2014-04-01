@@ -120,12 +120,12 @@ The idea is to hope that the model have a small number of groups of covariates a
 	  
 	We can use any variable selection method on the reduced dataset with improved efficiency (reduced variance) due to dimension reduction and correlation suppression. So we obtain two kinds of zeros in our first model : coerced zeros due to correlations (redundant information) and estimated ones with classical variable selection methods applied on remaining variables. This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
  	 	
-But to work, we need an explicit structure between the covariates. SEM are often used in social sciences and economy where a structure is supposed "by hand" but here we want to be able to find a structure without any a priori (possibility to include some known structure remains). Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented graph for our SEM. So we developped an MCMC algorithm to find it (R package CorReg on CRAN). However, Graphical LASSO can be used in the initialization step of our MCMC. This structure is based on a generative model to be able to compare likelihood-based criterion	 in the MCMC.
+But to work, we need an explicit structure between the covariates. SEM are often used in social sciences and economy where a structure is supposed "by hand" but here we want to be able to find a structure without any a priori (possibility to include some known structure remains). Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented graph for our SEM. So we developped an MCMC algorithm to find it (R package CorReg on CRAN). However, Graphical LASSO can be used in the initialization step of our MCMC. This structure is based on a generative model to be able to compare likelihood-based criterion in the MCMC.
  	\\
  	
  	%plan
  	This paper will first present the reduced model and its properties before describing in Section 3 the algorithm used to find the structure.
- 	We will then look at some numerical results on simulated (Section 4) and real industrial datasets (Section 5) before concluding and giving some perspectives in the sixth part.
+ 	We will then look at some numerical results on simulated (Section \ref{sectionsimul}) and real industrial datasets (Section \ref{sectionrealcase}) before concluding and giving some perspectives in the last part.
 	
 \section{Model to select decorrelated covariates}
 \subsection{The decorrelation problem in regression}
@@ -148,7 +148,7 @@ For a model defined by
 			&=&0+\sigma_Y^2 \operatorname{Tr}((X'X)^{-1})
 	\end{eqnarray}	 
 	and when correlations between covariates are strong, the matrix to invert is ill-conditioned, the variance explodes and so does the MSE.
-	Another problem is that matricial inversion requires $n\geq p$. When it is not the case, a frequently used alternative is the generalized inverse
+	Another problem is that matricial inversion requires $n\geq p$. When it is not the case, a frequently used alternative is the Moore-Penrose generalized inverse \cite{katsikis2008fast}. In the followings, matrices inverses when $n<p$ will refer to this generalized inverse. Thus OLS can obtain some results even with $n<p$ (see section \ref{sectionsimul} ).
 \subsection{Modelisation of the correlations}
 Let now $X \in \mathcal{R}^{n\times p}$ be a set of $p$ correlated covariates.
 We propose to explicitly define a family of $p_2$ internal regressions between covariates whith $I_2$ the set of indices of endogenous variables in $X$ (explained ones) and $I_1=\{I_1^1,\dots,I_1^p \}$ the set of the sets of indices of exogenous covariates (explaining ones) with $\forall j \notin I_2, I_1^j=\emptyset$. Then we have an explicit structure $S=(I_1,I_2,p_1,p_2)$ where $p_1=(p_1^1,\dots,p_1^{p_2})$ is the vector of the number of covariates in each internal regression. Thus we have $p_2=| I_2|$ and $p_1^j=|I_1^j|$ where $|.|$ represents the cardinal of an ensemble.
@@ -331,7 +331,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 
 	One would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. It also helps to face local extrema. In the followings, the chain was launched with twenty initialisations.
 	
-\section{Numerical results on simulated datasets}
+\section{Numerical results on simulated datasets} \label{sectionsimul}
 	\subsection{The datasets}	
 	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if \textsc{CorReg} 	keeps its promises.
 	The \textsc{CorReg} package has been tested on simulated datasets. 
@@ -862,7 +862,7 @@ $n$ & $p_2$&  $\psi$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{C
 
 
 	\clearpage	
-\section{Numerical results on real datasets}
+\section{Numerical results on real datasets} \label{sectionrealcase}
 \subsection{Quality case study} \label{sectionexfos}
 This work takes place in steel industry context, with quality oriented objective : to understand and prevent quality problems on finished product, knowing the whole process. 
 		
