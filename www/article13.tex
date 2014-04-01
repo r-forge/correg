@@ -10,7 +10,7 @@
  \graphicspath{{figures/}}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \author{Clément THERY, Christophe BIERNACKI, Gaétan LORIDANT}
-\title{CorReg: model-based pretreatment for regression with correlated variables. Application in steel industry}
+\title{Model-based pretreatment for regression with correlated variables.}
 
 %%%% debut macro %%%%
 \newenvironment{changemargin}[2]{\begin{list}{}{%
@@ -44,15 +44,16 @@
 
 When one wants to explain a phenomenon based on some covariates, the first statistical method tried frequently is the linear regression. It provides a predictive model with a good interpretability even  for non-statistician and is simple to learn. Therefore, linear regression is used in nearly all the fields where statistics are made, from industry (ballistic models to calibrate the process) to sociology (predicting some numerical properties of a population).
 Linear regression is a very classic situation but sometimes it has to face an also classical problem: the variance of the estimators, even whithout bias from modelisation. 
-We note the linear regression model:
+In this paper, vectors and matrices are in bold letters to distinguish them from scalars. We note the linear regression model:
 \begin{equation}
-		Y_{|X}=X\beta + \varepsilon
+		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}
 	\end{equation}
-	where $X$ is the $n\times p$ matrix of the explicative variables, $Y$ the  $n\times 1$ response vector and $\varepsilon \sim \mathcal{N}(0,\sigma_Y^2I_n)$ the noise of the regression, with $I_n$ the $n$-sized identity matrix and $\sigma_Y \in \mathcal{R}$. The $p\times 1$ vector $\beta$ is the vector of the coefficients of the regression, estimated with Ordinary Least Squares (\textsc{OLS}). As shown in section \ref{sectionOLS}, estimation of the parameters requires the inversion of a matrix which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
-Variance of $\hat{\beta}$ increases based on two aspects :
+	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables, $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I_n})$ the noise of the regression, with $\boldsymbol{I_n}$ the $n$-sized identity matrix and $\sigma_Y \in \mathcal{R}$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, estimated with Ordinary Least Squares (\textsc{OLS}). %As shown in section \ref{sectionOLS}, 
+	Estimation of the parameters requires the inversion of a matrix which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
+Variance of $\boldsymbol{\hat\beta}$ increases based on two aspects :
 \begin{itemize}
-	\item The dimension $p$ (number of covariates) of the model  : the more covariates you have the greater variance you get.
-	\item The correlations within the covariates : strongly correlated covariates give bad-conditioning and increase variance of the estimators .
+	\item The dimension $p$ (number of covariates) of the model: the more covariates you have the greater variance you get.
+	\item The correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
 \end{itemize}
 
 	With the rise of informatic, datasets contains more and more covariates and thus more and more useless covariates. So dimension reduction becomes a necessity. Moreover, when you use more covariates, you increase the chance to have correlated ones. It will be illustrated with examples from steel industry in the last section of this paper (many parameters of the whole process without any a priori) highly correlated (physical laws, process rules, etc). 
@@ -63,11 +64,11 @@ Variance of $\hat{\beta}$ increases based on two aspects :
 	Because \textsc{OLS} is the minimum-variance unbiased estimator, penalized methods try to reduce the variance introducing some bias to improve the bias-variance trade-off and get better prediction.
 Moreover, real datasets imply many irrelevant variables so we have to use variable selection methods.
 
-In the following we note classical norms: $\parallel\beta\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$ and $\parallel\beta \parallel_1=\sum_{i=1}^p|\beta_i| $.
+In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$ and $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $.
 
 	Ridge regression\cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty:
 	\begin{equation}
-		 \hat{\beta}=\operatorname{argmin} \left\lbrace \parallel Y-X\beta\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\beta\parallel_2^2\leq k
+		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel \boldsymbol{\beta} \parallel_2^2\leq k
 	\end{equation}
 	But Ridge regression do not aim at selecting covariates because coefficients tends to 0 but don't reach 0.
 	So it gives difficult interpretations for large values of $p$.	
@@ -75,7 +76,7 @@ In the following we note classical norms: $\parallel\beta\parallel_2^2=\sum_{i=1
 	
 	The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshirani1996regression}) consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty.
 		\begin{equation}
-		 \hat{\beta}=\operatorname{argmin} \left\lbrace \parallel Y-X\beta\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\beta\parallel_1\leq \lambda
+		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\boldsymbol{\beta} \parallel_1\leq \lambda
 		\end{equation}	
 	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) Algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. And it  really selects covariates with coefficients set exactly to 0.
 	 But \textsc{LASSO} also faces consistency problems \cite{Zhao2006MSC} when confronted  with correlated covariates. Another limitation of the \textsc{LASSO} is that it preserves at most $n$ predictors (troublesome when in high dimension). Some recent variants of the \textsc{LASSO} does exist for the choice of the penalization coefficient like the adaptative \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.
@@ -88,11 +89,11 @@ In the following we note classical norms: $\parallel\beta\parallel_2^2=\sum_{i=1
 %\end{equation}		
 	Elastic net can be written:
 	\begin{equation}
-		\hat{\beta}=(1+\lambda_2) \operatorname{argmin}\left\lbrace \parallel Y-X\beta \parallel_2^2 \right\rbrace, \textrm{ subject to } (1-\alpha)\parallel\beta\parallel_1+\alpha\parallel\beta\parallel_2^2\leq t \textrm{ for some } t
+		\boldsymbol{\hat{\beta}}=(1+\lambda_2) \operatorname{argmin}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta} \parallel_2^2 \right\rbrace, \textrm{ subject to } (1-\alpha)\parallel\boldsymbol{\beta}\parallel_1+\alpha\parallel\boldsymbol{\beta}\parallel_2^2\leq t \textrm{ for some } t
 	\end{equation}
 	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
 	%It seems to give good predictions. 
-	But it is based on the grouping effect and if the dataset contains two identical variables they will obtain the same coefficient whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Grouping effect is the fact that correlated covariates get similar coefficient and are selected together.
+	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model.
 	\\
 	
 	Another way of reducing the dimension is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (\textsc{OSCAR} \cite{bondell2008simultaneous}).
@@ -121,7 +122,7 @@ The idea is to hope that the model have a small number of groups of covariates a
  	We will then look at some numerical results on simulated (Section \ref{sectionsimul}) and real industrial datasets (Section \ref{sectionrealcase}) before concluding and giving some perspectives in the last part.
 	
 \section{Model to select decorrelated covariates}
-\subsection{The decorrelation problem in regression}\label{sectionOLS}
+\subsection{A classical problem: correlations in regression}\label{sectionOLS}
 For a model defined by 
 	\begin{equation}
 		Y_{|X}=X\beta + \varepsilon
