@@ -207,9 +207,9 @@ Moreover, the uncrossing constraint ($I_1\cap I_2=\emptyset$) guarantee to keep 
 			 \\
 			  
 		 
-	To better illustrate the bias-variance compromise, we look at a simple example with $p=3$ variables. $X_1$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $X_3=\frac{1}{2}x_1+\frac{1}{2}x_2+\varepsilon_3$ where $\varepsilon_3\sim{\mathcal{N}(0,\sigma_3^2)}$. We also have $\beta=(\frac{1}{3},\frac{1}{3},\frac{1}{3})$ and $\sigma_Y=10$. Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg} model: $MSE(\hat{\beta}|\beta,X)=Bias^2+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}))$ for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figures \ref{MQE1} to \ref{MQE3} show the theoretical MSE evolution with the strength of the sub-regression:
+	To better illustrate the bias-variance compromise, we look at a simple example with $p=3$ variables. $X_1$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $X_3=x_1+x_2+\varepsilon_3$ where $\varepsilon_3\sim{\mathcal{N}(0,\sigma_3^2)}$. We also have $\beta=(1,1,1)$ and $\sigma_Y=10$. Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg} model: $MSE(\hat{\beta}|\beta,X)=Bias^2+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}))$ for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figures \ref{MQE1} to \ref{MQE3} show the theoretical MSE evolution with the strength of the sub-regression:
 	\begin{equation}
-		1-\mathcal{R}^2=\frac{\operatorname{Var}(\varepsilon_3)}{\operatorname{Var}(x_3)}=\frac{\sigma_3^2}{\sigma_3^2+\frac{1}{2}}
+		1-\mathcal{R}^2=\frac{\operatorname{Var}(\varepsilon_3)}{\operatorname{Var}(x_3)}=\frac{\sigma_3^2}{\sigma_3^2+2}
 	\end{equation}
 	
 \begin{figure}[h!]
@@ -977,7 +977,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 	In the followings we suppose $\sigma^2_j\neq 0$.
 	
 	
-\subsubsection{Alternative neighbourhoods for the MCMC}
+\subsection{Alternative neighbourhoods for the MCMC}
 	We have here at each step $|\mathcal{V}_{S,j}|=p$ candidates but some other constraints can be added on the definition of $\mathcal{S}$ and will consequently modify the size of the neighbourhood (for example a maximum complexity for the internal regressions or the whole structure, a maximum number of internal regressions, {\it etc.}). \textsc{CorReg} allows to modify this neighbourhood to better fit users constraints. Relaxation (column-wise and row-wise) is optional but gives more stability to the number of feasible candidates at each step and allows to modify several parts of $I_1$ in only one step when needed. Hence it improves efficiency by a significant reinforcement of the irreductibility of the Markov chain. Rejecting candidates instead of doing the relaxation steps will  however reduce the number of evaluated candidates and thus accelerate the walk. So it can be used for a warming phase when $n$ is great and time is missing.
 	
 	The hierchical uniform hypothesis made above for $P(S)$ implies $p_2<\frac{p}{2}$ and $p_1^j<\frac{p}{2}$ so candidates may be rejected to satisfy this hypothesis. Stronger constraints on $p_2$ and/or $p_1$ can be given in \textsc{CorReg} if relevant.
