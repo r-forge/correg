@@ -3,7 +3,7 @@
 \title{Compute the BIC of a given structure}
 \usage{
 BicZ(X = X, Z = Z, Bic_null_vect = NULL, Bic_old = NULL, methode = 1,
-  Zold = NULL, star = TRUE)
+  Zold = NULL, star = FALSE)
 }
 \arguments{
   \item{X}{the dataset}

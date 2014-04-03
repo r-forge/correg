@@ -7,7 +7,7 @@
 #' @param Zold another structure with some common parts with Z (allows to compute only the differences)
 #' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
 #' @param star boolean defining wether classical BIC or BIC* is computed
-BicZ<-function(X=X,Z=Z,Bic_null_vect=NULL,Bic_old=NULL,methode=1,Zold=NULL,star=TRUE){
+BicZ<-function(X=X,Z=Z,Bic_null_vect=NULL,Bic_old=NULL,methode=1,Zold=NULL,star=FALSE){
    if(is.null(Bic_null_vect)){
       Bic_null_vect=density_estimation(X=X)$BIC_vect 
    }

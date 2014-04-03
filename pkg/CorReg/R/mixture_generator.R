@@ -9,6 +9,7 @@
 #' @param sigma_Y standard deviation for the noise of the regression
 #' @param sigma_X standard deviation for the noise of the subregression (all). ignored if gamma=T or if R2 is not NULL
 #' @param R2 the strength of the subregressions
+#' @param R2Y the strength of the main regression
 #' @param gamma boolean to generate a p-sized vector sigma_X gamma-distributed
 #' @param gammashape shape parameter of the gamma distribution (if needed)
 #' @param gammascale scale parameter of the gamma distribution (if needed)
@@ -34,16 +35,18 @@ mixture_generator<-function(n=130,
                             sigma_Y=10,
                             sigma_X=0.25,
                             R2=0.99,
-                            meanvar=NULL,
-                            sigmavar=NULL,
+                            R2Y=0.4,
+                            meanvar=0,
+                            sigmavar=1,
                             lambda=3,#pour l enombre de composantes des m?langes gaussiens
-                            Amax=15,
+                            Amax=NULL,
                             lambdapois=5,#pour les valeurs des coefs
-                            gamma=F,
+                            gamma=FALSE,
                             gammashape=1,
                             gammascale=0.5,tp1=1,tp2=1,tp3=1,pb=0,nonlin=0,pnonlin=2,scale=TRUE
 ){
   max_compl=min(max_compl,p)
+  if(is.null(Amax)){Amax=2*p}
   Amax=min(p+1,Amax) # min entre p+1 et Amax  why?
   R=round(ratio*p) # R : entier nombre de personne a gauche
   if(R==0){pb=0}
@@ -76,13 +79,11 @@ mixture_generator<-function(n=130,
   }else{
     A=generateurA_ou(Z=vraiZ,tp1=tp1,tp2=tp2,tp3=tp3,positive=positive,lambdapois=lambdapois,pb=pb,Amax=Amax,B=B)
   }
-
   composantes=rpois(p-R,lambda=lambda)
   composantes[composantes>n]=n #pas plus de composantes que de points
   composantes[composantes==0]=1#au moins une composante
   ploc=sum(composantes)
-  meanvar=NULL
-  sigmavar=NULL
+  
   if(is.null(meanvar)){
     meanvar=rpois(ploc,ploc)*(rep(-1,ploc)+2*rbinom(ploc,1,positive))
   }
@@ -122,9 +123,6 @@ mixture_generator<-function(n=130,
   rm(X1g)
 
   if(R>0){ 
-     if(scale){
-        X1=cbind(1,scale(X1[,-1]))
-     }
     X[,-list_X2]=X1
     if(!is.null(R2)){
        sigma_X=sqrt(((1-R2)*apply(X1%*%B[-list_X2,list_X2],2,var))/R2)
@@ -162,16 +160,21 @@ mixture_generator<-function(n=130,
   }  
   X=as.matrix(X)
   #names(X)=c("cste",paste("X_",1:p, sep=""))
+  
+  if(!is.null(R2Y)){
+     sigma_Y=sqrt(((1-R2Y)*apply(X%*%A,2,var))/R2)
+  }
   if(scale){
      X=cbind(1,scale(X[,-1]))
   }
   Y=X%*%A+rnorm(taille,mean=0,sd=sigma_Y)
+
   X_appr=as.matrix(X[1:n,-1])
   X_test=as.matrix(X[(n+1):taille,-1])
   Y_appr=as.matrix(Y[1:n])
   Y_test=as.matrix(Y[(n+1):taille]) 
   return(list(X_appr=X_appr,Y_appr=Y_appr,A=A,B=B[,-1],Z=vraiZ,
-              X_test=data.frame(X_test),Y_test=Y_test,sigma_X=sigma_X,mixmod=composantes))   
+              X_test=data.frame(X_test),Y_test=Y_test,sigma_X=sigma_X,sigma_Y=sigma_Y,mixmod=composantes))   
 }
 
 
