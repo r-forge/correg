@@ -3,7 +3,7 @@
 \title{MCMC algo to find a structure between the covariates}
 \usage{
 searchZ(X = X, Z = NULL, Bic_null_vect = NULL, candidates = -1,
-  reject = 1, methode = 1, p1max = 5, p2max = NULL, Maxiter = 1,
+  reject = 0, methode = 1, p1max = 5, p2max = NULL, Maxiter = 1,
   plot = FALSE, best = TRUE, better = FALSE, random = TRUE,
   verbose = 1, nb_opt_max = NULL, exact = TRUE, nbini = NULL,
   star = TRUE, clean = TRUE, ...)
