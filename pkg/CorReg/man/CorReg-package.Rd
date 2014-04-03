@@ -25,61 +25,47 @@ Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 
 
 \examples{
-require(CorReg)
-base=mixture_generator(n=25,p=20,ratio=0.4,sigma_X=0.001,tp1=1,tp2=1,tp3=1,positive=1)
+
+#dataset generation
+base=mixture_generator(n=15,p=10,ratio=0.4,tp1=1,tp2=1,tp3=1,positive=0.5,R2Y=0.8,R2=0.9,scale=TRUE,max_compl=3,lambda=1)
 X_appr=base$X_appr
 Y_appr=base$Y_appr
 Y_test=base$Y_test
 X_test=base$X_test
 TrueZ=base$Z#True generative structure (binary matrix)
-Trueclust=base$mixmod#classes of the gaussian mixtures (orthogonal covariates only)
 
-mixmod=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE)
+#density estimation for the MCMC
+mixmod=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE,mclust=T)
 BIC_empty_vect=mixmod$BIC_vect
-BIC_empty=sum(BIC_empty_vect)
 
-TrueBIC_vect=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=BIC_empty_vect)
-TrueBIC=sum(TrueBIC_vect)
-
-correl=cor(X_appr)#Correlations matrix will weight initialisation
-
-Zini=Winitial(W=correl,X=X_appr)#generates initial Z for the Markov chain
-BIC_ini_vect=BicZ(X=X_appr,Z=Zini,Bic_null_vect=BIC_empty_vect)
-Bic_ini=sum(BIC_ini_vect)
-
-#one chain
-res=searchZ(X=X_appr,Z=Zini,Maxiter=100,Bic_null_vect=BIC_empty_vect,star=TRUE,max_compl=5)
-#multiple chain
-#res=searchZ(X=X_appr,Z=NULL,nbini=20,Maxiter=100,Bic_null_vect=BIC_empty_vect)
-
+#MCMC to find the structure
+res=searchZ(X=X_appr,verbose=0,reject=0,Maxiter=900,nbtry=30,candidates=-1,Bic_null_vect=BIC_empty_vect,star=TRUE,p1max=15,clean=TRUE)
 hatZ=res$Z_opt
 hatBic=res$bic_opt
-sum(BicZ(X=X_appr,Z=hatZ,Bic_null_vect=BIC_empty_vect))#same value
 
+#BIC comparison between true and found structure
+bicopt_vect=BicZ(X=X_appr,Z=hatZ,Bic_null_vect=BIC_empty_vect)
+bicopt_vrai=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=BIC_empty_vect)
+sum(bicopt_vect);sum(bicopt_vrai)
+
+#interpretation of found and true structure ordered by increasing R2
 readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
+readZ(Z=TrueZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
 
+#Structure comparison
 compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
-select="lar"#LASSO with the Least Angle Regression algorithm to find the best model
-K=10
-groupe = rep(0:(K - 1), length.out = nrow(as.matrix(X_appr)))
-groupe = sample(groupe)
+
+#Regression coefficients estimation
 resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,
-               select=select,K=10,returning=TRUE,groupe=groupe)
+            select="NULL",K=10,returning=TRUE)
 
 MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$compl$A)
 MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)
 MSE_predictive=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$pred$A)
+MSE_vrai=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=base$A)
 
-MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive)
-MSE
-resY=correg(X=X_appr,Y=Y_appr,Z=TrueZ,compl=TRUE,expl=TRUE,pred=TRUE,
-               select=select,K=10,returning=TRUE,groupe=groupe)
-
-MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$compl$A)
-MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)
-MSE_predictive=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$pred$A)
-
-MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive)
-MSE
+MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive,MSE_vrai)
+MSE#estimated structure
+compZ$true_left;compZ$false_left
 #barplot(as.matrix(MSE),main="MSE on validation dataset", sub=paste("select=",select))
 }
