@@ -281,8 +281,8 @@ Structural equations models like \textsc{SEM} are often used in social sciences 
 
 	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model
 	\begin{eqnarray}
-		P(S|X)&\propto& P(X|S)P(S) \\
-		-2\log P(X|S)&\approx & BIC=-2\mathcal{L}(X,S,\Theta)+|\Theta|\log(n)\\  
+		P(S|\boldsymbol{X})&\propto& P(\boldsymbol{X}|S)P(S) \\
+		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)\\  
 	\end{eqnarray}
 	But $BIC$ tends to give too complex structures because we test a great range of models. 
 	Thus we choose to penalise the complexity a bit more with a hierarchical uniform {\it a priori} law $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$  instead of a simple uniform law on $S$.
@@ -292,9 +292,9 @@ Structural equations models like \textsc{SEM} are often used in social sciences 
 %	\end{eqnarray}		
 	It increases penalty on complexity for $p_2<\frac{p}{2}$ and $p_1^j<\frac{p}{2}$ . Hence %when using $BIC*$ 
 	this constraint on $\hat{p}_2$ and $\hat{p}_1^j$ is made in the MCMC in the followings.
-	But we can imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
-\\	
-		We will now use the following notation: $\psi(S)=\psi(X|S)$	where $\psi(X|S)$ is the chosen criterion, that will be $BIC$ with hierarchical uniform hypothesis in our numerical results. We do not change $BIC$ but only $P(S)$ so the properties are the same as classical $BIC$ but we will obtain better results when our hypothesis is verified.
+		We do not change $BIC$ but only $P(S)$ so the properties are the same as classical $BIC$ but we will obtain better results when our hypothesis is verified.
+
+	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
 	
 \subsection{MCMC algorithm}
 	\subsubsection{The neighbourhood}
@@ -320,14 +320,11 @@ Structural equations models like \textsc{SEM} are often used in social sciences 
 	At every moment, coherence between $I_1$ and others parts of $S$ can be done by $\forall 1\leq j\leq p :  p_1^j=|I_1^j|$, $I_2=\{j |p_1^j>0 \}$, $p_2= |I_2|$, .
 		
 	\subsubsection{Transition probabilities}
-	We first make the approximation
-	\begin{equation}
-		P(S|X)\approx exp(\psi(S)).
-	\end{equation}
-	The algorithm follows a time-homogeneous markov chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}|$ rows and columns (combinatory so we'll just compute the probabilities when we need them).
+	
+	The walk follows a time-homogeneous Markov Chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}|$ rows and columns (combinatory so we just compute the probabilities when we need them).
 	At each step the markov chain moves with probabiliy:
 	\begin{eqnarray}
-			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=&\sum_{j=1}^p \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{\exp(-\frac{1}{2} \psi(\tilde{S}))}{\sum_{S_l\in \mathcal{V}_{S,j}}\exp(-\frac{1}{2}\psi(S_l))} \\
+			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=&\sum_{j=1}^p \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{\exp(-\frac{1}{2}P(\tilde{S}|\boldsymbol{X}))}{\sum_{S_l\in \mathcal{V}_{S,j}}\exp(-\frac{1}{2}P(S_l|\boldsymbol{X}))} \\
 	\end{eqnarray}
 	And $\mathcal{S}$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
 	 
@@ -341,7 +338,7 @@ Because the walk follows a regular and thus ergodic markov chain with a finite s
 %		\pi (S) &=&\sum_{\tilde{S}\in \mathcal{S}} \pi(\tilde{S})\mathcal{P}(\tilde{S},S) \\%définition de la lois stationnaire
 %	\end{eqnarray}
 %		
-and the output will be the best structure in terms of $\psi$ which weights each candidate. Practically speaking, \textsc{CorReg} returns the best structure seen during the walk.
+and the output will be the best structure in terms of $P(S|\boldsymbol{X})$ which weights each candidate. Practically speaking, \textsc{CorReg} returns the best structure seen during the walk.
 Numerical results (Section 4) illustrates the efficiency of the walk when the true model really contains a linear structure or no structure at all (Table (\ref{compZvrai})) and when the structure is not linear (Table \ref{compZnonlin})).
 
  \subsubsection{Initialisation(s)}
