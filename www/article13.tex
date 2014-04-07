@@ -123,7 +123,7 @@ In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_
 % Principe de la méthode
 
  Where some reduce the dimension without looking at correlations and then have to suppose having no correlations between the remaining covariates,  we propose to focus on the correlations, giving a marginal model with orthogonal covariates and an explicit structure between covariates. Our work is based on the assumption that if we know explicitly the source of correlations, we could use this knowledge to avoid the problem.
- In fact we search the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint. This can be viewed as a pretreatment on the dataset allowing to use then other tools for dimension reduction and estimation without suffering from correlations. Practically speaking we use a system of linear regressions between the covariates to model the structure of the correlations. This structure is obtained by a MCMC algorithm optimizing the penalized likelihood of the joint law on the dataset $\boldsymbol{X}$. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
+ In fact we search the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint. This can be viewed as a pretreatment on the dataset allowing to use then other tools for dimension reduction and estimation without suffering from correlations. Practically speaking we use a system of linear regressions between the covariates to model the structure of the correlations. This structure is obtained by a MCMC algorithm optimizing the penalized likelihood of the joint law on the dataset $\boldsymbol{X}$. This algorithm is part of the R package \textsc{CorReg} accessible on \textsc{CRAN}. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
  %We will in a second time be able to use the remaining part of the information (sequential approach).	
  
 	
@@ -262,17 +262,17 @@ We see that $\sigma_y$ multplies $\operatorname{Tr}(\operatorname{Var}(\boldsymb
 \section{Sub-regressions model selection}	
 	\subsection{Modeling the uncorrelated covariates: a full generative approach}
 %ancienne intro	
-\textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented structure for our \textsc{SEM}. So we developped an MCMC algorithm to find the structure (R package \textsc{CorReg} on CRAN). The structure is based on a full generative model on $\boldsymbol{X}$ to be able to compare different size structures with a likelihood-based criterion in the \textsc{MCMC}.	
+Structural equations models like \textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero. But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles. So we developped an MCMC algorithm to find the structure (R package \textsc{CorReg} on CRAN). 
 	%ancienne intro
 	
-	To be able to compare structures with probabilistic criterions, we need a full generative model. We suppose that variables in $X_1$ follow Gaussian mixtures. 
+	To be able to compare structures with probabilistic likelihood-based criterions, we need a full generative model on $\boldsymbol{X}$ . We suppose that variables in $\boldsymbol{X_1}$ follow Gaussian mixtures. 
 	\begin{equation}
-			\forall j \notin I_2 : X^j_{|S} \sim f(\theta_j)=\mathcal{GM}(\pi_j;\mu_j;\sigma^2_j) \textrm{ with } \pi_j,\mu_j,\sigma^2_j \textrm{ vectors of size } k_j; \label{mixtureX1}
+			\forall j \notin I_2 : \boldsymbol{X^j}_{|S} \sim f(\boldsymbol{\theta_j})=\mathcal{GM}(\boldsymbol{\pi_j};\boldsymbol{\mu_j};\boldsymbol{\sigma^2_j}) \textrm{ with } \boldsymbol{\pi_j},\boldsymbol{\mu_j},\boldsymbol{\sigma^2_j} \textrm{ vectors of size } k_j. \label{mixtureX1}
 		\end{equation}
-		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust but one can use other laws if needed. Gaussian case is just a special case ($k_j=1$) of Gaussian mixture so it is included in our hypothesis.
+		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust but one can use other laws if needed (exponentially distributed for example). Gaussian case is just a special case ($k_j=1$) of Gaussian mixture so it is included in our hypothesis.
 
-		Variables in $X_1$ are supposed to be independent.
-	Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
+		Variables in $\boldsymbol{X_1}$ are supposed to be independent.
+	%Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
 	We now have a full generative model.
 	\subsection{Penalization of the integrated likelihood} \label{compstruct}
   To obtain the marginal regression model we need $S$, the linear structure between the covariates.
