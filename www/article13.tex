@@ -231,12 +231,13 @@ Moreover, the uncrossing constraint ($I_1\cap I_2=\emptyset$) guarantee to keep 
 	\subsection{Illustration of the tradeoff conveyed by the pretreatment}		  
 	 The Mean Squared Error (\textsc{MSE}) on $\boldsymbol{\hat{\beta}}$ is:
 	\begin{eqnarray}
-		\textsc{MSE}(\boldsymbol{\hat{\beta}}|\boldsymbol{\beta},\boldsymbol{X})&=&\operatorname{Bias}^2+\operatorname{Tr}(\operatorname{Var}(\boldsymbol{\hat{\beta}})) \\
-			&=&0+\sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}) \textrm{ for OLS and } 
+		\textsc{MSE}(\boldsymbol{\hat{\beta}}|\boldsymbol{\beta},\boldsymbol{X})&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\boldsymbol{\hat{\beta}})) \\
+			&=& 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}) \textrm{ for OLS, and then for the marginal model:} \\
+			&=& \parallel\sum_{j \in I_2}\beta_{j}\boldsymbol{\alpha_j} \parallel_2^2 +\parallel \boldsymbol{\beta_2}\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X_1}' \boldsymbol{X_1})^{-1})
 	\end{eqnarray}	 
-	To better illustrate the bias-variance tradeoff, we look at a simple example with $p=3$ variables. $X_1$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $X_3=x_1+x_2+\varepsilon_3$ where $\varepsilon_3\sim{\mathcal{N}(0,\sigma_3^2)}$. We also have $\beta=(1,1,1)$ and $\sigma_Y=10$. Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg} model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figures \ref{MQE1} to \ref{MQE3} show the theoretical MSE evolution with the strength of the sub-regression:
+	To better illustrate the bias-variance tradeoff, we look at a simple example with $p=3$ variables. $\boldsymbol{X_1}$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $\boldsymbol{x_3}=\boldsymbol{x_1}+\boldsymbol{x_2}+\boldsymbol{\varepsilon_3}$ where $\boldsymbol{\varepsilon_3}\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I_n})}$. We also have $\boldsymbol{\beta}=(1,1,1)$ and $\sigma_Y=10$. Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figures \ref{MQE1} to \ref{MQE3} show the theoretical MSE evolution with the strength of the sub-regression:
 	\begin{equation}
-		1-\mathcal{R}^2=\frac{\operatorname{Var}(\varepsilon_3)}{\operatorname{Var}(x_3)}=\frac{\sigma_3^2}{\sigma_3^2+2}
+		1-\mathcal{R}^2=\frac{\operatorname{Var}(\boldsymbol{\varepsilon_3)}}{\operatorname{Var}(\boldsymbol{x_3})}=\frac{\sigma_3^2}{\sigma_3^2+2}
 	\end{equation}
 	
 \begin{figure}[h!]
@@ -253,9 +254,10 @@ Moreover, the uncrossing constraint ($I_1\cap I_2=\emptyset$) guarantee to keep 
 			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
    \end{minipage} 
 \end{figure} 
-It is clear in Figures \ref{MQE1} to \ref{MQE3} that the marginal model is more robust than \textsc{OLS} on $X$. And when sub-regression get weaker ($1-\mathcal{R}^2$ tends to 1) it does not explode until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$.  $MSE_{OLS}=0+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}))=\operatorname{Tr}(\operatorname{Var}(\hat{\beta}_{1}))+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}_{2}))$ where both terms are multiplied by $\sigma_Y^2$ and so is $\operatorname{Tr}(\operatorname{Var}(\hat{\alpha}_{1}))$. Thus, as $\operatorname{Var}(\hat{\alpha}_{2})=0$ when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear).
+It is clear in Figures \ref{MQE1} to \ref{MQE3} that the marginal model is more robust than \textsc{OLS} on $X$. And when sub-regression get weaker ($1-\mathcal{R}^2$ tends to 1) it does not explode until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
+We see that $\sigma_y$ multplies $\operatorname{Tr}(\operatorname{Var}(\boldsymbol{\hat{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\boldsymbol{\hat{\beta}_{1}}))+\operatorname{Tr}(\operatorname{Var}(\boldsymbol{\hat{\beta}_{2}}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\boldsymbol{\hat{\beta}_{2}}))=0$.
+ Thus, as $\operatorname{Tr}(\operatorname{Var}(\boldsymbol{\hat{\beta}_{2}}))=0$ when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear).
 
-	
 	
 \section{Sub-regressions model selection}	
 	\subsection{Modeling the uncorrelated covariates: a full generative approach}
