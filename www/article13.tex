@@ -31,7 +31,26 @@
 	 \definecolor{darkblue}{rgb}{0,0,0.4}
 
 \begin{document}
-\maketitle
+
+\begin{center}
+{\Large
+	{\sc  CorReg : Régression sur variables Corrélées\\ et Application à l'industrie Sidérurgique}
+}
+\bigskip
+
+  Clément Théry$^{1}$ \& Christophe Biernacki$^{2}$ \& Gaétan Loridant$^{3}$
+\bigskip
+
+{\it
+$^{1}$ ArcelorMittal, Université Lille 1, Inria, CNRS, clement.thery@arcelormittal.com
+ 
+$^{2}$ Université Lille 1, Inria, CNRS, christophe.biernacki@math.univ-lille1.fr
+
+$^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormittal.com\textbf{}
+}
+\end{center}
+\bigskip
+april 2014
 \bigskip
 {\bf Abstract.} Linear regression outcomes are known to be damaged by correlated covariates. However many modern datasets are expected to convey more and more highly correlated covariates. We propose to explicitly model the correlations by a family of linear regressions between the covariates. Marginalization allows then to obtain a parsimonious correlation-free regression model, easily understandable and from which it is then possible to perform standard linear estimation methods including variables selection procedures for instance. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) available on the CRAN implements this new method which will be illustrated on both simulated datasets and real-life datasets from steel industry where correlated variables are frequent.
 \smallskip
