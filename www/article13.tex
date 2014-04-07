@@ -276,8 +276,10 @@ Structural equations models like \textsc{SEM} are often used in social sciences 
 	We now have a full generative model.
 	\subsection{Penalization of the integrated likelihood} \label{compstruct}
   To obtain the marginal regression model we need $S$, the linear structure between the covariates.
-	Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood according to the complexity of the structure~\cite{BIChuard}. We will prefer this kind of comparison criterion instead of cross-validation that is very time-consuming and thus not friendly with combinatory problematics.
-	We note $\Theta$ the set of the parameters of the generative model
+  Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $p_2$) and not related with $Y$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
+	Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood of the joint law on $\boldsymbol{X}$ according to the complexity of the structure~\cite{BIChuard}. 
+
+	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model
 	\begin{eqnarray}
 		P(S|X)&\propto& P(X|S)P(S) \\
 		-2\log P(X|S)&\approx & BIC=-2\mathcal{L}(X,S,\Theta)+|\Theta|\log(n)\\  
