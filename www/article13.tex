@@ -116,25 +116,17 @@ In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_
 	\\
 	
 	Another way of reducing the dimension is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (\textsc{OSCAR} \cite{bondell2008simultaneous}).
-	The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independant random variables with grouped $\beta_j$ following a Gaussian Mixture distribution. 
-
-The idea is to hope that the model have a small number of groups of covariates and that the mixture will have few enough components to have a number of parameters to estimate significantly lower than $p$. In such a case, it improves interpretability and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. But it requires to suppose having many covariates with the same level of effect on the response variable and seems to stay less efficient in prediction than elastic net. Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
+	The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independant random variables with grouped $\beta_j$ following a Gaussian Mixture distribution. The idea is to hope that the model have a small number of groups of covariates and that the mixture will have few enough components to have a number of parameters to estimate significantly lower than $p$. In such a case, it improves interpretability and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. 
+	
+	But it requires to suppose having many covariates with the same level of effect on the response variable and seems to stay less efficient in prediction than elastic net. Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
 	~\\	~\\
 % Principe de la méthode
 
- Where some try to reduce the dimension and then have to suppose having no correlations between the remaining covariates,  we propose to focus on the correlations, giving a model with orthogonal covariates and an explicit structure between covariates. In fact we search the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint. This can be viewed as a pretreatment on the dataset allowing to use then other dimension reduction tools without suffering from correlations. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
+ Where some reduce the dimension without looking at correlations and then have to suppose having no correlations between the remaining covariates,  we propose to focus on the correlations, giving a marginal model with orthogonal covariates and an explicit structure between covariates. Our work is based on the assumption that if we know explicitly the source of correlations, we could use this knowledge to avoid the problem.
+ In fact we search the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint. This can be viewed as a pretreatment on the dataset allowing to use then other tools for dimension reduction and estimation without suffering from correlations. Practically speaking we use a system of linear regressions between the covariates to model the structure of the correlations. This structure is obtained by a MCMC algorithm optimizing the penalized likelihood of the joint law on the dataset $\boldsymbol{X}$. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
  %We will in a second time be able to use the remaining part of the information (sequential approach).	
  
-	Our work is based on the assumption that if we know explicitly the source of correlations, we could use this knowledge to avoid the problem.
-	The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation}. Such a system is easy to interpret but estimation don't take advantage of the explicit structure \cite{TIMM} when the structure is straight forward (recursive \textsc{SEM}).
-  	Other methods take into account correlations but they only consider covariances between residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) or  endogenous variables like \textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}).
-
- 	
-	  We make the choice to distinguish the response variable from the other endogenous variables (that are on the left of a regression). Thus we have one regression on our response variable and a system of sub-regressions (without the response variable). Then we consider correlations between the explicative covariates of the main regression, not between the residuals.
-	  The structure is supposed to be the source of the correlations and allows us to define a marginal regression model based on a reduced set of independent covariates without significant information loss. So we may obtain two kinds of zeros in the marginal model : coerced zeros due to correlations (redundant information) and estimated ones with classical variable selection methods applied on remaining variables. This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
- 	 	
-\textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented structure for our \textsc{SEM}. So we developped an MCMC algorithm to find the structure (R package \textsc{CorReg} on CRAN). The structure is based on a full generative model on $\boldsymbol{X}$ to be able to compare different size structures with a likelihood-based criterion in the \textsc{MCMC}.
- 	\\
+	
  	
  	%plan
  	This paper will first present the marginal regression model and its properties before describing in Section 3 the random walk used to find the structure.
@@ -173,8 +165,21 @@ The family of $p_2$ regressions within correlated covariates in $\boldsymbol{X}$
 
 We make the hypothesis of the uncrossing rule $I_1\cap I_2=\emptyset$ {\it i.e.} endogenous variables don't explain other covariates, thus we have a partition $\boldsymbol{X}=\left[\boldsymbol{X_1},\boldsymbol{X_2}\right]$.
 
-The discrete structure $S$ is identifiable because we can't permute some regressions in (\ref{SR}) and obtain the same joint distribution $P(\boldsymbol{X},\boldsymbol{Y})$, the residuals ($\boldsymbol{\varepsilon_j}$) would not stay Gaussian (see the appendices). These residuals are in the following supposed independent but one can suppose dependencies between them and then use appropriate tools to estimate the $\boldsymbol{\delta_j}$ and $\sigma_j$ like \textsc{SUR} with Feasible Generalized Least Squares (\textsc{FGLS}) by Zellner \cite{SURzellner} or \textsc{SPRING} \cite{chiquetconf} as mentioned in the introduction.
-\\
+The discrete structure $S$ is identifiable because we can't permute some regressions in (\ref{SR}) and obtain the same joint distribution $P(\boldsymbol{X},\boldsymbol{Y})$, the residuals ($\boldsymbol{\varepsilon_j}$) would not stay Gaussian (see the appendices).
+
+
+%ancienne intro
+
+The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation}. Such a system is easy to interpret but estimation don't take advantage of the explicit structure \cite{TIMM} when the structure is straight forward (recursive \textsc{SEM}).
+  	Some methods take into account correlations but they only consider covariances between residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) or  endogenous variables like \textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}). 
+  	\\ Here we suppose independency between the residuals but in other cases it remains the possibility to use such methods to estimate the $\boldsymbol{\delta_j}$ and $\sigma_j$.
+
+ 	
+	  We make the choice to distinguish the response variable from the other endogenous variables (that are on the left of a regression). Thus we have one regression on our response variable and a system of sub-regressions (without the response variable). Then we consider correlations between the explicative covariates of the main regression, not between the residuals.
+	  The structure is supposed to be the source of the correlations and allows us to define a marginal regression model based on a reduced set of independent covariates without significant information loss. So we may obtain two kinds of zeros in the marginal model : coerced zeros due to correlations (redundant information) and estimated ones with classical variable selection methods applied on remaining variables. This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
+ 	\\
+%ancienne intro
+
 
 	
 \subsection{A by-product model: marginal regression with decorrelated covariates}
@@ -253,6 +258,10 @@ It is clear in Figures \ref{MQE1} to \ref{MQE3} that the marginal model is more 
 	
 \section{Sub-regressions model selection}	
 	\subsection{Modeling the uncorrelated covariates: a full generative approach}
+%ancienne intro	
+\textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix). It consists in a selection in the precision matrix, setting some covariances to zero. But the resulting matrix is symmetric and we need an oriented structure for our \textsc{SEM}. So we developped an MCMC algorithm to find the structure (R package \textsc{CorReg} on CRAN). The structure is based on a full generative model on $\boldsymbol{X}$ to be able to compare different size structures with a likelihood-based criterion in the \textsc{MCMC}.	
+	%ancienne intro
+	
 	To be able to compare structures with probabilistic criterions, we need a full generative model. We suppose that variables in $X_1$ follow Gaussian mixtures. 
 	\begin{equation}
 			\forall j \notin I_2 : X^j_{|S} \sim f(\theta_j)=\mathcal{GM}(\pi_j;\mu_j;\sigma^2_j) \textrm{ with } \pi_j,\mu_j,\sigma^2_j \textrm{ vectors of size } k_j; \label{mixtureX1}
