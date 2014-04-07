@@ -176,13 +176,14 @@ The structure obtained gives a system of linear regression that can be viewed as
 
  	
 	  We make the choice to distinguish the response variable from the other endogenous variables (that are on the left of a regression). Thus we have one regression on our response variable and a system of sub-regressions (without the response variable). Then we consider correlations between the explicative covariates of the main regression, not between the residuals.
-	  The structure is supposed to be the source of the correlations and allows us to define a marginal regression model based on a reduced set of independent covariates without significant information loss. So we may obtain two kinds of zeros in the marginal model : coerced zeros due to correlations (redundant information) and estimated ones with classical variable selection methods applied on remaining variables. This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
- 	\\
+	 
 %ancienne intro
 
 
 	
 \subsection{A by-product model: marginal regression with decorrelated covariates}
+ The structure is supposed to be the source of the correlations and allows us to define a marginal regression model based on a reduced set of independent covariates without significant information loss. So we may obtain two kinds of zeros in the marginal model : coerced zeros due to correlations (redundant information) and estimated ones with classical variable selection methods applied on remaining variables. This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
+ 	\\
 Let $\boldsymbol{Y} \in \mathcal{R}^n$ be a response variable we want to explain with $\boldsymbol{X}$:
 	\begin{equation}
 			\boldsymbol{Y}_{|\boldsymbol{X_1},\boldsymbol{X_2},S}=\boldsymbol{X_1\beta_1}+\boldsymbol{X_2\beta_2}+\boldsymbol{\varepsilon_Y} \textrm{ with } \boldsymbol{\varepsilon_Y} \sim \mathcal{N}(\boldsymbol{0},\sigma^2_Y\boldsymbol{I_n});	\label{MainR}
@@ -209,31 +210,31 @@ Moreover, the uncrossing constraint ($I_1\cap I_2=\emptyset$) guarantee to keep 
 
 	The marginal regression model simply is
 	\begin{equation}
-		Y_{|X_1}= X_1\alpha_1+ \varepsilon_{\alpha}
+		\boldsymbol{Y}_{|\boldsymbol{X_1}}= \boldsymbol{X_1}\boldsymbol{\beta_1^*}+ \boldsymbol{\varepsilon_Y^*}
 	\end{equation}			
 		So we have the \textsc{OLS} unbiased estimator of $\alpha$: 
 		\begin{equation}
-			\hat{\alpha}_{1} = (X'_{1} X_{1})^{-1}X'_{1}Y  \textrm{ and }\hat{\alpha}_{2} = 0
+			\boldsymbol{\hat\beta_1^*} = (\boldsymbol{X_1}' \boldsymbol{X_1})^{-1}\boldsymbol{X_1}'\boldsymbol{Y}  \textrm{ and }\boldsymbol{\hat\beta_2^*} = \boldsymbol{0}
 		\end{equation}
-		We see in (\ref{Trueexpl}) that it gives an unbiased estimation of $Y$ and $\alpha$
-		but in terms of $\beta$ this estimator is biased:
+		We see in (\ref{Trueexpl}) that it gives an unbiased estimation of $\boldsymbol{Y}$ and $\boldsymbol{\beta^*}$
+		but in terms of $\boldsymbol{\beta}$ this estimator is biased:
 		\begin{equation}
-			\operatorname{E}[\hat{\alpha_1}|X_1]=\beta_1+\sum_{j \in I_2}\beta_{j}\delta_j \textrm{ and }\operatorname{E}[\hat{\alpha_2}|X_1]=0
+			\operatorname{E}[\boldsymbol{\hat\beta_1^*}|\boldsymbol{X_1}]=\boldsymbol{\beta_1}+\sum_{j \in I_2}\beta_{j}\boldsymbol{\alpha_j} \textrm{ and }\operatorname{E}[\boldsymbol{\hat\beta_2^*}|\boldsymbol{X_1}]=\boldsymbol{0}
 		\end{equation}
 		with variance:
 		\begin{equation}
-			\operatorname{Var}[\hat{\alpha}_{1}|X_1]= (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 )(X'_{1} X_{1})^{-1}  \textrm{ and }\operatorname{Var}[\hat{\alpha}_{2}|X_1]= 0 
+			\operatorname{Var}[\boldsymbol{\hat\beta_1^*}|\boldsymbol{X_1}]= (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 )(\boldsymbol{X_1}' \boldsymbol{X_1})^{-1}  \textrm{ and }\operatorname{Var}[\boldsymbol{\hat\beta_2^*}|\boldsymbol{X_1}]= \boldsymbol{0} 
 		\end{equation}
 		We see that the variance is reduced compared to OLS described in equation (\ref{eqOLS})(no correlations and smaller matrix give better conditioning ) for small values of $\sigma_j$ $i.e.$ strong correlations. So we play on the bias-variance tradeoff, reducing the variance by adding a bias.		
 			%There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. Therefore we made some simulations to compare both methods (see the end of this paper).
 			 \\
 	\subsection{Illustration of the tradeoff conveyed by the pretreatment}		  
-	 The Mean Squared Error (\textsc{MSE}) on $\hat{\beta}$ is:
+	 The Mean Squared Error (\textsc{MSE}) on $\boldsymbol{\hat{\beta}}$ is:
 	\begin{eqnarray}
-		\textsc{MSE}(\hat{\beta}|\beta,X)&=&\operatorname{Bias}^2+\operatorname{Tr}(\operatorname{Var}(\hat{\beta})) \\
-			&=&0+\sigma_Y^2 \operatorname{Tr}((X'X)^{-1})
+		\textsc{MSE}(\boldsymbol{\hat{\beta}}|\boldsymbol{\beta},\boldsymbol{X})&=&\operatorname{Bias}^2+\operatorname{Tr}(\operatorname{Var}(\boldsymbol{\hat{\beta}})) \\
+			&=&0+\sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}) \textrm{ for OLS and } 
 	\end{eqnarray}	 
-	To better illustrate the bias-variance tradeoff, we look at a simple example with $p=3$ variables. $X_1$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $X_3=x_1+x_2+\varepsilon_3$ where $\varepsilon_3\sim{\mathcal{N}(0,\sigma_3^2)}$. We also have $\beta=(1,1,1)$ and $\sigma_Y=10$. Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg} model: $MSE(\hat{\beta}|\beta,X)=Bias^2+\operatorname{Tr}(\operatorname{Var}(\hat{\beta}))$ for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figures \ref{MQE1} to \ref{MQE3} show the theoretical MSE evolution with the strength of the sub-regression:
+	To better illustrate the bias-variance tradeoff, we look at a simple example with $p=3$ variables. $X_1$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $X_3=x_1+x_2+\varepsilon_3$ where $\varepsilon_3\sim{\mathcal{N}(0,\sigma_3^2)}$. We also have $\beta=(1,1,1)$ and $\sigma_Y=10$. Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg} model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figures \ref{MQE1} to \ref{MQE3} show the theoretical MSE evolution with the strength of the sub-regression:
 	\begin{equation}
 		1-\mathcal{R}^2=\frac{\operatorname{Var}(\varepsilon_3)}{\operatorname{Var}(x_3)}=\frac{\sigma_3^2}{\sigma_3^2+2}
 	\end{equation}
