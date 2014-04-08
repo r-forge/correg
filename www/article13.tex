@@ -277,12 +277,13 @@ Structural equations models like \textsc{SEM} are often used in social sciences 
 	\subsection{Penalization of the integrated likelihood} \label{compstruct}
   To obtain the marginal regression model we need $S$, the linear structure between the covariates.
   Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $p_2$) and not related with $Y$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
+	Because it is about model selection and we are able to provide a full generative model, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
 	Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood of the joint law on $\boldsymbol{X}$ according to the complexity of the structure~\cite{BIChuard}. 
 
 	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model
 	\begin{eqnarray}
 		P(S|\boldsymbol{X})&\propto& P(\boldsymbol{X}|S)P(S) \label{approxBIC}\\
-		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)\\  
+		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)  
 	\end{eqnarray}
 	But $BIC$ tends to give too complex structures because we test a great range of models. 
 	Thus we choose to penalise the complexity a bit more with a hierarchical uniform {\it a priori} law $P(S)=P(I_1 | p_1,I_2,p_2)P(p_1|I_2,p_2)P(I_2|p_2)P(p_2)$  instead of a simple uniform law on $S$.
@@ -342,7 +343,6 @@ and the output will be the best structure in terms of $P(S|\boldsymbol{X})$ whic
 Numerical results (Section 4) illustrates the efficiency of the walk when the true model really contains a linear structure or no structure at all (Table (\ref{compZvrai})) and when the structure is not linear (Table \ref{compZnonlin})).
 
  \subsubsection{Initialisation(s)}
-
  If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found and/or initial structure. So the model is really expert-friendly.
 The initial structure can be based on a first warming algorithm taking the correlations into account. coefficients are randomly placed into $I_1$, weighted by the absolute value of the correlations. We do so in the followings. Then this structure could be for example reduced by the hadamard product with the binary matrix obtained by Graphical Lasso\cite{friedman2008sparse} that makes selection in the precision matrix but it is time consuming.
 
