@@ -50,7 +50,7 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 \end{center}
 \bigskip
 
-{\bf Abstract.} Linear regression outcomes are known to be damaged by highly correlated covariates. However many modern datasets are expected to convey more and more highly correlated covariates due to the global increase of the amount of variables in datasets. We propose to explicitly model the correlations by a family of linear regressions between the covariates, some covariates explaining others. It allows then to obtain by marginalisation on the explained covariates a parsimonious correlation-free regression model, easily understandable and from which it is possible to perform standard linear estimation methods including variables selection procedures for instance. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) available on the CRAN implements this new method which will be illustrated on both simulated datasets and real-life datasets from steel industry where correlated variables are frequent.
+{\bf Abstract.} Linear regression outcomes are known to be damaged by highly correlated covariates. However many modern datasets are expected to convey more and more highly correlated covariates due to the global increase of the amount of variables in datasets. We propose to explicitly model the correlations by a family of linear regressions between the covariates, some covariates explaining others. It allows then to obtain by marginalisation on the explained covariates a parsimonious correlation-free regression model, easily understandable. This pretreatment by variable selection gives then the possibility to perform standard linear estimation methods including variables selection procedures for instance. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) available on the CRAN implements this new method which will be illustrated on both simulated datasets and real-life datasets from steel industry where correlated variables are frequent.
 \smallskip
 
 {\bf Keywords.} Regression, correlations, industry, variable selection, generative models
@@ -59,9 +59,8 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 %la régression et ses problèmes
 
 
-When one wants to explain a phenomenon based on some covariates, the first statistical method tried frequently is the linear regression. It provides a predictive model with a good interpretability even  for non-statistician and is simple to learn. Therefore, linear regression is used in nearly all the fields where statistics are made, from industry (ballistic models to calibrate the process) to sociology (predicting some numerical properties of a population).
-Linear regression is a very classic situation but sometimes it has to face an also classical problem: the variance of the estimators, even without bias from modelisation. 
-In this paper, vectors and matrices are in bold letters to distinguish them from scalars. We note the linear regression model:
+When one wants to explain a phenomenon based on some covariates, the first statistical method tried frequently is the linear regression. It provides a predictive model with a good interpretability even  for non-statistician and is simple to learn. Therefore, linear regression is used in nearly all the fields where statistics are made \cite{montgomery2012introduction}, from astronomy \cite{isobe1990linear} to sociology \cite{longford2012revision}.
+Linear regression is a very classic situation but sometimes it has to face an also classical problem: the variance of the estimators. We note the linear regression model:
 \begin{equation}
 		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}
 	\end{equation}
