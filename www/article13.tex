@@ -64,8 +64,8 @@ Linear regression is a very classic situation but sometimes it has to face an al
 \begin{equation}
 		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}
 	\end{equation}
-	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables, $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I_n})$ the noise of the regression, with $\boldsymbol{I_n}$ the $n$-sized identity matrix and $\sigma_Y \in \mathcal{R}$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated with Ordinary Least Squares (\textsc{OLS}). %As shown in section \ref{sectionOLS}, 
-	Estimation of the parameters requires the inversion of a matrix which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
+	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables, $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I_n})$ the noise of the regression, with $\boldsymbol{I_n}$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}). %As shown in section \ref{sectionOLS}, 
+	Estimation of $\boldsymbol{\beta}$ requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
 Variance of $\boldsymbol{\hat\beta}$ increases based on two aspects :
 \begin{itemize}
 	\item The dimension $p$ (number of covariates) of the model: the more covariates you have the greater variance you get.
