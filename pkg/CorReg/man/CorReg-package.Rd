@@ -28,18 +28,21 @@ Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 
 #dataset generation
 base=mixture_generator(n=15,p=10,ratio=0.4,tp1=1,tp2=1,tp3=1,positive=0.5,R2Y=0.8,R2=0.9,scale=TRUE,max_compl=3,lambda=1)
+
 X_appr=base$X_appr
 Y_appr=base$Y_appr
 Y_test=base$Y_test
 X_test=base$X_test
+
 TrueZ=base$Z#True generative structure (binary matrix)
 
 #density estimation for the MCMC
-mixmod=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE,mclust=T)
+mixmod=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE,mclust=TRUE)
 BIC_empty_vect=mixmod$BIC_vect
 
 #MCMC to find the structure
-res=searchZ(X=X_appr,verbose=0,reject=0,Maxiter=900,nbtry=30,candidates=-1,Bic_null_vect=BIC_empty_vect,star=TRUE,p1max=15,clean=TRUE)
+res=searchZ(X=X_appr,verbose=0,reject=0,Maxiter=900,
+nbtry=30,candidates=-1,Bic_null_vect=BIC_empty_vect,star=TRUE,p1max=15,clean=TRUE)
 hatZ=res$Z_opt
 hatBic=res$bic_opt
 
