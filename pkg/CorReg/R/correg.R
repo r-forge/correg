@@ -44,7 +44,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
                 select = "lar",
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
-                K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=TRUE,#final=FALSE,
+                K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=FALSE,#final=FALSE,
                 nbalter=10,deltamin=0.01,alpha=NULL,g=5) 
 {
   res = list()
