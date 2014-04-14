@@ -36,8 +36,8 @@ mixture_generator<-function(n=130,
                             sigma_X=0.25,
                             R2=0.99,
                             R2Y=0.4,
-                            meanvar=0,
-                            sigmavar=1,
+                            meanvar=NULL,
+                            sigmavar=NULL,
                             lambda=3,#pour l enombre de composantes des m?langes gaussiens
                             Amax=NULL,
                             lambdapois=5,#pour les valeurs des coefs
@@ -121,7 +121,6 @@ mixture_generator<-function(n=130,
     }
   }
   rm(X1g)
-
   if(R>0){ 
     X[,-list_X2]=X1
     if(!is.null(R2)){
@@ -160,15 +159,17 @@ mixture_generator<-function(n=130,
   }  
   X=as.matrix(X)
   #names(X)=c("cste",paste("X_",1:p, sep=""))
-  
-  if(!is.null(R2Y)){
-     sigma_Y=sqrt(((1-R2Y)*apply(X%*%A,2,var))/R2)
-  }
   if(scale){
      X=cbind(1,scale(X[,-1]))
   }
+  if(!is.null(R2Y)){
+     R2Y=min(R2Y,1)
+     R2Y=max(R2Y,0)
+     sigma_Y=sqrt(((1-R2Y)*apply(X%*%A,2,var))/R2)
+  }
+ 
   Y=X%*%A+rnorm(taille,mean=0,sd=sigma_Y)
-
+ 
   X_appr=as.matrix(X[1:n,-1])
   X_test=as.matrix(X[(n+1):taille,-1])
   Y_appr=as.matrix(Y[1:n])

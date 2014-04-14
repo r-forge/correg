@@ -2,13 +2,17 @@
 \alias{density_estimation}
 \title{BIC of estimated  marginal gaussian mixture densities}
 \usage{
-density_estimation(X = X, nbclustmax = 10, verbose = FALSE,
-  detailed = FALSE, max = TRUE, mclust = TRUE, nbini = 50)
+density_estimation(X = X, nbclustmax = 10, nbclustmin = 1,
+  verbose = FALSE, detailed = FALSE, max = TRUE, mclust = TRUE,
+  nbini = 50)
 }
 \arguments{
   \item{X}{the dataset (matrix)}
 
   \item{nbclustmax}{max number of clusters in the gaussian
+  mixtures}
+
+  \item{nbclustmin}{min number of clusters in the gaussian
   mixtures}
 
   \item{verbose}{verbose or not}
