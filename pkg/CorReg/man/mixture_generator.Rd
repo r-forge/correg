@@ -4,7 +4,7 @@
 \usage{
 mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
   valid = 1000, positive = 0.6, sigma_Y = 10, sigma_X = 0.25,
-  R2 = 0.99, R2Y = 0.4, meanvar = 0, sigmavar = 1, lambda = 3,
+  R2 = 0.99, R2Y = 0.4, meanvar = NULL, sigmavar = NULL, lambda = 3,
   Amax = NULL, lambdapois = 5, gamma = FALSE, gammashape = 1,
   gammascale = 0.5, tp1 = 1, tp2 = 1, tp3 = 1, pb = 0, nonlin = 0,
   pnonlin = 2, scale = TRUE)

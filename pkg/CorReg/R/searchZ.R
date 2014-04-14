@@ -38,7 +38,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
   if(is.null(Bic_null_vect)){
      Bic_null_vect=density_estimation(X=X,nbclustmax=10,verbose=FALSE,detailed=FALSE,mclust=TRUE)$BIC_vect
   }
-  if(is.null(nbini)){
+  if(is.null(nbini) ){
      if(is.null(Z)){
         Z=matrix(0,ncol=ncol(X),nrow=ncol(X))
      }
@@ -59,7 +59,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
         Wini=TRUE
      }
      res=list()
-     if(nbini>1){#first try with Zini matrix
+     if(nbini>1){#first try with provided Z matrix (or null if not provided)
         if(reject==0){#relax mode
            resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }else{# reject mode
@@ -68,7 +68,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
         if(resloc$bic_opt<=min(res$bic_opt,BICnull)){
            res=resloc
         }
-        nbini=nbini-1
+        nbini=nbini-1#to finally have the exact number of tries
      }
      if(clean){
         resclean=cleanZ(X=X,Z=res$Z_opt,Bic_null_vect=Bic_null_vect,star=star,verbose=verbose)#nettoyage colonnes puis ponctuel
