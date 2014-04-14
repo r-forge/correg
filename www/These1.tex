@@ -161,6 +161,8 @@
 			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. Thus if a structure is only touched by one missing value the penalty will be smaller than another same shaped structure but with more missing values implied.
 			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Another idea would be to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
 		
+%	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
+%	
 		
 		\subsection{Parameters estimation}
 			Estimating $B$ with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given $B$. So it's just about maximizing the likelihood of this density on $B$. This can be done with an Expectation-Maximization (EM) \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
