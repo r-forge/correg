@@ -1,5 +1,4 @@
 #' compare signs of the coefficients in two vectors
-#' @export
 #' @param trueA first vector
 #' @param Aalgo second vector
 compare_sign<-function(trueA=trueA,Aalgo=Aalgo){

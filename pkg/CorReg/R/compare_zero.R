@@ -1,5 +1,4 @@
 #' compare 0 values in two vectors
-#' @export
 #' @param trueA first vector
 #' @param Aalgo second vector
 #' @param taux boolean. Computes the ratio of each statistic or not.
