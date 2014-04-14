@@ -50,19 +50,19 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 \end{center}
 \bigskip
 
-{\bf Abstract.} Linear regression outcomes are known to be damaged by highly correlated covariates. However many modern datasets are expected to convey more and more highly correlated covariates due to the global increase of the amount of variables in datasets. We propose to explicitly model the correlations by a family of linear regressions between the covariates, some covariates explaining others. It allows then to obtain by marginalisation on the explained covariates a parsimonious correlation-free regression model, easily understandable. This pretreatment by variable selection gives then the possibility to perform standard linear estimation methods including variables selection procedures for instance. The structure of correlations is found with an MCMC algorithm. An R package (\textsc{CorReg}) available on the CRAN implements this new method which will be illustrated on both simulated datasets and real-life datasets from steel industry where correlated variables are frequent.
+{\bf Abstract.} Linear regression outcomes are known to be damaged by highly correlated covariates. However many modern datasets are expected to convey more and more highly correlated covariates due to the global increase of the amount of variables in datasets. We propose to explicitly model the correlations by a family of linear regressions between the covariates, some covariates explaining others. It allows then to obtain by marginalisation on the explained covariates a parsimonious correlation-free regression model, easily understandable. 
+It corresponds to a kind of variable selection preliminary step which has then to be followed by standard linear estimation methods including variables selection procedures for instance. The structure of correlations is found with an MCMC algorithm aiming at optimizing a specific BIC criterion.
+ An R package (\textsc{CorReg}) available on the CRAN implements this new method which will be illustrated on both simulated datasets and real-life datasets from steel industry where correlated variables are frequent.
 \smallskip
 
 {\bf Keywords.} Regression, correlations, industry, variable selection, generative models
 
 \section{Introduction}
 %la régression et ses problèmes
-
-
-When one wants to explain a phenomenon based on some covariates, the first statistical method tried frequently is the linear regression. It provides a predictive model with a good interpretability even  for non-statistician and is simple to learn. Therefore, linear regression is used in nearly all the fields where statistics are made \cite{montgomery2012introduction}, from industry and astronomy \cite{isobe1990linear} to sociology \cite{longford2012revision}.
+Linear regression is a very standard and efficient method providing a predictive model with a good interpretability even  for non-statistician. Therefore, linear regression is used in nearly all the fields where statistics are made \cite{montgomery2012introduction}, from industry and astronomy \cite{isobe1990linear} to sociology \cite{longford2012revision}.
 Linear regression is a very classic situation but sometimes it has to face an also classical problem: the variance of the estimators. We note the linear regression model:
 \begin{equation}
-		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}
+		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon} \label{regressionsimple}
 	\end{equation}
 	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables, $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}). %As shown in section \ref{sectionOLS}, 
 	Estimation of $\boldsymbol{\beta}$ requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
@@ -142,7 +142,7 @@ For a model defined by
 	\begin{equation}
 		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}
 	\end{equation}
-	With variance matrix
+	with variance matrix
 	\begin{equation}
 		\operatorname{Var}(\boldsymbol{\hat{\beta}})=\sigma_Y^2\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1} \label{eqOLS}
 	\end{equation}
@@ -150,8 +150,8 @@ For a model defined by
 	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
 	Another problem is that matricial inversion requires $n\geq p$. 
 \subsection{Our proposal: modelisation of the correlations}
-Let now $\boldsymbol{X} \in \mathcal{R}^{n\times p}$ be a set of $p$ correlated covariates.
-In the following, we note $\boldsymbol{X^j}$ the $j^{th}$ column of a matrix $\boldsymbol{X}$.
+Let now $\boldsymbol{X} \in \mathcal{R}^{n\times p}$ be a set of $p$ covariates.
+In the following, we note $\boldsymbol{X^j}$ the $j^{th}$ column of $\boldsymbol{X}$.
 
 We propose to explicitly define a family of $p_r$ internal regressions between covariates with $I_r$ the set of indices of endogenous variables in $\boldsymbol{X}$ (explained ones). We note $\boldsymbol{X}_r=\boldsymbol{X}^{I_r}$ the sub-matrix of the redundant covariates (explained by others) and  $\boldsymbol{X}_f$ the remaining submatrix of free covariates (independent explaining covariates).
 We focus here on the expression of $P(\boldsymbol{X}_r|\boldsymbol{X}_f)$.
@@ -186,19 +186,19 @@ The structure obtained gives a system of linear regression that can be viewed as
 \subsection{A by-product model: marginal regression with decorrelated covariates}
 Now we know $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$ by the structure of sub-regressions, we are able to define a marginal regression model $P(\boldsymbol{Y}|\boldsymbol{X}_f,S)$ based on the reduced set of independent covariates $\boldsymbol{X}_f$ without significant information loss. 
  	\\
-Let $\boldsymbol{Y} \in \mathcal{R}^n$ be a response variable we want to explain with $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$:
+Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can rewrite \ref{regressionsimple}:
 	\begin{equation}
 			\boldsymbol{Y}_{|\boldsymbol{X}_f,\boldsymbol{X}_r,S}=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon_Y} \textrm{ with } \boldsymbol{\varepsilon_Y} \sim \mathcal{N}(\boldsymbol{0},\sigma^2_Y\boldsymbol{I}_n);	\label{MainR}
 		\end{equation}
 		where $\boldsymbol{\beta}=(\boldsymbol{\beta}_f,\boldsymbol{\beta}_r) \in  \mathcal{R}^p$ is the vector of the regression coefficients associated respectively to $\boldsymbol{X}_f$ and $\boldsymbol{I}_n$ the identity matrix. 
-We note that (\ref{MainR}) and (\ref{SR}) also give by simple integration on $\boldsymbol{X}_r$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X}_f$}:
+We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\boldsymbol{X}_r$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X}_f$}:
 \begin{eqnarray}
 	\boldsymbol{Y}_{|\boldsymbol{X}_f,S}&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
-	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_2^*) \textrm{ and } \hat{\boldsymbol{\beta}}_r^*=\boldsymbol{\beta}_r^*=\boldsymbol{0}\label{modexpl}
+	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \hat{\boldsymbol{\beta}}_r^*=\boldsymbol{\beta}_r^*=\boldsymbol{0}\label{modexpl}
 \end{eqnarray}
-We note that it simply is a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $\boldsymbol{Y}$. 
+We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $\boldsymbol{Y}$. 
 
-\subsection{Strategy of use: pretreatment before classical selection methods}\label{interpretation}
+\subsection{Strategy of use: pretreatment before classical estimation/selection methods}\label{interpretation}
 As a pretreatment, it allows usage of any method in a second time to estimate $\boldsymbol{\beta}^*$, even with variable selection methods like LASSO or even stepwise \cite{seber2012linear}.
 
 After selection and estimation we will obtain a model with { \it two steps of variable selection}: the decorrelation step (coerced zeros associated to redundant information) and the classical selection step, with different meanings for obtained zeros in $\hat{\boldsymbol{\beta}}^*$. 
@@ -396,7 +396,7 @@ We see that (HU) hypothesis gives sparser models even with $\max (\hat{p}_f^j)=5
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
 \hline
-\multicolumn{3}{|c}{configuration}  &  \multicolumn{2}{|c}{Computing Time}  & \multicolumn{3}{|c}{Quality} & \multicolumn{2}{|c|}{Complexity}\\
+\multicolumn{3}{|c}{Configuration}  &  \multicolumn{2}{|c}{Computing Time}  & \multicolumn{3}{|c}{Quality} & \multicolumn{2}{|c|}{Complexity}\\
 \hline
 $n$ & $p_r$ & $P(S)$ &  Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta p_r$ & $\Delta compl$ \\
 \hline %global30p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_51_44.csv
