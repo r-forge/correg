@@ -5,7 +5,7 @@
 correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   pred = TRUE, prednew = FALSE, select = "lar", criterion = c("MSE",
   "BIC"), X_test = NULL, Y_test = NULL, intercept = TRUE, K = 10,
-  groupe = NULL, Amax = NULL, lambda = 1, returning = TRUE,
+  groupe = NULL, Amax = NULL, lambda = 1, returning = FALSE,
   nbalter = 10, deltamin = 0.01, alpha = NULL, g = 5)
 }
 \arguments{

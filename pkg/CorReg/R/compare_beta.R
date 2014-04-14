@@ -6,7 +6,8 @@
 
 compare_beta<-function(truebeta=truebeta,hatbeta=hatbeta,taux=FALSE){
    resloc=compare_zero(trueA=truebeta,Aalgo=hatbeta,taux=FALSE)
-   resloc=list(resloc,compare_sign(trueA=truebeta,Aalgo=hatbeta))
+   resloc=c(resloc,compare_sign(trueA=truebeta,Aalgo=hatbeta))
    resloc$biais=sum((truebeta-hatbeta)^2)
    return(resloc)
+   
 }
