@@ -71,8 +71,9 @@ We note the linear regression model:
 Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects : the dimension $p$ (number of covariates) of the model (the more covariates you have the greater variance you get)
 	 and the correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
 
-	With the rise of informatics, datasets contain more and more covariates and thus dimension reduction becomes a necessity. Moreover, increasing the number of covariates also increases the chance to have correlated ones. It will be illustrated with examples from steel industry in the last section of this paper (many parameters of the whole process without any a priori) highly correlated (physical laws, process rules, etc). 
-	 In such a context, variance of the estimators can lead to arbitrary results whereas interpretation and prediction are both strongly needed, depending on the context. For instance, in an industrial context interpretation could be favored to improve the process instead of only predict defects, so robust estimation is needed.
+	With the rise of informatics, datasets contain more and more covariates,% and thus dimension reduction becomes a necessity. Moreover, 
+	increasing the chance to have correlated ones.  It will be illustrated with examples from steel industry in the last section of this paper (many parameters of the whole process without any a priori) highly correlated (physical laws, process rules, etc). 
+	 In such a context, variance of the estimators can lead to arbitrary results whereas interpretation and prediction are both strongly needed, depending on the context. For instance, in an industrial context interpretation could be favoured to improve the process instead of only predict defects, so robust estimation is needed.
 		~\\	~\\
 		
 %bibliographie	
@@ -85,9 +86,8 @@ In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_
 	\begin{equation}
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel \boldsymbol{\beta} \parallel_2^2\leq \lambda \textrm{ with } \lambda>0
 	\end{equation}
-	But Ridge regression do not aim at selecting covariates because coefficients tends to 0 but don't reach 0.
-	So it gives difficult interpretations for large values of $p$.	
-	Moreover, real datasets imply many irrelevant variables so we have to use variable selection methods.
+	But this penalty is not guided by the correlations. It is the same for each covariates and will be too large for independent covariates and/or too small for correlated ones. So the efficiency is of such a method is limited. 
+	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $p$. Real datasets often imply many irrelevant variables so variable selection would be favoured when possible.
 	
 	The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshirani1996regression}) consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty to obtain zeros in $\hat{\boldsymbol{\beta}}$:
 		\begin{equation}
