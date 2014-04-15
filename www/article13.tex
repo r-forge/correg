@@ -77,28 +77,30 @@ Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects 
 		~\\	~\\
 		
 %bibliographie	
-	Because \textsc{OLS} is the minimum-variance linear unbiased estimator, penalized methods try to reduce the variance introducing some bias to improve the bias-variance trade-off and get better prediction.
+	Because \textsc{OLS} is the minimum-variance linear unbiased estimator, other methods can be seen as a pretreatment on the dataset to improve $\boldsymbol{X}'\boldsymbol{X}$ conditioning (by introducing some bias, selecting only some covariates, grouping some covariates, {\it etc.}).
 
 
 In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$ and $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $.
 
-	Ridge regression\cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty:
+	 Penalized methods try to reduce the variance introducing some bias to improve the bias-variance trade-off and get better prediction.
+	Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty:
 	\begin{equation}
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel \boldsymbol{\beta} \parallel_2^2\leq \lambda \textrm{ with } \lambda>0
 	\end{equation}
 	But this penalty is not guided by the correlations. It is the same for each covariates and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
-	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $p$. Real datasets often imply many irrelevant variables so variable selection would be favoured when possible.
+	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $p$. 
 	
+	Real datasets often imply many irrelevant variables so variable selection would be favoured when possible. Moreover, selection may keep only uncorrelated covariates and thus resolve the problem.	
 	The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshirani1996regression}) consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty to obtain zeros in $\hat{\boldsymbol{\beta}}$:
 		\begin{equation}
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\boldsymbol{\beta} \parallel_1\leq \lambda \textrm{ with } \lambda>0
 		\end{equation}	
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. Like the ridge regression, the penalty does not distinguish correlated and independent covariates, but the selection reduces the dimension and may select less correlated covariates.
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates.
 %	 Another limitation of the \textsc{LASSO} is that it preserves at most $n$ predictors (troublesome when in high dimension). 
 	 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptative \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But \textsc{LASSO} also faces consistency problems \cite{Zhao2006MSC} when confronted with correlated covariates.
 	 \\
 	 
-	Elastic net\cite{zou2005regularization}	is a method developed to be a compromise between Ridge regression and the \textsc{LASSO}: 
+	Elastic net \cite{zou2005regularization}	is a method developed to be a compromise between Ridge regression and the \textsc{LASSO}: 
 %	Given data set $(Y,X)$ and two parameters $(\lambda_1,\lamda_2)$, define artificial data set $(Y^*,X^*)$ by :
 %	\begin{equation}
 %		X^*_{(n+p)\times p}=(1+\lambda_2)^{-1/2}\left( X  \sqrt{\lambda_2}I \right), \ \ \  Y^*_{(n+p)}=\left( Y 0 \right)
@@ -109,10 +111,10 @@ In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_
 	\end{equation}
 	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
 	%It seems to give good predictions. 
-	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. %Hence, when comparing the two models, interpretations are not the same and nothing explicitly explains why. So it can be very confusing. 
+	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. %Hence, when comparing the two models, interpretations are not the same and nothing explicitly explains why. So it can be very confusing. 
 	\\
 	
-	Another way of reducing the dimension is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (\textsc{OSCAR} \cite{bondell2008simultaneous}).
+	Another way of improving the conditioning is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (\textsc{OSCAR} \cite{bondell2008simultaneous}) to reduce the dimension and also the correlations if correlated covariates are in the same clusters.
 	The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independant random variables with grouped $\beta_j$ following a Gaussian Mixture distribution. The idea is to hope that the model have a small number of groups of covariates and that the mixture will have few enough components to have a number of parameters to estimate significantly lower than $p$. In such a case, it improves interpretability and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. 
 	
 	But it requires to suppose having many covariates with the same level of effect on the response variable and seems to stay less efficient in prediction than elastic net. Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
@@ -121,11 +123,11 @@ In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_
 	~\\	~\\
 % Principe de la méthode
 
- Where some reduce the dimension without looking at correlations,  we propose to focus on the correlations, giving an explicit structure between covariates with the idea that if we know explicitly the source of correlations, we could use this knowledge to avoid the problem. Practically speaking we use a system of linear regressions between the covariates to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
-Then we can define a marginal model with uncorrelated covariates. Thus we have variable selection with explanation and improve interpretation and not only prediction.
- This can be viewed as a pretreatment on the dataset that will be followed then by any other tools for estimation and dimension reduction without suffering from correlations. 
+ Instead of reducing the dimension without looking at correlations,  we propose to focus on the correlations, giving an explicit structure between covariates with the idea that if we know explicitly the correlations, we could use this knowledge to avoid the problem. Practically speaking we use a system of linear regressions for the joint distribution of $\boldsymbol{X}$ to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
+Then we can define a marginal model with independent covariates. Thus we have variable selection with explanation and improve interpretation and not only prediction.
+ This can be viewed as a pretreatment on the dataset that will be followed then by any other tools for estimation and dimension reduction without suffering from correlations. This pretreatment is specifically done to decorrelate the covariates, unlike methods described above. 
  
-  The linear structure is obtained by a MCMC algorithm optimizing the penalized likelihood of the joint law on the dataset $\boldsymbol{X}$. This algorithm is part of the R package \textsc{CorReg} accessible on \textsc{CRAN}. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
+  The linear structure is obtained by a MCMC algorithm optimizing the penalized likelihood of the joint distribution on the dataset $\boldsymbol{X}$. This algorithm is part of the R package \textsc{CorReg} accessible on \textsc{CRAN}. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
  %We will in a second time be able to use the remaining part of the information (sequential approach).	
  
 	
@@ -190,7 +192,7 @@ Now we know $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$ by the structure of sub-reg
  	\\
 Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can rewrite (\ref{regressionsimple}):
 	\begin{equation}
-			\boldsymbol{Y}_{|\boldsymbol{X}_f,\boldsymbol{X}_r,S}=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon_Y} \textrm{ with } \boldsymbol{\varepsilon_Y} \sim \mathcal{N}(\boldsymbol{0},\sigma^2_Y\boldsymbol{I}_n);	\label{MainR}
+			\boldsymbol{Y}_{|\boldsymbol{X}_f,\boldsymbol{X}_r,S}=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon_Y} \label{MainR}
 		\end{equation}
 		where $\boldsymbol{\beta}=(\boldsymbol{\beta}_f,\boldsymbol{\beta}_r) \in  \mathcal{R}^p$ is the vector of the regression coefficients associated respectively to $\boldsymbol{X}_f$ and $\boldsymbol{I}_n$ the identity matrix. 
 We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\boldsymbol{X}_r$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X}_f$}:
@@ -272,7 +274,7 @@ Cross-validation is very time-consuming and thus not friendly with combinatory p
 	
 
 
-We want to find the structure $S$ that maximizes $P(S|\boldsymbol{X})$ and we have:	
+We want to find the most probable structure $S$ knowing the dataset, so we search for the structure that maximizes $P(S|\boldsymbol{X})$ and we have:	
 	\begin{eqnarray}
 	 \label{approxBIC} P(S|\boldsymbol{X})&\propto & P(\boldsymbol{X}|S)P(S)
 	=P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)P(\boldsymbol{X}_f|S)P(S)
