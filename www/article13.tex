@@ -188,7 +188,7 @@ The structure obtained gives a system of linear regression that can be viewed as
 \subsection{A by-product model: marginal regression with decorrelated covariates}
 Now we know $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$ by the structure of sub-regressions, we are able to define a marginal regression model $P(\boldsymbol{Y}|\boldsymbol{X}_f,S)$ based on the reduced set of independent covariates $\boldsymbol{X}_f$ without significant information loss. 
  	\\
-Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can rewrite \ref{regressionsimple}:
+Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can rewrite (\ref{regressionsimple}):
 	\begin{equation}
 			\boldsymbol{Y}_{|\boldsymbol{X}_f,\boldsymbol{X}_r,S}=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon_Y} \textrm{ with } \boldsymbol{\varepsilon_Y} \sim \mathcal{N}(\boldsymbol{0},\sigma^2_Y\boldsymbol{I}_n);	\label{MainR}
 		\end{equation}
