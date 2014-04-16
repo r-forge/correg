@@ -187,25 +187,38 @@ We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\b
 	\boldsymbol{Y}_{|\boldsymbol{X}_f,S}&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
 	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \boldsymbol{\beta}_r^*=\boldsymbol{0}\label{modexpl}
 \end{eqnarray}
-We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by selecting
-
-setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $\boldsymbol{Y}$. 
-
+We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by selecting $\boldsymbol{X}_f$ because of the correlations given by $S$.  It is a variable pre-selection independent of the response $\boldsymbol{Y}$. 
 \subsection{Strategy of use: pretreatment before classical estimation/selection methods}\label{interpretation}
-Now we have an explicit structure of correlations and we know which covariates will cause ill-conditioning. The explicit form also gives the ability to understand phenomenon inside the dataset and to see why some covariates are not selected by methods like the LASSO when all $\boldsymbol{X}$ is provided (redundent variables). 
-
 
 As a pretreatment, it allows usage of any method in a second time to estimate $\boldsymbol{\beta}^*$, even with variable selection methods like LASSO or even stepwise \cite{seber2012linear}.
 
-After selection and estimation we will obtain a model with { \it two steps of variable selection}: the decorrelation step (coerced zeros associated to redundant information) and the classical selection step, with different meanings for obtained zeros in $\hat{\boldsymbol{\beta}}^*$. 
- This two kinds of zero won't be interpreted in the same way and thus consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
+After selection and estimation we will obtain a model with { \it two steps of variable selection}: the decorrelation step (coerced selection associated to redundant information defined in $S$) and the classical selection step, with different meanings for obtained zeros in $\hat{\boldsymbol{\beta}}^*_f$ (irrelevant covariates) and for $\hat{\boldsymbol{\beta}}^*_r=0$ (redundant information). 
+ Thus we are able to distinguish the reasons of selection and consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
 
 
-The explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset. Expert knowledge can even be added to the structure.
+The explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset and to take better actions. Expert knowledge can even be added to the structure, physical models for example.
 
 Moreover, the uncrossing constraint ($I_f\cap I_r=\emptyset$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect) and straightforward readable.
 
-	For the marginal regression model defined in (\ref{modexpl})
+	
+			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We play on the bias-variance tradeoff.
+			 
+	\subsection{Illustration of the tradeoff conveyed by the pretreatment}	
+	As an example, we look at the OLS estimator on $\boldsymbol{X}$ with and without the pretreatment that is $\boldsymbol{X}_f$ selection.
+For a model defined by (\ref{regressionsimple}), we have the following Ordinary Least Squares (\textsc{OLS}) estimator:
+	\begin{equation}
+		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}
+	\end{equation}
+	with variance matrix
+	\begin{equation}
+		\operatorname{Var}(\hat{\boldsymbol{\beta}}_{OLS})=\sigma_Y^2\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1} \label{eqOLS}
+	\end{equation}
+	and without any bias.
+	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
+	Another problem is that matrix inversion requires $n\geq p$. 	
+		  
+		  
+For the marginal regression model defined in (\ref{modexpl})
 %	\begin{equation}
 %		\boldsymbol{Y}_{|\boldsymbol{X}_f}= \boldsymbol{X}_f\boldsymbol{\beta}_f^*+ \boldsymbol{\varepsilon}_Y^*
 %	\end{equation}			
@@ -223,22 +236,8 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 		\begin{equation}
 			\operatorname{Var}[\hat{\boldsymbol{\beta}}_f^*|\boldsymbol{X}_f]= (\sigma^2_Y+\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2 )(\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}  \textrm{ and }\operatorname{Var}[\hat{\boldsymbol{\beta}}_r^*|\boldsymbol{X}_f]= \boldsymbol{0} 
 		\end{equation}
-		We see that the variance is reduced compared to OLS described in equation (\ref{eqOLS})(no correlations and smaller matrix give better conditioning ) for small values of $\sigma_j$ $i.e.$ strong correlations. So we play on the bias-variance tradeoff, reducing the variance by adding a bias. 		
-			%There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. Therefore we made some simulations to compare both methods (see the end of this paper).
-			 \\
-	\subsection{Illustration of the tradeoff conveyed by the pretreatment}	
-	Here we look at the OLS case.
-For a model defined by (\ref{regressionsimple}), we have the following Ordinary Least Squares (\textsc{OLS}) estimator:
-	\begin{equation}
-		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}
-	\end{equation}
-	with variance matrix
-	\begin{equation}
-		\operatorname{Var}(\hat{\boldsymbol{\beta}}_{OLS})=\sigma_Y^2\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1} \label{eqOLS}
-	\end{equation}
-	and without any bias.
-	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
-	Another problem is that matrix inversion requires $n\geq p$. 	
+		We see that the variance is reduced compared to OLS described in equation (\ref{eqOLS})(no correlations and smaller matrix give better conditioning ) for small values of $\sigma_j$ $i.e.$ strong correlations. So we play on the bias-variance tradeoff, reducing the variance by adding a bias. 				  
+		  
 		  
 	 The Mean Squared Error (\textsc{MSE}) on $\hat{\boldsymbol{\beta}}$ is:
 	\begin{eqnarray}
@@ -268,9 +267,9 @@ For a model defined by (\ref{regressionsimple}), we have the following Ordinary 
 	\includegraphics[width=500px]{figures/MQEexplOLS.png}\label{MQE1}
 	\caption{MSE of OLS and CorReg (dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
-It is clear in Figure \ref{MQE1} that the marginal model is more robust than \textsc{OLS} on $X$. And when sub-regression get weaker ($1-\mathcal{R}^2$ tends to 1) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
+It is clear in Figure \ref{MQE1} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($1-\mathcal{R}^2$ tends to 1) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
 We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))=0$.
- Thus, as $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))=0$ when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear).
+ Thus, as $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))=0$ when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear). Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
 
 	
 \section{Sub-regressions model selection}	
