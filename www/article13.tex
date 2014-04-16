@@ -140,13 +140,15 @@ Then we can define a marginal model with independent covariates. Thus we have va
 %\subsection{A classical problem: correlations in regression}\label{sectionOLS}
 
 \subsection{Our proposal: modelisation of the correlations}
-We make the hypothesis that $\boldsymbol{X}$ can be described by a partition $\boldsymbol{X}=(\boldsymbol{X}_f,\boldsymbol{X}_r) $ where variables in $\boldsymbol{X}_r$ are endogenous covariates resulting from linear sub-regressions based on $\boldsymbol{X}_f$, the submatrix of mutually independent exogenous covariates. Then $\boldsymbol{X}_r$ is the $n\times p_r$ submatrix of $0\leq p_r <p$ redundent covariates and $\boldsymbol{X}_f$ the $n\times (p-p_r)$ submatrix of the free (independent) covariates.
+We make the hypothesis that $\boldsymbol{X}$ can be described by a partition $\boldsymbol{X}=(\boldsymbol{X}_f,\boldsymbol{X}_r) $ where variables in $\boldsymbol{X}_r$ are endogenous covariates resulting from linear sub-regressions based on $\boldsymbol{X}_f$, the submatrix of mutually independent exogenous covariates.
+So we model the correlations by $P(\boldsymbol{X}_r|\boldsymbol{X}_f) $ with $\boldsymbol{X}_f$ orthogonals.
+ Then $\boldsymbol{X}_r$ is the $n\times p_r$ submatrix of $0\leq p_r <p$ redundent covariates and $\boldsymbol{X}_f$ the $n\times (p-p_r)$ submatrix of the free (independent) covariates.
 In the following, we note $\boldsymbol{X}^j$ the $j^{th}$ column of $\boldsymbol{X}$ and $|.|$ represents the cardinal of an ensemble.
 The structure $S$ of $p_r$ regressions within correlated covariates in $\boldsymbol{X}$ is described by:
 	\begin{equation}
 		\boldsymbol{X}_{r|\boldsymbol{X}_f,S} \textrm{ defined by }\forall \boldsymbol{X}^j \subset \boldsymbol{X}_r: \boldsymbol{X}^j_{|\boldsymbol{X}_f,S}=\boldsymbol{X}_f\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j \textrm{ with } \boldsymbol{\varepsilon}_j \sim\mathcal{N}(\boldsymbol{0},\sigma^2_j\boldsymbol{I}_n) \label{SR}
 	\end{equation}
-		where $\boldsymbol{\alpha}_j \in \mathcal{R}^{(p-p_r)}$ are the vectors of the regression coefficients between the covariates. So we now have the expression of $P(\boldsymbol{X}_r|\boldsymbol{X}_f) $
+		where $\boldsymbol{\alpha}_j \in \mathcal{R}^{(p-p_r)}$ are the vectors of the regression coefficients between the covariates. 
 \\
 \\
 We note $I_r$ the set of indices of endogenous variables in $\boldsymbol{X}$ (explained ones).
@@ -163,7 +165,7 @@ The partition of $\boldsymbol{X}$ implies the uncrossing rule $I_f\cap I_r=\empt
 
 The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation}. Such a system is easy to interpret but estimation don't take advantage of the explicit structure \cite{TIMM} when the structure is straight forward (recursive \textsc{SEM}).
   	Some methods take into account correlations but they only consider covariances between residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) or  endogenous variables like \textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}) without explicit expression of the correlations and thus a smaller interpretation potential.
-  	\\ Here we suppose independency between the residuals but in other cases it remains the possibility to use such methods to estimate the $\boldsymbol{\alpha}_j$ and $\sigma_j$.
+  	\\ Here we suppose independence between the residuals but in other cases it remains the possibility to use such methods to estimate the $\boldsymbol{\alpha}_j$ and $\sigma_j$.
 
  	
 	  We make the choice to distinguish the response variable from the other endogenous variables (that are on the left of a sub-regression). Thus we have one regression on our response variable ($P(\boldsymbol{Y}|\boldsymbol{X}))$ and a system of sub-regressions (without the response variable: $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$). Then we consider correlations between the explicative covariates of the main regression, not between the residuals. We see that the $S$ does not depend on $\boldsymbol{Y}$ so it can be learnt independently, even with a larger dataset (if missing values in $\boldsymbol{Y}$).
@@ -185,7 +187,9 @@ We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\b
 	\boldsymbol{Y}_{|\boldsymbol{X}_f,S}&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
 	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \boldsymbol{\beta}_r^*=\boldsymbol{0}\label{modexpl}
 \end{eqnarray}
-We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $\boldsymbol{Y}$. 
+We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by selecting
+
+setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $\boldsymbol{Y}$. 
 
 \subsection{Strategy of use: pretreatment before classical estimation/selection methods}\label{interpretation}
 Now we have an explicit structure of correlations and we know which covariates will cause ill-conditioning. The explicit form also gives the ability to understand phenomenon inside the dataset and to see why some covariates are not selected by methods like the LASSO when all $\boldsymbol{X}$ is provided (redundent variables). 
