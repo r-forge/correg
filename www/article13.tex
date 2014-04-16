@@ -123,7 +123,7 @@ In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_
 	~\\	~\\
 % Principe de la méthode
 
- Instead of reducing the dimension without looking at correlations,  we propose to focus on the correlations, giving an explicit structure between covariates with the idea that if we know explicitly the correlations, we could use this knowledge to avoid the problem. Practically speaking we use a system of linear regressions for the joint distribution of $\boldsymbol{X}$ to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
+ Instead of reducing the dimension without looking at correlations,  we propose to focus on the correlations, giving an explicit structure between covariates with the idea that if we know explicitly the correlations, we could use this knowledge to avoid the problem. More precisely, we model the correlations with a system of linear regressions for the joint distribution of $\boldsymbol{X}$ to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
 Then we can define a marginal model with independent covariates. Thus we have variable selection with explanation and improve interpretation and not only prediction.
  This can be viewed as a pretreatment on the dataset that will be followed then by any other tools for estimation and dimension reduction without suffering from correlations. This pretreatment is specifically done to decorrelate the covariates, unlike methods described above. 
  
@@ -142,7 +142,7 @@ Then we can define a marginal model with independent covariates. Thus we have va
 \subsection{Our proposal: modelisation of the correlations}
 We make the hypothesis that $\boldsymbol{X}$ can be described by a partition $\boldsymbol{X}=(\boldsymbol{X}_f,\boldsymbol{X}_r) $ where variables in $\boldsymbol{X}_r$ are endogenous covariates resulting from linear sub-regressions based on $\boldsymbol{X}_f$, the submatrix of mutually independent exogenous covariates. Then $\boldsymbol{X}_r$ is the $n\times p_r$ submatrix of $0\leq p_r <p$ redundent covariates and $\boldsymbol{X}_f$ the $n\times (p-p_r)$ submatrix of the free (independent) covariates.
 In the following, we note $\boldsymbol{X}^j$ the $j^{th}$ column of $\boldsymbol{X}$ and $|.|$ represents the cardinal of an ensemble.
-The family of $p_r$ regressions within correlated covariates in $\boldsymbol{X}$ is noted:
+The structure $S$ of $p_r$ regressions within correlated covariates in $\boldsymbol{X}$ is described by:
 	\begin{equation}
 		\boldsymbol{X}_{r|\boldsymbol{X}_f,S} \textrm{ defined by }\forall \boldsymbol{X}^j \subset \boldsymbol{X}_r: \boldsymbol{X}^j_{|\boldsymbol{X}_f,S}=\boldsymbol{X}_f\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j \textrm{ with } \boldsymbol{\varepsilon}_j \sim\mathcal{N}(\boldsymbol{0},\sigma^2_j\boldsymbol{I}_n) \label{SR}
 	\end{equation}
@@ -183,7 +183,7 @@ Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can 
 We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\boldsymbol{X}_r$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X}_f$}:
 \begin{eqnarray}
 	\boldsymbol{Y}_{|\boldsymbol{X}_f,S}&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
-	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \hat{\boldsymbol{\beta}}_r^*=\boldsymbol{\beta}_r^*=\boldsymbol{0}\label{modexpl}
+	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \boldsymbol{\beta}_r^*=\boldsymbol{0}\label{modexpl}
 \end{eqnarray}
 We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by setting some coefficients to $0$ because of correlations. These $0$ won't be interpreted as independence with the response variable but as redundant information due to correlations between the covariates. It is a variable pre-selection independent of the response $\boldsymbol{Y}$. 
 
@@ -239,7 +239,8 @@ For a model defined by (\ref{regressionsimple}), we have the following Ordinary 
 	 The Mean Squared Error (\textsc{MSE}) on $\hat{\boldsymbol{\beta}}$ is:
 	\begin{eqnarray}
 		\textsc{MSE}(\hat{\boldsymbol{\beta}}|\boldsymbol{X})&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}})) \\
-			\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})&=& 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}) \textrm{ for OLS, and then for the marginal model:} \\
+			\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})&=& 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}) %\textrm{ for OLS, and then for the marginal model:}
+			 \\
 			\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1})
 	\end{eqnarray}	 
 	To better illustrate the bias-variance tradeoff, we look at a simple example with $p=3$ variables. $\boldsymbol{X}_f$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also have $\boldsymbol{\beta}=(1,1,1)$ and $\sigma_Y \in \{1,10\}$  . Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQE1} shows the theoretical MSE evolution with the strength of the sub-regression:
