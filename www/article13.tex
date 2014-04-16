@@ -275,17 +275,16 @@ We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\bo
 \section{Sub-regressions model selection}	
 Structural equations models like \textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero. But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
 
-Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $p_2$) and not related with $Y$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
-	
-The discrete structure $S$ is identifiable because we can't permute some regressions in (\ref{SR}) and obtain the same joint distribution $P(\boldsymbol{X},\boldsymbol{Y})$, the residuals ($\boldsymbol{\varepsilon}_j$) would not stay Gaussian (see the appendices).
-
+Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $p_r$) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
 
 We want to find the most probable structure $S$ knowing the dataset, so we search for the structure that maximizes $P(S|\boldsymbol{X})$ and we have:	
 	\begin{eqnarray}
 	 \label{approxBIC} P(S|\boldsymbol{X})&\propto & P(\boldsymbol{X}|S)P(S)
 	=P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)P(\boldsymbol{X}_f|S)P(S)
 	\end{eqnarray}
-	
+
+	The discrete structure $S$ is identifiable because we can't permute some regressions in (\ref{SR}) and obtain the same joint distribution $P(\boldsymbol{X},\boldsymbol{Y})$, the residuals ($\boldsymbol{\varepsilon}_j$) would not stay Gaussian (see the appendices).
+
 	\subsection{Modeling the uncorrelated covariates: a full generative approach on $P(\boldsymbol{X})$}
 	To be able to compare structures with probabilistic likelihood-based criterions, we need a full generative model on $\boldsymbol{X}$. Sub-regressions give $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S) $ but $P(\boldsymbol{X}_f|S)$ is still undefined. We suppose that variables in $\boldsymbol{X}_f$ follow Gaussian mixtures of $k_j \in \mathbf{N}^*$ components: 
 	\begin{equation}
