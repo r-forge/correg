@@ -10,7 +10,7 @@
  \graphicspath{{figures/}}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 %\author{Clément THERY, Christophe BIERNACKI, Gaétan LORIDANT}
-\title{Model-based pretreatment for regression with correlated variables.}
+\title{Model-based variable selection for regression with highly correlated variables.}
 
 %%%% debut macro %%%%
 \newenvironment{changemargin}[2]{\begin{list}{}{%
@@ -71,18 +71,18 @@ We note the linear regression model:
 Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects : the dimension $p$ (number of covariates) of the model (the more covariates you have the greater variance you get)
 	 and the correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
 
-	With the rise of informatics, datasets contain more and more covariates,% and thus dimension reduction becomes a necessity. Moreover, 
-	increasing the chance to have correlated ones.  It will be illustrated with examples from steel industry in the last section of this paper (many parameters of the whole process without any a priori) highly correlated (physical laws, process rules, etc). 
+	With the rise of informatics, datasets contain more and more covariates, % and thus dimension reduction becomes a necessity. Moreover, 
+	increasing the chance to have correlated ones.  It will be illustrated with examples from steel industry in the last section of this paper (many parameters of the whole process without any a priori and highly correlated: physical laws, process rules, etc). 
 	 In such a context, variance of the estimators can lead to arbitrary results whereas interpretation and prediction are both strongly needed, depending on the context. For instance, in an industrial context interpretation could be favoured to improve the process instead of only predict defects, so robust estimation is needed.
 		~\\	~\\
 		
 %bibliographie	
-	Because \textsc{OLS} is the minimum-variance linear unbiased estimator, other methods can be seen as a pretreatment on the dataset to improve $\boldsymbol{X}'\boldsymbol{X}$ conditioning (by introducing some bias, selecting only some covariates, grouping some covariates, {\it etc.}).
+	Because \textsc{OLS} is the minimum-variance linear unbiased estimator, some other methods can be seen as a modification of the dataset to improve the robustess of the estimator (by introducing some bias, selecting only some covariates, grouping some covariates, {\it etc.}).
 
 
 In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$ and $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $.
 
-	 Penalized methods try to reduce the variance introducing some bias to improve the bias-variance trade-off and get better prediction.
+	 Penalized methods try to reduce the variance introducing some bias to improve the bias-variance tradeoff and get better prediction.
 	Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty:
 	\begin{equation}
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel \boldsymbol{\beta} \parallel_2^2\leq \lambda \textrm{ with } \lambda>0
