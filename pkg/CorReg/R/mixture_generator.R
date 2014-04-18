@@ -159,16 +159,16 @@ mixture_generator<-function(n=130,
   }  
   X=as.matrix(X)
   #names(X)=c("cste",paste("X_",1:p, sep=""))
-  if(scale){
+  if(scale){#centrage réduction de X avant son utilisation
      X=cbind(1,scale(X[,-1]))
   }
-  if(!is.null(R2Y)){
+  if(!is.null(R2Y)){# le calcul tient donc compte du scaling
      R2Y=min(R2Y,1)
      R2Y=max(R2Y,0)
      sigma_Y=sqrt(((1-R2Y)*apply(X%*%A,2,var))/R2)
   }
  
-  Y=X%*%A+rnorm(taille,mean=0,sd=sigma_Y)
+  Y=X%*%A+rnorm(taille,mean=0,sd=sigma_Y)#pas de scale sur Y, sinon on perd le vrai A
  
   X_appr=as.matrix(X[1:n,-1])
   X_test=as.matrix(X[(n+1):taille,-1])
