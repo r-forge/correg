@@ -9,6 +9,7 @@ Authors@R: c(person("Clement", "THERY", role = c("aut", "cre"),
     person("Gaetan", "LORIDANT", role = "ctb"),
     person("Florian", "WATRIN", role = "ctb"),
     person("Quentin", "GRIMONPREZ", role = "ctb")
+    person("Vincent", "KUBICKI", role = "ctb")
     )
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Sequential linear regression based on a recursive structural
