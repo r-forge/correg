@@ -25,6 +25,7 @@
 #' @param nonlin to use non linear structure (half squared , half log). if not null, it is the proba to use power pnonlin instead of log
 #' @param pnonlin the power used if non linear structure
 #' @param scale boolean to scale X before computing Y
+#' @param Z the adjacency matrix to obtain
 #' @export
 mixture_generator<-function(n=130,
                             p=100,
@@ -43,12 +44,21 @@ mixture_generator<-function(n=130,
                             lambdapois=5,#pour les valeurs des coefs
                             gamma=FALSE,
                             gammashape=1,
-                            gammascale=0.5,tp1=1,tp2=1,tp3=1,pb=0,nonlin=0,pnonlin=2,scale=TRUE
+                            gammascale=0.5,tp1=1,tp2=1,tp3=1,
+                            pb=0,nonlin=0,pnonlin=2,scale=TRUE,Z=NULL
 ){
-  max_compl=min(max_compl,p)
+   if(is.null(Z)){
+     max_compl=min(max_compl,p)
+   }else{
+      max_compl=max(colSums(Z))
+   }
   if(is.null(Amax)){Amax=2*p}
   Amax=min(p+1,Amax) # min entre p+1 et Amax  why?
-  R=round(ratio*p) # R : entier nombre de personne a gauche
+  if(is.null(Z)){
+     R=round(ratio*p) # R : entier nombre de personne a gauche
+  }else{
+     R=sum(colSums(Z)!=0)
+  }
   if(R==0){pb=0}
   if(is.null(Amax) | Amax>p){Amax=p+1}
   #lmabda param?tre le nombre de composantes des m?langes gaussiens   
@@ -57,10 +67,19 @@ mixture_generator<-function(n=130,
   taille=n+valid
   qui=2:(p+1)  # vecteur de taille p qui contient les valeurs allant de 2 Ã  p+1 avec un pas de 1
   if(R>0){
-    list_X2=sample(qui,R) # melange R individus pri au hasard 
+     if(is.null(Z)){
+        list_X2=sample(qui,R) # melange R individus pri au hasard 
+     }else{
+        list_X2=which(colSums(Z)!=0)
+     }
     B[1,list_X2]=rpois(R,lambdapois)*(rep(-1,R)+2*rbinom(R,1,positive)) # 1ere ligne de B = ?????
     for(j in list_X2){#remplissage aléatoire de max_compl éléments de B sur chaque colonne à gauche
-      B[sample(qui[-c(list_X2-1)],size=max_compl),j]=(1/max_compl)*max(1,rpois(max_compl,lambdapois))*(rep(-1,max_compl)+2*rbinom(max_compl,1,positive))
+      if(is.null(Z)){
+         B[sample(qui[-c(list_X2-1)],size=max_compl),j]=(1/max_compl)*max(1,rpois(max_compl,lambdapois))*(rep(-1,max_compl)+2*rbinom(max_compl,1,positive))
+      }else{
+         compl_loc=colSums(Z)[j]
+         B[sample(qui[-c(list_X2-1)],size=compl_loc),j]=(1/compl_loc)*max(1,rpois(compl_loc,lambdapois))*(rep(-1,compl_loc)+2*rbinom(compl_loc,1,positive))
+      }
     }
     #ajout de G
     G=diag(p+1)
