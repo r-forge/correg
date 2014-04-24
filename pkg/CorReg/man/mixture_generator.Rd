@@ -7,7 +7,7 @@ mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
   R2 = 0.99, R2Y = 0.4, meanvar = NULL, sigmavar = NULL, lambda = 3,
   Amax = NULL, lambdapois = 5, gamma = FALSE, gammashape = 1,
   gammascale = 0.5, tp1 = 1, tp2 = 1, tp3 = 1, pb = 0, nonlin = 0,
-  pnonlin = 2, scale = TRUE)
+  pnonlin = 2, scale = TRUE, Z = NULL)
 }
 \arguments{
   \item{n}{the number of individuals in the learning
@@ -78,6 +78,8 @@ mixture_generator(n = 130, p = 100, ratio = 0.4, max_compl = 1,
   \item{pnonlin}{the power used if non linear structure}
 
   \item{scale}{boolean to scale X before computing Y}
+
+  \item{Z}{the adjacency matrix to obtain}
 }
 \description{
 Gaussiam mixture dataset generator with regression between
