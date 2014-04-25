@@ -1039,7 +1039,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 	\subsection{Identifiability of the structure}
 	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure the MCMC will asymptotically find the true model. Identifiability of the discrete structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
 	
-		If there are exact sub-regressions ($\sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. %\textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
+		If there are exact sub-regressions ($\sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. \textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
 	In the followings we suppose $\sigma^2_j\neq 0$.
 	
 	We introduce the matricial notation
@@ -1066,13 +1066,10 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 	
 	
 	
-	If the sufficient condition is not satisfied but we have different variances for $\boldsymbol{X}_f$ and $\boldsymbol{X}_r$,then we don't have identifiability but reverse regressions don't give the same results as the true model, as illustrated in the well-known salary discrimination study \cite{goldberger1984reverse} and explained by others (\cite{leamer1978least},\cite{cameron2005microeconometrics})
+	If the sufficient condition is not satisfied but we have different variances for $\boldsymbol{X}_f$ and $\boldsymbol{X}_r$, then we don't have identifiability but reverse regressions don't give the same results as the true model, as illustrated in the well-known salary discrimination study \cite{goldberger1984reverse} and explained in books and papers (\cite{leamer1978least},\cite{cameron2005microeconometrics}).
 	
 	Remark : the uncrossing constraint ($I_2\cap I_1 = \emptyset$) significantly reduces the number of feasible models and thus increases identifiability (because it also reduces the number of models equivalent in interpretation).
 	
-	
-	If there are exact sub-regressions, classical methods will fail (singular matrix) and the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. CorReg (Our R package) prints a warning to point out exact sub-regressions when found.
-			
 %	 As a set of Gaussian mixtures and linear combination of Gaussian mixtures, $\boldsymbol{X}$ follows a multivariate Gaussian mixture model with $K$ components:
 %		\begin{eqnarray}
 %			f(\boldsymbol{X}|S,\theta)=\sum_{k=1}^Kp_k \Phi(\boldsymbol{X}_r|\boldsymbol{X}_f\boldsymbol{\alpha},S,\theta)\Phi(\boldsymbol{X}_f|S,\theta)
