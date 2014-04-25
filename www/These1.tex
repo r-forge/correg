@@ -21,17 +21,44 @@
 	\section{Ordinary least squares and associated problems}
 	\section{Dimension reduction}
 		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression }
+			\cite{bondell2008simultaneous}%Oscar
 		\subsection{CLERE: CLusterwise Effect REgression}
+			\cite{yengo2012variable}%clere
 		\subsection{Spike and Slab}	
+			\cite{ishwaran2005spike}%spike and slab
 	\section{Penalized models}
 		\subsection{Ridge regression}
+			\cite{hoerl1970ridge}
+			\cite{marquardt1975ridge}
 		\subsection{LASSO: Least Absolute Shrinkage and Selection Operator }
+			\cite{tibshiranilasso}  
+			\cite{tibshirani1996regression} 
+			\cite{efron2004least} %LAR
+			\cite{Zhao2006MSC}%problèmes du lasso/lars en correlations
+			\cite{SAM10088}%lars necessite OLS en surcouche
+
 		\subsection{Adaptative LASSO and Random LASSO}
+			\cite{zou2006adaptive}% adaptative lasso
+			\cite{wang2011random}%random lasso
 		\subsection{Elasticnet}
+			\cite{zou2005regularization}
 	\section{Multiple Equations}
 		\subsection{SEM and Path Analysis}
 		\subsection{SUR: Seemingly Unrelated Regression}
+			\cite{SURzellner}
 		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}
+			\cite{chiquetconf}			
+			
+		\subsection{Selvarclust: Linear regression within covariates for clustering}
+			\cite{maugis2009variable}
+			The idea is to allow covariates to have different roles : $(S,R,U,W)$.
+			But:
+			\begin{itemize}
+				\item It is about clustering and not regression (not the same application field)
+				\item No sub-regression allowed between relevant variables (in the True model)
+				\item Using stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}
+			\end{itemize}	
+			We provide an specific MCMC algorithm with the ability to have redundant covariates in the true model.		 
 \part{\textsc{CorReg} : the concept}
 \chapter{Decorrelating covariates by a generative model}
 	\section{Generative model}
@@ -56,7 +83,7 @@
 		\subsection{Consistency Issues}\label{consistency}
 		Consistency issues of the LASSO are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
 		We have taken the same example to show how our method is more consistent.
-		Here $p=3$ and $n=1000$.We define $X_1,X_2,\varepsilon_Y,\varepsilon_{X} i.i.d. \sim \mathcal{N}(0,1)$ and then $X_3=\frac{2}{3}X_1+\frac{2}{3}X_2+\frac{1}{3}\varepsilon_X$ and $Y=2X_1+3X_2+\varepsilon_Y$.
+		Here $p=3$ and $n=1000$.We define $\boldsymbol{X}_f,\boldsymbol{X}_r,\boldsymbol{\varepsilon}_Y,\boldsymbol{\varepsilon}_{X} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then $X_3=\frac{2}{3}X_1+\frac{2}{3}X_2+\frac{1}{3}\varepsilon_X$ and $Y=2X_1+3X_2+\varepsilon_Y$.
 		We compare consistencies of complete,explicative and predictive model with LASSO (and LAR) for selection.
 		It happens that the algorithm don't find the true structure but a permuted one so we also look at the results obtained with the true $S$ (but $\hat{B}$ is used) and with the structure found by the Markov chain after a few seconds.
 		
