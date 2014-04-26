@@ -55,14 +55,16 @@ In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_
 			\cite{zou2005regularization}
 		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression }
 			%\cite{bondell2008simultaneous}%Oscar
-			Like elasticnet, \textsc{OSCAR} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (group with null coefficient).
+			Like elasticnet, \textsc{OSCAR} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect (by a pairwise $L_\infty$ norm) and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (implied by the $L_1$ norm).
 			\begin{equation}
-				\hat{\boldsymbol{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \parallel\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \parallel^2 \textrm{ subject to } \sum_{j=1}^p|\beta_j|+c\sum_{j<k}\operatorname{max}(|\beta_j|,|\beta_k|) \leq \lambda		
+				\hat{\boldsymbol{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \parallel\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \parallel^2_2 \textrm{ subject to } \sum_{j=1}^p|\beta_j|+c\sum_{j<k}\operatorname{max}(|\beta_j|,|\beta_k|) \leq \lambda		
 			\end{equation}						
-			
+			But \textsc{OSCAR} depends on two tuning parameters: $c$ anf $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{LAR} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
+			Correlations are only implicitely taken into account and only pairwise. So it lacks of an efficient algorithm and need a supplementary study to interpret the groups found.
 	\section{Modeling the parameters}	
 		\subsection{CLERE: CLusterwise Effect REgression}
 			\cite{yengo2012variable}%clere
+			
 		\subsection{Spike and Slab}	
 			\cite{ishwaran2005spike}%spike and slab
 	\section{Multiple Equations}
@@ -185,28 +187,28 @@ In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_
 	\section{Numerical results}
 
 \chapter{Missing values}
-	Missing values are a very recurrent issue in industry. We note $M$ the binary matrix indicating whereas a value is missing (1) or not (0).
+	Missing values are a very recurrent issue in industry. We note $\boldsymbol{M}$ the binary matrix indicating whereas a value is missing (1) or not (0).
 	\section{How to manage missing values in the MCMC ?}
 			\subsection{Position of the missing value}
 
-		In the MCMC we need to compute the likelihood of the structure. When missing values occurs, we restrict the likelihood to the known values. So we look at each non-missing value separately. Each value is seen as different random variable noted $x_{i,j}$.  But the structure itself makes things more complicated because known values are not all $iid$ (if $j \in I_2$ ).
+		In the MCMC we need to compute the likelihood of the structure. When missing values occurs, we restrict the likelihood to the known values. So we look at each non-missing value separately. Each value is seen as different random variable noted $x_{i,j}$.  But the structure itself makes things more complicated because known values are not all $iid$ (if $j \in I_r$ ).
 			For a given structure $S$, missing values can imply different consequences according to their position in the dataset.
 			To compute the likelihood of a value $x_{i,j}$ in the dataset :
 			\begin{itemize}
-				\item if $M_{i,j}=1$ : $x_{i,j}$ is not considered because we restrict the likelihood to known values.
-				\item else if $j \in I_1$ : like in previous method, we use the density estimated  ($e.g.$ a Gaussian Mixture model estimated by \textsc{Mixmod}) for $X^j$. Values in $X^j$ are $iid$.
+				\item if $\boldsymbol{M}_{i,j}=1$ : $x_{i,j}$ is not considered because we restrict the likelihood to known values.
+				\item else if $j \in I_f$ : like in previous method, we use the density estimated  ($e.g.$ a Gaussian Mixture model estimated by \textsc{Mixmod}) for $\boldsymbol{X}^j$. The $n$ random variables in $\boldsymbol{X}^j$ are $iid$.
 				\item else :
 			\end{itemize}
 			\begin{eqnarray}
-				x_{i,j}| X_{i,I_1^j} &\sim & \sum_{\substack{1\leq k \leq p \\B_k^j\neq 0 } } x_{i,k}B_k^j  + \mathcal{N}(0;\sigma_j) \\
-				&=& \sum_{\substack{1\leq k \leq p \\B_k^j\neq 0 \\ M_{i,k}\neq 0 } } x_{i,k}B_k^j  + \mathcal{N}(\sum_{\substack{1\leq k \leq p \\B_k^j\neq 0 \\ M_{i,k}= 0 } } x_{i,k}B_k^j \ ; \ \sigma_j) \label{Missingdensity}\\ 
+				x_{i,j}| \boldsymbol{X}_{i,I_f^j} &\sim & \sum_{\substack{1\leq k \leq p \\ \boldsymbol{\alpha}_k^j\neq 0 } } x_{i,k}\boldsymbol{\alpha}_k^j  + \mathcal{N}(0;\sigma_j) \\
+				&=& \sum_{\substack{1\leq k \leq p \\ \boldsymbol{\alpha}_k^j\neq 0 \\ \boldsymbol{M}_{i,k}\neq 0 } } x_{i,k}\boldsymbol{\alpha}_k^j  + \mathcal{N}(\sum_{\substack{1\leq k \leq p \\ \boldsymbol{\alpha}_k^j\neq 0 \\ \boldsymbol{M}_{i,k}= 0 } } x_{i,k}\boldsymbol{\alpha}_k^j \ ; \ \sigma_j) \label{Missingdensity}\\ 
 			\end{eqnarray}
 			
 					
 			
 		\subsection{Weighted penalty}
 			Now we have defined the way to compute the likelihood, other questions remain : how to define the number of parameters in the structure ?		How to take into account missingness (structures relying on highly missing covariates should be penalized) ?
-			We have seen that for a same covariate $X^j$ with $ j \in I_2$, the number of parameters is not the same for each individual depending whether or not $M_{i,j}=0$. But the penalty (for $\psi=BIC$) can't be added at the individual level (because $\log(1)=0$ so it would be annihilated). 
+			We have seen that for a same covariate $X^j$ with $ j \in I_r$, the number of parameters is not the same for each individual depending whether or not $M_{i,j}=0$. But the penalty (for $\psi=BIC$) can't be added at the individual level (because $\log(1)=0$ so it would be annihilated). 
 			
 			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. Thus if a structure is only touched by one missing value the penalty will be smaller than another same shaped structure but with more missing values implied.
 			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Another idea would be to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
@@ -214,19 +216,19 @@ In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_
 %	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
 %	
 		
-		\subsection{Parameters estimation}
-			Estimating $B$ with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given $B$. So it's just about maximizing the likelihood of this density on $B$. This can be done with an Expectation-Maximization (EM) \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
-			But estimation of $B$ is the mast critical part of the MCMC in terms of computational time so it could be dangerous to put there another iterative algorithm. 
+		\subsection{estimation of $\boldsymbol{\alpha}_j$}
+			Estimating the $\boldsymbol{\alpha}_j$ with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given the $\boldsymbol{\alpha}_j$. So it's just about maximizing the likelihood of this density on the $\boldsymbol{\alpha}_j$. This can be done with an Expectation-Maximization (EM) algorithm \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
+			But estimation of the $\boldsymbol{\alpha}_j$ is the most critical part of the MCMC in terms of computational time so it could be a bad idea to put there another iterative algorithm. 
 			Alternatives does exist :
 			\begin{itemize}
-				\item Because sub-regression are supposed to be simple, we could imagine to use estimate each column of $B$ with full submatrices of $X$. When relying on too much missing values, $\hat{B}$ would be a bad candidates and then penalized directly by the likelihood (and it could be a good thing). Computational cost would be reduced significantly.
-				\item To estimate $B$ (and not for the global likelihood) we could use data imputation (by the mean) and then obtain a full matrix but still ignoring missing values when estimating the likelihood.
+				\item Because sub-regression are supposed to be simple, we could imagine to estimate each column of $\boldsymbol{\alpha}$ with full sub-matrices of $\boldsymbol{X}_f$. When relying on too much missing values, $\hat{\boldsymbol{\alpha}}$ would be a bad candidate and then penalized directly by the likelihood (and it could be a good thing). Computational cost would be reduced significantly.
+				\item To estimate the $\boldsymbol{\alpha}_j$ (and not for the global likelihood) we could use data imputation (by the mean) and then obtain a full matrix but still ignoring missing values when estimating the likelihood. Imputation only concerns the estimation of the sub-regression coefficients and because null coefficients in sub-regression are coerced at each step, imputation only concerns a few covariates each time.
 			\end{itemize}
 	\section{Missing values in the main regression}
 		\subsection{explicative}
-			The reduced model (explicative one) is just a linear regression without structure so the method used for $\hat{B}$ can also be used here. 
+			The reduced model (explicative one) is just a linear regression without structure so estimating $\boldsymbol{\beta}$ is like estimating the $\boldsymbol{\alpha}_j$ and the same methods can be used. An EM algorithm would be prefered because this estimation is out of the MCMC, will be computed only one time and is the final objective where we want to minimize the error.
 		\subsection{predictive}
-			
+			If there are missing values in $\boldsymbol{X}^j \in \boldsymbol{X}_r$ a new possibility appears. Knowing $S$ and $\boldsymbol{\alpha}_j$ we are able to try a conditional imputation based on the corresponding sub-regression, like every time someone use linear regression for prediction. 
 			%si manquant à gauche : EM peut s'appuyer sur la loi conditionnelle sachant ce qui est à droite
 \chapter{CorReg: the package and its application in steel industry}	
 	\section{\textsc{CorReg} package for R}
