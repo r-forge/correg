@@ -30,19 +30,13 @@
 	
 	
 \chapter{State of the art}
+In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_p|)$.
 	\section{Ordinary least squares and associated problems}
 	Linear regression is defined by this simple equation:
 	\begin{equation}
 		\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y
 	\end{equation}
 	where $\boldsymbol{Y}\in \mathbf{R}^n$ is the response variable vector observed on $n$ individuals. 
-	\section{Dimension reduction}
-		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression }
-			\cite{bondell2008simultaneous}%Oscar
-		\subsection{CLERE: CLusterwise Effect REgression}
-			\cite{yengo2012variable}%clere
-		\subsection{Spike and Slab}	
-			\cite{ishwaran2005spike}%spike and slab
 	\section{Penalized models}
 		\subsection{Ridge regression}
 			\cite{hoerl1970ridge}
@@ -59,6 +53,18 @@
 			\cite{wang2011random}%random lasso
 		\subsection{Elasticnet}
 			\cite{zou2005regularization}
+		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression }
+			%\cite{bondell2008simultaneous}%Oscar
+			Like elasticnet, \textsc{OSCAR} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (group with null coefficient).
+			\begin{equation}
+				\hat{\boldsymbol{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \parallel\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \parallel^2 \textrm{ subject to } \sum_{j=1}^p|\beta_j|+c\sum_{j<k}\operatorname{max}(|\beta_j|,|\beta_k|) \leq \lambda		
+			\end{equation}						
+			
+	\section{Modeling the parameters}	
+		\subsection{CLERE: CLusterwise Effect REgression}
+			\cite{yengo2012variable}%clere
+		\subsection{Spike and Slab}	
+			\cite{ishwaran2005spike}%spike and slab
 	\section{Multiple Equations}
 		\subsection{SEM and Path Analysis}
 		\subsection{SUR: Seemingly Unrelated Regression}
