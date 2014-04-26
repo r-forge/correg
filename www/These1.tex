@@ -8,7 +8,7 @@
 \usepackage{lmodern}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \author{Clément THERY}
-\title{\textsc{CorReg}: regression with highly correlated covariates}
+\title{\textsc{CorReg}: Linear regression with highly correlated covariates}
 \begin{document}
 \maketitle
 \newpage
@@ -17,8 +17,25 @@
 \chapter{Abstracts}
 \chapter{Acknowledgments}
 \chapter{The industrial context}
+	This work takes place in a steel industry context. The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we have no idea of its origin. The defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process, each implying a whole manufactory. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates essentially depends on the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
+	We have several constraints :
+	\begin{itemize}
+		\item To be able to predict the defect and stop the process as early as possible to gain time (and money)
+		\item To be able to understand the origin of the defect to try to optimize the process
+		\item To be able to find parameters that can be changed because the objective is not only to understand but to correct the problematic part of the process.
+		\item It also must be fast and automatic (without any a priori).
+	\end{itemize}
+	We will see in the state of the art that correlations are a real issue and that the number of variables increases the problem.	
+	The stakes are very high because of the high productivity of the steel plants but also because steel making is now well-known and optimized thus new defects only appears on innovative steels with high value. Any improvement on such crisis can have important impact on the market shares and when the customer is implied, each day won by the automation of the data mining process can lead to a gain of hundreds of thousands of euros, sometimes more. So we really need a kind of automatic method, able to manage the correlations without any a priori and giving an easily understandable and flexible model.
+	
+	
 \chapter{State of the art}
 	\section{Ordinary least squares and associated problems}
+	Linear regression is defined by this simple equation:
+	\begin{equation}
+		\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y
+	\end{equation}
+	where $\boldsymbol{Y}\in \mathbf{R}^n$ is the response variable vector observed on $n$ individuals. 
 	\section{Dimension reduction}
 		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression }
 			\cite{bondell2008simultaneous}%Oscar
