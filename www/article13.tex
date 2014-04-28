@@ -1069,11 +1069,50 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 		So when we compare (\ref{densitydroite}) and (\ref{densitygauche}) we see that the number of components in $I_r$ variables differs when subregressions are of length $>1$ (almost 2 predictors) with multiple-class predictors (so the kronecker product is effective). We call this difference in component number "identifiability" in the sense that we try to find the model with the fewest component in $X_f$ (we use the BIC so when comparing two models with the same likelihood, the one with fewer parameters will win). So in this case we have a "better" model (the simplest one) in the group of equivalent-meaning models (permuting variables in some sub-regression).
 	So a sufficient condition is $\forall j \in I_r: k_j\geq 2$ with at least two distinct couples $(\boldsymbol{\mu}_j,\boldsymbol{\sigma}_j)$
 	
+	In the followings, $N_{11}$ and $N_{12}$ Gaussian (multivariate or not). $\boldsymbol{X}_r$ is here supposed to be univariate (identifiability in such a case will be generalisable).
+		\begin{eqnarray}
+			f(\boldsymbol{X_f})&=& p_{11} N_{11}+p_{12}N_{12}\\
+			\boldsymbol{X}_r&=&\boldsymbol{X}_f\boldsymbol{\alpha}_r +\boldsymbol{\varepsilon}_r \\
+			f(\boldsymbol{X}_r)&=&p_{11}(N_{11}+\boldsymbol{\varepsilon})+p_{12}(N_{12}+\boldsymbol{\varepsilon}) \\
+			f(\boldsymbol{X}_r|\boldsymbol{X}_f)&=&\boldsymbol{\varepsilon}\\
+			f(\boldsymbol{X}_r,\boldsymbol{X}_f)&=&f(\boldsymbol{X}_r|\boldsymbol{X}_f)f(\boldsymbol{X}_f)=f(\boldsymbol{X}_f|\boldsymbol{X}_r)f(\boldsymbol{X}_r) \\
+			f(\boldsymbol{X}_f|\boldsymbol{X}_r)&=&\frac{f(\boldsymbol{X}_r|\boldsymbol{X}_f)f(\boldsymbol{X}_f)}{f(\boldsymbol{X}_r)} \\
+			&=&\frac{(p_{11} N_{11}+p_{12}N_{12})\boldsymbol{\varepsilon}}{p_{11}(N_{11}+\boldsymbol{\varepsilon})+p_{12}(N_{12}+\boldsymbol{\varepsilon})} \textrm{ with }p_{11}+p_{12}=1\\
+			&=&\frac{(p_{11} N_{11}+p_{12}N_{12})\boldsymbol{\varepsilon}}{(p_{11} N_{11}+p_{12}N_{12})+\boldsymbol{\varepsilon}}
+		\end{eqnarray}
+	So we have a quotient of two multivariate Gaussian mixtures and the question is to know if it is Gaussian (in such a case we wouldn't have identifiability).
+If $\boldsymbol{X}_f$ is a Gaussian mixture with $K>1$ distinct components, then so will be $\boldsymbol{X}_r$.
+	We know that for a Gaussian multivariate distribution $(\boldsymbol{X}_r,\boldsymbol{X}_f)$ the conditional distributions $(\boldsymbol{X}_r|\boldsymbol{X}_f)$ and $(\boldsymbol{X}_f|\boldsymbol{X}_r)$ are both Gaussian. 
 	
 	
-	If the sufficient condition is not satisfied but we have different variances for $\boldsymbol{X}_f$ and $\boldsymbol{X}_r$, then we don't have identifiability but reverse regressions don't give the same results as the true model, as illustrated in the well-known salary discrimination study \cite{goldberger1984reverse} and explained in books and papers (\cite{leamer1978least},\cite{cameron2005microeconometrics}).
 	
-	Remark : the uncrossing constraint ($I_2\cap I_1 = \emptyset$) significantly reduces the number of feasible models and thus increases identifiability (because it also reduces the number of models equivalent in interpretation).
+		We decompose the joint distribution based on the components $k$.
+
+	\begin{eqnarray}
+			f(\boldsymbol{X}_r)&=&f(\boldsymbol{X}_f\boldsymbol{\alpha}_r +\boldsymbol{\varepsilon}_r) (MG to define explicitely) \\
+			\forall 1\leq j \leq K,  f(\boldsymbol{X}_r|k=j)&=& Gaussian to define
+			\end{eqnarray}
+		\begin{equation}
+			f(\boldsymbol{X}_r,\boldsymbol{X}_f)= \sum_{j=1}^K p_jf(\boldsymbol{X}_r,\boldsymbol{X}_f|k=j)
+	\end{equation}
+			where  $\forall 1\leq j \leq K$, $ f(\boldsymbol{X}_r,\boldsymbol{X}_f|k=j)$  is Gaussian multivariate  and thus
+			\begin{equation}
+			f(\boldsymbol{X}_r,\boldsymbol{X}_f)= \sum_{j=1}^K p_jf(\boldsymbol{X}_f|\boldsymbol{X}_r,k=j)f(\boldsymbol{X}_r|k=j)
+	\end{equation}
+				where  $\forall 1\leq j \leq K$, $ f(\boldsymbol{X}_r,\boldsymbol{X}_f|k=j)$  is Gaussian and $f(\boldsymbol{X}_f|\boldsymbol{X}_r,k=j)$ is Gaussian
+				
+				
+				Now we know that $\forall 1\leq j \leq K$,  $f(\boldsymbol{X}_f|\boldsymbol{X}_r,k=j)$ is Gaussian:
+				\begin{equation}
+				f(\boldsymbol{X}_f|\boldsymbol{X}_r)=\sum_{j=1}^Kp_jf(\boldsymbol{X}_f|\boldsymbol{X}_r,k=j)
+				\end{equation}
+				is a Gaussian mixture, so we have identifiability of the model even for trivial sub-regression if we keep the constraint to have distinct components.
+			%f(\boldsymbol{X}_r,\boldsymbol{X}_f)&=& sum_{j=1}^K 
+
+
+%	If the sufficient condition is not satisfied but we have different variances for $\boldsymbol{X}_f$ and $\boldsymbol{X}_r$, then we don't have identifiability but reverse regressions don't give the same results as the true model, as illustrated in the well-known salary discrimination study \cite{goldberger1984reverse} and explained in books and papers (\cite{leamer1978least},\cite{cameron2005microeconometrics}).
+%	
+	Remark : the uncrossing constraint ($I_r\cap I_f = \emptyset$) significantly reduces the number of feasible models and thus increases identifiability (because it also reduces the number of models equivalent in interpretation).
 	
 %	 As a set of Gaussian mixtures and linear combination of Gaussian mixtures, $\boldsymbol{X}$ follows a multivariate Gaussian mixture model with $K$ components:
 %		\begin{eqnarray}
