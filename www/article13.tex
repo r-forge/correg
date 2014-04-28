@@ -160,14 +160,7 @@ The structure $S$ of $p_r$ regressions within correlated covariates in $\boldsym
 The partition of $\boldsymbol{X}$ implies the uncrossing rule % $I_f\cap I_r=\emptyset$ 
 {\it i.e.} endogenous variables don't explain other covariates. This hypothesis ensures that $S$ contains no cycle and is straightforward readable (no need to order the sub-regressions). It is not so restrictive because cyclic structures have no sense and any non-cyclic structure can be associated with a structure that verifies the uncrossing constraint by just successively replacing endogenous covariates by their sub-regression when they are also exogenous in some other sub-regressions.
 
-
-%ancienne intro
-
-The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation}. Such a system is easy to interpret but estimation don't take advantage of the explicit structure \cite{TIMM} when it is basic (recursive \textsc{SEM}).
-  	Some methods take into account correlations but they only consider covariances between residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) or  endogenous variables like \textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}) without explicit expression of the correlations and thus a smaller interpretation potential.
-  	\\ Here we suppose independence between the residuals but in other cases it remains the possibility to use such methods to estimate the $\boldsymbol{\alpha}_j$ and $\sigma_j$.
-
- 	
+	
 	  We make the choice to distinguish the response variable from the other endogenous variables (that are on the left of a sub-regression). Thus we have one regression on the response variable ($P(\boldsymbol{Y}|\boldsymbol{X}))$ and a system of sub-regressions (without the response variable: $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$). Then we consider correlations between the explicative covariates of the main regression, not between the residuals. We see that the $S$ does not depend on $\boldsymbol{Y}$ so it can be learnt independently, even with a larger dataset (if missing values in $\boldsymbol{Y}$).
 	 
 %ancienne intro
@@ -197,6 +190,12 @@ After selection and estimation we will obtain a model with { \it two steps of va
 
 
 The explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset and to take better actions. Expert knowledge can even be added to the structure, physical models for example.
+
+
+The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation}. Such a system is easy to interpret but estimation don't take advantage of the explicit structure \cite{TIMM} when it is basic (recursive \textsc{SEM}).
+  	Some methods take into account correlations but they only consider covariances between residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) or  endogenous variables like \textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}) without explicit expression of the correlations and thus a smaller interpretation potential.
+  	\\ Here we suppose independence between the residuals but in other cases it remains the possibility to use such methods to estimate the $\boldsymbol{\alpha}_j$ and $\sigma_j$.
+
 
 Moreover, the uncrossing constraint (partition of $\boldsymbol{X}$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect) and straightforward readable.
 
