@@ -288,9 +288,9 @@ So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$.
 	\subsection{Modeling the uncorrelated covariates: a full generative approach on $P(\boldsymbol{X})$} \label{sectionfullgen}
 	To be able to compare structures with $P(S|\boldsymbol{X})$, we need a full generative model on $\boldsymbol{X}$. Sub-regressions give $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S) $ but $P(\boldsymbol{X}_f|S)$ is still undefined. We suppose that variables in $\boldsymbol{X}_f$ follow Gaussian mixtures of $k_j \in \mathbf{N}^*$ components: 
 	\begin{equation}
-			\forall \boldsymbol{X}^j \notin \boldsymbol{X}_r : \boldsymbol{X}^j_{|S} \sim f(\boldsymbol{\theta}_j)=\mathcal{GM}(\boldsymbol{\pi}_j;\boldsymbol{\mu}_j;\boldsymbol{\sigma}^2_j) \textrm{ with } \boldsymbol{\pi}_j,\boldsymbol{\mu}_j,\boldsymbol{\sigma}^2_j \textrm{ vectors of size } k_j. \label{mixtureX1}
+			\forall \boldsymbol{X}^j \notin \boldsymbol{X}_r : \boldsymbol{X}^j_{|S} \sim f(\boldsymbol{\theta}_j)=\mathcal{GM}(\boldsymbol{\pi}_j;\boldsymbol{\mu}_j;\boldsymbol{\sigma}^2_j) \textrm{ with } \boldsymbol{\pi}_j,\boldsymbol{\mu}_j,\boldsymbol{\sigma}^2_j \textrm{ vectors of size } K_j. \label{mixtureX1}
 		\end{equation}
-		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust but one can use other laws if needed (exponentially distributed for example). Gaussian case is just a special case ($k_j=1$) of Gaussian mixture so it is included in our hypothesis.
+		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust but one can use other laws if needed (exponentially distributed for example). Gaussian case is just a special case ($K_j=1$) of Gaussian mixture so it is included in our hypothesis but identifiability of $S$ requires to have at least one Gaussian mixture with at least two distinct components in each sub-regression (theorem and proof in appendix \ref{preuveident}). Identifiability if $S$ is not necessary to use a given structure but helps to find it.
 
 		Variables in $\boldsymbol{X}_f$ are in the followings supposed to be independent.
 	%Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
@@ -309,22 +309,21 @@ So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$.
 	We note $I_r$ the set of indices of endogenous variables in $\boldsymbol{X}$ (explained ones).
 We also define $I_f=\{I_f^1,\dots,I_f^p \}$ the set of the sets of indices of exogenous covariates (explaining ones $=\boldsymbol{X}_f$) with $\forall j \notin I_r, I_f^j=\emptyset$. 
 We see that $I_f$ defines the non-null coefficients in $\boldsymbol{\alpha}_j$ (each sub-regression can be very parsimonious).
-Then we have the explicit structure $S=(I_f,I_r,p_f,p_r)$ where $p_r=|I_r|$, $\boldsymbol{p}_f=(p_f^1,\dots,p_f^{p_r})$ is the vector of the number of covariates in each sub-regression  and $p_f^j=|I_f^j|$, with $|.|$ the cardinal of an ensemble.
-
+Then we have the explicit structure characterized by $S=(I_f,I_r,p_f,p_r)$ where $p_r=|I_r|$, $\boldsymbol{p}_f=(p_f^1,\dots,p_f^{p_r})$ is the vector of the number of covariates in each sub-regression  and $p_f^j=|I_f^j|$, with $|.|$ the cardinal of an ensemble.
+\\
+Uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)$ so it is equivalent to a maximization of the $BIC$.
 	 We suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of a simple uniform law on $S$ that is generally used and provides no penalty.
-%	 Thus we have :
-%		\begin{eqnarray}
-%		BIC^*(X|S)&=&BIC(X|S) +\ln(P(S)) \label{Bicstar}
-%	\end{eqnarray}		
+	 Thus we have :
+		\begin{eqnarray}
+		BIC_+(X|S)&=&BIC(X|S) +\ln(P(S)) \label{Bicstar}
+	\end{eqnarray}		
 	It increases penalty on complexity for $p_r<\frac{p}{2}$ and $p_f^j<\frac{p}{2}$ . Hence %when using $BIC*$ 
-	this constraint on $\hat{p}_r$ and $\hat{p}_f^j$ is given in the research algorithm when the Hierarchical Uniform (HU) hypothesis is made instead of Uniform one (U) in numerical experiments (section \ref{sectionsimul} and \ref{sectionrealcase}).
-		We do not change $BIC$ but only $P(S)$ so the properties are the same as classical $BIC$ but we obtain better results when (HU) this constraint is verified. Uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)$ so it is equivalent to a maximization of the $BIC$. With the Hierarchical Uniform hypothesis we maximize $\psi(\boldsymbol{X},S)\approx BIC + P(S)$.
+	this constraint on $\hat{p}_r$ and $\hat{p}_f^j$ is given in the research algorithm when the Hierarchical Uniform hypothesis is made instead of Uniform one in numerical experiments (section \ref{sectionsimul} and \ref{sectionrealcase}).
+		We do not change $BIC$ but only $P(S)$ so the properties of $BIC_+$ are the same as classical $BIC$ but we obtain better results when the constraints on the complexity are verified.  With the Hierarchical Uniform hypothesis we maximize $\psi(\boldsymbol{X},S)\approx BIC + P(S)$.
 
 %	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
 %	
 
-	%ancienne intro	
-	%ancienne intro
 
 \subsection{MCMC algorithm}
 	Now we have a comparison criterion, we define an MCMC algorithm to find the structure (R package \textsc{CorReg} on CRAN). 
@@ -1044,7 +1043,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure the MCMC will asymptotically find the true model. Identifiability of the discrete structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
 	
 		If there are exact sub-regressions ($\sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. \textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
-	In the followings we suppose $\sigma^2_j\neq 0$.
+	In the followings we suppose $\sigma^2_j\neq 0$, then $\boldsymbol{X}_f'\boldsymbol{X}_f$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$)  .
 	
 	We introduce the matricial notation
 		$\boldsymbol{X}_r=\boldsymbol{X}_f\boldsymbol{\alpha} + \boldsymbol{\varepsilon}$
@@ -1052,66 +1051,98 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 		\\ We want to know if $P(\boldsymbol{X}|S,\Theta)=P(\boldsymbol{X}|\tilde{S},\tilde{\Theta})$ does imply $(S,\Theta)=(\tilde{S},\tilde{\Theta})$.
 		
 	\subsubsection{Identifiability of $\Theta$}		
-		We know by identifiability of the Gaussian mixtures and linear regression ($\boldsymbol{X}_f'\boldsymbol{X}_f$ is of full rank) that if $P(\boldsymbol{X}|S,\Theta)=P(\boldsymbol{X}|S,\tilde{\Theta})$ then $\Theta=\tilde{\Theta}$. But the identifiability of the discrete parameter $S$ is still pending.
+		We know by identifiability of the Gaussian mixtures and linear regression ($\boldsymbol{X}_f'\boldsymbol{X}_f$ is of full rank) that if $P(\boldsymbol{X}|S,\Theta)=P(\boldsymbol{X}|S,\tilde{\Theta})$ then $\Theta=\tilde{\Theta}$ up to a permutation of the components. But the identifiability of the discrete parameter $S$ is still pending.
 		
-	\subsubsection{Sufficient conditions for Identifiability of $S$}
+	\subsubsection{Identifiability of $S$, quick look}
 	
 	In the following, $\otimes$ and $\oplus$ denote respectively the kronecker product and sum.
 	\begin{eqnarray}
 			\forall j \in I_r : \  \boldsymbol{X}^j_{|\boldsymbol{X}_f}&\sim & \mathcal{N}(\boldsymbol{X}_f\boldsymbol{\alpha}_j,\sigma^2_j\boldsymbol{I}_n) \label{densitycondgauche}\\
-			\forall j \in I_f : \boldsymbol{X}^j_{|S} &\sim& \mathcal{GM}(\boldsymbol{\pi}_j;\boldsymbol{\mu}_j;\boldsymbol{\sigma}^2_j) \textrm{ with } \boldsymbol{\pi}_j,\boldsymbol{\mu}_j,\boldsymbol{\sigma}^2_j \textrm{ vectors of size } k_j  \label{densitydroite}\\
+			\forall j \in I_f : \boldsymbol{X}^j_{|S} &\sim& \mathcal{GM}(\boldsymbol{\pi}_j;\boldsymbol{\mu}_j;\boldsymbol{\sigma}^2_j) \textrm{ with } \boldsymbol{\pi}_j,\boldsymbol{\mu}_j,\boldsymbol{\sigma}^2_j \textrm{ vectors of size } K_j  \label{densitydroite}\\
 			\textrm{And we obtain, } \forall j \in I_r : \  \boldsymbol{X}^j&\sim & 
 						\mathcal{GM}(\bigotimes_{\substack{i \in I_f^j  }}\boldsymbol{\pi}_i \ ; 
 			                         \bigoplus_{\substack{i \in I_f^j  }} \alpha_{i,j} \boldsymbol{\mu}_i \ ; 
-			                         \boldsymbol{\sigma}_j^2+\bigoplus_{\substack{i \in I_f^j  }}\alpha_{i,j}^2 \boldsymbol{\sigma}_i^2 )\label{densitygauche}
+			                         \boldsymbol{\sigma}_j^2+\bigoplus_{\substack{i \in I_f^j  }}\alpha_{i,j}^2 \boldsymbol{\sigma}_i^2 )\label{densitygauche}          
 		\end{eqnarray}
-		So when we compare (\ref{densitydroite}) and (\ref{densitygauche}) we see that the number of components in $I_r$ variables differs when subregressions are of length $>1$ (almost 2 predictors) with multiple-class predictors (so the kronecker product is effective). We call this difference in component number "identifiability" in the sense that we try to find the model with the fewest component in $X_f$ (we use the BIC so when comparing two models with the same likelihood, the one with fewer parameters will win). So in this case we have a "better" model (the simplest one) in the group of equivalent-meaning models (permuting variables in some sub-regression).
-	So a sufficient condition is $\forall j \in I_r: k_j\geq 2$ with at least two distinct couples $(\boldsymbol{\mu}_j,\boldsymbol{\sigma}_j)$
-	
-	In the followings, $N_{11}$ and $N_{12}$ Gaussian (multivariate or not). $\boldsymbol{X}_r$ is here supposed to be univariate (identifiability in such a case will be generalisable).
-		\begin{eqnarray}
-			f(\boldsymbol{X_f})&=& p_{11} N_{11}+p_{12}N_{12}\\
-			\boldsymbol{X}_r&=&\boldsymbol{X}_f\boldsymbol{\alpha}_r +\boldsymbol{\varepsilon}_r \\
-			f(\boldsymbol{X}_r)&=&p_{11}(N_{11}+\boldsymbol{\varepsilon})+p_{12}(N_{12}+\boldsymbol{\varepsilon}) \\
-			f(\boldsymbol{X}_r|\boldsymbol{X}_f)&=&\boldsymbol{\varepsilon}\\
-			f(\boldsymbol{X}_r,\boldsymbol{X}_f)&=&f(\boldsymbol{X}_r|\boldsymbol{X}_f)f(\boldsymbol{X}_f)=f(\boldsymbol{X}_f|\boldsymbol{X}_r)f(\boldsymbol{X}_r) \\
-			f(\boldsymbol{X}_f|\boldsymbol{X}_r)&=&\frac{f(\boldsymbol{X}_r|\boldsymbol{X}_f)f(\boldsymbol{X}_f)}{f(\boldsymbol{X}_r)} \\
-			&=&\frac{(p_{11} N_{11}+p_{12}N_{12})\boldsymbol{\varepsilon}}{p_{11}(N_{11}+\boldsymbol{\varepsilon})+p_{12}(N_{12}+\boldsymbol{\varepsilon})} \textrm{ with }p_{11}+p_{12}=1\\
-			&=&\frac{(p_{11} N_{11}+p_{12}N_{12})\boldsymbol{\varepsilon}}{(p_{11} N_{11}+p_{12}N_{12})+\boldsymbol{\varepsilon}}
-		\end{eqnarray}
-	So we have a quotient of two multivariate Gaussian mixtures and the question is to know if it is Gaussian (in such a case we wouldn't have identifiability).
-If $\boldsymbol{X}_f$ is a Gaussian mixture with $K>1$ distinct components, then so will be $\boldsymbol{X}_r$.
-	We know that for a Gaussian multivariate distribution $(\boldsymbol{X}_r,\boldsymbol{X}_f)$ the conditional distributions $(\boldsymbol{X}_r|\boldsymbol{X}_f)$ and $(\boldsymbol{X}_f|\boldsymbol{X}_r)$ are both Gaussian. 
+		So when we compare (\ref{densitydroite}) and (\ref{densitygauche}) we see that the number of components in $I_r$ variables differs when subregressions are of length $>1$ (almost 2 predictors) with multiple-class predictors (so the kronecker product is effective). We call this difference in component number "identifiability" in the sense that we try to find the model with the fewest component in $\boldsymbol{X}_f$ (we use the BIC so when comparing two models with the same likelihood, the one with fewer parameters will win). So in this case we have a "better" model (the simplest one) in the group of equivalent-meaning models (permuting variables in some sub-regression).
+	\\
 	
 	
+	\subsubsection{Identifiability: Theorem and proof} \label{preuveident}
+		A necessary and sufficient condition for identifiability of $S$ is $\forall j \in I_r: K_j\geq 2$ with at least two distinct components in $(\boldsymbol{\mu}_j,\boldsymbol{\sigma}_j)$
+\\
+	{\it Proof}:
+	We know that for a Gaussian multivariate distribution $(\boldsymbol{X}_r,\boldsymbol{X}_f)$ the conditional distributions $(\boldsymbol{X}_r|\boldsymbol{X}_f)$ and $(\boldsymbol{X}_f|\boldsymbol{X}_r)$ are both Gaussian (multivariate or not according to $p_r$). 
 	
-		We decompose the joint distribution based on the components $k$.
+		If $\exists j \in I_r: k_j=1$ (Gaussian) then all the covariates on the right of the associated sub-regression (with non-zero coefficients) are Gaussian and then the sub-regression can be permuted and is not identifiable. So if $\boldsymbol{X}^j$ are Gaussian mixtures, it is a necessary condition for identifiability to have $\forall j \in I_r: K_j\geq 2$ with at least two distinct components in $(\boldsymbol{\mu}_j,\boldsymbol{\sigma}_j)$.
 
-	\begin{eqnarray}
-			f(\boldsymbol{X}_r)&=&f(\boldsymbol{X}_f\boldsymbol{\alpha}_r +\boldsymbol{\varepsilon}_r) (MG to define explicitely) \\
-			\forall 1\leq j \leq K,  f(\boldsymbol{X}_r|k=j)&=& Gaussian to define
-			\end{eqnarray}
+	Gaussian mixtures in $\boldsymbol{X_r}$ with at least two distinct components does imply the presence of at least one Gaussian mixture in each sub-regression (with at least two components).
+%	\begin{equation}
+%	 \forall j \in I_f :    \boldsymbol{X}^j_{|S}=\sum_{k=1}^{K_j}\pi_j(k)\mathcal{N}\left(\mu_j(k),\sigma_j^2(k)\boldsymbol{I}_n\right) \\
+%	\end{equation}
+%	$\forall j \in I_r$ we can define $K_{j}$ the number of distinct components of $\boldsymbol{X}_j$.
+%	\begin{eqnarray}
+%				\boldsymbol{X}^{j}_{|S}&=&\sum_{k=1}^{K_j}\pi_j(k)\mathcal{N}\left(\mu_j(k),\sigma_j^2(k)\boldsymbol{I}_n\right)
+%	\end{eqnarray}
+	The joint distribution of the $p$ Gaussian mixtures is a multivariate Gaussian mixture $\boldsymbol{X}$ with $K\geq 2$ distinct components $(\boldsymbol{m}_k,\boldsymbol{\Sigma}_k)$ where $\boldsymbol{m}_k \in \mathbf{R}^p$ and $\boldsymbol{\Sigma}_k$ is a $p \times p$ matrix.
+		We decompose the joint distribution based on the components:
+		
 		\begin{equation}
-			f(\boldsymbol{X}_r,\boldsymbol{X}_f)= \sum_{j=1}^K p_jf(\boldsymbol{X}_r,\boldsymbol{X}_f|k=j)
+			f(\boldsymbol{X}_r,\boldsymbol{X}_f)= \sum_{k=1}^K p_kf(\boldsymbol{X}_r,\boldsymbol{X}_f|k)
 	\end{equation}
-			where  $\forall 1\leq j \leq K$, $ f(\boldsymbol{X}_r,\boldsymbol{X}_f|k=j)$  is Gaussian multivariate  and thus
+			where  $\forall 1\leq k \leq K$, $ f(\boldsymbol{X}_r,\boldsymbol{X}_f|k)$  is a multivariate Gaussian.
+			\\
+			Then,  $\forall j \in I_r, \forall i \in I_f^j$ we have:
 			\begin{equation}
-			f(\boldsymbol{X}_r,\boldsymbol{X}_f)= \sum_{j=1}^K p_jf(\boldsymbol{X}_f|\boldsymbol{X}_r,k=j)f(\boldsymbol{X}_r|k=j)
+			 f(\boldsymbol{X}_r,\boldsymbol{X}_f)= \sum_{k=1}^K p_kf(\boldsymbol{X}^i|\boldsymbol{X}_r,\boldsymbol{X}_f\setminus\boldsymbol{X}^i,k)f(\boldsymbol{X}_r,\boldsymbol{X}_f\setminus\boldsymbol{X}^i|k)
 	\end{equation}
-				where  $\forall 1\leq j \leq K$, $ f(\boldsymbol{X}_r,\boldsymbol{X}_f|k=j)$  is Gaussian and $f(\boldsymbol{X}_f|\boldsymbol{X}_r,k=j)$ is Gaussian
+				where the $f(\boldsymbol{X}^i|\boldsymbol{X}_r,\boldsymbol{X}_f\setminus\boldsymbol{X}^i,k)$ are Gaussian.
 				
-				
-				Now we know that $\forall 1\leq j \leq K$,  $f(\boldsymbol{X}_f|\boldsymbol{X}_r,k=j)$ is Gaussian:
-				\begin{equation}
-				f(\boldsymbol{X}_f|\boldsymbol{X}_r)=\sum_{j=1}^Kp_jf(\boldsymbol{X}_f|\boldsymbol{X}_r,k=j)
+Hence,
+\begin{equation}
+				f(\boldsymbol{X}^i|\boldsymbol{X}\setminus\boldsymbol{X}^i)=f(\boldsymbol{X}^i|\boldsymbol{X}_r,\boldsymbol{X}_f\setminus\boldsymbol{X}^i)=\sum_{k=1}^Kp_kf(\boldsymbol{X}^i|\boldsymbol{X}_r,\boldsymbol{X}_f\setminus\boldsymbol{X}^i,k)
 				\end{equation}
-				is a Gaussian mixture, so we have identifiability of the model even for trivial sub-regression if we keep the constraint to have distinct components.
-			%f(\boldsymbol{X}_r,\boldsymbol{X}_f)&=& sum_{j=1}^K 
-
-
+				
+				is a Gaussian mixture.				
+				
+%				Identifiability of $S$ means we don't have a linear regression of $\boldsymbol{X}^i$ on $(\boldsymbol{X}_r,\boldsymbol{X}_f\setminus\boldsymbol{X}^i)$. So we need a non-linear relationship or a not-Gaussian residual $f(\boldsymbol{X}^i|\boldsymbol{X}_r,\boldsymbol{X}\setminus\boldsymbol{X}^i)$, {\it i.e. } the Gaussian mixture $f(\boldsymbol{X}^i|\boldsymbol{X}\setminus\boldsymbol{X}^i)$ should have at least two distinct components.
+%	Linear relationship means $\exists \boldsymbol{\gamma} \in \mathbf{R}^{p-1}$ and $\sigma_i \in \mathbf{R}$ for which
+%	\begin{equation}
+%		\forall 1\leq k \leq K, \boldsymbol{X}^i_{|\boldsymbol{X}_r,\boldsymbol{X}\setminus\boldsymbol{X}^i,k}=\mathcal{N}(\boldsymbol{m}_k^{\bar{i}}\boldsymbol{\gamma},\sigma_i^2)
+%	\end{equation}
+%					
+%				
+%				\begin{equation}
+%				f(\boldsymbol{X}^i|\boldsymbol{X}\setminus\boldsymbol{X}^i)=f(\boldsymbol{X}^i|\boldsymbol{X}_r,\boldsymbol{X}_f\setminus\boldsymbol{X}^i)=\sum_{k=1}^Kp_kf(\boldsymbol{X}^i|\boldsymbol{X}_r,\boldsymbol{X}_f\setminus\boldsymbol{X}^i,k)
+%				\end{equation}
+%				
+				If it is a Gaussian mixture with at least two distinct components when $\boldsymbol{X}^j \in \boldsymbol{X}_r$ has at least two distinct components.
+				Then $\boldsymbol{X}^i$ can't be explained by a linear regression on the other covariates (non-Gaussian residual).		
+				 So we have identifiability of the structure $S$ even for trivial sub-regressions if we keep the constraint to have distinct components in $\boldsymbol{X}_r$ (equivalent to have at least one Gaussian mixture with at least two components in each sub-regression).
+%			%f(\boldsymbol{X}_r,\boldsymbol{X}_f)&=& sum_{j=1}^K 
+%
+%The distribution of $\boldsymbol{X}_r$ is a Gaussian mixture defined in (\ref{densitygauche}) thus
+%			$\forall 1\leq k \leq K$,  $(\boldsymbol{X}_r|k)$ is Gaussian: 
+%		
+%
+%
+%In the followings, $N_{11}$ and $N_{12}$ Gaussian (multivariate or not). $\boldsymbol{X}_r$ is here supposed to be univariate (identifiability in such a case will be generalisable).
+%		\begin{eqnarray}
+%			f(\boldsymbol{X_f})&=& p_{11} N_{11}+p_{12}N_{12}\\
+%			\boldsymbol{X}_r&=&\boldsymbol{X}_f\boldsymbol{\alpha}_r +\boldsymbol{\varepsilon}_r \\
+%			f(\boldsymbol{X}_r)&=&p_{11}(N_{11}+\boldsymbol{\varepsilon})+p_{12}(N_{12}+\boldsymbol{\varepsilon}) \\
+%			f(\boldsymbol{X}_r|\boldsymbol{X}_f)&=&\boldsymbol{\varepsilon}\\
+%			f(\boldsymbol{X}_r,\boldsymbol{X}_f)&=&f(\boldsymbol{X}_r|\boldsymbol{X}_f)f(\boldsymbol{X}_f)=f(\boldsymbol{X}_f|\boldsymbol{X}_r)f(\boldsymbol{X}_r) \\
+%			f(\boldsymbol{X}_f|\boldsymbol{X}_r)&=&\frac{f(\boldsymbol{X}_r|\boldsymbol{X}_f)f(\boldsymbol{X}_f)}{f(\boldsymbol{X}_r)} \\
+%			&=&\frac{(p_{11} N_{11}+p_{12}N_{12})\boldsymbol{\varepsilon}}{p_{11}(N_{11}+\boldsymbol{\varepsilon})+p_{12}(N_{12}+\boldsymbol{\varepsilon})} \textrm{ with }p_{11}+p_{12}=1\\
+%			&=&\frac{(p_{11} N_{11}+p_{12}N_{12})\boldsymbol{\varepsilon}}{(p_{11} N_{11}+p_{12}N_{12})+\boldsymbol{\varepsilon}}
+%		\end{eqnarray}
+%	So we have a quotient of two multivariate Gaussian mixtures and the question is to know if it is Gaussian (in such a case we wouldn't have identifiability).
+%If $\boldsymbol{X}_f$ is a Gaussian mixture with $K>1$ distinct components, then so will be $\boldsymbol{X}_r$.
+%	
 %	If the sufficient condition is not satisfied but we have different variances for $\boldsymbol{X}_f$ and $\boldsymbol{X}_r$, then we don't have identifiability but reverse regressions don't give the same results as the true model, as illustrated in the well-known salary discrimination study \cite{goldberger1984reverse} and explained in books and papers (\cite{leamer1978least},\cite{cameron2005microeconometrics}).
 %	
-	Remark : the uncrossing constraint ($I_r\cap I_f = \emptyset$) significantly reduces the number of feasible models and thus increases identifiability (because it also reduces the number of models equivalent in interpretation).
+	
 	
 %	 As a set of Gaussian mixtures and linear combination of Gaussian mixtures, $\boldsymbol{X}$ follows a multivariate Gaussian mixture model with $K$ components:
 %		\begin{eqnarray}
