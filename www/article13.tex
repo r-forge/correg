@@ -116,10 +116,14 @@ But like the ridge regression, the penalty does not distinguish correlated and i
 	But it requires to suppose having many covariates with the same level of effect on the response variable and seems to stay less efficient in prediction than elastic net. Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the regression coefficients and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
 	We see that none of the above methods takes explicitly the correlations into account.
 
+
+
 	~\\	~\\
 % Principe de la méthode
 
- Instead of reducing the dimension without looking at correlations,  we propose to focus on the correlations, giving an explicit structure between covariates with the idea that if we know explicitly the correlations, we could use this knowledge to avoid the problem. More precisely, we model the correlations with a system of linear regressions for the joint distribution of the covariates to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
+ Instead of reducing the dimension without looking at correlations, Selvarclust \cite{maugis2009variable} proposes to focus on the correlations, giving an explicit structure between covariates by linear sub-regressions between them. But is in a clustering context, with only irrelevant covariates being dependent from relevant ones (no sub-regressions between relevant or between irrelevant covariates) and the algorithm used to find the structure is a stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}. We propose to develop this method for linear regression with a specifically adapted algorithm to find the structure of sub-regression.
+ 
+  The idea is that if we know explicitly the correlations, we could use this knowledge to avoid the problem. More precisely, we model the correlations with a system of linear sub-regressions for the joint distribution of the covariates to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
 Then we can define a marginal model with independent covariates. 
 Thus we have an explained variable selection guided by the correlations and it improves interpretation, not only prediction.
  This can be viewed as a pretreatment on the dataset that will be followed then by any other tools for estimation and dimension reduction without suffering from correlations. This pretreatment is specifically done to decorrelate the covariates, unlike methods described above. 
@@ -300,6 +304,7 @@ So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$.
 
   Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood of the joint law on $\boldsymbol{X}$ according to the complexity of the structure~\cite{BIChuard}. 
 
+Uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a maximization of the $BIC$.
 	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model
 	\begin{eqnarray}
 		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)  
@@ -311,22 +316,21 @@ We also define $I_f=\{I_f^1,\dots,I_f^p \}$ the set of the sets of indices of ex
 We see that $I_f$ defines the non-null coefficients in $\boldsymbol{\alpha}_j$ (each sub-regression can be very parsimonious).
 Then we have the explicit structure characterized by $S=(I_f,I_r,p_f,p_r)$ where $p_r=|I_r|$, $\boldsymbol{p}_f=(p_f^1,\dots,p_f^{p_r})$ is the vector of the number of covariates in each sub-regression  and $p_f^j=|I_f^j|$, with $|.|$ the cardinal of an ensemble.
 \\
-Uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)$ so it is equivalent to a maximization of the $BIC$.
-	 We suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of a simple uniform law on $S$ that is generally used and provides no penalty.
+	 We suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of the simple uniform law on $S$ that is generally used and provides no penalty.
 	 Thus we have :
 		\begin{eqnarray}
 		BIC_+(X|S)&=&BIC(X|S) +\ln(P(S)) \label{Bicstar}
 	\end{eqnarray}		
 	It increases penalty on complexity for $p_r<\frac{p}{2}$ and $p_f^j<\frac{p}{2}$ . Hence %when using $BIC*$ 
 	this constraint on $\hat{p}_r$ and $\hat{p}_f^j$ is given in the research algorithm when the Hierarchical Uniform hypothesis is made instead of Uniform one in numerical experiments (section \ref{sectionsimul} and \ref{sectionrealcase}).
-		We do not change $BIC$ but only $P(S)$ so the properties of $BIC_+$ are the same as classical $BIC$ but we obtain better results when the constraints on the complexity are verified.  With the Hierarchical Uniform hypothesis we maximize $\psi(\boldsymbol{X},S)\approx BIC + P(S)$.
+		$BIC_+$ does not change $BIC$ but only $P(S)$ so the properties of $BIC_+$ are the same as classical $BIC$ but we obtain better results when the constraints on the complexity are verified.  %With the Hierarchical Uniform hypothesis we maximize $\psi(\boldsymbol{X},S)\approx BIC + P(S)$.
 
 %	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
 %	
 
 
 \subsection{MCMC algorithm}
-	Now we have a comparison criterion, we define an MCMC algorithm to find the structure (R package \textsc{CorReg} on CRAN). 
+	Now we have a comparison criterion $\psi(\boldsymbol{X},S)$, we define an MCMC algorithm to find the structure (R package \textsc{CorReg} on CRAN). 
 	\subsubsection{The neighbourhood}
 	Let's define $\mathcal{S}$ the ensemble of feasible structures (those with $I_f\cap I_r=\emptyset$).
 	\\
@@ -388,7 +392,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$ (see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 		\subsection{Finding the structure}
 		\subsubsection{How to evaluate found structure?}
-			The first criterion is $P(S|\boldsymbol{X})$ which is maximized in the MCMC. But in our case, it is estimated by the likelihood (see (\ref{approxBIC}))whose value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $S$ we define some indicators to compare the true model $S$ and the found one $\hat{S}$.
+			The first criterion is $\psi(\boldsymbol{X},S)$ which is maximized in the MCMC. But in our case, it is estimated by the likelihood (see (\ref{approxBIC}))whose value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $S$ we define some indicators to compare the true model $S$ and the found one $\hat{S}$.
 			Global indicators :
 			\begin{itemize}
 				\item $TL$ (True left) : the number of found dependent variables that really are dependent $TL=|I_r\cap \hat{I}_r|$ 
@@ -398,12 +402,12 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 				\item $\Delta compl$ : the difference in complexity between both model : $\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
 			\end{itemize}
 		\subsubsection{Results on $S$}	\label{compZ}
-In table \ref{compZvrai} we compare found structures in different contexts with both Uniform (U) and Hierarchical Uniform (HU) a priori law on $P(S)$. 
-We see that (HU) hypothesis gives sparser models even with $\max (\hat{p}_f^j)=5$. Moreover, this constraint is not active because observed comlexity are smaller (this constraint only serves to accelerate the walk by reducing the dimension of $\mathcal{S}$ because each configuration was computed a hundred times), meaning that the stronger penalty implied by (HU) really is efficient. The datasets used for (U) and (HU) are the same to keep the comparison  meaningful. These datasets and $\hat{S}$ are those used for tables 
+In table \ref{compZvrai} we compare found structures in different contexts with both Uniform and Hierarchical Uniform {\it a priori} law on $P(S)$, noted respectively $BIC$ and $BIC_+$. 
+We see that usage of $BIC_+$ gives sparser models even with $\max (\hat{p}_f^j)=5$. Moreover, this constraint is not active because observed complexities are smaller (this constraint only serves to accelerate the walk by reducing the dimension of $\mathcal{S}$ because each configuration was computed a hundred times), meaning that the stronger penalty implied by $BIC_+$ really is efficient. The datasets used for $BIC$ and $BIC_+$ are the same to keep the comparison  meaningful. These datasets and $\hat{S}$ are those used for tables 
  \ref{YXlinOLS} to \ref{YX2linstep}.
  
- It is also notable that (HU) has a greater computational cost than (U). 
-	We also notice that the MCMC is faster when there are numerous correlations (rejecting more candidates). 
+ It is also notable that $BIC_+$ has a greater computational cost than $BIC$. 
+	We notice that the MCMC is faster when there are numerous correlations (rejecting more candidates). 
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
@@ -412,49 +416,49 @@ We see that (HU) hypothesis gives sparser models even with $\max (\hat{p}_f^j)=5
 \hline
 $n$ & $p_r$ & $P(S)$ &  Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta p_r$ & $\Delta compl$ \\
 \hline %global30p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_51_44.csv
-30 & 0 & U&0.4104 & 3.2428 & 0 & 5.43 & 0 & -5.43 & 22.55  \\
+30 & 0 & $BIC$ &0.4104 & 3.2428 & 0 & 5.43 & 0 & -5.43 & 22.55  \\
 & & & (0.0275) & (0.3711) & (0) & (1.9346) & (0) & (1.9346) & (8.0884) \\
  &  &HU &0.4104 & 8.2338 & 0 & 0.53 & 0 & -0.53 & 2.27  \\
 & & & (0.0275) & (0.9045) & (0) & (0.7844) & (0) & (0.7844) & (3.3024) \\
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & U&0.4182 & 2.7735 & 10.96 & 5.93 & 4.98 & -0.95 & 38.16  \\
+30 & 16 & $BIC$ &0.4182 & 2.7735 & 10.96 & 5.93 & 4.98 & -0.95 & 38.16  \\
 & & & (0.0329) & (0.1498) & (1.9844) & (2.0313) & (1.9948) & (0.9987) & (6.499) \\
  &  &HU &0.4182 & 4.1876 & 11.61 & 4.57 & 4.33 & -0.24 & 16.48  \\
 & & & (0.0329) & (0.2178) & (1.8743) & (1.9502) & (1.8752) & (0.4948) & (5.4892) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & 0.4456 & 2.9154 & 25.23 & 1.92 & 6.5 & 4.58 & 28  \\
 & & & (0.0429) & (0.1331) & (1.4761) & (1.0888) & (1.4668) & (0.9866) & (5.0831) \\
- &  & HU & 0.4456 & 4.0233 & 16.96 & 3.04 & 14.77 & 11.73 & 4.35  \\
+ &  & $BIC_+$ & 0.4456 & 4.0233 & 16.96 & 3.04 & 14.77 & 11.73 & 4.35  \\
 & & & (0.0429) & (0.1091) & (1.3993) & (1.3993) & (1.4692) & (0.5478) & (5.8833) \\
 \hline
 \hline %global50p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_02_25_40.csv
-50 & 0 & U&0.5229 & 4.7068 & 0 & 4.2 & 0 & -4.2 & 13.35  \\
+50 & 0 & $BIC$ &0.5229 & 4.7068 & 0 & 4.2 & 0 & -4.2 & 13.35  \\
 & & & (0.0519) & (0.5865) & (0) & (1.7233) & (0) & (1.7233) & (5.6468) \\
- &  & HU &0.5229 & 10.1198 & 0 & 0.13 & 0 & -0.13 & 0.32  \\
+ &  & $BIC_+$ &0.5229 & 10.1198 & 0 & 0.13 & 0 & -0.13 & 0.32  \\
 & & & (0.0519) & (0.5541) & (0) & (0.3667) & (0) & (0.3667) & (0.9732) \\
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & U&0.5205 & 3.3681 & 11.15 & 5.42 & 4.72 & -0.7 & 22.85  \\	
+50 & 16 & $BIC$ &0.5205 & 3.3681 & 11.15 & 5.42 & 4.72 & -0.7 & 22.85  \\	
 & & & (0.0451) & (0.3123) & (1.93) & (1.9132) & (1.886) & (0.7317) & (5.7742) \\
  &  &HU &0.5205 & 4.909 & 11.42 & 4.59 & 4.45 & -0.14 & 7.55  \\
 & & & (0.0451) & (0.4556) & (1.9079) & (1.8968) & (1.8333) & (0.3487) & (4.0611) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & U& 0.5833 & 3.2683 & 28.17 & 1.38 & 3.7 & 2.32 & 12.74  \\
+50 & 32 & $BIC$ & 0.5833 & 3.2683 & 28.17 & 1.38 & 3.7 & 2.32 & 12.74  \\
 & & & (0.0628) & (0.316) & (1.3711) & (0.9077) & (1.3143) & (0.8394) & (4.3359) \\
  &  &HU &0.5833 & 4.3599 & 17.27 & 2.73 & 14.6 & 11.87 & -2.61  \\
 & & & (0.0628) & (0.3729) & (1.1708) & (1.1708) & (1.2792) & (0.338) & (4.4854) \\
 \hline
 \hline %global100p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_10_47_32.csv
-100 & 0 & U& 0.9623 & 12.9373 & 0 & 2.83 & 0 & -2.83 & 6.23  \\
+100 & 0 & $BIC$ & 0.9623 & 12.9373 & 0 & 2.83 & 0 & -2.83 & 6.23  \\
 & & & (0.077) & (1.7778) & (0) & (1.2953) & (0) & (1.2953) & (3.1999) \\
  &  &HU & 0.9623 & 20.9817 & 0 & 0.01 & 0 & -0.01 & 0.02  \\
 & & & (0.077) & (1.9421) & (0) & (0.1) & (0) & (0.1) & (0.2) \\
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & U& 1.1223 & 6.9647 & 11.67 & 4.8 & 4.25 & -0.55 & 12.58  \\
+100 & 16 & $BIC$ & 1.1223 & 6.9647 & 11.67 & 4.8 & 4.25 & -0.55 & 12.58  \\
 & & & (0.1122) & (0.5473) & (2.0003) & (2.0646) & (1.956) & (0.7833) & (3.9471) \\
  &  &HU & 1.1223 & 8.8486 & 12.04 & 3.95 & 3.88 & -0.07 & 3.75  \\
 & & & (0.1122) & (0.7174) & (1.9223) & (1.9404) & (1.9137) & (0.2564) & (2.2625) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U& 1.4343 & 5.9626 & 30.14 & 0.84 & 1.61 & 0.77 & 6.96  \\
+100 & 32 & $BIC$ & 1.4343 & 5.9626 & 30.14 & 0.84 & 1.61 & 0.77 & 6.96  \\
 & & & (0.2528) & (0.3136) & (1.3928) & (0.8495) & (1.2941) & (0.7086) & (3.0975) \\
  &  &HU & 1.4343 & 7.3741 & 17.49 & 2.51 & 14.26 & 11.75 & -3.76  \\
 & & & (0.2528) & (0.2748) & (1.1849) & (1.1849) & (1.2441) & (0.4794) & (4.4859) \\
@@ -476,51 +480,51 @@ When using penalized estimators for selection, a last Ordinary Least Square step
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_r$& $P(S)$ & indicator &OLS  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+$n$ & $p_r$& $P(S)$ & indicator &OLS  &    \textsc{CorReg} $\hat S$ + OLS & \textsc{CorReg} $S$ + OLS\\ 
 \hline %global30p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_51_44.csv
-30 & 0 & U& MSE (sd) & 262627.57 (732019) & 5928332.4 (49005690.2) & 262627.57 (732019) \\
+30 & 0 & $BIC$ & MSE (sd) & 262627.57 (732019) & 5928332.4 (49005690.2) & 262627.57 (732019) \\
 & & & cpl (sd) & 30 (0) & 29.99 (0.1) & 30 (0) \\
  &  &HU &MSE (sd) & 262627.57 (732019) & 10381962.64 (90962496.9) & 262627.57 (732019) \\
 & & & cpl (sd) & 30 (0) & 30 (0) & 30 (0) \\
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & U&MSE (sd) & 510747.53 (2287539.8) & 635.42 (335.2) & 610.32 (424.9) \\
+30 & 16 & $BIC$ &MSE (sd) & 510747.53 (2287539.8) & 635.42 (335.2) & 610.32 (424.9) \\
 & & & cpl (sd) & 30 (0) & 24.11 (1) & 25 (0) \\
  &  &HU &MSE (sd) & 510747.53 (2287539.8) & 603.24 (415.6) & 610.32 (424.9) \\
 & & & cpl (sd) & 30 (0) & 24.82 (0.6) & 25 (0) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 178323.95 (1426610.2) & 180.02 (44.9) & 141.03 (27.8) \\
 & & & cpl (sd) & 30 (0) & 13.85 (0.9) & 9 (0) \\
- &  & HU & MSE (sd) & 178323.95 (1426610.2) & 330.31 (134.8) & 141.03 (27.8) \\
+ &  & $BIC_+$ & MSE (sd) & 178323.95 (1426610.2) & 330.31 (134.8) & 141.03 (27.8) \\
 & & & cpl (sd) & 30 (0) & 21 (0) & 9 (0) \\
 \hline
 \hline %global50p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_02_25_40.csv
-50 & 0 & U&MSE (sd) & 528.08 (228.6) & 886.54 (364.3) & 528.08 (228.6) \\
+50 & 0 & $BIC$ &MSE (sd) & 528.08 (228.6) & 886.54 (364.3) & 528.08 (228.6) \\
 & & & cpl (sd) & 41 (0) & 36.8 (1.7) & 41 (0) \\
- &  & HU &MSE (sd) & 528.08 (228.6) & 542.29 (235) & 528.08 (228.6) \\
+ &  & $BIC_+$ &MSE (sd) & 528.08 (228.6) & 542.29 (235) & 528.08 (228.6) \\
 & & & cpl (sd) & 41 (0) & 40.87 (0.4) & 41 (0) \\
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & U&MSE (sd) & 612.72 (291.5) & 239.17 (89.4) & 200.32 (42.6) \\	
+50 & 16 & $BIC$ &MSE (sd) & 612.72 (291.5) & 239.17 (89.4) & 200.32 (42.6) \\	
 & & & cpl (sd) & 41 (0) & 24.43 (0.7) & 25 (0) \\
  &  &HU &MSE (sd) & 612.72 (291.5) & 207.6 (51.3) & 200.32 (42.6) \\
 & & & cpl (sd) & 41 (0) & 24.99 (0.5) & 25 (0) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & U&MSE (sd) & 555.44 (262.5) & 128.98 (18.1) & 121.08 (11.9) \\
+50 & 32 & $BIC$ &MSE (sd) & 555.44 (262.5) & 128.98 (18.1) & 121.08 (11.9) \\
 & & & cpl (sd) & 41 (0) & 11.45 (0.9) & 9 (0) \\
  &  &HU &MSE (sd) & 555.44 (262.5) & 171.9 (31.1) & 121.08 (11.9) \\
 & & &cpl (sd) & 41 (0) & 21 (0) & 9 (0) \\
 \hline
 \hline %global100p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_10_47_32.csv
-100 & 0 & U& MSE (sd) & 167.71 (20.6) & 323.44 (124.1) & 167.71 (20.6) \\
+100 & 0 & $BIC$ & MSE (sd) & 167.71 (20.6) & 323.44 (124.1) & 167.71 (20.6) \\
 & & & cpl (sd) & 41 (0) & 38.17 (1.3) & 41 (0) \\
  &  &HU &MSE (sd) & 167.71 (20.6) & 167.98 (20.8) & 167.71 (20.6) \\  
 & & & cpl (sd) & 41 (0) & 40.99 (0.1) & 41 (0) \\
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & U&  MSE (sd) & 168.68 (22.4) & 158.51 (51.6) & 133.49 (12.2) \\
+100 & 16 & $BIC$ &  MSE (sd) & 168.68 (22.4) & 158.51 (51.6) & 133.49 (12.2) \\
 & & & cpl (sd) & 41 (0) & 24.53 (0.7) & 25 (0) \\
  &  &HU &  MSE (sd) & 168.68 (22.4) & 137.03 (20.3) & 133.49 (12.2) \\
 & & & cpl (sd) & 41 (0) & 25.01 (0.4) & 25 (0) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U&  MSE (sd) & 173.25 (22.9) & 112.8 (10.7) & 110.63 (6.9) \\
+100 & 32 & $BIC$ &  MSE (sd) & 173.25 (22.9) & 112.8 (10.7) & 110.63 (6.9) \\
 & & & cpl (sd) & 41 (0) & 10.02 (0.8) & 9 (0) \\
  &  &HU & MSE (sd) & 173.25 (22.9) & 127.4 (11.9) & 110.63 (6.9) \\
 & & & cpl (sd) & 41 (0) & 21 (0) & 9 (0) \\
@@ -533,51 +537,51 @@ $n$ & $p_r$& $P(S)$ & indicator &OLS  &    \textsc{CorReg} $\hat S$& \textsc{Cor
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_r$&  $P(S)$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+$n$ & $p_r$&  $P(S)$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$ + LASSO& \textsc{CorReg} $S$ + LASSO\\ 
 \hline %global30p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_51_44.csv
-30 & 0 & U&MSE (sd) & 1246.35 (350.5) & 1433.98 (526.7) & 1246.35 (350.5) \\
+30 & 0 & $BIC$ &MSE (sd) & 1246.35 (350.5) & 1433.98 (526.7) & 1246.35 (350.5) \\
 & & & cpl (sd) & 17.84 (5.5) & 15.79 (5.6) & 17.84 (5.5) \\
  &  &HU &MSE (sd) & 1246.35 (350.5) & 1248.84 (341.4) & 1246.35 (350.5) \\
 & & & cpl (sd) & 17.84 (5.5) & 17.63 (5.6) & 17.84 (5.5) \\ 
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
 30 &16& U & MSE (sd) & 712.79 (405.2) & 566.32 (226.4) & 554.01 (257.1) \\
 & & & cpl (sd) & 16.68 (4.4) & 15.35 (4.3) & 16.14 (4.5) \\
- &  & HU & MSE (sd) & 712.79 (405.2) & 551.92 (242.4) & 554.01 (257.1) \\
+ &  & $BIC_+$ & MSE (sd) & 712.79 (405.2) & 551.92 (242.4) & 554.01 (257.1) \\
 & & & cpl (sd) & 16.68 (4.4) & 15.96 (4.4) & 16.14 (4.5) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 216.12 (128.3) & 157.78 (39.4) & 147.04 (28.4) \\
 & & & cpl (sd) & 11.23 (4.4) & 8.56 (1.8) & 7.91 (1.3) \\
- &  & HU & MSE (sd) & 216.12 (128.3) & 178.88 (68.9) & 147.04 (28.4) \\
+ &  & $BIC_+$ & MSE (sd) & 216.12 (128.3) & 178.88 (68.9) & 147.04 (28.4) \\
 & & & cpl (sd) & 11.23 (4.4) & 9.86 (3) & 7.91 (1.3) \\
 \hline
 \hline %global50p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_02_25_40.csv
-50 & 0 & U&MSE (sd) & 658.38 (221.4) & 872.32 (239.4) & 658.38 (221.4) \\
+50 & 0 & $BIC$ &MSE (sd) & 658.38 (221.4) & 872.32 (239.4) & 658.38 (221.4) \\
 & & & cpl (sd) & 28.2 (6) & 22.95 (5.8) & 28.2 (6) \\
- &  & HU &MSE (sd) & 658.38 (221.4) & 652.72 (211.9) & 658.38 (221.4) \\
+ &  & $BIC_+$ &MSE (sd) & 658.38 (221.4) & 652.72 (211.9) & 658.38 (221.4) \\
 & & & cpl (sd) & 28.2 (6) & 28.36 (5.9) & 28.2 (6) \\
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & U&MSE (sd) & 274.34 (101.7) & 268.76 (106.3) & 225.64 (67.5) \\	
+50 & 16 & $BIC$ &MSE (sd) & 274.34 (101.7) & 268.76 (106.3) & 225.64 (67.5) \\	
 & & & cpl (sd) & 22.14 (4.1) & 19.52 (2.9) & 20.47 (2.8) \\
  &  &HU &MSE (sd) & 274.34 (101.7) & 233.8 (78.9) & 225.64 (67.5) \\
 & & & cpl (sd) & 22.14 (4.1) & 20.19 (2.8) & 20.47 (2.8) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & U&MSE (sd) & 165.6 (73.7) & 128.34 (18.8) & 123.73 (12.8) \\
+50 & 32 & $BIC$ &MSE (sd) & 165.6 (73.7) & 128.34 (18.8) & 123.73 (12.8) \\
 & & & cpl (sd) & 12.93 (6.4) & 8.51 (1.5) & 8.09 (1.1) \\
  &  &HU &MSE (sd) & 165.6 (73.7) & 135.84 (24.1) & 123.73 (12.8) \\
 & & &cpl (sd) & 12.93 (6.4) & 10.17 (3.1) & 8.09 (1.1) \\
 \hline
 \hline %global100p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_10_47_32.csv
-100 & 0 & U&  MSE (sd) & 183.33 (31.1) & 357.15 (133.4) & 183.33 (31.1) \\
+100 & 0 & $BIC$ &  MSE (sd) & 183.33 (31.1) & 357.15 (133.4) & 183.33 (31.1) \\
 & & & cpl (sd) & 37.78 (2.4) & 32.93 (3.7) & 37.78 (2.4) \\
  &  &HU &  MSE (sd) & 183.33 (31.1) & 183.78 (31.6) & 183.33 (31.1) \\
 & & &  cpl (sd) & 37.78 (2.4) & 37.75 (2.4) & 37.78 (2.4) \\
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & U& MSE (sd) & 148.83 (18.6) & 164.44 (54.3) & 139.57 (16.1) \\
+100 & 16 & $BIC$ & MSE (sd) & 148.83 (18.6) & 164.44 (54.3) & 139.57 (16.1) \\
 & & & cpl (sd) & 25.22 (4) & 21.72 (2) & 22.3 (1.7) \\
  &  &HU &  MSE (sd) & 148.83 (18.6) & 142.97 (22.1) & 139.57 (16.1) \\
 & & & cpl (sd) & 25.22 (4) & 22.24 (1.8) & 22.3 (1.7) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U& MSE (sd) & 124.29 (19.9) & 113.36 (11) & 111.54 (7.2) \\
+100 & 32 & $BIC$ & MSE (sd) & 124.29 (19.9) & 113.36 (11) & 111.54 (7.2) \\
 & & & cpl (sd) & 13.18 (5.9) & 8.68 (1.2) & 8.53 (1) \\
  &  &HU & MSE (sd) & 124.29 (19.9) & 118.33 (12) & 111.54 (7.2) \\
 & & & cpl (sd) & 13.18 (5.9) & 11.02 (2.9) & 8.53 (1) \\
@@ -590,51 +594,51 @@ $n$ & $p_r$&  $P(S)$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{C
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_r$&  $P(S)$&indicator &Elasticnet  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+$n$ & $p_r$&  $P(S)$&indicator &Elasticnet  &    \textsc{CorReg} $\hat S$ + Elasticnet& \textsc{CorReg} $S$ + Elasticnet\\ 
 \hline %global30p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_51_44.csv
-30 & 0 & U&MSE (sd) & 1 326.54 (388.4) & 1 356.98 (331.4) & 1 326.54 (388.4) \\
+30 & 0 & $BIC$ &MSE (sd) & 1 326.54 (388.4) & 1 356.98 (331.4) & 1 326.54 (388.4) \\
 & & & cpl (sd) & 12.14 (5.1) & 12.5 (5.2) & 12.14 (5.1) \\
  &  &HU & MSE (sd) & 1326.54 (388.4) & 1307.96 (356.6) & 1326.54 (388.4) \\
 & & & cpl (sd) & 12.14 (5.1) & 12.27 (5.1) & 12.14 (5.1) \\
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & U&MSE (sd) & 1 400.56 (1598.2) & 668.57 (274.6) & 653.59 (283.7) \\
+30 & 16 & $BIC$ &MSE (sd) & 1 400.56 (1598.2) & 668.57 (274.6) & 653.59 (283.7) \\
 & & & cpl (sd) & 13.86 (6.8) & 14.31 (5.7) & 14.83 (5.3) \\
  &  &HU &MSE (sd) & 1 400.56 (1598.2) & 643.25 (277.9) & 653.59 (283.7) \\
 & & & cpl (sd) & 13.86 (6.8) & 14.83 (5.6) & 14.83 (5.3) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 855.74 (582.6) & 181.08 (51.9) & 146.79 (32.7) \\
 & & & cpl (sd) & 15.57 (6.3) & 11.19 (2.4) & 8.37 (1.3) \\
- &  & HU & MSE (sd) & 855.74 (582.6) & 311.57 (163.9) & 146.79 (32.7) \\
+ &  & $BIC_+$ & MSE (sd) & 855.74 (582.6) & 311.57 (163.9) & 146.79 (32.7) \\
 & & & cpl (sd) & 15.57 (6.3) & 14.87 (3.9) & 8.37 (1.3) \\
 \hline
 \hline %global50p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_02_25_40.csv
-50 & 0 & U&MSE (sd) & 738.94 (254.5) & 914.56 (283.7) & 738.94 (254.5) \\
+50 & 0 & $BIC$ &MSE (sd) & 738.94 (254.5) & 914.56 (283.7) & 738.94 (254.5) \\
 & & & cpl (sd) & 25.85 (8.7) & 20.97 (7.8) & 25.85 (8.7) \\
- &  & HU &MSE (sd) & 738.94 (254.5) & 751.06 (262.2) & 738.94 (254.5) \\
+ &  & $BIC_+$ &MSE (sd) & 738.94 (254.5) & 751.06 (262.2) & 738.94 (254.5) \\
 & & & cpl (sd) & 25.85 (8.7) & 25.43 (8.8) & 25.85 (8.7) \\
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & U&	MSE (sd) & 516.36 (226.6) & 276.6 (133.6) & 228.85 (89.3) \\
+50 & 16 & $BIC$ &	MSE (sd) & 516.36 (226.6) & 276.6 (133.6) & 228.85 (89.3) \\
 & & & cpl (sd) & 26.72 (7.4) & 20.49 (3.8) & 21.8 (3.3) \\
  &  &HU &MSE (sd) & 516.36 (226.6) & 239.77 (103.7) & 228.85 (89.3) \\
 & & & cpl (sd) & 26.72 (7.4) & 21.57 (3.4) & 21.8 (3.3) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & U&MSE (sd) & 328.7 (146.3) & 130.61 (20.6) & 124.01 (15.4) \\
+50 & 32 & $BIC$ &MSE (sd) & 328.7 (146.3) & 130.61 (20.6) & 124.01 (15.4) \\
 & & & cpl (sd) & 24.7 (7.1) & 9.95 (1.5) & 8.22 (1.2) \\
  &  &HU &MSE (sd) & 328.7 (146.3) & 169.13 (40.2) & 124.01 (15.4) \\
 & & &cpl (sd) & 24.7 (7.1) & 16.04 (3.8) & 8.22 (1.2) \\
 \hline
 \hline %global100p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_10_47_32.csv
-100 & 0 & U& MSE (sd) & 175.93 (25.9) & 355.79 (143.8) & 175.93 (25.9) \\
+100 & 0 & $BIC$ & MSE (sd) & 175.93 (25.9) & 355.79 (143.8) & 175.93 (25.9) \\
 & & & cpl (sd) & 39.71 (1.7) & 34.11 (4.6) & 39.71 (1.7) \\
  &  &HU &  MSE (sd) & 175.93 (25.9) & 176.2 (26.3) & 175.93 (25.9) \\
 & & &  cpl (sd) & 39.71 (1.7) & 39.69 (1.7) & 39.71 (1.7) \\
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & U&  MSE (sd) & 173.65 (25.1) & 164.96 (59) & 139.51 (17.6) \\
+100 & 16 & $BIC$ &  MSE (sd) & 173.65 (25.1) & 164.96 (59) & 139.51 (17.6) \\
 & & &  cpl (sd) & 35.54 (4.2) & 22.58 (2.2) & 23.26 (1.9) \\
  &  &HU &  MSE (sd) & 173.65 (25.1) & 143.04 (23.2) & 139.51 (17.6) \\
 & & & cpl (sd) & 35.54 (4.2) & 23.16 (1.9) & 23.26 (1.9) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U&  MSE (sd) & 161.92 (25.2) & 113.61 (10.9) & 111.46 (7.2) \\
+100 & 32 & $BIC$ &  MSE (sd) & 161.92 (25.2) & 113.61 (10.9) & 111.46 (7.2) \\
 & & &  cpl (sd) & 30.78 (6.4) & 9.25 (1.2) & 8.67 (1) \\
  &  &HU &  MSE (sd) & 161.92 (25.2) & 127.44 (13.3) & 111.46 (7.2) \\
 & & &cpl (sd) & 30.78 (6.4) & 17.85 (2.7) & 8.67 (1) \\
@@ -648,51 +652,51 @@ $n$ & $p_r$&  $P(S)$&indicator &Elasticnet  &    \textsc{CorReg} $\hat S$& \text
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_r$&  $P(S)$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+$n$ & $p_r$&  $P(S)$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$ + Stepwise& \textsc{CorReg} $S$ + Stepwise\\ 
 \hline %global30p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_51_44.csv
-30 & 0 & U& MSE (sd) & 1 919.43 (861.8) & 2 014.13 (683.6) & 1 919.43 (861.8) \\
+30 & 0 & $BIC$ & MSE (sd) & 1 919.43 (861.8) & 2 014.13 (683.6) & 1 919.43 (861.8) \\
 & & &cpl (sd) & 22.8 (3.3) & 19.34 (4.9) & 22.8 (3.3) \\
  &  &HU &MSE (sd) & 1 919.43 (861.8) & 1 885.39 (814) & 1 919.43 (861.8) \\
 & & & cpl (sd) & 22.8 (3.3) & 22.73 (3.1) & 22.8 (3.3) \\
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & U&MSE (sd) & 696.46 (492.9) & 662.07 (285.9) & 660.93 (354) \\
+30 & 16 & $BIC$ &MSE (sd) & 696.46 (492.9) & 662.07 (285.9) & 660.93 (354) \\
 & & & cpl (sd) & 15.9 (3.8) & 15.1 (3.7) & 15.76 (3.7) \\
  &  &HU &MSE (sd) & 696.46 (492.9) & 655.94 (325.7) & 660.93 (354) \\
 & & & cpl (sd) & 15.9 (3.8) & 15.72 (3.6) & 15.76 (3.7) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 394.93 (356) & 155.18 (36.4) & 147.81 (30.3) \\
 & & &cpl (sd) & 16.1 (6.3) & 8.26 (1.7) & 7.77 (1.3) \\
- &  & HU &  MSE (sd) & 394.93 (356) & 189.49 (79) & 147.81 (30.3) \\
+ &  & $BIC_+$ &  MSE (sd) & 394.93 (356) & 189.49 (79) & 147.81 (30.3) \\
 & & & cpl (sd) & 16.1 (6.3) & 10.23 (3) & 7.77 (1.3) \\
 \hline
 \hline %global50p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_02_25_40.csv
-50 & 0 & U&MSE (sd) & 745.88 (241.7) & 962.12 (319.3) & 745.88 (241.7) \\
+50 & 0 & $BIC$ &MSE (sd) & 745.88 (241.7) & 962.12 (319.3) & 745.88 (241.7) \\
 & & & cpl (sd) & 27.19 (4.6) & 22.9 (4.5) & 27.19 (4.6) \\
- &  & HU &MSE (sd) & 745.88 (241.7) & 749.08 (244.2) & 745.88 (241.7) \\
+ &  & $BIC_+$ &MSE (sd) & 745.88 (241.7) & 749.08 (244.2) & 745.88 (241.7) \\
 & & & cpl (sd) & 27.19 (4.6) & 27.21 (4.5) & 27.19 (4.6) \\
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & U&	MSE (sd) & 279.82 (151.1) & 290.13 (117.3) & 239.61 (69.5) \\
+50 & 16 & $BIC$ &	MSE (sd) & 279.82 (151.1) & 290.13 (117.3) & 239.61 (69.5) \\
 & & & cpl (sd) & 21.24 (5.2) & 18.13 (2.8) & 19.23 (2.7) \\
  &  &HU &MSE (sd) & 279.82 (151.1) & 252.35 (108.5) & 239.61 (69.5) \\
 & & & cpl (sd) & 21.24 (5.2) & 18.97 (2.7) & 19.23 (2.7) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & U&MSE (sd) & 199.3 (158.7) & 126.81 (17.4) & 124.19 (13) \\
+50 & 32 & $BIC$ &MSE (sd) & 199.3 (158.7) & 126.81 (17.4) & 124.19 (13) \\
 & & & cpl (sd) & 14.31 (6.2) & 8.16 (1.2) & 8.04 (1) \\
  &  &HU &MSE (sd) & 199.3 (158.7) & 136.32 (25.2) & 124.19 (13) \\
 & & &cpl (sd) & 14.31 (6.2) & 9.59 (2.6) & 8.04 (1) \\
 \hline
 \hline %global100p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_10_47_32.csv
-100 & 0 & U&   MSE (sd) & 193.26 (34.9) & 387.18 (151.6) & 193.26 (34.9) \\
+100 & 0 & $BIC$ &   MSE (sd) & 193.26 (34.9) & 387.18 (151.6) & 193.26 (34.9) \\
 & & & cpl (sd) & 36.3 (2.5) & 30.94 (4.2) & 36.3 (2.5) \\
  &  &HU &   MSE (sd) & 193.26 (34.9) & 194.43 (37.3) & 193.26 (34.9) \\
 & & &  cpl (sd) & 36.3 (2.5) & 36.22 (2.7) & 36.3 (2.5) \\
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & U&  MSE (sd) & 145.46 (20.1) & 165.74 (56.1) & 140.27 (17.5) \\
+100 & 16 & $BIC$ &  MSE (sd) & 145.46 (20.1) & 165.74 (56.1) & 140.27 (17.5) \\
 & & & cpl (sd) & 23.44 (3.8) & 21.23 (2.1) & 21.93 (1.7) \\
  &  &HU &  MSE (sd) & 145.46 (20.1) & 143.74 (23.2) & 140.27 (17.5) \\
 & & & cpl (sd) & 23.44 (3.8) & 21.86 (1.7) & 21.93 (1.7) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U& MSE (sd) & 128.44 (18.4) & 113.27 (10.7) & 111.77 (7.2) \\
+100 & 32 & $BIC$ & MSE (sd) & 128.44 (18.4) & 113.27 (10.7) & 111.77 (7.2) \\
 & & &  cpl (sd) & 13.58 (5.2) & 8.59 (1.1) & 8.48 (1) \\
  &  &HU &  MSE (sd) & 128.44 (18.4) & 118.61 (11.5) & 111.77 (7.2) \\
 & & & cpl (sd) & 13.58 (5.2) & 10.75 (2.8) & 8.48 (1) \\
@@ -705,43 +709,43 @@ $n$ & $p_r$&  $P(S)$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$& \texts
 
 \clearpage
 	\subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$ (worst case for us)}	 \label{tableMSEsimgauche}
-We now try the method with a response depending only on variables in $\boldsymbol{X_r}$. The datasets used here were still those from \ref{compZvrai}.
-Depending only on $\boldsymbol{X_r}$ imply sparsity and impossibility to obtain the true model when using the true structure. \textsc{CorReg} is still better than classical methods. 
+We now try the method with a response depending only on variables in $\boldsymbol{X}_r$. The datasets used here were still those from \ref{compZvrai}.
+Depending only on $\boldsymbol{X}_r$ imply sparsity and impossibility to obtain the true model when using the true structure. \textsc{CorReg} is still better than classical methods. 
 
 \begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_r$&$P(S)$ &indicator &OLS  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+$n$ & $p_r$&$P(S)$ &indicator &OLS  &    \textsc{CorReg} $\hat S$ + OLS& \textsc{CorReg} $S$ + OLS\\ 
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & U&MSE (sd) & 81781.54 (247281.7) & 507.1 (269.2) & 593.03 (428.3) \\
+30 & 16 & $BIC$ &MSE (sd) & 81781.54 (247281.7) & 507.1 (269.2) & 593.03 (428.3) \\
 & & & cpl (sd) & 30 (0) & 24.11 (1) & 25 (0) \\
  &  &HU &MSE (sd) & 81781.54 (247281.7) & 587.07 (425.6) & 593.03 (428.3) \\
 & & & cpl (sd) & 30 (0) & 24.82 (0.6) & 25 (0) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 74136.81 (297716.1) & 189.45 (48.1) & 144.51 (31.4) \\
 & & & cpl (sd) & 30 (0) & 13.85 (0.9) & 9 (0) \\
- &  & HU & MSE (sd) & 74136.81 (297716.1) & 340.53 (169.4) & 144.51 (31.4) \\
+ &  & $BIC_+$ & MSE (sd) & 74136.81 (297716.1) & 340.53 (169.4) & 144.51 (31.4) \\
 & & & cpl (sd) & 30 (0) & 21 (0) & 9 (0) \\
 \hline
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & U&	MSE (sd) & 684.04 (438.1) & 190.97 (37.7) & 197.32 (40) \\
+50 & 16 & $BIC$ &	MSE (sd) & 684.04 (438.1) & 190.97 (37.7) & 197.32 (40) \\
 & & & cpl (sd) & 41 (0) & 24.43 (0.7) & 25 (0) \\
  &  &HU &MSE (sd) & 684.04 (438.1) & 196.36 (40.5) & 197.32 (40) \\
 & & & cpl (sd) & 41 (0) & 24.99 (0.5) & 25 (0) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & U&MSE (sd) & 596.32 (323) & 126.94 (15.5) & 119.39 (12.4) \\
+50 & 32 & $BIC$ &MSE (sd) & 596.32 (323) & 126.94 (15.5) & 119.39 (12.4) \\
 & & & cpl (sd) & 41 (0) & 11.45 (0.9) & 9 (0) \\
  &  &HU &MSE (sd) & 596.32 (323) & 168.03 (27.7) & 119.39 (12.4) \\
 & & &cpl (sd) & 41 (0) & 21 (0) & 9 (0) \\
 \hline
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & U&  MSE (sd) & 168.35 (20.1) & 133.75 (12.4) & 135.08 (13.1) \\
+100 & 16 & $BIC$ &  MSE (sd) & 168.35 (20.1) & 133.75 (12.4) & 135.08 (13.1) \\
 & & & cpl (sd) & 41 (0) & 24.53 (0.7) & 25 (0) \\
  &  &HU &  MSE (sd) & 168.35 (20.1) & 135.04 (13.1) & 135.08 (13.1) \\
 & & & cpl (sd) & 41 (0) & 25.01 (0.4) & 25 (0) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U&  MSE (sd) & 168.07 (21.4) & 109.61 (7.4) & 108.64 (7.2) \\
+100 & 32 & $BIC$ &  MSE (sd) & 168.07 (21.4) & 109.61 (7.4) & 108.64 (7.2) \\
 & & &  cpl (sd) & 41 (0) & 10.02 (0.8) & 9 (0) \\
  &  &HU & MSE (sd) & 168.07 (21.4) & 124.23 (11.1) & 108.64 (7.2) \\
 & & & cpl (sd) & 41 (0) & 21 (0) & 9 (0) \\
@@ -754,36 +758,36 @@ $n$ & $p_r$&$P(S)$ &indicator &OLS  &    \textsc{CorReg} $\hat S$& \textsc{CorRe
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_r$&  $P(S)$ &indicator &LAR  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+$n$ & $p_r$&  $P(S)$ &indicator &LAR  &    \textsc{CorReg} $\hat S$ + LAR& \textsc{CorReg} $S$ + LAR\\ 
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & U&MSE (sd) & 367.45 (198.4) & 298.32 (122.4) & 292.53 (102.2) \\
+30 & 16 & $BIC$ &MSE (sd) & 367.45 (198.4) & 298.32 (122.4) & 292.53 (102.2) \\
 & & & cpl (sd) & 14.37 (5.1) & 12.9 (3.8) & 12.84 (3.8) \\
  &  &HU &MSE (sd) & 367.45 (198.4) & 298.1 (119.1) & 292.53 (102.2) \\
 & & & cpl (sd) & 14.37 (5.1) & 12.81 (3.8) & 12.84 (3.8) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 273.12 (267.2) & 166.93 (49) & 152.45 (39.5) \\
 & & & cpl (sd) & 11.7 (5.8) & 8.7 (2.5) & 7.45 (1.4) \\
- &  & HU & MSE (sd) & 273.12 (267.2) & 175.68 (57.5) & 152.45 (39.5) \\
+ &  & $BIC_+$ & MSE (sd) & 273.12 (267.2) & 175.68 (57.5) & 152.45 (39.5) \\
 & & & cpl (sd) & 11.7 (5.8) & 9.19 (2.9) & 7.45 (1.4) \\
 \hline
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & U&	MSE (sd) & 189.64 (52.5) & 171.97 (45.9) & 176.58 (46.8) \\
+50 & 16 & $BIC$ &	MSE (sd) & 189.64 (52.5) & 171.97 (45.9) & 176.58 (46.8) \\
 & & & cpl (sd) & 14.15 (3.9) & 13.4 (2.8) & 13.5 (3.1) \\
  &  &HU &MSE (sd) & 189.64 (52.5) & 174.36 (45.3) & 176.58 (46.8) \\
 & & & cpl (sd) & 14.15 (3.9) & 13.57 (3) & 13.5 (3.1) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & U&MSE (sd) & 163.88 (67.4) & 124.53 (17) & 121.99 (16.6) \\
+50 & 32 & $BIC$ &MSE (sd) & 163.88 (67.4) & 124.53 (17) & 121.99 (16.6) \\
 & & & cpl (sd) & 13.06 (7.2) & 8.29 (1.6) & 7.73 (1.2) \\
  &  &HU &MSE (sd) & 163.88 (67.4) & 133.7 (26.4) & 121.99 (16.6) \\
 & & &cpl (sd) & 13.06 (7.2) & 9.65 (3.3) & 7.73 (1.2) \\
 \hline
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & U& MSE (sd) & 129.65 (14.8) & 127.11 (12.1) & 127.46 (12.2) \\
+100 & 16 & $BIC$ & MSE (sd) & 129.65 (14.8) & 127.11 (12.1) & 127.46 (12.2) \\
 & & &  cpl (sd) & 14.86 (3.1) & 13.97 (2.5) & 14.04 (2.5) \\
  &  &HU &  MSE (sd) & 129.65 (14.8) & 127.46 (12.2) & 127.46 (12.2) \\
 & & & cpl (sd) & 14.86 (3.1) & 14.02 (2.5) & 14.04 (2.5) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U&  MSE (sd) & 121.21 (20.1) & 109.66 (7.9) & 109.04 (7.8) \\
+100 & 32 & $BIC$ &  MSE (sd) & 121.21 (20.1) & 109.66 (7.9) & 109.04 (7.8) \\
 & & & cpl (sd) & 12.84 (5.2) & 8.42 (1.1) & 8.11 (0.8) \\
  &  &HU &  MSE (sd) & 121.21 (20.1) & 112.56 (11.2) & 109.04 (7.8) \\
 & & & cpl (sd) & 12.84 (5.2) & 9.77 (2.3) & 8.11 (0.8) \\
@@ -796,36 +800,36 @@ $n$ & $p_r$&  $P(S)$ &indicator &LAR  &    \textsc{CorReg} $\hat S$& \textsc{Cor
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_r$&  $P(S)$ &indicator & Elasticnet  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+$n$ & $p_r$&  $P(S)$ &indicator & Elasticnet  &    \textsc{CorReg} $\hat S$ + Elasticnet& \textsc{CorReg} $S$ + Elasticnet\\ 
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & U&MSE (sd) & 499.32 (218.8) & 311.41 (137.4) & 305.09 (123.5) \\
+30 & 16 & $BIC$ &MSE (sd) & 499.32 (218.8) & 311.41 (137.4) & 305.09 (123.5) \\
 & & & cpl (sd) & 14.08 (6.1) & 11.75 (4.8) & 11.49 (4.7) \\
  &  &HU &MSE (sd) & 499.32 (218.8) & 307.6 (128.7) & 305.09 (123.5) \\
 & & & cpl (sd) & 14.08 (6.1) & 11.63 (4.7) & 11.49 (4.7) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 691.55 (503.2) & 193.45 (54.2) & 150.17 (35) \\
 & & & cpl (sd) & 12.54 (7.2) & 10.26 (2.7) & 7.81 (1.4) \\
- &  & HU & MSE (sd) & 691.55 (503.2) & 279.21 (117.3) & 150.17 (35) \\
+ &  & $BIC_+$ & MSE (sd) & 691.55 (503.2) & 279.21 (117.3) & 150.17 (35) \\
 & & & cpl (sd) & 12.54 (7.2) & 13 (4.3) & 7.81 (1.4) \\
 \hline
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & U&	MSE (sd) & 282.05 (134.8) & 180.64 (47.6) & 181.49 (48.6) \\
+50 & 16 & $BIC$ &	MSE (sd) & 282.05 (134.8) & 180.64 (47.6) & 181.49 (48.6) \\
 & & & cpl (sd) & 20.37 (6.3) & 13.68 (4) & 14.05 (4) \\
  &  &HU &MSE (sd) & 282.05 (134.8) & 180.84 (47.5) & 181.49 (48.6) \\
 & & & cpl (sd) & 20.37 (6.3) & 14.03 (4) & 14.05 (4) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & U&MSE (sd) & 308.13 (142.9) & 129.39 (19.6) & 122.71 (17.8) \\
+50 & 32 & $BIC$ &MSE (sd) & 308.13 (142.9) & 129.39 (19.6) & 122.71 (17.8) \\
 & & & cpl (sd) & 22.94 (7.7) & 9.37 (2.1) & 7.91 (1.4) \\
  &  &HU &MSE (sd) & 308.13 (142.9) & 159.14 (30.4) & 122.71 (17.8) \\
 & & &cpl (sd) & 22.94 (7.7) & 15.42 (4) & 7.91 (1.4) \\
 \hline
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & U& MSE (sd) & 150.14 (19.7) & 127.48 (14) & 128.21 (15) \\
+100 & 16 & $BIC$ & MSE (sd) & 150.14 (19.7) & 127.48 (14) & 128.21 (15) \\
 & & &  cpl (sd) & 25.6 (5.4) & 14.73 (3.8) & 14.73 (3.9) \\
  &  &HU &  MSE (sd) & 150.14 (19.7) & 128.21 (14.9) & 128.21 (15) \\
 & & & cpl (sd) & 25.6 (5.4) & 14.7 (3.9) & 14.73 (3.9) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U& MSE (sd) & 157.18 (23.5) & 110.24 (8) & 109.24 (7.8) \\
+100 & 32 & $BIC$ & MSE (sd) & 157.18 (23.5) & 110.24 (8) & 109.24 (7.8) \\
 & & &  cpl (sd) & 30.41 (6.7) & 8.96 (1.3) & 8.3 (1) \\
  &  &HU &  MSE (sd) & 157.18 (23.5) & 123.8 (12.5) & 109.24 (7.8) \\
 & & & cpl (sd) & 30.41 (6.7) & 17.18 (3.3) & 8.3 (1) \\
@@ -839,36 +843,36 @@ $n$ & $p_r$&  $P(S)$ &indicator & Elasticnet  &    \textsc{CorReg} $\hat S$& \te
 \centering
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
-$n$ & $p_r$&  $P(S)$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+$n$ & $p_r$&  $P(S)$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$ + stepwise & \textsc{CorReg} $S$ + stepwise \\ 
 \hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & U&MSE (sd) & 394.59 (454.6) & 341.47 (153.2) & 351.14 (148) \\
+30 & 16 & $BIC$ &MSE (sd) & 394.59 (454.6) & 341.47 (153.2) & 351.14 (148) \\
 & & & cpl (sd) & 13.09 (3.2) & 12.9 (2.9) & 12.92 (3) \\
  &  &HU &MSE (sd) & 394.59 (454.6) & 353.99 (157) & 351.14 (148) \\
 & & & cpl (sd) & 13.09 (3.2) & 12.83 (2.9) & 12.92 (3) \\
 \hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
 30 & 32 & U & MSE (sd) & 410.11 (343.5) & 163.05 (45.4) & 152.08 (38.1) \\
 & & & cpl (sd) & 15.8 (6.5) & 8.29 (2.2) & 7.34 (1.3) \\
- &  & HU & MSE (sd) & 410.11 (343.5) & 178.94 (69.7) & 152.08 (38.1) \\
+ &  & $BIC_+$ & MSE (sd) & 410.11 (343.5) & 178.94 (69.7) & 152.08 (38.1) \\
 & & & cpl (sd) & 15.8 (6.5) & 8.89 (3) & 7.34 (1.3) \\
 \hline
 \hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & U&	MSE (sd) & 180.67 (52.7) & 173.02 (38.3) & 174.84 (36.8) \\
+50 & 16 & $BIC$ &	MSE (sd) & 180.67 (52.7) & 173.02 (38.3) & 174.84 (36.8) \\
 & & & cpl (sd) & 13.56 (3.7) & 12.78 (2.4) & 13.07 (2.4) \\
  &  &HU &MSE (sd) & 180.67 (52.7) & 175.3 (38.1) & 174.84 (36.8) \\
 & & & cpl (sd) & 13.56 (3.7) & 13.01 (2.4) & 13.07 (2.4) \\
 \hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & U&MSE (sd) & 188.91 (88.5) & 124.38 (17.4) & 122.38 (16.7) \\
+50 & 32 & $BIC$ &MSE (sd) & 188.91 (88.5) & 124.38 (17.4) & 122.38 (16.7) \\
 & & & cpl (sd) & 14.74 (6.6) & 8.07 (1.6) & 7.65 (1.2) \\
  &  &HU &MSE (sd) & 188.91 (88.5) & 134.22 (23.6) & 122.38 (16.7) \\
 & & &cpl (sd) & 14.74 (6.6) & 9.5 (2.8) & 7.65 (1.2) \\
 \hline
 \hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & U&  MSE (sd) & 128.18 (13.7) & 127.43 (13.7) & 127.71 (13.3) \\
+100 & 16 & $BIC$ &  MSE (sd) & 128.18 (13.7) & 127.43 (13.7) & 127.71 (13.3) \\
 & & &  cpl (sd) & 13.78 (2.8) & 13.51 (2) & 13.59 (2.1) \\
  &  &HU & MSE (sd) & 128.18 (13.7) & 127.71 (13.3) & 127.71 (13.3) \\
 & & & cpl (sd) & 13.78 (2.8) & 13.59 (2.1) & 13.59 (2.1) \\
 \hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & U& MSE (sd) & 126.15 (20.6) & 109.47 (8) & 109.04 (7.8) \\
+100 & 32 & $BIC$ & MSE (sd) & 126.15 (20.6) & 109.47 (8) & 109.04 (7.8) \\
 & & & cpl (sd) & 13.25 (4.4) & 8.3 (1) & 8.12 (0.8) \\
  &  &HU &  MSE (sd) & 126.15 (20.6) & 113.96 (11.4) & 109.04 (7.8) \\
 & & & cpl (sd) & 13.25 (4.4) & 10.08 (2.6) & 8.12 (0.8) \\
@@ -888,9 +892,9 @@ $n$ & $p_r$&  $P(S)$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$& \texts
 \hline
 $n$ & $p_r$ & $P(S)$&Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta p_2$ & $\Delta compl$ \\
 \hline
-30 & 16 & U& 0.4313 & 2.7769 & 9.96 & 2.45 & 5.95 & 3.5 & 29.42  \\
+30 & 16 & $BIC$ & 0.4313 & 2.7769 & 9.96 & 2.45 & 5.95 & 3.5 & 29.42  \\
 & & &(0.0391) & (0.0883) & (1.3175) & (1.3808) & (1.3056) & (1.453) & (6.2639) \\
- &  & HU & 0.4313 & 4.9079 & 7.28 & 1.25 & 8.63 & 7.38 & 5.77  \\ 
+ &  & $BIC_+$ & 0.4313 & 4.9079 & 7.28 & 1.25 & 8.63 & 7.38 & 5.77  \\ 
 & & &(0.0391) & (0.4353) & (1.5769) & (0.9987) & (1.5548) & (1.6316) & (6.1297) \\ 
 \hline
 \end{tabular} 
@@ -904,7 +908,7 @@ $n$ & $p_r$ & $P(S)$&Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta p_
 \hline 
 $n$ & $p_r$& $P(S)$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
 \hline %nonlin0.5global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_55_33.csv
-30 & 16 & U&MSE (sd) & 996.06 (323.7) & 1100.17 (391.4) & 1501.25 (905.9) \\
+30 & 16 & $BIC$ &MSE (sd) & 996.06 (323.7) & 1100.17 (391.4) & 1501.25 (905.9) \\
 & & &cpl (sd) & 17.66 (5.4) & 14.7 (4.7) & 11.97 (4.9) \\
  &  &HU &MSE (sd) & 996.06 (323.7) & 1094.5 (621.8) & 1501.25 (905.9) \\
 & & & cpl (sd) & 17.66 (5.4) & 16.98 (4.8) & 11.97 (4.9) \\ 
