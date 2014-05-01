@@ -1075,14 +1075,25 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 %	
 If all the variables in $\boldsymbol{X}$ are Gaussian mixtures with at least two distinct components, then the model of sub-regression is identifiable (from the identifiability of the SR model by Maugis \cite{maugis2009variable}).
 		
-But making this hypothesis on $\boldsymbol{X}_r$ is sufficient.
+But making this hypothesis on $\boldsymbol{X}_r$ is sufficient. 
 In the followings, we call Gaussian mixture the Gaussian mixtures with at least two distinct components, and Gaussian mixtures with equal components are called Gaussian (in fact they are).
 
-First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there is at least one Gaussian mixture on the right of each sub-regression. So there is a non-empty subset of $\boldsymbol{X} \subset \boldsymbol{X}_f$ containing Gaussian mixtures. We note $\boldsymbol{X}_{S^c}$ its complement (empty or not) in $\boldsymbol{X}_f$
+First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there is at least one Gaussian mixture on the right of each sub-regression. So we have $\boldsymbol{X}^G \subsetneq \boldsymbol{X}_f$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
 
 
 The theorem from Maugis guarantee that a sub-regression between Gaussian mixtures is identifiable.
-		For each sub-regression, 
+		\begin{eqnarray}
+			\forall j \in I_r, \boldsymbol{X}^j_{|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_j^G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c}+ \boldsymbol{\varepsilon}_j \\
+			\boldsymbol{X}^j_{|\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c} + \tilde{\boldsymbol{\varepsilon}}_j \textrm{ is identifiable where} \\
+			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian. And we have the unique decomposition} \\
+			f(\boldsymbol{X}^j|\boldsymbol{X}^G,\boldsymbol{X}^{G^c})&=&f(\boldsymbol{X}^j|\boldsymbol{X}^{G^c})f(\boldsymbol{X}^{G})
+		\end{eqnarray}
+		We have the unique (Gaussian are allowed only on the right of the sub-regressions) decomposition $f(\boldsymbol{X}_r|\boldsymbol{X}_f)=f(\boldsymbol{X}_r|\boldsymbol{X}^G,\boldsymbol{X}^{G^c})=f(\boldsymbol{X}_r|\boldsymbol{X}^{G^c})f(\boldsymbol{X}^{G}) $ 
+		where  $f(\boldsymbol{X}_r|\boldsymbol{X}^{G^c})$ is identifiable. Moreover, $\boldsymbol{X}^{G}$ is a set (empty or not) of independent Gaussian variables, whose parameters are identifiable.
+		So $\forall j \in I_r, f(\boldsymbol{X}^j|\boldsymbol{X}_f)$. And the structure is identifiable.
+		
+		
+		
 %	\subsubsection{Identifiability: Theorem and proof} 
 %		A necessary and sufficient condition for identifiability of $S$ is $\forall j \in I_r: K_j\geq 2$ with at least two distinct components in $(\boldsymbol{\mu}_j,\boldsymbol{\sigma}_j)$
 %\\
