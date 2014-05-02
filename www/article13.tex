@@ -72,12 +72,12 @@ Linear regression is a very standard and efficient method providing a predictive
 %	 and the correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
 
 	With the rise of informatics, datasets contain more and more covariates, % and thus dimension reduction becomes a necessity. Moreover, 
-	increasing the chance to have correlated ones.  It will be illustrated with examples on real datasets in the last section of this paper (steel industry: many parameters of the whole process without any a priori and highly correlated because of physical laws, process rules, etc). 
+	increasing the chance to have correlated ones.  
 	 In such a context, variance of the estimators can lead to arbitrary results whereas interpretation and prediction are both strongly needed, depending on the context. For instance, interpretation could be favoured to improve a situation instead of only predict problems, so robust estimation is a real stake.
 		~\\	~\\
 		
 %bibliographie	
-	The Ordinary Least Squares (\textsc{OLS}) estimator is the minimum-variance linear unbiased estimator but it suffers from ill-conditioned matrices inversion when the covariates are highly correlated (section \ref{sectionOLS}). Therefore, some other methods can be seen as a modification of the dataset to improve the robustess of the estimator (by introducing some bias, selecting only some covariates, grouping some covariates, {\it etc.}).
+	The Ordinary Least Squares (\textsc{OLS}) estimator is the minimum-variance linear unbiased estimator but it suffers from ill-conditioned matrices inversion when the covariates are highly correlated (section \ref{sectionOLS}). Therefore, some other methods try to improve the robustess of the estimator by introducing some bias, selecting only some covariates, grouping some covariates, {\it etc.}.
 
 
 %In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$ and $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $.
@@ -85,15 +85,15 @@ Linear regression is a very standard and efficient method providing a predictive
 	 Penalized methods try to reduce the variance introducing some bias to improve the bias-variance tradeoff and get better prediction.
 	Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty.
 	But this penalty is not guided by the correlations. It is the same for each covariate and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
-	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large number of covariates. 
+	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large number of covariates. The absence of variable selection is not compatible with the need to find small set of relevant covariates to explain the response variable. 
 	
-	Real datasets often imply many irrelevant variables so variable selection would be favoured when possible. Moreover, selection may keep only uncorrelated covariates and thus resolve the problem.	
+	Real datasets often imply many irrelevant variables so variable selection would be favoured when possible to reduce the dimension and obtain models small enough to be understood. Moreover, selection may keep only uncorrelated covariates and thus resolve the correlations problem.	
 	The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshirani1996regression}) consists in a shrinkage of the regression coefficients based on a parametric $L_1$ penalty to shrink some coefficients exactly to zero.
 %	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. 
-But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates.
+But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. It only produces a parsimonious model, that is a gain for interpretation but only half the way.
 %	 Another limitation of the \textsc{LASSO} is that it preserves at most $n$ predictors (troublesome when in high dimension). 
 	% Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptative \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But
-	 \textsc{LASSO} is also known to face consistency problems \cite{Zhao2006MSC} when confronted with correlated covariates.
+	 Indeed, \textsc{LASSO} is also known to face consistency problems \cite{Zhao2006MSC} when confronted with correlated covariates. So the quality of interpretation is compromised.
 	 \\
 	 
 	Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and the \textsc{LASSO} by a linear combination of $L_1$ and $L_2$ penalties.
@@ -107,27 +107,29 @@ But like the ridge regression, the penalty does not distinguish correlated and i
 %	\end{equation}
 %	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
 	%It seems to give good predictions. 
-	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain similar predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. %Hence, when comparing the two models, interpretations are not the same and nothing explicitly explains why. So it can be very confusing. 
+	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain similar predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. Interpretation will be misleading in both LASSO and Elastic net cases because nothing differentiates correlated and uncorrelated covariates.
+	%Hence, when comparing the two models, interpretations are not the same and nothing explicitly explains why. So it can be very confusing. 
 	\\
 	
-	Another way of improving the conditioning is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (\textsc{OSCAR} \cite{bondell2008simultaneous}) to reduce the dimension and also the correlations if correlated covariates are in the same clusters.
+	Another way of improving the conditioning and the understandability is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (\textsc{OSCAR} \cite{bondell2008simultaneous}) to reduce the dimension and also the correlations if correlated covariates are in the same clusters.
 	The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the regression coefficients no longer as fixed effect parameters but as unobserved independent random variables with grouped coefficients following a Gaussian Mixture distribution. The idea is to hope that the model have a small number of groups of covariates and that the mixture will have few enough components to have a number of parameters to estimate significantly lower than the number of covariates. In such a case, it improves interpretability and ability to yeld reliable prediction with a smaller variance on the coefficients estimator. 
 	
-	But it requires to suppose having many covariates with the same level of effect on the response variable and seems to stay less efficient in prediction than elastic net. Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the regression coefficients and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
-	We see that none of the above methods takes explicitly the correlations into account.
+	But it requires to suppose having many covariates with the same level of effect on the response variable and seems to stay less efficient in prediction than elastic net.
+	 Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the regression coefficients and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
+	We see that none of the above methods takes explicitly the correlations into account, even if the clustering methods introduce a kind of relationship between the covariates.
 
 
 
 	~\\	~\\
 % Principe de la méthode
 
- Instead of reducing the dimension without looking at correlations, Selvarclust \cite{maugis2009variable} proposes to focus on the correlations, giving an explicit structure between covariates by linear sub-regressions between them. But is in a clustering context, with only irrelevant covariates being dependent from relevant ones (no sub-regressions between relevant or between irrelevant covariates) and the algorithm used to find the structure is a stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}. We propose to develop this method for linear regression with a specifically adapted algorithm to find the structure of sub-regression.
+ Instead of reducing the dimension without looking at correlations, Selvarclust \cite{maugis2009variable} proposes to focus on the correlations, giving an explicit structure between covariates by linear sub-regressions between them. But it is made in a clustering context, with only irrelevant covariates being dependent from relevant ones (no sub-regressions between relevant or between irrelevant covariates) and the algorithm used to find the structure is a stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}. We propose to develop this method for linear regression with a specifically adapted algorithm to find the structure of sub-regression.
  
   The idea is that if we know explicitly the correlations, we could use this knowledge to avoid the problem. More precisely, we model the correlations with a system of linear sub-regressions for the joint distribution of the covariates to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
 Then we can define a marginal model with independent covariates. 
 Thus we have an explained variable selection guided by the correlations and it improves interpretation, not only prediction.
  This can be viewed as a pretreatment on the dataset that will be followed then by any other tools for estimation and dimension reduction without suffering from correlations. This pretreatment is specifically done to decorrelate the covariates, unlike methods described above. 
-The linear structure is obtained by a MCMC algorithm optimizing the penalized likelihood of the joint distribution on the covariates. This algorithm is part of the R package \textsc{CorReg} accessible on \textsc{CRAN}. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
+The linear structure is obtained by a MCMC algorithm optimizing the penalized likelihood of the joint distribution on the covariates, independently from the response variable. This algorithm is part of the R package \textsc{CorReg} accessible on \textsc{CRAN}. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
  %We will in a second time be able to use the remaining part of the information (sequential approach).	
  
 	
@@ -923,7 +925,7 @@ $n$ & $p_r$& $P(S)$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{Co
 	\clearpage	
 \section{Numerical results on real datasets} \label{sectionrealcase}
 \subsection{Quality case study} \label{sectionexfos}
-This work takes place in steel industry context, with quality oriented objective : to understand and prevent quality problems on finished product, knowing the whole process. 
+This work takes place in steel industry context, with quality oriented objective : to understand and prevent quality problems on finished product, knowing the whole process. The correlations are strong here (many parameters of the whole process without any a priori and highly correlated because of physical laws, process rules, {\it etc.}). 
 		
 We have :
 		\begin{itemize}
@@ -1030,10 +1032,10 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 
 
 \section{Conclusion and perspectives} \label{conclusion}
-	We have seen that correlations can lead to serious estimation and variable selection problems in linear regression and that in such a context, it can be useful to explicitly model the structure between the covariates and to use this structure (even sequentially) to avoid correlations issues. We also show that real industrial context faces this kind of situations so our model can help to interprete and predict physical phenomenon efficiently and to help to manage missing values. But for now we still need a full dataset to learn the structure between the covariates and even if correlations are strong, some information is lost. Further work is needed to face these two challenges.
+	We have seen that correlations can lead to serious estimation and variable selection problems in linear regression and that in such a context, it can be useful to explicitly model the structure between the covariates and to use this structure (even sequentially) to avoid correlations issues. We also show that real industrial context faces this kind of situations so our model can help to understand and predict physical phenomenon efficiently. But for now we still need a full dataset to learn the structure between the covariates and even if correlations are strong, some information is lost. Further work is needed to face these two challenges.
 	
 	\textsc{CorReg} is accessible on CRAN and has already proved its efficiency on real regression problematics in industry. \textsc{CorReg}'s strength is its great interpretability of the model, composed of several short linear regression easily managed by non-statisticians while strongly reducing correlations issues that are everywhere in industry.
-	Nevertheless, we need to enlarge its application field to missing values, also very commons in industry. The actual generative model allows such a functionality without supplementary hypothesis and this also is a strength of \textsc{CorReg}. 
+	Nevertheless, we need to enlarge its application field to missing values, also very commons in industry. The structure can be used to estimate missing values in $\boldsymbol{X}_r$ but the actual generative model allows to go further (to manage missing values even in the MCMC algorithm) without supplementary hypothesis and this also is a strength of \textsc{CorReg}. 
 	
 	Another perspective would be to take back lost information (the residual of each sub-regression) to improve predictive efficiency when needed. It would only consists in a second step of linear regression between the residuals and would thus still be able to use any selection method.
 	
@@ -1078,7 +1080,7 @@ If all the variables in $\boldsymbol{X}$ are Gaussian mixtures with at least two
 But making this hypothesis on $\boldsymbol{X}_r$ is sufficient. 
 In the followings, we call Gaussian mixture the Gaussian mixtures with at least two distinct components, and Gaussian mixtures with equal components are called Gaussian (in fact they are).
 
-First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there is at least one Gaussian mixture on the right of each sub-regression. So we have $\boldsymbol{X}^G \subsetneq \boldsymbol{X}_f$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
+First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there must be at least one Gaussian mixture on the right of each sub-regression. So we have $\boldsymbol{X}^G \subsetneq \boldsymbol{X}_f$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
 
 
 The theorem from Maugis guarantee that a sub-regression between Gaussian mixtures is identifiable.
@@ -1090,7 +1092,7 @@ The theorem from Maugis guarantee that a sub-regression between Gaussian mixture
 		\end{eqnarray}
 		We have the unique (Gaussian are allowed only on the right of the sub-regressions) decomposition $f(\boldsymbol{X}_r|\boldsymbol{X}_f)=f(\boldsymbol{X}_r|\boldsymbol{X}^G,\boldsymbol{X}^{G^c})=f(\boldsymbol{X}_r|\boldsymbol{X}^{G^c})f(\boldsymbol{X}^{G}) $ 
 		where  $f(\boldsymbol{X}_r|\boldsymbol{X}^{G^c})$ is identifiable. Moreover, $\boldsymbol{X}^{G}$ is a set (empty or not) of independent Gaussian variables, whose parameters are identifiable.
-		So $\forall j \in I_r, f(\boldsymbol{X}^j|\boldsymbol{X}_f)$. And the structure is identifiable.
+		So the structure is identifiable.
 		
 		
 		
