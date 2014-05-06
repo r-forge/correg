@@ -73,22 +73,22 @@ Linear regression is a very standard and efficient method providing a predictive
 
 	With the rise of informatics, datasets contain more and more covariates, % and thus dimension reduction becomes a necessity. Moreover, 
 	increasing the chance to have correlated ones.  
-	 In such a context, variance of the estimators can lead to arbitrary results leading to misleading interpretations whereas interpretation and prediction are both strongly needed, depending on the context. For instance, interpretation could be favoured to improve a situation instead of only predict problems, so robust estimation is a real stake.
+		Many estimators rely on the inversion of matrix that will be ill-conditioned in such a context, increasing the variance of these estimators and leading to misleading interpretations and reduced prediction efficiency.
+		%whereas interpretation and prediction are both strongly needed, depending on the context. For instance, interpretation could be favoured to improve a situation instead of only predict problems, so robust estimation is a real stake.
 		~\\	~\\
 		
 %bibliographie	
-	The Ordinary Least Squares (\textsc{OLS}) estimator is the minimum-variance linear unbiased estimator but it suffers from ill-conditioned matrices inversion when the covariates are highly correlated (section \ref{sectionOLS}). Some other methods try to improve the robustess of the estimator by introducing some bias, selecting only some covariates, grouping some covariates, {\it etc.}
-	but many of these methods are not directly guided by the correlations whereas knowing the correlations between the covariates facilitates interpretation.
+	We know the minimum-variance linear unbiased estimator for linear regression that is the Ordinary Least Squares (\textsc{OLS}) estimator but it suffers from ill-conditioned matrices inversion when the covariates are highly correlated (section \ref{sectionOLS}). 
+	Many traditional try to reduce the variance introducing some bias to improve the bias-variance tradeoff and get better prediction by selection of only some covariates, grouping of some covariates, {\it etc.}
 
 
 %In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$ and $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $.
 
-	 Penalized methods try to reduce the variance introducing some bias to improve the bias-variance tradeoff and get better prediction.
-	Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty but
+	 Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty but
 	it is the same for each covariate no matter how much it is correlated or not to others.%and will be too large for independent covariates and/or too small for correlated ones.  
 	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large number of covariates. The absence of variable selection is not compatible with the need to find small set of relevant covariates to explain the response variable. 
 	
-	Real datasets often imply many irrelevant variables so variable selection would be favoured when possible to reduce the dimension and obtain models small enough to be understood. Moreover, selection may keep only uncorrelated covariates and thus resolve the correlations problem.	
+	Real datasets often imply many irrelevant variables so variable selection should be favoured when possible to reduce the dimension and obtain models small enough to be understood. Moreover, selection may keep only uncorrelated covariates and thus resolve the correlations problem.	Variable selection methods may add some bias by deleting some relevant covariates but reduce the variance by the dimension reduction.
 	The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshirani1996regression}) consists in a shrinkage of the regression coefficients based on a parametric $L_1$ penalty to shrink some coefficients exactly to zero.
 %	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. 
 But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. It only produces a parsimonious model, that is a gain for interpretation but only half the way.
@@ -112,22 +112,25 @@ But like the ridge regression, the penalty does not distinguish correlated and i
 	%Hence, when comparing the two models, interpretations are not the same and nothing explicitly explains why. So it can be very confusing. 
 	\\
 	
-	Another way of improving the conditioning and the understandability is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (\textsc{OSCAR} \cite{bondell2008simultaneous}) to reduce the dimension and also the correlations if correlated covariates are in the same clusters.
-	The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the regression coefficients no longer as fixed effect parameters but as unobserved independent random variables with grouped coefficients following a Gaussian Mixture distribution. The idea is to hope that the model have a small number of groups of covariates and that the mixture will have few enough components to have a number of parameters to estimate significantly lower than the number of covariates. In such a case, it improves interpretability and ability to yeld reliable prediction with a smaller variance on the coefficients estimator. 
+	Another way of improving the conditioning and the understandability is to consider clusters of variables with the same coefficients, like the Octogonal Shrinkage and Clustering Algorithm for Regression (\textsc{OSCAR} \cite{bondell2008simultaneous}) to reduce the dimension and also the correlations if correlated covariates are in the same clusters. The bias is added by the dimension reduction inherent to the coefficients clustering.
+	The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the regression coefficients no longer as fixed effect parameters but as unobserved independent random variables with grouped coefficients following a Gaussian Mixture distribution. The idea is that if the model have a small number of groups of covariates and the mixture have few enough components the model will have a number of parameters to estimate significantly lower than the number of covariates. In such a case, it improves interpretability and ability to yeld reliable prediction with a smaller variance on the coefficients estimator. 
 	
 	But it requires to suppose having many covariates with the same level of effect on the response variable and seems to stay less efficient in prediction than elastic net.
-	 Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the regression coefficients and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
+	 Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the regression coefficients and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues. It is again a probable increase of the bias by variable selection to reduce the variance by dimension reduction.
+	  %\textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}) takes into account correlations between endogenous covariates but without explicit expression of the correlations and thus a reduced interpretation potential.
 	We see that none of the above methods takes explicitly the correlations into account, even if the clustering methods may group the correlated covariates together.
-
+	These methods are not directly guided by the correlations whereas knowing the correlations between the covariates facilitates interpretation.
 
 
 	~\\	~\\
 % Principe de la méthode
-In the field of clustering, model-based explicit correlations by linear sub-regressions between covariates claims to obtain good results in both interpretation and estimation quality (like Selvarclust \cite{maugis2009variable}). But this is made in a clustering context only, with only irrelevant covariates being dependent from relevant ones (no sub-regressions between relevant or between irrelevant covariates) and the algorithm used to find the structure is a stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}. We propose to transpose this method for linear regression with a specifically adapted algorithm to find the structure of sub-regression.
+Outside of the linear regression field, model-based explicit correlations by linear sub-regressions between covariates  claims  to obtain good results in both interpretation and estimation quality  \cite{maugis2009variable}. But this is made in a clustering context only, with only irrelevant covariates being dependent from relevant ones (no sub-regressions between relevant or between irrelevant covariates) and the algorithm used to find the structure is a stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even if it is known to be often unstable \cite{miller2002subset}. We propose to transpose this method for linear regression with a specifically adapted algorithm to find the structure of sub-regression.
  
-  The idea is that if we know explicitly the correlations, we could use this knowledge to avoid the problem. More precisely, we model the correlations with a system of linear sub-regressions for the joint distribution of the covariates to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
+  The idea is that if we know explicitly the correlations, we could use this knowledge to avoid the problem. 
+	We use the correlations as new information to reduce the variance without adding any bias.  
+  More precisely, we model the correlations with a system of linear sub-regressions for the joint distribution of the covariates to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
 Then we can define a marginal model with independent covariates. 
-Thus we have an explained variable selection guided by the correlations and it improves interpretation, not only prediction.
+Thus we have an explained variable selection guided by the correlations and it improves interpretation, not only prediction. This marginal model still is the true model but in a different probability space, without bias and with reduced variance for the estimators. The model depends only on independent covariates because it is a marginal model on these covariates.
  This can be viewed as a pretreatment on the dataset that will be followed then by any other tools for estimation and dimension reduction without suffering from correlations. This pretreatment is specifically done to decorrelate the covariates, unlike methods described above. 
 The linear structure is obtained by a MCMC algorithm optimizing the penalized likelihood of the joint distribution on the covariates, independently from the response variable. This algorithm is part of the R package \textsc{CorReg} accessible on \textsc{CRAN}. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
  %We will in a second time be able to use the remaining part of the information (sequential approach).	
@@ -144,7 +147,7 @@ We note the linear regression model:
 \begin{equation}
 		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon} \label{regressionsimple}
 	\end{equation}
-	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables, $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
+	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates), $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
 	\begin{equation}
 		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}
 	\end{equation}
@@ -158,7 +161,7 @@ Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects:
 	 and the correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
 	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
 	Another problem is that matrix inversion requires $n\geq p$. 	
-As a running example, we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define another couple $\boldsymbol{x}_4,\boldsymbol{x}_5$ of covariates that are {\it i.i.d. } with $(\boldsymbol{x}_1,\boldsymbol{x}_2)$ and two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$ .
+\paragraph{Running example:} we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define another couple $\boldsymbol{x}_4,\boldsymbol{x}_5$ of covariates that are {\it i.i.d. } with $(\boldsymbol{x}_1,\boldsymbol{x}_2)$ and two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$ .
 It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
 	
 	
@@ -167,14 +170,14 @@ We make the hypothesis that $\boldsymbol{X}$ can be described by a partition $\b
 So we model the correlations by $P(\boldsymbol{X}_r|\boldsymbol{X}_f) $ with $\boldsymbol{X}_f$ orthogonals.
  Then $\boldsymbol{X}_r$ is the $n\times p_r$ submatrix of $0\leq p_r <p$ redundent covariates and $\boldsymbol{X}_f$ the $n\times (p-p_r)$ submatrix of the free (independent) covariates.
  
-In our running example, $\boldsymbol{X}_r=\boldsymbol{x}_3$ and $\boldsymbol{X}_f=\{\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5 \}$ 
+ 
  
 In the following, we note $\boldsymbol{X}^j$ the $j^{th}$ column of $\boldsymbol{X}$.
 The structure $S$ of $p_r$ regressions within correlated covariates in $\boldsymbol{X}$ is described by:
 	\begin{equation}
 		\boldsymbol{X}_{r|\boldsymbol{X}_f,S} \textrm{ defined by }\forall \boldsymbol{X}^j \subset \boldsymbol{X}_r: \boldsymbol{X}^j_{|\boldsymbol{X}_f,S}=\boldsymbol{X}_f\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j \textrm{ with } \boldsymbol{\varepsilon}_j \sim\mathcal{N}(\boldsymbol{0},\sigma^2_j\boldsymbol{I}_n) \label{SR}
 	\end{equation}
-		where $\boldsymbol{\alpha}_j \in \mathcal{R}^{(p-p_r)}$ are the sparse vectors of the regression coefficients between the covariates (each sub-regression freely implies different covariates). In our running example, $p_r=1$ and $\boldsymbol{\alpha}_3=(1,1,0,0)'$
+		where $\boldsymbol{\alpha}_j \in \mathcal{R}^{(p-p_r)}$ are the sparse vectors of the regression coefficients between the covariates (each sub-regression freely implies different covariates). 
 \\
 \\
 
@@ -185,12 +188,16 @@ The partition of $\boldsymbol{X}$ implies the uncrossing rule  $\boldsymbol{X}_r
 	
 	  We make the choice to distinguish the response variable from the other endogenous variables (that are on the left of a sub-regression). Thus we have one regression on the response variable ($P(\boldsymbol{Y}|\boldsymbol{X}))$ and a system of sub-regressions (without the response variable: $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$). Then we consider correlations between the explicative covariates of the main regression, not between the residuals. We see that the $S$ does not depend on $\boldsymbol{Y}$ so it can be learnt independently, even with a larger dataset (if missing values in $\boldsymbol{Y}$).
 	 
-%ancienne intro
-
+The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation} \cite{TIMM}.
+  	Here we suppose the $\boldsymbol{\varepsilon}_j$ independent but in other cases \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) takes into account correlations between residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) and could be used to estimate the $\boldsymbol{\alpha}_j$. 
+		 
+	 
+\paragraph{In the running example:}$\boldsymbol{X}_r=\boldsymbol{x}_3$, $\boldsymbol{X}_f=\{\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5 \}$, $p_r=1$ and $\boldsymbol{\alpha}_3=(1,1,0,0)'$
 
 	
+
 \subsection{A by-product model: marginal regression with decorrelated covariates}
-Now we know $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$ by the structure of sub-regressions, we are able to define a marginal regression model $P(\boldsymbol{Y}|\boldsymbol{X}_f,S)$ based on the reduced set of independent covariates $\boldsymbol{X}_f$ without significant information loss. 
+Now we know $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$ by the structure of sub-regressions, we are able to define a marginal regression model $P(\boldsymbol{Y}|\boldsymbol{X}_f,S)$ based on the reduced set of independent covariates $\boldsymbol{X}_f$ without significant information loss. We use the information of the correlations structure to rewrite the true model without bias in the marginal space defined by the independent covariates.
  	\\
 Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can rewrite (\ref{regressionsimple}):
 	\begin{equation}
@@ -200,30 +207,32 @@ Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can 
 We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\boldsymbol{X}_r$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X}_f$}:
 \begin{eqnarray}
 	\boldsymbol{Y}_{|\boldsymbol{X}_f,S}&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
-	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \boldsymbol{\beta}_r^*=\boldsymbol{0}\label{modexpl}
+	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*\label{modexpl}
 \end{eqnarray}
-We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by selecting $\boldsymbol{X}_f$ because of the correlations given by $S$.  It is a variable pre-selection independent of the response $\boldsymbol{Y}$. \\
-Our running example gives here $\boldsymbol{Y}= 2\boldsymbol{x}_1+2\boldsymbol{x}_2+\boldsymbol{x}_4+\boldsymbol{x}_5+\boldsymbol{\varepsilon}_3 +\boldsymbol{\varepsilon}_Y$
+ This model is still the true model and OLS estimator will still give an unbiased estimator, but its variance will be reduced by both dimension reduction and decorrelation (variables in $\boldsymbol{X}_f$ are independent so the matrix $\boldsymbol{X}_f'\boldsymbol{X}_f$ will be well-conditioned). So the information given by the structure $S$ allows to reduce the variance without adding bias, by simple marginalization.
+\\
+Nevertheless, to be able to compare the bias-variance tradeoff, we can see this model as a variable pre-selection independent of the response $\boldsymbol{Y}$.
+We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by selecting $\boldsymbol{X}_f$ because of the correlations given by $S$. So we also get the model
+\begin{equation}
+\boldsymbol{Y}_{|\boldsymbol{X},S}=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \boldsymbol{\beta}_r^*=\boldsymbol{0}
+\end{equation}
+	for which OLS estimator of the coefficients may be biased.  
+
+\paragraph{Running example:} $\boldsymbol{Y}_{|\boldsymbol{X}_f}= 2\boldsymbol{x}_1+2\boldsymbol{x}_2+\boldsymbol{x}_4+\boldsymbol{x}_5+\boldsymbol{\varepsilon}_3 +\boldsymbol{\varepsilon}_Y$
 \subsection{Strategy of use: pretreatment before classical estimation/selection methods}\label{interpretation}
 
-As a pretreatment, it allows usage of any method in a second time to estimate $\boldsymbol{\beta}^*$, even with variable selection methods like LASSO or stepwise \cite{seber2012linear}.
+As a pretreatment, the model allows usage of any method in a second time to estimate $\boldsymbol{\beta}_f^*$, even with variable selection methods like LASSO or a best subset algorithm like stepwise \cite{seber2012linear}. However, we always have $\boldsymbol{X}_r=\boldsymbol{0}$
 
-After selection and estimation we will obtain a model with { \it two steps of variable selection}: the decorrelation step (coerced selection associated to redundant information defined in $S$) and the classical selection step, with different meanings for obtained zeros in $\hat{\boldsymbol{\beta}}^*_f$ (irrelevant covariates) and for $\hat{\boldsymbol{\beta}}^*_r=0$ (redundant information). 
+After selection and estimation we will obtain a model with { \it two steps of variable selection}: the decorrelation step by marginalization(coerced selection associated to redundant information defined in $S$) and the classical selection step, with different meanings for obtained zeros in $\hat{\boldsymbol{\beta}}^*_f$ (irrelevant covariates) and for $\hat{\boldsymbol{\beta}}^*_r=0$ (redundant information). 
  Thus we are able to distinguish the reasons of selection and consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
 
 
 The explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset and to take better actions. Expert knowledge can even be added to the structure, physical models for example.
 
-
-The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation}. Such a system is easy to interpret but estimation don't take advantage of the explicit structure \cite{TIMM} when it is basic (recursive \textsc{SEM}).
-  	Some methods take into account correlations but they only consider covariances between residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) or  endogenous variables like \textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}) without explicit expression of the correlations and thus a smaller interpretation potential.
-  	\\ Here we suppose independence between the residuals but in other cases it remains the possibility to use such methods to estimate the $\boldsymbol{\alpha}_j$ and $\sigma_j$.
-
-
 Moreover, the uncrossing constraint (partition of $\boldsymbol{X}$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect) and straightforward readable.
 
 	
-			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We play on the bias-variance tradeoff.
+			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We just play on the traditional bias-variance tradeoff.
 			 
 	\subsection{Illustration of the tradeoff conveyed by the pretreatment}	
 	We compare the OLS estimator on $\boldsymbol{X}$ defined in section \ref{sectionOLS} with the estimator obtained by the pretreatment that is $\boldsymbol{X}_f$ selection.
