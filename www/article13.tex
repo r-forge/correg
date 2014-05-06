@@ -144,26 +144,42 @@ We note the linear regression model:
 \begin{equation}
 		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon} \label{regressionsimple}
 	\end{equation}
-	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables, $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}). %As shown in section \ref{sectionOLS}, 
+	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables, $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
+	\begin{equation}
+		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}
+	\end{equation}
+	with variance matrix
+	\begin{equation}
+		\operatorname{Var}(\hat{\boldsymbol{\beta}}_{OLS})=\sigma_Y^2\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1} \label{eqOLS}
+	\end{equation}
+	and without any bias.
 	Estimation of $\boldsymbol{\beta}$ requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
-Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects : the dimension $p$ (number of covariates) of the model (the more covariates you have the greater variance you get)
+Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects: the dimension $p$ (number of covariates) of the model (the more covariates you have the greater variance you get)
 	 and the correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
-
+	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
+	Another problem is that matrix inversion requires $n\geq p$. 	
+As a running example, we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define another couple $\boldsymbol{x}_4,\boldsymbol{x}_5$ of covariates that are {\it i.i.d. } with $(\boldsymbol{x}_1,\boldsymbol{x}_2)$ and two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$ .
+It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
+	
+	
 \subsection{Our proposal: modelisation of the correlations}
 We make the hypothesis that $\boldsymbol{X}$ can be described by a partition $\boldsymbol{X}=(\boldsymbol{X}_f,\boldsymbol{X}_r) $ given by an explicit structure $S$ where variables in $\boldsymbol{X}_r$ are endogenous covariates resulting from linear sub-regressions based on $\boldsymbol{X}_f$, the submatrix of mutually independent exogenous covariates.
 So we model the correlations by $P(\boldsymbol{X}_r|\boldsymbol{X}_f) $ with $\boldsymbol{X}_f$ orthogonals.
  Then $\boldsymbol{X}_r$ is the $n\times p_r$ submatrix of $0\leq p_r <p$ redundent covariates and $\boldsymbol{X}_f$ the $n\times (p-p_r)$ submatrix of the free (independent) covariates.
+ 
+In our running example, $\boldsymbol{X}_r=\boldsymbol{x}_3$ and $\boldsymbol{X}_f=\{\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5 \}$ 
+ 
 In the following, we note $\boldsymbol{X}^j$ the $j^{th}$ column of $\boldsymbol{X}$.
 The structure $S$ of $p_r$ regressions within correlated covariates in $\boldsymbol{X}$ is described by:
 	\begin{equation}
 		\boldsymbol{X}_{r|\boldsymbol{X}_f,S} \textrm{ defined by }\forall \boldsymbol{X}^j \subset \boldsymbol{X}_r: \boldsymbol{X}^j_{|\boldsymbol{X}_f,S}=\boldsymbol{X}_f\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j \textrm{ with } \boldsymbol{\varepsilon}_j \sim\mathcal{N}(\boldsymbol{0},\sigma^2_j\boldsymbol{I}_n) \label{SR}
 	\end{equation}
-		where $\boldsymbol{\alpha}_j \in \mathcal{R}^{(p-p_r)}$ are the sparse vectors of the regression coefficients between the covariates (each sub-regression freely implies different covariates). 
+		where $\boldsymbol{\alpha}_j \in \mathcal{R}^{(p-p_r)}$ are the sparse vectors of the regression coefficients between the covariates (each sub-regression freely implies different covariates). In our running example, $p_r=1$ and $\boldsymbol{\alpha}_3=(1,1,0,0)'$
 \\
 \\
 
 
-The partition of $\boldsymbol{X}$ implies the uncrossing rule % $I_f\cap I_r=\emptyset$ 
+The partition of $\boldsymbol{X}$ implies the uncrossing rule  $\boldsymbol{X}_r \cap \boldsymbol{X}_f$ 
 {\it i.e.} endogenous variables don't explain other covariates. This hypothesis ensures that $S$ contains no cycle and is straightforward readable (no need to order the sub-regressions). It is not so restrictive because cyclic structures have no sense and any non-cyclic structure can be associated with a structure that verifies the uncrossing constraint by just successively replacing endogenous covariates by their sub-regression when they are also exogenous in some other sub-regressions.
 
 	
@@ -186,10 +202,11 @@ We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\b
 	\boldsymbol{Y}_{|\boldsymbol{X}_f,S}&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
 	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \boldsymbol{\beta}_r^*=\boldsymbol{0}\label{modexpl}
 \end{eqnarray}
-We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by selecting $\boldsymbol{X}_f$ because of the correlations given by $S$.  It is a variable pre-selection independent of the response $\boldsymbol{Y}$. 
+We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by selecting $\boldsymbol{X}_f$ because of the correlations given by $S$.  It is a variable pre-selection independent of the response $\boldsymbol{Y}$. \\
+Our running example gives here $\boldsymbol{Y}= 2\boldsymbol{x}_1+2\boldsymbol{x}_2+\boldsymbol{x}_4+\boldsymbol{x}_5+\boldsymbol{\varepsilon}_3 +\boldsymbol{\varepsilon}_Y$
 \subsection{Strategy of use: pretreatment before classical estimation/selection methods}\label{interpretation}
 
-As a pretreatment, it allows usage of any method in a second time to estimate $\boldsymbol{\beta}^*$, even with variable selection methods like LASSO or even stepwise \cite{seber2012linear}.
+As a pretreatment, it allows usage of any method in a second time to estimate $\boldsymbol{\beta}^*$, even with variable selection methods like LASSO or stepwise \cite{seber2012linear}.
 
 After selection and estimation we will obtain a model with { \it two steps of variable selection}: the decorrelation step (coerced selection associated to redundant information defined in $S$) and the classical selection step, with different meanings for obtained zeros in $\hat{\boldsymbol{\beta}}^*_f$ (irrelevant covariates) and for $\hat{\boldsymbol{\beta}}^*_r=0$ (redundant information). 
  Thus we are able to distinguish the reasons of selection and consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
@@ -209,20 +226,8 @@ Moreover, the uncrossing constraint (partition of $\boldsymbol{X}$) guarantee to
 			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We play on the bias-variance tradeoff.
 			 
 	\subsection{Illustration of the tradeoff conveyed by the pretreatment}	
-	As an example, we look at the OLS estimator on $\boldsymbol{X}$ with and without the pretreatment that is $\boldsymbol{X}_f$ selection.
-For a model defined by (\ref{regressionsimple}), we have the following Ordinary Least Squares (\textsc{OLS}) estimator:
-	\begin{equation}
-		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}
-	\end{equation}
-	with variance matrix
-	\begin{equation}
-		\operatorname{Var}(\hat{\boldsymbol{\beta}}_{OLS})=\sigma_Y^2\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1} \label{eqOLS}
-	\end{equation}
-	and without any bias.
-	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
-	Another problem is that matrix inversion requires $n\geq p$. 	
-		  
-		  
+	We compare the OLS estimator on $\boldsymbol{X}$ defined in section \ref{sectionOLS} with the estimator obtained by the pretreatment that is $\boldsymbol{X}_f$ selection.
+  
 For the marginal regression model defined in (\ref{modexpl})
 %	\begin{equation}
 %		\boldsymbol{Y}_{|\boldsymbol{X}_f}= \boldsymbol{X}_f\boldsymbol{\beta}_f^*+ \boldsymbol{\varepsilon}_Y^*
@@ -251,7 +256,7 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 			 \\
 			\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1})
 	\end{eqnarray}	 
-	To better illustrate the bias-variance tradeoff, we look at a simple example with $p=3$ variables. $\boldsymbol{X}_f$ is composed by two independent scaled Gaussian $\mathcal{N}(0,1)$, $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also have $\boldsymbol{\beta}=(1,1,1)$ and $\sigma_Y \in \{1,10\}$  . Then we observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQE1} shows the theoretical MSE evolution with the strength of the sub-regression:
+	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQE1} shows the theoretical MSE evolution with the strength of the sub-regression:
 	\begin{equation}
 		1-\mathcal{R}^2=\frac{\operatorname{Var}(\boldsymbol{\varepsilon)_3}}{\operatorname{Var}(\boldsymbol{x}_3)}=\frac{\sigma_3^2}{\sigma_3^2+2}
 	\end{equation}
@@ -269,12 +274,12 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 %			\includegraphics[width=170px]{figures/MQEn1000sigmaY10.png} 
 %			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
 %   \end{minipage} 
-	\includegraphics[width=500px]{figures/MQEexplOLS.png}\label{MQE1}
+	\includegraphics[width=500px]{figures/MQEexplOLSp5.png}\label{MQE1}
 	\caption{MSE of OLS and CorReg (dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
 It is clear in Figure \ref{MQE1} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($1-\mathcal{R}^2$ tends to 1) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
 We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))=0$.
- Thus, as $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))=0$ when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear). Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
+ Thus, when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear). Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
 
 	
 \section{Sub-regressions model selection}	
@@ -298,7 +303,7 @@ So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$.
 		\end{equation}
 		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust. Gaussian case is just a special case ($K_j=1$) of Gaussian mixture so it is included in our hypothesis but identifiability of $S$ requires to have at least one Gaussian mixture with at least two distinct components in each sub-regression (derived from the identifiability of the SR model in \cite{maugis2009variable}, more details in the Appendices \ref{preuveident}).
 				
-		Remark:  Identifiability if $S$ is not necessary to use a given structure but helps to find it.
+		Remark:  Identifiability of $S$ is not necessary to use a given structure but helps to find it.
 
 		Variables in $\boldsymbol{X}_f$ are in the followings supposed to be independent Gaussian mixtures with at least two distinct components each.
 	%Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
@@ -308,7 +313,7 @@ So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$.
 
   Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood of the joint law on $\boldsymbol{X}$ according to the complexity of the structure~\cite{BIChuard}. 
 
-Uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a maximization of the $BIC$.
+Uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a minimization of the $BIC$.
 	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model
 	\begin{eqnarray}
 		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)  
@@ -318,12 +323,12 @@ Uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ 
 	We note $I_r$ the set of indices of endogenous variables in $\boldsymbol{X}$ (explained ones).
 We also define $I_f=\{I_f^1,\dots,I_f^p \}$ the set of the sets of indices of exogenous covariates (explaining ones $=\boldsymbol{X}_f$) with $\forall j \notin I_r, I_f^j=\emptyset$. 
 We see that $I_f$ defines the non-null coefficients in $\boldsymbol{\alpha}_j$ (each sub-regression can be very parsimonious).
-Then we have the explicit structure characterized by $S=(I_f,I_r,p_f,p_r)$ where $p_r=|I_r|$, $\boldsymbol{p}_f=(p_f^1,\dots,p_f^{p_r})$ is the vector of the number of covariates in each sub-regression  and $p_f^j=|I_f^j|$, with $|.|$ the cardinal of an ensemble.
+Then we have the explicit structure characterized by $S=(I_f,I_r,p_f,p_r)$ where $p_r=|I_r|$, $\boldsymbol{p}_f=(p_f^1,\dots,p_f^{p_r})$ is the vector of the number of covariates in each sub-regression  and $p_f^j=|I_f^j|$, with $|.|$ the cardinal of an ensemble. Our running example is then described by $S= \left( \{ \{1,2\}\},\{3\},(2),(1)\right)$
 \\
 	 We suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of the simple uniform law on $S$ that is generally used and provides no penalty.
 	 Thus we have :
 		\begin{eqnarray}
-		BIC_+(X|S)&=&BIC(X|S) +\ln(P(S)) \label{Bicstar}
+		BIC_+(X|S)&=&BIC(X|S) -\ln(P(S)) \label{Bicstar}
 	\end{eqnarray}		
 	It increases penalty on complexity for $p_r<\frac{p}{2}$ and $p_f^j<\frac{p}{2}$ . Hence %when using $BIC*$ 
 	this constraint on $\hat{p}_r$ and $\hat{p}_f^j$ is given in the research algorithm when the Hierarchical Uniform hypothesis is made instead of Uniform one in numerical experiments (section \ref{sectionsimul} and \ref{sectionrealcase}).
