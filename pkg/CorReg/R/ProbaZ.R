@@ -31,8 +31,10 @@ ProbaZ<-function(Z=NULL,p=NULL,proba=FALSE,star=TRUE){
       }
       nb=1#modele vide
       if(p>1){
-         #calcul du nombre de modèles
-         for (i in 1:(p-1)){
+         #calcul du nombre de modeles
+         for (i in 1:(p-1)){#pour chaque nombre de sous-regression possible
+            #choix de qui est à gauche, puis ayant une partition, tout devient possible à droite 
+            #(sauf le cas vide qui enfreindrait le nombre de sous-regression donc on fait -1)
             nb=nb+choose(p,i)*(2^(p-i)-1)^i
          }
       }
