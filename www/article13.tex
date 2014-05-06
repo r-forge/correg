@@ -330,7 +330,7 @@ Then we have the explicit structure characterized by $S=(I_f,I_r,p_f,p_r)$ where
 		\begin{eqnarray}
 		BIC_+(X|S)&=&BIC(X|S) -\ln(P(S)) \label{Bicstar}
 	\end{eqnarray}		
-	It increases penalty on complexity for $p_r<\frac{p}{2}$ and $p_f^j<\frac{p}{2}$ . Hence %when using $BIC*$ 
+	It increases penalty on complexity for $p_r\leq\frac{p}{2}$ and $p_f^j\leq\frac{p}{2}$ . Hence %when using $BIC*$ 
 	this constraint on $\hat{p}_r$ and $\hat{p}_f^j$ is given in the research algorithm when the Hierarchical Uniform hypothesis is made instead of Uniform one in numerical experiments (section \ref{sectionsimul} and \ref{sectionrealcase}).
 		$BIC_+$ does not change $BIC$ but only $P(S)$ so the properties of $BIC_+$ are the same as classical $BIC$ but we obtain better results when the constraints on the complexity are verified.  %With the Hierarchical Uniform hypothesis we maximize $\psi(\boldsymbol{X},S)\approx BIC + P(S)$.
 
