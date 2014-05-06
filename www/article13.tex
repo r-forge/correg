@@ -33,7 +33,7 @@
 \begin{document}
 \begin{center}
 {\Large
-	{\sc Model-based variable selection for regression \\ with highly correlated variables.}
+	{\sc Model-based variable selection in regression \\ with highly correlated variables.}
 }
 \bigskip
 
@@ -50,7 +50,7 @@ $^{3}$ Etudes Industrielles ArcelorMittal Dunkerque, gaetan.loridant@arcelormitt
 \end{center}
 \bigskip
 
-{\bf Abstract.} Linear regression outcomes are known to be damaged by highly correlated covariates. However many modern datasets are expected to convey more and more highly correlated covariates due to the global increase of the amount of variables in datasets. We propose to explicitly model the correlations by a family of linear regressions between the covariates, some covariates explaining others. It allows then to obtain by marginalisation on the explained covariates a parsimonious correlation-free regression model, easily understandable. 
+{\bf Abstract.} Linear regression outcomes are known to be damaged by highly correlated covariates. However many modern datasets are expected to convey more and more highly correlated covariates due to the global increase of the amount of variables in datasets. We propose to explicitly model the correlations by a family of linear regressions between the covariates, some covariates explaining others. It allows then to obtain by marginalisation on the explained covariates a parsimonious correlation-free regression model. 
 It corresponds to a kind of variable selection preliminary step which has then to be followed by standard linear estimation methods including classical variables selection procedures for instance. The structure of correlations is found with an MCMC algorithm aiming at optimizing a specific BIC criterion.
  An R package (\textsc{CorReg}) available on the CRAN implements this new method which will be illustrated on both simulated datasets and real-life datasets from steel industry where correlated variables are frequent.
 \smallskip
@@ -73,18 +73,19 @@ Linear regression is a very standard and efficient method providing a predictive
 
 	With the rise of informatics, datasets contain more and more covariates, % and thus dimension reduction becomes a necessity. Moreover, 
 	increasing the chance to have correlated ones.  
-	 In such a context, variance of the estimators can lead to arbitrary results whereas interpretation and prediction are both strongly needed, depending on the context. For instance, interpretation could be favoured to improve a situation instead of only predict problems, so robust estimation is a real stake.
+	 In such a context, variance of the estimators can lead to arbitrary results leading to misleading interpretations whereas interpretation and prediction are both strongly needed, depending on the context. For instance, interpretation could be favoured to improve a situation instead of only predict problems, so robust estimation is a real stake.
 		~\\	~\\
 		
 %bibliographie	
-	The Ordinary Least Squares (\textsc{OLS}) estimator is the minimum-variance linear unbiased estimator but it suffers from ill-conditioned matrices inversion when the covariates are highly correlated (section \ref{sectionOLS}). Therefore, some other methods try to improve the robustess of the estimator by introducing some bias, selecting only some covariates, grouping some covariates, {\it etc.}.
+	The Ordinary Least Squares (\textsc{OLS}) estimator is the minimum-variance linear unbiased estimator but it suffers from ill-conditioned matrices inversion when the covariates are highly correlated (section \ref{sectionOLS}). Some other methods try to improve the robustess of the estimator by introducing some bias, selecting only some covariates, grouping some covariates, {\it etc.}
+	but many of these methods are not directly guided by the correlations whereas knowing the correlations between the covariates facilitates interpretation.
 
 
 %In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$ and $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $.
 
 	 Penalized methods try to reduce the variance introducing some bias to improve the bias-variance tradeoff and get better prediction.
-	Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty.
-	But this penalty is not guided by the correlations. It is the same for each covariate and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
+	Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty but
+	it is the same for each covariate no matter how much it is correlated or not to others.%and will be too large for independent covariates and/or too small for correlated ones.  
 	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large number of covariates. The absence of variable selection is not compatible with the need to find small set of relevant covariates to explain the response variable. 
 	
 	Real datasets often imply many irrelevant variables so variable selection would be favoured when possible to reduce the dimension and obtain models small enough to be understood. Moreover, selection may keep only uncorrelated covariates and thus resolve the correlations problem.	
@@ -116,14 +117,13 @@ But like the ridge regression, the penalty does not distinguish correlated and i
 	
 	But it requires to suppose having many covariates with the same level of effect on the response variable and seems to stay less efficient in prediction than elastic net.
 	 Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the regression coefficients and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
-	We see that none of the above methods takes explicitly the correlations into account, even if the clustering methods introduce a kind of relationship between the covariates.
+	We see that none of the above methods takes explicitly the correlations into account, even if the clustering methods may group the correlated covariates together.
 
 
 
 	~\\	~\\
 % Principe de la méthode
-
- Instead of reducing the dimension without looking at correlations, Selvarclust \cite{maugis2009variable} proposes to focus on the correlations, giving an explicit structure between covariates by linear sub-regressions between them. But it is made in a clustering context, with only irrelevant covariates being dependent from relevant ones (no sub-regressions between relevant or between irrelevant covariates) and the algorithm used to find the structure is a stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}. We propose to develop this method for linear regression with a specifically adapted algorithm to find the structure of sub-regression.
+In the field of clustering, model-based explicit correlations by linear sub-regressions between covariates claims to obtain good results in both interpretation and estimation quality (like Selvarclust \cite{maugis2009variable}). But this is made in a clustering context only, with only irrelevant covariates being dependent from relevant ones (no sub-regressions between relevant or between irrelevant covariates) and the algorithm used to find the structure is a stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}. We propose to transpose this method for linear regression with a specifically adapted algorithm to find the structure of sub-regression.
  
   The idea is that if we know explicitly the correlations, we could use this knowledge to avoid the problem. More precisely, we model the correlations with a system of linear sub-regressions for the joint distribution of the covariates to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
 Then we can define a marginal model with independent covariates. 
@@ -760,7 +760,7 @@ $n$ & $p_r$&$P(S)$ &indicator &OLS  &    \textsc{CorReg} $\hat S$ + OLS& \textsc
 & & & cpl (sd) & 41 (0) & 21 (0) & 9 (0) \\
 \hline
 \end{tabular} 
-\caption{OLS and OLS combined with constrained \textsc{CorReg}.$\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X_r}$. Sometimes $\hat{S}$ gives better results than $S$ because $S$ is penalized by the fact that it relies only on covariates not in the true model. } \label{YX2linOLS}
+\caption{OLS and OLS combined with constrained \textsc{CorReg}.$\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}_r$. Sometimes $\hat{S}$ gives better results than $S$ because $S$ is penalized by the fact that it relies only on covariates not in the true model. } \label{YX2linOLS}
 \end{table}
 
 \begin{table}[h!]
@@ -802,7 +802,7 @@ $n$ & $p_r$&  $P(S)$ &indicator &LAR  &    \textsc{CorReg} $\hat S$ + LAR& \text
 & & & cpl (sd) & 12.84 (5.2) & 9.77 (2.3) & 8.11 (0.8) \\
 \hline
 \end{tabular} 
-\caption{LASSO (with LAR) combined with constrained \textsc{CorReg}.$\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X_r}$. }\label{YX2linLASSO}
+\caption{LASSO (with LAR) combined with constrained \textsc{CorReg}.$\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}_r$. }\label{YX2linLASSO}
 \end{table}
 
 \begin{table}[h!]
@@ -844,7 +844,7 @@ $n$ & $p_r$&  $P(S)$ &indicator & Elasticnet  &    \textsc{CorReg} $\hat S$ + El
 & & & cpl (sd) & 30.41 (6.7) & 17.18 (3.3) & 8.3 (1) \\
 \hline
 \end{tabular} 
-\caption{Elasticnet (with Elasticnet) combined with constrained \textsc{CorReg}.$\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X_2}$.}\label{YX2linenet}
+\caption{Elasticnet (with Elasticnet) combined with constrained \textsc{CorReg}.$\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}_r$.}\label{YX2linenet}
 \end{table}
 
 
@@ -887,7 +887,7 @@ $n$ & $p_r$&  $P(S)$ &indicator &Stepwise  &    \textsc{CorReg} $\hat S$ + stepw
 & & & cpl (sd) & 13.25 (4.4) & 10.08 (2.6) & 8.12 (0.8) \\
 \hline
 \end{tabular} 
-\caption{Stepwise  combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X_r}$.}\label{YX2linstep}
+\caption{Stepwise  combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}_r$.}\label{YX2linstep}
 \end{table}
 
 \clearpage
