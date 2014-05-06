@@ -130,7 +130,7 @@ Outside of the linear regression field, model-based explicit correlations by lin
 	We use the correlations as new information to reduce the variance without adding any bias.  
   More precisely, we model the correlations with a system of linear sub-regressions for the joint distribution of the covariates to model the structure of the correlations. It helps to define the greatest set of orthogonal covariates to keep the maximum information but with an orthogonality constraint.
 Then we can define a marginal model with independent covariates. 
-Thus we have an explained variable selection guided by the correlations and it improves interpretation, not only prediction. This marginal model still is the true model but in a different probability space, without bias and with reduced variance for the estimators. The model depends only on independent covariates because it is a marginal model on these covariates.
+Thus we have an explained variable selection guided by the correlations and it improves interpretation, not only prediction. This marginal model still is the true model but in a different probability space, and OLS still gives an estimator without bias but with a reduced variance for the estimators. The model depends only on independent covariates because it is a marginal model on these covariates.
  This can be viewed as a pretreatment on the dataset that will be followed then by any other tools for estimation and dimension reduction without suffering from correlations. This pretreatment is specifically done to decorrelate the covariates, unlike methods described above. 
 The linear structure is obtained by a MCMC algorithm optimizing the penalized likelihood of the joint distribution on the covariates, independently from the response variable. This algorithm is part of the R package \textsc{CorReg} accessible on \textsc{CRAN}. %We only consider strong correlations (i.e. : problematic ones) thus we keep most of the information contained in the dataset. 
  %We will in a second time be able to use the remaining part of the information (sequential approach).	
@@ -197,7 +197,7 @@ The structure obtained gives a system of linear regression that can be viewed as
 	
 
 \subsection{A by-product model: marginal regression with decorrelated covariates}
-Now we know $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$ by the structure of sub-regressions, we are able to define a marginal regression model $P(\boldsymbol{Y}|\boldsymbol{X}_f,S)$ based on the reduced set of independent covariates $\boldsymbol{X}_f$ without significant information loss. We use the information of the correlations structure to rewrite the true model without bias in the marginal space defined by the independent covariates.
+Now we know $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$ by the structure of sub-regressions, we are able to define a marginal regression model $P(\boldsymbol{Y}|\boldsymbol{X}_f,S)$ based on the reduced set of independent covariates $\hat{\boldsymbol{\beta}}_f$ without significant information loss. We use the information of the correlations structure to rewrite the true model without bias in the marginal space defined by the independent covariates.
  	\\
 Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can rewrite (\ref{regressionsimple}):
 	\begin{equation}
@@ -211,7 +211,7 @@ We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\b
 \end{eqnarray}
  This model is still the true model and OLS estimator will still give an unbiased estimator, but its variance will be reduced by both dimension reduction and decorrelation (variables in $\boldsymbol{X}_f$ are independent so the matrix $\boldsymbol{X}_f'\boldsymbol{X}_f$ will be well-conditioned). So the information given by the structure $S$ allows to reduce the variance without adding bias, by simple marginalization.
 \\
-Nevertheless, to be able to compare the bias-variance tradeoff, we can see this model as a variable pre-selection independent of the response $\boldsymbol{Y}$.
+Nevertheless, to be able to compare the bias-variance tradeoff, we can see this model as a variable pre-selection independent of the response in $\boldsymbol{Y}_{|\boldsymbol{X}}$.
 We note that it is simply a linear regression on some of the original covariates so we only made a pretreatment on the dataset by selecting $\boldsymbol{X}_f$ because of the correlations given by $S$. So we also get the model
 \begin{equation}
 \boldsymbol{Y}_{|\boldsymbol{X},S}=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \boldsymbol{\beta}_r^*=\boldsymbol{0}
