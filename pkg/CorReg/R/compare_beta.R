@@ -1,7 +1,7 @@
 #' compare signs of the coefficients in two vectors
 #' @export
-#' @param trueA first vector
-#' @param Aalgo second vector
+#' @param truebeta first vector
+#' @param hatbeta second vector
 #' @param taux boolean. Computes the ratio of each selection statistic or not.
 
 compare_beta<-function(truebeta=truebeta,hatbeta=hatbeta,taux=FALSE){
