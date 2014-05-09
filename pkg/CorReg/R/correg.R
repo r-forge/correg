@@ -182,7 +182,7 @@ if(explnew){compl=TRUE}
       I2 = qui$I2
       R2_vect=R2Z(Z=Z,X=X,adj=TRUE)#evaluation des R2
       #tri par R2 => nouvel I2 ordonné
-      #initialisation du résultat final (par le modèle complet, + AIC)
+      #initialisation du résultat final (par le modèle complet déjà calculé, + AIC associé)
       
       for (iexplnew in 1:length(I2)){
          I1=c(qui$I1,I2[1:iexplnew])#c'est ici que tout se joue
