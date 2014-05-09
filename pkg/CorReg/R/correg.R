@@ -44,7 +44,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, e
                 select = "lar",
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
-                K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=FALSE,#final=FALSE,
+                K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=FALSE,final=FALSE,
                 nbalter=10,deltamin=0.01,alpha=NULL,g=5) 
 {
   res = list()
@@ -59,8 +59,9 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, e
   select = select[1]
   if(select=="NULL"){
     returning=FALSE
-#     final=F
+    final=FALSE
   }
+  if(!pred){final=FALSE}
 if(explnew){compl=TRUE}
   criterion = criterion[1]
   if (is.null(Amax)) {
@@ -526,6 +527,7 @@ if(explnew){compl=TRUE}
          quifinal=which(A_pred!=0)
       }
       A_final=correg(X=X[,quifinal],Y=Y,returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select=select,compl=TRUE,expl=FALSE,pred=FALSE)$compl$A
+      quifinal=which(A_pred!=0)
       res$final$A[quifinal]=A_final
    }
   return(res)
