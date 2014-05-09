@@ -39,6 +39,8 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
 
 \item{returning}{boolean : second predictive step (selection on I1 knowing I2 coefficients)}
 
+\item{final}{boolean : recompute estimators without selection on the remaining parameters of the predictive model}
+
 \item{X_test}{validation sample}
 
 \item{Y_test}{response for the validation sample}
