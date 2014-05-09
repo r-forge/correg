@@ -41,7 +41,7 @@ mixture_generator<-function(n=130,
                             sigmavar=NULL,
                             lambda=3,#pour l enombre de composantes des m?langes gaussiens
                             Amax=NULL,
-                            lambdapois=5,#pour les valeurs des coefs
+                            lambdapois=10,#pour les valeurs des coefs et des moyennes des variables
                             gamma=FALSE,
                             gammashape=1,
                             gammascale=0.5,tp1=1,tp2=1,tp3=1,
@@ -104,7 +104,7 @@ mixture_generator<-function(n=130,
   ploc=sum(composantes)
   
   if(is.null(meanvar)){
-    meanvar=rpois(ploc,ploc)*(rep(-1,ploc)+2*rbinom(ploc,1,positive))
+    meanvar=rpois(ploc,lambdapois)*(rep(-1,ploc)+2*rbinom(ploc,1,positive))
   }
   if(is.null(sigmavar)){
     sigmavar=5
