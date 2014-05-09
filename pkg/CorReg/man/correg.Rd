@@ -7,8 +7,8 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
   explnew = TRUE, pred = TRUE, prednew = FALSE, select = "lar",
   criterion = c("MSE", "BIC"), X_test = NULL, Y_test = NULL,
   intercept = TRUE, K = 10, groupe = NULL, Amax = NULL, lambda = 1,
-  returning = FALSE, nbalter = 10, deltamin = 0.01, alpha = NULL,
-  g = 5)
+  returning = FALSE, final = FALSE, nbalter = 10, deltamin = 0.01,
+  alpha = NULL, g = 5)
 }
 \arguments{
 \item{B}{the (p+1)xp matrix associated to Z and that contains the parameters of the sub-regressions}
