@@ -28,7 +28,7 @@
 #' @param groupe a vector to define the groups used for cross-validation (to obtain a reproductible result)
 #' @param Amax the maximum number of covariates in the final model
 #' @param returning boolean : second predictive step (selection on I1 knowing I2 coefficients)
-# ' @param final boolean : recompute estimators without selection on the remaining parameters of the predictive model
+#' @param final boolean : recompute estimators without selection on the remaining parameters of the predictive model
 #' @param X_test validation sample
 #' @param Y_test response for the validation sample
 #' @param intercept boolean. If FALSE intercept will be set to 0 in each model.
@@ -508,5 +508,16 @@ if(explnew){compl=TRUE}
       res$pred$A = res$compl$A
     }
   }
+   if(pred & final){
+      res$final$A=res$pred$A
+      A_pred=res$pred$A
+      if(intercept){
+         quifinal=which(A_pred[-1]!=0)
+      }else{
+         quifinal=which(A_pred!=0)
+      }
+      A_final=correg(X=X[,quifinal],Y=Y,returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select=select,compl=TRUE,expl=FALSE,pred=FALSE)$compl$A
+      res$final$A[quifinal]=A_final
+   }
   return(res)
 }
