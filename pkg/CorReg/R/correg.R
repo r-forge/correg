@@ -176,14 +176,18 @@ if(explnew){compl=TRUE}
        A_expl=alpha
     }
     res$expl$BIC = BicTheta(X = X, Y = Y, intercept = intercept, beta = A_expl)
-    if(explnew){#selection sur explicatif
+    if(explnew){#selection sur explicatif####
       qui = WhoIs(Z = Z)
       I1 = qui$I1
       I2 = qui$I2
       R2_vect=R2Z(Z=Z,X=X,adj=TRUE)#evaluation des R2
+      R2_vect=R2_vect[R2_vect!=0]
       #tri par R2 => nouvel I2 ordonné
+      I2=I2[order(R2_vect,decreasing=TRUE)]
       #initialisation du résultat final (par le modèle complet déjà calculé, + AIC associé)
-      
+      res$expl2$A=res$compl$A
+      resopt=res$compl$A
+      AICopt=mon_AIC(theta=resopt,Y=Y,X=X,intercept=intercept)
       for (iexplnew in 1:length(I2)){
          I1=c(qui$I1,I2[1:iexplnew])#c'est ici que tout se joue
          
@@ -230,9 +234,6 @@ if(explnew){compl=TRUE}
              lars_expl = linearRidge(Y~.,data=data.frame(X[,I1]))
              res$expl2$A=coef(lars_expl)
           }
-         #Calculer ici le AIC pour avoir encore la dimension réduite
-         #Si premier passage ou AIC meilleur que tout, mise à jour
-         #le bloc ci-dessous doit sortir de la boucle et être adapté pour l'optimum
           if(is.null(alpha)){
              A_expl = rep(0, times = ncol(X) + intercept)
              if(intercept){
@@ -245,8 +246,16 @@ if(explnew){compl=TRUE}
              A_expl=alpha
           }
           res$expl2$BIC = BicTheta(X = X, Y = Y, intercept = intercept, beta = A_expl)
+         #calcul du AIC
+         AICloc=mon_AIC(theta=res$expl2$A,Y=Y,X=X,intercept=intercept)
+         if(AICloc<AICopt){
+            resopt=res$expl2$A
+            AICopt=AICloc
+         }
       }
       #on remet les choses à leur place
+      res$expl2$A=resopt
+      res$expl2$AIC=AICopt
       qui = WhoIs(Z = Z)
       I1 = qui$I1
       I2 = qui$I2
