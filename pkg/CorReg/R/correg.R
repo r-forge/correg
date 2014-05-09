@@ -58,15 +58,16 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, e
   }
   select = select[1]
   if(select=="NULL"){
-    returning=F
+    returning=FALSE
 #     final=F
   }
+if(explnew){compl=TRUE}
   criterion = criterion[1]
   if (is.null(Amax)) {
     Amax = ncol(X) + 1
   }
   if (sum(Z) == 0) {
-    compl = T
+    compl = TRUE
   }
   if(!is.null(alpha)){
      expl=TRUE
@@ -180,8 +181,12 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, e
       I1 = qui$I1
       I2 = qui$I2
       R2_vect=R2Z(Z=Z,X=X,adj=TRUE)#evaluation des R2
-      #tri par R2
+      #tri par R2 => nouvel I2 ordonné
+      #initialisation du résultat final (par le modèle complet, + AIC)
+      
       for (iexplnew in 1:length(I2)){
+         I1=c(qui$I1,I2[1:iexplnew])#c'est ici que tout se joue
+         
           if(!is.null(alpha)){
              res$expl2$A=alpha
           }else if (select == "NULL") {
@@ -225,6 +230,9 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, e
              lars_expl = linearRidge(Y~.,data=data.frame(X[,I1]))
              res$expl2$A=coef(lars_expl)
           }
+         #Calculer ici le AIC pour avoir encore la dimension réduite
+         #Si premier passage ou AIC meilleur que tout, mise à jour
+         #le bloc ci-dessous doit sortir de la boucle et être adapté pour l'optimum
           if(is.null(alpha)){
              A_expl = rep(0, times = ncol(X) + intercept)
              if(intercept){
