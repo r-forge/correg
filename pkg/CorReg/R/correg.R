@@ -37,9 +37,9 @@
 #' @param nbalter number of alternance for prednew
 #' @param deltamin criterion to stop alternance 
 #' @param g number of group of variables for clere
+#' @param explnew select the number of sub-regression to take into account (by AIC on the corresponding final model)
 #' 
-#' 
-correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, 
+correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, explnew=TRUE,
                 pred = TRUE,prednew=FALSE,
                 select = "lar",
                 criterion = c("MSE", "BIC"),
@@ -175,6 +175,74 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
        A_expl=alpha
     }
     res$expl$BIC = BicTheta(X = X, Y = Y, intercept = intercept, beta = A_expl)
+    if(explnew){#selection sur explicatif
+      qui = WhoIs(Z = Z)
+      I1 = qui$I1
+      I2 = qui$I2
+      R2_vect=R2Z(Z=Z,X=X,adj=TRUE)#evaluation des R2
+      #tri par R2
+      for (iexplnew in 1:length(I2)){
+          if(!is.null(alpha)){
+             res$expl2$A=alpha
+          }else if (select == "NULL") {
+             res$expl2$A = OLS(X = as.matrix(X[, I1]), Y = Y, intercept = intercept)$beta
+          }else if (select != "elasticnet" & select != "ridge" & select != "adalasso"  & select!="clere" & select!="spikeslab") {
+             lars_expl = lars(x = as.matrix(X[, I1]), y = Y, type = select, 
+                              intercept = intercept)
+             res$expl2 = meilleur_lars(lars = lars_expl, X = as.matrix(X[, I1]), Y = Y, 
+                                      mode = criterion, intercept = intercept, 
+                                      K = K, groupe = groupe, Amax = Amax)
+          }else if (select=="elasticnet"){
+             lars_expl = renet(x = as.matrix(X[, I1]), y = Y, intercept = intercept, 
+                               lambda = lambda)
+             names(lars_expl)[4] = "coefficients"
+             res$expl2 = meilleur_lars(lars = lars_expl, X = as.matrix(X[,I1]), Y = Y, 
+                                      mode = criterion, intercept = intercept, 
+                                      K = K, groupe = groupe, Amax = Amax)
+          }else if(select=="adalasso"){
+             resada=adalasso(X=X[,I1],y=Y,k=K)    
+             if(intercept){
+                if(is.null(resada$intercept.adalasso)){
+                   resada$intercept.adalasso=0
+                }
+                res$expl2$A=c(resada$intercept.adalasso,resada$coefficients.adalasso)
+             }else{
+                res$expl2$A=c(resada$coefficients.adalasso)
+             }
+             Xloc=X[,I1][,resada$coefficients.adalasso!=0]
+             res$expl2$A[res$expl2$A!=0]=c(OLS(X=Xloc,Y=Y,intercept=intercept)$beta)       
+          }else if(select=="clere"){
+             res$expl2$A=A_clere(y=as.numeric(Y),x=X[,I1],g=g)
+          }else if(select=="spikeslab"){
+             respike=spikeslab(x=X[,I1],y=Y)
+             res$expl2$A=rep(0,times=ncol(X[,I1])+intercept)
+             if(intercept){
+                res$expl2$A[c(1,1+which(respike$gnet.scale!=0))]=OLS(X=X[,I1][,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
+             }else{
+                res$expl2$A[respike$gnet.scale!=0]=OLS(X=X[,I1][,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
+             }
+          }else{#ridge
+             lars_expl = linearRidge(Y~.,data=data.frame(X[,I1]))
+             res$expl2$A=coef(lars_expl)
+          }
+          if(is.null(alpha)){
+             A_expl = rep(0, times = ncol(X) + intercept)
+             if(intercept){
+                A_expl[c(intercept, I1 + intercept)] = res$expl2$A
+             }else{
+                A_expl[I1] = res$expl2$A
+             }
+             res$expl2$A = A_expl
+          }else{
+             A_expl=alpha
+          }
+          res$expl2$BIC = BicTheta(X = X, Y = Y, intercept = intercept, beta = A_expl)
+      }
+      #on remet les choses à leur place
+      qui = WhoIs(Z = Z)
+      I1 = qui$I1
+      I2 = qui$I2
+    }#fin du nouvel explicatif
     if (pred & length(I2)>0) {
       if(length(I2)<2 & select!="NULL"){
          select="lar"
