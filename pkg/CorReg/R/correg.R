@@ -195,7 +195,6 @@ if(explnew){compl=TRUE}
       AICopt=mon_AIC(theta=resopt,Y=Y,X=X,intercept=intercept)
       for (iexplnew in 1:length(I2)){
          I1=c(qui$I1,I2[1:iexplnew])#c'est ici que tout se joue
-         
           if(!is.null(alpha)){
              res$expl2$A=alpha
           }else if (select == "NULL") {
@@ -536,10 +535,14 @@ if(explnew){compl=TRUE}
       }else{
          quifinal=which(A_pred!=0)
       }
-      resA_final=correg(X=X[,quifinal],Y=Y,returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select=select,compl=TRUE,expl=FALSE,pred=FALSE)
-      quifinal=which(A_pred!=0)
-      res$final$A[quifinal]=resA_final$compl$A
-      res$final$BIC = resA_final$compl$BIC
+      if(length(quifinal)==0){
+         res$final=res$pred
+      }else{
+         resA_final=correg(X=X[,quifinal],Y=Y,returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select=select,compl=TRUE,expl=FALSE,pred=FALSE)
+         quifinal=which(A_pred!=0)
+         res$final$A[quifinal]=resA_final$compl$A
+         res$final$BIC = resA_final$compl$BIC
+      }
       res$final$AIC=mon_AIC(theta=res$final$A,Y=Y,X=X,intercept=intercept) 
       
    }
