@@ -524,6 +524,9 @@ if(explnew){compl=TRUE}
     if (pred) {
       res$pred$A = res$compl$A
     }
+    if (explnew){
+       res$expl2$A = res$compl$A
+    }
   }
    if(pred & final){
       res$final$A=res$pred$A
