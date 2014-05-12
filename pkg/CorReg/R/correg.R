@@ -59,9 +59,8 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, e
   select = select[1]
   if(select=="NULL"){
     returning=FALSE
-    final=FALSE
   }
-  if(!pred){final=FALSE}
+  if(final){pred=TRUE}
 if(explnew){compl=TRUE}
   criterion = criterion[1]
   if (is.null(Amax)) {
