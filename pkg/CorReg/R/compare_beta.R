@@ -11,3 +11,5 @@ compare_beta<-function(truebeta=truebeta,hatbeta=hatbeta,taux=FALSE){
    return(resloc)
    
 }
+
+
