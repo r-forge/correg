@@ -117,7 +117,9 @@ if(explnew){compl=TRUE}
     }
     res$compl$BIC = BicTheta(X = X, Y = Y, intercept = intercept, 
                              beta = res$compl$A)
+    res$compl$AIC=mon_AIC(theta=res$compl$A,Y=Y,X=X,intercept=intercept) 
   }
+#explicatif
   if (sum(Z) != 0 & (expl | pred)) {
     qui = WhoIs(Z = Z)
     I1 = qui$I1
@@ -177,6 +179,9 @@ if(explnew){compl=TRUE}
        A_expl=alpha
     }
     res$expl$BIC = BicTheta(X = X, Y = Y, intercept = intercept, beta = A_expl)
+    res$expl$AIC=mon_AIC(theta=res$expl$A,Y=Y,X=X,intercept=intercept) 
+    
+    #nouvel explicatif
     if(explnew){#selection sur explicatif####
       qui = WhoIs(Z = Z)
       I1 = qui$I1
@@ -184,7 +189,7 @@ if(explnew){compl=TRUE}
       R2_vect=R2Z(Z=Z,X=X,adj=TRUE)#evaluation des R2
       R2_vect=R2_vect[R2_vect!=0]
       #tri par R2 => nouvel I2 ordonné
-      I2=I2[order(R2_vect,decreasing=TRUE)]
+      I2=I2[order(R2_vect,decreasing=FALSE)]#on commence par garder ce qui est mal expliqué par le reste (donc forte perte et peu de corrélations)
       #initialisation du résultat final (par le modèle complet déjà calculé, + AIC associé)
       res$expl2$A=res$compl$A
       resopt=res$compl$A
@@ -257,6 +262,8 @@ if(explnew){compl=TRUE}
       #on remet les choses à leur place
       res$expl2$A=resopt
       res$expl2$AIC=AICopt
+      res$expl2$BIC = BicTheta(X = X, Y = Y, intercept = intercept, 
+                              beta = res$expl2$A)
       qui = WhoIs(Z = Z)
       I1 = qui$I1
       I2 = qui$I2
@@ -369,7 +376,8 @@ if(explnew){compl=TRUE}
       res$pred$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
       res$pred$BIC = BicTheta(X = X, Y = Y, intercept = intercept, 
                               beta = A_pred)
-
+      res$pred$AIC=mon_AIC(theta=res$pred$A,Y=Y,X=X,intercept=intercept) 
+      
     }
     #nouveau prédictif####
     if (prednew) {
@@ -526,9 +534,12 @@ if(explnew){compl=TRUE}
       }else{
          quifinal=which(A_pred!=0)
       }
-      A_final=correg(X=X[,quifinal],Y=Y,returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select=select,compl=TRUE,expl=FALSE,pred=FALSE)$compl$A
+      resA_final=correg(X=X[,quifinal],Y=Y,returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select=select,compl=TRUE,expl=FALSE,pred=FALSE)
       quifinal=which(A_pred!=0)
-      res$final$A[quifinal]=A_final
+      res$final$A[quifinal]=resA_final$compl$A
+      res$final$BIC = resA_final$compl$BIC
+      res$final$AIC=mon_AIC(theta=res$final$A,Y=Y,X=X,intercept=intercept) 
+      
    }
   return(res)
 }
