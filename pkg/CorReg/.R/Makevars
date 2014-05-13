@@ -1,2 +1,0 @@
-CC = clang -std=gnu99 -fsanitize=undefined -fno-omit-frame-pointer
-CXX = clang -fsanitize=undefined -fno-omit-frame-pointer
