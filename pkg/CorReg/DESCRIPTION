@@ -12,9 +12,9 @@ Authors@R: c(person("Clement", "THERY", role = c("aut", "cre"),
     person("Vincent", "KUBICKI", role = "ctb")
     )
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
-Description: Sequential linear regression based on a recursive structural
-    equation model (explicit correlations). It permits to face highly
-    correlated datasets.
+Description: Linear regression based on a recursive structural
+    equation model (explicit correlations) found by a MCMC algorithm. It permits to face highly
+    correlated covariates. Variable selection included (by lasso, elasticnet, etc.). It also provides some graphical tools for basic statistics.
 License: CeCILL
 Copyright: ArcelorMittal
 URL: http://www.correg.org
