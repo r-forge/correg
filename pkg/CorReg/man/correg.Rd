@@ -3,8 +3,8 @@
 \alias{correg}
 \title{Estimates the response variable using a structure}
 \usage{
-correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE,
-  explnew = TRUE, pred = TRUE, prednew = FALSE, select = "lar",
+correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE,
+  explnew = FALSE, pred = FALSE, prednew = FALSE, select = "lar",
   criterion = c("MSE", "BIC"), X_test = NULL, Y_test = NULL,
   intercept = TRUE, K = 10, groupe = NULL, Amax = NULL, lambda = 1,
   returning = FALSE, final = FALSE, nbalter = 10, deltamin = 0.01,
