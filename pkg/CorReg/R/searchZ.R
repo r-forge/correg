@@ -61,12 +61,9 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
      res=list()
      if(nbini>1){#first try with provided Z matrix (or null if not provided)
         if(reject==0){#relax mode
-           resloc=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
+           res=.Call( "rechercheZ_relax",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }else{# reject mode
-           resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
-        }
-        if(resloc$bic_opt<=min(res$bic_opt,BICnull)){
-           res=resloc
+           res=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }
         nbini=nbini-1#to finally have the exact number of tries
      }
