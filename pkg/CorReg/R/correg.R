@@ -39,8 +39,8 @@
 #' @param g number of group of variables for clere
 #' @param explnew select the number of sub-regression to take into account (by AIC on the corresponding final model)
 #' 
-correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = TRUE, explnew=TRUE,
-                pred = TRUE,prednew=FALSE,
+correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, explnew=FALSE,
+                pred = FALSE,prednew=FALSE,
                 select = "lar",
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
