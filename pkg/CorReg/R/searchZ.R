@@ -38,7 +38,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
   if(is.null(Bic_null_vect)){
      Bic_null_vect=density_estimation(X=X,nbclustmax=10,verbose=FALSE,detailed=FALSE,mclust=TRUE)$BIC_vect
   }
-  if(is.null(nbini) ){
+  if(is.null(nbini) | nbini<1 ){
      if(is.null(Z)){
         Z=matrix(0,ncol=ncol(X),nrow=ncol(X))
      }
@@ -66,13 +66,13 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
            res=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }
         nbini=nbini-1#to finally have the exact number of tries
+        if(clean){
+           resclean=cleanZ(X=X,Z=res$Z_opt,Bic_null_vect=Bic_null_vect,star=star,verbose=verbose)#nettoyage colonnes puis ponctuel
+           res$Z_opt=resclean$Z_opt
+           res$bic_opt=resclean$bic_opt
+        }
      }
-     if(clean){
-        resclean=cleanZ(X=X,Z=res$Z_opt,Bic_null_vect=Bic_null_vect,star=star,verbose=verbose)#nettoyage colonnes puis ponctuel
-        res$Z_opt=resclean$Z_opt
-        res$bic_opt=resclean$bic_opt
-     }
-     
+    
      for(i in 1:nbini){
         if(Wini){
            Z=Winitial(W=W,X=X,p1max=p1max,Bic_null_vect=Bic_null_vect,p2max=p2max)
@@ -82,6 +82,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
         }else{# reject mode
            resloc=.Call( "rechercheZ_rejet",X,Z,Bic_null_vect,candidates,methode,p1max,p2max,Maxiter,plot,best,better,random,verbose,nb_opt_max,exact,star, PACKAGE = "CorReg")
         }
+        if(length(res)==0){res=resloc}
         if(resloc$bic_opt<=min(res$bic_opt,BICnull)){
            res=resloc
         }
