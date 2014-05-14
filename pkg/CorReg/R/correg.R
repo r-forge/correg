@@ -61,7 +61,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, 
     returning=FALSE
   }
   if(final){pred=TRUE}
-if(explnew){compl=TRUE}
+if(explnew){compl=TRUE;expl=TRUE}
   criterion = criterion[1]
   if (is.null(Amax)) {
     Amax = ncol(X) + 1
@@ -190,8 +190,8 @@ if(explnew){compl=TRUE}
       #tri par R2 => nouvel I2 ordonné
       I2=I2[order(R2_vect,decreasing=FALSE)]#on commence par garder ce qui est mal expliqué par le reste (donc forte perte et peu de corrélations)
       #initialisation du résultat final (par le modèle complet déjà calculé, + AIC associé)
-      res$expl2$A=res$compl$A
-      resopt=res$compl$A
+      res$expl2$A=res$expl$A
+      resopt=res$expl$A
       AICopt=mon_AIC(theta=resopt,Y=Y,X=X,intercept=intercept)
       for (iexplnew in 1:length(I2)){
          I1=c(qui$I1,I2[1:iexplnew])#c'est ici que tout se joue
@@ -538,7 +538,7 @@ if(explnew){compl=TRUE}
       if(length(quifinal)==0){
          res$final=res$pred
       }else{
-         resA_final=correg(X=X[,quifinal],Y=Y,returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select=select,compl=TRUE,expl=FALSE,pred=FALSE)
+         resA_final=correg(X=X[,quifinal],Y=Y,returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select=select,compl=TRUE,expl=FALSE,pred=FALSE,explnew=FALSE)
          quifinal=which(A_pred!=0)
          res$final$A[quifinal]=resA_final$compl$A
          res$final$BIC = resA_final$compl$BIC
