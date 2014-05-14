@@ -107,7 +107,8 @@ mixture_generator<-function(n=130,
     meanvar=rpois(ploc,lambdapois)*(rep(-1,ploc)+2*rbinom(ploc,1,positive))
   }
   if(is.null(sigmavar)){
-    sigmavar=5
+    sigmavar=rpois(ploc,5)
+    sigmavar[sigmavar==0]=1
   }
   prop=runif(ploc)   
   comp_cum=cumsum(composantes)
