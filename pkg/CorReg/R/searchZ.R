@@ -38,7 +38,10 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
   if(is.null(Bic_null_vect)){
      Bic_null_vect=density_estimation(X=X,nbclustmax=10,verbose=FALSE,detailed=FALSE,mclust=TRUE)$BIC_vect
   }
-  if(is.null(nbini) | nbini<1 ){
+  if(!is.null(nbini)){
+     if (nbini<1){nbini=NULL}
+  }
+  if(is.null(nbini)){
      if(is.null(Z)){
         Z=matrix(0,ncol=ncol(X),nrow=ncol(X))
      }
@@ -74,7 +77,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
      }
     
      for(i in 1:nbini){
-        if(Wini){
+        if(Wini){#only if no Z provided
            Z=Winitial(W=W,X=X,p1max=p1max,Bic_null_vect=Bic_null_vect,p2max=p2max)
         }
         if(reject==0){#relax mode
