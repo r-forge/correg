@@ -266,11 +266,8 @@ if(explnew){compl=TRUE;expl=TRUE}
       I1 = qui$I1
       I2 = qui$I2
     }#fin du nouvel explicatif
-    if (pred & length(I2)>0) {
-      if(length(I2)<2 & select!="NULL"){
-         select="lar"
-      }
-      
+#predictif
+    if (pred & length(I2)>0) {     
       if (is.null(B)) {
         B = hatB(Z = Z, X = X)
       }
@@ -286,9 +283,13 @@ if(explnew){compl=TRUE;expl=TRUE}
       }else if (select != "elasticnet"  & select != "ridge" & select != "adalasso"  & select!="clere" & select!="spikeslab") {
         lars_inj = lars(x = Xtilde, y = Ytilde, type = select, 
                         intercept = F)
-        A_inj = meilleur_lars(lars = lars_inj, X = Xtilde, 
+        if(max(lars_inj$R2)==0){
+           A_inj=rep(0,times=ncol(Xtilde))
+        }else{
+         A_inj = meilleur_lars(lars = lars_inj, X = Xtilde, 
                               Y = Ytilde, mode = criterion, intercept = F, 
                               K = K, groupe = groupe)$A
+        }
       }else if (select=="elasticnet") {
         lars_inj = renet(x = Xtilde, y = Ytilde, intercept = F, 
                         lambda = lambda)
