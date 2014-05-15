@@ -1108,6 +1108,18 @@ The theorem from Maugis guarantee that a sub-regression between Gaussian mixture
 %			
 %		\end{equation}
 	%It can also be extended to the $(S,R,U,W)$ model with variables of $\boldsymbol{X}_f$ independent from $\boldsymbol{X}_r$ defining ...
+	
+Here, $\otimes$ and $\oplus$ denote respectively the kronecker product and sum.
+	\begin{eqnarray}
+			\forall j \in I_r : \  \boldsymbol{X}^j_{|\boldsymbol{X}_f}&\sim & \mathcal{N}(\boldsymbol{X}_f\boldsymbol{\alpha}_j,\sigma^2_j\boldsymbol{I}_n) \label{densitycondgauche}\\
+			\forall j \in I_f : \boldsymbol{X}^j_{|S} &\sim& \mathcal{GM}(\boldsymbol{\pi}_j;\boldsymbol{\mu}_j;\boldsymbol{\sigma}^2_j) \textrm{ with } \boldsymbol{\pi}_j,\boldsymbol{\mu}_j,\boldsymbol{\sigma}^2_j \textrm{ vectors of size } K_j  \label{densitydroite}\\
+			\textrm{And we obtain, } \forall j \in I_r : \  \boldsymbol{X}^j&\sim & 
+						\mathcal{GM}(\bigotimes_{\substack{i \in I_f^j  }}\boldsymbol{\pi}_i \ ; 
+			                         \bigoplus_{\substack{i \in I_f^j  }} \alpha_{i,j} \boldsymbol{\mu}_i \ ; 
+			                         \boldsymbol{\sigma}_j^2+\bigoplus_{\substack{i \in I_f^j  }}\alpha_{i,j}^2 \boldsymbol{\sigma}_i^2 )\label{densitygauche}          
+		\end{eqnarray}
+		So when we compare (\ref{densitydroite}) and (\ref{densitygauche}) we see that the number of components in $I_r$ variables differs when subregressions are of length $>1$ (almost 2 predictors) with multiple-class predictors (so the kronecker product is effective).	
+	
 	The presence of two Gaussian mixtures on the right of the sub-regression gives the identifiability of it (even with also Gaussian variables) by the strict increase of the component number when combining Gaussian mixtures.
 	So a sub-regression is identifiable if it has only Gaussian mixtures (even only one) on the right or if it has at least two Gaussian mixtures (even with additional Gaussian variables)
 	
