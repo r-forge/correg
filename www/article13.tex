@@ -656,39 +656,53 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 
 \clearpage
 \subsection{Robustess of the model}
- We have generated non linear structures (Tables \ref{compZnonlin} and \ref{resYnonlin}). Variables in $\boldsymbol{X_r}$ depends on the $\log$ or the square (randomly choosen with equiprobability) of a variable in $\boldsymbol{X_f}$ . Dependencies are still real but non linear. \textsc{CorReg} still found dependencies. One example of non-linear structure found with \textsc{CorReg} on real datasets is given in section \ref{sectionexfos}.
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{3}{|c}{configuration}  &  \multicolumn{2}{|c}{Computing Time}  & \multicolumn{3}{|c}{Quality} & \multicolumn{2}{|c|}{Complexity}\\
-\hline
-$n$ & $p_r$ & $P(S)$&Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta p_2$ & $\Delta compl$ \\
-\hline
-30 & 16 & $BIC$ & 0.4313 & 2.7769 & 9.96 & 2.45 & 5.95 & 3.5 & 29.42  \\
-& & &(0.0391) & (0.0883) & (1.3175) & (1.3808) & (1.3056) & (1.453) & (6.2639) \\
- &  & $BIC_+$ & 0.4313 & 4.9079 & 7.28 & 1.25 & 8.63 & 7.38 & 5.77  \\ 
-& & &(0.0391) & (0.4353) & (1.5769) & (0.9987) & (1.5548) & (1.6316) & (6.1297) \\ 
-\hline
-\end{tabular} 
-\caption{Results of the Markov chain for non linear structure ($\log$ and square). Mean observed and standard deviation (sd). } \label{compZnonlin}
-\end{table}
+% We have generated non linear structures (Tables \ref{compZnonlin} and \ref{resYnonlin}). Variables in $\boldsymbol{X_r}$ depends on the $\log$ or the square (randomly choosen with equiprobability) of a variable in $\boldsymbol{X_f}$ . Dependencies are still real but non linear. \textsc{CorReg} still found dependencies. One example of non-linear structure found with \textsc{CorReg} on real datasets is given in section \ref{sectionexfos}.
+%\begin{table}[h!]
+%\centering
+%\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
+%\hline
+%\multicolumn{3}{|c}{configuration}  &  \multicolumn{2}{|c}{Computing Time}  & \multicolumn{3}{|c}{Quality} & \multicolumn{2}{|c|}{Complexity}\\
+%\hline
+%$n$ & $p_r$ & $P(S)$&Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta p_2$ & $\Delta compl$ \\
+%\hline
+%30 & 16 & $BIC$ & 0.4313 & 2.7769 & 9.96 & 2.45 & 5.95 & 3.5 & 29.42  \\
+%& & &(0.0391) & (0.0883) & (1.3175) & (1.3808) & (1.3056) & (1.453) & (6.2639) \\
+% &  & $BIC_+$ & 0.4313 & 4.9079 & 7.28 & 1.25 & 8.63 & 7.38 & 5.77  \\ 
+%& & &(0.0391) & (0.4353) & (1.5769) & (0.9987) & (1.5548) & (1.6316) & (6.1297) \\ 
+%\hline
+%\end{tabular} 
+%\caption{Results of the Markov chain for non linear structure ($\log$ and square). Mean observed and standard deviation (sd). } \label{compZnonlin}
+%\end{table}
+%
+%
+%\begin{table}[h!]
+%\centering
+%\begin{tabular}{|c|c|c|c|c|c|c|}
+%\hline 
+%$n$ & $p_r$& $P(S)$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
+%\hline %nonlin0.5global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_55_33.csv
+%30 & 16 & $BIC$ &MSE (sd) & 996.06 (323.7) & 1100.17 (391.4) & 1501.25 (905.9) \\
+%& & &cpl (sd) & 17.66 (5.4) & 14.7 (4.7) & 11.97 (4.9) \\
+% &  &$BIC_+$ &MSE (sd) & 996.06 (323.7) & 1094.5 (621.8) & 1501.25 (905.9) \\
+%& & & cpl (sd) & 17.66 (5.4) & 16.98 (4.8) & 11.97 (4.9) \\ 
+%\hline
+%\end{tabular} 
+%\caption{ $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} is not too far from LASSO even if it stays behind. } \label{resYnonlin}
+%\end{table}
 
 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|}
-\hline 
-$n$ & $p_r$& $P(S)$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
-\hline %nonlin0.5global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_55_33.csv
-30 & 16 & $BIC$ &MSE (sd) & 996.06 (323.7) & 1100.17 (391.4) & 1501.25 (905.9) \\
-& & &cpl (sd) & 17.66 (5.4) & 14.7 (4.7) & 11.97 (4.9) \\
- &  &$BIC_+$ &MSE (sd) & 996.06 (323.7) & 1094.5 (621.8) & 1501.25 (905.9) \\
-& & & cpl (sd) & 17.66 (5.4) & 16.98 (4.8) & 11.97 (4.9) \\ 
-\hline
-\end{tabular} 
-\caption{ $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} is not too far from LASSO even if it stays behind. } \label{resYnonlin}
-\end{table}
+We have generated a non-linear structure to test the robustess of the model. $\boldsymbol{X}_f$ is a set of 6 independent Gaussian mixtures defined as previously but with random signs for the components means. $\boldsymbol{X}_r=\boldsymbol{X}_7=a\boldsymbol{X}_1^2+\boldsymbol{X}_2-2\boldsymbol{X}_3+ \varepsilon$. The matrix $\boldsymbol{X}$ is then scaled and we get $\boldsymbol{Y}=\sum_{i=1}^7\boldsymbol{X}_i+\varepsilon_Y$. We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression.
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/robust_S.png} 
+			\caption{Quality of the structure found when the paramater $a$ increases}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/robust_MSE.png} 
+			\caption{MSE on the main regression.}
+   \end{minipage}
+\end{figure}
 
 
 	\clearpage	
