@@ -217,23 +217,38 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	\section{Numerical results}
 
 \chapter{Missing values}
-	Missing values are a very recurrent issue in industry. We note $\boldsymbol{M}$ the binary matrix indicating whereas a value is missing (1) or not (0).
+	Missing values are a very recurrent issue in industry. We note $\boldsymbol{M}$ the $n\times p$ binary matrix indicating whereas a value is missing (1) or not (0) in $\boldsymbol{X}$.
+	We note $\boldsymbol{X}_M$ the missing values. $\Theta$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
+	$\boldsymbol{\alpha}$ is the matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$
+	We have 
+	\begin{equation}
+		g(\boldsymbol{X}|\Theta)=\int_{\boldsymbol{X}_M}f(\boldsymbol{X}|\Theta)d \boldsymbol{X}
+	\end{equation}
 	\section{How to manage missing values in the MCMC ?}
 			\subsection{Position of the missing value}
 
-		In the MCMC we need to compute the likelihood of the structure. When missing values occurs, we restrict the likelihood to the known values. So we look at each non-missing value separately. Each value is seen as different random variable noted $x_{i,j}$.  But the structure itself makes things more complicated because known values are not all $iid$ (if $j \in I_r$ ).
+		In the MCMC we need to compute the likelihood of the structure. When missing values occurs, we restrict the likelihood to the known values. So we look at each non-missing value separately. Each value is seen as different random variable noted $x_{i,j}$ for the $i^{th}$ value of $\boldsymbol{X}^j$.  But the structure itself makes things more complicated because known values are not all $iid$ (if $j \in I_r$ ).
 			For a given structure $S$, missing values can imply different consequences according to their position in the dataset.
-			To compute the likelihood of a value $x_{i,j}$ in the dataset :
-			\begin{itemize}
-				\item if $\boldsymbol{M}_{i,j}=1$ : $x_{i,j}$ is not considered because we restrict the likelihood to known values.
-				\item else if $j \in I_f$ : like in previous method, we use the density estimated  ($e.g.$ a Gaussian Mixture model estimated by \textsc{Mixmod}) for $\boldsymbol{X}^j$. The $n$ random variables in $\boldsymbol{X}^j$ are $iid$.
-				\item else :
-			\end{itemize}
+			We decompose the joint distribution $g(\boldsymbol{X}|\Theta)=g(\boldsymbol{X}_r|\Theta,\boldsymbol{X}_f)g(\boldsymbol{X}_f|\Theta)$.
+			To compute the likelihood of a value $x_{i,j}$ in the dataset, if $\boldsymbol{M}_{i,j}=1$ : $x_{i,j}$ is not considered because we restrict the likelihood to known values (integrated likelihood).
+				 else if $j \in I_f$ : like in previous method, we use the density estimated  ($e.g.$ a Gaussian Mixture model estimated by \textsc{Mixmod}) for $\boldsymbol{X}^j$. Values of $\boldsymbol{X}^j$ are $iid$: 
+				 \begin{equation}
+				 	g(\boldsymbol{x}_{i,j}|\Theta)=f(\boldsymbol{x}_{i,j}|\Theta)=\sum_{k=1}^{k_j}\pi_{j,k}\Phi(\boldsymbol{x}_{i,j}|\mu_{j,k},\sigma_{j,k}^2) 
+				 \end{equation} with $\Theta$ estimated by Mixmod and
+				 else, $\forall j \in I_r$:
 			\begin{eqnarray}
-				x_{i,j}| \boldsymbol{X}_{i,I_f^j} &\sim & \sum_{\substack{1\leq k \leq p \\ \boldsymbol{\alpha}_k^j\neq 0 } } x_{i,k}\boldsymbol{\alpha}_k^j  + \mathcal{N}(0;\sigma_j) \\
-				&=& \sum_{\substack{1\leq k \leq p \\ \boldsymbol{\alpha}_k^j\neq 0 \\ \boldsymbol{M}_{i,k}\neq 0 } } x_{i,k}\boldsymbol{\alpha}_k^j  + \mathcal{N}(\sum_{\substack{1\leq k \leq p \\ \boldsymbol{\alpha}_k^j\neq 0 \\ \boldsymbol{M}_{i,k}= 0 } } x_{i,k}\boldsymbol{\alpha}_k^j \ ; \ \sigma_j) \label{Missingdensity}\\ 
+				g(x_{i,j}| \boldsymbol{X}_{i,f},\Theta)=g(x_{i,j}| \boldsymbol{X}_{i,I_f^j},\Theta) &=& \sum_{k=1}^{k_{ij}}\pi_{ij,k}\Phi(x_{i,j}|\mu_{ij,k},\sigma_{ij,k}^2) \textrm{ where } \\
+				\boldsymbol{\pi}_{ij} &=& \bigotimes_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }k_{ij}=|\pi_{ij}| ,\\
+				\boldsymbol{\mu}_{ij}&=& \sum_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=0  }}\alpha_{l,j}x_{i,l} + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1  }} \alpha_{l,j} \boldsymbol{\mu}_l \\
+				%
+				%
+					\mathcal{GM}(\bigotimes_{\substack{i \in I_f^j  }}&&\boldsymbol{\pi}_i \ ; 
+			                         \bigoplus_{\substack{i \in I_f^j  }} \alpha_{i,j} \boldsymbol{\mu}_i \ ; 
+			                         \boldsymbol{\sigma}_j^2+\bigoplus_{\substack{i \in I_f^j  }}\alpha_{i,j}^2 \boldsymbol{\sigma}_i^2 )								
+	%					 \sum_{k=1}^{k_j}\pi_{j,k}\Phi(\boldsymbol{x}_{i,j}|\mu_{j,k},\Sigma_{j,k}) 
+	%			\Phi \left( \sum_{\substack{1\leq k \leq p \\ \boldsymbol{\alpha}_k^j\neq 0 \\ \boldsymbol{M}_{i,k}\neq 0 } } x_{i,k}\boldsymbol{\alpha}_k^j  + \mathcal{N}(\sum_{\substack{1\leq k \leq p \\ \boldsymbol{\alpha}_k^j\neq 0 \\ \boldsymbol{M}_{i,k}= 0 } } x_{i,k}\boldsymbol{\alpha}_k^j \ ; \ \sigma_j) \label{Missingdensity}
 			\end{eqnarray}
-			
+			 
 					
 			
 		\subsection{Weighted penalty}
