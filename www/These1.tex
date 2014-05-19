@@ -218,7 +218,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 
 \chapter{Missing values}
 	Missing values are a very recurrent issue in industry. We note $\boldsymbol{M}$ the $n\times p$ binary matrix indicating whereas a value is missing (1) or not (0) in $\boldsymbol{X}$.
-	We note $\boldsymbol{X}_M$ the missing values. $\Theta$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
+	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{\bar M}$. $\Theta$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
 	$\boldsymbol{\alpha}$ is the matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$
 	We have 
 	\begin{equation}
@@ -227,7 +227,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	\section{How to manage missing values in the MCMC ?}
 			\subsection{Position of the missing value}
 
-		In the MCMC we need to compute the likelihood of the structure. When missing values occurs, we restrict the likelihood to the known values. So we look at each non-missing value separately. Each value is seen as different random variable noted $x_{i,j}$ for the $i^{th}$ value of $\boldsymbol{X}^j$.  But the structure itself makes things more complicated because known values are not all $iid$ (if $j \in I_r$ ).
+		In the MCMC we need to compute the likelihood of the structure. When missing values occurs, we restrict the likelihood to the known values. So we look at each non-missing value separately. Each value is seen as different random variable noted $x_{i,j}$ for the $i^{th}$ value of $\boldsymbol{X}^j$ the observed values.  But the structure itself makes things more complicated because known values are not all $iid$ (if $j \in I_r$ ).
 			For a given structure $S$, missing values can imply different consequences according to their position in the dataset.
 			We decompose the joint distribution $g(\boldsymbol{X}|\Theta)=g(\boldsymbol{X}_r|\Theta,\boldsymbol{X}_f)g(\boldsymbol{X}_f|\Theta)$.
 			To compute the likelihood of a value $x_{i,j}$ in the dataset, if $\boldsymbol{M}_{i,j}=1$ : $x_{i,j}$ is not considered because we restrict the likelihood to known values (integrated likelihood).
@@ -263,13 +263,28 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 				\item Because sub-regression are supposed to be parsimonious, we could imagine to estimate each column of $\boldsymbol{\alpha}$ with full sub-matrices of $\boldsymbol{X}_f$. When relying on too much missing values, $\hat{\boldsymbol{\alpha}}$ would be a bad candidate and then penalized directly by the likelihood (and it could be a good thing). Computational cost would be reduced significantly.
 				\item To estimate the $\boldsymbol{\alpha}_j$ (and not for the global likelihood) we could use data imputation (by the mean) and then obtain a full matrix but still ignoring missing values when estimating the likelihood. Imputation only concerns the estimation of the sub-regression coefficients and because null coefficients in sub-regression are coerced at each step, imputation only concerns a few covariates each time.
 			\end{itemize}
-			The EM algorithm can be written here :
 			
-			
+			The EM algorithm can be written here: we start with some $\Theta^{(0)} $ initial value of $\Theta$. The $\pi_{ij,k}$ are estimated once for each covariate (by Mixmod) and stay the same during the EM algorithm.
+			E step : estimation of 
+			\begin{equation}
+				\boldsymbol{X}^{(h)}=E(\boldsymbol{X}|\boldsymbol{X}_{\bar M},\Theta^{(h)})
+			\end{equation}
+			$\forall (i,j), \boldsymbol{M}_{i,j}=1$, 			
+			\begin{equation}
+				\boldsymbol{X}^{(h)_{i,j}}=E(\boldsymbol{X}_{i,j}|\boldsymbol{X}_{\bar M},\Theta^{(h)})=\sum_{k=1}^{k_{ij}}\pi_{ij,k}\mu_{ij,k}^{(h)} \label{Estep}
+			\end{equation}
+			where, $\forall j \in I_f, k_{ij}=k_j, \pi_{ij,k}=\pi_{j,k}, \mu_{ij,k}=\mu_{j,k}$ 
+			M-step : we determine $\Theta^{(h+1)}$ as the solution of the equation
+			\begin{equation}
+				E(\boldsymbol{X}|\Theta)=\boldsymbol{X}^{(h)} \textrm{ done by OLS}
+			\end{equation}
+			So the M step is just computing linear regressions on the filled dataset.
 			
 	\section{Missing values in the main regression}
 		\subsection{explicative}
 			The reduced model (explicative one) is just a linear regression without structure so estimating $\boldsymbol{\beta}$ is like estimating the $\boldsymbol{\alpha}_j$ and the same methods can be used. An EM algorithm would be prefered because this estimation is out of the MCMC, will be computed only one time and is the final objective where we want to minimize the error.
+			The $E$ step is the same as during the MCMC because we can take benefits from the structure. Where others will just fill $\boldsymbol{X}^j$ by their means, we can use when $j\in I_r$ the conditionnal mean $E(X^j|X_f,\boldsymbol{\alpha}^j)$ defined in \ref{Estep}.
+			
 		\subsection{predictive}
 			If there are missing values in $\boldsymbol{X}^j \in \boldsymbol{X}_r$ a new possibility appears. Knowing $S$ and $\boldsymbol{\alpha}_j$ we are able to try a conditional imputation based on the corresponding sub-regression, like every time someone use linear regression for prediction. 
 			%si manquant à gauche : EM peut s'appuyer sur la loi conditionnelle sachant ce qui est à droite
