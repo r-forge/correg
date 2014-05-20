@@ -134,6 +134,11 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 \chapter{Taking back the residuals}
 	\section{The model}
 	\section{Properties}
+\begin{figure}[h!]
+	\includegraphics[width=500px]{figures/res_these/MQE_toutOLSp5.png}\label{MQE2}
+	\caption{MSE of OLS (plain black) and CorReg marginal(red dashed) and CorReg full (green dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
+\end{figure}	
+	
 	\section{Consistency}
 		\subsection{Consistency Issues}\label{consistency}
 		Consistency issues of the LASSO are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
@@ -256,7 +261,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 %	
 		
 		\subsection{Estimation of the coefficients in each regression}
-			Estimating the $\boldsymbol{\alpha}_j$ and $\boldsymbol{\beta}$ with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given the $\boldsymbol{\alpha}_j$. So it's just about maximizing the likelihood of this density on the $\boldsymbol{\alpha}_j$. This can be done with an Expectation-Maximization (EM) algorithm \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
+			Estimating the $\boldsymbol{\alpha}_j$  with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given the $\boldsymbol{\alpha}_j$. So it's just about maximizing the likelihood of this density on the $\boldsymbol{\alpha}_j$. This can be done with an Expectation-Maximization (EM) algorithm \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
 			But estimation of the $\boldsymbol{\alpha}_j$ is the most critical part of the MCMC in terms of computational time so it could be a bad idea to put there another iterative algorithm. 
 			Alternatives does exist :
 			\begin{itemize}
@@ -264,16 +269,16 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 				\item To estimate the $\boldsymbol{\alpha}_j$ (and not for the global likelihood) we could use data imputation (by the mean) and then obtain a full matrix but still ignoring missing values when estimating the likelihood. Imputation only concerns the estimation of the sub-regression coefficients and because null coefficients in sub-regression are coerced at each step, imputation only concerns a few covariates each time.
 			\end{itemize}
 			
-			The EM algorithm can be written here: we start with some $\Theta^{(0)} $ initial value of $\Theta$. The $\pi_{ij,k}$ are estimated once for each covariate (by Mixmod) and stay the same during the EM algorithm.
+			The EM algorithm can be written here: we start with some $\Theta^{(0)} $ initial value for $\Theta$. The $\pi_{ij,k}$ are estimated once for each covariate (for example by Mixmod) and stay the same during the EM algorithm.
 			E step : estimation of 
 			\begin{equation}
-				\boldsymbol{X}^{(h)}=E(\boldsymbol{X}|\boldsymbol{X}_{\bar M},\Theta^{(h)})
+				\boldsymbol{X}^{(h)}=E(\boldsymbol{X}|\boldsymbol{X}_{\bar M},\Theta^{(h)}) \textrm{ so it simply is}
 			\end{equation}
 			$\forall (i,j), \boldsymbol{M}_{i,j}=1$, 			
 			\begin{equation}
-				\boldsymbol{X}^{(h)_{i,j}}=E(\boldsymbol{X}_{i,j}|\boldsymbol{X}_{\bar M},\Theta^{(h)})=\sum_{k=1}^{k_{ij}}\pi_{ij,k}\mu_{ij,k}^{(h)} \label{Estep}
+				\boldsymbol{X}^{(h)}_{i,j}=E(\boldsymbol{X}_{i,j}|\boldsymbol{X}_{\bar M},\Theta^{(h)})=\sum_{k=1}^{k_{ij}}\pi_{ij,k}\mu_{ij,k}^{(h)} \label{Estep}
 			\end{equation}
-			where, $\forall j \in I_f, k_{ij}=k_j, \pi_{ij,k}=\pi_{j,k}, \mu_{ij,k}=\mu_{j,k}$ 
+			where, $\forall j \in I_f, k_{ij}=k_j, \pi_{ij,k}=\pi_{j,k}, \mu_{ij,k}=\mu_{j,k}$ \\
 			M-step : we determine $\Theta^{(h+1)}$ as the solution of the equation
 			\begin{equation}
 				E(\boldsymbol{X}|\Theta)=\boldsymbol{X}^{(h)} \textrm{ done by OLS}
