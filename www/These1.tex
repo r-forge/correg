@@ -230,6 +230,8 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		g(\boldsymbol{X}|\Theta)=\int_{\boldsymbol{X}_M}f(\boldsymbol{X}|\Theta)d \boldsymbol{X}
 	\end{equation}
 	\section{How to manage missing values in the MCMC ?}
+		Real datasets often have missing values. Here we suppose they are Missing Completely At Random (MCAR). Many methods does exist to manage such problems \cite{little1992regression}. 	
+	
 			\subsection{Position of the missing value}
 
 		In the MCMC we need to compute the likelihood of the structure. When missing values occurs, we restrict the likelihood to the known values. So we look at each non-missing value separately. Each value is seen as different random variable noted $x_{i,j}$ for the $i^{th}$ value of $\boldsymbol{X}^j$ the observed values.  But the structure itself makes things more complicated because known values are not all $iid$ (if $j \in I_r$ ).
@@ -269,14 +271,14 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 				\item To estimate the $\boldsymbol{\alpha}_j$ (and not for the global likelihood) we could use data imputation (by the mean) and then obtain a full matrix but still ignoring missing values when estimating the likelihood. Imputation only concerns the estimation of the sub-regression coefficients and because null coefficients in sub-regression are coerced at each step, imputation only concerns a few covariates each time.
 			\end{itemize}
 			
-			The EM algorithm can be written here: we start with some $\Theta^{(0)} $ initial value for $\Theta$. The $\pi_{ij,k}$ are estimated once for each covariate (for example by Mixmod) and stay the same during the EM algorithm.
-			E step : estimation of 
+			The EM algorithm can be written here: we start with some $\Theta^{(0)}=(\boldsymbol{\alpha},\boldsymbol{\varepsilon}) $ initial value for $\Theta$. The $\pi_{ij,k}$ are estimated once for each covariate (for example by Mixmod) and stay the same during the EM algorithm.
+			naive E step : estimation of 
 			\begin{equation}
 				\boldsymbol{X}^{(h)}=E(\boldsymbol{X}|\boldsymbol{X}_{\bar M},\Theta^{(h)}) \textrm{ so it simply is}
 			\end{equation}
 			$\forall (i,j), \boldsymbol{M}_{i,j}=1$, 			
 			\begin{equation}
-				\boldsymbol{X}^{(h)}_{i,j}=E(\boldsymbol{X}_{i,j}|\boldsymbol{X}_{\bar M},\Theta^{(h)})=\sum_{k=1}^{k_{ij}}\pi_{ij,k}\mu_{ij,k}^{(h)} \label{Estep}
+				x^{(h)}_{i,j}=E(x_{i,j}|\boldsymbol{X}_{\bar M},\Theta^{(h)}) =\sum_{k=1}^{k_{ij}}\pi_{ij,k}\mu_{ij,k}^{(h)} \label{Estep}
 			\end{equation}
 			where, $\forall j \in I_f, k_{ij}=k_j, \pi_{ij,k}=\pi_{j,k}, \mu_{ij,k}=\mu_{j,k}$ \\
 			M-step : we determine $\Theta^{(h+1)}$ as the solution of the equation
@@ -285,6 +287,19 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			\end{equation}
 			So the M step is just computing linear regressions on the filled dataset.
 			
+			
+		real E step : individuals are $iid$ so we just look at the expression for one individual, and use it for all
+		$\forall 1\leq n \leq n , \forall j \notin I_r$, we note $\bar{\boldsymbol{X}}_{i,j}=(\boldsymbol{X}_{\bar M}\cap \boldsymbol{X}_{i} \setminus \boldsymbol{X}^j)$ 
+			\begin{eqnarray}
+				P(\boldsymbol{X}_{fi}^M,\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M} | \Theta)&=&
+					P(\boldsymbol{X}_{fi}^M|\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M}|\Theta) \\
+				&=&P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M}|\Theta) \\
+				P(\boldsymbol{X}_{fi}^M|\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M},\Theta)&=&\frac{P(\boldsymbol{X}_{ri}^M|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M}|\Theta)}{P(\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M}|\Theta)} \\
+				&=&\frac{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M}|\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)}{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)} \\
+				&=&\frac{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M}|\Theta)}{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{\bar M},\Theta)}
+			\end{eqnarray}
+			
+			No imputation for missing left. Imputations for missing right ar just used to obtain $\hat{\boldsymbol{\alpha}}$ but not when computing the $BIC$ or $BIC_+$.
 	\section{Missing values in the main regression}
 		\subsection{explicative}
 			The reduced model (explicative one) is just a linear regression without structure so estimating $\boldsymbol{\beta}$ is like estimating the $\boldsymbol{\alpha}_j$ and the same methods can be used. An EM algorithm would be prefered because this estimation is out of the MCMC, will be computed only one time and is the final objective where we want to minimize the error.
