@@ -1,20 +1,22 @@
-# ' Fill the missing values in the dataset
-# ' 
-# ' @param X the dataset (matrix) with missing values
-# ' @param Z the structure associated to X. Can be a matrix of zeros if non structure.
-# ' @param res_mixmod the best results found by mixmod if already computed
-# ' @param mixmod boolean to say if the function has to use mixmod hypothesis or just the observed mean.
-# ' @param nbclustmax the max number of cluster for mixmod.
-# ' @param X1 booleant to say if dependent variables on the right will be filled based on the structure
-# ' @param Bt the matrix used for X1 if X1=TRUE
+#' Fill the missing values in the dataset
+#' 
+#' @param X the dataset (matrix) with missing values
+#' @param Z the structure associated to X. Can be a matrix of zeros if non structure.
+#' @param res_mixmod the best results found by mixmod if already computed
+#' @param mixmod boolean to say if the function has to use mixmod hypothesis or just the observed mean.
+#' @param nbclustmax the max number of cluster for mixmod.
+#' @param X1 boolean to say if dependent variables on the right will be filled based on the structure
+#' @param Bt the matrix used for X1 if X1=TRUE
+#' @param mclust boolean indicates wether to use Mixmod or mclust
+#' @export
 
-fillmiss<-function(X=X,Z=NULL,mixmod=F,B=NULL,Bt=NULL,res_mixmod=res_mixmod,nbclustmax=10,X1=T,mclust=F){
-   quimank=which(is.na(X),arr.ind=T)
+fillmiss<-function(X=X,Z=NULL,mixmod=FALSE,B=NULL,Bt=NULL,res_mixmod=res_mixmod,nbclustmax=10,X1=TRUE,mclust=FALSE){
+   quimank=which(is.na(X),arr.ind=TRUE)
    p=ncol(X)
    if(is.null(Z)){
      Z=matrix(0,ncol=p,nrow=p)
    }
-   quiou=WhoIs(Z=Z,I1=T,I2=T,I3=T)
+   quiou=WhoIs(Z=Z,I1=TRUE,I2=TRUE,I3=TRUE)
    if(is.null(B)){
      B=hatB(Z=Z,X=X)
    } 
