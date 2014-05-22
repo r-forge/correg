@@ -46,15 +46,30 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
       vect=X[!is.na(X[,i]),i]#donnees observees seulement
       nbclustmaxloc=nbclustmax
       combien=length(unique(vect))
-      if(combien<=nbclustmaxloc){nbclustmaxloc=max(1,round(combien/2))}
+      if(combien<=nbclustmaxloc){
+            nbclustmaxloc=max(1,round(combien/2))
+      }
       res=Mclust(vect,G=c(nbclustmin:nbclustmaxloc),modelNames="V")[c("bic","parameters")]
-      nbclust[i]=res$parameters$variance$G
-      BIC_vect[i]=-res$bic
-      if(detailed){
-        prop=res$parameters$pro#proportions
-        meansvect=res$parameters$mean#means
-        varvect=res$parameters$variance$sigmasq#variances
-        detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+      if(is.na(res$bic)){
+         res=mixmodCluster(data=vect,criterion="BIC",nbCluster=c(nbclustmin:nbclustmaxloc),strategy=mixmodStrategy(nbTryInInit=nbini))["bestResult"]
+         if(verbose){print(res)}
+         nbclust[i]=res[1]
+         BIC_vect[i]=res[3]
+         if(detailed){
+            prop=res[6][1]#proportions
+            meansvect=c(res[6][2])#means
+            varvect=unlist(res[6][3])#variances
+            detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+         }
+      }else{
+         nbclust[i]=res$parameters$variance$G
+         BIC_vect[i]=-res$bic
+         if(detailed){
+           prop=res$parameters$pro#proportions
+           meansvect=res$parameters$mean#means
+           varvect=res$parameters$variance$sigmasq#variances
+           detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+         }
       }
     }
     options(warn=1)

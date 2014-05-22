@@ -7,6 +7,7 @@
 #' @param nbclustmax the max number of cluster for mixmod.
 #' @param X1 boolean to say if dependent variables on the right will be filled based on the structure
 #' @param Bt the matrix used for X1 if X1=TRUE
+#' @param B the matrix of the coefficients for sub-regressions
 #' @param mclust boolean indicates wether to use Mixmod or mclust
 #' @export
 
