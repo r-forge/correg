@@ -422,71 +422,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 				\item $\Delta compl$ : the difference in complexity between both model : $\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
 			\end{itemize}
 		\subsubsection{Results on $S$}	\label{compZ}
-%In table \ref{compZvrai} 
-We compare found structures in different contexts with both Uniform and Hierarchical Uniform {\it a priori} law on $P(S)$, noted respectively $BIC$ and $BIC_+$. 
-We see that usage of $BIC_+$ gives sparser models even with $\max (\hat{p}_f^j)=5$. Moreover, this constraint is not active because observed complexities are smaller (this constraint only serves to accelerate the walk by reducing the dimension of $\mathcal{S}$ because each configuration was computed a hundred times), meaning that the stronger penalty implied by $BIC_+$ really is efficient. The datasets used for $BIC$ and $BIC_+$ are the same to keep the comparison  meaningful. %These datasets and $\hat{S}$ are used for   %tables \ref{YXlinOLS} to \ref{YX2linstep}.
- 
- It is also notable that $BIC_+$ has a greater computational cost than $BIC$. 
-	We notice that the MCMC is faster when there are numerous correlations (rejecting more candidates). 
-\begin{table}[h!]
-\centering
-\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-\hline
-\multicolumn{3}{|c}{Configuration}  &  \multicolumn{2}{|c}{Computing Time}  & \multicolumn{3}{|c}{Quality} & \multicolumn{2}{|c|}{Complexity}\\
-\hline
-$n$ & $p_r$ & $P(S)$ &  Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta p_r$ & $\Delta compl$ \\
-\hline %global30p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_51_44.csv
-30 & 0 & $BIC$ &0.4104 & 3.2428 & 0 & 5.43 & 0 & -5.43 & 22.55  \\
-& & & (0.0275) & (0.3711) & (0) & (1.9346) & (0) & (1.9346) & (8.0884) \\
- &  & $BIC_+$ &0.4104 & 8.2338 & 0 & 0.53 & 0 & -0.53 & 2.27  \\
-& & & (0.0275) & (0.9045) & (0) & (0.7844) & (0) & (0.7844) & (3.3024) \\
-\hline %global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_49_58.csv
-30 & 16 & $BIC$ &0.4182 & 2.7735 & 10.96 & 5.93 & 4.98 & -0.95 & 38.16  \\
-& & & (0.0329) & (0.1498) & (1.9844) & (2.0313) & (1.9948) & (0.9987) & (6.499) \\
- &  & $BIC_+$ &0.4182 & 4.1876 & 11.61 & 4.57 & 4.33 & -0.24 & 16.48  \\
-& & & (0.0329) & (0.2178) & (1.8743) & (1.9502) & (1.8752) & (0.4948) & (5.4892) \\
-\hline %global30p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_50_41.csv
-30 & 32 & $BIC$ & 0.4456 & 2.9154 & 25.23 & 1.92 & 6.5 & 4.58 & 28  \\
-& & & (0.0429) & (0.1331) & (1.4761) & (1.0888) & (1.4668) & (0.9866) & (5.0831) \\
- &  & $BIC_+$ & 0.4456 & 4.0233 & 16.96 & 3.04 & 14.77 & 11.73 & 4.35  \\
-& & & (0.0429) & (0.1091) & (1.3993) & (1.3993) & (1.4692) & (0.5478) & (5.8833) \\
-\hline
-\hline %global50p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_02_25_40.csv
-50 & 0 & $BIC$ &0.5229 & 4.7068 & 0 & 4.2 & 0 & -4.2 & 13.35  \\
-& & & (0.0519) & (0.5865) & (0) & (1.7233) & (0) & (1.7233) & (5.6468) \\
- &  & $BIC_+$ &0.5229 & 10.1198 & 0 & 0.13 & 0 & -0.13 & 0.32  \\
-& & & (0.0519) & (0.5541) & (0) & (0.3667) & (0) & (0.3667) & (0.9732) \\
-\hline %global50p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_50_48.csv
-50 & 16 & $BIC$ &0.5205 & 3.3681 & 11.15 & 5.42 & 4.72 & -0.7 & 22.85  \\	
-& & & (0.0451) & (0.3123) & (1.93) & (1.9132) & (1.886) & (0.7317) & (5.7742) \\
- &  & $BIC_+$ &0.5205 & 4.909 & 11.42 & 4.59 & 4.45 & -0.14 & 7.55  \\
-& & & (0.0451) & (0.4556) & (1.9079) & (1.8968) & (1.8333) & (0.3487) & (4.0611) \\
-\hline %global50p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_23_49_39.csv
-50 & 32 & $BIC$ & 0.5833 & 3.2683 & 28.17 & 1.38 & 3.7 & 2.32 & 12.74  \\
-& & & (0.0628) & (0.316) & (1.3711) & (0.9077) & (1.3143) & (0.8394) & (4.3359) \\
- &  & $BIC_+$ &0.5833 & 4.3599 & 17.27 & 2.73 & 14.6 & 11.87 & -2.61  \\
-& & & (0.0628) & (0.3729) & (1.1708) & (1.1708) & (1.2792) & (0.338) & (4.4854) \\
-\hline
-\hline %global100p40ratio0BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_10_47_32.csv
-100 & 0 & $BIC$ & 0.9623 & 12.9373 & 0 & 2.83 & 0 & -2.83 & 6.23  \\
-& & & (0.077) & (1.7778) & (0) & (1.2953) & (0) & (1.2953) & (3.1999) \\
- &  & $BIC_+$ & 0.9623 & 20.9817 & 0 & 0.01 & 0 & -0.01 & 0.02  \\
-& & & (0.077) & (1.9421) & (0) & (0.1) & (0) & (0.1) & (0.2) \\
-\hline %global100p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_33_40.csv
-100 & 16 & $BIC$ & 1.1223 & 6.9647 & 11.67 & 4.8 & 4.25 & -0.55 & 12.58  \\
-& & & (0.1122) & (0.5473) & (2.0003) & (2.0646) & (1.956) & (0.7833) & (3.9471) \\
- &  & $BIC_+$ & 1.1223 & 8.8486 & 12.04 & 3.95 & 3.88 & -0.07 & 3.75  \\
-& & & (0.1122) & (0.7174) & (1.9223) & (1.9404) & (1.9137) & (0.2564) & (2.2625) \\
-\hline % global100p40ratio0.8BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_13mars2014_04_10_09.csv
-100 & 32 & $BIC$ & 1.4343 & 5.9626 & 30.14 & 0.84 & 1.61 & 0.77 & 6.96  \\
-& & & (0.2528) & (0.3136) & (1.3928) & (0.8495) & (1.2941) & (0.7086) & (3.0975) \\
- &  & $BIC_+$ & 1.4343 & 7.3741 & 17.49 & 2.51 & 14.26 & 11.75 & -3.76  \\
-& & & (0.2528) & (0.2748) & (1.1849) & (1.1849) & (1.2441) & (0.4794) & (4.4859) \\
-\hline
-\end{tabular} 
-\caption{Results of the Markov chain: Mean observed and standard deviation (sd). } \label{compZvrai}
-\end{table}
-\clearpage
+
 
 \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
@@ -501,20 +437,12 @@ $n$ & $p_r$ & $P(S)$ &  Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta
 
 
 
-\begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/bon_gauche.png} 
-			\caption{Number of $\boldsymbol{X_r}$ covariates found with both $BIC$ (dotted) and $BIC_+$ (plain)}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/faux_gauche.png} 
-			\caption{Number of covariates wrongly set in $\boldsymbol{X}_r$ with both $BIC$ (dotted) and $BIC_+$ (plain)} 
-   \end{minipage}
-\end{figure}
 
 
 
 \clearpage
+\subsection{Results on prediction}
+
 \subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ (best case for us)}	 \label{tableMSEsimgauche}
 \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
@@ -563,7 +491,6 @@ $n$ & $p_r$ & $P(S)$ &  Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta
 \end{figure}
 
 \clearpage
-\subsection{Results on prediction}
 	\subsubsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
 We then try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). The datasets used here were those from table \ref{compZvrai}. 
  
