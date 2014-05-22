@@ -9,7 +9,7 @@
 #' @param max boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset
 #' @param mclust boolean. Use mclust instead of Rmixmod
 #' @param nbini number of initial points for Rmixmod
-density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detailed=FALSE,max=TRUE,mclust=TRUE,nbini=50){
+density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detailed=FALSE,max=TRUE,mclust=TRUE,nbini=20){
   #X est la matrice sans constante
    X=1*as.matrix(X)
   n=nrow(X)
@@ -41,7 +41,10 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
     options(warn=-1)
     for (i in 1:p){
       vect=X[!is.na(X[,i]),i]#donnees observees seulement
-      res=Mclust(vect,G=c(nbclustmin:nbclustmax),modelNames="V")[c("bic","parameters")]
+      nbclustmaxloc=nbclustmax
+      combien=length(unique(vect))
+      if(combien<=nbclustmaxloc){nbclustmaxloc=max(1,round(combien/2))}
+      res=Mclust(vect,G=c(nbclustmin:nbclustmaxloc),modelNames="V")[c("bic","parameters")]
       nbclust[i]=res$parameters$variance$G
       BIC_vect[i]=-res$bic
       if(detailed){
