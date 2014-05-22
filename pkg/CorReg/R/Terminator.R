@@ -4,7 +4,7 @@
 #' @param target the dataset (matrix or data.frame) in which missing values will be made
 #' 
 Terminator<-function(target="Sarah Connor", wrath=0.1){
-   if(target=="Sarah Connor" ){
+   if(target[1]=="Sarah Connor" ){
       print("I'll be back !")
    }else if (wrath>0){
       wrath=
