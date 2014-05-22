@@ -7,7 +7,6 @@ Terminator<-function(target="Sarah Connor", wrath=0.1){
    if(target[1]=="Sarah Connor" ){
       print("I'll be back !")
    }else if (wrath>0){
-      wrath=
       target=as.matrix(target)
       n=nrow(target)
       p=ncol(target)
