@@ -125,11 +125,206 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	\section{How to compare structures ?}
 		\subsection{Bayesian criterion for quality}
 		\subsection{Some indicators for proximity}
+		The first criterion is $\psi(\boldsymbol{X},S)$ which is maximized in the MCMC. But in our case, it is estimated by the likelihood (see (\ref{approxBIC}))whose value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $S$ we define some indicators to compare the true model $S$ and the found one $\hat{S}$.
+			Global indicators :
+			\begin{itemize}
+				\item $TL$ (True left) : the number of found dependent variables that really are dependent $TL=|I_r\cap \hat{I}_r|$ 
+				\item $WL$ (Wrong left) : the number of found dependent variables that are not dependent $WL=|\hat{I}_r|-TL$
+				\item $ML$ (Missing left) : the number of really dependent variables not found $ML=|I_r|-TL$
+				\item $\Delta p_r$ : the gap between the number of sub-regression in both model : $\Delta p_r=|I_r|-|\hat{I}_r|$. The sign defines if $\hat{S}$ is too complex or too simple
+				\item $\Delta compl$ : the difference in complexity between both model : $\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
+			\end{itemize}
 	\section{Neighbourhood}
 		\subsection{Classical}
 		\subsection{Active relaxation of the constraints}
 	\section{The walk}
-	\section{Numerical results}
+	
+	\section{Numerical results on simulated datasets} \label{sectionsimul}
+
+
+	\subsection{The datasets}	
+	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if \textsc{CorReg} 	keeps its promises.
+	The \textsc{CorReg} package has been tested on simulated datasets. 
+Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \ref{tableMSEsimtout} and \ref{tableMSEsimgauche} show the results obtained using only \textsc{CorReg}, or \textsc{CorReg} combined with other methods. Tables give both mean and standard deviation of the observed Mean Squared Errors (MSE) on a validation sample of $1 000$ individuals. For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$, variables in $\boldsymbol{X}_f$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $X_r$ don't have a greater variance or mean.
+	We used \textsc{Rmixmod} to estimate the densities of each covariate. For each configuration, the MCMC walk was launched on $10$ initial structures with a maximum of 1 000 steps each time.
+	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
+	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
+	We compare different methods with and without CorReg as a pretreatment. All the results are provided by the CorReg package.
+	
+		\subsubsection{Results on $\hat S$}	\label{compZ}
+
+
+\begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/BIC_p2.png} 
+			\caption{Quality of the subregressions found with classical $BIC$ criterion}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/BICSTAR_P2.png} 
+			\caption{Quality of the subregressions found with our $BIC_+$ criterion} 
+   \end{minipage}
+\end{figure}
+
+
+
+
+
+
+\clearpage
+\subsection{Results on prediction}
+
+\subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ (best case for us)}	 \label{tableMSEsimgauche}
+\begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X1_MSE_NB.png} 
+			\caption{Comparison of the MSE between OLS and CorReg+OLS}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X1_compl_NB.png} 
+			\caption{Comparison of the complexities between OLS and CorReg+OLS} 
+   \end{minipage}
+\end{figure}
+ 
+%\caption{OLS and OLS combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X1_MSE_NB.png} 
+			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X1_compl_NB.png} 
+			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
+   \end{minipage}
+\end{figure}
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X1_MSE_NB.png} 
+			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X1_compl_NB.png} 
+			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
+   \end{minipage}
+\end{figure}
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X1_MSE_NB.png} 
+			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X1_compl_NB.png} 
+			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
+   \end{minipage}
+\end{figure}
+
+\clearpage
+	\subsubsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
+We then try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). The datasets used here were those from table \ref{compZvrai}. 
+ 
+ 
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_tout_MSE_NB.png} 
+			\caption{Comparison of the MSE between OLS and CorReg+OLS}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_tout_compl_NB.png} 
+			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
+   \end{minipage}
+\end{figure}
+ 
+%\caption{OLS and OLS combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/lar_tout_MSE_NB.png} 
+			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/lar_tout_compl_NB.png} 
+			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
+   \end{minipage}
+\end{figure}
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_tout_MSE_NB.png} 
+			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_tout_compl_NB.png} 
+			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
+   \end{minipage}
+\end{figure}
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_tout_MSE_NB.png} 
+			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_tout_compl_NB.png} 
+			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
+   \end{minipage}
+\end{figure}
+
+We see that CorReg tends to give more parsimonious models and better predictions, even if the true model is not parsomious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better (CorReg does not allow the true model to be choosen).
+
+
+
+
+\clearpage
+	\subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$ (worst case for us)}	 \label{tableMSEsimgauche}
+We now try the method with a response depending only on variables in $\boldsymbol{X}_r$. The datasets used here were still those from \ref{compZvrai}.
+Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtain the true model when using the true structure. 
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X2_MSE_NB.png} 
+			\caption{Comparison of the MSE between OLS and CorReg+OLS}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X2_compl_NB.png} 
+			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
+   \end{minipage}
+\end{figure}
+\textsc{CorReg} is still better than OLS for strong correlations and limited values of $n$. 
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X2_MSE_NB.png} 
+			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X2_compl_NB.png} 
+			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
+   \end{minipage}
+\end{figure}
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X2_MSE_NB.png} 
+			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X2_compl_NB.png} 
+			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
+   \end{minipage}
+\end{figure}
+
+ \begin{figure}[h!]
+	\begin{minipage}[l]{.48\linewidth}
+			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X2_MSE_NB.png} 
+			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
+	\end{minipage} \
+   \begin{minipage}[r]{.48\linewidth}
+			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X2_compl_NB.png} 
+			\caption{Comparison of the compexities between stepwise and CorReg+stepwise}
+   \end{minipage}
+\end{figure}
+
 \part{Further usage of the structure}	
 \chapter{Taking back the residuals}
 	\section{The model}
