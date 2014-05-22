@@ -5,7 +5,7 @@
 \usage{
 density_estimation(X = X, nbclustmax = 10, nbclustmin = 1,
   verbose = FALSE, detailed = FALSE, max = TRUE, mclust = TRUE,
-  nbini = 50)
+  nbini = 20)
 }
 \arguments{
 \item{X}{the dataset (matrix)}
