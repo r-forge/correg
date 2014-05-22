@@ -26,7 +26,10 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
   if(mclust==F){#si on veut utiliser mixmod
     for (i in 1:p){
       vect=X[!is.na(X[,i]),i]#donnees observees seulement
-      res=mixmodCluster(data=vect,criterion="BIC",nbCluster=c(nbclustmin:nbclustmax),strategy=mixmodStrategy(nbTryInInit=nbini))["bestResult"]
+      nbclustmaxloc=nbclustmax
+      combien=length(unique(vect))
+      if(combien<=nbclustmaxloc){nbclustmaxloc=max(1,round(combien/2))}
+      res=mixmodCluster(data=vect,criterion="BIC",nbCluster=c(nbclustmin:nbclustmaxloc),strategy=mixmodStrategy(nbTryInInit=nbini))["bestResult"]
       if(verbose){print(res)}
       nbclust[i]=res[1]
       BIC_vect[i]=res[3]
