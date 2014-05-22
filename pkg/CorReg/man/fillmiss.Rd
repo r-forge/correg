@@ -21,6 +21,8 @@ fillmiss(X = X, Z = NULL, mixmod = FALSE, B = NULL, Bt = NULL,
 
 \item{Bt}{the matrix used for X1 if X1=TRUE}
 
+\item{B}{the matrix of the coefficients for sub-regressions}
+
 \item{mclust}{boolean indicates wether to use Mixmod or mclust}
 }
 \description{
