@@ -6,6 +6,7 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 \usepackage{lmodern}
+\usepackage{subfigure}
 \usepackage[table]{xcolor}
  \graphicspath{{figures/}}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
@@ -369,7 +370,7 @@ Then we have the explicit structure characterized by $S=(I_f,I_r,p_f,p_r)$ where
 	\end{itemize}
 	
 	\smallskip
-	At every moment, coherence between $I_f$ and others parts of $S$ can be done by $\forall 1\leq j\leq p :  p_f^j=|I_f^j|$, $I_r=\{j |p_f^j>0 \}$, $p_r= |I_r|$ .
+	At every moment, coherence between $I_f$ and others parts of $S$ can be done by $\forall 1\leq j\leq p :  p_f^j=|I_f^j|$, $I_r=\{j |p_f^j>0 \}$ and $p_r= |I_r|$ .
 		
 	\subsubsection{Transition probabilities}
 	
@@ -391,7 +392,7 @@ Because the walk follows a regular and thus ergodic markov chain with a finite s
 %	\end{eqnarray}
 %		
 and the output will be the best structure in terms of $P(S|\boldsymbol{X})$ which weights each candidate. Practically speaking, \textsc{CorReg} returns the best structure seen during the walk.
-Numerical results (Section 4) illustrates the efficiency of the walk when the true model really contains a linear structure or no structure at all (Table (\ref{compZvrai})) and when the structure is not linear (Table \ref{compZnonlin})).
+Numerical results (Section 4) illustrates the efficiency of the walk when the true model contains structures with various strength (Figure \ref{reshatZ}) and an example with a non-linear structure (Figure \ref{resnonlin}).
 
  \subsubsection{Initialisation(s)}
  If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found and/or initial structure. So the model is really expert-friendly.
@@ -405,26 +406,25 @@ The initial structure can be based on a first warming algorithm taking the corre
 	\subsection{The datasets}	
 	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if \textsc{CorReg} 	keeps its promises.
 	The \textsc{CorReg} package has been tested on simulated datasets. 
-Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \ref{tableMSEsimtout} and \ref{tableMSEsimgauche} show the results obtained using only \textsc{CorReg}, or \textsc{CorReg} combined with other methods. Tables give both mean and standard deviation of the observed Mean Squared Errors (MSE) on a validation sample of $1 000$ individuals. For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$, variables in $\boldsymbol{X}_f$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $X_r$ don't have a greater variance or mean.
+Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \ref{reshatY} and \ref{resrobust} show the results obtained using only \textsc{CorReg}, or \textsc{CorReg} combined with other methods respectively for general case and extreme cases. Figures gives both mean and inter-quartile intervals of the observed Mean Squared Errors (MSE) on a validation sample of $1 000$ individuals. For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$ and those of the sub-regressions are successively set to $(0.1,0.3,0.5,0.7,0.99)$. Variables in $\boldsymbol{X}_f$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $X_r$ don't have a greater variance or mean.
 	We used \textsc{Rmixmod} to estimate the densities of each covariate. For each configuration, the MCMC walk was launched on $10$ initial structures with a maximum of 1 000 steps each time.
 	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
-	We compare different methods with and without CorReg as a pretreatment. All the results are provided by the CorReg package.
+	We compare different methods with and without CorReg as a pretreatment. All the results are provided by the CorReg package. In the following figures, the thickness represent various values of $n$, the thicker the greater, in $(30,50,100,400)$ so we start from $n<p$.
 		\subsection{Finding the structure}
 		\subsubsection{How to evaluate found structure?}
-			The first criterion is $\psi(\boldsymbol{X},S)$ which is maximized in the MCMC. But in our case, it is estimated by the likelihood (see (\ref{approxBIC}))whose value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $S$ we define some indicators to compare the true model $S$ and the found one $\hat{S}$.
-			Global indicators :
+			The first criterion is $\psi(\boldsymbol{X},S)$ which is maximized in the MCMC. But in our case, it is estimated by the likelihood (see (\ref{approxBIC}))whose value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $S$ we define some indicators to compare the true model $S$ and the found $\hat{S}$:
 			\begin{itemize}
 				\item $TL$ (True left) : the number of found dependent variables that really are dependent $TL=|I_r\cap \hat{I}_r|$ 
 				\item $WL$ (Wrong left) : the number of found dependent variables that are not dependent $WL=|\hat{I}_r|-TL$
 				\item $ML$ (Missing left) : the number of really dependent variables not found $ML=|I_r|-TL$
-				\item $\Delta p_r$ : the gap between the number of sub-regression in both model : $\Delta p_r=|I_r|-|\hat{I}_r|$. The sign defines if $\hat{S}$ is too complex or too simple
-				\item $\Delta compl$ : the difference in complexity between both model : $\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
+				\item $\Delta p_r$ : the gap between the number of sub-regression in both model : $\Delta p_r=|I_r|-|\hat{I}_r|$. The sign defines if $\hat{S}$ is too complex or too simple.
+				%\item $\Delta compl$ : the difference in complexity between both model : $\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
 			\end{itemize}
+			
 		\subsubsection{Results on $S$}	\label{compZ}
-
-
-\begin{figure}[h!]
+Here we just take a look at $TL$ and $WL$, that fully describe the quality of the variable selection that will be made in the marginal model. $ML$ and $\Delta p_r$ can be deduced knowing the value of $p_r$ (16 in these cases).
+\begin{figure}[h!] \label{reshatZ}
 	\begin{minipage}[l]{.48\linewidth}
 			\includegraphics[height=180px,width=245px]{figures/res_article/BIC_p2.png} 
 			\caption{Quality of the subregressions found with classical $BIC$ criterion}
@@ -434,121 +434,118 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 			\caption{Quality of the subregressions found with our $BIC_+$ criterion} 
    \end{minipage}
 \end{figure}
-
+We can clearly observe that $BIC_+$ find less sub-regressions when $R^2$ is small and give less wrong sub-regressions than $BIC$ for every $R^2$ but when the strength of the sub-regression increases, $BIC_+$ find as much good sub-regressions as the $BIC$ so the objective is reached. We found the sub-regression only when they are significant and we reduce the noise.
 
 
 
 
 
 \clearpage
-\subsection{Results on prediction}
+\subsection{Results on prediction}\label{reshatY}
 
-\subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ (best case for us)}	 \label{tableMSEsimgauche}
+	%\subsubsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
+We first try the method with a response variable $Y$ depending on all covariates (\textsc{CorReg} reduces the dimension and thus can't give the true model if there is a structure). The datasets used here were the same as for Figure \ref{reshatZ}. 
+ 
 \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X1_MSE_NB.png} 
-			\caption{Comparison of the MSE between OLS and CorReg+OLS}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X1_compl_NB.png} 
-			\caption{Comparison of the complexities between OLS and CorReg+OLS} 
-   \end{minipage}
-\end{figure}
- 
-%\caption{OLS and OLS combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X1_MSE_NB.png} 
-			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X1_compl_NB.png} 
-			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
-   \end{minipage}
-\end{figure}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X1_MSE_NB.png} 
-			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X1_compl_NB.png} 
-			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
-   \end{minipage}
-\end{figure}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X1_MSE_NB.png} 
-			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X1_compl_NB.png} 
-			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
-   \end{minipage}
-\end{figure}
-
-\clearpage
-	\subsubsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We then try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). The datasets used here were those from table \ref{compZvrai}. 
- 
- 
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
+	\subfigure[MSE on a validation subset]{
 			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_tout_MSE_NB.png} 
-			\caption{Comparison of the MSE between OLS and CorReg+OLS}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
+	} \quad
+   	\subfigure[Complexity]{
 			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_tout_compl_NB.png} 
-			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
-   \end{minipage}
+	}
+	\caption{Comparison of OLS (dotted) and CorReg + OLS (plain) when $Y$ depends on all covariates. Thickness represents $n=30,50,100,400$.}\label{toutOLS}
 \end{figure}
- 
+
+ Figure \ref{toutOLS} (left) shows that CorReg improves the prediction power of OLS in a significant way for small values of $n$ and/or significant linear structures. This advantage then shrinks when $n$ explodes because the matrix to invert become well-conditioned and the true model does depend on all covariates (not allowed in the marginal model). We also see that (Figure \ref{toutOLS} right) the model provided by CorReg is more parsimonious and that for small values of $n$ and weak sub-regressions, the number of found sub-regressions is reduced so the marginal model tends to keep more covariates.
 %\caption{OLS and OLS combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
 
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
+\begin{figure}[h!]
+	\subfigure[MSE on a validation subset]{
 			\includegraphics[height=180px,width=245px]{figures/res_article/lar_tout_MSE_NB.png} 
-			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
+	} \quad
+   	\subfigure[Complexity]{
 			\includegraphics[height=180px,width=240px]{figures/res_article/lar_tout_compl_NB.png} 
-			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
-   \end{minipage}
+	}
+	\caption{Comparison of LASSO (dotted) and CorReg + LASSO (plain) when $Y$ depends on all covariates. Thickness represents $n=30,50,100,400$.}\label{toutlar}
 \end{figure}
 
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
+\begin{figure}[h!]
+	\subfigure[MSE on a validation subset]{
 			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_tout_MSE_NB.png} 
-			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
+	} \quad
+   	\subfigure[Complexity]{
 			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_tout_compl_NB.png} 
-			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
-   \end{minipage}
+	}
+	\caption{Comparison of elasticnet (dotted) and CorReg + elasticnet (plain) when $Y$ depends on all covariates. Thickness represents $n=30,50,100,400$.}\label{toutelast}
 \end{figure}
+
+
+\begin{figure}[h!]
+	\subfigure[MSE on a validation subset]{
+			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_tout_MSE_NB.png} 
+	} \quad
+   	\subfigure[Complexity]{
+			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_tout_compl_NB.png} 
+	}
+	\caption{Comparison of stepwise (dotted) and CorReg + stepwise (plain) when $Y$ depends on all covariates. Thickness represents $n=30,50,100,400$.}\label{toutstepwise}
+\end{figure}
+Figures \ref{toutlar}, \ref{toutelast} and \ref{toutstepwise} show that CorReg used as a pretreatment improves the results obtained by variable selection methods and tends to give a more parsimonious model. This is remarkable because the true model depends on all covariates, so it shows that other variable selection methods are really penalized by the correlations between the covariates.
+
 
  \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_tout_MSE_NB.png} 
-			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_tout_compl_NB.png} 
-			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
-   \end{minipage}
+	\subfigure[MSE on a validation subset]{
+			\includegraphics[height=180px,width=245px]{figures/res_article/ridge_tout_MSE_NB.png} 
+	} \quad
+   	\subfigure[Complexity]{
+			\includegraphics[height=180px,width=240px]{figures/res_article/ridge_tout_compl_NB.png} 
+	}
+	\caption{Comparison of ridge (dotted) and CorReg + ridge (plain) when $Y$ depends on all covariates. Thickness represents $n=30,50,100,400$.}\label{toutridge}
 \end{figure}
-
-We see that CorReg tends to give more parsimonious models and better predictions, even if the true model is not parsomious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better (CorReg does not allow the true model to be choosen).
-
-
-
-
+Figure \ref{toutridge} shows that the ridge regression is efficient in prediction when confronted to correlated covariates. It is directly made to improve the conditioning and keeps all the covariates (as the true model) so it logically gives better predictions than CorReg which delete some covariates. But we notice that CorReg pretreatment before the ridge regression gives MSE that are really near form those from the ridge regression alone (inter-quartile intervals are essentially mingled) and with a parsimonious model.
+Ridge regression alone gives a full model (40 covariates even with only 30 individuals) and will give models too complex to be interpreted. A model with 40 covariates is already difficult to interpret and it get worse when $p$ rises. So even the ridge regression in its most favorable case (True model depending on all the covariates) takes benefits (for interpretation) form the CorReg pretreatment.
 \clearpage
+
+\subsection{Extreme cases and Robustess of the model} \label{resrobust}
+\subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ (best case for us)}	 \label{tableMSEsimdroit}
+The datasets used here were the same as for Figure \ref{reshatZ}.
+
+ \begin{figure}[h!]
+	\subfigure[MSE on a validation subset]{
+			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X1_MSE_NB.png} 
+	} \quad
+   	\subfigure[Complexity]{
+			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X1_compl_NB.png} 
+	}
+	\caption{Comparison of OLS (dotted) and CorReg + OLS (plain) when $Y$ depends on $X_f$ only. Thickness represents $n=30,50,100,400$.}\label{X1OLS}
+\end{figure}
+%\caption{OLS and OLS combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
+
+\begin{figure}[h!]
+	\subfigure[MSE on a validation subset]{
+			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X1_MSE_NB.png} 
+	} \quad
+   	\subfigure[Complexity]{
+			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X1_compl_NB.png} 
+	}
+	\caption{Comparison of LASSO (dotted) and CorReg + LASSO (plain) when $Y$ depends on $X_f$ only. Thickness represents $n=30,50,100,400$.}\label{X1lasso}
+\end{figure}
+Figures \ref{X1OLS} and \ref{X1lasso} lead to the same comparison. Even if the true model needs variable selection and depends only on independent covariates, if the dataset contained correlated but irrelevant covariates then classical variable selection methods gain to be associated with a pretreatment by CorReg.
+
+\begin{figure}[h!]
+	\subfigure[MSE on a validation subset]{
+			\includegraphics[height=180px,width=245px]{figures/res_article/ridge_X1_MSE_NB.png} 
+	} \quad
+   	\subfigure[Complexity]{
+			\includegraphics[height=180px,width=240px]{figures/res_article/ridge_X1_compl_NB.png} 
+	}
+	\caption{Comparison of ridge (dotted) and CorReg + ridge (plain) when $Y$ depends on $X_f$ only. Thickness represents $n=30,50,100,400$.}\label{X1ridge}
+\end{figure}
+Figure \ref{X1ridge} shows that ridge regression is penalized when the true model is parsimonious and that CorReg can help to improve the results in such a case.
+
+
+
 	\subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$ (worst case for us)}	 \label{tableMSEsimgauche}
-We now try the method with a response depending only on variables in $\boldsymbol{X}_r$. The datasets used here were still those from \ref{compZvrai}.
+We now try the method with a response depending only on variables in $\boldsymbol{X}_r$. The datasets used here were still the same as for Figure \ref{reshatZ}.
 Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtain the true model when using the true structure. 
 
  \begin{figure}[h!]
@@ -558,7 +555,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
 			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X2_compl_NB.png} 
-			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
+			\caption{Comparison of the complexities between OLS and CorReg+OLS} 
    \end{minipage}
 \end{figure}
 \textsc{CorReg} is still better than OLS for strong correlations and limited values of $n$. 
@@ -569,72 +566,17 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
 			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X2_compl_NB.png} 
-			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
+			\caption{Comparison of the complexities between LASSO and CorReg+LASSO} 
    \end{minipage}
 \end{figure}
 
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X2_MSE_NB.png} 
-			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X2_compl_NB.png} 
-			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
-   \end{minipage}
-\end{figure}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X2_MSE_NB.png} 
-			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X2_compl_NB.png} 
-			\caption{Comparison of the compexities between stepwise and CorReg+stepwise}
-   \end{minipage}
-\end{figure}
 
 \clearpage
-\subsection{Robustess of the model}
-% We have generated non linear structures (Tables \ref{compZnonlin} and \ref{resYnonlin}). Variables in $\boldsymbol{X_r}$ depends on the $\log$ or the square (randomly choosen with equiprobability) of a variable in $\boldsymbol{X_f}$ . Dependencies are still real but non linear. \textsc{CorReg} still found dependencies. One example of non-linear structure found with \textsc{CorReg} on real datasets is given in section \ref{sectionexfos}.
-%\begin{table}[h!]
-%\centering
-%\begin{tabular}{|c|c|c|c|c|c|c|c|c|c|}
-%\hline
-%\multicolumn{3}{|c}{configuration}  &  \multicolumn{2}{|c}{Computing Time}  & \multicolumn{3}{|c}{Quality} & \multicolumn{2}{|c|}{Complexity}\\
-%\hline
-%$n$ & $p_r$ & $P(S)$&Time Mixmod  & Time MCMC  & $TL$ & $WL$ & $ML$ & $\Delta p_2$ & $\Delta compl$ \\
-%\hline
-%30 & 16 & $BIC$ & 0.4313 & 2.7769 & 9.96 & 2.45 & 5.95 & 3.5 & 29.42  \\
-%& & &(0.0391) & (0.0883) & (1.3175) & (1.3808) & (1.3056) & (1.453) & (6.2639) \\
-% &  & $BIC_+$ & 0.4313 & 4.9079 & 7.28 & 1.25 & 8.63 & 7.38 & 5.77  \\ 
-%& & &(0.0391) & (0.4353) & (1.5769) & (0.9987) & (1.5548) & (1.6316) & (6.1297) \\ 
-%\hline
-%\end{tabular} 
-%\caption{Results of the Markov chain for non linear structure ($\log$ and square). Mean observed and standard deviation (sd). } \label{compZnonlin}
-%\end{table}
-%
-%
-%\begin{table}[h!]
-%\centering
-%\begin{tabular}{|c|c|c|c|c|c|c|}
-%\hline 
-%$n$ & $p_r$& $P(S)$ &indicator &LASSO  &    \textsc{CorReg} $\hat S$& \textsc{CorReg} $S$\\ 
-%\hline %nonlin0.5global30p40ratio0.4BICTRUEBICstarTRUEp1max5lambda5100Amaxp2max100sigma_sousreg0.001maxit9000maxtry20max_compl1scaleTRUEcandidates-1_12mars2014_19_55_33.csv
-%30 & 16 & $BIC$ &MSE (sd) & 996.06 (323.7) & 1100.17 (391.4) & 1501.25 (905.9) \\
-%& & &cpl (sd) & 17.66 (5.4) & 14.7 (4.7) & 11.97 (4.9) \\
-% &  &$BIC_+$ &MSE (sd) & 996.06 (323.7) & 1094.5 (621.8) & 1501.25 (905.9) \\
-%& & & cpl (sd) & 17.66 (5.4) & 16.98 (4.8) & 11.97 (4.9) \\ 
-%\hline
-%\end{tabular} 
-%\caption{ $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} is not too far from LASSO even if it stays behind. } \label{resYnonlin}
-%\end{table}
-
+\subsubsection{non-linear case}
 
 We have generated a non-linear structure to test the robustess of the model. $\boldsymbol{X}_f$ is a set of 6 independent Gaussian mixtures defined as previously but with random signs for the components means. $\boldsymbol{X}_r=\boldsymbol{X}_7=a\boldsymbol{X}_1^2+\boldsymbol{X}_2-2\boldsymbol{X}_3+ \varepsilon$. The matrix $\boldsymbol{X}$ is then scaled and we get $\boldsymbol{Y}=\sum_{i=1}^7\boldsymbol{X}_i+\varepsilon_Y$. We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression.
 
- \begin{figure}[h!]
+ \begin{figure}[h!] \label{resnonlin}
 	\begin{minipage}[l]{.48\linewidth}
 			\includegraphics[height=180px,width=245px]{figures/res_article/robust_S.png} 
 			\caption{Quality of the structure found when the paramater $a$ increases}
@@ -679,29 +621,33 @@ We have :
 			It is now time to look at the predictive results (Figure \ref{compareMSEexfos}).
 				The best model found when not using \textsc{CorReg} is given by the LASSO. But when using \textsc{CorReg} elasticnet produces a better model in terms of prediction. LASSO gives a model with 21 non-zero coefficients and elasticnet with \textsc{CorReg} gives a model with 40 non-zero parameters but $6.40\%$ better in prediction on the validation sample (847 products). $14$ non-zero coefficients are common between the two models.
 				Elasticnet alone get a model with 78 parameters that is improved by $9.75\%$ in prediction when used with \textsc{CorReg}. When using LASSO with \textsc{CorReg} we obtain a model with 24 non-zero coefficients that is $4.11\%$ better than LASSO alone. We also computed the OLS model (without selection) and the naive one (estimating the response by the mean of the learning set). All the MSE were modified here to obtain a value of 100 for the best (to preserve confidentiality). Elasticnet with \textsc{CorReg} is $13.51\%$ better than OLS.
-		\begin{figure}[h]
-			\centering
-				\label{barplotMSEexfos}
-				\includegraphics[width=430px]{figures/MSEfinal.png}
-			\caption{MSE comparison on industrial dataset. Learning set : 3 000 products, validation set : 847 products}
-		\end{figure}		
+%		\begin{figure}[h]
+%			\centering
+%				\label{barplotMSEexfos}
+%				\includegraphics[width=430px]{figures/MSEfinal.png}
+%			\caption{MSE comparison on industrial dataset. Learning set : 3 000 products, validation set : 847 products}
+%		\end{figure}		
 		\begin{table}[h!]
 \centering
 \begin{tabular}{|c|c|c|}
 	\hline 
 	Model & MSE & Complexity (with intercept) \\ 
 	\hline 
-	OLS & 115.63 & 206 \\ 
+	OLS & 14.03 & 206 \\ 
 	\hline 
-	\textsc{CorReg} + OLS & 109.59&130 \\ 
-	\hline  
-	LASSO & 106.84 & 21 \\ 
+	\textsc{CorReg} + OLS & 13.30 & 130 \\ 
+	\hline   
+	LASSO & 12.96 & 21 \\ 
 	\hline 
-	\textsc{CorReg} + LASSO & 102.45 &24 \\ 
+	\textsc{CorReg} + LASSO & 12.77 & 24 \\ 
 	\hline 
-	elasticnet & 110.81 & 78\\ 
+	elasticnet & 13.52 & 78\\ 
 	\hline 
-	\textsc{CorReg} + elasticnet & 100 &40 \\ 
+	\textsc{CorReg} + elasticnet & \textbf{12.15} & 40 \\ 
+	\hline 
+	ridge & 13.09 & 206\\ 
+	\hline 
+	\textsc{CorReg} + ridge & 12.69 & 130 \\ 
 	\hline 
 \end{tabular} 
 \caption{Results obtained on a validation sample.}	
