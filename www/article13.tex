@@ -574,9 +574,9 @@ Figure \ref{X2LASSO} shows that LASSO naturally tends to keep $\boldsymbol{X_r}$
 It is notable that the structure does not depend on $\boldsymbol{Y}$ so it can be used for several studies and has an intrinsic value for interpretation even when the marginal model is not kept after confrontation with the classical one. CorReg is both a pre-study and a pre-treatment
 
 \FloatBarrier
-\subsubsection{non-linear case}
+\subsubsection{Non-linear case}
 
-We have generated a non-linear structure to test the robustess of the model. $\boldsymbol{X}_f$ is a set of 6 independent Gaussian mixtures defined as previously but with random signs for the components means. $\boldsymbol{X}_r=\boldsymbol{X}_7=a\boldsymbol{X}_1^2+\boldsymbol{X}_2-2\boldsymbol{X}_3+ \varepsilon$. The matrix $\boldsymbol{X}$ is then scaled and we get $\boldsymbol{Y}=\sum_{i=1}^7\boldsymbol{X}_i+\varepsilon_Y$. We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression.
+We have generated a non-linear structure to test the robustess of the model. $\boldsymbol{X}_f$ is a set of 6 independent Gaussian mixtures defined as previously but with random signs for the components means. $\boldsymbol{X}_r=\boldsymbol{X}_7=a\boldsymbol{X}_1^2+\boldsymbol{X}_2+\boldsymbol{X}_3+ \varepsilon$. The matrix $\boldsymbol{X}$ is then scaled and we get $\boldsymbol{Y}=\sum_{i=1}^7\boldsymbol{X}_i+\varepsilon_Y$. We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression.
 
  \begin{figure}[h!] 
 	\begin{minipage}[l]{.48\linewidth}
@@ -584,8 +584,8 @@ We have generated a non-linear structure to test the robustess of the model. $\b
 			\caption{Frequency of true $\boldsymbol{X}_r$ found (plain)   when the paramater $a$ increases}\label{resnonlin}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/robust_MSE.png} \label{MSEnonlin}
-			\caption{MSE on the main regression for OLS(thick) and LASSO (thin) used both with (plain) or without CorReg (dotted).}
+			\includegraphics[height=180px,width=240px]{figures/res_article/robust_MSE.png} 
+			\caption{MSE on the main regression for OLS(thick) and LASSO (thin) used both with (plain) or without CorReg (dotted).}\label{MSEnonlin}
    \end{minipage}
 \end{figure}
 Figure \ref{MSEnonlin} illustrates the advantage of using CorReg even with non-linear structures. Figure \ref{resnonlin} shows that the MCMC have more difficulties to find a linear structure as the non-linear part of the sub-regression increases but the model is quite robust (efficient for small values of $a$)
