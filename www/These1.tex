@@ -4,6 +4,8 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
+\usepackage{subfigure}
+\usepackage{placeins}
 \usepackage{graphicx}
 \usepackage{lmodern}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
@@ -12,10 +14,11 @@
 \begin{document}
 \maketitle
 \newpage
-\itshape To my sons, to my great friend Quentin Grimonprez, contributor of CorReg. I do not thank Vincent Kubicki, he does not play kazoo with me and says that my latex installation was rotten. \upshape
+\itshape To my sons,% to my great friend Quentin Grimonprez, contributor of CorReg. I do not thank Vincent Kubicki, he does not play kazoo with me and says that my latex installation was rotten. 
+\upshape
 \tableofcontents
-\chapter{Abstracts}
-\chapter{Acknowledgments}
+\chapter*{Abstract}
+\chapter*{Acknowledgments}
 \chapter{The industrial context}
 	This work takes place in a steel industry context. The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we have no idea of its origin. The defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process, each implying a whole manufactory. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates essentially depends on the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
 	We have several constraints :
@@ -63,7 +66,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 
 
 
-		\subsection{Adaptative LASSO and Random LASSO}
+		\subsection{Adaptive LASSO and Random LASSO}
 			\cite{zou2006adaptive}% adaptative lasso
 			\cite{wang2011random}%random lasso
 			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptative \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But \textsc{LASSO} also faces consistency problems \cite{Zhao2006MSC} when confronted with correlated covariates.
@@ -156,11 +159,11 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 
 \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/BIC_p2.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/BIC_p2.png} 
 			\caption{Quality of the subregressions found with classical $BIC$ criterion}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/BICSTAR_P2.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/BICSTAR_P2.png} 
 			\caption{Quality of the subregressions found with our $BIC_+$ criterion} 
    \end{minipage}
 \end{figure}
@@ -176,11 +179,11 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 \subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ (best case for us)}	 \label{tableMSEsimgauche}
 \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X1_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X1_MSE_NB.png} 
 			\caption{Comparison of the MSE between OLS and CorReg+OLS}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X1_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X1_compl_NB.png} 
 			\caption{Comparison of the complexities between OLS and CorReg+OLS} 
    \end{minipage}
 \end{figure}
@@ -189,33 +192,33 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/lar_X1_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X1_MSE_NB.png} 
 			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/lar_X1_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X1_compl_NB.png} 
 			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
    \end{minipage}
 \end{figure}
 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X1_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X1_MSE_NB.png} 
 			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X1_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X1_compl_NB.png} 
 			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
    \end{minipage}
 \end{figure}
 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X1_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X1_MSE_NB.png} 
 			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X1_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X1_compl_NB.png} 
 			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
    \end{minipage}
 \end{figure}
@@ -227,11 +230,11 @@ We then try the method with a response depending on all covariates (\textsc{CorR
  
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/OLS_tout_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_tout_MSE_NB.png} 
 			\caption{Comparison of the MSE between OLS and CorReg+OLS}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/OLS_tout_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_tout_compl_NB.png} 
 			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
    \end{minipage}
 \end{figure}
@@ -240,33 +243,33 @@ We then try the method with a response depending on all covariates (\textsc{CorR
 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/lar_tout_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/lar_tout_MSE_NB.png} 
 			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/lar_tout_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/lar_tout_compl_NB.png} 
 			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
    \end{minipage}
 \end{figure}
 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_tout_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_tout_MSE_NB.png} 
 			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_tout_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_tout_compl_NB.png} 
 			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
    \end{minipage}
 \end{figure}
 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_tout_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_tout_MSE_NB.png} 
 			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_tout_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_tout_compl_NB.png} 
 			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
    \end{minipage}
 \end{figure}
@@ -283,44 +286,44 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X2_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X2_MSE_NB.png} 
 			\caption{Comparison of the MSE between OLS and CorReg+OLS}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X2_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X2_compl_NB.png} 
 			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
    \end{minipage}
 \end{figure}
 \textsc{CorReg} is still better than OLS for strong correlations and limited values of $n$. 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/lar_X2_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X2_MSE_NB.png} 
 			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/lar_X2_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X2_compl_NB.png} 
 			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
    \end{minipage}
 \end{figure}
 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X2_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X2_MSE_NB.png} 
 			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X2_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X2_compl_NB.png} 
 			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
    \end{minipage}
 \end{figure}
 
  \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			%\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X2_MSE_NB.png} 
+			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X2_MSE_NB.png} 
 			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			%\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X2_compl_NB.png} 
+			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X2_compl_NB.png} 
 			\caption{Comparison of the compexities between stepwise and CorReg+stepwise}
    \end{minipage}
 \end{figure}
@@ -330,7 +333,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 	\section{The model}
 	\section{Properties}
 \begin{figure}[h!]
-	%\includegraphics[width=500px]{figures/res_these/MQE_toutOLSp5.png}\label{MQE2}
+	\includegraphics[width=500px]{figures/res_these/MQE_toutOLSp5.png}\label{MQE2}
 	\caption{MSE of OLS (plain black) and CorReg marginal(red dashed) and CorReg full (green dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure}	
 	
@@ -512,15 +515,19 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 		\subsection{Found Structure}
 		\subsection{Results}
 \chapter{Conclusion and perspectives}
-\chapter{References}
-\bibliography{biblio}{ }
-\bibliographystyle{plain}
-\chapter{Appendices}
-	\section{Graphs and CorReg}
-		\subsection{Matricial notations}
-		\subsection{Properties}
-	\section{Mixture models}
-		\subsection{Linear combination}
+
+\cleardoublepage
+
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{apalike}
+\bibliography{biblio}
+\addcontentsline{toc}{chapter}{Appendices}
+\appendix
+	\chapter{Graphs and CorReg}
+		\section{Matricial notations}
+		\section{Properties}
+	\chapter{Mixture models}
+		\section{Linear combination}
 			
-		\subsection{Industrial examples}	
+		\section{Industrial examples}	
 \end{document}
