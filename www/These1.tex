@@ -67,9 +67,9 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 
 
 		\subsection{Adaptive LASSO and Random LASSO}
-			\cite{zou2006adaptive}% adaptative lasso
+			\cite{zou2006adaptive}% adaptive lasso
 			\cite{wang2011random}%random lasso
-			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptative \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But \textsc{LASSO} also faces consistency problems \cite{Zhao2006MSC} when confronted with correlated covariates.
+			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptive \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But \textsc{LASSO} also faces consistency problems \cite{Zhao2006MSC} when confronted with correlated covariates.
 		\subsection{Elasticnet}
 			\cite{zou2005regularization}
 			Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and the \textsc{LASSO}: 
@@ -432,15 +432,27 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 	\section{How to manage missing values in the MCMC ?}
 		Here we suppose they are Missing Completely At Random (MCAR). 
 	
-			\subsection{Position of the missing value}
+			\subsection{Decomposition of the integrated likelihood}
 
-		In the MCMC we need to compute the likelihood of the structure. When missing values occurs, we restrict the likelihood to the known values according to equation (\ref{integralmiss}). we have
+		In the MCMC we need to compute the likelihood of the dataset knowing the structure. When missing values occurs, we restrict the likelihood to the known values according to equation (\ref{integralmiss}). 
+		
+For the covariates in $\boldsymbol{X}_f$, we use the density estimated  ($e.g.$ a Gaussian Mixture model estimated by \textsc{Mixmod}) or given as hypothesis. All individuals are supposed $iid$ so $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \notin I_r $: 
+				 \begin{equation}
+				 	g(x_{i,j}|\Theta)=f(x_{i,j}|\Theta)=\sum_{k=1}^{k_j}\pi_{j,k}\Phi(x_{i,j}|\mu_{j,k},\Sigma_{j,k}) 
+				 \end{equation} with $k_j,\pi_{j,k}, \mu_{j,k}$ and $\Sigma_{j,k}$ estimated by Mixmod (for example). 
+\\				 		
+				 		
+		Then we have
 		\begin{eqnarray}
 			g(\boldsymbol{X}|\Theta)&=& g(\boldsymbol{X}_r|\boldsymbol{X}_f,\Theta)g(\boldsymbol{X}_f|\Theta) \\
 			&=&\prod_{i=1}^n\left[ g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} g(x_{i,j}|\Theta) \right]\\
-			&=&\prod_{i=1}^n\left[ g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} f(x_{i,j}|\Theta) \right]
+			&=&\prod_{i=1}^n\left[ g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)
+							\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}}\sum_{k=1}^{k_j}\pi_{j,k}\Phi(x_{i,j}|\mu_{j,k},\Sigma_{j,k}) \right]
 		\end{eqnarray}
-		reminding that individuals are $iid$ and covariates in $\boldsymbol{X}_f$ are orthogonal.  Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
+		reminding that covariates in $\boldsymbol{X}_f$ are orthogonal. \\
+		
+	 Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. \\
+	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 		\begin{eqnarray}
 g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta)=g(x_{i,j}| \boldsymbol{X}_{i}^{I_f^j},\Theta) &=& \sum_{k=1}^{k_{ij}}\pi_{ij,k}\Phi(x_{i,j}|\mu_{ij,k},\Sigma_{ij,k}) \textrm{ where }  \label{Missingdensity}\\
 				\boldsymbol{\pi}_{ij} &=& \bigotimes_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }k_{ij}=|\pi_{ij}| ,\\
@@ -527,7 +539,7 @@ g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta)=g(x_{i,j}| \boldsymbol{X}_{i}^{I_f^j
 			%si manquant à gauche : EM peut s'appuyer sur la loi conditionnelle sachant ce qui est à droite
 \chapter{CorReg: the package and its application in steel industry}	
 	\section{\textsc{CorReg} package for R}
-	\textsc{CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptative lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with \textsc{CorReg}.
+	\textsc{CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with \textsc{CorReg}.
 	\textsc{CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
 	\section{Application in steel industry}
 		\subsection{The dataset}
