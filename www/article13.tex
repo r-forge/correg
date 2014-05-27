@@ -684,33 +684,16 @@ We have:
 			\caption{Correlations between the covariates in $\boldsymbol{X}$ (upper) and $\hat{\boldsymbol{X}}_f$ (lower).}
 	\end{minipage} \hfill
 	\begin{minipage}[c]{.30\linewidth}
-			\includegraphics[height=150px, width=150px]{figures/R2corregBVBI.png} 
-			\caption{$R^2_{adj}$ of the 67 sub-regressions.}
+				\includegraphics[height=150px,width=150px]{figures/histcorrelBVBI.png} 
+			\caption{Histogram of correlations in $\boldsymbol{X}$.} 
 	\end{minipage} \hfill
    \begin{minipage}[r]{.30\linewidth}
-			\includegraphics[height=150px,width=150px]{figures/histcorrelBVBI.png} 
-			\caption{Histogram of correlations in $\boldsymbol{X}$.} 
+			\includegraphics[height=150px, width=150px]{figures/R2corregBVBI.png} 
+			\caption{$R^2_{adj}$ of the 55 sub-regressions.}\label{R2bv}
    \end{minipage}
-\end{figure}   			
-%	Here $n<p$ so we only compare the leave-one-out cross-validation MSE.
-%	\textsc{CorReg} improves LASSO by $5.24\%$ and elasticnet by $8.60\%$. \textsc{CorReg} combined with LASSO gives the best result but it is only a leave-on-out MSE.
-%\begin{table}[h!]
-%\centering
-%\begin{tabular}{|c|c|c|}
-%	\hline 
-%	Model & MSE & Complexity (with intercept) \\ 
-%	\hline 
-%	LASSO & 105.54 & 34 \\ 
-%	\hline 
-%	\textsc{CorReg} + LASSO & 100 & 18 \\ 
-%	\hline 
-%	elasticnet & 129.94 & 13 \\ 
-%	\hline 
-%	\textsc{CorReg} + elasticnet & 118.76 & 21 \\ 
-%	\hline 
-%\end{tabular} 
-%\caption{Results obtained with leave-one out cross-validation. $n=100, p=145$.}	
-%\end{table}
+\end{figure}   	
+CorReg found 55 sub-regressions as shown in Figure \ref{R2bv}. One of them seems to be weak $R^2=0.17$ but is not linear (points out a link between diameter of a coil and some shape indicator).	
+
 The response variable was binary but $n$ was too small compared to $p$ to use logistic regression so we have considered $\boldsymbol{Y}$ as a continuous variable and then made imputation by $1$ when $\hat{\boldsymbol{Y}}>0.5$ and by $0$ else.
 
 
@@ -721,19 +704,19 @@ The response variable was binary but $n$ was too small compared to $p$ to use lo
 	Method& indicator& With CorReg & without CorReg \\ 
 	\hline
 	OLS & well-classified & 100& 56 \\
-		& MSE (leave-one-out) & & \\
+		& MSE (leave-one-out)& 1.95& 51 810\\
 		& complexity & 91& 100 \\
 	\hline 
 		LASSO & well-classified &93 &93 \\
-		& MSE (leave-one-out) & 0.106 & 0.120\\
+		& MSE (leave-one-out)& 0.106 & 0.120\\
 		& complexity & 27&34\\
 	\hline 
 		Elasticnet & well-classified &84 &87 \\
-		& MSE (leave-one-out) &0.140 &0.148\\
+		& MSE (leave-one-out)&0.140 &0.148\\
 		& complexity &10 &13\\
 	\hline 
 		Ridge & well-classified &88 &85 \\
-		& MSE (leave-one-out) & &\\
+		& MSE (leave-one-out)& 0.179 & 0.177\\
 		& complexity &91 &146\\
 	\hline 
 \end{tabular} 
