@@ -208,6 +208,7 @@ Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can 
 		where $\boldsymbol{\beta}=(\boldsymbol{\beta}_f,\boldsymbol{\beta}_r) \in  \mathcal{R}^p$ is the vector of the regression coefficients associated respectively to $\boldsymbol{X}_f$ and $\boldsymbol{I}_n$ the identity matrix. 
 We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\boldsymbol{X}_r$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X}_f$}:
 \begin{eqnarray}
+		P(\boldsymbol{Y}|\boldsymbol{X}_f)&=& \int_{\boldsymbol{X}_r}P(\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f)P(\boldsymbol{X}_r|\boldsymbol{X}_f) d \boldsymbol{X} \\
 	\boldsymbol{Y}_{|\boldsymbol{X}_f,S}&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
 	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*\label{modexpl}
 \end{eqnarray}
@@ -286,7 +287,7 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 %			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
 %   \end{minipage} 
 	\includegraphics[width=500px]{figures/MQEexplOLSp5.png}\label{MQE1}
-	\caption{MSE of OLS and CorReg (dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\caption{MSE of OLS (plain) and CorReg (dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
 It is clear in Figure \ref{MQE1} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($1-\mathcal{R}^2$ tends to 1) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
 We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))=0$.
@@ -376,7 +377,7 @@ Then we have the explicit structure characterized by $S=(I_f,I_r,p_f,p_r)$ where
 	\subsubsection{Transition probabilities}
 	
 	The walk follows a time-homogeneous Markov Chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}|$ rows and columns (combinatory so we just compute the probabilities when we need them).
-	At each step the markov chain moves with probabiliy:
+	At each step the markov chain moves with probability:
 	\begin{eqnarray}
 			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=&\sum_{j=1}^p \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{\exp(-\frac{1}{2}\psi(\boldsymbol{X},\tilde{S}))}{\sum_{S_l\in \mathcal{V}_{S,j}}\exp(-\frac{1}{2}\psi(\boldsymbol{X},S_l))} 
 	\end{eqnarray}

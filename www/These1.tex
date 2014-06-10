@@ -14,7 +14,7 @@
 \begin{document}
 \maketitle
 \newpage
-\itshape To my sons, to my great friend Quentin Grimonprez, contributor of CorReg. I do not thank Vincent Kubicki, he does not play kazoo with me and says that my latex installation was rotten. 
+\itshape To my sons, to my great friend Quentin Grimonprez, contributor of CorReg. I do not thank Vincent Kubicki, he does not play kazoo with me and said that my latex installation was rotten. 
 \upshape
 \tableofcontents
 \chapter*{Abstract}
@@ -447,33 +447,33 @@ For the covariates in $\boldsymbol{X}_f$, we use the density estimated  ($e.g.$ 
 			g(\boldsymbol{X}|\Theta)&=& g(\boldsymbol{X}_r|\boldsymbol{X}_f,\Theta)g(\boldsymbol{X}_f|\Theta) \\
 			&=&\prod_{i=1}^n\left[ g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} g(x_{i,j}|\Theta) \right]\\
 			&=&\prod_{i=1}^n\left[ g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)
-							\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}}\sum_{k=1}^{k_j}\pi_{j,k}\Phi(x_{i,j}|\mu_{j,k},\Sigma_{j,k}) \right]
+							\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}}\sum_{k=1}^{k_j}\pi_{j,k}\Phi(x_{i,j}|\mu_{j,k},\Sigma_{j,k}) \right] \label{decomplikelimiss}
 		\end{eqnarray}
 		reminding that covariates in $\boldsymbol{X}_f$ are orthogonal. \\
 		
 	 Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. \\
 	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 		\begin{eqnarray}
-g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta)=g(x_{i,j}| \boldsymbol{X}_{i}^{I_f^j},\Theta) &=& \sum_{k=1}^{k_{ij}}\pi_{ij,k}\Phi(x_{i,j}|\mu_{ij,k},\Sigma_{ij,k}) \textrm{ where }  \label{Missingdensity}\\
+g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta)\hat{=} g(x_{i,j}| \boldsymbol{X}_{i}^{I_f^j},\Theta) &=& \sum_{k=1}^{k_{ij}}\pi_{ij,k}\Phi(x_{i,j}|\mu_{ij,k},\Sigma_{ij,k}) \textrm{ where }  \label{Missingdensity}\\
 				\boldsymbol{\pi}_{ij} &=& \bigotimes_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }k_{ij}=|\pi_{ij}| ,\\
 				\boldsymbol{\mu}_{ij}&=& \sum_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=0  }}\alpha_{l,j}x_{i,l} + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1  }} \alpha_{l,j} \boldsymbol{\mu}_l \\
 				\boldsymbol{\Sigma}_{ij} &=& \sigma_j^2 + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 }}\alpha_{i,l}^2 \boldsymbol{\Sigma}_l		
 		\end{eqnarray}		 
+		In first approximation we can suppose independence between the sub-regression:
+		\begin{equation}
+		\forall (j,j') \in I_r \times I_r, g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta) \perp g(x_{i,j'}| \boldsymbol{X}_{i}^{I_f},\Theta)
+\end{equation}		 
+then we have the complete expression of the likelihood with \ref{decomplikelimiss} and \ref{Missingdensity}.
+ Such approximation can be costless according to the position of the missing values ({\it e.g.} if they are all in $\boldsymbol{X}^{I_r}$). It is closer to the real model than the orthogonal hypothesis made by classical imputation by the mean. Moreover, sub-regressions are used only locally and errors don't cumulate whereas the true general decomposition combine many sub-regressions with cumulated noise of approximation. Thus, a general model would be better asymptotically but may not be efficient with finite dataset if the structure is complex. This first approximation is a good candidate to compare to the naive model (not taking into account the structure of sub-regression but making imputations by the mean for each covariate individually). 
 		
+		However, we write the real generalized expression for the log-likelihood.
+		Let $\mathcal{I}_r$ be a permutation of $I_r$ (arbitrary chosen, so the package will use identity). We define the general imputation:
+		\begin{eqnarray}
+			g(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},\Theta)&=& \prod_{i=1}^n \left[g(x_{i,\mathcal{I}_r(p_r)}|x_{i,\mathcal{I}_r(p_r)},\boldsymbol{X}_i^{I_f},\Theta)\prod_{j=1}^{p_r-1}g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_i^{I_f},\Theta)\right]\\
+		\end{eqnarray}
+			
+			
 
-		
-					
-			
-		\subsection{Weighted penalty}
-			Now we have defined the way to compute the likelihood, other questions remain : how to define the number of parameters in the structure ?		How to take into account missingness (structures relying on highly missing covariates should be penalized) ?
-			We have seen that for a same covariate $X^j$ with $ j \in I_r$, the number of parameters is not the same for each individual depending whether or not $M_{i,j}=0$. But the penalty (for $\psi=BIC$) can't be added at the individual level (because $\log(1)=0$ so it would be annihilated). 
-			
-			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. Thus if a structure is only touched by one missing value the penalty will be smaller than another same shaped structure but with more missing values implied.
-			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Another idea would be to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
-		
-%	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
-%	
-		
 		\subsection{Estimation of the coefficients in each regression}
 			Estimating the $\boldsymbol{\alpha}_j$  with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given the $\boldsymbol{\alpha}_j$. So it's just about maximizing the likelihood of this density on the $\boldsymbol{\alpha}_j$. This can be done with an Expectation-Maximization (EM) algorithm \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
 			But estimation of the $\boldsymbol{\alpha}_j$ is the most critical part of the MCMC in terms of computational time so it could be a bad idea to put there another iterative algorithm. 
@@ -507,11 +507,27 @@ g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta)=g(x_{i,j}| \boldsymbol{X}_{i}^{I_f^j
 					P(\boldsymbol{X}_{fi}^M|\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M}|\Theta) \\
 				&=&P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M}|\Theta) \\
 				P(\boldsymbol{X}_{fi}^M|\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M},\Theta)&=&\frac{P(\boldsymbol{X}_{ri}^M|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M}|\Theta)}{P(\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M}|\Theta)} \\
-				&=&\frac{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsybembol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M}|\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)}{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)} \\
+				&=&\frac{P(\boldsymbol{X}_{ri}^{O}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M}|\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)
+				}{
+				P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)
+				} \\
 				&=&\frac{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M}|\Theta)}{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{\bar M},\Theta)}
 			\end{eqnarray}
 			
-			No imputation for missing left. Imputations for missing right ar just used to obtain $\hat{\boldsymbol{\alpha}}$ but not when computing the $BIC$ or $BIC_+$.
+			No imputation for missing left. Imputations for missing right are just used to obtain $\hat{\boldsymbol{\alpha}}$ but not when computing the $BIC$ or $BIC_+$.
+			
+		\subsection{Weighted penalty}
+			Now we have defined the way to compute the likelihood, other questions remain : how to define the number of parameters in the structure ?		How to take into account missingness (structures relying on highly missing covariates should be penalized) ?
+			We have seen that for a same covariate $X^j$ with $ j \in I_r$, the number of parameters is not the same for each individual depending whether or not $M_{i,j}=0$. But the penalty (for $\psi=BIC$) can't be added at the individual level (because $\log(1)=0$ so it would be annihilated). 
+			
+			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. Thus if a structure is only touched by one missing value the penalty will be smaller than another same shaped structure but with more missing values implied.
+			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Another idea would be to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
+		
+%	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
+%	
+					
+			
+			
 	\section{Missing values in the main regression}
 		\subsection{explicative}
 			The reduced model (explicative one) is just a linear regression without structure so estimating $\boldsymbol{\beta}$ is like estimating the $\boldsymbol{\alpha}_j$ and the same methods can be used. An EM algorithm would be prefered because this estimation is out of the MCMC, will be computed only one time and is the final objective where we want to minimize the error.
