@@ -14,6 +14,8 @@ showdata<-function(X=X,what=c("miss","correl")){
       }else{
          print("No missing values")
       }
+   }else if (what=="correl"){
+      corrplot(corr=X,addrect=NULL,is.corr=T,method="color",tl.pos="n",diag=F,outline=F)
    }else{
       correl=cor(X[,!is.na(colSums(X)) & apply(X,2,sd)!=0])
       corrplot(corr=correl,addrect=NULL,is.corr=T,method="color",tl.pos="n",diag=F,outline=F)
