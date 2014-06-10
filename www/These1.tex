@@ -454,7 +454,7 @@ For the covariates in $\boldsymbol{X}_f$, we use the density estimated  ($e.g.$ 
 	 Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. \\
 	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 		\begin{eqnarray}
-g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta)\hat{=} g(x_{i,j}| \boldsymbol{X}_{i}^{I_f^j},\Theta) &=& \sum_{k=1}^{k_{ij}}\pi_{ij,k}\Phi(x_{i,j}|\mu_{ij,k},\Sigma_{ij,k}) \textrm{ where }  \label{Missingdensity}\\
+g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta)= g(x_{i,j}| \boldsymbol{X}_{i}^{I_f^j},\Theta) &=& \sum_{k=1}^{k_{ij}}\pi_{ij,k}\Phi(x_{i,j}|\mu_{ij,k},\Sigma_{ij,k}) \textrm{ where }  \label{Missingdensity}\\
 				\boldsymbol{\pi}_{ij} &=& \bigotimes_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }k_{ij}=|\pi_{ij}| ,\\
 				\boldsymbol{\mu}_{ij}&=& \sum_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=0  }}\alpha_{l,j}x_{i,l} + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1  }} \alpha_{l,j} \boldsymbol{\mu}_l \\
 				\boldsymbol{\Sigma}_{ij} &=& \sigma_j^2 + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 }}\alpha_{i,l}^2 \boldsymbol{\Sigma}_l		
@@ -467,15 +467,28 @@ then we have the complete expression of the likelihood with \ref{decomplikelimis
  Such approximation can be costless according to the position of the missing values ({\it e.g.} if they are all in $\boldsymbol{X}^{I_r}$). It is closer to the real model than the orthogonal hypothesis made by classical imputation by the mean. Moreover, sub-regressions are used only locally and errors don't cumulate whereas the true general decomposition combine many sub-regressions with cumulated noise of approximation. Thus, a general model would be better asymptotically but may not be efficient with finite dataset if the structure is complex. This first approximation is a good candidate to compare to the naive model (not taking into account the structure of sub-regression but making imputations by the mean for each covariate individually). 
 		
 		However, we write the real generalized expression for the log-likelihood.
-		Let $\mathcal{I}_r$ be a permutation of $I_r$ (arbitrary chosen, so the package will use identity). We define the general imputation:
+		Let $\mathcal{I}_r$ be a permutation of $I_r$ (arbitrary chosen, so the package will use identity). We define the general decomposition:
 		\begin{eqnarray}
-			g(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},\Theta)&=& \prod_{i=1}^n \left[g(x_{i,\mathcal{I}_r(p_r)}|x_{i,\mathcal{I}_r(p_r)},\boldsymbol{X}_i^{I_f},\Theta)\prod_{j=1}^{p_r-1}g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_i^{I_f},\Theta)\right]\\
+			g(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},\Theta)&=& \prod_{i=1}^n \left[g(x_{i,\mathcal{I}_r(p_r)}|\boldsymbol{X}_i^{I_f},\Theta)\prod_{j=1}^{p_r-1}g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_{i}^{\mathcal{I}_r(j+1)},\dots ,\boldsymbol{X}_{i}^{\mathcal{I}_r(p_r)}, \boldsymbol{X}_i^{I_f},\Theta)\right]
 		\end{eqnarray}
+		where we don't know the expression of $ g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_{i}^{\mathcal{I}_r(j+1)},\dots ,\boldsymbol{X}_{i}^{\mathcal{I}_r(p_r)}, \boldsymbol{X}_i^{I_f},\Theta)$ so the previous approximation stands still. 
 			
 			
 
 		\subsection{Estimation of the coefficients in each regression}
 			Estimating the $\boldsymbol{\alpha}_j$  with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given the $\boldsymbol{\alpha}_j$. So it's just about maximizing the likelihood of this density on the $\boldsymbol{\alpha}_j$. This can be done with an Expectation-Maximization (EM) algorithm \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
+			
+step E: ($\Theta$ stands for the parameters of the gaussian mixtures for the marginal distributions, estimated once by Mixmod):
+\begin{equation}
+	\boldsymbol{X}^{(h)}=E[\boldsymbol{X}|\boldsymbol{X}_{O},\boldsymbol{\alpha}^{(h)},\boldsymbol{\varepsilon},\Theta,S]
+\end{equation}			
+	
+	step M:	
+\begin{equation}
+	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}(\mathcal{L}(\boldsymbol{X}^{(h)},\boldsymbol{\alpha},\boldsymbol{\varepsilon},\Theta,S)) \textrm{ by OLS}
+\end{equation}	
+	
+		
 			But estimation of the $\boldsymbol{\alpha}_j$ is the most critical part of the MCMC in terms of computational time so it could be a bad idea to put there another iterative algorithm. 
 			Alternatives does exist :
 			\begin{itemize}
@@ -483,12 +496,16 @@ then we have the complete expression of the likelihood with \ref{decomplikelimis
 				\item To estimate the $\boldsymbol{\alpha}_j$ (and not for the global likelihood) we could use data imputation (by the mean) and then obtain a full matrix but still ignoring missing values when estimating the likelihood. Imputation only concerns the estimation of the sub-regression coefficients and because null coefficients in sub-regression are coerced at each step, imputation only concerns a few covariates each time.
 			\end{itemize}
 			
+			
+			 $\forall j \in I_r$, estimation of $\boldsymbol{\alpha}^j$ only depends on individuals not missing in $\boldsymbol{X}^j$ (individuals are {\it iid}).
+			 So we work with a restriction of $\boldsymbol{X}$ for each $\boldsymbol{\alpha}^j$. Thus in this section, to simplify the notation, we will consider no missing values in $\boldsymbol{X}_r$ but in fact we work with restrictions.
+			
 			The EM algorithm can be written here: we start with some $\Theta^{(0)}=(\boldsymbol{\alpha},\boldsymbol{\varepsilon}) $ initial value for $\Theta$. The $\pi_{ij,k}$ are estimated once for each covariate (for example by Mixmod) and stay the same during the EM algorithm.
-			naive E step : estimation of 
+			Naive E step : estimation of 
 			\begin{equation}
 				\boldsymbol{X}^{(h)}=E(\boldsymbol{X}|\boldsymbol{X}_{\bar M},\Theta^{(h)}) \textrm{ so it simply is}
 			\end{equation}
-			$\forall (i,j), \boldsymbol{M}_{i,j}=1$, 			
+			$\forall (i,j), \boldsymbol{M}_{i,j}=1, j\neq I_r$, 			
 			\begin{equation}
 				x^{(h)}_{i,j}=E(x_{i,j}|\boldsymbol{X}_{\bar M},\Theta^{(h)}) =\sum_{k=1}^{k_{ij}}\pi_{ij,k}\mu_{ij,k}^{(h)} \label{Estep}
 			\end{equation}
