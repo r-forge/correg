@@ -679,22 +679,30 @@ We have:
 			\item The stakes : $20\%$ of productivity to gain on a specific product with high added value.
 		\end{itemize}
 		
-\begin{figure}[h!]
-	\begin{minipage}[l]{.30\linewidth}
-			\includegraphics[width=150px]{figures/correlbeforeafter.png} 
-			\caption{Correlations between the covariates in $\boldsymbol{X}$ (upper) and $\hat{\boldsymbol{X}}_f$ (lower).}
+		
+		\begin{figure}[h!]
+	\begin{minipage}[t]{.30\linewidth}
+			\includegraphics[height=150px,width=150px]{figures/nbcompBV.png}%{figures/mixmod.png} 
+			\caption{Distribution of the number of components found for each covariate.}\label{graphMixmod}
 	\end{minipage} \hfill
-	\begin{minipage}[c]{.30\linewidth}
-				\includegraphics[height=150px,width=150px]{figures/histcorrelBVBI.png} 
-			\caption{Histogram of correlations in $\boldsymbol{X}$.} 
+	\begin{minipage}[t]{.30\linewidth}
+			\includegraphics[height=150px, width=150px]{figures/GMcriseBV.png}%{figures/histR2exfos.png} $R^2_{adj}$ of the 76 sub-regressions.
+			\caption{Another example of non-Gaussian real variable easily modeled by a Gaussian mixture.}
 	\end{minipage} \hfill
-   \begin{minipage}[r]{.30\linewidth}
-			\includegraphics[height=150px, width=150px]{figures/R2corregBVBI.png} 
-			\caption{$R^2_{adj}$ of the 55 sub-regressions.}\label{R2bv}
+   \begin{minipage}[t]{.30\linewidth}
+			\includegraphics[height=150px,width=150px]{figures/histcorrelBVBI.png} 
+			\caption{Histogram of correlations in $\boldsymbol{X}$.} \label{compareMSEexfos}
    \end{minipage}
-\end{figure}   	
+\end{figure} 
+  		
+  			
 CorReg found 55 sub-regressions as shown in Figure \ref{R2bv}. One of them seems to be weak $R^2=0.17$ but is not linear (points out a link between diameter of a coil and some shape indicator).	
 
+\begin{figure}
+\centering
+	\includegraphics[height=150px, width=150px]{figures/R2corregBVBI.png} 
+			\caption{$R^2_{adj}$ of the 55 sub-regressions.}\label{R2bv}
+\end{figure}
 The response variable was binary but $n$ was too small compared to $p$ to use logistic regression so we have considered $\boldsymbol{Y}$ as a continuous variable and then made imputation by $1$ when $\hat{\boldsymbol{Y}}>0.5$ and by $0$ else.
 
 
