@@ -698,7 +698,7 @@ We have:
   			
 CorReg found 55 sub-regressions as shown in Figure \ref{R2bv}. One of them seems to be weak $R^2=0.17$ but is not linear (points out a link between diameter of a coil and some shape indicator).	
 
-\begin{figure}
+\begin{figure}[h!]
 \centering
 	\includegraphics[height=150px, width=150px]{figures/R2corregBVBI.png} 
 			\caption{$R^2_{adj}$ of the 55 sub-regressions.}\label{R2bv}
@@ -734,7 +734,7 @@ The response variable was binary but $n$ was too small compared to $p$ to use lo
 
 In this precise case, \textsc{CorReg} found a structure that helped to decorrelate covariates in interpretation and to find the relevant part of the process to optimize. This product is made by a long process that requires several steel plants so it was necessary to point out the steel plant where the problem occurred.
 
-
+\FloatBarrier
 \section{Conclusion and perspectives} \label{conclusion}
 	We have seen that correlations can lead to serious estimation and variable selection problems in linear regression and that in such a context, it can be useful to explicitly model the structure between the covariates and to use this structure (even sequentially) to avoid correlations issues. We also show that real industrial context faces this kind of situations so our model can help to understand and predict physical phenomenon efficiently. But for now we still need a full dataset to learn the structure between the covariates and even if correlations are strong, some information is lost. Further work is needed to face these two challenges.
 	
