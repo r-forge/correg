@@ -6,10 +6,11 @@
 #' @param nbclustmin min number of clusters in the gaussian mixtures
 #' @param verbose verbose or not
 #' @param detailed boolean to give the details of the mixtures found
+#' @param matshape boolean to give the detail in matricial shape
 #' @param max boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset
 #' @param mclust boolean. Use mclust instead of Rmixmod
 #' @param nbini number of initial points for Rmixmod
-density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detailed=FALSE,max=TRUE,mclust=TRUE,nbini=20){
+density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detailed=FALSE,max=TRUE,mclust=TRUE,nbini=20,matshape=FALSE){
   #X est la matrice sans constante
    X=1*as.matrix(X)
   n=nrow(X)
@@ -37,7 +38,11 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
         prop=res[6][1]#proportions
         meansvect=c(res[6][2])#means
         varvect=unlist(res[6][3])#variances
-        detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+        if(matshape){
+           detailsmat=rbind(detailsmat,cbind(prop,meansvect,varvect,i))
+        }else{
+           detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+        }      
       }
     }
   }else{#on utilise mclust
@@ -59,7 +64,11 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
             prop=res[6][1]#proportions
             meansvect=c(res[6][2])#means
             varvect=unlist(res[6][3])#variances
-            detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+            if(matshape){
+               detailsmat=rbind(detailsmat,cbind(prop,meansvect,varvect,i))
+            }else{
+               detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+            }
          }
       }else{
          nbclust[i]=res$parameters$variance$G
@@ -68,7 +77,11 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
            prop=res$parameters$pro#proportions
            meansvect=res$parameters$mean#means
            varvect=res$parameters$variance$sigmasq#variances
-           detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+           if(matshape){
+              detailsmat=rbind(detailsmat,cbind(prop,meansvect,varvect,i))
+           }else{
+              detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+           }         
          }
       }
     }
