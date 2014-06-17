@@ -5,7 +5,7 @@
 \usage{
 density_estimation(X = X, nbclustmax = 10, nbclustmin = 1,
   verbose = FALSE, detailed = FALSE, max = TRUE, mclust = TRUE,
-  nbini = 20)
+  nbini = 20, matshape = FALSE)
 }
 \arguments{
 \item{X}{the dataset (matrix)}
@@ -17,6 +17,8 @@ density_estimation(X = X, nbclustmax = 10, nbclustmin = 1,
 \item{verbose}{verbose or not}
 
 \item{detailed}{boolean to give the details of the mixtures found}
+
+\item{matshape}{boolean to give the detail in matricial shape}
 
 \item{max}{boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset}
 
