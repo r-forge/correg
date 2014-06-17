@@ -75,10 +75,14 @@ mixture_generator<-function(n=130,
     B[1,list_X2]=rpois(R,lambdapois)*(rep(-1,R)+2*rbinom(R,1,positive)) # 1ere ligne de B = ?????
     for(j in list_X2){#remplissage aléatoire de max_compl éléments de B sur chaque colonne à gauche
       if(is.null(Z)){
-         B[sample(qui[-c(list_X2-1)],size=max_compl),j]=(1/max_compl)*max(1,rpois(max_compl,lambdapois))*(rep(-1,max_compl)+2*rbinom(max_compl,1,positive))
+         loc=(1/max_compl)*rpois(max_compl,lambdapois)*(rep(-1,max_compl)+2*rbinom(max_compl,1,positive))
+         loc[loc==0]=1
+         B[sample(qui[-c(list_X2-1)],size=max_compl),j]=loc
       }else{
          compl_loc=colSums(Z)[j]
-         B[sample(qui[-c(list_X2-1)],size=compl_loc),j]=(1/compl_loc)*max(1,rpois(compl_loc,lambdapois))*(rep(-1,compl_loc)+2*rbinom(compl_loc,1,positive))
+         loc=(1/compl_loc)*rpois(compl_loc,lambdapois)*(rep(-1,compl_loc)+2*rbinom(compl_loc,1,positive))
+         loc[loc==0]=1
+         B[sample(qui[-c(list_X2-1)],size=compl_loc),j]=loc
       }
     }
     #ajout de G
