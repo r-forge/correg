@@ -484,7 +484,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 			\subsection{Decomposition of the integrated likelihood}
 We start with the complete likelihood
 \begin{eqnarray}
-	L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{I_r}|\boldsymbol{X}_i^{I_f},\boldsymbol{\alpha},\Theta,S)f(\boldsymbol{X}_i^{I_f}|\boldsymbol{\alpha},\Theta,S) \right] \\
+	L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{I_r}|\boldsymbol{X}_i^{I_f},\boldsymbol{\alpha},\Theta,S)f(\boldsymbol{X}_i^{I_f}|\boldsymbol{\alpha},\Theta,S) \right] \\
 	&=&\prod_{i=1}^n\left[\prod_{j \in I_r}f(x_{i,j}|\boldsymbol{X}_i^{I_f},\boldsymbol{\alpha},\Theta,S)\prod_{j \notin I_r} f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) \right] \\
 	&=&\prod_{i=1}^n\left[\prod_{j \in I_r}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S)\prod_{j \notin I_r} f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) \right] \\
 %	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
@@ -521,7 +521,7 @@ We know that $\boldsymbol{X}$ is a Gaussian mixture with $K$ components.
 	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\prod_{i=1}^n\phi_k(\boldsymbol{X}_i,\boldsymbol{\alpha},\Theta,S)d\boldsymbol{X} \\
 	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\boldsymbol{X}_{i,M}}\phi_k(\boldsymbol{X}_i,\boldsymbol{\alpha},\Theta,S)d\boldsymbol{X}_i \\
 	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\phi_k(\boldsymbol{X}_{i,O},\boldsymbol{\alpha},\Theta,S)\\
-	&=&\sum_{k=1}^K \pi_k \phi_k(\boldsymbol{X}_{O},\boldsymbol{\alpha},\Theta,S)=f((\boldsymbol{X}_{O},\boldsymbol{\alpha},\Theta,S)
+	&=&\sum_{k=1}^K \pi_k \phi_k(\boldsymbol{X}_{O},\boldsymbol{\alpha},\Theta,S)=f(\boldsymbol{X}_{O},\boldsymbol{\alpha},\Theta,S)
 \end{eqnarray}
 
 
@@ -566,7 +566,7 @@ We know that $\boldsymbol{X}$ is a Gaussian mixture with $K$ components.
 %			
 %	
 To estimate $\boldsymbol{\alpha}$ we use an EM algorithm. We start with an arbitrary value $\boldsymbol{\alpha}^{(0)}$, then:
-For the step $h$ of the algorithm at the E step we want 
+For the iteration $h$ of the algorithm at the E step we want 
 \begin{equation}
 	E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]
 \end{equation}
@@ -611,7 +611,7 @@ Then we have
 	\Sigma_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}&=&\operatorname{var}(x_{i,j,k})-\operatorname{cov}(x_{i,j},\boldsymbol{X}_{i,O,k}^{I_r^j})\operatorname{var}(\boldsymbol{X}_{i,O,k}^{I_r^j})^{-1}\operatorname{cov}(\boldsymbol{X}_{i,O,k}^{I_r^j},x_{i,j,k})
 \end{eqnarray}
  
-But we don't need to compute the variance because we only want $E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]$ so the mean is sufficient, we impute  
+But we do not need to compute the variance because we only want $E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]$ so the mean is sufficient, we impute  
 \begin{equation}
 	\hat{x}_{i,j}=\frac{1}{K_{ij}}\sum_{k=1}^{K_{ij}}\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}
 \end{equation}
