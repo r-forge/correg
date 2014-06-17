@@ -613,7 +613,7 @@ Then we have
  
 But we do not need to compute the variance because we only want $E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]$ so the mean is sufficient, we impute  
 \begin{equation}
-	\hat{x}_{i,j}=\frac{1}{K_{ij}}\sum_{k=1}^{K_{ij}}\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}
+	\hat{x}_{i,j}=\frac{1}{K_{ij}}\sum_{k=1}^{K_{ij}}\pi_{ij,k}\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}
 \end{equation}
 
 We have 
