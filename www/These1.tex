@@ -474,22 +474,19 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 \chapter{Missing values}
 	Real datasets often have missing values and it is a very recurrent issue in industry. We note $\boldsymbol{M}$ the $n\times p$ binary matrix indicating whereas a value is missing (1) or not (0) in $\boldsymbol{X}$.
 	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{O}$ the observed values. $\Theta$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
-	$\boldsymbol{\alpha}$ is the matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.
-	
-	\section{State of the art}	
-	 Many methods does exist to manage such problems \cite{little1992regression}. 	
-	\section{How to manage missing values in the MCMC ?}
-		Here we suppose they are Missing Completely At Random (MCAR). 
-	
-			\subsection{Decomposition of the integrated likelihood}
-We start with the complete likelihood
+	$\boldsymbol{\alpha}$ is the matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\ 
+			Here we suppose that missing values are Missing Completely At Random (MCAR). 
+	 Many methods does exist to manage such problems \cite{little1992regression} but they make approximation , add noise (imputation methods) or delete information (cutting methods).	
+\section{Some results on missing values and Gaussian mixtures}
+	\subsection{Decomposition of the integrated likelihood}
+We start with the complete likelihood of $\boldsymbol{X}$
 \begin{eqnarray}
 	L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{I_r}|\boldsymbol{X}_i^{I_f},\boldsymbol{\alpha},\Theta,S)f(\boldsymbol{X}_i^{I_f}|\boldsymbol{\alpha},\Theta,S) \right] \\
 	&=&\prod_{i=1}^n\left[\prod_{j \in I_r}f(x_{i,j}|\boldsymbol{X}_i^{I_f},\boldsymbol{\alpha},\Theta,S)\prod_{j \notin I_r} f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) \right] \\
 	&=&\prod_{i=1}^n\left[\prod_{j \in I_r}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S)\prod_{j \notin I_r} f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) \right] \\
 %	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
 %			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
-	\mathcal{L}(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j \in I_r}\log \left(f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S)\right)+\sum_{j \notin I_r} \log \left(f(x_{i,j}|\boldsymbol{\alpha},\Theta,S)\right) \right]
+	\mathcal{L}(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j \in I_r}\log \left(f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S)\right)+\sum_{j \notin I_r} \log \left(f(x_{i,j}|\boldsymbol{\alpha},\Theta,S)\right) \right] \label{loglikmiss}
 \end{eqnarray}
 		In the MCMC we need to compute the likelihood of the dataset knowing the structure. When missing values occurs, we restrict the likelihood to the known values by integration on $\boldsymbol{X}_M$.
 %		We have 
@@ -513,7 +510,7 @@ We start with the complete likelihood
 %		
 %	 Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. \\
 
-We know that $\boldsymbol{X}$ is a Gaussian mixture with $K$ components.
+We know that $\boldsymbol{X}$ is a Gaussian mixture ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}^{I_f}$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}^{I_r}$) with $K$ the number of its components.
 \begin{eqnarray}
 	L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X}_0)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})d\boldsymbol{X} \\
 	&=&\int_{\boldsymbol{X}_M}\sum_{k=1}^K \pi_k \phi_k(\boldsymbol{X},\boldsymbol{\alpha},\Theta,S)d\boldsymbol{X} \\
@@ -532,11 +529,13 @@ We know that $\boldsymbol{X}$ is a Gaussian mixture with $K$ components.
 % $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \notin I_r $:
 %	 \begin{equation}
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
-%	 \end{equation}	 
-	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \notin I_r $:
-	 \begin{equation}
-	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=\sum_{k=1}^{k_j}\pi_{j,k}\Phi(x_{i,j}|\mu_{j,k},\Sigma_{j,k})
-	 \end{equation} with $k_j,\pi_{j,k}, \mu_{j,k}$ and $\Sigma_{j,k}$ estimated by Mixmod (for example). 
+%	 \end{equation}	
+
+We also have, if we look at the decomposition $\boldsymbol{X}=[\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f}]$: 
+%	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \notin I_r $:
+%	 \begin{equation}
+%	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=\sum_{k=1}^{k_j}\pi_{j,k}\Phi(x_{i,j}|\mu_{j,k},\Sigma_{j,k})
+%	 \end{equation} with $k_j,\pi_{j,k}, \mu_{j,k}$ and $\Sigma_{j,k}$ estimated by Mixmod (for example). 
 %	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 %	 \begin{equation}
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
@@ -549,7 +548,7 @@ We know that $\boldsymbol{X}$ is a Gaussian mixture with $K$ components.
 				\boldsymbol{\mu}_{ij}&=& \sum_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=0  }}\alpha_{l,j}x_{i,l} + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1  }} \alpha_{l,j} \boldsymbol{\mu}_l \\
 				\boldsymbol{\Sigma}_{ij} &=& \sigma_j^2 + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 }}\alpha_{i,l}^2 \boldsymbol{\Sigma}_l		
 		\end{eqnarray}		 
-		This can be easily used for imputation of the missing values in $\boldsymbol{X}^{I_r}$ knowing the parameters $\boldsymbol{\alpha}, \Theta$ and $S$. 
+		This could be easily used for imputation of the missing values in $\boldsymbol{X}^{I_r}$ knowing the parameters $\boldsymbol{\alpha}, \Theta$ and $S$. 
 %		In first approximation we can suppose independence between the sub-regression:
 %		\begin{equation}
 %		\forall (j,j') \in I_r \times I_r, g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta) \perp g(x_{i,j'}| \boldsymbol{X}_{i}^{I_f},\Theta)
@@ -565,99 +564,78 @@ We know that $\boldsymbol{X}$ is a Gaussian mixture with $K$ components.
 %		where we don't know the expression of $ g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_{i}^{\mathcal{I}_r(j+1)},\dots ,\boldsymbol{X}_{i}^{\mathcal{I}_r(p_r)}, \boldsymbol{X}_i^{I_f},\Theta)$ so the previous approximation stands still. 
 %			
 %	
-To estimate $\boldsymbol{\alpha}$ we use an EM algorithm. We start with an arbitrary value $\boldsymbol{\alpha}^{(0)}$, then:
-For the iteration $h$ of the algorithm at the E step we want 
-\begin{equation}
-	E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]
-\end{equation}
-So we get $\boldsymbol{X}_M^{(h)}$ the  imputation for $\boldsymbol{X}_M$ and then the M step simply is
-\begin{equation}
-	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha},S,\Theta) \right]
-\end{equation}
-and we can use the same method as the one for classical case without missing values (OLS, SUR, {\it etc.}).
-		And we continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance.\\
-		
-Imputation in $\boldsymbol{X}^{I_r}$ is made according to (\ref{Missingdensity}) and we have orthogonality in $\boldsymbol{X}^{I_f}$:
-\begin{displaymath}
-\forall j \notin I_r, P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f}\setminus \boldsymbol{X}^j)=P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r})
-\end{displaymath}
-Moreover, $\forall j \notin I_r, \forall l \in I_r $ with $j \notin I_f^l, \boldsymbol{X}^j\perp \boldsymbol{X}^j$ so
-\begin{displaymath}
-\forall j \notin I_r, P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f}\setminus \boldsymbol{X}^j)=P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r})=P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r^j})
-\end{displaymath}
-where $I_r^j=\{i \in I_r| j \in I_f^j \}=\{i \in I_r|\alpha_{j,i}\neq 0 \}$ So we will make imputations (for E step only) according to $P(\boldsymbol{X}^j|\boldsymbol{X}_O^{I_r^j})$
-		\\
-$\forall 1 \leq i \leq n$	
-To use formulas on conditional distribution for Gaussian multivariate distribution we first write $P(\boldsymbol{X}_i^j,\boldsymbol{X}_i^{I_r^j})$ which is a Gaussian mixture with $K_{ij}$ components.
-\\
-$\forall j \notin I_r, \forall (l_1,l_2) \in I_r^j, P(x_{i,l_1}|x_{i,j},x_{i,l_2})=P(x_{i,l_1}|x_{i,j})$
-\begin{eqnarray}
-	P(x_{i,j},\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\alpha})&=& P(x_{i,j})\prod_{\substack{ l \in I_r^j \\M_{i,l=0} } }P(x_{i,l}|x_{i,j}) \\
-	&=&\sum_{k =1}^{ K_{ij}} \pi_{ij,k} \phi(x_{i,j},\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\mu}_{ij,k},\boldsymbol{\Sigma}_{ij,k}) \textrm{ where } \\
-	\boldsymbol{\pi}_{ij}&=&\boldsymbol{\pi}_j\otimes \left[ \bigotimes_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 } } \boldsymbol{\pi}_{ijl} \right]=\boldsymbol{\pi}_j\otimes\bigotimes_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 } } \left(\bigotimes_{\substack{h \in I_f^l \\ h \neq j} }\boldsymbol{\pi}_h \right)
-	 \textrm{ and  }K_{ij}=|\boldsymbol{\pi}_{ij}| ,\\
-	\boldsymbol{\mu}_{ij}&=&\boldsymbol{\mu}_j \times \left[\prod_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 }}\boldsymbol{\mu}_{ijl} \right]
-		=\boldsymbol{\mu}_j \times \prod_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 }}\left[\alpha_{j,l}x_{i,j}+\bigoplus_{\substack{h \in I_f^l}}\alpha_{h,l}\boldsymbol{\mu}_{h} \right] \\	
-		\boldsymbol{\Sigma}_{ij}&& \textrm{is the associated variance-covariance matrix}
-\end{eqnarray}
-		Cartesian product and power in the expression of the mean.
-		
-
-Then we have 
-\begin{eqnarray}
-	P(x_{i,j}|\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\alpha})&= &\sum_{k=1}^{K_{ij}}\pi_{ij,k}\phi(x_{i,j}|\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\mu}_{ij,k},\boldsymbol{\Sigma}_{ij,k}) \\
-	&=&\sum_{k=1}^{K_{ij}}\pi_{ij,k}\phi \left(x_{i,j},\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}},\Sigma_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}\right) \textrm{ with} \\
-	\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}&=& \mu_{j,k} + \operatorname{cov}(x_{i,j,k},\boldsymbol{X}_{i,O,k}^{I_r^j})\operatorname{var}(\boldsymbol{X}_{i,O,k}^{I_r^j})^{-1}(\boldsymbol{X}_{i,O}^{I_r^j}-\boldsymbol{\mu}_{\boldsymbol{X}_{i,O}^{I_r^j},k})\textrm{ and} \\
-	\Sigma_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}&=&\operatorname{var}(x_{i,j,k})-\operatorname{cov}(x_{i,j},\boldsymbol{X}_{i,O,k}^{I_r^j})\operatorname{var}(\boldsymbol{X}_{i,O,k}^{I_r^j})^{-1}\operatorname{cov}(\boldsymbol{X}_{i,O,k}^{I_r^j},x_{i,j,k})
-\end{eqnarray}
- 
-But we do not need to compute the variance because we only want $E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]$ so the mean is sufficient, we impute  
-\begin{equation}
-	\hat{x}_{i,j}=\frac{1}{K_{ij}}\sum_{k=1}^{K_{ij}}\pi_{ij,k}\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}
-\end{equation}
-
-We have 
-\begin{eqnarray}
-	\forall l \in I_r^j,\forall 1\leq k \leq K_{ij}, \operatorname{cov}(x_{i,j,k},\boldsymbol{X}_{i,O,k}^{l})&=&\operatorname{cov}(x_{i,j,k},\sum_{h\in I_f^l}x_{i,h}\alpha_{h,l}+\varepsilon_{i,l})
-	=\alpha_{j,l}\sigma_{j,k}^2 \\
-	\forall l \in I_r^j,\forall 1\leq k \leq K_{ij}, \operatorname{var}(x_{i,l,k})&=&\sigma_l^2+\sum_{h \in I_f^l}\alpha_{h,l}^2\sigma_{h,k}^2 
-	\end{eqnarray}
-	$\forall l_1\neq l_2 \in I_r^j,\forall 1\leq k \leq K_{ij},$
-	\begin{eqnarray}
-	 \operatorname{cov}(x_{i,l_1,k},x_{i,l_2,k})&=&\operatorname{cov}(\sum_{h\in I_f^{l_1}}x_{i,h,k}\alpha_{h,l_1}+\varepsilon_{i,l_1},\sum_{h\in I_f^{l_2}}x_{i,h,k}\alpha_{h,l_2}+\varepsilon_{i,l_2})\\
-	&=& \operatorname{cov}(\sum_{h\in I_f^{l_1}}x_{i,h,k}\alpha_{h,l_1},\sum_{h\in I_f^{l_2}}x_{i,h,k}\alpha_{h,l_2}) \\
-	&=& \sum_{h \in I_f^{l_1}\cap I_f^{l_2}}\sigma_{h,k}^2\alpha_{h,l_1}\alpha_{h,l_2}
-\end{eqnarray}
-
-
-		
-\subsection{Alternative E step}
-	If we can't (or don't want to) compute the E step described above, then we can use alternative imputation step for missing data based on $\boldsymbol{\alpha}$ (and keep the alternate optimisation to find the best $\boldsymbol{\alpha}$). 
-	
-	$\forall x_{i,j} \in \boldsymbol{X}_M $ we have:
-	\\
-if $j\in I_r$, Equation(\ref{Missingdensity}) gives: 
-	\begin{eqnarray}
-	E[x_{i,j}|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S]&=&E[\sum_{k=1}^{k_{ij}}\pi_{ij,k}\Phi(x_{i,j}|\mu_{ij,k},\Sigma_{ij,k})|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S] 
-	\end{eqnarray}
-	  
-	Let $r_{i,j}=\{l \in I_r| \boldsymbol{\alpha}_{j,l}\neq 0, \boldsymbol{M}_{i,j}=0 \}$ the set of observed covariates for individual $i$ that are explained by $x_{i,j}$ according to $S$.
-	\\
-	If $j\notin I_r$ we can do:
-	\begin{eqnarray}
-	E[x_{i,j}|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S]&=&\frac{1}{|r_{i,j}|}\sum_{k \in r_{i,j}}E_{|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S}\left[\frac{1}{\alpha_{j,k}}\left(x_{i,k}-\varepsilon_{k}(i)-\sum_{l \in I_f^k} x_{i,l}\alpha_{l,k}\right)\right] \\
-	&=& \frac{1}{|r_{i,j}|}\sum_{k \in r_{i,j}}E_{|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S}\left[\frac{1}{\alpha_{j,k}}\left(x_{i,k}- \sum_{l \in I_f^k} x_{i,l}\alpha_{l,k}\right)\right]
-	\end{eqnarray}
-	that is the mean of the expectations of the inverse sub-regressions implying $x_i,j$ with value in $\boldsymbol{X}^{I_r}_i$ not missing.
-
-
-
-Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the distribution given by Mixmod for $\boldsymbol{X}^{I_f}$ along the MCMC. The full EM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
+%To estimate $\boldsymbol{\alpha}$ we use an EM algorithm. We start with an arbitrary value $\boldsymbol{\alpha}^{(0)}$, then:
+%For the iteration $h$ of the algorithm at the E step we want 
+%\begin{equation}
+%	E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]
+%\end{equation}
+%So we get $\boldsymbol{X}_M^{(h)}$ the  imputation for $\boldsymbol{X}_M$ and then the M step simply is
+%\begin{equation}
+%	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha},S,\Theta) \right]
+%\end{equation}
+%and we can use the same method as the one for classical case without missing values (OLS, SUR, {\it etc.}).
+%		And we continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance.\\
+%		
+%Imputation in $\boldsymbol{X}^{I_r}$ is made according to (\ref{Missingdensity}) and we have orthogonality in $\boldsymbol{X}^{I_f}$:
+%\begin{displaymath}
+%\forall j \notin I_r, P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f}\setminus \boldsymbol{X}^j)=P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r})
+%\end{displaymath}
+%Moreover, $\forall j \notin I_r, \forall l \in I_r $ with $j \notin I_f^l, \boldsymbol{X}^j\perp \boldsymbol{X}^j$ so
+%\begin{displaymath}
+%\forall j \notin I_r, P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f}\setminus \boldsymbol{X}^j)=P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r})=P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r^j})
+%\end{displaymath}
+%where $I_r^j=\{i \in I_r| j \in I_f^j \}=\{i \in I_r|\alpha_{j,i}\neq 0 \}$ So we will make imputations (for E step only) according to $P(\boldsymbol{X}^j|\boldsymbol{X}_O^{I_r^j})$
+%		\\
+%$\forall 1 \leq i \leq n$	
+%To use formulas on conditional distribution for Gaussian multivariate distribution we first write $P(\boldsymbol{X}_i^j,\boldsymbol{X}_i^{I_r^j})$ which is a Gaussian mixture with $K_{ij}$ components.
+%\\
+%$\forall j \notin I_r, \forall (l_1,l_2) \in I_r^j, P(x_{i,l_1}|x_{i,j},x_{i,l_2})=P(x_{i,l_1}|x_{i,j})$
+%\begin{eqnarray}
+%	P(x_{i,j},\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\alpha})&=& P(x_{i,j})\prod_{\substack{ l \in I_r^j \\M_{i,l=0} } }P(x_{i,l}|x_{i,j}) \\
+%	&=&\sum_{k =1}^{ K_{ij}} \pi_{ij,k} \phi(x_{i,j},\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\mu}_{ij,k},\boldsymbol{\Sigma}_{ij,k}) \textrm{ where } \\
+%	\boldsymbol{\pi}_{ij}&=&\boldsymbol{\pi}_j\otimes \left[ \bigotimes_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 } } \boldsymbol{\pi}_{ijl} \right]=\boldsymbol{\pi}_j\otimes\bigotimes_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 } } \left(\bigotimes_{\substack{h \in I_f^l \\ h \neq j} }\boldsymbol{\pi}_h \right)
+%	 \textrm{ and  }K_{ij}=|\boldsymbol{\pi}_{ij}| ,\\
+%	\boldsymbol{\mu}_{ij}&=&\boldsymbol{\mu}_j \times \left[\prod_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 }}\boldsymbol{\mu}_{ijl} \right]
+%		=\boldsymbol{\mu}_j \times \prod_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 }}\left[\alpha_{j,l}x_{i,j}+\bigoplus_{\substack{h \in I_f^l}}\alpha_{h,l}\boldsymbol{\mu}_{h} \right] \\	
+%		\boldsymbol{\Sigma}_{ij}&& \textrm{is the associated variance-covariance matrix}
+%\end{eqnarray}
+%		Cartesian product and power in the expression of the mean.
+%		
+%
+%Then we have 
+%\begin{eqnarray}
+%	P(x_{i,j}|\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\alpha})&= &\sum_{k=1}^{K_{ij}}\pi_{ij,k}\phi(x_{i,j}|\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\mu}_{ij,k},\boldsymbol{\Sigma}_{ij,k}) \\
+%	&=&\sum_{k=1}^{K_{ij}}\pi_{ij,k}\phi \left(x_{i,j},\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}},\Sigma_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}\right) \textrm{ with} \\
+%	\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}&=& \mu_{j,k} + \operatorname{cov}(x_{i,j,k},\boldsymbol{X}_{i,O,k}^{I_r^j})\operatorname{var}(\boldsymbol{X}_{i,O,k}^{I_r^j})^{-1}(\boldsymbol{X}_{i,O}^{I_r^j}-\boldsymbol{\mu}_{\boldsymbol{X}_{i,O}^{I_r^j},k})\textrm{ and} \\
+%	\Sigma_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}&=&\operatorname{var}(x_{i,j,k})-\operatorname{cov}(x_{i,j},\boldsymbol{X}_{i,O,k}^{I_r^j})\operatorname{var}(\boldsymbol{X}_{i,O,k}^{I_r^j})^{-1}\operatorname{cov}(\boldsymbol{X}_{i,O,k}^{I_r^j},x_{i,j,k})
+%\end{eqnarray}
+% 
+%But we do not need to compute the variance because we only want $E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]$ so the mean is sufficient, we impute  
+%\begin{equation}
+%	\hat{x}_{i,j}=\frac{1}{K_{ij}}\sum_{k=1}^{K_{ij}}\pi_{ij,k}\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}
+%\end{equation}
+%
+%We have 
+%\begin{eqnarray}
+%	\forall l \in I_r^j,\forall 1\leq k \leq K_{ij}, \operatorname{cov}(x_{i,j,k},\boldsymbol{X}_{i,O,k}^{l})&=&\operatorname{cov}(x_{i,j,k},\sum_{h\in I_f^l}x_{i,h}\alpha_{h,l}+\varepsilon_{i,l})
+%	=\alpha_{j,l}\sigma_{j,k}^2 \\
+%	\forall l \in I_r^j,\forall 1\leq k \leq K_{ij}, \operatorname{var}(x_{i,l,k})&=&\sigma_l^2+\sum_{h \in I_f^l}\alpha_{h,l}^2\sigma_{h,k}^2 
+%	\end{eqnarray}
+%	$\forall l_1\neq l_2 \in I_r^j,\forall 1\leq k \leq K_{ij},$
+%	\begin{eqnarray}
+%	 \operatorname{cov}(x_{i,l_1,k},x_{i,l_2,k})&=&\operatorname{cov}(\sum_{h\in I_f^{l_1}}x_{i,h,k}\alpha_{h,l_1}+\varepsilon_{i,l_1},\sum_{h\in I_f^{l_2}}x_{i,h,k}\alpha_{h,l_2}+\varepsilon_{i,l_2})\\
+%	&=& \operatorname{cov}(\sum_{h\in I_f^{l_1}}x_{i,h,k}\alpha_{h,l_1},\sum_{h\in I_f^{l_2}}x_{i,h,k}\alpha_{h,l_2}) \\
+%	&=& \sum_{h \in I_f^{l_1}\cap I_f^{l_2}}\sigma_{h,k}^2\alpha_{h,l_1}\alpha_{h,l_2}
+%\end{eqnarray}
+%
+%
 
 \section{SEM}
-	We use a SEM \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$. At iteration $h$,
+	We use a SEM \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because the log-likelihood (\ref{loglikmiss}) is not linear. 
+	\paragraph{initialization:} We start with imputation by the mean for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by cutting method	(sparse structure) or using imputed values in $\boldsymbol{X}$.
+	At iteration $h$,
 	\paragraph{SE step:}
-		We generate the missing values according to $P(\boldsymbol{X}_M|\boldsymbol{X}_O; \alpha^{(h)},\Theta,S)$ 
+		We generate the missing values according to $P(\boldsymbol{X}_M|\boldsymbol{X}_O; \alpha^{(h)},\Theta,S)$, that is stochastic imputation.
 	\paragraph{M step:}
 		We estimate 
 		\begin{equation}
@@ -666,9 +644,9 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 and we can use the same method as the one for classical case without missing values (OLS, SUR, {\it etc.}).
 		And we continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance. Then we make $m$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m$ last iterations.
 		
-	\subsection{SE step in details}
-		We use a Gibbs sampling method to generate the missing values. $\boldsymbol{X}$ follows a multivariate Gaussian mixture with $K$ component and we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ is generated.
-		Initialisation: all the $z_{i,j}$ are set to the first component (such an initialisation does not depend on $K$) and $\boldsymbol{X}_M$ are imputed by the marginal means.
+	\subsection{Stochastic imputation by Gibbs sampling}
+		We use a Gibbs sampling method to generate the missing values at the SE step. $\boldsymbol{X}$ follows a multivariate Gaussian mixture with $K$ component and we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ is generated.
+		\paragraph{Initialisation:} all the $z_{i,j}$ are set to the first component (such an initialisation does not depend on $K$) and $\boldsymbol{X}_M$ are imputed by the marginal means.
 		At each iteration of the Gibbs sampler: \\
 			$\forall x_{i,j} \in \boldsymbol{X}_M^{I_r}$:  $x_{i,j}$ is generated according to 
 			\begin{eqnarray}
@@ -712,69 +690,103 @@ $\forall j_1 \in I_r, j_2 \notin I_f^{j_1}\cup I_r$
 \end{equation}
 We see that the $0$ in the variance-covariance matrix does not depend on $Z$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.
 
-	Then, $\forall Z_{i,j}$
+	Then, $\forall 1\leq i \leq n, \forall j \in I_f$ we draw new values for $Z_{i,j}$ according to
+	\begin{eqnarray}
+		P(Z_{i,j}|\boldsymbol{X},Z_{\bar{i,j}};\Theta,\boldsymbol{\alpha},S)&=&P(Z_{i,j}|\boldsymbol{X}_i,Z_{i,\bar{j}};\Theta,\boldsymbol{\alpha},S)=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j})
+	\end{eqnarray}
+		
 	
 	
 	We see that $Z_{i,j}$ are not used if there is no missing values in $\boldsymbol{X}_i$ and others are not all needed so we can also optimize computation time by  computing only the $Z_{i,j}$ that are needed in the Gibbs.
+	For the last iteration of the Gibbs, in the last iteration of the SEM, we do not need to draw $Z$.	
+	
+	Instead of using long chain for each Gibbs, we can use small chains because SEM iteration will simulate longer chains so it remains efficient with a smaller computation cost.
+	
+	Computation cost will be the main purpose here because we need an iterative algorithm (Gibbs sampler) at each iteration of another iterative algorithm (SEM) for each candidate of the MCMC.
+	So alternative method should be preferred for large datasets with many missing values and only a small amount of time.
+			
+\subsection{Alternative E step}
+	If we can't (or don't want to) compute the SE step described above, then we can use alternative imputation step for missing data based on $\boldsymbol{\alpha}$ (and keep the alternate optimisation to find the best $\boldsymbol{\alpha}$). 
+	
+	$\forall x_{i,j} \in \boldsymbol{X}_M $ we have:
+	\\
+if $j\in I_r$, Equation(\ref{Missingdensity}) gives: 
+	\begin{eqnarray}
+	E[x_{i,j}|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S]&=&E[\sum_{k=1}^{k_{ij}}\pi_{ij,k}\Phi(x_{i,j}|\mu_{ij,k},\Sigma_{ij,k})|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S] 
+	\end{eqnarray}
+	  
+	Let $r_{i,j}=\{l \in I_r| \boldsymbol{\alpha}_{j,l}\neq 0, \boldsymbol{M}_{i,j}=0 \}$ the set of observed covariates for individual $i$ that are explained by $x_{i,j}$ according to $S$.
+	\\
+	If $j\notin I_r$ we can do:
+	\begin{eqnarray}
+	E[x_{i,j}|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S]&=&\frac{1}{|r_{i,j}|}\sum_{k \in r_{i,j}}E_{|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S}\left[\frac{1}{\alpha_{j,k}}\left(x_{i,k}-\varepsilon_{k}(i)-\sum_{l \in I_f^k} x_{i,l}\alpha_{l,k}\right)\right] \\
+	&=& \frac{1}{|r_{i,j}|}\sum_{k \in r_{i,j}}E_{|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S}\left[\frac{1}{\alpha_{j,k}}\left(x_{i,k}- \sum_{l \in I_f^k} x_{i,l}\alpha_{l,k}\right)\right]
+	\end{eqnarray}
+	that is the mean of the expectations of the inverse sub-regressions implying $x_i,j$ with value in $\boldsymbol{X}^{I_r}_i$ not missing.
+
+
+
+Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the distribution given by Mixmod for $\boldsymbol{X}^{I_f}$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
+
 \newpage
-		\subsection{Estimation of the coefficients in each regression}
-			Estimating the $\boldsymbol{\alpha}_j$  with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given the $\boldsymbol{\alpha}_j$. So it's just about maximizing the likelihood of this density on the $\boldsymbol{\alpha}_j$. This can be done with an Expectation-Maximization (EM) algorithm \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
-			
-step E: ($\Theta$ stands for the parameters of the gaussian mixtures for the marginal distributions, estimated once by Mixmod):
-\begin{equation}
-	\boldsymbol{X}^{(h)}=E[\boldsymbol{X}|\boldsymbol{X}_{O},\boldsymbol{\alpha}^{(h)},\boldsymbol{\varepsilon},\Theta,S]
-\end{equation}			
-	
-	step M:	
-\begin{equation}
-	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}(\mathcal{L}(\boldsymbol{X}^{(h)},\boldsymbol{\alpha},\boldsymbol{\varepsilon},\Theta,S)) \textrm{ by OLS}
-\end{equation}	
-	
-		
-			But estimation of the $\boldsymbol{\alpha}_j$ is the most critical part of the MCMC in terms of computational time so it could be a bad idea to put there another iterative algorithm. 
-			Alternatives does exist :
-			\begin{itemize}
-				\item Because sub-regression are supposed to be parsimonious, we could imagine to estimate each column of $\boldsymbol{\alpha}$ with full sub-matrices of $\boldsymbol{X}_f$. When relying on too much missing values, $\hat{\boldsymbol{\alpha}}$ would be a bad candidate and then penalized directly by the likelihood (and it could be a good thing). Computational cost would be reduced significantly.
-				\item To estimate the $\boldsymbol{\alpha}_j$ (and not for the global likelihood) we could use data imputation (by the mean) and then obtain a full matrix but still ignoring missing values when estimating the likelihood. Imputation only concerns the estimation of the sub-regression coefficients and because null coefficients in sub-regression are coerced at each step, imputation only concerns a few covariates each time.
-			\end{itemize}
-			
-			
-			 $\forall j \in I_r$, estimation of $\boldsymbol{\alpha}^j$ only depends on individuals not missing in $\boldsymbol{X}^j$ (individuals are {\it iid}).
-			 So we work with a restriction of $\boldsymbol{X}$ for each $\boldsymbol{\alpha}^j$. Thus in this section, to simplify the notation, we will consider no missing values in $\boldsymbol{X}_r$ but in fact we work with restrictions.
-			
-			The EM algorithm can be written here: we start with some $\Theta^{(0)}=(\boldsymbol{\alpha},\boldsymbol{\varepsilon}) $ initial value for $\Theta$. The $\pi_{ij,k}$ are estimated once for each covariate (for example by Mixmod) and stay the same during the EM algorithm.
-			Naive E step : estimation of 
-			\begin{equation}
-				\boldsymbol{X}^{(h)}=E(\boldsymbol{X}|\boldsymbol{X}_{\bar M},\Theta^{(h)}) \textrm{ so it simply is}
-			\end{equation}
-			$\forall (i,j), \boldsymbol{M}_{i,j}=1, j\neq I_r$, 			
-			\begin{equation}
-				x^{(h)}_{i,j}=E(x_{i,j}|\boldsymbol{X}_{\bar M},\Theta^{(h)}) =\sum_{k=1}^{k_{ij}}\pi_{ij,k}\mu_{ij,k}^{(h)} \label{Estep}
-			\end{equation}
-			where, $\forall j \in I_f, k_{ij}=k_j, \pi_{ij,k}=\pi_{j,k}, \mu_{ij,k}=\mu_{j,k}$ \\
-			M-step : we determine $\Theta^{(h+1)}$ as the solution of the equation
-			\begin{equation}
-				E(\boldsymbol{X}|\Theta)=\boldsymbol{X}^{(h)} \textrm{ done by OLS}
-			\end{equation}
-			So the M step is just computing linear regressions on the filled dataset.
-			
-			
-		real E step : individuals are $iid$ so we just look at the expression for one individual, and use it for all
-		$\forall 1\leq n \leq n , \forall j \notin I_r$, we note $\bar{\boldsymbol{X}}_{i,j}=(\boldsymbol{X}_{\bar M}\cap \boldsymbol{X}_{i} \setminus \boldsymbol{X}^j)$ 
-			\begin{eqnarray}
-				P(\boldsymbol{X}_{fi}^M,\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M} | \Theta)&=&
-					P(\boldsymbol{X}_{fi}^M|\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M}|\Theta) \\
-				&=&P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M}|\Theta) \\
-				P(\boldsymbol{X}_{fi}^M|\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M},\Theta)&=&\frac{P(\boldsymbol{X}_{ri}^M|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M}|\Theta)}{P(\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M}|\Theta)} \\
-				&=&\frac{P(\boldsymbol{X}_{ri}^{O}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M}|\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)
-				}{
-				P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)
-				} \\
-				&=&\frac{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M}|\Theta)}{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{\bar M},\Theta)}
-			\end{eqnarray}
-			
-			No imputation for missing left. Imputations for missing right are just used to obtain $\hat{\boldsymbol{\alpha}}$ but not when computing the $BIC$ or $BIC_+$.
-			
+%		\subsection{Estimation of the coefficients in each regression}
+%			Estimating the $\boldsymbol{\alpha}_j$  with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given the $\boldsymbol{\alpha}_j$. So it's just about maximizing the likelihood of this density on the $\boldsymbol{\alpha}_j$. This can be done with an Expectation-Maximization (EM) algorithm \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
+%			
+%step E: ($\Theta$ stands for the parameters of the gaussian mixtures for the marginal distributions, estimated once by Mixmod):
+%\begin{equation}
+%	\boldsymbol{X}^{(h)}=E[\boldsymbol{X}|\boldsymbol{X}_{O},\boldsymbol{\alpha}^{(h)},\boldsymbol{\varepsilon},\Theta,S]
+%\end{equation}			
+%	
+%	step M:	
+%\begin{equation}
+%	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}(\mathcal{L}(\boldsymbol{X}^{(h)},\boldsymbol{\alpha},\boldsymbol{\varepsilon},\Theta,S)) \textrm{ by OLS}
+%\end{equation}	
+%	
+%		
+%			But estimation of the $\boldsymbol{\alpha}_j$ is the most critical part of the MCMC in terms of computational time so it could be a bad idea to put there another iterative algorithm. 
+%			Alternatives does exist :
+%			\begin{itemize}
+%				\item Because sub-regression are supposed to be parsimonious, we could imagine to estimate each column of $\boldsymbol{\alpha}$ with full sub-matrices of $\boldsymbol{X}_f$. When relying on too much missing values, $\hat{\boldsymbol{\alpha}}$ would be a bad candidate and then penalized directly by the likelihood (and it could be a good thing). Computational cost would be reduced significantly.
+%				\item To estimate the $\boldsymbol{\alpha}_j$ (and not for the global likelihood) we could use data imputation (by the mean) and then obtain a full matrix but still ignoring missing values when estimating the likelihood. Imputation only concerns the estimation of the sub-regression coefficients and because null coefficients in sub-regression are coerced at each step, imputation only concerns a few covariates each time.
+%			\end{itemize}
+%			
+%			
+%			 $\forall j \in I_r$, estimation of $\boldsymbol{\alpha}^j$ only depends on individuals not missing in $\boldsymbol{X}^j$ (individuals are {\it iid}).
+%			 So we work with a restriction of $\boldsymbol{X}$ for each $\boldsymbol{\alpha}^j$. Thus in this section, to simplify the notation, we will consider no missing values in $\boldsymbol{X}_r$ but in fact we work with restrictions.
+%			
+%			The EM algorithm can be written here: we start with some $\Theta^{(0)}=(\boldsymbol{\alpha},\boldsymbol{\varepsilon}) $ initial value for $\Theta$. The $\pi_{ij,k}$ are estimated once for each covariate (for example by Mixmod) and stay the same during the EM algorithm.
+%			Naive E step : estimation of 
+%			\begin{equation}
+%				\boldsymbol{X}^{(h)}=E(\boldsymbol{X}|\boldsymbol{X}_{\bar M},\Theta^{(h)}) \textrm{ so it simply is}
+%			\end{equation}
+%			$\forall (i,j), \boldsymbol{M}_{i,j}=1, j\neq I_r$, 			
+%			\begin{equation}
+%				x^{(h)}_{i,j}=E(x_{i,j}|\boldsymbol{X}_{\bar M},\Theta^{(h)}) =\sum_{k=1}^{k_{ij}}\pi_{ij,k}\mu_{ij,k}^{(h)} \label{Estep}
+%			\end{equation}
+%			where, $\forall j \in I_f, k_{ij}=k_j, \pi_{ij,k}=\pi_{j,k}, \mu_{ij,k}=\mu_{j,k}$ \\
+%			M-step : we determine $\Theta^{(h+1)}$ as the solution of the equation
+%			\begin{equation}
+%				E(\boldsymbol{X}|\Theta)=\boldsymbol{X}^{(h)} \textrm{ done by OLS}
+%			\end{equation}
+%			So the M step is just computing linear regressions on the filled dataset.
+%			
+%			
+%		real E step : individuals are $iid$ so we just look at the expression for one individual, and use it for all
+%		$\forall 1\leq n \leq n , \forall j \notin I_r$, we note $\bar{\boldsymbol{X}}_{i,j}=(\boldsymbol{X}_{\bar M}\cap \boldsymbol{X}_{i} \setminus \boldsymbol{X}^j)$ 
+%			\begin{eqnarray}
+%				P(\boldsymbol{X}_{fi}^M,\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M} | \Theta)&=&
+%					P(\boldsymbol{X}_{fi}^M|\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M}|\Theta) \\
+%				&=&P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M}|\Theta) \\
+%				P(\boldsymbol{X}_{fi}^M|\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M},\Theta)&=&\frac{P(\boldsymbol{X}_{ri}^M|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M}|\Theta)}{P(\boldsymbol{X}_{fi}^{\bar M},\boldsymbol{X}_{ri}^{\bar M}|\Theta)} \\
+%				&=&\frac{P(\boldsymbol{X}_{ri}^{O}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M}|\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)
+%				}{
+%				P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{\bar M}|\Theta)
+%				} \\
+%				&=&\frac{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{M},\boldsymbol{X}_{fi}^{\bar M},\Theta)P(\boldsymbol{X}_{fi}^{M}|\Theta)}{P(\boldsymbol{X}_{ri}^{\bar M}|\boldsymbol{X}_{fi}^{\bar M},\Theta)}
+%			\end{eqnarray}
+%			
+%			No imputation for missing left. Imputations for missing right are just used to obtain $\hat{\boldsymbol{\alpha}}$ but not when computing the $BIC$ or $BIC_+$.
+%			
 		\subsection{Weighted penalty}
 			Now we have defined the way to compute the likelihood, other questions remain : how to define the number of parameters in the structure ?		How to take into account missingness (structures relying on highly missing covariates should be penalized) ?
 			We have seen that for a same covariate $X^j$ with $ j \in I_r$, the number of parameters is not the same for each individual depending whether or not $M_{i,j}=0$. But the penalty (for $\psi=BIC$) can't be added at the individual level (because $\log(1)=0$ so it would be annihilated). 
@@ -788,14 +800,12 @@ step E: ($\Theta$ stands for the parameters of the gaussian mixtures for the mar
 			
 			
 	\section{Missing values in the main regression}
-		\subsection{explicative}
-			The reduced model (explicative one) is just a linear regression without structure so estimating $\boldsymbol{\beta}$ is like estimating the $\boldsymbol{\alpha}_j$ and the same methods can be used. An EM algorithm would be prefered because this estimation is out of the MCMC, will be computed only one time and is the final objective where we want to minimize the error.
-			The $E$ step is the same as during the MCMC because we can take benefits from the structure. Where others will just fill $\boldsymbol{X}^j$ by their means, we can use when $j\in I_r$ the conditionnal mean $E(X^j|X_f,\boldsymbol{\alpha}^j)$ defined in \ref{Estep}.
-			
-		\subsection{predictive}
-			If there are missing values in $\boldsymbol{X}^j \in \boldsymbol{X}_r$ a new possibility appears. Knowing $S$ and $\boldsymbol{\alpha}_j$ we are able to try a conditional imputation based on the corresponding sub-regression, like every time someone use linear regression for prediction. 
-			%si manquant à gauche : EM peut s'appuyer sur la loi conditionnelle sachant ce qui est à droite
-
+		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest.
+		
+		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computing on vectors with distinct number of individuals (due to missing values). So it requires a bit more reflexion but could be a good perspective for our method.
+	\section{Numerical results}
+		\subsection{Finding the structure}
+		\subsection{Efficiency for main regression}
 \chapter{Taking back the residuals}
 	\section{The model}
 	\section{Properties}
