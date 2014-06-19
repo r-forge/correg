@@ -539,7 +539,7 @@ To compute this likelihood, we will use the decomposition
 with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \notin I_r $:
 	 \begin{equation}
 	 f(x_{i,j};\boldsymbol{\alpha},\Theta,S)=\sum_{k=1}^{k_j}\pi_{j,k}\Phi(x_{i,j}|\mu_{j,k},\Sigma_{j,k})
-	 \end{equation} with $k_j,\pi_{j,k}, \mu_{j,k}$ and $\Sigma_{j,k}$ estimated by Mixmod (for example). 
+	 \end{equation} with $k_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated by Mixmod (for example) once before the MCMC starts. 
 %	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 %	 \begin{equation}
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
@@ -553,6 +553,16 @@ with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \
 				\boldsymbol{\Sigma}_{ij} &=& \sigma_j^2 + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 }}\alpha_{i,l}^2 \boldsymbol{\Sigma}_l		
 		\end{eqnarray}		 
 		This could be easily used for imputation of the missing values in $\boldsymbol{X}^{I_r}$ knowing the parameters $\boldsymbol{\alpha}, \Theta$ and $S$. 
+		But we see that	$f(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)$ is not the product of the $f(x_{i,j}|\boldsymbol{X}_{i,O}^{I_f^j};\boldsymbol{\alpha},\Theta,S) $	if a same missing value occurs in distinct sub-regressions. Thus if every sub-regression are distinct connex component then we can use (\ref{Missingdensity}) and we have
+		\begin{equation}
+		L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X}_0)=\prod_{i=1}^n\prod_{\substack{j \in I_r \\ M_{i,j}=0}}f(x_{i,j}|\boldsymbol{X}^{I_f^j}_{i,O};\boldsymbol{\alpha},\Theta,S)\prod_{\substack{j \in I_f \\ M_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\Theta,S)
+\end{equation}		 
+		But for the general case we need to manage the dependencies implied by missing values in common covariates in the $I_f^j$.
+		Because $\boldsymbol{X}$ is a Gaussian Mixture, $\boldsymbol{X}_O$ and then $(\boldsymbol{X}^{I_r}_O|\boldsymbol{X}_O^{I_f})$ are Gaussian mixtures too. \\
+		We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu};\boldsymbol{\Sigma})$.
+		
+		
+		
 %		In first approximation we can suppose independence between the sub-regression:
 %		\begin{equation}
 %		\forall (j,j') \in I_r \times I_r, g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta) \perp g(x_{i,j'}| \boldsymbol{X}_{i}^{I_f},\Theta)
