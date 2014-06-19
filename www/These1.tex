@@ -584,7 +584,8 @@ Where
 				\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O},k}+
 				\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_f},k})^{-1}
 				( ^t\boldsymbol{X}_{i,O}^{I_f}-\boldsymbol{\mu}_{X^{I_f}_{i,O},k})\\
-		\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k}&=& \\
+		\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k}&=&\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_f},k}
+		(\boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_r},k}
 \end{eqnarray}		
 		
 	\subsection{Likelihood computation optimized}
