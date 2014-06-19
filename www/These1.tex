@@ -559,10 +559,14 @@ with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \
 \end{equation}		 
 		But for the general case we need to manage the dependencies implied by missing values in common covariates in the $I_f^j$.
 		Because $\forall 1\leq i \leq n, \boldsymbol{X}_i$ is a Gaussian Mixture, $\boldsymbol{X}_{i,O}$ and then $(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}_{i,O}^{I_f})$ are Gaussian mixtures too. \\
-		We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu};\boldsymbol{\Sigma})$.
+		We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
 \begin{eqnarray}
-		f(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)&=&\sum_{k=1}^{K_{i,I_r}}\pi_{i,I_r,k}\\
-		\boldsymbol{\pi}_{i,I_r}&=& \bigotimes_{\substack{j \in I_f \\M_{i,j}=1}}\boldsymbol{\pi}_{j}
+		f(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)&=&\sum_{k=1}^{K_{i,I_r}}\pi_{i,I_r,k}\Phi_k(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
+		\boldsymbol{\pi}_{i,I_r}&=& \bigotimes_{\substack{j \in I_f \\M_{i,j}=1}}\boldsymbol{\pi}_{j} \textrm{ (Kronecker product) } \\
+		K_{i,I_r}&=&|\boldsymbol{\pi}_{i,I_r}| \textrm{ and } \forall 1\leq k\leq K_{i,I_r}  \\
+		\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k}&=& \boldsymbol{\mu}_{i,I_r,k}+\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_f},k})^{-1}( ^t\boldsymbol{X}_{i,O}^{I_f}-\boldsymbol{\mu}_{X_{i,O}^{I_f},k})\\
+		\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k}&=& \\
+		\boldsymbol{\mu}_{X_{i,O}^{I_f}}&=&  \prod_{\substack{j \in I_f \\M_{i,j}=0}}\boldsymbol{\mu}_{j} \textrm{ (Cartesian product) } \\	
 \end{eqnarray}		
 		
 	\subsection{Likelihood computation optimized}
@@ -666,7 +670,7 @@ and we can use the same method as the one for classical case without missing val
 	\subsection{Stochastic imputation by Gibbs sampling}
 		We use a Gibbs sampling method to generate the missing values at the SE step. $\boldsymbol{X}$ follows a multivariate Gaussian mixture with $K$ component and we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ is generated.
 		\paragraph{Initialisation:} all the $z_{i,j}$ are set to the first component (such an initialisation does not depend on $K$) and $\boldsymbol{X}_M$ are imputed by the marginal means.
-		At each iteration of the Gibbs sampler: \\
+		\paragraph{Iteration:} At each iteration of the Gibbs sampler: \\
 			$\forall x_{i,j} \in \boldsymbol{X}_M^{I_r}$:  $x_{i,j}$ is generated according to 
 			\begin{eqnarray}
 			P(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,S)&=&P(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}};\alpha^{(h)},\Theta,S) \\
@@ -711,7 +715,8 @@ We see that the $0$ in the variance-covariance matrix does not depend on $Z$ so 
 
 	Then, $\forall 1\leq i \leq n, \forall j \in I_f$ we draw new values for $Z_{i,j}$ according to
 	\begin{eqnarray}
-		P(Z_{i,j}|\boldsymbol{X},Z_{\bar{i,j}};\Theta,\boldsymbol{\alpha},S)&=&P(Z_{i,j}|\boldsymbol{X}_i,Z_{i,\bar{j}};\Theta,\boldsymbol{\alpha},S)=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j})
+		P(Z_{i,j}|\boldsymbol{X},Z_{\bar{i,j}};\Theta,\boldsymbol{\alpha},S)&=&P(Z_{i,j}|\boldsymbol{X}_i,Z_{i,\bar{j}};\Theta,\boldsymbol{\alpha},S)=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j}) \\
+		\textrm{where } t_{i,j,k}&=&\frac{\pi_{j,k}\Phi(x_{i,j};\mu_{j,k},\sigma_{j,k}^2)}{\sum_{l=1}^{K_j}\pi_{j,l}\Phi(x_{i,j};\mu_{j,l},\sigma_{j,l}^2) }
 	\end{eqnarray}
 		
 	
