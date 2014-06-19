@@ -573,6 +573,7 @@ Where
 	\boldsymbol{\pi}&=&\bigotimes_{\substack{j \in I_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}\\
 	K&=& |\boldsymbol{\pi}| \\
 	\boldsymbol{\mu}_{X^{I_f}}&=&  \prod_{\substack{j \in I_f}}\boldsymbol{\mu}_{j} \textrm{ (Cartesian product) } \\	
+	\boldsymbol{\sigma}_{X}&=&\prod_{\substack{j \in I_f}}\boldsymbol{\sigma}_{j} \textrm{ (Cartesian product) }
 \end{eqnarray}
 		with $ \boldsymbol{\pi}_j, \mu_{j,k},\Sigma_{j,k}$ are estimated once before the MCMC starts (by Mixmod for example).
 		
@@ -585,9 +586,38 @@ Where
 				\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_f},k})^{-1}
 				( ^t\boldsymbol{X}_{i,O}^{I_f}-\boldsymbol{\mu}_{X^{I_f}_{i,O},k})\\
 		\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k}&=&\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_f},k}
-		(\boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_r},k}
+		(\boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_r},k} \\
+		\forall j \in I_r: \ \  \boldsymbol{\mu}_{X_{i,O}^{j}}&=&\sum_{l \in I_f^j}\alpha_{l,j}\mu_{l,k} 
 \end{eqnarray}		
-		
+		$\forall j \in I_r \textrm{ with } M_{i,j}=0$ 
+\begin{equation}
+	\operatorname{var}_{k}(x_{i,j})=\sigma_{j}^2+ \sum_{l \in I_f^j} \alpha_{l,j}^2\sigma_{X^l,k}^2
+\end{equation}			
+	$\forall j \notin I_r \textrm{ with } M_{i,j}=0$
+\begin{equation}
+	\operatorname{var}_{k}(x_{i,j})=\sigma_{X^j,k}^2
+\end{equation}			
+	$\forall j_1 \in I_r, j_2 \in I_r,I_f^{j_1}\cap I_f^{j_2}\neq \emptyset \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
+	\begin{equation}
+	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})=\sum_{l\in I_f^{j_1}\cap I_f^{j_2}}\alpha_{l,j_1}\alpha_{l,j_2}\operatorname{var}_{k}(x_{i,l}) =\sum_{l\in I_f^{j_1}\cap I_f^{j_2}}\alpha_{l,j_1}\alpha_{l,j_2}\sigma_{X^l,k}^2
+\end{equation}
+	$\forall j_1 \in I_r, j_2 \in I_r,I_f^{j_1}\cap I_f^{j_2}= \emptyset \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
+	\begin{equation}
+	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})=0
+\end{equation}
+	$\forall j_1 \in I_f, j_2 \in I_f \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
+	\begin{equation}
+	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})=0
+\end{equation}
+	$\forall j_1 \in I_r, j_2 \in I_f^{j_1} \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
+	\begin{equation}
+	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})= \alpha_{j_2,j_1}\sigma^2_{X^{j_2},k}
+\end{equation}
+$\forall j_1 \in I_r, j_2 \notin I_f^{j_1}\cup I_r \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
+	\begin{equation}
+	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})= 0
+\end{equation}
+We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.
 	\subsection{Likelihood computation optimized}
 		First, we can look if there are missing values shared by several sub-regression. We just need to compute the  row-sums of the adjacency matrix or to search for redundancy in $I_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^nM_{i,j}=0$ then we can use the simplified form of the likelihood given in (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
 
@@ -702,35 +732,36 @@ and we can use the same method as the one for classical case without missing val
 			\begin{eqnarray}
 			=\mathcal{N}(\mu_{j|Z_{i,j}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}(X_{\bar{ij}}-\boldsymbol{\mu}_{X_{\bar{ij}}|Z_i}) ;  \sigma_{j|Z_{i,j}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}')
 			\end{eqnarray}		
-With $\forall j \in I_r$ 
-\begin{equation}
-	\operatorname{var}_{|Z_{i}}(x_{i,j})=\sigma_{j|Z_{i,j}}^2+ \sum_{l \in I_f^j} \alpha_{l,j}^2\sigma_{l|Z_i,l}^2=\sigma_{j}^2+ \sum_{l \in I_f^j} \alpha_{l,j}^2\sigma_{l|Z_i,l}^2
-\end{equation}			
-	$\forall j \notin I_r $
-\begin{equation}
-	\operatorname{var}_{|Z_{i}}(x_{i,j})=\sigma_{j|Z_{i,j}}^2
-\end{equation}			
-	$\forall j_1 \in I_r, j_2 \in I_r,I_f^{j_1}\cap I_f^{j_2}\neq \emptyset $
-	\begin{equation}
-	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})=\sum_{k\in I_f^{j_1}\cap I_f^{j_2}}\alpha_{k,j_1}\alpha_{k,j_2}\operatorname{var}_{|Z_i}(x_{k|Z_i,k}) =\sum_{k\in I_f^{j_1}\cap I_f^{j_2}}\alpha_{k,j_1}\alpha_{k,j_2}\sigma_{k|Z_{i,k}}^2
-\end{equation}
-	$\forall j_1 \in I_r, j_2 \in I_r,I_f^{j_1}\cap I_f^{j_2}= \emptyset $
-	\begin{equation}
-	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})=0
-\end{equation}
-	$\forall j_1 \in I_f, j_2 \in I_f$
-	\begin{equation}
-	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})=0
-\end{equation}
-	$\forall j_1 \in I_r, j_2 \in I_f^{j_1}$
-	\begin{equation}
-	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})= \alpha_{j_2,j_1}\sigma^2_{j_2|Z_{i,j_2}}
-\end{equation}
-$\forall j_1 \in I_r, j_2 \notin I_f^{j_1}\cup I_r$
-	\begin{equation}
-	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})= 0
-\end{equation}
-We see that the $0$ in the variance-covariance matrix does not depend on $Z$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.
+			Where all the values needed here were described above for the likelihood computation.
+%With $\forall j \in I_r$ 
+%\begin{equation}
+%	\operatorname{var}_{|Z_{i}}(x_{i,j})=\sigma_{j|Z_{i,j}}^2+ \sum_{l \in I_f^j} \alpha_{l,j}^2\sigma_{l|Z_i,l}^2=\sigma_{j}^2+ \sum_{l \in I_f^j} \alpha_{l,j}^2\sigma_{l|Z_i,l}^2
+%\end{equation}			
+%	$\forall j \notin I_r $
+%\begin{equation}
+%	\operatorname{var}_{|Z_{i}}(x_{i,j})=\sigma_{j|Z_{i,j}}^2
+%\end{equation}			
+%	$\forall j_1 \in I_r, j_2 \in I_r,I_f^{j_1}\cap I_f^{j_2}\neq \emptyset $
+%	\begin{equation}
+%	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})=\sum_{k\in I_f^{j_1}\cap I_f^{j_2}}\alpha_{k,j_1}\alpha_{k,j_2}\operatorname{var}_{|Z_i}(x_{k|Z_i,k}) =\sum_{k\in I_f^{j_1}\cap I_f^{j_2}}\alpha_{k,j_1}\alpha_{k,j_2}\sigma_{k|Z_{i,k}}^2
+%\end{equation}
+%	$\forall j_1 \in I_r, j_2 \in I_r,I_f^{j_1}\cap I_f^{j_2}= \emptyset $
+%	\begin{equation}
+%	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})=0
+%\end{equation}
+%	$\forall j_1 \in I_f, j_2 \in I_f$
+%	\begin{equation}
+%	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})=0
+%\end{equation}
+%	$\forall j_1 \in I_r, j_2 \in I_f^{j_1}$
+%	\begin{equation}
+%	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})= \alpha_{j_2,j_1}\sigma^2_{j_2|Z_{i,j_2}}
+%\end{equation}
+%$\forall j_1 \in I_r, j_2 \notin I_f^{j_1}\cup I_r$
+%	\begin{equation}
+%	\operatorname{cov}_{|Z_{i}}(x_{i,j_1},x_{i,j_2})= 0
+%\end{equation}
+%We see that the $0$ in the variance-covariance matrix does not depend on $Z$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.
 
 	Then, $\forall 1\leq i \leq n, \forall j \in I_f$ we draw new values for $Z_{i,j}$ according to
 	\begin{eqnarray}
@@ -837,8 +868,11 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate.
 			\begin{equation}
 			k_j=\frac{1}{n}\sum_{i=1}^nk_{i,j}
-\end{equation}						
-			
+\end{equation}						where $k_{i,j}$ is the number of parameter to estimate in $P(x_{i,j}|\boldsymbol{X}_i\setminus \\boldsymbol{X}_i^j)$.
+			\begin{eqnarray}
+		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n) \\
+		&=& -2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+(\sum_{j=1}^pk_j)\log(n)
+	\end{eqnarray}
 			 Thus if a structure is only touched by one missing value the penalty will be smaller than another same shaped structure but with more missing values implied.
 			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Another idea would be to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
 		
