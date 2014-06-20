@@ -889,8 +889,25 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 		\subsection{Finding the structure}
 		\subsection{Efficiency for main regression}
 \chapter{Taking back the residuals}
+	We have seen that eviction of redundant covariates improves the results by a good trade-off between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back.
 	\section{The model}
-	\section{Properties}
+		After the estimation of the marginal model, we know both $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\beta}^*}$.
+		\begin{eqnarray}
+			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{X}^{I_r}&=&\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \\
+			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\underbrace{(\boldsymbol{\beta}_{I_r}+\boldsymbol{\alpha}\boldsymbol{\beta}_{I_f})}_{\boldsymbol{\beta}^*}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{Y}- \boldsymbol{X}^{I_r}\boldsymbol{\beta}^*&=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{\varepsilon}&=&\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\boldsymbol{\alpha}
+		\end{eqnarray}		 
+		So we introduce a plug-in model
+		\begin{eqnarray}
+			\boldsymbol{Y}- \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}^*}&=&(\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}})\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+		\end{eqnarray}
+		That allows us to estimate $\boldsymbol{\beta}_{I_r}$ with a classical linear model based on previous estimations of $\boldsymbol{\beta}^*$ and $\boldsymbol{\alpha}$.
+		
+	\section{Interpretation and latent variables}
+			
+	
 \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/res_these/MQE_toutOLSp5.png}\label{MQE2}
 	\caption{MSE of OLS (plain black) and CorReg marginal(red dashed) and CorReg full (green dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
