@@ -901,11 +901,15 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 		\end{eqnarray}		 
 		So we introduce a plug-in model
 		\begin{eqnarray}
-			\boldsymbol{Y}- \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}^*}&=&(\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}})\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+			\underbrace{\boldsymbol{Y}- \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}^*}}_{\tilde{\boldsymbol{Y}}}&=&\underbrace{(\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}})}_{\tilde{\boldsymbol{X}}}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
 		\end{eqnarray}
 		That allows us to estimate $\boldsymbol{\beta}_{I_r}$ with a classical linear model based on previous estimations of $\boldsymbol{\beta}^*$ and $\boldsymbol{\alpha}$.
-		
+		Then we have a model with a smaller noise
+		\begin{equation}
+			\boldsymbol{Y}= \boldsymbol{X}^{I_r}\boldsymbol{\beta}^* + \boldsymbol{\varepsilon}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
+		\end{equation}
 	\section{Interpretation and latent variables}
+			$\hat{\boldsymbol{\beta}}_{I_r}$ can be interpreted as the proper effect of $\boldsymbol{X}^{I_r}$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}^{I_r}$ that is independent from other covariates. Then if $\boldsymbol{X}^{I_r}$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}^{I_f}$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_{I_r}=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. But this latent variable is known to be independent of $\boldsymbol{X}^{I_f}$ and dependent of $\boldsymbol{X}^{I_r}$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}}$. Thus, it reveals latent variables.
 			
 	
 \begin{figure}[h!]
