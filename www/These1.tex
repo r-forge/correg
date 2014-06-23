@@ -473,7 +473,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 \part{Further usage of the structure}	
 \chapter{Missing values}
 	Real datasets often have missing values and it is a very recurrent issue in industry. We note $\boldsymbol{M}$ the $n\times p$ binary matrix indicating whereas a value is missing (1) or not (0) in $\boldsymbol{X}$.
-	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{O}$ the observed values. $\Theta$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
+	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{O}$ the observed values. $\Theta=\{\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
 	$\boldsymbol{\alpha}$ is the matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\ 
 			Here we suppose that missing values are Missing Completely At Random (MCAR). 
 	 Many methods does exist to manage such problems \cite{little1992regression} but they make approximation , add noise (imputation methods) or delete information (cutting methods).	
@@ -581,6 +581,7 @@ Where
 		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we have
 \begin{eqnarray}
 		\Phi_k(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
+				P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
 		\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k}&=& 
 				\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O},k}+
 				\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_f},k})^{-1}
@@ -703,7 +704,8 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 %
 
 \section{SEM}
-	We use a SEM \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because the log-likelihood (\ref{loglikmiss}) is not linear. 
+	The likelihood depends on $\boldsymbol{\alpha}$ which was formerly estimated by OLS when there was no missing values.
+	Here we use a  Stochastic Expectation Maximization (SEM) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use OLS and  the log-likelihood (\ref{loglikmiss}) is not linear so a simple Expectation-Maximization (EM) would be difficult to compute.
 	\paragraph{initialization:} We start with imputation by the mean for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by cutting method	(sparse structure) or using imputed values in $\boldsymbol{X}$.
 	At iteration $h$,
 	\paragraph{SE step:}
@@ -714,7 +716,7 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha},S,\Theta) \right]
 \end{equation}
 and we can use the same method as the one for classical case without missing values (OLS, SUR, {\it etc.}).
-		And we continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance. Then we make $m$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m$ last iterations.
+		We continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance). Then we make $m$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m$ last iterations.
 		
 	\subsection{Stochastic imputation by Gibbs sampling}
 		We use a Gibbs sampling method to generate the missing values at the SE step. $\boldsymbol{X}$ follows a multivariate Gaussian mixture with $K$ component and we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ is generated.
@@ -868,7 +870,7 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate.
 			\begin{equation}
 			k_j=\frac{1}{n}\sum_{i=1}^nk_{i,j}
-\end{equation}						where $k_{i,j}$ is the number of parameter to estimate in $P(x_{i,j}|\boldsymbol{X}_i\setminus \\boldsymbol{X}_i^j)$.
+\end{equation}						where $k_{i,j}$ is the number of parameter to estimate in $P(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$.
 			\begin{eqnarray}
 		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n) \\
 		&=& -2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+(\sum_{j=1}^pk_j)\log(n)
@@ -884,7 +886,7 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 	\section{Missing values in the main regression}
 		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest.
 		
-		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computing on vectors with distinct number of individuals (due to missing values). So it requires a bit more reflexion but could be a good perspective for our method.
+		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires a bit more reflexion but could be a good perspective for our method.
 	\section{Numerical results}
 		\subsection{Finding the structure}
 		\subsection{Efficiency for main regression}
