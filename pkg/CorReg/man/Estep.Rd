@@ -3,14 +3,23 @@
 \alias{Estep}
 \title{Imputation of missing values knowing alpha (E step of the EM)}
 \usage{
-Estep(X = X, alpha = alpha, M = M, Z = Z, mixmod = mixmod, Zc = Zc)
+Estep(X = X, alpha = alpha, M = NULL, Z = NULL, mixmod = mixmod,
+  Zc = Zc, X1 = FALSE)
 }
 \arguments{
+\item{X}{the dataset with missing values}
+
+\item{M}{binary matrix X-sized (1=missing)}
+
 \item{Ir}{the set of indices of the covariates on the left (computed once before EM to be efficient)}
 
 \item{Zc}{profil (sum) colonne de Z}
 
-\item{alpha}{matrix of the coefficients (p+1)xp}
+\item{mixmod}{the matrix from mixmod}
+
+\item{Zc}{p-sized vector to see if Z column is empty or not}
+
+\item{alpha}{matrix of the coefficients (p+1)xp format Matrix}
 }
 \description{
 Imputation of missing values knowing alpha (E step of the EM)
