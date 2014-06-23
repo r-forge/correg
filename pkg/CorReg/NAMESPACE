@@ -3,7 +3,6 @@
 export(BicZ)
 export(BicZcurve)
 export(CVMSE)
-export(Estep)
 export(MSEZ)
 export(MSE_loc)
 export(OLS)
