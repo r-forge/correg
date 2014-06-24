@@ -564,7 +564,7 @@ with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \
 \begin{eqnarray}
 L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X}_0)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,S)\\
 &=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{I_r}|\boldsymbol{X}_{i,O}^{I_f};\boldsymbol{\alpha},\Theta,S)\Phi_k(\boldsymbol{X}_{i,O}^{I_f};\boldsymbol{\alpha},\Theta,S)\\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{I_r}|\boldsymbol{X}_{i,O}^{I_f};\boldsymbol{\alpha},\Theta,S)\prod_{\substack{j \in I_f \\ M_{i,j}=0}}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k})
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{I_r}|\boldsymbol{X}_{i,O}^{I_f};\boldsymbol{\alpha},\Theta,S)\prod_{\substack{j \in I_f \\ M_{i,j}=0}}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{liklihoodmissglobal}
 \end{eqnarray}		
 
 %définintion des objets génériques
@@ -620,7 +620,9 @@ $\forall j_1 \in I_r, j_2 \notin I_f^{j_1}\cup I_r \textrm{ with } M_{i,j_1}=M_{
 \end{equation}
 We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.
 	\subsection{Likelihood computation optimized}
+		The main problem with the likelihood in its global form (\ref{liklihoodmissglobal}) is that the number of components explodes so we can't use it in practice. But in many case, it can be simplified.
 		First, we can look if there are missing values shared by several sub-regression. We just need to compute the  row-sums of the adjacency matrix or to search for redundancy in $I_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^nM_{i,j}=0$ then we can use the simplified form of the likelihood given in (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
+		So the true value of the likelihood can be computed in most of cases but in the MCMC, it remains the possibility to have a structure with explosive likelihood expression when combined with the missing values. Then we propose in the package to use the simplified form of the likelihood, that can be seen as an approximation of the likelihood. Numerical results on simulated datasets will show if this approximation is effective.
 
 %		In first approximation we can suppose independence between the sub-regression:
 %		\begin{equation}
