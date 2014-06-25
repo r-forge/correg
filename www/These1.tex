@@ -612,7 +612,7 @@ Where
 \end{equation}
 	$\forall j_1 \in I_r, j_2 \in I_f^{j_1} \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
 	\begin{equation}
-	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})= \alpha_{j_2,j_1}\sigma_{X^{j_2},k}
+	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})= \alpha_{j_2,j_1}\sigma_{X^{j_2},k}^2
 \end{equation}
 $\forall j_1 \in I_r, j_2 \notin I_f^{j_1}\cup I_r \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
 	\begin{equation}
@@ -782,7 +782,20 @@ and we can use the same method as the one for classical case without missing val
 	
 	Computation cost will be the main purpose here because we need an iterative algorithm (Gibbs sampler) at each iteration of another iterative algorithm (SEM) for each candidate of the MCMC.
 	So alternative method should be preferred for large datasets with many missing values and only a small amount of time.
-			
+	
+	Because $K$ can be very large we search a way to compute the likelihood.
+	We can use a Gibbs algorithm to estimate the likelihood:
+	\begin{eqnarray}
+	P(\boldsymbol{X}_O;\Theta, S, \boldsymbol{\alpha})&=& 
+		\sum_{Z\in \mathcal{Z}}\int_{\boldsymbol{X}_M}\frac{P(\boldsymbol{X}_M,Z,\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},S)}{P(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},S)}P(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},S) dX \\
+		&\approx &\frac{1}{Q} \sum_{q=1}^Q\frac{P(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},S)}{P(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},S)} \textrm{ by the law of large numbers}
+	\end{eqnarray}		
+	where $Q$ is the number of iterations of the Gibbs sampler.
+	But to be faster, we use the previous Gibbs algorithm with:
+	\begin{eqnarray}
+	P(\boldsymbol{X}_O;\Theta, S, \boldsymbol{\alpha})&=& \frac{1}{Q} \sum_{q=1}^Q\frac{P(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},S)}{P(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},S)}
+	\end{eqnarray}	
+		
 \subsection{Alternative E step}
 	If we can't (or don't want to) compute the SE step described above, then we can use alternative imputation step for missing data based on $\boldsymbol{\alpha}$ (and keep the alternate optimisation to find the best $\boldsymbol{\alpha}$). 
 	
@@ -886,7 +899,7 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 			
 			
 	\section{Missing values in the main regression}
-		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest.
+		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest. One great advantage of multiple drow procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. 
 		
 		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires a bit more reflexion but could be a good perspective for our method.
 	\section{Numerical results}
