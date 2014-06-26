@@ -1,5 +1,5 @@
 SEM<-function(nbit_gibbs=1,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-              Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,Xout=FALSE,alphaout=TRUE){
+              Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,compout=TRUE,Xout=FALSE,alphaout=TRUE){
    last=FALSE
    result=list()
    
@@ -25,12 +25,14 @@ SEM<-function(nbit_gibbs=1,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_vect=comp_
    
    
    for (i in 1:(nbit_SEM+warm)){
+      print(i)
       if(i==(nbit_SEM+warm)){last=TRUE}
       #SE step
       resgibbs2=Gibbs(last=last,nbit=nbit_gibbs,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
                      Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir)
       comp_vect=resgibbs2$comp_vect
       X=resgibbs2$X
+#       print(comp_vect)
       #step M
       resM=Mstep(Z=Z,X=X,sigma_IR=sigma_IR,Ir=Ir)
       alpha=resM$alpha
@@ -45,5 +47,6 @@ SEM<-function(nbit_gibbs=1,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_vect=comp_
          }   
       }
    }
+   if(compout){result$comp=comp_vect}
    return(result)
 }
