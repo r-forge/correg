@@ -21,7 +21,7 @@ muiZ<-function(mixmod=mixmod,components=components,Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,s
             Sigma[i,j]=(alpha[-1,][,i]*alpha[-1,][,j])%*%sigmai#attention premier produit hadamard
             Sigma[j,i]=Sigma[i,j]
          }else{#i est à droite
-            Sigma[i,j]=alpha[-1,][i,j]*sigmai[j]
+            Sigma[i,j]=alpha[-1,][i,j]*sigmai[i]
             Sigma[j,i]=Sigma[i,j]
          }
       }
