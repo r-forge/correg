@@ -265,8 +265,102 @@ We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\bo
 
 	
 \chapter{Estimation of the Structure of subregression by MCMC}
+\section{Sub-regressions model selection}	
+Structural equations models like \textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero. But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
+
+Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $p_r$) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
+Because it is about model selection and we are able to provide a full generative model (section \ref{sectionfullgen}), we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
+	
+We want to find the most probable structure $S$ knowing the dataset, so we search for the structure that maximizes $P(S|\boldsymbol{X})$ and we have:	
+	\begin{eqnarray}
+	 \label{approxBIC} P(S|\boldsymbol{X})&\propto & P(\boldsymbol{X}|S)P(S)
+	=P(\boldsymbol{X}^{I_r}\boldsymbol{X}^{I_f},S)P(\boldsymbol{X}^{I_f}|S)P(S)
+	\end{eqnarray}
+So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$.
+	
+
+	\subsection{Modeling the uncorrelated covariates: a full generative approach on $P(\boldsymbol{X})$} \label{sectionfullgen}
+	To be able to compare structures with $P(S|\boldsymbol{X})$, we need a full generative model on $\boldsymbol{X}$. Sub-regressions give $P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S) $ but $P(\boldsymbol{X}^{I_f}|S)$ is still undefined. We suppose that variables in $\boldsymbol{X}_f$ follow Gaussian mixtures of $k_j \in \mathbf{N}^*$ components: 
+	\begin{equation}
+			\forall \boldsymbol{X}^j \notin \boldsymbol{X}^{I_r} : \boldsymbol{X}^j_{|S} \sim f(\boldsymbol{\theta}_j)=\mathcal{GM}(\boldsymbol{\pi}_j;\boldsymbol{\mu}_j;\boldsymbol{\sigma}^2_j) \textrm{ with } \boldsymbol{\pi}_j,\boldsymbol{\mu}_j,\boldsymbol{\sigma}^2_j \textrm{ vectors of size } K_j. \label{mixtureX1}
+		\end{equation}
+		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust. Gaussian case is just a special case ($K_j=1$) of Gaussian mixture so it is included in our hypothesis but identifiability of $S$ requires to have Gaussian mixtures with at least two distinct components in each sub-regression (derived from the identifiability of the SR model in \cite{maugis2009variable}, more details in the Appendices \ref{preuveident}).
+				
+		Remark:  Identifiability of $S$ is not necessary to use a given structure but helps to find it.
+
+		Variables in $\boldsymbol{X}$ are in the followings supposed to be independent Gaussian mixtures with at least two distinct components each. 
+	%Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
+	We now have a full generative model.
+	
+\subsection{Identifiability of the structure} \label{preuveident}
+	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure the MCMC will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
+	
+		If there are exact sub-regressions ($\sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. \textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
+	In the followings we suppose $\sigma^2_j\neq 0$, then $\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f}$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
+	\\
+	
+Our full generative model is a $p$-sized Gaussian mixture model of $K$ distinct components and 
+%	\begin{equation}
+%	f(\boldsymbol{X}|K,S)=f(\boldsymbol{X}_f|K,S)f(\boldsymbol{X}_r|\boldsymbol{X}_f,S)
+%	\end{equation}	
+%	
+	can be seen as a $\mathbf{SR}$ model defined by Maugis \cite{maugis2009variable}. In this section, $S$ will denote the set of variable as in the paper from Maugis and we call Gaussian mixtures the Gaussian mixtures with at least two distinct components. The equivalence with Maugis's model is defined by:
+	$\boldsymbol{X}^{I_r}=\boldsymbol{y}^{S^c}$ and $\boldsymbol{X}^{I_f}=\boldsymbol{y}^R$. We have supposed independence between variables in $\boldsymbol{X}^{I_f}$ so the identifiability theorem from Maugis tells that our model is identifiable if variables in $\boldsymbol{X}^{I_f}$ are Gaussian mixtures (what we supposed in section \ref{sectionfullgen}).
+	\\
+	
+	
+%First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there must be at least one Gaussian mixture on the right of each sub-regression. 
+We define $\boldsymbol{X}^G \subsetneq \boldsymbol{X}^{I_f}$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
+We suppose that variables in $\boldsymbol{X}^{I_r}$ are all Gaussian mixtures. It implies that $\forall j  \in I_r,\exists i \in I_f^j $ so that $\boldsymbol{X}^i \subset \boldsymbol{X}^{G^c} $ since any linear combination of Gaussian variable would only give a Gaussian (so each sub-regression contain at least one Gaussian mixture as a regressor).
+\\
+	We introduce the matricial notation
+		$\boldsymbol{X}^{I_r}=\boldsymbol{X}^{I_f}\boldsymbol{\alpha} + \boldsymbol{\varepsilon}$ where
+		 $\boldsymbol{\alpha}$ is the $(p-p_r)\times p_r$ matrix whose columns are the $\boldsymbol{\alpha}_j$ and $\boldsymbol{\varepsilon}$ is the $n\times p_r$ matrix whose columns are the $\boldsymbol{\varepsilon}_j$
+		%\\We note $\Theta$ the parameter of the model.We want to know if $P(\boldsymbol{X}|S,\Theta)=P(\boldsymbol{X}|\tilde{S},\tilde{\Theta})$ does imply $(S,\Theta)=(\tilde{S},\tilde{\Theta})$.
+		
+The theorem from Maugis guarantee that a sub-regression between Gaussian mixtures is identifiable in terms of which one is regressed by others.
+		\begin{eqnarray}
+%			\forall j \in I_r, \boldsymbol{X}^j_{|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_j^G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c}+ \boldsymbol{\varepsilon}_j \\
+%			\boldsymbol{X}^j_{|\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c} + \tilde{\boldsymbol{\varepsilon}}_j \textrm{ is identifiable where} \\
+%			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian. 
+		 \boldsymbol{X}_{r|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}+ \boldsymbol{\varepsilon} \\
+			\boldsymbol{X}_{r|\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c} + \tilde{\boldsymbol{\varepsilon}} \textrm{ is identifiable where} \\
+			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian.}  
+		\end{eqnarray}
+		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
+		It implies then that: $\forall j \in I_r, \boldsymbol{X}^{j} \subset \boldsymbol{X}^G \textrm{ and } \exists i \in I_f^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  
+	
+
+
 	\section{How to compare structures ?}
 		\subsection{Bayesian criterion for quality}
+		Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood of the joint law on $\boldsymbol{X}$ according to the complexity of the structure~\cite{BIChuard}. \\
+			 We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context.
+		In the followings we use the $BIC$.	
+		\subsection{Penalization of the integrated likelihood by $P(S)$} \label{compstruct}
+Uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a minimization of the $BIC$.
+	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model
+	\begin{eqnarray}
+		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)  
+	\end{eqnarray}
+	But $BIC$ tends to give too complex structures because we test a great range of models. Thus we choose to penalise the complexity a bit more.
+	
+	We note $I_r$ the set of indices of endogenous variables in $\boldsymbol{X}$ (explained ones).
+We also define $I_f=\{I_f^1,\dots,I_f^p \}$ the set of the sets of indices of exogenous covariates (explaining ones $=\boldsymbol{X}_f$) with $\forall j \notin I_r, I_f^j=\emptyset$. 
+We see that $I_f$ defines the non-null coefficients in $\boldsymbol{\alpha}_j$ (each sub-regression can be very parsimonious).
+Then we have the explicit structure characterized by $S=(I_f,I_r,p_f,p_r)$ where $p_r=|I_r|$, $\boldsymbol{p}_f=(p_f^1,\dots,p_f^{p_r})$ is the vector of the number of covariates in each sub-regression  and $p_f^j=|I_f^j|$, with $|.|$ the cardinal of an ensemble. Our running example is then described by $S= \left( \{ \{1,2\}\},\{3\},(2),(1)\right)$
+\\
+	 We suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of the simple uniform law on $S$ that is generally used and provides no penalty.
+	 Thus we have :
+		\begin{eqnarray}
+		BIC_+(X|S)&=&BIC(X|S) -\ln(P(S)) \label{Bicstar}
+	\end{eqnarray}		
+	It increases penalty on complexity for $p_r\leq\frac{p}{2}$ and $p_f^j\leq\frac{p}{2}$ . Hence %when using $BIC*$ 
+	this constraint on $\hat{p}_r$ and $\hat{p}_f^j$ is given in the research algorithm when the Hierarchical Uniform hypothesis is made instead of Uniform one in numerical experiments (section \ref{sectionsimul} and \ref{sectionrealcase}).
+		$BIC_+$ does not change $BIC$ but only $P(S)$ so the properties of $BIC_+$ are the same as classical $BIC$ but we obtain better results when the constraints on the complexity are verified.  %With the Hierarchical Uniform hypothesis we maximize $\psi(\boldsymbol{X},S)\approx BIC + P(S)$.
+
+%	 
+%	
 		\subsection{Some indicators for proximity}
 		The first criterion is $\psi(\boldsymbol{X},S)$ which is maximized in the MCMC. But in our case, it is estimated by the likelihood (see (\ref{approxBIC}))whose value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $S$ we define some indicators to compare the true model $S$ and the found one $\hat{S}$.
 			Global indicators :
@@ -294,7 +388,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
 	We compare different methods with and without CorReg as a pretreatment. All the results are provided by the CorReg package.
 	
-		\subsubsection{Results on $\hat S$}	\label{compZ}
+		\subsection{Results on $\hat S$}	\label{compZ}
 
 
 \begin{figure}[h!]
@@ -314,7 +408,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 
 
 \clearpage
-\subsection{Results on prediction}
+\subsection{Results on prediction}\label{compY}
 
 \subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ (best case for us)}	 \label{tableMSEsimgauche}
 \begin{figure}[h!]
@@ -365,7 +459,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 
 \clearpage
 	\subsubsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We then try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). The datasets used here were those from table \ref{compZvrai}. 
+We then try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
  
  
  \begin{figure}[h!]
@@ -468,6 +562,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
    \end{minipage}
 \end{figure}
 
+\section{Numerical results on real datasets} \label{sectionrealcase}
 
 
 \part{Further usage of the structure}	
@@ -895,8 +990,10 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 		
 %	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
 %	
-					
 			
+			\subsection{new criterion ?}		
+			In fact we have the same number of parameters to estimate with or without missing values but the problem is that some of the parameters are estimated based only on a portion of the individuals so each parameter has a different weight.
+			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$
 			
 	\section{Missing values in the main regression}
 		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest. One great advantage of multiple drow procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. 
@@ -905,6 +1002,8 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 	\section{Numerical results}
 		\subsection{Finding the structure}
 		\subsection{Efficiency for main regression}
+	\section{Missing values in real life}
+		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen,  
 \chapter{Taking back the residuals}
 	We have seen that eviction of redundant covariates improves the results by a good trade-off between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back.
 	\section{The model}
@@ -1019,7 +1118,7 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 \chapter{CorReg: the R package}	
 	
 		\textsc{CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with \textsc{CorReg}.
-	\textsc{CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
+	\textsc{CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). %More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
 	
 \chapter{Conclusion and perspectives}
 	\section{Conclusion}
