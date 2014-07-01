@@ -35,6 +35,7 @@ Imports:
     ridge(>= 2.1),
     rpart(>= 4.1-5),
     MASS(>= 7.3-30),
-    parcor(>= 0.2)
+    parcor(>= 0.2),
+    mvtnorm(>= 0.9)
 LinkingTo: Rcpp, RcppEigen
 Roxygen: list(wrap = FALSE)
