@@ -13,7 +13,6 @@ loglikcond<-function(X=X,mui=mui,Sigma=Sigma,M=M,i=i,Zc=Zc){
       res=res/dmvnorm(x=X[i,quimank_i],mean = mu,sigma=sigma)#on divise par la vraisemblance conditionnelle des manquants pour obtenir la marginale
       #attention sigma minuscule dans les deux lignes précédentes  
    }
-   print(res)
    return(log(res))
 }
 
