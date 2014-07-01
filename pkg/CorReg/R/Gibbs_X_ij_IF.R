@@ -1,4 +1,4 @@
-# ' Gibbs sampler for redundant covariates
+# ' Gibbs sampler for INDEPENDENT Covariates
 # '  @param X est la ligne concernée (X[i,]) 
 # ' @param components est le vecteur des classes pour i (vecteur creux de taille p avec pr elements non nuls)
 # ' @param mixmod is mixmod$details
