@@ -7,6 +7,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
       sigmai=resmui$sigmai
       Sigma=as.matrix(resmui$Sigma)
       loglik=rep(0,times=n)
+      loglikfin=0
       for(i in 1:nbmiss){
          #          print(paste("i",i))
          miss=quimiss[i,]
@@ -20,10 +21,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
             sigmai=resmui$sigmai
             Sigma=as.matrix(resmui$Sigma)
          }
-         #          print(paste("i2",i))
-         #          print(Ir)
-         #          print(miss[2])
-         #          print(miss[2]%in%Ir)
+
          if(miss[2]%in%Ir){#redundant covariate missing
             #             print("left")
             
@@ -61,13 +59,13 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
             }
          }
       } 
+      loglikfin=sum(loglik)/nbit+loglikfin
    }
    #    print("c")
    #    print(X)
    #    print(comp_vect)
    if(loglik_bool){
-      print(loglik)
-      return(list(X=X,comp_vect=comp_vect,loglik=sum(loglik)))    
+      return(list(X=X,comp_vect=comp_vect,loglik=loglikfin))    
    }else{
       return(list(X=X,comp_vect=comp_vect))
    }
