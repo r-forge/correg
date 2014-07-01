@@ -166,6 +166,23 @@ The structure obtained gives a system of linear regression that can be viewed as
 	 
 \paragraph{In the running example:}$\boldsymbol{X}_r=\boldsymbol{x}_3$, $\boldsymbol{X}_f=\{\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5 \}$, $p_r=1$ and $\boldsymbol{\alpha}_3=(1,1,0,0)'$
 
+
+
+
+
+
+
+
+	We note $I_r$ the set of indices of endogenous variables in $\boldsymbol{X}$ (explained ones).
+We also define $I_f=\{I_f^1,\dots,I_f^p \}$ the set of the sets of indices of exogenous covariates (explaining ones $=\boldsymbol{X}_f$) with $\forall j \notin I_r, I_f^j=\emptyset$. 
+We see that $I_f$ defines the non-null coefficients in $\boldsymbol{\alpha}_j$ (each sub-regression can be very parsimonious).
+Then we have the explicit structure characterized by $S=\{I_f,I_r,p_f,p_r\}$ where $p_r=|I_r|$, $\boldsymbol{p}_f=(p_f^1,\dots,p_f^{p_r})$ is the vector of the number of covariates in each sub-regression  and $p_f^j=|I_f^j|$, with $|.|$ the cardinal of an ensemble. Our running example is then described by $S= \left( \{ \{1,2\}\},\{3\},(2),(1)\right)$
+\\
+
+
+
+
+
 	
 
 \section{A by-product model: marginal regression with decorrelated covariates}
@@ -338,19 +355,15 @@ The theorem from Maugis guarantee that a sub-regression between Gaussian mixture
 			 We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context.
 		In the followings we use the $BIC$.	
 		\subsection{Penalization of the integrated likelihood by $P(S)$} \label{compstruct}
-Uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a minimization of the $BIC$.
+When considering \ref{approxBIC} we see that uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a minimization of the $BIC$.
 	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model
 	\begin{eqnarray}
 		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)  
 	\end{eqnarray}
-	But $BIC$ tends to give too complex structures because we test a great range of models. Thus we choose to penalise the complexity a bit more.
+	But $BIC$ tends to give too complex structures because we test a great range of models (known issue). Thus we choose to penalise the complexity a bit more. We don't want to modify the $BIC$ to keep its properties.
 	
-	We note $I_r$ the set of indices of endogenous variables in $\boldsymbol{X}$ (explained ones).
-We also define $I_f=\{I_f^1,\dots,I_f^p \}$ the set of the sets of indices of exogenous covariates (explaining ones $=\boldsymbol{X}_f$) with $\forall j \notin I_r, I_f^j=\emptyset$. 
-We see that $I_f$ defines the non-null coefficients in $\boldsymbol{\alpha}_j$ (each sub-regression can be very parsimonious).
-Then we have the explicit structure characterized by $S=(I_f,I_r,p_f,p_r)$ where $p_r=|I_r|$, $\boldsymbol{p}_f=(p_f^1,\dots,p_f^{p_r})$ is the vector of the number of covariates in each sub-regression  and $p_f^j=|I_f^j|$, with $|.|$ the cardinal of an ensemble. Our running example is then described by $S= \left( \{ \{1,2\}\},\{3\},(2),(1)\right)$
-\\
-	 We suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of the simple uniform law on $S$ that is generally used and provides no penalty.
+
+We have the explicit structure characterized by $S=\{I_f,I_r,p_f,p_r\}$, then we suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of the simple uniform law on $S$ that is generally used and provides no penalty.
 	 Thus we have :
 		\begin{eqnarray}
 		BIC_+(X|S)&=&BIC(X|S) -\ln(P(S)) \label{Bicstar}
