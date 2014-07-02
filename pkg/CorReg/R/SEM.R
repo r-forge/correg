@@ -2,7 +2,7 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
               Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,loglikout=FALSE,nbclust_vect=nbclust_vect,Ir=Ir,compout=TRUE,Xout=FALSE,alphaout=TRUE,gibbsfin=0){
    last=FALSE
    result=list()
-   
+   require(mvtnorm)
    #initialisation
   
    if(is.null(Zc)){
@@ -48,7 +48,7 @@ if(is.null(alpha)){
    for (i in 1:(nbit_SEM+warm)){
       print(i)
       if(i==(nbit_SEM+warm) & gibbsfin<=0){last=TRUE}
-      if(i>warm & loglikout){
+      if(i>warm & loglikout & gibbsfin<=0 ){
          loglik_bool=TRUE
       }#on commence à calculer les vraisemblances
      
@@ -69,23 +69,22 @@ if(is.null(alpha)){
          }
          if(i==warm+1){
             if(alphaout){result$alpha=alpha/nbit_SEM}
-#             if(Xout){result$X=X/nbit_SEM}
+             if(Xout){result$X=X/nbit_SEM}
             if(loglikout){result$loglik=loglik/nbit_SEM}
          }else{
             if(alphaout){result$alpha=result$alpha+alpha/nbit_SEM}#optimiser au format creux
-#              if(Xout){result$X=result$X+X/nbit_SEM}#optimiser en ne modifiant que les manquants
+              if(Xout){result$X=result$X+X/nbit_SEM}#optimiser en ne modifiant que les manquants
             if(loglikout){result$loglik=result$loglik+loglik/nbit_SEM}
          }   
       }
    }
-if(Xout){result$X=X}
 
    if(compout){result$comp=comp_vect}
 
 if(gibbsfin>0){
    resgibbs2=Gibbs(M=M,last=TRUE,nbit=gibbsfin,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-                   Z=Z,Zc=Zc,alpha=result$alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool)
-   result$X=resgibbs2$X
+                   Z=Z,Zc=Zc,alpha=result$alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=Xout)
+   if(Xout){result$X=resgibbs2$X}
    result$loglik=resgibbs2$loglik
 }
    return(result)

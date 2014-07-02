@@ -1,5 +1,5 @@
 Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-                Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool){
+                Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=FALSE){
    for(iter in 1:nbit){
       missrow_loc=1
       resmui=muiZ(mixmod = mixmod,components=comp_vect[missrow_loc,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#on commence ligne 1
@@ -8,6 +8,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
       Sigma=as.matrix(resmui$Sigma)
       loglik=rep(0,times=n)
       loglikfin=0
+      if(Xout){Xfin=X}
       for(i in 1:nbmiss){
          #          print(paste("i",i))
          miss=quimiss[i,]
@@ -28,7 +29,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
             X[miss[1],miss[2]]=Gibbs_X_ij_IR(X=X[miss[1],],sigma=sigma_IR[miss[2]],alpha=alpha[,miss[2]])
          }else{#missing right
             #             print("right")
-            X[miss[1],miss[2]]=Gibbs_X_ij_IF(Z=Z,X=X[miss[1],],mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alpha,mixmod=mixmod,j=miss[2],components=comp_vect[miss[1],])
+            X[miss[1],miss[2]]=Gibbs_X_ij_IF(Z=Z,X=X[miss[1],],mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alpha,mixmod=mixmod,i=miss[1],j=miss[2],components=comp_vect[miss[1],])
          }
          #          print(paste("i3",i))
       }
@@ -60,6 +61,14 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
          }
       } 
       loglikfin=sum(loglik)/nbit+loglikfin
+      if(Xout){
+         if (iter>1){
+            Xfin=Xfin+X/nbit
+         }else{
+            Xfin=X/nbit
+         }
+      }#optimiser en ne modifiant que les manquants
+      
    }
    #    print("c")
    #    print(X)
