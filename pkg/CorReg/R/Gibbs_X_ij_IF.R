@@ -2,7 +2,7 @@
 # '  @param X est la ligne concernée (X[i,]) 
 # ' @param components est le vecteur des classes pour i (vecteur creux de taille p avec pr elements non nuls)
 # ' @param mixmod is mixmod$details
-Gibbs_X_ij_IF<-function(Z=Z,X=X,p=p,mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alpha,mixmod=mixmod,j=j,components=components){
+Gibbs_X_ij_IF<-function(Z=Z,X=X,p=p,mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alpha,mixmod=mixmod,j=j,components=components,i=i){
    Sigma_j_reste=Sigma[j,-j]
    Sigma_reste_reste=Sigma[-j,-j]
    prodmat=Sigma_j_reste%*%solve(Sigma_reste_reste)
@@ -11,9 +11,9 @@ Gibbs_X_ij_IF<-function(Z=Z,X=X,p=p,mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alph
    sigma=as.numeric(sigma)
 #    print(paste("sigma",sigma))
    if(as.numeric(sigma)<=0){
-      print(paste("sigmas<0",sigma, j));
+      print(paste("sigmas<0",sigma,i, j));
       sigma=-as.numeric(sigma)
-      stop
+      stop("bullshit")
    }
    res=rnorm(1,mean=as.numeric(mu),sd=as.numeric(sqrt(sigma)))
 #    print(paste("res",res))
