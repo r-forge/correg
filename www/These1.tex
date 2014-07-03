@@ -128,7 +128,8 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 				\item It is about clustering and not regression (not the same application field)
 				\item No sub-regression allowed between relevant variables (in the True model)
 				\item Using stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}
-			\end{itemize}	
+			\end{itemize}
+			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates tha	
 			We provide an specific MCMC algorithm with the ability to have redundant covariates in the true model.		 
 \part{Pretreatment for correlations}
 \chapter{Decorrelating covariates by a generative model}
@@ -273,7 +274,7 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 %			\includegraphics[width=170px]{figures/MQEn1000sigmaY10.png} 
 %			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
 %   \end{minipage} 
-	\includegraphics[width=500px]{figures/MQEexplOLSp5.png}\label{MQE1}
+	\includegraphics[width=500px]{figures/MQEexplOLSp5col.png}\label{MQE1}
 	\caption{MSE of OLS (plain) and CorReg (dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
 It is clear in Figure \ref{MQE1} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($1-\mathcal{R}^2$ tends to 1) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
@@ -1042,8 +1043,8 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 			
 	
 \begin{figure}[h!]
-	\includegraphics[width=500px]{figures/res_these/MQE_toutOLSp5.png}\label{MQE2}
-	\caption{MSE of OLS (plain black) and CorReg marginal(red dashed) and CorReg full (green dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}\label{MQE2}
+	\caption{MSE of OLS (plain red) and CorReg marginal(blue dashed) and CorReg full (green dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure}	
 	
 	\section{Consistency}
