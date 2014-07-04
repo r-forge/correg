@@ -42,6 +42,7 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
            detailsmat=rbind(detailsmat,cbind(prop,meansvect,varvect,i))
         }else{
            detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+           detailsmat[[i]]=detailsmat[[i]][order(detailsmat[[i]][,1]),]
         }      
       }
     }

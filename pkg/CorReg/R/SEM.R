@@ -1,10 +1,10 @@
 SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-              Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,loglikout=FALSE,nbclust_vect=nbclust_vect,Ir=Ir,compout=TRUE,Xout=FALSE,alphaout=TRUE,gibbsfin=0){
+              Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,loglikout=FALSE,nbclust_vect=nbclust_vect,Ir=Ir,compout=TRUE,Xout=FALSE,alphaout=TRUE,gibbsfin=0,verbose=1){
    last=FALSE
    result=list()
    require(mvtnorm)
    #initialisation
-  
+   
    if(is.null(Zc)){
       Zc=colSums(Z)
    }
@@ -13,11 +13,11 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
    }
    if(is.null(comp_vect)){
       comp_vect=matrix(rep(1,times=p*n),ncol=p)
-#       for(i in 1:p){
-#          if(nbclust_vect[i]>1){
-#             comp_vect[,i]=which(rmultinom(n =missrow, size = 1,prob=mixmod[[i]][,1])==1,arr.ind = TRUE)[,1]
-#          }
-#       }
+      #       for(i in 1:p){
+      #          if(nbclust_vect[i]>1){
+      #             comp_vect[,i]=which(rmultinom(n =missrow, size = 1,prob=mixmod[[i]][,1])==1,arr.ind = TRUE)[,1]
+      #          }
+      #       }
       #Imputation des classes####
       for(j in 1:p){
          if(nbclust_vect[j]>1){
@@ -34,9 +34,9 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
          }
       }
    }
-if(is.null(alpha)){
-   alpha=hatB(Z = Z,X=X)
-}
+   if(is.null(alpha)){
+      alpha=hatB(Z = Z,X=X)
+   }
    if(is.null(sigma_IR)){
       sigma_IR=rep(0,times=p)#résidus des regressions (fixés avec alpha donc stables pour gibbs)
       for (j in Ir){
@@ -46,15 +46,14 @@ if(is.null(alpha)){
    
    loglik_bool=FALSE
    for (i in 1:(nbit_SEM+warm)){
-      print(i)
       if(i==(nbit_SEM+warm) & gibbsfin<=0){last=TRUE}
       if(i>warm & loglikout & gibbsfin<=0 ){
          loglik_bool=TRUE
       }#on commence à calculer les vraisemblances
-     
+      
       #SE step####
       resgibbs2=Gibbs(M=M,last=last,nbit=nbit_gibbs,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-                     Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool)
+                      Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool)
       comp_vect=resgibbs2$comp_vect
       X=resgibbs2$X
       
@@ -68,24 +67,26 @@ if(is.null(alpha)){
             loglik=resgibbs2$loglik#scalaire
          }
          if(i==warm+1){
+            if(verbose){print("warm finished")}
             if(alphaout){result$alpha=alpha/nbit_SEM}
-             if(Xout){result$X=X/nbit_SEM}
+            if(Xout){result$X=X/nbit_SEM}
             if(loglikout){result$loglik=loglik/nbit_SEM}
          }else{
             if(alphaout){result$alpha=result$alpha+alpha/nbit_SEM}#optimiser au format creux
-              if(Xout){result$X=result$X+X/nbit_SEM}#optimiser en ne modifiant que les manquants
+            if(Xout){result$X=result$X+X/nbit_SEM}#optimiser en ne modifiant que les manquants
             if(loglikout){result$loglik=result$loglik+loglik/nbit_SEM}
          }   
       }
    }
-
+   
    if(compout){result$comp=comp_vect}
-
-if(gibbsfin>0){
-   resgibbs2=Gibbs(M=M,last=TRUE,nbit=gibbsfin,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-                   Z=Z,Zc=Zc,alpha=result$alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=Xout)
-   if(Xout){result$X=resgibbs2$X}
-   result$loglik=resgibbs2$loglik
-}
+   
+   if(gibbsfin>0){
+      if(verbose){print("final Gibbs")}
+      resgibbs2=Gibbs(M=M,last=TRUE,nbit=gibbsfin,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
+                      Z=Z,Zc=Zc,alpha=result$alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=Xout)
+      if(Xout){result$X=resgibbs2$X}
+      result$loglik=resgibbs2$loglik
+   }
    return(result)
 }
