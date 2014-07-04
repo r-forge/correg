@@ -2,7 +2,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
                 Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=FALSE){
    for(iter in 1:nbit){
       missrow_loc=1
-      resmui=muiZ(mixmod = mixmod,components=comp_vect[missrow_loc,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#on commence ligne 1
+      resmui=muiZ(p=ncol(Z),mixmod = mixmod,components=comp_vect[missrow_loc,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#on commence ligne 1
       mui=resmui$mui
       sigmai=resmui$sigmai
       Sigma=as.matrix(resmui$Sigma)
@@ -17,7 +17,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
                loglik[missrow_loc]=loglikcond(X=X,mui=mui,Sigma=as.matrix(Sigma),M=M,i=missrow_loc,Zc=Zc)
             }
             missrow_loc=miss[1]#une fois la vraisemblance calculée on change de ligne
-            resmui=muiZ(mixmod = mixmod,components=comp_vect[missrow_loc,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#mise à jour
+            resmui=muiZ(p=ncol(Z),mixmod = mixmod,components=comp_vect[missrow_loc,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#mise à jour
             mui=resmui$mui
             sigmai=resmui$sigmai
             Sigma=as.matrix(resmui$Sigma)
@@ -37,7 +37,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
          loglik[missrow_loc]=loglikcond(X=X,mui=mui,Sigma=as.matrix(Sigma),M=M,i=missrow_loc,Zc=Zc)
          for (i in 1:n){
             if(sum(M[i,])==0){#on veut la vraisemblance des lignes restantes (pleines)
-               resmui=muiZ(mixmod = mixmod,components=comp_vect[i,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#mise à jour
+               resmui=muiZ(p=ncol(Z),mixmod = mixmod,components=comp_vect[i,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#mise à jour
                mui=resmui$mui
                Sigma=as.matrix(resmui$Sigma)
                loglik[i]=loglikcond(X=X,mui=mui,Sigma=as.matrix(Sigma),M=M,i=i,Zc=Zc)

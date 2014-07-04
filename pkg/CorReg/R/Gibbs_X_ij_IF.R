@@ -8,12 +8,13 @@ Gibbs_X_ij_IF<-function(Z=Z,X=X,p=p,mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alph
    prodmat=Sigma_j_reste%*%solve(Sigma_reste_reste)
    mu=mui[j]+prodmat%*%(X[-j]-mui[-j])
    sigma=sigmai[j]-prodmat%*%Sigma_j_reste;
+   sigmai[j]-Sigma_j_reste%*%solve(Sigma_reste_reste)%*%Sigma_j_reste
    sigma=as.numeric(sigma)
 #    print(paste("sigma",sigma))
    if(as.numeric(sigma)<=0){
       print(paste("sigmas<0",sigma,i, j));
       sigma=-as.numeric(sigma)
-      stop("bullshit")
+#       stop("bullshit")
    }
    res=rnorm(1,mean=as.numeric(mu),sd=as.numeric(sqrt(sigma)))
 #    print(paste("res",res))
