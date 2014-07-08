@@ -15,7 +15,7 @@ hatB<-function(Z=Z,X=X,methode=1){
     quimank=c(quimank,which(is.na(Yloc),arr.ind=T))
     quimank=unique(quimank)
     if(length(quimank)>0){
-      Xloc=Xloc[-quimank,] #si des valeurs sont manquantes,on supprimes les lignes localement
+      Xloc=matrix(Xloc[-quimank,],ncol=length(qui)) #si des valeurs sont manquantes,on supprimes les lignes localement
       Yloc=Yloc[-quimank]
     }
     beta=OLS(X=matrix(as.double(Xloc),ncol=ncol(Xloc)),Y=as.double(Yloc),intercept=T,methode=methode)$beta
