@@ -72,7 +72,7 @@ OLS<- function(X=X,Y=Y,M=NULL,intercept=FALSE,sigma=FALSE,Bic=FALSE,methode=1,mi
       res=.Call( "OLS",X, as.double(Y),intercept,sigma,Bic,methode, PACKAGE = "CorReg")
     }else{
       print("not any complete line")
-      res=NA
+      res=list(beta=NA)
     }
     return (res)
   }

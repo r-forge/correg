@@ -1,5 +1,5 @@
 SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-              Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,loglikout=FALSE,nbclust_vect=nbclust_vect,Ir=Ir,compout=TRUE,Xout=FALSE,alphaout=TRUE,gibbsfin=0,verbose=1){
+              Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,loglikout=FALSE,gibbsfinwarm=0,nbclust_vect=nbclust_vect,Ir=Ir,compout=TRUE,Xout=FALSE,alphaout=TRUE,gibbsfin=0,verbose=1){
    last=FALSE
    result=list()
    require(mvtnorm)
@@ -83,7 +83,7 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
    
    if(gibbsfin>0){
       if(verbose){print("final Gibbs")}
-      resgibbs2=Gibbs(M=M,last=TRUE,nbit=gibbsfin,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
+      resgibbs2=Gibbs(M=M,last=TRUE,warm=gibbsfinwarm,nbit=gibbsfin,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
                       Z=Z,Zc=Zc,alpha=result$alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=Xout)
       if(Xout){result$X=resgibbs2$X}
       result$loglik=resgibbs2$loglik

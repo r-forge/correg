@@ -1,4 +1,4 @@
-Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
+Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
                 Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=FALSE){
    for(iter in 1:nbit){
       missrow_loc=1
@@ -62,18 +62,18 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,mixmod=mixmod,X=X,comp_vect=comp_vect,miss
       } 
       loglikfin=sum(loglik)/nbit+loglikfin
       if(Xout){
-         if (iter>1){
+         if (iter>1 & iter>=warm){
             Xfin=Xfin+X/nbit
-         }else{
+         }else if(iter>warm){
             Xfin=X/nbit
          }
-      }#optimiser en ne modifiant que les manquants
-      
+      }#optimiser en ne modifiant que les manquants  
    }
    #    print("c")
    #    print(X)
    #    print(comp_vect)
    if(loglik_bool){
+      loglikfin=-2*loglikfin+missing_penalty(nbclust_vect=nbclust_vect,Z=Z,M=M,n=nrow(X),p=ncol(Z),Zc=Zc)#BIC adapté
       return(list(X=X,comp_vect=comp_vect,loglik=loglikfin))    
    }else{
       return(list(X=X,comp_vect=comp_vect))
