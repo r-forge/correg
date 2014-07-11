@@ -1,5 +1,5 @@
 Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-                Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=FALSE){
+                Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=FALSE,GibbsIR=TRUE){
    for(iter in 1:nbit){
       missrow_loc=1
       resmui=muiZ(p=ncol(Z),mixmod = mixmod,components=comp_vect[missrow_loc,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#on commence ligne 1
@@ -22,16 +22,12 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
             sigmai=resmui$sigmai
             Sigma=as.matrix(resmui$Sigma)
          }
-
+         
          if(miss[2]%in%Ir){#redundant covariate missing
-            #             print("left")
-            
-            X[miss[1],miss[2]]=Gibbs_X_ij_IR(X=X[miss[1],],sigma=sigma_IR[miss[2]],alpha=alpha[,miss[2]])
+               X[miss[1],miss[2]]=Gibbs_X_ij_IR(X=X[miss[1],],sigma=sigma_IR[miss[2]],alpha=alpha[,miss[2]],GibbsIR=GibbsIR)
          }else{#missing right
-            #             print("right")
             X[miss[1],miss[2]]=Gibbs_X_ij_IF(Z=Z,X=X[miss[1],],mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alpha,mixmod=mixmod,i=miss[1],j=miss[2],components=comp_vect[miss[1],])
          }
-         #          print(paste("i3",i))
       }
       if(loglik_bool){#on a fini la derniere ligne donc on calcule sa vraisemblance 
          loglik[missrow_loc]=loglikcond(X=X,mui=mui,Sigma=as.matrix(Sigma),M=M,i=missrow_loc,Zc=Zc)
@@ -47,7 +43,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
       
       if(!last | (iter!=nbit)){
          #Imputation des classes####
-         for(j in 1:p){
+         for(j in (1:p)[-Ir]){#pas besoin de classe à gauche car dans Gibbs on connaît toujours tout le monde à droite (quitte à le supposer)
             #             print(paste("j",j))
             if(nbclust_vect[j]>1){
                for (i in 1:n){
@@ -74,8 +70,8 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
    #    print(comp_vect)
    if(loglik_bool){
       loglikfin=-2*loglikfin+missing_penalty(nbclust_vect=nbclust_vect,Z=Z,M=M,n=nrow(X),p=ncol(Z),Zc=Zc)#BIC adapté
-      return(list(X=X,comp_vect=comp_vect,loglik=loglikfin))    
-   }else{
-      return(list(X=X,comp_vect=comp_vect))
    }
+   result=list(X=X,comp_vect=comp_vect,loglik=loglikfin)    
+   if(Xout){result$Xfin=Xfin}
+      return(result)
 }
