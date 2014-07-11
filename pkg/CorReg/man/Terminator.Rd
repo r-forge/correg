@@ -3,12 +3,16 @@
 \alias{Terminator}
 \title{Destructing values to have missing ones}
 \usage{
-Terminator(target = "Sarah Connor", wrath = 0.1, diag = 0)
+Terminator(target = "Sarah Connor", wrath = 0.1, diag = 0, Z = NULL)
 }
 \arguments{
 \item{wrath}{the ratio of missing values in the output}
 
 \item{target}{the dataset (matrix or data.frame) in which missing values will be made}
+
+\item{diag}{if >0 it is the thickness of the diagonal band of missing values}
+
+\item{Z}{adjacency matrix to coerce a maximum of 1 missing value per sub-regression for each individual}
 }
 \description{
 Destructing values to have missing ones

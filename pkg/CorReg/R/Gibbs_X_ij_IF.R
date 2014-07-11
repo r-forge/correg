@@ -12,7 +12,7 @@ Gibbs_X_ij_IF<-function(Z=Z,X=X,p=p,mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alph
    sigma=as.numeric(sigma)
 #    print(paste("sigma",sigma))
    if(as.numeric(sigma)<=0){
-      print(paste("sigmas<0",sigma,i, j));
+      print(paste("sigmas<0",sigma,i, j,"try to scale the dataset"));
       sigma=-as.numeric(sigma)
 #       stop("bullshit")
    }

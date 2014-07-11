@@ -10,13 +10,18 @@
 Estep<-function(X=X,alpha=alpha,M=NULL,Z=NULL,mixmod=mixmod,Zc=Zc,X1=FALSE){
    #X bouge, mais pas alpha ni Z ni M ni mixmod
    require(Matrix)
-   quimank=which(is.na(X),arr.ind=TRUE)# apriori on stockera les deux formats (M et quimank en permanence) et on fera pareil pour Z
+   if(is.null(M)){
+      quimank=which(is.na(X),arr.ind=TRUE)# apriori on stockera les deux formats (M et quimank en permanence) et on fera pareil pour Z
+      M=sparseMatrix(i=quimank[,1],j=quimank[,2],dims=c(n,p))
+   }else{
+      quimank=which(M!=0,arr.ind=TRUE)# apriori on stockera les deux formats (M et quimank en permanence) et on fera pareil pour Z
+   }
    
    p=ncol(X)
    n=nrow(X)
    #on liste tout ce qu'il faut (on verra après comment extraire ça pour optimiser)
    nbmank=nrow(quimank)
-   M=sparseMatrix(i=quimank[,1],j=quimank[,2],dims=c(n,p))
+   Z=alpha[-1,];Z[Z!=0]=1
    Z=as(Matrix(Z,sparse=TRUE),"nsparseMatrix")
    Zc=Matrix(colSums(Z))
    X=fillmiss(X=X,X1=FALSE,mixmod=FALSE)
@@ -49,29 +54,7 @@ Estep<-function(X=X,alpha=alpha,M=NULL,Z=NULL,mixmod=mixmod,Zc=Zc,X1=FALSE){
          }
          X[miss[1],miss[2]]=loc
       }else if(X1){#trou à droite
-         Irj= which(Z[miss[2],]!=0)#variables expliquées par le manquant
-         IrjO=which(Z[miss[2],]!=0 & M[miss[1],]==0)
-         if(length(IrjO)<1){#variable dans I3 ou trop de manquants
-            #imputation par la moyenne, mais déjà fait à la base
-         }else{#imputation conditionnelle
-            pi_ij=unlist(mixmod[mixmod[,4]==miss[2],1])
-            for(l in IrjO){
-               pi_ij=kronecker(pi_ij,unlist(mixmod[mixmod[,4]==l,1]))
-            }
-            Kij=length(pi_ij)
-            loc=0
-            for (k in 1:Kij){
-               mixmodj=mixmod[mixmod[,4]==miss[2],]
-               muloc=unlist(mixmodj[,2])[k%%nrow(mixmodj)]#ne marche pas, d'abord tout dilater...
-               #calcul de la covariance
-               #produit par l'inverse de la variance
-               #produit par la covariance
-               #total
-               muloc=muloc
-               loc=loc+pi_ij[k]*muloc
-            }
-            X[miss[1],miss[2]]=(1/Kij)*loc
-         }
+         
       }
    }
    return(X)

@@ -1,5 +1,5 @@
 SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-              Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,loglikout=FALSE,gibbsfinwarm=0,nbclust_vect=nbclust_vect,Ir=Ir,compout=TRUE,Xout=FALSE,alphaout=TRUE,gibbsfin=0,verbose=1){
+              Z=Z,Zc=Zc,alpha=alpha,GibbsIR=TRUE,sigma_IR=sigma_IR,loglikout=FALSE,gibbsfinwarm=0,nbclust_vect=nbclust_vect,Ir=Ir,compout=TRUE,Xout=FALSE,alphaout=TRUE,gibbsfin=0,verbose=1,fill=FALSE){
    last=FALSE
    result=list()
    require(mvtnorm)
@@ -19,10 +19,10 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
       #          }
       #       }
       #Imputation des classes####
-      for(j in 1:p){
+      for(j in (1:p)[-Ir]){#pas besoin de classe à gauche car dans Gibbs on connaît toujours tout le monde à droite (quitte à le supposer)
          if(nbclust_vect[j]>1){
             for (i in 1:n){
-               if(!is.na(X[i,j])){#valeur observée (ou imputée, peu importe) on estime la classe
+               if(!is.na(X[i,j]) & !fill){#valeur observée (ou imputée, peu importe) on estime la classe
                   vect=rmultinom(1, 1, tik(x=X[i,j],nbclust=nbclust_vect[j],mixmod=mixmod[[j]]))
                   comp_vect[i,j]=match(1,vect)
                }else{#manquant donc on impute la classe et la valeur 
@@ -52,8 +52,8 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
       }#on commence à calculer les vraisemblances
       
       #SE step####
-      resgibbs2=Gibbs(M=M,last=last,nbit=nbit_gibbs,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-                      Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool)
+      resgibbs2=Gibbs(M=M,last=last,nbit=nbit_gibbs,mixmod=mixmod,X=X,warm=0,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
+                      Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,GibbsIR=GibbsIR,loglik_bool=loglik_bool)
       comp_vect=resgibbs2$comp_vect
       X=resgibbs2$X
       
@@ -84,8 +84,8 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
    if(gibbsfin>0){
       if(verbose){print("final Gibbs")}
       resgibbs2=Gibbs(M=M,last=TRUE,warm=gibbsfinwarm,nbit=gibbsfin,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
-                      Z=Z,Zc=Zc,alpha=result$alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=Xout)
-      if(Xout){result$X=resgibbs2$X}
+                      Z=Z,Zc=Zc,alpha=result$alpha,GibbsIR=GibbsIR,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=Xout)
+      if(Xout){result$X=resgibbs2$Xfin}
       result$loglik=resgibbs2$loglik
    }
    return(result)

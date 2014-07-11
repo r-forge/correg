@@ -3,7 +3,7 @@
 \alias{hatB}
 \title{Estimates B matrix}
 \usage{
-hatB(Z = Z, X = X, methode = 1)
+hatB(Z = Z, X = X, methode = 1, NA_heur = FALSE)
 }
 \arguments{
 \item{Z}{binary adjacency matrix of the structure (size p)}

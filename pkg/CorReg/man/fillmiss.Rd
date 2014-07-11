@@ -4,7 +4,7 @@
 \title{Fill the missing values in the dataset}
 \usage{
 fillmiss(X = X, Z = NULL, mixmod = FALSE, B = NULL, Bt = NULL,
-  res_mixmod = res_mixmod, nbclustmax = 10, X1 = TRUE, mclust = FALSE)
+  res_mixmod = NULL, nbclustmax = 10, X1 = FALSE, mclust = FALSE)
 }
 \arguments{
 \item{X}{the dataset (matrix) with missing values}
