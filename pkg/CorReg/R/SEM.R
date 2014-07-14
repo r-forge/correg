@@ -2,7 +2,6 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
               Z=Z,Zc=Zc,vraiX=NULL,alpha=alpha,GibbsIR=TRUE,sigma_IR=sigma_IR,loglikout=FALSE,gibbsfinwarm=0,nbclust_vect=nbclust_vect,Ir=Ir,compout=TRUE,Xout=FALSE,alphaout=TRUE,gibbsfin=0,verbose=1,fill=FALSE){
    last=FALSE
    result=list()
-   require(mvtnorm)
    #initialisation
    
    if(is.null(Zc)){

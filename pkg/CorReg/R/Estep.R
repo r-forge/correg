@@ -10,7 +10,6 @@
 #'
 Estep<-function(X=X,alpha=alpha,M=NULL,Z=NULL,mixmod=mixmod,Zc=Zc,X1=FALSE){
    #X bouge, mais pas alpha ni Z ni M ni mixmod
-   require(Matrix)
    if(is.null(M)){
       quimank=which(is.na(X),arr.ind=TRUE)# apriori on stockera les deux formats (M et quimank en permanence) et on fera pareil pour Z
       M=sparseMatrix(i=quimank[,1],j=quimank[,2],dims=c(n,p))
