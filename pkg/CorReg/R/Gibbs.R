@@ -59,11 +59,11 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
       } 
       loglikfin=sum(loglik)/nbit+loglikfin
       if(Xout){
-         if (iter>1 & iter>=warm){
+         if (iter>1 & iter>(warm+1)){
             Xfin=Xfin+X/nbit
-         }else if(iter>warm){
+         }else if(iter==(warm+1)){
             Xfin=X/nbit
-         }
+         }#sinon warm donc on ne fait rien
       }#optimiser en ne modifiant que les manquants  
    }
    #    print("c")

@@ -11,6 +11,8 @@ hatB(Z = Z, X = X, methode = 1, NA_heur = FALSE)
 \item{X}{the dataset}
 
 \item{methode}{parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr}
+
+\item{NA_heur}{boolean to estimate NA by the mean heuristic}
 }
 \description{
 Estimates B matrix
