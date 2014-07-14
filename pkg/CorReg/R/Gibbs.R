@@ -8,6 +8,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
       Sigma=as.matrix(resmui$Sigma)
       loglik=rep(0,times=n)
       loglikfin=0
+      nbmiss=sum(M)
       if(Xout){Xfin=X}
       for(i in 1:nbmiss){
          #          print(paste("i",i))
@@ -72,6 +73,9 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
       loglikfin=-2*loglikfin+missing_penalty(nbclust_vect=nbclust_vect,Z=Z,M=M,n=nrow(X),p=ncol(Z),Zc=Zc)#BIC adapté
    }
    result=list(X=X,comp_vect=comp_vect,loglik=loglikfin)    
-   if(Xout){result$Xfin=Xfin}
+   if(Xout){result$Xfin=Xfin
+   }else{
+      result$Xfin=X
+   }
       return(result)
 }

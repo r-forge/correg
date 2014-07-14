@@ -12,6 +12,7 @@
 #' @import spikeslab
 #' @import  rpart
 #' @import corrplot
+#' @import mvtnorm
 #' @useDynLib CorReg
 #' @export
 #' @param B the (p+1)xp matrix associated to Z and that contains the parameters of the sub-regressions
