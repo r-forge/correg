@@ -4,7 +4,6 @@
 #' @param Ir the set of indices of the covariates on the left (computed once before EM to be efficient)
 #' @param Zc profil (sum) colonne de Z
 #' @param mixmod the matrix from mixmod
-#' @param Zc p-sized vector to see if Z column is empty or not
 #' @param alpha matrix of the coefficients (p+1)xp format Matrix
 #'
 Estep<-function(X=X,alpha=alpha,M=NULL,Z=NULL,mixmod=mixmod,Zc=Zc,X1=FALSE){

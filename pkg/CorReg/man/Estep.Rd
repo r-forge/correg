@@ -17,8 +17,6 @@ Estep(X = X, alpha = alpha, M = NULL, Z = NULL, mixmod = mixmod,
 
 \item{mixmod}{the matrix from mixmod}
 
-\item{Zc}{p-sized vector to see if Z column is empty or not}
-
 \item{alpha}{matrix of the coefficients (p+1)xp format Matrix}
 }
 \description{
