@@ -11,6 +11,8 @@ Estep(X = X, alpha = alpha, M = NULL, Z = NULL, mixmod = mixmod,
 
 \item{M}{binary matrix X-sized (1=missing)}
 
+\item{Ir}{vector of indices of endogenous covariates (redundent)}
+
 \item{Ir}{the set of indices of the covariates on the left (computed once before EM to be efficient)}
 
 \item{Zc}{profil (sum) colonne de Z}
@@ -18,6 +20,8 @@ Estep(X = X, alpha = alpha, M = NULL, Z = NULL, mixmod = mixmod,
 \item{mixmod}{the matrix from mixmod}
 
 \item{alpha}{matrix of the coefficients (p+1)xp format Matrix}
+
+\item{X1}{boolean for alternative method}
 }
 \description{
 Imputation of missing values knowing alpha (E step of the EM)
