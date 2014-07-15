@@ -3,7 +3,7 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
    last=FALSE
    result=list()
    #initialisation
-   
+   p=ncol(Z)
    if(is.null(Zc)){
       Zc=colSums(Z)
    }

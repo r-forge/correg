@@ -11,9 +11,7 @@ Estep(X = X, alpha = alpha, M = NULL, Z = NULL, mixmod = mixmod,
 
 \item{M}{binary matrix X-sized (1=missing)}
 
-\item{Ir}{vector of indices of endogenous covariates (redundent)}
-
-\item{Ir}{the set of indices of the covariates on the left (computed once before EM to be efficient)}
+\item{Z}{adjacency matrix of the structure}
 
 \item{Zc}{profil (sum) colonne de Z}
 

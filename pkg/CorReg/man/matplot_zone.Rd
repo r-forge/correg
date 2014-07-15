@@ -7,6 +7,31 @@ matplot_zone(x = x, y = y, col = 1:6, alpha = 0.2, what = which.min,
   ylim = NULL, xlim = NULL, type = "p", xlab = NULL, ylab = "NULL",
   main = NULL, lwd = lwd)
 }
+\arguments{
+\item{x}{the abscisses}
+
+\item{y}{matrix of the curves (columns)}
+
+\item{col}{list of colors (like in matplot)}
+
+\item{what}{a function to choose a winner}
+
+\item{alpha}{parameter for transparency of the background}
+
+\item{ylim}{vector for vertical limits}
+
+\item{xlim}{vector for horizontal limits}
+
+\item{type}{the type of curve (like in matplot)}
+
+\item{xlab}{(like in matplot)}
+
+\item{ylab}{(like in matplot)}
+
+\item{lwd}{(like in matplot)}
+
+\item{main}{the main title (like in matplot)}
+}
 \description{
 draws matplot with conditionnal background for easier comparison of curves.
 }
