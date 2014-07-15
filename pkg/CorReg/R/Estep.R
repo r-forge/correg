@@ -1,8 +1,7 @@
 #' Imputation of missing values knowing alpha (E step of the EM)
 #' @param X the dataset with missing values
 #' @param M binary matrix X-sized (1=missing) 
-#' @param Ir vector of indices of endogenous covariates (redundent)
-#' @param Ir the set of indices of the covariates on the left (computed once before EM to be efficient)
+#' @param Z adjacency matrix of the structure
 #' @param Zc profil (sum) colonne de Z
 #' @param mixmod the matrix from mixmod
 #' @param alpha matrix of the coefficients (p+1)xp format Matrix

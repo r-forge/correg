@@ -2,6 +2,8 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
                 Z=Z,Zc=Zc,alpha=alpha,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=FALSE,GibbsIR=TRUE){
    for(iter in 1:nbit){
       missrow_loc=1
+      n=nrow(M)
+      p=ncol(M)
       resmui=muiZ(p=ncol(Z),mixmod = mixmod,components=comp_vect[missrow_loc,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#on commence ligne 1
       mui=resmui$mui
       sigmai=resmui$sigmai
