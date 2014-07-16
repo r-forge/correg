@@ -1,4 +1,4 @@
-bender<-function(phrase="CorReg rules !"){
+Bender<-function(phrase="CorReg rules !"){
   cat( "\n
                   o
                   |

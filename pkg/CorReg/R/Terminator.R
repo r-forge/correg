@@ -8,7 +8,7 @@ Terminator<-function(target="Sarah Connor", wrath=0.1,diag=0,Z=NULL){
    if(target[1]=="Sarah Connor" ){
       print("I'll be back !")
    }else if (target=="bender"){
-      bender()
+      Bender()
    }else if(diag>0){
       quidiag=cbind(rep(1:n,length.out=max(n,p)),rep(1:p,length.out=max(n,p)))
       target[quidiag]=NA
