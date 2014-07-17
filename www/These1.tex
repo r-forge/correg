@@ -508,6 +508,8 @@ Ajout de la formule du calcul du P(S)
 		\subsection{Classical}
 		\subsection{Active relaxation of the constraints}
 	\section{The walk}
+
+	\section{CorReg}	
 	
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 
@@ -1388,10 +1390,11 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 
 	\section{Numerical results}
 
-\chapter{CorReg: the R package}	
+\chapter{CorReg: the concept}	
 	
 		\textsc{CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with \textsc{CorReg}.
 	\textsc{CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). %More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
+	The objective of CorReg is to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014 (probably using BERT). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). It will be
 	
 \chapter{Conclusion and perspectives}
 	\section{Conclusion}
@@ -1408,6 +1411,7 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 			Even if it is written in C++, the algorithm could be optimized by a better usage of sparse matrices, memory usage optimization, and other small things that could reduce computational cost to be faster and allow to work with larger datasets (already works with thousands of covariates).
 		\subsection{Missing values in classical methods}
 			The full generative approach could be used to manage missing values without imputation for many classical methods.
+			It can notably be used for clustering and not only in response variable prediction context.
 		\subsection{Interpretation improvements}
 			Ergonomy of the software could be improved to better fit industrial needs.
 \cleardoublepage
