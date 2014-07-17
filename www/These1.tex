@@ -86,7 +86,12 @@
 	We will see in the state of the art that correlations are a real issue and that the number of variables increases the problem.	
 	The stakes are very high because of the high productivity of the steel plants but also because steel making is now well-known and optimized thus new defects only appears on innovative steels with high value. Any improvement on such crisis can have important impact on the market shares and when the customer is implied, each day won by the automation of the data mining process can lead to a gain of hundreds of thousands of euros, sometimes more. So we really need a kind of automatic method, able to manage the correlations without any a priori and giving an easily understandable and flexible model.
 	\subsection{Steelmaking process}
-	
+	\begin{center}
+          \begin{tabular}{ccc}
+         \includegraphics[width=130px,height=130px]{figures/liquid.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame1.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame.jpg} \\
+          	\includegraphics[width=130px,height=130px]{figures/ecras_moy.jpg} &\includegraphics[width=130px,height=130px]{figures/tcc2.jpg} & \includegraphics[width=130px,height=130px]{figures/bobines.jpg}
+          \end{tabular}
+        \end{center}
 \chapter{State of the art}
 	\section{Linear regression}
 		\subsection{Historic interest}
@@ -136,7 +141,10 @@ We note the linear regression model:
 Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects: the dimension $p$ (number of covariates) of the model (the more covariates you have the greater variance you get)
 	 and the correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
 	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
-	Another problem is that matrix inversion requires $n\geq p$. 	
+	Another problem is that matrix inversion requires $n\geq p$.
+	When matrices are not invertible, classical packages like the function lm of R use generalized inverse regression \cite{PSP:2043984}	
+	
+	
 	\section{Penalized models}
 		\subsection{Ridge regression}		% ne pas oublier de mentionner les packages existants
 
@@ -194,6 +202,9 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			\end{equation}						
 			But \textsc{OSCAR} depends on two tuning parameters: $c$ anf $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{LAR} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
 			Correlations are only implicitely taken into account and only pairwise. So it lacks of an efficient algorithm and need a supplementary study to interpret the groups found.
+			
+		\subsection{Graphical LASSO}
+			\cite{friedman2008sparse,witten2011new,tibshiranilasso,friedman2010applications}
 	\section{Modeling the parameters}			% ne pas oublier de mentionner les packages existants
 
 		\subsection{CLERE: CLusterwise Effect REgression}		% ne pas oublier de mentionner les packages existants
@@ -206,7 +217,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			\cite{ishwaran2005spike}%spike and slab
 			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
-
+		
 		\subsection{SEM and Path Analysis}		% ne pas oublier de mentionner les packages existants
 
 		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
@@ -232,12 +243,19 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		\section{Choice of model}
 		% ne pas oublier de mentionner les packages existants
 			\subsection{Cross validation}
-			\subsection{BIC}
+				\cite{kohavi1995study,arlot2010survey}
+			\subsection{Information Criterion}
+			
+			\cite{BIChuard}
 			\subsection{stepwise}
+			\cite{seber2012linear}
 			\subsection{bootstrap}
+			\cite{efron1979bootstrap,efron1994introduction}
 		\section{SEM}
 		\section{MCMC}
+		\cite{gilks1996markov,chib1995understanding,roberts2001optimal}
 		\section{Gibbs}
+		\cite{casella1992explaining}
 		\section{Industrial tools}
 			Linear regression, decision trees, bayesian networks, neural network but without confidence
 			Presence of softwares sent as non-statistical methods, based on rules (derivatives of decision trees).			
