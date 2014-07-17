@@ -74,6 +74,8 @@
 \tableofcontents
 
 \chapter{The industrial context}
+	\paragraph{Abstract:} Ce chapître explique les contraintes industrielles qui ont orienté les travaux pour répondre aux demandes d'ArcelorMittal qui est le commanditaire de ces travaux de recherche.
+
 	\subsection{Impact of the industrial context}
 	This work takes place in a steel industry context. The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we may have no idea of its origin. The defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process, each implying a whole manufactory. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates essentially depends on the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
 	We have several constraints :
@@ -93,6 +95,7 @@
           \end{tabular}
         \end{center}
 \chapter{State of the art}
+\paragraph{Abstract:} Rapide aperçu de ce qui existe pour tenter de répondre à notre problématique.
 	\section{Linear regression}
 		\subsection{Historic interest}
 			méthode ancienne et reconnue, remonte aux origines des statistiques, méthode pionnière en prédiction.
@@ -239,7 +242,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
 		
 		\subsection{SEM and Path Analysis}		% ne pas oublier de mentionner les packages existants
-
+			\cite{davidson1993estimation,pearl2000causality,pearl1998graphs,brito2006graphical,mcdonald2002principles}
 		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
 
 			\cite{SURzellner}
@@ -268,7 +271,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			
 			\cite{BIChuard}
 			\subsection{stepwise}
-			\cite{seber2012linear}
+			\cite{seber2012linear,miller2002subset}
 			\subsection{bootstrap}
 			\cite{efron1979bootstrap,efron1994introduction}
 		\section{SEM}
@@ -282,6 +285,8 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			
 \part{Pretreatment for correlations}
 \chapter{Decorrelating covariates by a generative model}
+\paragraph{Abstract:} Nous modélisons explicitement les corrélations entre covariables par un système de régressions linéaires entre covariables. Cela permet une meilleure compréhension des données mais aussi une préselection de variables mettant de côté les variables redondantes pour réduire fortement les corrélations tout en ne perdant que peu d'information. La préselection prend un sens particulier grâce à la structure de sous-régression qui permet de distinguer par suite les variables indépendantes de la variable réponse de celles qui sont juste redondantes mais potentiellement liées à la variable réponse.
+\\
 
 \paragraph{Running example:} we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define another couple $\boldsymbol{x}_4,\boldsymbol{x}_5$ of covariates that are {\it i.i.d. } with $(\boldsymbol{x}_1,\boldsymbol{x}_2)$ and two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$ .
 It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
@@ -373,7 +378,9 @@ Moreover, the uncrossing constraint (partition of $\boldsymbol{X}$) guarantee to
 
 	
 			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We just play on the traditional bias-variance tradeoff.
-\chapter{Numerical results with a known structure}			 
+\chapter{Numerical results with a known structure}	
+\paragraph{Abstract:} Premiers résultats numériques pour une structure (hors coefficients de sous-régression) connue. On constate un net apport de la méthode de préselection.
+		 
 	\section{Illustration of the tradeoff conveyed by the pre-treatment}	
 	We compare the OLS estimator on $\boldsymbol{X}$ defined in section \ref{sectionOLS} with the estimator obtained by the pre-treatment that is $\boldsymbol{X}_f$ selection.
   
@@ -434,6 +441,9 @@ We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\bo
 		Résultats comme dans l'article	mais sur vrai S	
 		
 \chapter{Estimation of the Structure of subregression by MCMC}
+\paragraph{Abstract:} La structure de sous-régression est supposée inconnue. Il nous faut donc la trouver. Un algorithme de type MCMC est proposé pour résoudre cette problématique. La mise en oeuvre de celui-ciu passe par une modélisation complète du jeu de données et nous pousse à introduire un nouveau critère de choix de modèle tenant compte du nombre de modèles testés.
+
+
 \section{Sub-regressions model selection}	
 Structural equations models like \textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero. But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
 
