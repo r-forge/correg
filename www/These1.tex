@@ -74,6 +74,7 @@
 \tableofcontents
 
 \chapter{The industrial context}
+	\subsection{Impact of the industrial context}
 	This work takes place in a steel industry context. The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we may have no idea of its origin. The defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process, each implying a whole manufactory. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates essentially depends on the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
 	We have several constraints :
 	\begin{itemize}
@@ -84,22 +85,40 @@
 	\end{itemize}
 	We will see in the state of the art that correlations are a real issue and that the number of variables increases the problem.	
 	The stakes are very high because of the high productivity of the steel plants but also because steel making is now well-known and optimized thus new defects only appears on innovative steels with high value. Any improvement on such crisis can have important impact on the market shares and when the customer is implied, each day won by the automation of the data mining process can lead to a gain of hundreds of thousands of euros, sometimes more. So we really need a kind of automatic method, able to manage the correlations without any a priori and giving an easily understandable and flexible model.
-	
+	\subsection{Steelmaking process}
 	
 \chapter{State of the art}
-	\section{Industrial state of the art}
-		This work takes place in steel industry and it implies some choices and directions.
-		Industrial context is often poor in statistical background and the stakes are frequently very high in terms of financial impact. 
+	\section{Linear regression: why?}
+		\subsection{Historic interest}
+			méthode ancienne et reconnue, remonte aux origines des statistiques, méthode pionnière en prédiction.
+		\subsection{Simplicity}
+			Facile à mettre en oeuvre théoriquement, rapide en pratique et présent partout (même dans Excel)
+			Très simple à interpréter, principe intuitif.
+			donne tout de suite l'impact des variables (positif ou négatif) sur la réponse et leur poids (si scaled dataset) 
+		\subsection{Industrial context}
+			Manque d'arriere plan statistique
+			besoin de comprendre pour corriger
+			défaut de confiance dans les statistiques d'où besoni accru en interprétation
+			La régression s'y prete bien car déjà connue et utilisée par chacun dans Excel (parfois à tort à travers).
+			
+			
+			Industrial context is often poor in statistical background and the stakes are frequently very high in terms of financial impact. 
 		These two points give strong constraints because methods used has to be accessible for non-statistician in a minimum amount of time and results obtained have to be clearly interpreated (no black-box) because if industrial experts don't understand the result, they will not trust it and then they will not use it. So a powerfull tool without interpretation becomes kind of useless in such a context.
 		
 		Every engineer, even non-statistician use frequently linear regression to seek relationship between some covariates. It is easy to understand, fast to do, it can be done directly in Microsoft Excel that remains the most used software in industry and the software used by engineers to open most of the datasets.
 		 
 		 Regression appears to be the basis of industrial statistics so we have chosen to work in this way. Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative. 
 		 It's simplicity facilitates a wide spread usage in industry and other applied fields.
-	\newpage
+			
+			
+		\subsection{Flexibility and future of regression}
+			Richesse des types de régression et des méthodes d'estimation
+			Apparition des mélanges de régression
+
 	
 In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_p|)$.
-	\section{Ordinary least squares and associated problems}\label{sectionOLS}
+	\section{Ordinary least squares and associated problems}\label{sectionOLS}		% ne pas oublier de mentionner les packages existants
+
 We note the linear regression model:
 \begin{equation}
 		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon} \label{regressionsimple}
@@ -119,7 +138,8 @@ Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects:
 	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
 	Another problem is that matrix inversion requires $n\geq p$. 	
 	\section{Penalized models}
-		\subsection{Ridge regression}
+		\subsection{Ridge regression}		% ne pas oublier de mentionner les packages existants
+
 			%\cite{hoerl1970ridge}
 			%\cite{marquardt1975ridge}
 Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty:
@@ -130,7 +150,8 @@ Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can 
 	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $p$. 
 				
 			
-		\subsection{LASSO: Least Absolute Shrinkage and Selection Operator }
+		\subsection{LASSO: Least Absolute Shrinkage and Selection Operator }		% ne pas oublier de mentionner les packages existants
+
 			\cite{tibshiranilasso}  
 			\cite{tibshirani1996regression} 
 			\cite{efron2004least} %LAR
@@ -144,11 +165,13 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 
 
 
-		\subsection{Adaptive LASSO and Random LASSO}
+		\subsection{Adaptive LASSO and Random LASSO}		% ne pas oublier de mentionner les packages existants
+
 			\cite{zou2006adaptive}% adaptive lasso
 			\cite{wang2011random}%random lasso
 			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptive \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But \textsc{LASSO} also faces consistency problems \cite{Zhao2006MSC} when confronted with correlated covariates.
-		\subsection{Elasticnet}
+		\subsection{Elasticnet}		% ne pas oublier de mentionner les packages existants
+
 			\cite{zou2005regularization}
 			Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and the \textsc{LASSO}: 
 %	Given data set $(Y,X)$ and two parameters $(\lambda_1,\lamda_2)$, define artificial data set $(Y^*,X^*)$ by :
@@ -162,7 +185,8 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
 	%It seems to give good predictions. 
 	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. %Hence, when comparing the two models, interpretations are not the same and nothing explicitly explains why. So it can be very confusing. 
-		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression }
+		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression }		% ne pas oublier de mentionner les packages existants
+
 			%\cite{bondell2008simultaneous}%Oscar
 			Like elasticnet, \textsc{OSCAR} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect (by a pairwise $L_\infty$ norm) and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (implied by the $L_1$ norm).
 			\begin{equation}
@@ -170,22 +194,30 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			\end{equation}						
 			But \textsc{OSCAR} depends on two tuning parameters: $c$ anf $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{LAR} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
 			Correlations are only implicitely taken into account and only pairwise. So it lacks of an efficient algorithm and need a supplementary study to interpret the groups found.
-	\section{Modeling the parameters}	
-		\subsection{CLERE: CLusterwise Effect REgression}
+	\section{Modeling the parameters}			% ne pas oublier de mentionner les packages existants
+
+		\subsection{CLERE: CLusterwise Effect REgression}		% ne pas oublier de mentionner les packages existants
+
 			\cite{yengo2012variable}%clere
 			The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independant random variables with grouped $\beta_j$ following a Gaussian Mixture distribution. The idea is to hope that the model have a small number of groups of covariates and that the mixture will have few enough components to have a number of parameters to estimate significantly lower than $p$. In such a case, it improves interpretability and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. 
 	
-		\subsection{Spike and Slab}	
+		\subsection{Spike and Slab}			% ne pas oublier de mentionner les packages existants
+
 			\cite{ishwaran2005spike}%spike and slab
 			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
-	\section{Multiple Equations}
-		\subsection{SEM and Path Analysis}
-		\subsection{SUR: Seemingly Unrelated Regression}
+	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
+
+		\subsection{SEM and Path Analysis}		% ne pas oublier de mentionner les packages existants
+
+		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
+
 			\cite{SURzellner}
-		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}
+		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}		% ne pas oublier de mentionner les packages existants
+
 			\cite{chiquetconf}			
 			
-		\subsection{Selvarclust: Linear regression within covariates for clustering}
+		\subsection{Selvarclust: Linear regression within covariates for clustering}		% ne pas oublier de mentionner les packages existants
+
 			\cite{maugis2009variable}
 			The idea is to allow covariates to have different roles : $(S,R,U,W)$.
 			But:
@@ -196,6 +228,18 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			\end{itemize}
 			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates tha	
 			We provide an specific MCMC algorithm with the ability to have redundant covariates in the true model.		 
+
+		\section{Choice of model}
+		% ne pas oublier de mentionner les packages existants
+			\subsection{Cross validation}
+			\subsection{BIC}
+			\subsection{stepwise}
+			\subsection{bootstrap}
+
+		\section{Industrial tools}
+			Linear regression, decision trees, bayesian networks, neural network but without confidence
+			Presence of softwares sent as non-statistical methods, based on rules (derivatives of decision trees).			
+			
 \part{Pretreatment for correlations}
 \chapter{Decorrelating covariates by a generative model}
 
