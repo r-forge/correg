@@ -19,21 +19,57 @@
 
 
 \chapter*{Résumé}
-	Les travaux effectués durant cette thèse ont pour but de pouvoir pallier le problème des corrélations au sein des bases de données, particulièrement fréquentes dans le cadre des données industrielles. Une modélisation explicite des corrélations par un système de sous-régressions entre covariables permet de pointer les sources des corrélations et d'isoler certaines variables redondantes. Il en découle une pré-sélection de variables nettement moins corrélées sans perte significative d'information et avec un fort potentiel explicatif (la préselection elle-même est expliquée par la structure de sous-régression qui simple à comprendre car uniquement constituée de modèles linéaires). Un algorithme de recherche de structure de sous-régressions est proposé, basé sur un modèle génératif complet sur les données et utilisant une chaîne MCMC (Monte-Carlo Markov Chain). Ce prétraitement est utilisé pour la régression linéaire à des fins illustratives mais ne dépend pas de la variable réponse et peut donc être utilisé de manière générale pour toute problématique de corrélations.\\
+	Les travaux effectués durant cette thèse ont pour but de pouvoir pallier le problème des corrélations au sein des bases de données, particulièrement fréquentes dans le cadre des données industrielles. Une modélisation explicite des corrélations par un système de sous-régressions entre covariables permet de pointer les sources des corrélations et d'isoler certaines variables redondantes. 
+	\\
 	
-	Par suite, le modèle génératif complet peut être utilisé pour gérer d'éventuelles valeurs manquantes dans les données, tant pour la recherche de structure que pour de l'imputation multiple préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. Encore une fois, la régression linéaire vient illustrer l'apport de la méthode qui reste cependant générique et applicable à d'autres contextes tels que le clustering.
+	Il en découle une pré-sélection de variables nettement moins corrélées sans perte significative d'information et avec un fort potentiel explicatif (la préselection elle-même est expliquée par la structure de sous-régression qui est simple à comprendre car uniquement constituée de modèles linéaires). \\
 	
-	Enfin, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter les variables redondantes de manière séquentiel et donc utiliser toute l'information sans souffrir des corrélations entre covariables.
+	Un algorithme de recherche de structure de sous-régressions est proposé, basé sur un modèle génératif complet sur les données et utilisant une chaîne MCMC (Monte-Carlo Markov Chain). Ce prétraitement est utilisé pour la régression linéaire à des fins illustratives mais ne dépend pas de la variable réponse et peut donc être utilisé de manière générale pour toute problématique de corrélations.\\
 	
-	Tout au long de ces travaux, l'accent est mis principalement sur l'interprétabilité des résultats en raison du caractère industriel du financement de cette thèse.
+	Par suite, le modèle génératif complet peut être utilisé pour gérer d'éventuelles valeurs manquantes dans les données, tant pour la recherche de structure que pour de l'imputation multiple préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. Cela permet également d'estimer les valeurs manquantes et de fournir un intervalle de confiance sur leur estimation.
+	Encore une fois, la régression linéaire vient illustrer l'apport de la méthode qui reste cependant générique et applicable à d'autres contextes tels que le clustering.
+	\\
+	
+	Enfin, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter les variables redondantes de manière séquentielle et donc utiliser toute l'information sans souffrir des corrélations entre covariables.
+	\\
+	
+	Tout au long de ces travaux, l'accent est mis principalement sur l'interprétabilité des résultats en raison du caractère industriel du financement de cette thèse. 
+\\	
+
+	Le package R intitulé CorReg, disponible sur le CRAN\footnote{http://cran.r-project.org} sous licence CeCILL\footnote{http://www.cecill.info}, implémente les méthodes développées durant cette thèse.
 	
 \paragraph{Mots clés:}Pré-traitement, Régression, Corrélations, Valeurs manquantes, MCMC, modèle génératif, Critère Bayésien, sélection de variable, méthode séquentielle.
 \chapter*{Abstract}
+	This thesis was motivated by correlation issues in real datasets, in particular industrial datasets. The main idea stands in explicit modeling of the correlations between covariates by a structure of sub-regression, that simply is a system of linear regression between the covariates. It points out redundant covariates that can be deleted in a pre-selection step to improve matrix conditonning without significant loss of information and with strong explicative potential because this pre-selection is explained by the structure of sub-regression, itself easy to interpret.
+	\\
+	
+	An algorithm to find the sub-regression structure inherent to the dataset is provided, based on full generative model and using Monte-Carlo Markov Chain (MCMC) method. This pretreatment is then illustrated on linear regression to show its efficiency but does not depend on a response variable and thus can be used in a more general way with any correlated datasets.
+	\\
+	
+	The generative model defined here allows to manage missing values both during the MCMC and then for imputation (for example multiple imputation) to be able to use classical methods that are not compatible with missing datasets. Missing values can be imputed with a confidence interval to show estimation accuracy. Once again, linear regression is used to illustrate the benefits of this method but it remains a pretreatment that can be used in other contexts, like clustering and so on.
+	\\ 
+	
+	Finally a plug-in estimator is defined to get back the redundant covariates sequentially. Then all the covariates are used but the sequential approach act as a protection against correlations.
+\\
 
+	The industrial motivation of this work define interpretation as a stronghold at each step. 	
+	
+	The R package CorReg, is on CRAN\footnote{http://cran.r-project.org} now under CeCILL\footnote{http://www.cecill.info} license. It implements the methods created during this thesis.
+	
+	 	
 \paragraph{Keywords:} Pretreatment,Regression, Correlations, Missing values, MCMC, generative model, Bayesian Criterion, variable selection,plug-in method,\dots
-\chapter*{Résumé substantiel}
-
+\chapter*{Résumé substantiel en français}
+	
 \chapter*{Acknowledgments}
+
+% ArcelorMittal pour le financement et la confiance
+
+% encadrants soutien moral technique patience
+
+% collègues inria soutien technique package
+
+% famille ?
+
 
 \tableofcontents
 
@@ -52,7 +88,14 @@
 	
 \chapter{State of the art}
 	\section{Industrial state of the art}
-			
+		This work takes place in steel industry and it implies some choices and directions.
+		Industrial context is often poor in statistical background and the stakes are frequently very high in terms of financial impact. 
+		These two points give strong constraints because methods used has to be accessible for non-statistician in a minimum amount of time and results obtained have to be clearly interpreated (no black-box) because if industrial experts don't understand the result, they will not trust it and then they will not use it. So a powerfull tool without interpretation becomes kind of useless in such a context.
+		
+		Every engineer, even non-statistician use frequently linear regression to seek relationship between some covariates. It is easy to understand, fast to do, it can be done directly in Microsoft Excel that remains the most used software in industry and the software used by engineers to open most of the datasets.
+		 
+		 Regression appears to be the basis of industrial statistics so we have chosen to work in this way. Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative. 
+		 It's simplicity facilitates a wide spread usage in industry and other applied fields.
 	\newpage
 	
 In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_p|)$.
