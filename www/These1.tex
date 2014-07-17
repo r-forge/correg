@@ -202,9 +202,8 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			\end{equation}						
 			But \textsc{OSCAR} depends on two tuning parameters: $c$ anf $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{LAR} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
 			Correlations are only implicitely taken into account and only pairwise. So it lacks of an efficient algorithm and need a supplementary study to interpret the groups found.
-			
-		\subsection{Graphical LASSO}
-			\cite{friedman2008sparse,witten2011new,tibshiranilasso,friedman2010applications}
+		
+		
 	\section{Modeling the parameters}			% ne pas oublier de mentionner les packages existants
 
 		\subsection{CLERE: CLusterwise Effect REgression}		% ne pas oublier de mentionner les packages existants
@@ -216,6 +215,27 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 
 			\cite{ishwaran2005spike}%spike and slab
 			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
+	\section{Miscellaneous}	
+	\subsection{Principal Component Regression}
+	\cite{jackson2005user}
+	\subsection{Partial Least Squares (PLS) Regression}
+	\cite{abdi2003partial,geladi1986partial}
+	\subsection{Non-parametric regression}
+	\cite{eubank1999nonparametric,hardle1990applied}
+		Non conforme aux exigences d'interprétabilité
+	\subsection{Sliced Inverse Regression}
+		It is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression. But it is not sufficient in terms of ease of use (after estimation) for non-statisticians.
+		\cite{li1991sliced,saracco1999regression}
+	\subsection{Neural networks}	
+		\cite{fausett1994fundamentals}
+		Non conforme aux exigences d'interprétabilité
+	\subsection{Bayesian networks}
+		\cite{heckerman1995learning,jensen2007bayesian,friedman2000using}
+		Bayesian networks are quite good in terms of interpretation but suffer from great dimension and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitely not suitable in our industrial context. 
+		
+\subsection{Graphical LASSO}
+			\cite{friedman2008sparse,witten2011new,tibshiranilasso,friedman2010applications}		
+		
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
 		
 		\subsection{SEM and Path Analysis}		% ne pas oublier de mentionner les packages existants
