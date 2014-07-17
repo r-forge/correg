@@ -235,7 +235,9 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			\subsection{BIC}
 			\subsection{stepwise}
 			\subsection{bootstrap}
-
+		\section{SEM}
+		\section{MCMC}
+		\section{Gibbs}
 		\section{Industrial tools}
 			Linear regression, decision trees, bayesian networks, neural network but without confidence
 			Presence of softwares sent as non-statistical methods, based on rules (derivatives of decision trees).			
@@ -333,7 +335,7 @@ Moreover, the uncrossing constraint (partition of $\boldsymbol{X}$) guarantee to
 
 	
 			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We just play on the traditional bias-variance tradeoff.
-			 
+\chapter{Numerical results with a known structure}			 
 	\section{Illustration of the tradeoff conveyed by the pre-treatment}	
 	We compare the OLS estimator on $\boldsymbol{X}$ defined in section \ref{sectionOLS} with the estimator obtained by the pre-treatment that is $\boldsymbol{X}_f$ selection.
   
@@ -390,7 +392,9 @@ It is clear in Figure \ref{MQE1} that the marginal model is more robust than \te
 We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))=0$.
  Thus, when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear). Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
 
-	
+	\section{Predictive efficiency}
+		Résultats comme dans l'article	mais sur vrai S	
+		
 \chapter{Estimation of the Structure of subregression by MCMC}
 \section{Sub-regressions model selection}	
 Structural equations models like \textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero. But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
@@ -473,6 +477,9 @@ When considering \ref{approxBIC} we see that uniform law on $P(S)$ gives $\psi(\
 	But $BIC$ tends to give too complex structures because we test a great range of models (known issue). Thus we choose to penalise the complexity a bit more. We don't want to modify the $BIC$ to keep its properties.
 	
 
+Bien insister sur le fait que BIC ne tient pas compte du nombre de modèles testés \cite{massart2007concentration}. 
+
+
 We have the explicit structure characterized by $S=\{I_f,I_r,p_f,p_r\}$, then we suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of the simple uniform law on $S$ that is generally used and provides no penalty.
 	 Thus we have :
 		\begin{eqnarray}
@@ -482,6 +489,9 @@ We have the explicit structure characterized by $S=\{I_f,I_r,p_f,p_r\}$, then we
 	this constraint on $\hat{p}_r$ and $\hat{p}_f^j$ is given in the research algorithm when the Hierarchical Uniform hypothesis is made instead of Uniform one in numerical experiments (section \ref{sectionsimul} and \ref{sectionrealcase}).
 		$BIC_+$ does not change $BIC$ but only $P(S)$ so the properties of $BIC_+$ are the same as classical $BIC$ but we obtain better results when the constraints on the complexity are verified.  %With the Hierarchical Uniform hypothesis we maximize $\psi(\boldsymbol{X},S)\approx BIC + P(S)$.
 
+Dénombrement des modèles réalisables
+Allusion à l'annexe qui dénombre les matrices binaires nilpotentes.
+Ajout de la formule du calcul du P(S) 
 %	 
 %	
 		\subsection{Some indicators for proximity}
@@ -499,10 +509,10 @@ We have the explicit structure characterized by $S=\{I_f,I_r,p_f,p_r\}$, then we
 		\subsection{Active relaxation of the constraints}
 	\section{The walk}
 	
-	\section{Numerical results on simulated datasets} \label{sectionsimul}
+	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 
 
-	\subsection{The datasets}	
+	\section{The datasets}	
 	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if \textsc{CorReg} 	keeps its promises.
 	The \textsc{CorReg} package has been tested on simulated datasets. 
 Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \ref{tableMSEsimtout} and \ref{tableMSEsimgauche} show the results obtained using only \textsc{CorReg}, or \textsc{CorReg} combined with other methods. Tables give both mean and standard deviation of the observed Mean Squared Errors (MSE) on a validation sample of $1 000$ individuals. For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$, variables in $\boldsymbol{X}_f$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $X_r$ don't have a greater variance or mean.
@@ -511,7 +521,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
 	We compare different methods with and without CorReg as a pretreatment. All the results are provided by the CorReg package.
 	
-		\subsection{Results on $\hat S$}	\label{compZ}
+		\section{Results on $\hat S$}	\label{compZ}
 
 
 \begin{figure}[h!]
@@ -531,9 +541,9 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 
 
 \clearpage
-\subsection{Results on prediction}\label{compY}
+\section{Results on prediction}\label{compY}
 
-\subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ (best case for us)}	 \label{tableMSEsimgauche}
+\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ (best case for us)}	 \label{tableMSEsimgauche}
 \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
 			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X1_MSE_NB.png} 
@@ -581,7 +591,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 \end{figure}
 
 \clearpage
-	\subsubsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
+	\subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
 We then try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
  
  
@@ -637,7 +647,7 @@ We see that CorReg tends to give more parsimonious models and better predictions
 
 
 \clearpage
-	\subsubsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$ (worst case for us)}	 \label{tableMSEsimgauche}
+	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$ (worst case for us)}	 \label{tableMSEsimgauche}
 We now try the method with a response depending only on variables in $\boldsymbol{X}_r$. The datasets used here were still those from \ref{compZvrai}.
 Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtain the true model when using the true structure. 
 
@@ -685,7 +695,147 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
    \end{minipage}
 \end{figure}
 
-\section{Numerical results on real datasets} \label{sectionrealcase}
+\chapter{Numerical results on real datasets} \label{sectionrealcase}
+	\section{Quality case study} \label{sectionexfos}
+This work takes place in steel industry context, with quality oriented objective : to understand and prevent quality problems on finished product, knowing the whole process. The correlations are strong here (many parameters of the whole process without any a priori and highly correlated because of physical laws, process rules, {\it etc.}). 
+		
+We have :
+		\begin{itemize}
+			\item a quality parameter (confidential) as response variable,
+			\item 205 variables from the whole process to explain it.
+		\end{itemize}
+
+\begin{figure}[h!]
+	\begin{minipage}[t]{.30\linewidth}
+			\includegraphics[height=150px,width=150px]{figures/res_article/nb_comp_X_exfo.png}%{figures/mixmod.png} 
+			\caption{Distribution of the number of components found for each covariate.}\label{graphMixmod}
+	\end{minipage} \hfill
+	\begin{minipage}[t]{.30\linewidth}
+			\includegraphics[height=150px, width=150px]{figures/res_article/gaussianmixture_exfo.png}%{figures/histR2exfos.png} $R^2_{adj}$ of the 76 sub-regressions.
+			\caption{Example of non-Gaussian real variable easily modeled by a Gaussian mixture.}
+	\end{minipage} \hfill
+   \begin{minipage}[t]{.30\linewidth}
+			\includegraphics[height=150px,width=150px]{figures/correlexfoshist.png} 
+			\caption{Histogram of correlations in $\boldsymbol{X}$.} \label{compareMSEexfos}
+   \end{minipage}
+\end{figure}   			
+	We get a training set of $n=3 000$ products described by $p=205$ variables from the industrial process and a validation sample of $847$ products.
+	Let's note $\rho$ the absolute value of correlations between two covariates. Industrial variables are naturally highly correlated as the width and the weight of a steel slab ($\rho=0.905$), the temperature before and after some tool ($\rho=0.983$), the  roughness of both faces of the product ($\rho= 0.919$), a mean and a max ($\rho=0.911$). 
+	
+	The objective here is not only to predict non-quality but to understand and then avoid it. CorReg provides an automatic method without any a priori and is combined with variable selection methods. So it allows to obtain in a small amount of time some indications on the source of the problem, and to use human resources efficiently. When quality crises occurs, time is extremely precious so automation is a real stake. The combinatorial aspect of the sub-regression models makes it impossible to do manually.
+		
+		
+		\begin{figure}[h!]
+		\centering
+			\includegraphics[height=150px, width=150px]{figures/histR2exfos.png} 
+			\caption{$R^2_{adj}$ of the 76 sub-regressions.}
+\end{figure} 
+		
+		
+	\textsc{CorReg} found the above correlations but it also found more complex structures describing physical models, like   Width = f (Mean flow , Mean speed) even if the true Physcial model is not linear : Width = flow / (speed * thickness) (here thickness is constant). Non-linear regulation models used to optimize the process were also found (but are confidential). These first results are easily understandable and meet metallurgists expertise.  Sub-regressions with small values of $R^2$ are associated with non-linear model (chemical kinetics for example).
+			The algorithm gives a structure of $p_r=76$ subregressions with a mean of $\bar{\boldsymbol{p}}_f=5.17$ regressors. In $\boldsymbol{X}_f$ the number of $\rho>0.7$ is $\textbf{79.33\%}$ smaller than in $\boldsymbol{X}$.		
+	\\
+	
+	
+			It is now time to look at the predictive results (Table \ref{Res_exfos}). We see that CorReg improves the results for each method tested in terms of prediction.
+			We get parsimonious models automatically in a small amount of time (several hours but able to work during the night or the week-end)
+%				The best model found when not using \textsc{CorReg} is given by the LASSO. But when using \textsc{CorReg} elasticnet produces a better model in terms of prediction. LASSO gives a model with 21 non-zero coefficients and elasticnet with \textsc{CorReg} gives a model with 40 non-zero parameters but $6.40\%$ better in prediction on the validation sample (847 products). $14$ non-zero coefficients are common between the two models.
+%				Elasticnet alone get a model with 78 parameters that is improved by $9.75\%$ in prediction when used with \textsc{CorReg}. When using LASSO with \textsc{CorReg} we obtain a model with 24 non-zero coefficients that is $4.11\%$ better than LASSO alone. We also computed the OLS model (without selection) and the naive one (estimating the response by the mean of the learning set). All the MSE were modified here to obtain a value of 100 for the best (to preserve confidentiality). Elasticnet with \textsc{CorReg} is $13.51\%$ better than OLS.
+%%		\begin{figure}[h]
+%			\centering
+%				\label{barplotMSEexfos}
+%				\includegraphics[width=430px]{figures/MSEfinal.png}
+%			\caption{MSE comparison on industrial dataset. Learning set : 3 000 products, validation set : 847 products}
+%		\end{figure}		
+
+		\begin{table}[h!]
+\centering
+\begin{tabular}{|c c|c|c|}
+	\hline 
+	Method& indicator& With CorReg & without CorReg \\ 
+	\hline 
+	OLS & MSE & 13.30 & 14.03 \\
+		& (complexity)& (130) & (206) \\
+	\hline
+	LASSO & MSE & 12.77 & 12.96 \\
+		& (complexity)& (24) & (21) \\
+	\hline
+	Elasticnet & MSE & \textbf{12.15} & 13.52 \\
+		& (complexity)& (40) & (78) \\
+	\hline
+	Ridge & MSE & 12.69 & 13.09 \\
+		& (complexity)& (130) & (206) \\
+	\hline
+\end{tabular} 
+\caption{Results obtained on a validation sample (847 individuals).}\label{Res_exfos}
+\end{table}
+
+
+		In terms of interpretation, the main regression comes with the family of regression so it gives a better understanding of the consequences of corrective actions on the whole process. It typically permits to determine the \textit{tuning parameters} whereas variable selection alone would point variables we can't directly act on.	So it becomes easier to take corrective actions on the process to reach the goal. The stakes are so important that even a little improvement leads to consequent benefits, and we don't even talk about the impact on the market shares that is even more important.
+		\FloatBarrier
+		\section{Production case study}
+This second example is about a phenomenon that impacts the productivity of a steel plant.
+We have:
+		\begin{itemize}
+			\item a (confidential)  response variable,
+			\item $p=145$ variables from the whole process to explain it but only $n=100$ individuals.
+			\item The stakes : $20\%$ of productivity to gain on a specific product with high added value.
+		\end{itemize}
+		
+		
+		\begin{figure}[h!]
+	\begin{minipage}[t]{.30\linewidth}
+			\includegraphics[height=150px,width=150px]{figures/nbcompBV.png}%{figures/mixmod.png} 
+			\caption{Distribution of the number of components found for each covariate.}\label{graphMixmod}
+	\end{minipage} \hfill
+	\begin{minipage}[t]{.30\linewidth}
+			\includegraphics[height=150px, width=150px]{figures/GMcriseBV.png}%{figures/histR2exfos.png} $R^2_{adj}$ of the 76 sub-regressions.
+			\caption{Another example of non-Gaussian real variable easily modeled by a Gaussian mixture.}
+	\end{minipage} \hfill
+   \begin{minipage}[t]{.30\linewidth}
+			\includegraphics[height=150px,width=150px]{figures/histcorrelBVBI.png} 
+			\caption{Histogram of correlations in $\boldsymbol{X}$.} \label{compareMSEexfos}
+   \end{minipage}
+\end{figure} 
+  		
+  			
+CorReg found 55 sub-regressions as shown in Figure \ref{R2bv}. One of them seems to be weak $R^2=0.17$ but is not linear (points out a link between diameter of a coil and some shape indicator).	
+
+\begin{figure}[h!]
+\centering
+	\includegraphics[height=150px, width=150px]{figures/R2corregBVBI.png} 
+			\caption{$R^2_{adj}$ of the 55 sub-regressions.}\label{R2bv}
+\end{figure}
+The response variable was binary but $n$ was too small compared to $p$ to use logistic regression so we have considered $\boldsymbol{Y}$ as a continuous variable and then made imputation by $1$ when $\hat{\boldsymbol{Y}}>0.5$ and by $0$ else.
+
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c c|c|c|}
+	\hline 
+	Method& indicator& With CorReg & without CorReg \\ 
+	\hline
+	OLS & well-classified & 100& 56 \\
+		& MSE (leave-one-out)& 1.95& 51 810\\
+		& complexity & 91& 100 \\
+	\hline 
+		LASSO & well-classified &93 &93 \\
+		& MSE (leave-one-out)& 0.106 & 0.120\\
+		& complexity & 27&34\\
+	\hline 
+		Elasticnet & well-classified &84 &87 \\
+		& MSE (leave-one-out)&0.140 &0.148\\
+		& complexity &10 &13\\
+	\hline 
+		Ridge & well-classified &88 &85 \\
+		& MSE (leave-one-out)& 0.179 & 0.177\\
+		& complexity &91 &146\\
+	\hline 
+\end{tabular} 
+\caption{Results obtained with leave-one out cross-validation. $n=100, p=145$.}	
+\end{table}
+
+In this precise case, \textsc{CorReg} found a structure that helped to decorrelate covariates in interpretation and to find the relevant part of the process to optimize. This product is made by a long process that requires several steel plants so it was necessary to point out the steel plant where the problem occurred.
 
 
 \part{Further usage of the structure}	
@@ -1270,6 +1420,16 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 	\chapter{Graphs and CorReg}
 		\section{Matricial notations}
 		\section{Properties}
+		Toute matrice binaire est associable à une matrice d'adjacence d'un graphe orienté (DAG)
+		
+		Matrice nilpotente = carré nul
+		
+		carré d'une matrice d'adjacence => chemins de longueur 2
+		
+		donc matrices binaires nilpotentes = graphes orientés sans chemins de longueur 2 donc celui qui reçoit n'emet pas donc graphe bi-partie
+		
+		dénombrement : liste systématique des possibilités (par décompostion comme dans la hiérarchie)		
+		
 	\chapter{Mixture models}
 		\section{Linear combination}
 			
