@@ -664,9 +664,9 @@ Ajout de la formule du calcul du P(S)
 		\subsection{Classical}
 		\subsection{Active relaxation of the constraints}
 	\section{The walk}
-
+		
 	\section{CorReg}	
-	
+		expliquer la grande diversité des paramétrages possibles et les sorties possibles.
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 
 
@@ -1359,7 +1359,7 @@ and we can use the same method as the one for classical case without missing val
 	where $Q$ is the number of iterations of the Gibbs sampler.
 	But to be faster, we use the previous Gibbs algorithm with:
 	\begin{eqnarray}
-	P(\boldsymbol{X}_O;\Theta, S, \boldsymbol{\alpha})&=& \frac{1}{Q} \sum_{q=1}^Q\frac{P(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},S)}{P(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},S)}
+	P(\boldsymbol{X}_O;\Theta, S, \boldsymbol{\alpha})&\approx & \frac{1}{Q} \sum_{q=1}^Q\frac{P(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},S)}{P(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},S)}
 	\end{eqnarray}	
 		
 \subsection{Alternative E step}
@@ -1449,11 +1449,15 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest. One great advantage of multiple draw procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. 
 		
 		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective for our method.
-	\section{Numerical results}
-		\subsection{Finding the structure}
-		\subsection{Efficiency for main regression}
+	\section{Numerical results on simulated datastets}
+		\subsection{Estimation of the sub-regression coefficients}
+		\subsection{Multiple imputation for the main regression}
 	\section{Missing values in real life}
-		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen,  
+		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same S and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
+		
+		To be able to evaluate imputation quality we work with a real dataset but artificial missing values.
+				
+		
 \chapter{Taking back the residuals}
 	We have seen that eviction of redundant covariates improves the results by a good trade-off between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back.
 	\section{The model}
