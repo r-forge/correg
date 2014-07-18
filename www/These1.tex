@@ -136,15 +136,19 @@
 			Richesse des types de régression et des méthodes d'estimation
 			On peut faire des choses plus pointues en adaptant un peu le modèle mais en conservant la simplicité : Multilevel Regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel}
 
-	
-In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_p|)$.
+
+
+
+\paragraph{Notations:}	
+In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_p|)$. Vectors are in bold characters.
 	\section{Ordinary least squares and associated problems}\label{sectionOLS}		% ne pas oublier de mentionner les packages existants
 
 We note the linear regression model:
 \begin{equation}
 		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon} \label{regressionsimple}
 	\end{equation}
-	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates), $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
+	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables,% (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates)
+	 $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
 	\begin{equation}
 		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaOLS}
 	\end{equation}
@@ -152,15 +156,31 @@ We note the linear regression model:
 	\begin{equation}
 		\operatorname{Var}(\hat{\boldsymbol{\beta}}_{OLS})=\sigma_Y^2\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1} \label{eqOLS}
 	\end{equation}
-	and without any bias.
-	Estimation of $\boldsymbol{\beta}$ requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
-Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects: the dimension $p$ (number of covariates) of the model (the more covariates you have the greater variance you get)
-	 and the correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
-	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
-	Another problem is that matrix inversion requires $n\geq p$.
-	When matrices are not invertible, classical packages like the function lm of R use generalized inverse regression \cite{PSP:2043984}	
+	and without any bias \cite{saporta2006probabilites,dodge2004analyse}. In fact it is the Best Linear Unbiased Estimator (BLUE).
+	\\
+	Equation \ref{regressionsimple}	has no intercept but can be generalized by adding to $\boldsymbol{X}$ a first column full of 1. So we don't consider the intercept to simplify notations. In practice, an intercept is added by default.
 	
-	Ajouter l'exemple et la courbe du MQE sur OLS seulement pour montrer l'explosion.
+	
+	Estimation of $\boldsymbol{\beta}$ requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
+For a fixed number $n$ of individuals, conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects: 
+\begin{itemize}
+	\item The dimension $p$ (number of covariates) of the model (the more covariates you have the greater variance you get)
+	\item The correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
+\end{itemize}
+	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
+	Another problem is that matrix inversion requires to have more individuals than covariates ($n\geq p$).
+	When matrices are not invertible, classical packages like the function lm of R use generalized inverse regression \cite{PSP:2043984}.
+		
+	
+\paragraph{Running example:} we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
+It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
+	
+	 \begin{figure}\label{MQEOLS}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEOLS.png}
+	  \caption{Evolution of theoretical Mean Squared error on $\hat{\boldsymbol{\beta}}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } 
+	\end{figure}
+	Many other estimation methods were created to obtain better estimations by playing on the bias/variance tradeoff or by making additionnal hypothesis.
 	\section{Penalized models}
 		\subsection{Ridge regression}		% ne pas oublier de mentionner les packages existants
 
@@ -308,9 +328,6 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 \paragraph{Abstract:} Nous modélisons explicitement les corrélations entre covariables par un système de régressions linéaires entre covariables. Cela permet une meilleure compréhension des données mais aussi une préselection de variables mettant de côté les variables redondantes pour réduire fortement les corrélations tout en ne perdant que peu d'information. La préselection prend un sens particulier grâce à la structure de sous-régression qui permet de distinguer par suite les variables indépendantes de la variable réponse de celles qui sont juste redondantes mais potentiellement liées à la variable réponse.
 \\
 
-\paragraph{Running example:} we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define another couple $\boldsymbol{x}_4,\boldsymbol{x}_5$ of covariates that are {\it i.i.d. } with $(\boldsymbol{x}_1,\boldsymbol{x}_2)$ and two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$ .
-It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
-	
 	
 \section{Our proposal: modelisation of the correlations}
 We make the hypothesis that $\boldsymbol{X}$ can be described by a partition $\boldsymbol{X}=(\boldsymbol{X}_f,\boldsymbol{X}_r) $ given by an explicit structure $S$ where variables in $\boldsymbol{X}_r$ are endogenous covariates resulting from linear sub-regressions based on $\boldsymbol{X}_f$, the submatrix of mutually independent exogenous covariates.
