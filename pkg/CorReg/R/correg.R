@@ -379,7 +379,6 @@ if(explnew){compl=TRUE;expl=TRUE}
       res$pred$AIC=mon_AIC(theta=res$pred$A,Y=Y,X=X,intercept=intercept) 
       
     }
-print("ok")
     #nouveau prédictif####
     if (prednew) {
        if(length(I2)<2 & select=="adalasso"){
