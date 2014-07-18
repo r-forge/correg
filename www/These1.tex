@@ -134,7 +134,7 @@
 			
 		\subsection{Flexibility and future of regression}
 			Richesse des types de régression et des méthodes d'estimation
-			Apparition des mélanges de régression
+			On peut faire des choses plus pointues en adaptant un peu le modèle mais en conservant la simplicité : Multilevel Regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel}
 
 	
 In the following we note classical norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_p|)$.
@@ -191,12 +191,11 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 
 		\subsection{Adaptive LASSO and Random LASSO}		% ne pas oublier de mentionner les packages existants
 
-			\cite{zou2006adaptive}% adaptive lasso
-			\cite{wang2011random}%random lasso
+			%\cite{zou2006adaptive}% adaptive lasso
+			%\cite{wang2011random}%random lasso
 			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptive \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But \textsc{LASSO} also faces consistency problems \cite{Zhao2006MSC} when confronted with correlated covariates.
 		\subsection{Elasticnet}		% ne pas oublier de mentionner les packages existants
 
-			\cite{zou2005regularization}
 			Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and the \textsc{LASSO}: 
 %	Given data set $(Y,X)$ and two parameters $(\lambda_1,\lamda_2)$, define artificial data set $(Y^*,X^*)$ by :
 %	\begin{equation}
@@ -224,12 +223,10 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 
 		\subsection{CLERE: CLusterwise Effect REgression}		% ne pas oublier de mentionner les packages existants
 
-			\cite{yengo2012variable}%clere
 			The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independant random variables with grouped $\beta_j$ following a Gaussian Mixture distribution. The idea is to hope that the model have a small number of groups of covariates and that the mixture will have few enough components to have a number of parameters to estimate significantly lower than $p$. In such a case, it improves interpretability and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. 
 	
 		\subsection{Spike and Slab}			% ne pas oublier de mentionner les packages existants
 
-			\cite{ishwaran2005spike}%spike and slab
 			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
 	\section{Miscellaneous}	
 	\subsection{Principal Component Regression}
