@@ -204,6 +204,13 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 	
 	
 	Many other estimation methods were created to obtain better estimations by playing on the bias/variance tradeoff or by making additionnal hypothesis.
+	To have an easier comparison, we also look at the empiric MSE obtained on $\hat{\boldsymbol{\beta}}$.
+		
+	
+	Image sur MSE réels
+	
+	
+	
 	\section{Penalized models}
 	
 	We have seen that OLS is the Best linear Unbiased Estimator for $\hat{\boldsymbol{\beta}}$, meaning that it has the minimum variance. But it remains possible to play with the bias/variance tradeoff to reduce the variance by adding some bias. The underlying idea is that a small bias and a small variance could be preferred to a huge variance without bias. Many methods do this by a penalization on  $\hat{\boldsymbol{\beta}}$.  Some of them propose an effective variable selection.
@@ -222,23 +229,27 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a biased esti
 		 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} -\lambda\boldsymbol{I}_n\right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaridge}
 	\end{equation}
 	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ is done for a given $\lambda$. Methods does exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called \textsc{ridge} is on CRAN \cite{packageridge}. 
+	We have computed the same experiment as in previous figure but with the ridge package instead of OLS. It is clear that the ridge regression is efficient in variance reduction (it is what it is built for).
+	
+	
 	
 	%It is the same for each covariates and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
 	Moreover, like OLS, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $p$. Ridge regression is efficient to improve conditionning of the estimator but gives no clue to the origin of ill-conditioning and keep irrelevant covariates. It remains a good candidate for prediction-only studies. 
-				
+	
 			
 		\subsection{LASSO: Least Absolute Shrinkage and Selection Operator }		% ne pas oublier de mentionner les packages existants
 
-			\cite{tibshiranilasso}  
-			\cite{tibshirani1996regression} 
-			\cite{efron2004least} %LAR
-			\cite{Zhao2006MSC}%problèmes du lasso/lars en correlations
+			%\cite{tibshiranilasso}  
+			%\cite{tibshirani1996regression} 
+			%\cite{efron2004least} %LAR
+			%\cite{Zhao2006MSC}%problèmes du lasso/lars en correlations
 			\cite{SAM10088}%lars necessite OLS en surcouche
-The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshirani1996regression}) consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty to obtain zeros in $\hat{\boldsymbol{\beta}}$:
+The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshirani1996regression,tibshiranilasso}) consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty to obtain zeros in $\hat{\boldsymbol{\beta}}$ instead of the $L_2$ penalty of the ridge regression:
 		\begin{equation}
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\boldsymbol{\beta} \parallel_1\leq \lambda \textrm{ with } \lambda>0
 		\end{equation}	
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates.
+		Here again we have to choose a value for $\lambda$.
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}.
 
 
 
