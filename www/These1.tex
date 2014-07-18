@@ -160,7 +160,18 @@ We note the linear regression model:
 	\\
 	Equation \ref{regressionsimple}	has no intercept but can be generalized by adding to $\boldsymbol{X}$ a first column full of 1. So we don't consider the intercept to simplify notations. In practice, an intercept is added by default.
 	
+	Ordinary Least Squares find a $p-$dimensional hyperplane that minimizes the distance with each individual $(\boldsymbol{X}_i,Y_i)$. It can be written
+	\begin{equation}
+		\boldsymbol{\hat{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace
+	\end{equation}
+	So estimation of $\boldsymbol{Y}$ by OLS can be viewed as a projection onto the linear space spanned by the regressors $\boldsymbol{X}$ as shown in figure \ref{geomOLS}.% that is in public domain\footnote{"OLS geometric interpretation" by Stpasha - Own work. Licensed under Public domain via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:OLS\_ geometric\_ interpretation.svg\#mediaviewer/File:OLS\_geometric\_interpretation.svg}.
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[width=250px]{figures/OLS_geometric_interpretation.png}
+	\caption{Multiple linear regression with Ordinary Least Squares. Public domain image.} \label{geomOLS}
+	\end{figure}
 	
+	%problème
 	Estimation of $\boldsymbol{\beta}$ requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
 For a fixed number $n$ of individuals, conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects: 
 \begin{itemize}
@@ -169,19 +180,31 @@ For a fixed number $n$ of individuals, conditionning of $\boldsymbol{X}'\boldsym
 \end{itemize}
 	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
 	Another problem is that matrix inversion requires to have more individuals than covariates ($n\geq p$).
-	When matrices are not invertible, classical packages like the function lm of R use generalized inverse regression \cite{PSP:2043984}.
+	When matrices are not invertible, classical packages like the function lm of R base package \cite{packagebase} use the Moore-Penrose pseudoinverse \cite{PSP:2043984} to generalize OLS.
 		
 	
 \paragraph{Running example:} we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
 It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
 	
-	 \begin{figure}\label{MQEOLS}
+	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEOLS.png}
-	  \caption{Evolution of theoretical Mean Squared error on $\hat{\boldsymbol{\beta}}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } 
+	  \caption{Evolution of theoretical Mean Squared error on $\hat{\boldsymbol{\beta}}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLS1}
 	\end{figure}
+	
+	Figure \ref{MQEOLS1} shows the theoretical MSE obtained on $\hat{\boldsymbol{\beta}}$ with OLS. These results are based on equation \ref{eqOLS}, we show the mean obtained after 100 experiences computed on our running example.
+	
+	The $R^2$ R-squared stands for:
+	\begin{equation}\label{defR2}
+	R^2=1-\frac{\sum_i (y_i - x_i\beta)^2}{\sum_i (y_i-\bar{y})^2}
+	\end{equation}
+	where $\bar{\boldsymbol{Y}}=\frac{1}{n}\sum_{i=1}^n y_i $
+	
+	
 	Many other estimation methods were created to obtain better estimations by playing on the bias/variance tradeoff or by making additionnal hypothesis.
 	\section{Penalized models}
+	
+	We have seen that OLS is the Best linear Unbiased Estimator for $\hat{\boldsymbol{\beta}}$, meaning that it has the minimum variance. But it remains possible to play with the bias/variance tradeoff to reduce the variance by adding some bias. The underlying idea is that a small bias and a small variance could be preferred to a huge variance without bias. Many methods do this by a penalization on  $\hat{\boldsymbol{\beta}}$.  Some of them propose an effective variable selection.
 		\subsection{Ridge regression}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{hoerl1970ridge}
@@ -190,7 +213,15 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a biased esti
 	\begin{equation}
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel \boldsymbol{\beta} \parallel_2^2\leq \lambda \textrm{ with } \lambda>0
 	\end{equation}
-	But this penalty is not guided by the correlations. It is the same for each covariates and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
+	But this penalty is not guided by the correlations. It introduce an additional parameter $\lambda$ to choose for the whole dataset  whereas correlations may concern only some of the covariates with several intensities.
+	
+	The solution of the ridge regression is given by
+	\begin{equation}
+		 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} -\lambda\boldsymbol{I}_n\right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaridge}
+	\end{equation}
+	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ is done for a given $\lambda$. Methods does exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called \textsc{ridge} is on CRAN \cite{packageridge}. 
+	
+	It is the same for each covariates and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
 	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $p$. 
 				
 			
