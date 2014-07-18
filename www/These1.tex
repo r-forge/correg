@@ -243,33 +243,52 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a biased esti
 			%\cite{tibshirani1996regression} 
 			%\cite{efron2004least} %LAR
 			%\cite{Zhao2006MSC}%problèmes du lasso/lars en correlations
-			\cite{SAM10088}%lars necessite OLS en surcouche
+			%\cite{SAM10088}%lars necessite OLS en surcouche
 The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshirani1996regression,tibshiranilasso}) consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty to obtain zeros in $\hat{\boldsymbol{\beta}}$ instead of the $L_2$ penalty of the ridge regression:
 		\begin{equation}
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\boldsymbol{\beta} \parallel_1\leq \lambda \textrm{ with } \lambda>0
 		\end{equation}	
+		
+		
+Mettre le dessin de la norme $L_1$ pour expliquer les 0 et le détailler		
+		
 		Here again we have to choose a value for $\lambda$.
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}.
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem.
 
 
-
-		\subsection{Adaptive LASSO and Random LASSO}		% ne pas oublier de mentionner les packages existants
+		% ne pas oublier de mentionner les packages existants
 
 			%\cite{zou2006adaptive}% adaptive lasso
 			%\cite{wang2011random}%random lasso
-			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptive \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But \textsc{LASSO} also faces consistency problems \cite{Zhao2006MSC} when confronted with correlated covariates.
+			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptive \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But the consistency issues remains because it is still the same model. Only the choices of $\lambda$ differ.
+			 
+			 It is notable that the main goal of the LASSO is to select some covariate, thus the penalization is just a mean to achieve selection. But estimation of $\hat{\boldsymbol{\beta}}$ can be improved by a second estimation with OLS based only on selected covariates \cite{SAM10088}.
+		\subsection{Least Angle Regression}
+			Schéma de la géométrie qui motive le nom de la méthode
+			
+			sortie graphique du package lars avec les chemins d'évolution des coefficients.
+			
+			Explication du choix par validation croisée et de la surcouche OLS
+			
+			Résultats comparatifs en modifiant le A du running example pour voir que validation croisée est mieux que le BIC dans ce cas là (au passage, prendre un cas non consistant).	 
+			 
 		\subsection{Elasticnet}		% ne pas oublier de mentionner les packages existants
 
-			Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and the \textsc{LASSO}: 
+			Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and the \textsc{LASSO} by mixing both $L_1$ and $L_2$ penalties: 
 %	Given data set $(Y,X)$ and two parameters $(\lambda_1,\lamda_2)$, define artificial data set $(Y^*,X^*)$ by :
 %	\begin{equation}
 %		X^*_{(n+p)\times p}=(1+\lambda_2)^{-1/2}\left( X  \sqrt{\lambda_2}I \right), \ \ \  Y^*_{(n+p)}=\left( Y 0 \right)
 %\end{equation}		
-	%Elastic net can be written:
+	%Elastic net can be writt"en:
 	\begin{equation}
 		\boldsymbol{\hat{\beta}}=(1+\lambda_2) \operatorname{argmin}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta} \parallel_2^2 \right\rbrace, \textrm{ subject to } (1-\alpha)\parallel\boldsymbol{\beta}\parallel_1+\alpha\parallel\boldsymbol{\beta}\parallel_2^2\leq t \textrm{ for some } t
 	\end{equation}
 	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
+	
+	
+Mettre le dessin de l'article fondateur qui montre le compromis des normes.	
+	
+	
 	%It seems to give good predictions. 
 	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. %Hence, when comparing the two models, interpretations are not the same and nothing explicitly explains why. So it can be very confusing. 
 		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression }		% ne pas oublier de mentionner les packages existants
@@ -280,6 +299,10 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 				\hat{\boldsymbol{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \parallel\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \parallel^2_2 \textrm{ subject to } \sum_{j=1}^p|\beta_j|+c\sum_{j<k}\operatorname{max}(|\beta_j|,|\beta_k|) \leq \lambda		
 			\end{equation}						
 			But \textsc{OSCAR} depends on two tuning parameters: $c$ anf $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{LAR} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
+			
+Mettre le dessin de l'octogone et le détailler.			
+			
+			
 			Correlations are only implicitely taken into account and only pairwise. So it lacks of an efficient algorithm and need a supplementary study to interpret the groups found.
 		
 		
@@ -292,6 +315,10 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		\subsection{Spike and Slab}			% ne pas oublier de mentionner les packages existants
 
 			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
+			
+Mettre un dessin du spike et du slab			
+			
+			
 	\section{Miscellaneous}	
 	\subsection{Principal Component Regression}
 	\cite{jackson2005user}
@@ -971,13 +998,24 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 
 \part{Further usage of the structure}	
 \chapter{Missing values}
+	\paragraph{Résumé:} Le modèle génératif complet sur les données nous permet d'obtenir la loi des valeurs manquantes. Mais nous pouvons aller encore plus loin car la modélisation explicite des corrélations nous permet d'obtenir les lois conditionnelles de chaque valeur manquante sachant les valeurs observées. Ce chapitre présente comment nous pouvons par un simple algorithme SEM estimer les paramètres des sous-régressions dans la chaîne MCMC de recherche de structure. Enfin, nous pouvons imputer les valeurs manquantes à l'aide d'un Gibbs qui procède par imputations multiples, fournissant au passage un indicateur de précision sur l'imputation proposée. 
+
+\section{Introduction}
 	Real datasets often have missing values and it is a very recurrent issue in industry. We note $\boldsymbol{M}$ the $n\times p$ binary matrix indicating whereas a value is missing (1) or not (0) in $\boldsymbol{X}$.
 	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{O}$ the observed values. $\Theta=\{\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
 	$\boldsymbol{\alpha}$ is the matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\ 
 			Here we suppose that missing values are Missing Completely At Random (MCAR). 
 	 Many methods does exist to manage such problems \cite{little1992regression} but they make approximation , add noise (imputation methods) or delete information (cutting methods).	
-\section{Some results on missing values and Gaussian mixtures}
-	\subsection{Decomposition of the integrated likelihood}
+	 
+Détailler les différents pattern de valeurs manquantes
+	 
+Detailler Les 6 types de méthodes	 
+	 
+	We have a full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates. So when a value is missing, we know its distribution but more than that, we know its conditional distribution based on observed values for the same individual. Thus we are able to make imputation and to describe the missing values with their conditional distribution. This is a positive side-effect of the explicit generative model on $\boldsymbol{X}$. 
+\section{Estimation of the sub-regressions with missing values}
+\subsection{The integrated likelihood}
+The first thing we do with $\boldsymbol{X}$ is to estimate S.
+	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients.
 We start with the complete likelihood of $\boldsymbol{X}$
 \begin{eqnarray}
 	L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{I_r}|\boldsymbol{X}_i^{I_f};\boldsymbol{\alpha},\Theta,S)f(\boldsymbol{X}_i^{I_f};\boldsymbol{\alpha},\Theta,S) \right] \\
@@ -1038,7 +1076,7 @@ To compute this likelihood, we will use the decomposition
 with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \notin I_r $:
 	 \begin{equation}
 	 f(x_{i,j};\boldsymbol{\alpha},\Theta,S)=\sum_{k=1}^{K_j}\pi_{j,k}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{likmissdroite}
-	 \end{equation} with $K_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated by Mixmod (for example) once before the MCMC starts. 
+	 \end{equation} with $K_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated once (for example by RMixmod \cite{packageRmixmod}) before the MCMC starts. 
 %	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 %	 \begin{equation}
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
@@ -1117,11 +1155,13 @@ $\forall j_1 \in I_r, j_2 \notin I_f^{j_1}\cup I_r \textrm{ with } M_{i,j_1}=M_{
 	\begin{equation}
 	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})= 0
 \end{equation}
-We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.
 	\subsection{Likelihood computation optimized}
-		The main problem with the likelihood in its global form (\ref{liklihoodmissglobal}) is that the number of components explodes so we can't use it in practice. But in many case, it can be simplified.
-		First, we can look if there are missing values shared by several sub-regression. We just need to compute the  row-sums of the adjacency matrix or to search for redundancy in $I_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^nM_{i,j}=0$ then we can use the simplified form of the likelihood given in (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
-		So the true value of the likelihood can be computed in most of cases but in the MCMC, it remains the possibility to have a structure with explosive likelihood expression when combined with the missing values. Then we propose in the package to use the simplified form of the likelihood, that can be seen as an approximation of the likelihood. Numerical results on simulated datasets will show if this approximation is effective.
+	The main problem with the likelihood in its global form (\ref{liklihoodmissglobal}) is that the number of components explodes so we can't use it in practice. But in many case, it can be simplified.
+We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.  Another strictly technical tip would be to use sparse matrix storage to avoid null value storage and useless zero multiplications.
+		Moreover, we can look if there are missing values shared by several sub-regression. 
+		Connex component detection could be done to reduce the dimension down to strictly dependent covariates and use \ref{Missingdensity} elsewhere.
+		We just need to compute the  row-sums of the adjacency matrix or to search for redundancy in $I_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^nM_{i,j}=0$ then we can use the simplified form of the likelihood given in (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
+		So the true value of the likelihood can be computed efficiently in most of cases but in the MCMC, it remains the possibility to have a structure with explosive likelihood expression when combined with the missing values and we need to compute the likelihood for a great number of candidates. Then it is possible to use directly the simplified form of the likelihood, that can be seen as an approximation of the likelihood, not taking into account some of the dependencies but it would offer no guarantee in terms of efficiency for the MCMC. %Numerical results on simulated datasets will show if this approximation is effective.
 
 %		In first approximation we can suppose independence between the sub-regression:
 %		\begin{equation}
@@ -1203,10 +1243,36 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 %\end{eqnarray}
 %
 %
-
+	\subsection{Weighted penalty}
+			Now we have defined the way to compute the likelihood, other questions remain : how to define the number of parameters in the structure ?		How to take into account missingness (structures relying on highly missing covariates should be penalized) ?
+			We have seen that for a same covariate $X^j$ with $ j \in I_r$, the number of parameters is not the same for each individual depending whether or not $M_{i,j}=0$. But the penalty (for $\psi=BIC$) can't be added at the individual level (because $\log(1)=0$ so it would be annihilated). 
+			
+			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate.
+			\begin{equation}
+			k_j=\frac{1}{n}\sum_{i=1}^nk_{i,j}
+\end{equation}						where $k_{i,j}$ is the number of parameter to estimate in $P(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$.
+			\begin{eqnarray}
+		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n) \\
+		&=& -2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+(\sum_{j=1}^pk_j)\log(n)
+	\end{eqnarray}
+			 Thus if a structure is only touched by one missing value the penalty will be smaller than another same shaped structure but with more missing values implied.
+			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Another idea would be to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
+		
+%	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
+%	
+			
+			In fact we have the same number of parameters to estimate with or without missing values but the problem is that some of the parameters are estimated based only on a portion of the individuals so each parameter has a different weight.
+			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$ so we need a new penalty term. The more intuitive way is to use a weighted penalty $\tilde{k}=\frac{1}{n}\sum_{i=1}^nk_i$ where $k_i$ is the number of parameter for the $i^{th}$ individual.
+	
 \section{SEM}
-	The likelihood depends on $\boldsymbol{\alpha}$ which was formerly estimated by OLS when there was no missing values.
-	Here we use a  Stochastic Expectation Maximization (SEM) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use OLS and  the log-likelihood (\ref{loglikmiss}) is not linear so a simple Expectation-Maximization (EM) would be difficult to compute.
+	The integrated likelihood depicted above depends on $\boldsymbol{\alpha}$ which was formerly estimated by OLS when there was no missing values. But when missing values occurs in a sub-regression we need another solution.
+	
+	\subsection{Brief Introduction to Stochastic Expectation-Maximization}	
+	We use a  Stochastic Expectation Maximization (SEM) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use OLS and  the log-likelihood (\ref{loglikmiss}) is not linear so a simple Expectation-Maximization (EM) would be difficult to compute.
+	
+ajouter article sur EM.	
+	
+	\subsection{Our implementation of SEM}
 	\paragraph{initialization:} We start with imputation by the mean for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by cutting method	(sparse structure) or using imputed values in $\boldsymbol{X}$.
 	At iteration $h$,
 	\paragraph{SE step:}
@@ -1231,7 +1297,8 @@ and we can use the same method as the one for classical case without missing val
 			We have $P(\boldsymbol{X}|Z)=\mathcal{N}(\boldsymbol{\mu}_{|Z},\boldsymbol{\Sigma}_{|Z})$. \\
 			$\forall x_{i,j} \in \boldsymbol{X}_M^{I_f}$:  $x_{i,j}$ is generated according to 
 			\begin{eqnarray}
-			P(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,S)&=&P(x_{i,j}|\boldsymbol{X}_{i,\bar{j}},Z_i;\boldsymbol{\alpha}^{(h)},\Theta,S)			\end{eqnarray}			
+			P(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,S)&=&P(x_{i,j}|\boldsymbol{X}_{i,\bar{j}},Z_i;\boldsymbol{\alpha}^{(h)},\Theta,S)			
+			\end{eqnarray}			
 			\begin{eqnarray}
 			=\mathcal{N}(\mu_{j|Z_{i,j}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}(X_{\bar{ij}}-\boldsymbol{\mu}_{X_{\bar{ij}}|Z_i}) ;  \sigma_{j|Z_{i,j}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}')
 			\end{eqnarray}		
@@ -1377,32 +1444,11 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 %			
 %			No imputation for missing left. Imputations for missing right are just used to obtain $\hat{\boldsymbol{\alpha}}$ but not when computing the $BIC$ or $BIC_+$.
 %			
-		\subsection{Weighted penalty}
-			Now we have defined the way to compute the likelihood, other questions remain : how to define the number of parameters in the structure ?		How to take into account missingness (structures relying on highly missing covariates should be penalized) ?
-			We have seen that for a same covariate $X^j$ with $ j \in I_r$, the number of parameters is not the same for each individual depending whether or not $M_{i,j}=0$. But the penalty (for $\psi=BIC$) can't be added at the individual level (because $\log(1)=0$ so it would be annihilated). 
-			
-			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate.
-			\begin{equation}
-			k_j=\frac{1}{n}\sum_{i=1}^nk_{i,j}
-\end{equation}						where $k_{i,j}$ is the number of parameter to estimate in $P(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$.
-			\begin{eqnarray}
-		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n) \\
-		&=& -2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+(\sum_{j=1}^pk_j)\log(n)
-	\end{eqnarray}
-			 Thus if a structure is only touched by one missing value the penalty will be smaller than another same shaped structure but with more missing values implied.
-			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Another idea would be to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
-		
-%	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
-%	
-			
-			\subsection{new criterion ?}		
-			In fact we have the same number of parameters to estimate with or without missing values but the problem is that some of the parameters are estimated based only on a portion of the individuals so each parameter has a different weight.
-			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$
 			
 	\section{Missing values in the main regression}
-		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest. One great advantage of multiple drow procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. 
+		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest. One great advantage of multiple draw procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. 
 		
-		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires a bit more reflexion but could be a good perspective for our method.
+		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective for our method.
 	\section{Numerical results}
 		\subsection{Finding the structure}
 		\subsection{Efficiency for main regression}
