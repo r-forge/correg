@@ -182,6 +182,8 @@ For a fixed number $n$ of individuals, conditionning of $\boldsymbol{X}'\boldsym
 	Another problem is that matrix inversion requires to have more individuals than covariates ($n\geq p$).
 	When matrices are not invertible, classical packages like the function lm of R base package \cite{packagebase} use the Moore-Penrose pseudoinverse \cite{PSP:2043984} to generalize OLS.
 		
+		
+	Last but not least, Ordinary Least Squares is unbiased but if some $\beta_i$ are null (irrelevant covariates) the corresponding $\hat{\beta}_i$ will only asymptotically tend to 0 so the number of covariates in the estimated model remains $p$. This is a major issue because we are searching for a statistical tool able to work without a priori on a big dataset containing many irrelevant datasets. Pointing out some relevant covariate and how they impact the response really is the main goal here. We will need a variable selection method one moment or another. It could be as a pretreatment, during coefficient estimation or by post-treatment.
 	
 \paragraph{Running example:} we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
 It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
@@ -221,8 +223,8 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a biased esti
 	\end{equation}
 	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ is done for a given $\lambda$. Methods does exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called \textsc{ridge} is on CRAN \cite{packageridge}. 
 	
-	It is the same for each covariates and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
-	Moreover, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $p$. 
+	%It is the same for each covariates and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
+	Moreover, like OLS, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $p$. Ridge regression is efficient to improve conditionning of the estimator but gives no clue to the origin of ill-conditioning and keep irrelevant covariates. It remains a good candidate for prediction-only studies. 
 				
 			
 		\subsection{LASSO: Least Absolute Shrinkage and Selection Operator }		% ne pas oublier de mentionner les packages existants
