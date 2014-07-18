@@ -59,7 +59,7 @@
 	 	
 \paragraph{Keywords:} Pretreatment, Regression, Correlations, Missing values, MCMC, generative model, Bayesian Criterion, variable selection, plug-in method,\dots
 \chapter*{Résumé substantiel en français}
-	
+	Combien de pages ? substantiel à quel point ?
 \chapter*{Acknowledgments}
 
 % ArcelorMittal pour le financement et la confiance
@@ -75,9 +75,26 @@
 
 \chapter{The industrial context}
 	\paragraph{Abstract:} Ce chapître explique les contraintes industrielles qui ont orienté les travaux pour répondre aux demandes d'ArcelorMittal qui est le commanditaire de ces travaux de recherche.
+\subsection{Steelmaking process}
+	This work takes place in a steel industry context.
+	Steelmaking starts from raw materials to give highly specific products.
+	
+	
+		
+	parler du process de manière  linéaire	
+	\begin{center}
+          \begin{tabular}{ccc}
+         \includegraphics[width=130px,height=130px]{figures/liquid.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame1.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame.jpg} \\
+          	\includegraphics[width=130px,height=130px]{figures/ecras_moy.jpg} &\includegraphics[width=130px,height=130px]{figures/tcc2.jpg} & \includegraphics[width=130px,height=130px]{figures/bobines.jpg}
+          \end{tabular}
+        \end{center}
+
+	faire remarquer la longueur du process et le nombre de paramètres.
+	Faire remarquer les corrélations
+	Conclure avec le côté innovant de la sidérurgie puis transition vers la recherche et donc vers la thèse
 
 	\subsection{Impact of the industrial context}
-	This work takes place in a steel industry context. The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we may have no idea of its origin. The defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process, each implying a whole manufactory. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates essentially depends on the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
+	 The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we may have no idea of its origin. The defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process, each implying a whole plant. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates essentially depends on the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
 	We have several constraints :
 	\begin{itemize}
 		\item To be able to predict the defect and stop the process as early as possible to gain time (and money)
@@ -87,15 +104,9 @@
 	\end{itemize}
 	We will see in the state of the art that correlations are a real issue and that the number of variables increases the problem.	
 	The stakes are very high because of the high productivity of the steel plants but also because steel making is now well-known and optimized thus new defects only appears on innovative steels with high value. Any improvement on such crisis can have important impact on the market shares and when the customer is implied, each day won by the automation of the data mining process can lead to a gain of hundreds of thousands of euros, sometimes more. So we really need a kind of automatic method, able to manage the correlations without any a priori and giving an easily understandable and flexible model.
-	\subsection{Steelmaking process}
-	\begin{center}
-          \begin{tabular}{ccc}
-         \includegraphics[width=130px,height=130px]{figures/liquid.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame1.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame.jpg} \\
-          	\includegraphics[width=130px,height=130px]{figures/ecras_moy.jpg} &\includegraphics[width=130px,height=130px]{figures/tcc2.jpg} & \includegraphics[width=130px,height=130px]{figures/bobines.jpg}
-          \end{tabular}
-        \end{center}
+	
 \chapter{State of the art}
-\paragraph{Abstract:} Rapide aperçu de ce qui existe pour tenter de répondre à notre problématique.
+\paragraph{Abstract:} Rapide aperçu de ce qui existe déjà pour tenter de répondre à notre problématique.
 	\section{Linear regression}
 		\subsection{Historic interest}
 			méthode ancienne et reconnue, remonte aux origines des statistiques, méthode pionnière en prédiction.
@@ -103,6 +114,8 @@
 			Facile à mettre en oeuvre théoriquement, rapide en pratique et présent partout (même dans Excel)
 			Très simple à interpréter, principe intuitif.
 			donne tout de suite l'impact des variables (positif ou négatif) sur la réponse et leur poids (si scaled dataset) 
+			
+			C'est ici qu'on peut mettre le principe de la régression linéaire (image d'un nuage de point et d'une droite qui le traverse)
 		\subsection{Industrial context}
 			Manque d'arriere plan statistique
 			besoin de comprendre pour corriger
@@ -115,8 +128,8 @@
 		
 		Every engineer, even non-statistician use frequently linear regression to seek relationship between some covariates. It is easy to understand, fast to do, it can be done directly in Microsoft Excel that remains the most used software in industry and the software used by engineers to open most of the datasets.
 		 
-		 Regression appears to be the basis of industrial statistics so we have chosen to work in this way. Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative. 
-		 It's simplicity facilitates a wide spread usage in industry and other applied fields.
+		 Regression appears to be the basis of industrial statistics so we have chosen to work in this way. As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative. 
+		 It's simplicity facilitates a wide spread usage in industry and other fields of application.
 			
 			
 		\subsection{Flexibility and future of regression}
@@ -133,7 +146,7 @@ We note the linear regression model:
 	\end{equation}
 	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates), $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
 	\begin{equation}
-		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}
+		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaOLS}
 	\end{equation}
 	with variance matrix
 	\begin{equation}
@@ -147,13 +160,13 @@ Conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects:
 	Another problem is that matrix inversion requires $n\geq p$.
 	When matrices are not invertible, classical packages like the function lm of R use generalized inverse regression \cite{PSP:2043984}	
 	
-	
+	Ajouter l'exemple et la courbe du MQE sur OLS seulement pour montrer l'explosion.
 	\section{Penalized models}
 		\subsection{Ridge regression}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{hoerl1970ridge}
 			%\cite{marquardt1975ridge}
-Ridge regression \cite{marquardt1975ridge} proposes a biased estimator that can be written in terms of a parametric $L_2$ penalty:
+Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a biased estimator for $\boldsymbol{\beta}$ that can be written in terms of a parametric $L_2$ penalty:
 	\begin{equation}
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel \boldsymbol{\beta} \parallel_2^2\leq \lambda \textrm{ with } \lambda>0
 	\end{equation}
@@ -229,12 +242,22 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	\subsection{Sliced Inverse Regression}
 		It is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression. But it is not sufficient in terms of ease of use (after estimation) for non-statisticians.
 		\cite{li1991sliced,saracco1999regression}
+	\subsection{General Linear Model (GLM)}
+		\cite{kiebel2003general,wickens2004general,nelder1972generalized,mccullagh1989generalized}
+		Generalise le modèle linéaire, assez classique dans les outils statistiques, mais pas assez immédiat en interprétation par rapport au modèle linéaire classique ou bien aux arbres de décision (transition vers la section suivante sur CART)
+\subsection{Classification and Regression Trees (CART)}
+		\cite{breiman1984classification}%\cite{quinlan1986induction} à vérifier
+		Bonne méthode pour l'industrie
+		Son problème principale est le cas linéaire... donc bon complément à notre modèle.
+		CorReg propose un outil de mise en oeuvre rapide et avec légendes ainsi qu'une fonctionnalité de sélection pour mieux analyser les problématiques de corrélations.		
+	
 	\subsection{Neural networks}	
 		\cite{fausett1994fundamentals}
 		Non conforme aux exigences d'interprétabilité
 	\subsection{Bayesian networks}
 		\cite{heckerman1995learning,jensen2007bayesian,friedman2000using}
 		Bayesian networks are quite good in terms of interpretation but suffer from great dimension and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitely not suitable in our industrial context. 
+		
 		
 \subsection{Graphical LASSO}
 			\cite{friedman2008sparse,witten2011new,tibshiranilasso,friedman2010applications}		
@@ -1442,7 +1465,7 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 	
 		\textsc{CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with \textsc{CorReg}.
 	\textsc{CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). %More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
-	The objective of CorReg is to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014 (probably using BERT). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). It will be
+	The objective of CorReg is to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). It will be
 	
 \chapter{Conclusion and perspectives}
 	\section{Conclusion}
@@ -1452,7 +1475,7 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 		
 	\section{Perspective}
 		\subsection{Non-linear regression}
-			Polynomial regression, logistic regression, {\it etc.} could be improved by a method like this.
+			Polynomial regression, logistic regression \cite{hosmer2000applied}, {\it etc.} could be improved by a method like this.
 		\subsection{Pretreatment not only for regression}
 			Classification and Regression Tree, and any other method could benefit of the variable selection pretreatment implied by our marginal model.
 		\subsection{Improved programming}
