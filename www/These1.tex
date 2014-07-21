@@ -661,12 +661,35 @@ Ajout de la formule du calcul du P(S)
 				\item $\Delta compl$ : the difference in complexity between both model : $\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
 			\end{itemize}
 	\section{Neighbourhood}
+	Let's define $\mathcal{S}$ the ensemble of feasible structures (those with $I_f\cap I_r=\emptyset$).
+	\\
+	For each step, starting from $S \in \mathcal{S}$ we define a neighbourhood:
+		\begin{eqnarray}
+		\mathcal{V}_{S}&=& \{S \}\cup \{ S^{(i,j)} |1\leq i \leq p, i\neq j  \} 
+	\end{eqnarray}	
+	where the $S^{(i,j)}$ are defined according to a strategy.
+
+On propose de limiter le voisinage à Sj (que l'on définit par la suite de plusieurs manières différentes selon les heuristiques choisies) afin, à chaque étape de se poser la question d'une modification de l'équation Xj sachant le reste .
+Cette modification peut aller dans le sens d'une modification des variables à droites, d'une création de sous-régression ou d'une suppression de sous-régression (bien detailler la suppression pour ne pas tomber dans le cas normal)
+	
 		\subsection{Classical}
+			\begin{eqnarray}
+		\mathcal{V}_{S,j}&=& \{S \}\cup \{ S^{(i,j)} |1\leq i \leq p, i\neq j  \} \\
+		\textrm{where }\ \ j &\sim & \mathcal{U}(\{1,\dots,p\}) 
+	\end{eqnarray}
+		sans relaxation on a des rejets (pour éviter les croisements, ou au moins les cycles)
 		\subsection{Active relaxation of the constraints}
+			LA relaxation : expliquer le concept de manière imagée puis en formule.			
+			
 	\section{The walk}
-		
+		Loi de tirage avec pondération par psi
+		possibilité de saut automatique (type MH) si meilleur ou non (attention à la conservation de la mélangeance)
 	\section{CorReg}	
 		expliquer la grande diversité des paramétrages possibles et les sorties possibles.
+montrer un exemple de courbe vraisemblance et complexité avec bic et un autre avec bic+ (même graine, même initialisation)
+faire pareil avec diverses stratégies (si ça montre quelque chose, ce qui sera le cas pour la relaxation : sauts de complexité vers le bas).
+
+		
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 
 
