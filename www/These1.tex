@@ -249,8 +249,14 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\boldsymbol{\beta} \parallel_1\leq \lambda \textrm{ with } \lambda>0
 		\end{equation}	
 		
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=500px]{figures/lassocircles.png} 
+			\caption{Geometric view of the Penalty}
+		\end{figure}
 		
-Mettre le dessin de la norme $L_1$ pour expliquer les 0 et le détailler		
+		
+détailler le graphique
 		
 		Here again we have to choose a value for $\lambda$.
 	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem.
@@ -286,12 +292,15 @@ Mettre le dessin de la norme $L_1$ pour expliquer les 0 et le détailler
 	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
 	
 	
-Mettre le dessin de l'article fondateur qui montre le compromis des normes.	
-	
+	\begin{figure}[h!]
+			\centering
+			\includegraphics[width=500px]{figures/elasticnetcircles.png} 
+			\caption{Geometric view of the Penalty}
+		\end{figure}	
 	
 	%It seems to give good predictions. 
 	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. %Hence, when comparing the two models, interpretations are not the same and nothing explicitly explains why. So it can be very confusing. 
-		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression }		% ne pas oublier de mentionner les packages existants
+		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{bondell2008simultaneous}%Oscar
 			Like elasticnet, \textsc{OSCAR} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect (by a pairwise $L_\infty$ norm) and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (implied by the $L_1$ norm).
@@ -300,7 +309,12 @@ Mettre le dessin de l'article fondateur qui montre le compromis des normes.
 			\end{equation}						
 			But \textsc{OSCAR} depends on two tuning parameters: $c$ anf $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{LAR} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
 			
-Mettre le dessin de l'octogone et le détailler.			
+\begin{figure}[h!]
+			\centering
+			\includegraphics[width=500px]{figures/oscarcircles.png} 
+			\caption{Geometric view of the Penalty}
+		\end{figure} 
+		détailler le graphique			
 			
 			
 			Correlations are only implicitely taken into account and only pairwise. So it lacks of an efficient algorithm and need a supplementary study to interpret the groups found.
@@ -464,36 +478,36 @@ We note $\boldsymbol{\alpha}$ the $(p-p_r)\times p_r$ matrix of the  $\boldsymbo
 	where \begin{equation}
 	{n \choose k}=\frac{n!}{k!(n-k)!}
 	\end{equation} is the binomial coefficient.\\
-	We have then $|\mathcal{S}_2| =3 $,$|\mathcal{S}_3| =13 $ and $|\mathcal{S}_10| >13.26\times10^9 $ so the number of feasible structures really explodes when $p$ is growing.
+	We have then $|\mathcal{S}_2| =3 $,$|\mathcal{S}_3| =13 $ and $|\mathcal{S}_{10}| >13.26\times10^9 $ so the number of feasible structures really explodes when $p$ is growing.
 
 \paragraph{In the running example:} $|\mathcal{S}_5| =841 $
  représentation graphique du graph
 	
 
 \section{A by-product model: marginal regression with decorrelated covariates}
-Now we know $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$ by the structure of sub-regressions, we are able to define a marginal regression model $P(\boldsymbol{Y}|\boldsymbol{X}_f,S)$ based on the reduced set of independent covariates $\hat{\boldsymbol{\beta}}_f$ without significant information loss. We use the information of the correlations structure to rewrite the true model without bias in the marginal space defined by the independent covariates.
+Now we know $P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S)$ by the structure of sub-regressions, we are able to define a marginal regression model $P(\boldsymbol{Y}|\boldsymbol{X}^{I_f},S)$ based on the reduced set of independent covariates $\hat{\boldsymbol{\beta}}_f$ without significant information loss. We use the information of the correlations structure to rewrite the true model without bias in the marginal space defined by the independent covariates.
  	\\
-Using the partition $\boldsymbol{X}=[\boldsymbol{X}_f,\boldsymbol{X}_r]$ we can rewrite (\ref{regressionsimple}):
+Using the partition $\boldsymbol{X}=[\boldsymbol{X}^{I_f},\boldsymbol{X}^{I_f}]$ we can rewrite (\ref{regressionsimple}):
 	\begin{equation}
-			\boldsymbol{Y}_{|\boldsymbol{X}_f,\boldsymbol{X}_r,S}=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon_Y} \label{MainR}
+			\boldsymbol{Y}_{|\boldsymbol{X}^{I_f},\boldsymbol{X}^{I_r},S}=\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon_Y} \label{MainR}
 		\end{equation}
-		where $\boldsymbol{\beta}=(\boldsymbol{\beta}_f,\boldsymbol{\beta}_r) \in  \mathcal{R}^p$ is the vector of the regression coefficients associated respectively to $\boldsymbol{X}_f$ and $\boldsymbol{I}_n$ the identity matrix. 
-We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\boldsymbol{X}_r$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X}_f$}:
+		where $\boldsymbol{\beta}=(\boldsymbol{\beta}_{I_f},\boldsymbol{\beta}_{I_r}) \in  \mathcal{R}^p$ is the vector of the regression coefficients associated respectively to $\boldsymbol{X}^{I_f}$ and $\boldsymbol{I}_n$ the identity matrix. 
+We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\boldsymbol{X}^{I_r}$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X}^{I_f}$}:
 \begin{eqnarray}
-		P(\boldsymbol{Y}|\boldsymbol{X}_f)&=& \int_{\boldsymbol{X}_r}P(\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f)P(\boldsymbol{X}_r|\boldsymbol{X}_f) d \boldsymbol{X} \\
-	\boldsymbol{Y}_{|\boldsymbol{X}_f,S}&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
-	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*\label{modexpl}
+		P(\boldsymbol{Y}|\boldsymbol{X}^{I_f})&=& \int_{\boldsymbol{X}^{I_r}}P(\boldsymbol{Y}|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f})P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f}) d \boldsymbol{X} \\
+	\boldsymbol{Y}_{|\boldsymbol{X}^{I_f},S}&=&\boldsymbol{X}^{I_f} (\boldsymbol{\beta}_{I_f}+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
+	&=&\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}^*+\boldsymbol{\varepsilon}_Y^*\label{modexpl}
 \end{eqnarray}
- This model is still the true model and OLS estimator will still give an unbiased estimator, but its variance will be reduced by both dimension reduction and decorrelation (variables in $\boldsymbol{X}_f$ are independent so the matrix $\boldsymbol{X}_f'\boldsymbol{X}_f$ will be well-conditioned). So the information given by the structure $S$ allows to reduce the variance without adding bias, by simple marginalization.
+ This model is still the true model and OLS estimator will still give an unbiased estimator, but its variance will be reduced by both dimension reduction and decorrelation (variables in $\boldsymbol{X}^{I_f}$ are independent so the matrix $\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f}$ will be well-conditioned). So the information given by the structure $S$ allows to reduce the variance without adding bias, by simple marginalization.
 \\
 Nevertheless, to be able to compare the bias-variance tradeoff, we can see this model as a variable pre-selection independent of the response in $\boldsymbol{Y}_{|\boldsymbol{X}}$.
-We note that it is simply a linear regression on some of the original covariates so we only made a pre-treatment on the dataset by selecting $\boldsymbol{X}_f$ because of the correlations given by $S$. So we also get the model
+We note that it is simply a linear regression on some of the original covariates so we only made a pre-treatment on the dataset by selecting $\boldsymbol{X}^{I_f}$ because of the correlations given by $S$. So we also get the model
 \begin{equation}
-\boldsymbol{Y}_{|\boldsymbol{X},S}=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_f^*,\boldsymbol{\beta}_r^*) \textrm{ and } \boldsymbol{\beta}_r^*=\boldsymbol{0}
+\boldsymbol{Y}_{|\boldsymbol{X},S}=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_{I_f}^*,\boldsymbol{\beta}_{I_r}^*) \textrm{ and } \boldsymbol{\beta}_{I_r}^*=\boldsymbol{0}
 \end{equation}
 	for which OLS estimator of the coefficients may be biased.  
 
-\paragraph{Running example:} $\boldsymbol{Y}_{|\boldsymbol{X}_f}= 2\boldsymbol{x}_1+2\boldsymbol{x}_2+\boldsymbol{x}_4+\boldsymbol{x}_5+\boldsymbol{\varepsilon}_3 +\boldsymbol{\varepsilon}_Y$
+\paragraph{Running example:} $\boldsymbol{Y}_{|\boldsymbol{X}^{I_f}}= 2\boldsymbol{x}_1+2\boldsymbol{x}_2+\boldsymbol{x}_4+\boldsymbol{x}_5+\boldsymbol{\varepsilon}_3 +\boldsymbol{\varepsilon}_Y$
 \section{Strategy of use: pre-treatment before classical estimation/selection methods}\label{interpretation}
 
 As a pre-treatment, the model allows usage of any method in a second time to estimate $\boldsymbol{\beta}_f^*$, even with variable selection methods like LASSO or a best subset algorithm like stepwise \cite{seber2012linear}. However, we always have $\boldsymbol{X}_r=\boldsymbol{0}$
@@ -778,18 +792,27 @@ The initial structure can be based on a first warming algorithm taking the corre
 			
 			 In the followings, the chain wzs launched with twenty initialisations each time.
 			
-		\subsection{The Graphical LASSO}
-		L'algorithme Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} est conçu pour construire des graphes non orientés creux , ce qui est un aspect de notre objectif. 
-		Mais il se base sur une hypothèse de famille exponentielle pour $\boldsymbol{X}$, car dans ce cas
-les $0$ de la matrice de précision $\Sigma ^-1$ correspondent au indépendances conditionnelles entre variables \cite{dempster1972covariance} (lien avec les corrélations partielles) .	Or, l'identifiabilité du modèle se base sur une hypothèse de mélange Gaussien qui ne sont pas de famille exponentielle.
-De plus le graphical Lasso ne fournit qu'un graphe non-orienté. Il faut alors définir une orientation qui corresponde à un graphe bi-parti $(\boldsymbol{X}_r,\boldsymbol{X}_f)$, ce qui revient à un algorithme de 2-coloration. De plus, trouver une orientation bi-parti nécessite l'absence de cycles de longueur impair (ce que ne garantit pas le graphical lasso).
-		Glasso est donc intéressant mais demanderait l'hypothèse de normalité et un algorithme d'orientation, le tout sans garantie d'aboutir à une structure (à moins de rompre les cycles impairs selon une heuristique par suppression d'un arc dans chaque cycle impair)
-	\section{CorReg}	
-		expliquer la grande diversité des paramétrages possibles et les sorties possibles.
+\section{CorReg}	
+		Expliquer la grande diversité des paramétrages possibles et les sorties possibles.
 montrer un exemple de courbe vraisemblance et complexité avec bic et un autre avec bic+ (même graine, même initialisation)
 faire pareil avec diverses stratégies (si ça montre quelque chose, ce qui sera le cas pour la relaxation : sauts de complexité vers le bas).
 	
 			possibilité de saut automatique (type MH) si meilleur ou non (attention à la conservation de la mélangeance)
+	\subsection{The Graphical LASSO}
+		L'algorithme Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} est conçu pour construire des graphes non orientés creux , ce qui est un aspect de notre objectif. 
+		Mais il se base sur une hypothèse de famille exponentielle pour $\boldsymbol{X}$, car dans ce cas
+les $0$ de la matrice de précision $\Sigma ^-1$ correspondent au indépendances conditionnelles entre variables \cite{dempster1972covariance} (lien avec les corrélations partielles) .	Or, l'identifiabilité du modèle se base sur une hypothèse de mélange Gaussien qui ne sont pas de famille exponentielle.
+De plus le graphical Lasso ne fournit qu'un graphe non-orienté. Il faut alors définir une orientation qui corresponde à un graphe bi-parti $(\boldsymbol{X}_r,\boldsymbol{X}_f)$, ce qui revient à un algorithme de 2-coloration. De plus, trouver une orientation bi-parti nécessite l'absence de cycles de longueur impair (ce que ne garantit pas le graphical lasso).
+		Glasso est donc intéressant mais demanderait l'hypothèse de normalité et un algorithme d'orientation, le tout sans garantie d'aboutir à une structure à moins de rompre les cycles impairs selon une heuristique par suppression d'un arc dans chaque cycle impair. Une heuristique possible serait alors de passer par l'arbre couvrant minimal \cite{graham1985history,moret1991empirical,gower1969minimum} (voir annexe).
+	\subsection{Pruning step}
+		If the complexity of $S$ remains too high, pruning methods can be used.
+		\subsubsection{Variable selection}
+			We can use variable selection methods like the LASSO to estimate the coefficient $\boldsymbol{\alpha}$ and obtain some supplementary zeros.
+			The complexity may be the same so it is not really a pruning method.
+		\subsubsection{$R^2$ thresholding }
+			We can define a minimal value for the $R^2$ of the sub-regression to maintain them in the final structure. But this minimal value would be totally arbitrary and we know that it is frequent to use linear regression with real datasets that only show a $R^2$ between $0.1$ and $0.2$. It is particularly true in social sciences.
+		\subsubsection{Test}
+			Another pruning method would be to delete sub-regression that offer a F-statistic under a minimal value.
 
 		
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
