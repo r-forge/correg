@@ -449,17 +449,17 @@ We note $\boldsymbol{\alpha}$ the $(p-p_r)\times p_r$ matrix of the  $\boldsymbo
 	We know (\cite{biggs1993algebraic})as a classical result of graph theory that the power of adjacency matrices give the paths in the graph: $\boldsymbol{G}^k_{i,j}\neq 0$ means that there is a path of length $k$ going from $\boldsymbol{X}^i$ to $\boldsymbol{X}^j$. Because the graph is bipartite and arcs are only going from $\boldsymbol{X}^{I_f}$ to $\boldsymbol{X}^{I_r}$ we can deduce that $\boldsymbol{G}$ is nilpotent: $\boldsymbol{G}^2=0$. And we have the following result: every binary nilpotent matrix of order 2 can be seen as an adjacency matrix of a structure that respects the uncrossing rule. proof by contradiction: if there exist a path of length 2 between some vertices $i$ and $j$ then $\boldsymbol{G}^2_{i,j}\neq 0$ so the matrix is not nilpotent of order 2. We can deduce that the number of feasible structure with $p$ covariates is the number of binary nilpotent matrix of order 2.
 	
 	We see that $\boldsymbol{G}$ completely describe $S$ and that the sparse storage of $G$ gives $I_f$ which is sufficient to obtain $S$ by doing $\forall 1\leq j\leq p :  p_f^j=|I_f^j|$, $I_r=\{j |p_f^j>0 \}$ and $p_r=|I_r|$.
-	This decomposition helps us to enumerate all the feasible structure (and thus all the binary nilpotent matrix of order 2).
+	This decomposition helps us to enumerate all the feasible structure (and thus all the binary nilpotent matrix of order 2).\\
 	We note $\mathcal{S}_p$ the set of the feasible structure with $p$ covariates. If we consider all the structure with equiprobability:
 	\begin{eqnarray}
 		S&=&\{I_f,I_r,\boldsymbol{p}_f,p_r\} \\
-		P(S)&=&P(I_f , \boldsymbol{p}_f|I_r,p_r)P(I_r,p_r) \\
-		&=&P(\boldsymbol{p}_f|I_f, I_r,p_r)P(I_f |I_r,p_r)P(I_r,p_r) \\
-		&=&P(I_f |I_r,p_r)P(I_r,p_r) \\
-		&=&\sum_{p_r=0}^{p-1}P(I_f |I_r,p_r)P(I_r|p_r)\\
-		P(I_r|p_r)&=& \frac{1}{{p \choose p_r}}\\
-		P(I_f|I_r,p_r)&=& \frac{1}{(2^{p-pr}-1)^{p_r}}\\
-		|\mathcal{S}_p|&=&\sum_{p_r=0}^{p-1}{p \choose p_r}(2^{p-pr}-1)^{p_r}
+		P(S|p_r)&=&P(I_f , \boldsymbol{p}_f|I_r,p_r)P(I_r|p_r) \\
+		&=&P(\boldsymbol{p}_f|I_f, I_r,p_r)P(I_f |I_r,p_r)P(I_r|p_r) \\
+		&=&P(I_f |I_r,p_r)P(I_r|p_r) \\
+		%&=&\sum_{p_r=0}^{p-1}P(I_f |I_r,p_r)P(I_r|p_r)\\
+		P(I_r|p_r)&=& \frac{1}{{p \choose p_r}} \\
+		P(I_f|I_r,p_r)&=& \frac{1}{(2^{p-p_r}-1)^{p_r}}\\
+		|\mathcal{S}_p|&=&\sum_{p_r=0}^{p-1}|\mathcal{S}_{p|p_r}|= \sum_{p_r=0}^{p-1}\frac{1}{P(S|p_r)} =\sum_{p_r=0}^{p-1}{p \choose p_r}(2^{p-p_r}-1)^{p_r}
 	\end{eqnarray}
 	where \begin{equation}
 	{n \choose k}=\frac{n!}{k!(n-k)!}
@@ -467,7 +467,7 @@ We note $\boldsymbol{\alpha}$ the $(p-p_r)\times p_r$ matrix of the  $\boldsymbo
 	We have then $|\mathcal{S}_2| =3 $,$|\mathcal{S}_3| =13 $ and $|\mathcal{S}_10| >13.26\times10^9 $ so the number of feasible structures really explodes when $p$ is growing.
 
 \paragraph{In the running example:} $|\mathcal{S}_5| =841 $
- représentation graphique
+ représentation graphique du graph
 	
 
 \section{A by-product model: marginal regression with decorrelated covariates}
