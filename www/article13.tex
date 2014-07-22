@@ -400,7 +400,7 @@ Numerical results (Section 4) illustrates the efficiency of the walk when the tr
  If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found and/or initial structure. So the model is really expert-friendly.
 The initial structure can be based on a first warming algorithm taking the correlations into account. Coefficients are randomly placed into $I_f$, weighted by the absolute value of the correlations. We do so in the followings. Then this structure could be for example reduced by the Hadamard product with the binary matrix obtained by Graphical Lasso\cite{friedman2008sparse} that makes selection in the precision matrix but it is time consuming.
 
-	One would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. It also helps to face local extrema. In the followings, the chain wzs launched with twenty initialisations each time.
+	One would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. It also helps to face local extrema. In the followings, the chain was launched with twenty initialisations each time.
 	
 \section{Numerical results on simulated datasets} \label{sectionsimul}
 	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. (see figure \ref{toutOLS}).
