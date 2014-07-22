@@ -347,9 +347,7 @@ Mettre un dessin du spike et du slab
 		Bayesian networks are quite good in terms of interpretation but suffer from great dimension and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitely not suitable in our industrial context. 
 		
 		
-\subsection{Graphical LASSO}
-			\cite{friedman2008sparse,witten2011new,tibshiranilasso,friedman2010applications}		
-		
+	
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
 		
 		\subsection{SEM and Path Analysis}		% ne pas oublier de mentionner les packages existants
@@ -684,11 +682,54 @@ Cette modification peut aller dans le sens d'une modification des variables à d
 	\section{The walk}
 		Loi de tirage avec pondération par psi
 		possibilité de saut automatique (type MH) si meilleur ou non (attention à la conservation de la mélangeance)
+		
+	\section{Initialization}
+		\subsection{Correlation-based initialisation}
+			We use a $p\times p$ matrix of weights that can be for example the matrix of the absolute values of the correlations of $\boldsymbol{X}$
+			
+			On constate que le BIC du modèle initial (correl) est souvent moins bon que celui du modèle vide.
+		On se demande alors s'il n'est pas préférable de partir du modèle vide.
+		On refait donc des simulations avec d'un côté, 10 initialisations selon les corrélations et de l'autre 10 initialisations sur le modèle vide ($Z=0$).
+		\begin{center}
+		\begin{figure}[h!]
+		\includegraphics[width=500px]{figures/pourc_meilleur_marelaxini.png} 
+		\caption{pourcentage de fois où chaque méthode est la meilleure, en fonction de l'avancement de la recherche}
+		\end{figure}		
+		\end{center}
+	
+	\begin{center}
+		\begin{figure}[h!]
+		\includegraphics[width=500px]{figures/courbes_BICmoyen_marelaxini.png} 
+		\caption{Evolution du BIC(on veut le minimiser au fil des étapes (moyenne sur les échantillons)}
+		\end{figure}
+	\end{center}
+	
+		\subsection{Multiple intialisation}	
+			On se demande enfin combien d'initialisations réaliser.
+		On compare donc ce qui arrive quand on change le nombre d'itérations.
+		Par définition, le modèle ayant le plus d'initialisations est meilleur ou égal aux autres (puisqu'il les contient).
+		On veut donc juste savoir s'il est significativement meilleur.	
+	
+	\begin{center}
+	\begin{figure}[h!]
+		\includegraphics[width=500px]{figures/courbes_BICmoyen_marelax_nbini.png} 
+		\caption{Evolution du BIC(on veut le minimiser au fil des étapes (moyenne sur les échantillons)}
+	\end{figure}
+	\end{center}
+			
+			
+			
+		\subsection{The Graphical LASSO}
+		L'algorithme Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} est conçu pour construire des graphes non orientés creux , ce qui est un aspect de notre objectif. 
+		Mais il se base sur une hypothèse de famille exponentielle pour $\boldsymbol{X}$, car dans ce cas
+les $0$ de la matrice de précision $\Sigma ^-1$ correspondent au indépendances conditionnelles entre variables \cite{dempster1972covariance} (lien avec les corrélations partielles) .	Or, l'identifiabilité du modèle se base sur une hypothèse de mélange Gaussien qui ne sont pas de famille exponentielle.
+De plus le graphical Lasso ne fournit qu'un graphe non-orienté. Il faut alors définir une orientation qui corresponde à un graphe bi-parti $(\boldsymbol{X}_r,\boldsymbol{X}_f)$, ce qui revient à un algorithme de 2-coloration. De plus, trouver une orientation bi-parti nécessite l'absence de cycles de longueur impair (ce que ne garantit pas le graphical lasso).
+		Glasso est donc intéressant mais demanderait l'hypothèse de normalité et un algorithme d'orientation, le tout sans garantie d'aboutir à une structure (à moins de rompre les cycles impairs selon une heuristique par suppression d'un arc dans chaque cycle impair)
 	\section{CorReg}	
 		expliquer la grande diversité des paramétrages possibles et les sorties possibles.
 montrer un exemple de courbe vraisemblance et complexité avec bic et un autre avec bic+ (même graine, même initialisation)
 faire pareil avec diverses stratégies (si ça montre quelque chose, ce qui sera le cas pour la relaxation : sauts de complexité vers le bas).
-
+	
 		
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 
@@ -1620,6 +1661,8 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 
 \addcontentsline{toc}{chapter}{References}
 \bibliographystyle{apalike}
+%\bibliographystyle{plain}
+\nocite{*}
 \bibliography{biblio}
 \addcontentsline{toc}{chapter}{Appendices}
 \appendix
