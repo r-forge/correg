@@ -611,14 +611,14 @@ But it is only the theoretical MSE and we want to know what happens in the real 
 		Faire avec vrai modèle= modèle complet puis X1 uniquement puis X2 uniquement puis aussi Amax=15 si p largement supérieur à 100
 \chapter{Estimation of the Structure of subregression by MCMC}\label{chapterMCMC}
 \paragraph{Abstract:} La structure de sous-régression est supposée inconnue. Il nous faut donc la trouver. Un algorithme de type MCMC est proposé pour résoudre cette problématique. La mise en oeuvre de celui-ciu passe par une modélisation complète du jeu de données et nous pousse à introduire un nouveau critère de choix de modèle tenant compte du nombre de modèles testés.
+\\
+\\
 
-
-
-\section{Sub-regressions model selection}	
+\section{Bayesian approach}
 Structural equations models like \textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero. But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
 
 Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $p_r$) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
-Because it is about model selection and we are able to provide a full generative model (section \ref{sectionfullgen}), we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
+Because it is about model selection, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
 	
 We want to find the most probable structure $S$ knowing the dataset, so we search for the structure that maximizes $P(S|\boldsymbol{X})$ and we have:	
 	\begin{eqnarray}
@@ -627,22 +627,16 @@ We want to find the most probable structure $S$ knowing the dataset, so we searc
 	\end{eqnarray}
 So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$.
 	
-	
-\section{Structure decomposition}
 
-
-	
-
+\section{Sub-regression structure in details}
 	\subsection{Modeling the uncorrelated covariates: a full generative approach on $P(\boldsymbol{X})$} \label{sectionfullgen}
-	To be able to compare structures with $P(S|\boldsymbol{X})$, we need a full generative model on $\boldsymbol{X}$. Sub-regressions give $P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S) $ but $P(\boldsymbol{X}^{I_f}|S)$ is still undefined. We suppose that variables in $\boldsymbol{X}_f$ follow Gaussian mixtures of $k_j \in \mathbf{N}^*$ components: 
+	To be able to compare structures with $P(S|\boldsymbol{X})$, we need a full generative model on $\boldsymbol{X}$. Sub-regressions give $P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S) $ but $P(\boldsymbol{X}^{I_f}|S)$ is still undefined. We suppose that variables in $\boldsymbol{X}_f$ follow Gaussian mixtures of $k_j >0$ components: 
 	\begin{equation}
 			\forall \boldsymbol{X}^j \notin \boldsymbol{X}^{I_r} : \boldsymbol{X}^j_{|S} \sim f(\boldsymbol{\theta}_j)=\mathcal{GM}(\boldsymbol{\pi}_j;\boldsymbol{\mu}_j;\boldsymbol{\sigma}^2_j) \textrm{ with } \boldsymbol{\pi}_j,\boldsymbol{\mu}_j,\boldsymbol{\sigma}^2_j \textrm{ vectors of size } K_j. \label{mixtureX1}
 		\end{equation}
-		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust. Gaussian case is just a special case ($K_j=1$) of Gaussian mixture so it is included in our hypothesis but identifiability of $S$ requires to have Gaussian mixtures with at least two distinct components in each sub-regression (derived from the identifiability of the SR model in \cite{maugis2009variable}, more details in the Appendices \ref{preuveident}).
+		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust. Gaussian case is just a special case ($K_j=1$) of Gaussian mixture so it is included in our hypothesis but identifiability of $S$ requires to have Gaussian mixtures with at least two distinct components in each sub-regression (derived from the identifiability of the SR model in \cite{maugis2009variable}, more details in section \ref{preuveident}).
 				
-		Remark:  Identifiability of $S$ is not necessary to use a given structure but helps to find it.
-
-		Variables in $\boldsymbol{X}$ are in the followings supposed to be independent Gaussian mixtures with at least two distinct components each. 
+		
 	%Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
 	We now have a full generative model.
 	
@@ -684,10 +678,13 @@ The theorem from Maugis guarantee that a sub-regression between Gaussian mixture
 		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
 		It implies then that: $\forall j \in I_r, \boldsymbol{X}^{j} \subset \boldsymbol{X}^G \textrm{ and } \exists i \in I_f^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  
 	
+\paragraph{Remark:} Identifiability of $S$ is not necessary to use a given structure but helps to find it.
 
+		Variables in $\boldsymbol{X}$ are in the followings supposed to be independent Gaussian mixtures with at least two distinct components each. 
 
-	\section{How to compare structures ?}
-		\subsection{Bayesian criterion for quality}
+\section{Sub-regression model selection}	
+
+			\subsection{Bayesian criterion for quality}
 		Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood of the joint law on $\boldsymbol{X}$ according to the complexity of the structure~\cite{BIChuard}. \\
 			 We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context.
 		In the followings we use the $BIC$.	
@@ -823,7 +820,7 @@ montrer un exemple de courbe vraisemblance et complexité avec bic et un autre a
 faire pareil avec diverses stratégies (si ça montre quelque chose, ce qui sera le cas pour la relaxation : sauts de complexité vers le bas).
 	
 			possibilité de saut automatique (type MH) si meilleur ou non (attention à la conservation de la mélangeance)
-	\subsection{The Graphical LASSO}
+	\subsection{The Graphical LASSO}\label{sectionGlasso}
 		L'algorithme Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} est conçu pour construire des graphes non orientés creux , ce qui est un aspect de notre objectif. 
 		Mais il se base sur une hypothèse de famille exponentielle pour $\boldsymbol{X}$, car dans ce cas
 les $0$ de la matrice de précision $\Sigma ^-1$ correspondent au indépendances conditionnelles entre variables \cite{dempster1972covariance} (lien avec les corrélations partielles) .	Or, l'identifiabilité du modèle se base sur une hypothèse de mélange Gaussien qui ne sont pas de famille exponentielle.
