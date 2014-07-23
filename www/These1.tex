@@ -157,6 +157,10 @@ We note the linear regression model:
 		\operatorname{Var}(\hat{\boldsymbol{\beta}}_{OLS})=\sigma_Y^2\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1} \label{eqOLS}
 	\end{equation}
 	and without any bias \cite{saporta2006probabilites,dodge2004analyse}. In fact it is the Best Linear Unbiased Estimator (BLUE).
+	The theoretical MSE is given by
+	\begin{equation}
+	E[\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})]= 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1})
+	\end{equation}
 	\\
 	Equation \ref{regressionsimple}	has no intercept but can be generalized by adding to $\boldsymbol{X}$ a first column full of 1. So we don't consider the intercept to simplify notations. In practice, an intercept is added by default.
 	
@@ -354,8 +358,8 @@ Mettre un dessin du spike et du slab
 		CorReg propose un outil de mise en oeuvre rapide et avec légendes ainsi qu'une fonctionnalité de sélection pour mieux analyser les problématiques de corrélations.		
 	
 	\subsection{Neural networks}	
-		\cite{fausett1994fundamentals}
-		Non conforme aux exigences d'interprétabilité
+		Neural networks \cite{fausett1994fundamentals} seems to be really powerful but it has a predictive only goal and the model obtained can't be interpreted easily (and can't be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes far behind.
+		
 	\subsection{Bayesian networks}
 		\cite{heckerman1995learning,jensen2007bayesian,friedman2000using}
 		Bayesian networks are quite good in terms of interpretation but suffer from great dimension and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitely not suitable in our industrial context. 
@@ -571,7 +575,7 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 			 \\
 			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})]&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_{I_r}\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}^{I_f'} \boldsymbol{X}^{I_f})^{-1})
 	\end{eqnarray}	 
-	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQE1} shows the theoretical MSE evolution with the strength of the sub-regression.
+	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQE1} shows the theoretical MSE evolution with the strength of the sub-regression. In this section, all experiences have been made 100 times to obtain smooth curves. So we have generated 100 times $\boldsymbol{X}$ and $\boldsymbol{Y}$
 %	\begin{equation}
 %		1-\mathcal{R}^2=\frac{\operatorname{Var}(\boldsymbol{\varepsilon)_3}}{\operatorname{Var}(\boldsymbol{x}_3)}=\frac{\sigma_3^2}{\sigma_3^2+2}
 %	\end{equation}
@@ -590,11 +594,16 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 %			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
 %   \end{minipage} 
 	\includegraphics[width=500px]{figures/MQEexplOLSp5col.png}\label{MQE1}
-	\caption{theoretical MSE on $\boldsymbol{\beta}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\caption{Theoretical MSE on $\boldsymbol{\beta}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
 It is clear in Figure \ref{MQE1} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($\mathcal{R}^2$ tends to 0) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
 We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))=0$.
- Thus, when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear). Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
+ Thus, when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear). 
+ 
+But it is only the theoretical MSE and we want to know what happens in the real life. So we look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$. Here again, each configuration is computed 100 times and we take the mean to smooth the curves. We first observe that real results are better from expected (Figure \ref{MQEreelOLS}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices. Our package CorReg also uses this decomposition. But our marginal model remains better for strong correlations.\\
+ 
+ 
+ Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
 	
 	\section{Predictive efficiency}
 		Résultats comme dans l'article	mais sur vrai S	
