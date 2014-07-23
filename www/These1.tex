@@ -455,7 +455,7 @@ We note $\boldsymbol{\alpha}$ the $(p-p_r)\times p_r$ matrix of the  $\boldsymbo
 \paragraph{In the running example:}$\boldsymbol{X}_r=\boldsymbol{x}_3$, $\boldsymbol{X}_f=\{\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5 \}$, $p_r=1$ and $\boldsymbol{\alpha}_3=(1,1,0,0)'$ and we have $S= \left( \{ \{1,2\}\},\{3\},(2),(1)\right)$
 
 
-\section{Graph theory}
+\section{Graph theory}\label{sectiongraph}
 	We can model $S$ by a Directed Acyclic Graph (DAG) whose vertices are the $p$ covariates and arcs are the link between them described by the adjacency matrix $\boldsymbol{G}$ \cite{bondy1976graph}. This adjacency matrix is a binary $p\times p$ matrix with $\boldsymbol{G}_{i,j}=1$ if and only if $i \in I_f^j$ that is $\boldsymbol{X}^j$ is explained by $\boldsymbol{X}^i$ and can also be seen as $\boldsymbol{\alpha}_i^j\neq 0$.
 	
 	Graphical representation of $S$ helps to understand it and can be compared to the bayesian network representation. It helps to interprete the structure has also been used to construct the algorithm to find $S$ (chapter \ref{chapterMCMC}).
@@ -610,12 +610,12 @@ But it is only the theoretical MSE and we want to know what happens in the real 
 		modèles avec beaucoup de variables (car rapide vu que pas de MCMC).
 		Faire avec vrai modèle= modèle complet puis X1 uniquement puis X2 uniquement puis aussi Amax=15 si p largement supérieur à 100
 \chapter{Estimation of the Structure of subregression by MCMC}\label{chapterMCMC}
-\paragraph{Abstract:} La structure de sous-régression est supposée inconnue. Il nous faut donc la trouver. Un algorithme de type MCMC est proposé pour résoudre cette problématique. La mise en oeuvre de celui-ciu passe par une modélisation complète du jeu de données et nous pousse à introduire un nouveau critère de choix de modèle tenant compte du nombre de modèles testés.
+\paragraph{Abstract:} La structure de sous-régression est supposée inconnue. Il nous faut donc la trouver. Un algorithme de type MCMC est proposé pour résoudre cette problématique. La mise en oeuvre de celui-ci passe par une modélisation complète du jeu de données et nous pousse à introduire un nouveau critère de choix de modèle tenant compte du nombre de modèles testés.
 \\
 \\
 
 \section{Bayesian approach}
-Structural equations models like \textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero. But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
+Structural equations models like \textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
 
 Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $p_r$) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
 Because it is about model selection, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
@@ -623,28 +623,27 @@ Because it is about model selection, we decide to follow a Bayesian approach (\c
 We want to find the most probable structure $S$ knowing the dataset, so we search for the structure that maximizes $P(S|\boldsymbol{X})$ and we have:	
 	\begin{eqnarray}
 	 \label{approxBIC} P(S|\boldsymbol{X})&\propto & P(\boldsymbol{X}|S)P(S)
-	=P(\boldsymbol{X}^{I_r}\boldsymbol{X}^{I_f},S)P(\boldsymbol{X}^{I_f}|S)P(S)
+	=P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S)P(\boldsymbol{X}^{I_f}|S)P(S)
 	\end{eqnarray}
 So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$.
 	
 
 \section{Sub-regression structure in details}
 	\subsection{Modeling the uncorrelated covariates: a full generative approach on $P(\boldsymbol{X})$} \label{sectionfullgen}
-	To be able to compare structures with $P(S|\boldsymbol{X})$, we need a full generative model on $\boldsymbol{X}$. Sub-regressions give $P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S) $ but $P(\boldsymbol{X}^{I_f}|S)$ is still undefined. We suppose that variables in $\boldsymbol{X}_f$ follow Gaussian mixtures of $k_j >0$ components: 
+	To be able to compare structures with $P(S|\boldsymbol{X})$, we need a full generative model on $\boldsymbol{X}$. Sub-regressions give $P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S) $ but $P(\boldsymbol{X}^{I_f}|S)$ is still undefined. We suppose that variables in $\boldsymbol{X}^{I_f}$ follow Gaussian mixtures of $K_j >0$ components: 
 	\begin{equation}
 			\forall \boldsymbol{X}^j \notin \boldsymbol{X}^{I_r} : \boldsymbol{X}^j_{|S} \sim f(\boldsymbol{\theta}_j)=\mathcal{GM}(\boldsymbol{\pi}_j;\boldsymbol{\mu}_j;\boldsymbol{\sigma}^2_j) \textrm{ with } \boldsymbol{\pi}_j,\boldsymbol{\mu}_j,\boldsymbol{\sigma}^2_j \textrm{ vectors of size } K_j. \label{mixtureX1}
 		\end{equation}
-		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust. Gaussian case is just a special case ($K_j=1$) of Gaussian mixture so it is included in our hypothesis but identifiability of $S$ requires to have Gaussian mixtures with at least two distinct components in each sub-regression (derived from the identifiability of the SR model in \cite{maugis2009variable}, more details in section \ref{preuveident}).
-				
+		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust. Gaussian case is just a special case ($K_j=1$) of Gaussian mixture so it is included in our hypothesis.
 		
 	%Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
-	We now have a full generative model.
+	We now have a full generative model on $\boldsymbol{X}$.
 	
 \subsection{Identifiability of the structure} \label{preuveident}
-	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure the MCMC will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
+	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
 	
-		If there are exact sub-regressions ($\sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. \textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
-	In the followings we suppose $\sigma^2_j\neq 0$, then $\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f}$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
+		If there are exact sub-regressions ($\exists j, \sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. \textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
+	In the followings we suppose $\forall j, \sigma^2_j\neq 0$, then $\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f}$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
 	\\
 	
 Our full generative model is a $p$-sized Gaussian mixture model of $K$ distinct components and 
@@ -653,12 +652,12 @@ Our full generative model is a $p$-sized Gaussian mixture model of $K$ distinct 
 %	\end{equation}	
 %	
 	can be seen as a $\mathbf{SR}$ model defined by Maugis \cite{maugis2009variable}. In this section, $S$ will denote the set of variable as in the paper from Maugis and we call Gaussian mixtures the Gaussian mixtures with at least two distinct components. The equivalence with Maugis's model is defined by:
-	$\boldsymbol{X}^{I_r}=\boldsymbol{y}^{S^c}$ and $\boldsymbol{X}^{I_f}=\boldsymbol{y}^R$. We have supposed independence between variables in $\boldsymbol{X}^{I_f}$ so the identifiability theorem from Maugis tells that our model is identifiable if variables in $\boldsymbol{X}^{I_f}$ are Gaussian mixtures (what we supposed in section \ref{sectionfullgen}).
+	$\boldsymbol{X}^{I_r}=\boldsymbol{y}^{S^c}$ and $\boldsymbol{X}^{I_f}=\boldsymbol{y}^R$. We have supposed independence between variables in $\boldsymbol{X}^{I_f}$ so the identifiability theorem from Maugis tells that our model is identifiable if variables in $\boldsymbol{X}^{I_f}$ are Gaussian mixtures.% (what we supposed in section \ref{sectionfullgen}).
 	\\
 	
 	
 %First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there must be at least one Gaussian mixture on the right of each sub-regression. 
-We define $\boldsymbol{X}^G \subsetneq \boldsymbol{X}^{I_f}$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
+We define $\boldsymbol{X}^G \subsetneq \boldsymbol{X}^{I_f}$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}^{I_f}$.
 We suppose that variables in $\boldsymbol{X}^{I_r}$ are all Gaussian mixtures. It implies that $\forall j  \in I_r,\exists i \in I_f^j $ so that $\boldsymbol{X}^i \subset \boldsymbol{X}^{G^c} $ since any linear combination of Gaussian variable would only give a Gaussian (so each sub-regression contain at least one Gaussian mixture as a regressor).
 \\
 	We introduce the matricial notation
@@ -676,52 +675,57 @@ The theorem from Maugis guarantee that a sub-regression between Gaussian mixture
 			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian.}  
 		\end{eqnarray}
 		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
-		It implies then that: $\forall j \in I_r, \boldsymbol{X}^{j} \subset \boldsymbol{X}^G \textrm{ and } \exists i \in I_f^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  
+		It implies then that: $\forall j \in I_r, \boldsymbol{X}^{j} $ is a Gaussian mixture and $\exists i \in I_f^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  
 	
 \paragraph{Remark:} Identifiability of $S$ is not necessary to use a given structure but helps to find it.
-
-		Variables in $\boldsymbol{X}$ are in the followings supposed to be independent Gaussian mixtures with at least two distinct components each. 
+In the followings, true $S$ is supposed to be identifiable (at least one Gaussian mixture in each sub-regression).
+		
 
 \section{Sub-regression model selection}	
 
 			\subsection{Bayesian criterion for quality}
 		Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood of the joint law on $\boldsymbol{X}$ according to the complexity of the structure~\cite{BIChuard}. \\
 			 We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context.
-		In the followings we use the $BIC$.	
+		In the followings we use the $BIC$, that is more classical.
 		\subsection{Penalization of the integrated likelihood by $P(S)$} \label{compstruct}
-When considering \ref{approxBIC} we see that uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a minimization of the $BIC$.
+When considering (\ref{approxBIC}) we see that uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a minimization of the $BIC$.
 	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model
 	\begin{eqnarray}
 		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)  
 	\end{eqnarray}
-	But $BIC$ tends to give too complex structures because we test a great range of models (known issue). Thus we choose to penalise the complexity a bit more. We don't want to modify the $BIC$ to keep its properties.
+	But $BIC$ tends to give too complex structures because we test a great range of models and the number of model compared is not taken into account\cite{massart2007concentration}. Thus we choose to penalise the complexity a bit more. We don't want to modify the $BIC$ to keep its properties.
 	
-
-Bien insister sur le fait que BIC ne tient pas compte du nombre de modèles testés \cite{massart2007concentration}. 
-
-
 We have the explicit structure characterized by $S=\{I_f,I_r,p_f,p_r\}$, then we suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of the simple uniform law on $S$ that is generally used and provides no penalty.
+It goes against the fact that the number of models with $p_r$ sub-regressions and the number of possible combination for each sub-regression depends on $p_r$ and thus provides distinct penalties according to the complexity. 
 	 Thus we have :
 		\begin{eqnarray}
 		BIC_+(X|S)&=&BIC(X|S) -\ln(P(S)) \label{Bicstar}
 	\end{eqnarray}		
-	It increases penalty on complexity for $p_r\leq\frac{p}{2}$ and $p_f^j\leq\frac{p}{2}$ . Hence %when using $BIC*$ 
+	The hierarchical uniform hypothesis gives:
+	\begin{eqnarray}
+	P(S)&=&P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r) \textrm{ with} \\
+	P(p_r)&=&\frac{1}{p} \\
+	P(I_r|p_r)&=& \frac{1}{ { p \choose p_r} }\\
+	P(\boldsymbol{p}_f|I_r,p_r)&=& \frac{1}{p_r \times \frac{1}{p-p_r}}=\frac{p-p_r}{p_r}\\
+	P(I_f | \boldsymbol{p}_f,I_r,p_r)&=&\frac{1}{\prod_{j \in I_r}{ p-p_r \choose p_f^j }}  
+	\end{eqnarray}
+	instead of $P(S)=\frac{1}{|\mathcal{S}_p|}$ as defined in section \ref{sectiongraph} for the classical uniform hypothesis.
+	It increases penalty on complexity for $p_r\leq\frac{p}{2}$ and $p_f^j\leq\frac{p}{2}$ because probability of a complex model is under-estimated. Hence %when using $BIC*$ 
 	this constraint on $\hat{p}_r$ and $\hat{p}_f^j$ is given in the research algorithm when the Hierarchical Uniform hypothesis is made instead of Uniform one in numerical experiments (section \ref{sectionsimul} and \ref{sectionrealcase}).
 		$BIC_+$ does not change $BIC$ but only $P(S)$ so the properties of $BIC_+$ are the same as classical $BIC$ but we obtain better results when the constraints on the complexity are verified.  %With the Hierarchical Uniform hypothesis we maximize $\psi(\boldsymbol{X},S)\approx BIC + P(S)$.
 
 
-Ajout de la formule du calcul du P(S) 
 %	 
 %	
 		\subsection{Some indicators for proximity}
 		The first criterion is $\psi(\boldsymbol{X},S)$ which is maximized in the MCMC. But in our case, it is estimated by the likelihood (see (\ref{approxBIC}))whose value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $S$ we define some indicators to compare the true model $S$ and the found one $\hat{S}$.
 			Global indicators :
 			\begin{itemize}
-				\item $TL$ (True left) : the number of found dependent variables that really are dependent $TL=|I_r\cap \hat{I}_r|$ 
-				\item $WL$ (Wrong left) : the number of found dependent variables that are not dependent $WL=|\hat{I}_r|-TL$
-				\item $ML$ (Missing left) : the number of really dependent variables not found $ML=|I_r|-TL$
-				\item $\Delta p_r$ : the gap between the number of sub-regression in both model : $\Delta p_r=|I_r|-|\hat{I}_r|$. The sign defines if $\hat{S}$ is too complex or too simple
-				\item $\Delta compl$ : the difference in complexity between both model : $\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
+				\item $TL$ (True left) : the number of found dependent variables that really are dependent\\ $TL=|I_r\cap \hat{I}_r|$ 
+				\item $WL$ (Wrong left) : the number of found dependent variables that are not dependent \\ $WL=|\hat{I}_r|-TL$
+				\item $ML$ (Missing left) : the number of really dependent variables not found\\ $ML=|I_r|-TL$
+				\item $\Delta p_r$ : the gap between the number of sub-regression in both model: \\ $\Delta p_r=|I_r|-|\hat{I}_r|$. The sign defines if $\hat{S}$ is too complex or too simple.
+				\item $\Delta compl$ : the difference in complexity between both model: \\$\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
 			\end{itemize}
 	\section{Neighbourhood}
 	Let's define $\mathcal{S}$ the ensemble of feasible structures (those with $I_f\cap I_r=\emptyset$).
