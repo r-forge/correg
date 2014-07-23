@@ -564,12 +564,12 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 		We see that the variance is reduced compared to OLS described in equation (\ref{eqOLS})(no correlations and smaller matrix give better conditioning ) for small values of $\sigma_j$ $i.e.$ strong correlations. So we play on the bias-variance tradeoff, reducing the variance by adding a bias. 				  
 		  
 		  
-	 The Mean Squared Error (\textsc{MSE}) on $\hat{\boldsymbol{\beta}}$ is:
+	 The theoretical Mean Squared Error (\textsc{MSE}) on $\hat{\boldsymbol{\beta}}$ is:
 	\begin{eqnarray}
-		\textsc{MSE}(\hat{\boldsymbol{\beta}}|\boldsymbol{X})&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}})) \\
-			\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})&=& 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}) %\textrm{ for OLS, and then for the marginal model:}
+		E[\textsc{MSE}(\hat{\boldsymbol{\beta}}|\boldsymbol{X})]&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}})) \\
+			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})]&=& 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}) %\textrm{ for OLS, and then for the marginal model:}
 			 \\
-			\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_{I_r}\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}^{I_f'} \boldsymbol{X}^{I_f})^{-1})
+			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})]&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_{I_r}\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}^{I_f'} \boldsymbol{X}^{I_f})^{-1})
 	\end{eqnarray}	 
 	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQE1} shows the theoretical MSE evolution with the strength of the sub-regression.
 %	\begin{equation}
@@ -590,15 +590,16 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 %			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
 %   \end{minipage} 
 	\includegraphics[width=500px]{figures/MQEexplOLSp5col.png}\label{MQE1}
-	\caption{MSE of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\caption{theoretical MSE on $\boldsymbol{\beta}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
 It is clear in Figure \ref{MQE1} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($\mathcal{R}^2$ tends to 0) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
 We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))=0$.
  Thus, when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear). Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
-
+	
 	\section{Predictive efficiency}
 		Résultats comme dans l'article	mais sur vrai S	
-		
+		modèles avec beaucoup de variables (car rapide vu que pas de MCMC).
+		Faire avec vrai modèle= modèle complet puis X1 uniquement puis X2 uniquement puis aussi Amax=15 si p largement supérieur à 100
 \chapter{Estimation of the Structure of subregression by MCMC}\label{chapterMCMC}
 \paragraph{Abstract:} La structure de sous-régression est supposée inconnue. Il nous faut donc la trouver. Un algorithme de type MCMC est proposé pour résoudre cette problématique. La mise en oeuvre de celui-ciu passe par une modélisation complète du jeu de données et nous pousse à introduire un nouveau critère de choix de modèle tenant compte du nombre de modèles testés.
 
