@@ -590,7 +590,7 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 %			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
 %   \end{minipage} 
 	\includegraphics[width=500px]{figures/MQEexplOLSp5col.png}\label{MQE1}
-	\caption{MSE of OLS (plain) and CorReg (dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\caption{MSE of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
 It is clear in Figure \ref{MQE1} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($\mathcal{R}^2$ tends to 0) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
 We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))=0$.
@@ -786,7 +786,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 	
 	\begin{center}
 		\begin{figure}[h!]
-		\includegraphics[width=500px]{figures/courbes_BICmoyen_marelaxini.png} 
+		\includegraphics[width=500px]{figures/typeinit.png} %mars 2013 analyse plan ini marelax
 		\caption{Evolution du BIC(on veut le minimiser au fil des étapes (moyenne sur les échantillons)}
 		\end{figure}
 	\end{center}
