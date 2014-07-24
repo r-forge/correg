@@ -59,7 +59,7 @@
 	 	
 \paragraph{Keywords:} Pretreatment, Regression, Correlations, Missing values, MCMC, generative model, Bayesian Criterion, variable selection, plug-in method,\dots
 \chapter*{Résumé substantiel en français}
-	Combien de pages ? substantiel à quel point ?
+	rassemble
 \chapter*{Acknowledgments}
 
 % ArcelorMittal pour le financement et la confiance
@@ -831,7 +831,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 	\begin{center}
 	\begin{figure}[h!]
 	\centering
-		\includegraphics[width=300px]{figures/courbes_BICmoyen_marelax_nbini.png} 
+		\includegraphics[width=400px]{figures/courbes_BICmoyen_marelax_nbinibis.png} 
 		\caption{Comparison of distinct number of correlation-based initialisations for the MCMC.}\label{nbini}
 	\end{figure}
 	\end{center}
@@ -846,7 +846,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 		\subsubsection{Test}
 			Another pruning method would be to delete sub-regression that offer a F-statistic under a minimal value.
 			 In the followings, the chain was launched with twenty initialisations each time, based on the correlation matrix.
-		\subsubsection{additional Cleaning steps}
+		\subsubsection{Additional cleaning steps}
 			Because the walk is not exhaustive, it does make sense to let the walk continue a few steps with neighbourhood containing only suppressions in the structure. The walk follows an ergodic chain thus it is just an heuristic change in the strategy with:
 			\begin{equation}
 				\mathcal{A}_q=\{(i,j)| i \in I_f^j \}
@@ -918,7 +918,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 \clearpage
 \section{Results on prediction}\label{compY}
 
-\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ (best case for us)}	 \label{tableMSEsimgauche}
+\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$ (best case for us)}	 \label{tableMSEsimgauche}
 \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
 			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X1_MSE_NB.png} 
@@ -1022,8 +1022,8 @@ We see that CorReg tends to give more parsimonious models and better predictions
 
 
 \clearpage
-	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$ (worst case for us)}	 \label{tableMSEsimgauche}
-We now try the method with a response depending only on variables in $\boldsymbol{X}_r$. The datasets used here were still those from \ref{compZvrai}.
+	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$ (worst case for us)}	 \label{tableMSEsimgauche}
+We now try the method with a response depending only on variables in $\boldsymbol{X}^{I_r}$. The datasets used here were still those from \ref{compZvrai}.
 Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtain the true model when using the true structure. 
 
  \begin{figure}[h!]
@@ -1108,7 +1108,7 @@ We have :
 		
 		
 	\textsc{CorReg} found the above correlations but it also found more complex structures describing physical models, like   Width = f (Mean flow , Mean speed) even if the true Physcial model is not linear : Width = flow / (speed * thickness) (here thickness is constant). Non-linear regulation models used to optimize the process were also found (but are confidential). These first results are easily understandable and meet metallurgists expertise.  Sub-regressions with small values of $R^2$ are associated with non-linear model (chemical kinetics for example).
-			The algorithm gives a structure of $p_r=76$ subregressions with a mean of $\bar{\boldsymbol{p}}_f=5.17$ regressors. In $\boldsymbol{X}_f$ the number of $\rho>0.7$ is $\textbf{79.33\%}$ smaller than in $\boldsymbol{X}$.		
+			The algorithm gives a structure of $p_r=76$ subregressions with a mean of $\bar{\boldsymbol{p}}_f=5.17$ regressors. In $\boldsymbol{X}^{I_f}$ the number of $\rho>0.7$ is $\textbf{79.33\%}$ smaller than in $\boldsymbol{X}$.		
 	\\
 	
 	
@@ -1224,10 +1224,10 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 			Here we suppose that missing values are Missing Completely At Random (MCAR). 
 	 Many methods does exist to manage such problems \cite{little1992regression} but they make approximation , add noise (imputation methods) or delete information (cutting methods).	
 	 
-Détailler les différents pattern de valeurs manquantes
-	 
-Detailler Les 6 types de méthodes	 
-	 
+%Détailler les différents pattern de valeurs manquantes
+%	 
+%Detailler Les 6 types de méthodes	 
+%	 
 	We have a full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates. So when a value is missing, we know its distribution but more than that, we know its conditional distribution based on observed values for the same individual. Thus we are able to make imputation and to describe the missing values with their conditional distribution. This is a positive side-effect of the explicit generative model on $\boldsymbol{X}$. 
 \section{Estimation of the sub-regressions with missing values}
 \subsection{The integrated likelihood}
@@ -1376,7 +1376,7 @@ $\forall j_1 \in I_r, j_2 \notin I_f^{j_1}\cup I_r \textrm{ with } M_{i,j_1}=M_{
 	The main problem with the likelihood in its global form (\ref{liklihoodmissglobal}) is that the number of components explodes so we can't use it in practice. But in many case, it can be simplified.
 We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.  Another strictly technical tip would be to use sparse matrix storage to avoid null value storage and useless zero multiplications.
 		Moreover, we can look if there are missing values shared by several sub-regression. 
-		Connex component detection could be done to reduce the dimension down to strictly dependent covariates and use \ref{Missingdensity} elsewhere.
+		Connex component detection could be done to reduce the dimension down to strictly dependent covariates and use equation (\ref{Missingdensity}) elsewhere.
 		We just need to compute the  row-sums of the adjacency matrix $G$ or to search for redundancy in $I_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^nM_{i,j}=0$ then we can use the simplified form of the likelihood given in (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
 		So the true value of the likelihood can be computed efficiently in most of cases but in the MCMC, it remains the possibility to have a structure with explosive likelihood expression when combined with the missing values and we need to compute the likelihood for a great number of candidates. Then it is possible to use directly the simplified form of the likelihood, that can be seen as an approximation of the likelihood, not taking into account some of the dependencies but it would offer no guarantee in terms of efficiency for the MCMC. %Numerical results on simulated datasets will show if this approximation is effective.
 
@@ -1473,24 +1473,21 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 		&=& -2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+(\sum_{j=1}^pk_j)\log(n)
 	\end{eqnarray}
 			 Thus if a structure is only touched by one missing value the penalty will be smaller than another same shaped structure but with more missing values implied.
-			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Another idea would be to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
+			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Or to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
 		
 %	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
 %	
 			
 			In fact we have the same number of parameters to estimate with or without missing values but the problem is that some of the parameters are estimated based only on a portion of the individuals so each parameter has a different weight.
-			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$ so we need a new penalty term. The more intuitive way is to use a weighted penalty $\tilde{k}=\frac{1}{n}\sum_{i=1}^nk_i$ where $k_i$ is the number of parameter for the $i^{th}$ individual.
+			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$ so our proposed penalty term is an intuitive way to use a weighted penalty.
 	
 \section{SEM}
 	The integrated likelihood depicted above depends on $\boldsymbol{\alpha}$ which was formerly estimated by OLS when there was no missing values. But when missing values occurs in a sub-regression we need another solution.
 	
-	\subsection{Brief Introduction to Stochastic Expectation-Maximization}	
 	We use a  Stochastic Expectation Maximization (SEM) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use OLS and  the log-likelihood (\ref{loglikmiss}) is not linear so a simple Expectation-Maximization (EM) would be difficult to compute.
-	
-ajouter article sur EM.	
-	
+		
 	\subsection{Our implementation of SEM}
-	\paragraph{initialization:} We start with imputation by the mean for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by cutting method	(sparse structure) or using imputed values in $\boldsymbol{X}$.
+	\paragraph{initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by cutting method	(sparse structure) or using imputed values in $\boldsymbol{X}$.
 	At iteration $h$,
 	\paragraph{SE step:}
 		We generate the missing values according to $P(\boldsymbol{X}_M|\boldsymbol{X}_O; \alpha^{(h)},\Theta,S)$, that is stochastic imputation.
@@ -1502,6 +1499,10 @@ ajouter article sur EM.
 and we can use the same method as the one for classical case without missing values (OLS, SUR, {\it etc.}).
 		We continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance). Then we make $m$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m$ last iterations.
 		
+		
+Another (faster but not optimal) way would be to only use the structure for $\boldsymbol{X}^{I_r}$ and use the distribution given by Mixmod for $\boldsymbol{X}^{I_f}$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
+
+
 	\subsection{Stochastic imputation by Gibbs sampling}
 		We use a Gibbs sampling method to generate the missing values at the SE step. $\boldsymbol{X}$ follows a multivariate Gaussian mixture with $K$ component and we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ is generated.
 		\paragraph{Initialisation:} all the $z_{i,j}$ are set to the first component (such an initialisation does not depend on $K$) and $\boldsymbol{X}_M$ are imputed by the marginal means.
@@ -1600,9 +1601,6 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 
 
 
-Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the distribution given by Mixmod for $\boldsymbol{X}^{I_f}$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
-
-
 %		\subsection{Estimation of the coefficients in each regression}
 %			Estimating the $\boldsymbol{\alpha}_j$  with missing values is just estimating independent regressions with missing values. We have seen in equation (\ref{Missingdensity}) that we know the expression of this density for a given the $\boldsymbol{\alpha}_j$. So it's just about maximizing the likelihood of this density on the $\boldsymbol{\alpha}_j$. This can be done with an Expectation-Maximization (EM) algorithm \cite{dempster1977maximum} or one of its extensions \cite{mclachlan2007algorithm}.
 %			
@@ -1696,66 +1694,69 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 			\boldsymbol{Y}= \boldsymbol{X}^{I_r}\boldsymbol{\beta}^* + \boldsymbol{\varepsilon}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
 		\end{equation}
 	\section{Interpretation and latent variables}
-			$\hat{\boldsymbol{\beta}}_{I_r}$ can be interpreted as the proper effect of $\boldsymbol{X}^{I_r}$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}^{I_r}$ that is independent from other covariates. Then if $\boldsymbol{X}^{I_r}$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}^{I_f}$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_{I_r}=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. But this latent variable is known to be independent of $\boldsymbol{X}^{I_f}$ and dependent of $\boldsymbol{X}^{I_r}$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}}$. Thus, it reveals latent variables.
+			$\hat{\boldsymbol{\beta}}_{I_r}$ can be interpreted as the proper effect of $\boldsymbol{X}^{I_r}$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}^{I_r}$ that is independent from other covariates. Then if $\boldsymbol{X}^{I_r}$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}^{I_f}$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_{I_r}=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}^{I_f}$ and dependent of $\boldsymbol{X}^{I_r}$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}}$. Thus, it can reveal some kinds of latent variables.
 			
 	
 \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}\label{MQE2}
-	\caption{MSE of OLS (plain red) and CorReg marginal(blue dashed) and CorReg full (green dotted) estimators for varying $(1-R^2)$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\caption{MSE of OLS (plain red) and CorReg marginal(blue dashed) and CorReg full (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure}	
 	
 	\section{Consistency}
 		\subsection{Consistency Issues}\label{consistency}
 		Consistency issues of the LASSO are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
 		We have taken the same example to show how our method is more consistent.
-		Here $p=3$ and $n=1000$.We define $\boldsymbol{X}_f,\boldsymbol{X}_r,\boldsymbol{\varepsilon}_Y,\boldsymbol{\varepsilon}_{X} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then $X_3=\frac{2}{3}X_1+\frac{2}{3}X_2+\frac{1}{3}\varepsilon_X$ and $Y=2X_1+3X_2+\varepsilon_Y$.
-		We compare consistencies of complete,explicative and predictive model with LASSO (and LAR) for selection.
-		It happens that the algorithm don't find the true structure but a permuted one so we also look at the results obtained with the true $S$ (but $\hat{B}$ is used) and with the structure found by the Markov chain after a few seconds.
+		Here $p=3$ and $n=1000$.\\
+		We define $\boldsymbol{X}^{I_f}, \boldsymbol{X}^{I_r}, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{X} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
+		$\boldsymbol{X}_3=\frac{2}{3}\boldsymbol{X}_1+\frac{2}{3}\boldsymbol{X}_2+\frac{1}{3}\boldsymbol{\varepsilon}_X$ and \\
+		$\boldsymbol{Y}=2\boldsymbol{X}_1+3\boldsymbol{X}_2+\boldsymbol{\varepsilon}_Y$.\\
+		We compare consistencies of complete, marginal and full plug-in model with LASSO (and LAR) for selection.
+		It happens that the algorithm don't find the true structure but a permuted one so we also look at the results obtained with the true $S$ (but $\hat{\boldsymbol{\alpha}}$ is used) and with the structure found by the Markov chain after a few seconds.
 		
-		True $S$ is found $340$ times on $1000$ tries.
+		True $S$ was found $340$ times on $1000$ tries (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
 		
 		\begin{table}[h!]
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & \textsc{CorReg} Explicative & \textsc{CorReg} Predictive \\ 
+		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO\\ 
 		\hline 
 		True $S$ &  1.006479 & \textbf{1.005468} & \textbf{1.006093} \\ 
 		\hline 
 		$\hat{Z}$ & \textbf{1.006479} & 1.884175 & 1.006517 \\ 
 		\hline 
 		\end{tabular} 
-		\caption{MSE observer on a validation sample (1000 individuals)}
+		\caption{MSE observed on a validation sample (1000 individuals)}
 		\end{table}
 
-		We observe as we hoped that explicative model is better when using true $S$ (coercing real zeros) and that explicative with $\hat{S}$ is penalized (coercing wrong coefficients to be zeros).
-		But the main point is that the predictive model stay better than the classical one whith the true $S$ and corrects enough the explicative model to follow the classical LASSO closely when using $\hat{S}$. 
+		We observe as we hoped that our marginal model is better when using true $S$ (coercing real zeros) and that marginal with $\hat{S}$ is penalized (coercing wrong coefficients to be zeros when true $S$ is not found).
+		But the main point is that the plug-in model stay better than the classical one with the true $S$ and corrects enough the marginal model to follow the classical LASSO closely when using $\hat{S}$. 
 		And when we look at the consistency :
 		\begin{table}[h!]	
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & Explicative & Predictive \\ 
+		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
 		\hline 
 		True $S$ &  0 & 1000 & 830 \\ 
 		\hline 
 		$\hat{S}$ & 0 & 340 & \textbf{621} \\ 
 		\hline 
 		\end{tabular} 
-		\caption{number of consistent model found ($Y$ depending on $X_1,X_2$ and only them) on $1000$ tries}
+		\caption{Number of consistent model found ($\boldsymbol{Y}$ depending on $\boldsymbol{X}_1,\boldsymbol{X}_2$ and only them) on $1000$ tries}
 		\end{table}				
 		
 		$299$ times on $1000$ tries, the predictive model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
 		
-		We also made the same experiment but with $X_1,X_2$ (and consequently $X_3$) following gaussian mixtures (to improve identifiability) randomly generated by our \textsc{CorReg} package for R. 
-		True $S$ is now found $714$ times on $1000$ tries \label{testidentifiable}. So it confirms that non-gaussian models are easier to identify.
+		We also made the same experiment but with $\boldsymbol{X}_1,\boldsymbol{X}_2$ (and consequently $\boldsymbol{X}_3$) following Gaussian mixtures (to improve identifiability) randomly generated by our CorReg package for R. 
+		True $S$ is now found $714$ times on $1000$ tries \label{testidentifiable}. So it confirms that Gaussian mixture models are easier to identify.
 		
 		
 		\begin{table}[h!]
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & Explicative & Predictive \\ 
+		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
 		\hline 
 		True $S$ &  1.571029 & \textbf{1.569559} & \textbf{1.570801} \\ 
 		\hline 
@@ -1770,14 +1771,14 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 		\centering	
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & Explicative & Predictive \\ 
+		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
 		\hline 
 		True $S$ &  0 & 1000 & 789 \\ 
 		\hline 
 		$\hat{S}$ & 0 & 714 & \textbf{608} \\ 
 		\hline 
 		\end{tabular} 
-		\caption{number of consistent model found ($Y$ depending on $X_1,X_2$ and only them) on $1000$ tries}
+		\caption{Number of consistent model found ($Y$ depending on $X_1,X_2$ and only them) on $1000$ tries}
 		\end{table}				
 				
 		
@@ -1790,7 +1791,7 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 	
 		\textsc{CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with \textsc{CorReg}.
 	\textsc{CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). %More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
-	The objective of CorReg is to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). It will be
+	The objective of CorReg is to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). 
 	
 \chapter{Conclusion and perspectives}
 	\section{Conclusion}
@@ -1817,23 +1818,23 @@ Another way is to only use the structure for $\boldsymbol{X}^{I_r}$ and use the 
 %\bibliographystyle{plain}
 \nocite{*}
 \bibliography{biblio}
-\addcontentsline{toc}{chapter}{Appendices}
-\appendix
-	\chapter{Graphs and CorReg}
-		\section{Matricial notations}
-		\section{Properties}
-		Toute matrice binaire est associable à une matrice d'adjacence d'un graphe orienté (DAG)
-		
-		Matrice nilpotente = carré nul
-		
-		carré d'une matrice d'adjacence => chemins de longueur 2
-		
-		donc matrices binaires nilpotentes = graphes orientés sans chemins de longueur 2 donc celui qui reçoit n'emet pas donc graphe bi-partie
-		
-		dénombrement : liste systématique des possibilités (par décompostion comme dans la hiérarchie)		
-		
-	\chapter{Mixture models}
-		\section{Linear combination}
-			
-		\section{Industrial examples}	
+%\addcontentsline{toc}{chapter}{Appendices}
+%\appendix
+%	\chapter{Graphs and CorReg}
+%		\section{Matricial notations}
+%		\section{Properties}
+%		Toute matrice binaire est associable à une matrice d'adjacence d'un graphe orienté (DAG)
+%		
+%		Matrice nilpotente = carré nul
+%		
+%		carré d'une matrice d'adjacence => chemins de longueur 2
+%		
+%		donc matrices binaires nilpotentes = graphes orientés sans chemins de longueur 2 donc celui qui reçoit n'emet pas donc graphe bi-partie
+%		
+%		dénombrement : liste systématique des possibilités (par décompostion comme dans la hiérarchie)		
+%		
+%	\chapter{Mixture models}
+%		\section{Linear combination}
+%			
+%		\section{Industrial examples}	
 \end{document}
