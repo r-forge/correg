@@ -625,7 +625,7 @@ We want to find the most probable structure $S$ knowing the dataset, so we searc
 	 \label{approxBIC} P(S|\boldsymbol{X})&\propto & P(\boldsymbol{X}|S)P(S)
 	=P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S)P(\boldsymbol{X}^{I_f}|S)P(S)
 	\end{eqnarray}
-So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$.
+So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$. It will be done with a Markov chain Monte-Carlo algorithm (MCMC).
 	
 
 \section{Sub-regression structure in details}
@@ -724,28 +724,37 @@ It goes against the fact that the number of models with $p_r$ sub-regressions an
 				\item $TL$ (True left) : the number of found dependent variables that really are dependent\\ $TL=|I_r\cap \hat{I}_r|$ 
 				\item $WL$ (Wrong left) : the number of found dependent variables that are not dependent \\ $WL=|\hat{I}_r|-TL$
 				\item $ML$ (Missing left) : the number of really dependent variables not found\\ $ML=|I_r|-TL$
-				\item $\Delta p_r$ : the gap between the number of sub-regression in both model: \\ $\Delta p_r=|I_r|-|\hat{I}_r|$. The sign defines if $\hat{S}$ is too complex or too simple.
+				\item $\Delta p_r$ : the gap between the number of sub-regression in both model: \\ $\Delta p_r=|I_r|-|\hat{I}_r|$. The sign defines if $\hat{S}$ is too complex or too simple compared to the true model
 				\item $\Delta compl$ : the difference in complexity between both model: \\$\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
 			\end{itemize}
+			
+			
+			
 	\section{Neighbourhood}
-	Let's define $\mathcal{S}$ the ensemble of feasible structures (those with $I_f\cap I_r=\emptyset$).
+	We note $\mathcal{S}_p$ the ensemble of feasible structures of size $p$ (those uncrossed, {\it i.e.} with $I_f\cap I_r=\emptyset$).
 	\\
-	For each step, starting from $S \in \mathcal{S}$ we define a neighbourhood:
+	For each step $q$, starting from $S \in \mathcal{S}_p$ we define a neighbourhood:
 		\begin{eqnarray}
-		\mathcal{V}_{S}&=& \{S \}\cup \{ S^{(i,j)} |1\leq i \leq p, i\neq j  \} 
+		\mathcal{V}_{S}&=& \{S \}\cup \{ S^{(i,j)} |(i,j) \in \mathcal{A}_q\}\cap{\mathcal{S}_p} 
 	\end{eqnarray}	
-	where the $(i,j)$ are defined according to a strategy.
+	where $\mathcal{A}_q$ is a set of arcs to modify (add or remove) in the associated graph, defined according to a strategy.
 	And we have for  given $S$ and $(i,j)$:
 	\begin{itemize}
-		\item if $i \in I_f^j$ then we remove $i$ from $I_f^j$
+		\item if $i \in I_f^j$ then we remove $i$ from $I_f^j$ (arc removal)
 		\item else we had $i$ in $I_f^j$
 	\end{itemize} 
 	Then coherence between $I_f$ and others parts of $S$ is done by $\forall 1\leq j\leq p :  p_f^j=|I_f^j|$, $I_r=\{j |p_f^j>0 \}$ and $p_r= |I_r|$.
 	
-	We see that
+In the adjacency matrix we just do: $G_{i,j}=1-G_{i,j}$. 
+The main advantage of such a neighbourhood is that increasing and decreasing complexities are tested at each step without arbitrary ratio. If we just look at the sub-regression system, we have to choose for each sub-regression if we add, remove or keep covariates and we also have to choose if we had or delete some sub-regression. Adjacency matrix makes the neighbourhood extremely natural.
 
 		\subsection{Strategy}
-		
+			Many strategies can be imagined. First, we can decide to keep the local $\hat{S}$ in the neighbourhood or not, that is allowing or not stationarity. Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $\psi(\boldsymbol{X},S)$ so it is not an evidence to allow or not stationarity. Our package CorReg give the user the choice with stationarity allowed by default.
+			
+
+		The only constraint on $\mathcal{A}_q$ is that $\forall (i,j) \in \mathcal{A}_q, i\neq j$			
+			
+			
 			On propose de limiter le voisinage à Sj (que l'on définit par la suite de plusieurs manières différentes selon les heuristiques choisies) afin, à chaque étape de se poser la question d'une modification de l'équation Xj sachant le reste .
 		\subsection{Classical reject}
 			\begin{eqnarray}
