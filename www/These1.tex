@@ -746,33 +746,44 @@ It goes against the fact that the number of models with $p_r$ sub-regressions an
 	Then coherence between $I_f$ and others parts of $S$ is done by $\forall 1\leq j\leq p :  p_f^j=|I_f^j|$, $I_r=\{j |p_f^j>0 \}$ and $p_r= |I_r|$.
 	
 In the adjacency matrix we just do: $G_{i,j}=1-G_{i,j}$. 
-The main advantage of such a neighbourhood is that increasing and decreasing complexities are tested at each step without arbitrary ratio. If we just look at the sub-regression system, we have to choose for each sub-regression if we add, remove or keep covariates and we also have to choose if we had or delete some sub-regression. Adjacency matrix makes the neighbourhood extremely natural.
+The main advantage of such a neighbourhood is that increasing and decreasing complexities are tested at each step without arbitrary ratio. If we just look at the sub-regression system, we have to choose for each sub-regression if we add, remove or keep covariates and we also have to choose if we had or delete some sub-regression. Adjacency matrix makes the neighbourhood extremely natural with just the modification of a value in a binary matrix.
 
 		\subsection{Strategy}
-			Many strategies can be imagined. First, we can decide to keep the local $\hat{S}$ in the neighbourhood or not, that is allowing or not stationarity. Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $\psi(\boldsymbol{X},S)$ so it is not an evidence to allow or not stationarity. Our package CorReg give the user the choice with stationarity allowed by default.
+			Many strategies can be imagined. First, we can decide to keep the local $\hat{S}$ in the neighbourhood or not, that is allowing or not stationarity. Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $\psi(\boldsymbol{X},S)$ so it is not an evidence to allow or not stationarity. Our package CorReg give the user the choice with stationarity,  included in the neighbourhood by default.
 			
 
 		The only constraint on $\mathcal{A}_q$ is that $\forall (i,j) \in \mathcal{A}_q, i\neq j$			
 			
-			
-			On propose de limiter le voisinage à Sj (que l'on définit par la suite de plusieurs manières différentes selon les heuristiques choisies) afin, à chaque étape de se poser la question d'une modification de l'équation Xj sachant le reste .
-		\subsection{Classical reject}
-			\begin{eqnarray}
-		\mathcal{V}_{S,j}&=& \{S \}\cup \{ S^{(i,j)} |1\leq i \leq p, i\neq j  \} \\
-		\textrm{where }\ \ j &\sim & \mathcal{U}(\{1,\dots,p\}) 
-	\end{eqnarray}
-		sans relaxation on a des rejets (pour éviter les croisements, ou au moins les cycles)
+		We propose, for step $q$ to draw $j$ from $\mathcal{U}(\{1,\dots,p\})$ and then 
+		\begin{equation}
+			\mathcal{A}_{q|j}=\{ (i,j)|i \neq j \}
+		\end{equation}
+			Such a strategy can be interpreted as the uniform choice of a sub-regression to modify followed by the proposal of each possible unary change.
+			Our package CorReg let the user choose many other strategies like a fixed number of random couples $(i,j)$, or the union of the $j^th$ line and column of $G$.
 		\subsection{Active relaxation of the constraints}
-			LA relaxation : expliquer le concept de manière imagée puis en formule.			
+		We have defined the neighbourhood with an intersection with $\mathcal{S}_p$. 
+		In practice, for some of the $(i,j) \in \mathcal{A}_q$, we have $S^{(i,j)}\notin \mathcal{S}_p$. Such candidates are basically rejected so the number of candidates is not constant at each step. Moreover, complex structures reduce the size of the potential neighbourhood because of the uncrossing rule. 
+		Thus we propose a relaxation method by a new definition of $S^{(i,j)}$:
+	\begin{itemize}
+		\item if $i \notin I_f^j$ (add): 
+			\begin{itemize}
+				\item $I_f^j=I_f^j\cup \{i\}$
+				\item $I_f^i=\emptyset$ (explicative variables can't depend on others : column-wise relaxation)
+				\item $I_f=I_f \setminus \{j\}$ (dependent variables can't explain others : row-wise relaxation) 
+			\end{itemize}			 
+		\item else (remove): $I_f^j=I_f^j\setminus \{i\}$
+	\end{itemize}
+	It can be seen as forcing the modification by deleting what would make the structure not feasible. So in one step we can test a model that remove completely a sub-regression, remove the explicative role of a covariate in all sub-regression and create a new pairwise sub-regression. It drastically increases the scope of the neighbourhood and guarantee to allways have the same number of candidates during the MCMC. It can be compared to simulated annealing that sometimes proposes exotic candidates to avoid local extrema, but here without any temperature to set. Here again, the neighbourhood remains natural, without arbitrary parameters to tune. 
+
 			
 	\section{The walk}
-		
-The walk follows a time-homogeneous Markov Chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}|$ rows and columns (combinatory so we just compute the probabilities when we need them).
-	At each step the markov chain moves with probability:
+		Once we have a neighbourhood, we have to choose a candidate for the next step.
+The walk follows a time-homogeneous Markov Chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}_p|$ rows and columns (combinatory so we just compute the probabilities when we need them).
+	At each step the Markov chain moves with probability:
 	\begin{eqnarray}
 			\forall (S,\tilde{S}) \in \mathcal{S}^2 : \mathcal{P}(S,\tilde{S})&=&\sum_{j=1}^p \mathbf{1}_{ \{\tilde{S}\in \mathcal{V}_{S,j}\} }\frac{\exp(-\frac{1}{2}\psi(\boldsymbol{X},\tilde{S}))}{\sum_{S_l\in \mathcal{V}_{S,j}}\exp(-\frac{1}{2}\psi(\boldsymbol{X},S_l))} 
 	\end{eqnarray}
-	And $\mathcal{S}$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
+	And $\mathcal{S}_p$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
 	 
 Because the walk follows a regular and thus ergodic markov chain with a finite state space, it has exactly one stationary distribution \cite{grinstead1997introduction} %: $\pi$ and every rows of $\operatorname{lim}_{k\rightarrow \infty}\mathcal{P}^k=W$ equals $\pi$.
 %	
@@ -784,7 +795,8 @@ Because the walk follows a regular and thus ergodic markov chain with a finite s
 %		\pi (S) &=&\sum_{\tilde{S}\in \mathcal{S}} \pi(\tilde{S})\mathcal{P}(\tilde{S},S) \\%définition de la lois stationnaire
 %	\end{eqnarray}
 %		
-and the output will be the best structure in terms of $P(S|\boldsymbol{X})$ which weights each candidate. Practically speaking, \textsc{CorReg} returns the best structure seen during the walk (even if the corresponding candidate has never been chosen).
+and the output will be the best structure in terms of $P(S|\boldsymbol{X})$ which weights each candidate. Practically speaking, \textsc{CorReg} returns the best structure seen during the walk (even if the corresponding candidate has never been chosen). The package also give the local structure when the walk stops so user can relaunch the algorithm from the same point if he wants to go further.
+The main criterion to stop the walk is a maximum number of iteration but CorReg can also stop the walk after a given number of step on the best model found.
 Numerical results (Section 4) illustrates the efficiency of the walk when the true model contains structures with various strength (Figure \ref{reshatZ}) and an example with a non-linear structure (Figure \ref{resnonlin}).
 		
 		
@@ -793,39 +805,38 @@ Numerical results (Section 4) illustrates the efficiency of the walk when the tr
 		\subsection{Correlation-based initialization}
 		 If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found and/or initial structure. So the model is really expert-friendly.
 The initial structure can be based on a first warming algorithm taking the correlations into account. Coefficients are randomly placed into $I_f$, according to a Bernoulli draw weighted by the absolute value of the correlations and with respect to the uncrossing constraint. Uncrossing constraint will not allow some strong correlation to be taken into account according to the order of the Bernoulli drawing so we can draw with a random order or by ordering by descending correlations. 
+		
+		We note that the $BIC$ associated to initial model is often better than the $BIC$ of the void structure, so we compare several chains inf Figures \ref{pourcini} and \ref{Bicini}:			
 			
-			On constate que le BIC du modèle initial (correl) est souvent moins bon que celui du modèle vide.
-		On se demande alors s'il n'est pas préférable de partir du modèle vide.
-		On refait donc des simulations avec d'un côté, 10 initialisations selon les corrélations et de l'autre 10 initialisations sur le modèle vide ($Z=0$).
 		\begin{center}
 		\begin{figure}[h!]
-		\includegraphics[width=500px]{figures/pourc_meilleur_marelaxini.png} 
-		\caption{pourcentage de fois où chaque méthode est la meilleure, en fonction de l'avancement de la recherche}
+		\centering
+		\includegraphics[width=300px]{figures/pourc_meilleur_marelaxini.png} 
+		\caption{Amount of time each method is better for the 100 first steps of the MCMC. } \label{pourcini}
 		\end{figure}		
 		\end{center}
 	
 	\begin{center}
 		\begin{figure}[h!]
-		\includegraphics[width=500px]{figures/typeinit.png} %mars 2013 analyse plan ini marelax
-		\caption{Evolution du BIC(on veut le minimiser au fil des étapes (moyenne sur les échantillons)}
+		\centering
+		\includegraphics[width=300px]{figures/typeinit.png} %mars 2013 analyse plan ini marelax
+		\caption{Evolution of the $BIC$ (criterion to minimize in the MCMC) for each method.}\label{Bicini}
 		\end{figure}
 	\end{center}
 	
 		\subsection{Multiple intialisation}	
-		One would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. It also helps to face local extrema.
-			On se demande enfin combien d'initialisations réaliser.
-		On compare donc ce qui arrive quand on change le nombre d'itérations.
-		Par définition, le modèle ayant le plus d'initialisations est meilleur ou égal aux autres (puisqu'il les contient).
-		On veut donc juste savoir s'il est significativement meilleur.	
-	
+		Local extremas are a known issue for most of optimization methods, and one would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. 
+		We also compare the results obtained with several number of chains. Figure \ref{nbini} shows the evolution of the $BIC$ of the best chain with a number of chains varying from 1 to 10, so the model with 10 chains contain the others and is almost as good as they are. We see that multiple initialization is efficient but the gain is logarithmic in the number of tries so it is recommended to use multiple chains but not too much.		
+			
 	\begin{center}
 	\begin{figure}[h!]
+	\centering
 		\includegraphics[width=500px]{figures/courbes_BICmoyen_marelax_nbini.png} 
-		\caption{Evolution du BIC(on veut le minimiser au fil des étapes (moyenne sur les échantillons)}
+		\caption{Comparison of distinct number of correlation-based initialisations for the MCMC.}\label{nbini}
 	\end{figure}
 	\end{center}
 			
-			 In the followings, the chain wzs launched with twenty initialisations each time.
+			 In the followings, the chain was launched with twenty initialisations each time, based on the correlation matrix.
 			
 \section{CorReg}	
 		Expliquer la grande diversité des paramétrages possibles et les sorties possibles.
