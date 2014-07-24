@@ -773,8 +773,8 @@ The main advantage of such a neighbourhood is that increasing and decreasing com
 			\end{itemize}			 
 		\item else (remove): $I_f^j=I_f^j\setminus \{i\}$
 	\end{itemize}
-	It can be seen as forcing the modification by deleting what would make the structure not feasible. So in one step we can test a model that remove completely a sub-regression, remove the explicative role of a covariate in all sub-regression and create a new pairwise sub-regression. It drastically increases the scope of the neighbourhood and guarantee to allways have the same number of candidates during the MCMC. It can be compared to simulated annealing that sometimes proposes exotic candidates to avoid local extrema, but here without any temperature to set. Here again, the neighbourhood remains natural, without arbitrary parameters to tune. 
-
+	It can be seen as forcing the modification by deleting what would make the structure not feasible. So in one step we can test a model that remove completely a sub-regression, remove the explicative role of a covariate in all sub-regression and create a new pairwise sub-regression. It drastically increases the scope of the neighbourhood and guarantee to always have the same number of candidates during the MCMC. It can be compared to simulated annealing that sometimes proposes exotic candidates to avoid local extrema, but here without any temperature to set. Here again, the neighbourhood remains natural, without arbitrary parameters to tune. 
+	Another advantage of the relaxation method is that it reduce complexity very quickly without having to deconstruct a sub-regression, so it helps to have simpler models in a small amount of time (asymptotical results are the same because the chain is regular thus ergodic).
 			
 	\section{The walk}
 		Once we have a neighbourhood, we have to choose a candidate for the next step.
@@ -831,26 +831,12 @@ The initial structure can be based on a first warming algorithm taking the corre
 	\begin{center}
 	\begin{figure}[h!]
 	\centering
-		\includegraphics[width=500px]{figures/courbes_BICmoyen_marelax_nbini.png} 
+		\includegraphics[width=300px]{figures/courbes_BICmoyen_marelax_nbini.png} 
 		\caption{Comparison of distinct number of correlation-based initialisations for the MCMC.}\label{nbini}
 	\end{figure}
 	\end{center}
 			
-			 In the followings, the chain was launched with twenty initialisations each time, based on the correlation matrix.
-			
-\section{CorReg}	
-		Expliquer la grande diversité des paramétrages possibles et les sorties possibles.
-montrer un exemple de courbe vraisemblance et complexité avec bic et un autre avec bic+ (même graine, même initialisation)
-faire pareil avec diverses stratégies (si ça montre quelque chose, ce qui sera le cas pour la relaxation : sauts de complexité vers le bas).
-	
-			possibilité de saut automatique (type MH) si meilleur ou non (attention à la conservation de la mélangeance)
-	\subsection{The Graphical LASSO}\label{sectionGlasso}
-		L'algorithme Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} est conçu pour construire des graphes non orientés creux , ce qui est un aspect de notre objectif. 
-		Mais il se base sur une hypothèse de famille exponentielle pour $\boldsymbol{X}$, car dans ce cas
-les $0$ de la matrice de précision $\Sigma ^-1$ correspondent au indépendances conditionnelles entre variables \cite{dempster1972covariance} (lien avec les corrélations partielles) .	Or, l'identifiabilité du modèle se base sur une hypothèse de mélange Gaussien qui ne sont pas de famille exponentielle.
-De plus le graphical Lasso ne fournit qu'un graphe non-orienté. Il faut alors définir une orientation qui corresponde à un graphe bi-parti $(\boldsymbol{X}_r,\boldsymbol{X}_f)$, ce qui revient à un algorithme de 2-coloration. De plus, trouver une orientation bi-parti nécessite l'absence de cycles de longueur impair (ce que ne garantit pas le graphical lasso).
-		Glasso est donc intéressant mais demanderait l'hypothèse de normalité et un algorithme d'orientation, le tout sans garantie d'aboutir à une structure à moins de rompre les cycles impairs selon une heuristique par suppression d'un arc dans chaque cycle impair. Une heuristique possible serait alors de passer par l'arbre couvrant minimal \cite{graham1985history,moret1991empirical,gower1969minimum} (voir annexe).
-	\subsection{Pruning step}
+	\section{Pruning}
 		If the complexity of $S$ remains too high, pruning methods can be used.
 		\subsubsection{Variable selection}
 			We can use variable selection methods like the LASSO to estimate the coefficient $\boldsymbol{\alpha}$ and obtain some supplementary zeros.
@@ -859,7 +845,44 @@ De plus le graphical Lasso ne fournit qu'un graphe non-orienté. Il faut alors d
 			We can define a minimal value for the $R^2$ of the sub-regression to maintain them in the final structure. But this minimal value would be totally arbitrary and we know that it is frequent to use linear regression with real datasets that only show a $R^2$ between $0.1$ and $0.2$. It is particularly true in social sciences.
 		\subsubsection{Test}
 			Another pruning method would be to delete sub-regression that offer a F-statistic under a minimal value.
-
+			 In the followings, the chain was launched with twenty initialisations each time, based on the correlation matrix.
+		\subsubsection{additional Cleaning steps}
+			Because the walk is not exhaustive, it does make sense to let the walk continue a few steps with neighbourhood containing only suppressions in the structure. The walk follows an ergodic chain thus it is just an heuristic change in the strategy with:
+			\begin{equation}
+				\mathcal{A}_q=\{(i,j)| i \in I_f^j \}
+			\end{equation}
+			It is not based on any arbitrary parameter and change the result only if it founds a better structure in terms of the criterion $\psi$ used in the walk.
+	\section{The Graphical LASSO}\label{sectionGlasso}
+		Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} is set to give undirectionnal (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It does make sense for exponential family because in these cases, zeros in the precision matrix $\Sigma ^-1$ can be interpreted in terms of conditionnal independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ and we search an oriented graph.
+	But we can still use it for initialization, for example by a hadamard product with $G_0$ the adjacency matrix of the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum}. But it is time consuming and has no theoretical properties relied to our problematic of minimizing $\psi$, so the idea was left behind after some tries.		
+	
+\section{CorReg}	
+	The CorReg package is now on CRAN and provides many parameters for the walk. If wanted it can return some curves associated to the walk to have an idea of what happens whith distinct strategies. 		
+	
+We define the complexity of a structure $S$ as the number of elements in the adjacency matrix, that is the number of links between covariates and is obtained by:
+\begin{equation}
+	\textrm{Complexity}(S)=\sum_{j \in I_r}p_f^j
+\end{equation}	
+	
+		We compare some walks with each time the same dataset and the same seed for the random generator. We have $p=100$ and $n=50$.
+		
+		For Figures \ref{comparecomplrelax} and \ref{compareBICrelax} we start from an arbitrary structure with a complexity of $62$. We see that relaxation helps to delete these false sub-regressions and avoid to be stuck in it, improving the $BIC$ much faster. We also observe that final complexities are comparable. Here the MCMC was launched only once (with the totally arbitrary initial structure based on nothing), the true structure had a complexity of $120$.
+\begin{center}
+	\begin{figure}[h!]
+	\centering
+\includegraphics[width=400px]{figures/complexitycompareMCMC.png} 		
+\caption{Comparison of complexity evolution with or without constraint relaxation.}\label{comparecomplrelax}
+	\end{figure}
+	\end{center}
+			
+\begin{center}
+	\begin{figure}[h!]
+	\centering
+\includegraphics[width=400px]{figures/BICcompareMCMCrelax.png} 		
+\caption{Comparison of BIC evolution with or without constraint relaxation.}\label{compareBICrelax}
+	\end{figure}
+	\end{center}
+			
 		
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 
