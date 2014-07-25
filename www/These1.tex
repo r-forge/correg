@@ -59,7 +59,7 @@
 	 	
 \paragraph{Keywords:} Pretreatment, Regression, Correlations, Missing values, MCMC, generative model, Bayesian Criterion, variable selection, plug-in method,\dots
 \chapter*{Résumé substantiel en français}
-	rassemble
+	en gros, un article en français
 \chapter*{Acknowledgments}
 
 % ArcelorMittal pour le financement et la confiance
@@ -255,15 +255,15 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[width=500px]{figures/lassocircles.png} 
-			\caption{Geometric view of the Penalty}
+			\includegraphics[width=150px]{figures/lassocircles.png} 
+			\caption{Geometric view of the Penalty for the LASSO}
 		\end{figure}
 		
 		
 détailler le graphique
 		
 		Here again we have to choose a value for $\lambda$.
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem.
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem. This consistency issu is illustrated in section \ref{consistency}.
 
 
 		% ne pas oublier de mentionner les packages existants
@@ -290,20 +290,21 @@ détailler le graphique
 %		X^*_{(n+p)\times p}=(1+\lambda_2)^{-1/2}\left( X  \sqrt{\lambda_2}I \right), \ \ \  Y^*_{(n+p)}=\left( Y 0 \right)
 %\end{equation}		
 	%Elastic net can be writt"en:
-	\begin{equation}
-		\boldsymbol{\hat{\beta}}=(1+\lambda_2) \operatorname{argmin}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta} \parallel_2^2 \right\rbrace, \textrm{ subject to } (1-\alpha)\parallel\boldsymbol{\beta}\parallel_1+\alpha\parallel\boldsymbol{\beta}\parallel_2^2\leq t \textrm{ for some } t
-	\end{equation}
+	\begin{eqnarray}
+		\boldsymbol{\hat{\beta}}&=&(1+\lambda_2) \operatorname{argmin}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta} \parallel_2^2 \right\rbrace \textrm{ subject to} \nonumber \\
+			 & &(1-\alpha)\parallel\boldsymbol{\beta}\parallel_1+\alpha\parallel\boldsymbol{\beta}\parallel_2^2\leq t \textrm{ for some } t
+	\end{eqnarray}
 	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
 	
 	
 	\begin{figure}[h!]
 			\centering
-			\includegraphics[width=500px]{figures/elasticnetcircles.png} 
-			\caption{Geometric view of the Penalty}
+			\includegraphics[width=150px]{figures/elasticnetcircles.png} 
+			\caption{Geometric view of the Penalty for elasticnet}
 		\end{figure}	
 	
 	%It seems to give good predictions. 
-	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. %Hence, when comparing the two models, interpretations are not the same and nothing explicitly explains why. So it can be very confusing. 
+	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. 
 		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{bondell2008simultaneous}%Oscar
@@ -315,13 +316,13 @@ détailler le graphique
 			
 \begin{figure}[h!]
 			\centering
-			\includegraphics[width=500px]{figures/oscarcircles.png} 
-			\caption{Geometric view of the Penalty}
+			\includegraphics[width=150px]{figures/oscarcircles.png} 
+			\caption{Geometric view of the Penalty for OSCAR}
 		\end{figure} 
 		détailler le graphique			
 			
 			
-			Correlations are only implicitely taken into account and only pairwise. So it lacks of an efficient algorithm and need a supplementary study to interpret the groups found.
+			Correlations are only implicitly taken into account and only pairwise. So it lacks of an efficient algorithm and need a supplementary study to interpret the groups found.
 		
 		
 	\section{Modeling the parameters}			% ne pas oublier de mentionner les packages existants
@@ -355,7 +356,8 @@ Mettre un dessin du spike et du slab
 		\cite{breiman1984classification}%\cite{quinlan1986induction} à vérifier
 		Bonne méthode pour l'industrie
 		Son problème principale est le cas linéaire... donc bon complément à notre modèle.
-		CorReg propose un outil de mise en oeuvre rapide et avec légendes ainsi qu'une fonctionnalité de sélection pour mieux analyser les problématiques de corrélations.		
+		CorReg propose un outil de mise en oeuvre rapide et avec légendes ainsi qu'une fonctionnalité de sélection pour mieux analyser les problématiques de corrélations.	
+		Gros avantage: les données mixtes	
 	
 	\subsection{Neural networks}	
 		Neural networks \cite{fausett1994fundamentals} seems to be really powerful but it has a predictive only goal and the model obtained can't be interpreted easily (and can't be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes far behind.
@@ -366,29 +368,6 @@ Mettre un dessin du spike et du slab
 		
 		
 	
-	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
-		
-		\subsection{SEM and Path Analysis}		% ne pas oublier de mentionner les packages existants
-			\cite{davidson1993estimation,pearl2000causality,pearl1998graphs,brito2006graphical,mcdonald2002principles}
-		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
-
-			\cite{SURzellner}
-		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}		% ne pas oublier de mentionner les packages existants
-
-			\cite{chiquetconf}			
-			
-		\subsection{Selvarclust: Linear regression within covariates for clustering}		% ne pas oublier de mentionner les packages existants
-
-			\cite{maugis2009variable}
-			The idea is to allow covariates to have different roles : $(S,R,U,W)$.
-			But:
-			\begin{itemize}
-				\item It is about clustering and not regression (not the same application field)
-				\item No sub-regression allowed between relevant variables (in the True model)
-				\item Using stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}
-			\end{itemize}
-			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates tha	
-			We provide an specific MCMC algorithm with the ability to have redundant covariates in the true model.		 
 
 		\section{Choice of model}
 		% ne pas oublier de mentionner les packages existants
@@ -409,6 +388,34 @@ Mettre un dessin du spike et du slab
 		\section{Industrial tools}
 			Linear regression, decision trees, bayesian networks, neural network but without confidence
 			Presence of softwares sent as non-statistical methods, based on rules (derivatives of decision trees).			
+			metre image du flou vert et rouge avec encadré
+			
+			
+	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
+		
+		\subsection{SEM and Path Analysis}		% ne pas oublier de mentionner les packages existants
+			\cite{davidson1993estimation,pearl2000causality,pearl1998graphs,brito2006graphical}%mcdonald2002principles
+		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
+
+			\cite{SURzellner}
+		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}		% ne pas oublier de mentionner les packages existants
+
+			\cite{chiquetconf}			
+			
+		\subsection{Selvarclust: Linear regression within covariates for clustering}		% ne pas oublier de mentionner les packages existants
+
+			\cite{maugis2009variable}
+			The idea is to allow covariates to have different roles : $(S,R,U,W)$.
+			But:
+			\begin{itemize}
+				\item It is about clustering and not regression (not the same application field)
+				\item No sub-regression allowed between relevant variables (in the True model)
+				\item Using stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset}
+			\end{itemize}
+			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates.
+			We provide a specific MCMC algorithm with the ability to have redundant covariates in the true model.		 
+			
+			
 			
 \part{Pretreatment for correlations}
 \chapter{Decorrelating covariates by a generative model}
@@ -1702,8 +1709,7 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 	\caption{MSE of OLS (plain red) and CorReg marginal(blue dashed) and CorReg full (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure}	
 	
-	\section{Consistency}
-		\subsection{Consistency Issues}\label{consistency}
+	\section{Consistency}\label{consistency}
 		Consistency issues of the LASSO are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
 		We have taken the same example to show how our method is more consistent.
 		Here $p=3$ and $n=1000$.\\
