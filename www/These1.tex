@@ -640,8 +640,8 @@ We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\bo
 But it is only the theoretical MSE and we want to know what happens in the real life. So we look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$. Here again, each configuration is computed 100 times and we take the mean to smooth the curves. The MSE on $\hat{\boldsymbol{Y}}$ is computed on a validation sample with 1 000 individuals. Our marginal model remains better for strong correlations.\\
 
 \section{Observed MSE comparison}
-	We also look at the observed MSE on both $\boldsymbol{\beta}$ and $\boldsymbol{Y}$ for some methods depicted above.
-
+	We also look at the observed MSE on both $\boldsymbol{\beta}$ and $\boldsymbol{Y}$ for some of the methods depicted above.
+	\subsection{On the running example}
  \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/OLSexpl.png}\label{MSEOLSexpl}
 	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
@@ -652,11 +652,55 @@ But it is only the theoretical MSE and we want to know what happens in the real 
 	  \includegraphics[width=500px]{figures/MQEreel/OLSYexpl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLSYexpl}
 	\end{figure}
-	We see in figures \ref{MSEOLSexpl} and \ref{MQEOLSYexpl} that MSE on $\hat{\boldsymbol{Y}}_{OLS}$ give the same results as those on $\hat{\boldsymbol{\beta}}$.
+	We see in figures \ref{MSEOLSexpl} and \ref{MQEOLSYexpl} that MSE on $\hat{\boldsymbol{Y}}_{LASSO}$ give the same results as those on $\hat{\boldsymbol{\beta}}$.
 	
 	
-		
- 
+ \begin{figure}[h!]
+	\includegraphics[width=500px]{figures/MQEreel/larexpl.png}\label{MSElarexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of LASSO with LAR on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+\end{figure} 
+	
+	 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/larYexpl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{LASSO}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQElarYexpl}
+	\end{figure}
+	Figure \ref{MSElarexpl}  and \ref{} show that variable selection done the LASSO gives a biased $\hat{\boldsymbol{\beta}}$ by setting some coefficients to 0 but strong correlations makes this bias neutral for prediction. Here the LASSO tends to propose the same model as we do  with our marginal model, but without explanation. We will see  later that it is not sufficient in higher dimension.
+%ridge
+	\begin{figure}[h!]
+	\includegraphics[width=500px]{figures/MQEreel/ridgeexpl.png}\label{MSEridgexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{ridge}$ on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+\end{figure} 
+	
+	 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/ridgeYexpl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEridgeYexpl}
+	\end{figure}	
+Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression provides good results for this running example. But we will see later that high dimension reduces the efficiency of the ridge regression when some covariates begin to be irrelevant or not enough relevant.  
+ %elasticnet
+	\begin{figure}[h!]
+	\includegraphics[width=500px]{figures/MQEreel/elasticnetexpl.png}\label{MSEelasticnetexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{elasticnet}$ on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+\end{figure} 
+	
+	 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/elasticnetYexpl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{elasticnet}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEelasticnetYexpl}
+	\end{figure}
+  %stepwise
+	\begin{figure}[h!]
+	\includegraphics[width=500px]{figures/MQEreel/stepwiseexpl.png}\label{MSEstepwiseexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{stepwise}$ on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+\end{figure} 
+	
+	 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/stepwiseYexpl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEstepwiseYexpl}
+	\end{figure}
+	
  Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
 	
 %	\section{Predictive efficiency}
