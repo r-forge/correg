@@ -211,9 +211,13 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 	To have an easier comparison, we also look at the empiric MSE obtained on $\hat{\boldsymbol{\beta}}$.
 		
 	
-	Image sur MSE réels
 	
-	
+	 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/OLScompl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLScompl}
+	\end{figure}	
+	We first observe that real results are better from expected (Figure \ref{MQEOLScompl}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices. Our package CorReg also uses this decomposition. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$
 	
 	\section{Penalized models}
 	
@@ -234,7 +238,11 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a biased esti
 	\end{equation}
 	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ is done for a given $\lambda$. Methods does exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called \textsc{ridge} is on CRAN \cite{packageridge}. 
 	We have computed the same experiment as in previous figure but with the ridge package instead of OLS. It is clear that the ridge regression is efficient in variance reduction (it is what it is built for).
-	
+	 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/ridgecompl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEridgecompl}
+	\end{figure}
 	
 	
 	%It is the same for each covariates and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
@@ -281,7 +289,13 @@ détailler le graphique
 			Explication du choix par validation croisée et de la surcouche OLS
 			
 			Résultats comparatifs en modifiant le A du running example pour voir que validation croisée est mieux que le BIC dans ce cas là (au passage, prendre un cas non consistant).	 
-			 
+			 	 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/larcompl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{lar}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQElarcompl}
+	\end{figure}
+	
+	
 		\subsection{Elasticnet}		% ne pas oublier de mentionner les packages existants
 
 			Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and the \textsc{LASSO} by mixing both $L_1$ and $L_2$ penalties: 
@@ -305,6 +319,15 @@ détailler le graphique
 	
 	%It seems to give good predictions. 
 	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. 
+	
+	 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/elasticnetcompl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{elasticnet}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEelasticnetcompl}
+	\end{figure}
+	
+		
+	
 		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{bondell2008simultaneous}%Oscar
@@ -378,6 +401,14 @@ Mettre un dessin du spike et du slab
 			\cite{BIChuard}
 			\subsection{stepwise}
 			\cite{seber2012linear,miller2002subset}
+			
+				 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/stepwisecompl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEstepwisecompl}
+	\end{figure}
+	
+	
 			\subsection{bootstrap}
 			\cite{efron1979bootstrap,efron1994introduction}
 		\section{SEM}
@@ -436,7 +467,7 @@ The structure $S$ of $p_r$ sub-regressions within correlated covariates in $\bol
 		\boldsymbol{X}^{I_r}_{|\boldsymbol{X}^{I_f},S} \textrm{ defined by }\forall j \in I_r: \boldsymbol{X}^j_{|\boldsymbol{X}^{I_f},S}=\boldsymbol{X}^{I_f}\boldsymbol{\alpha}^j+\boldsymbol{\varepsilon}^j \textrm{ with } \boldsymbol{\varepsilon}^j \sim\mathcal{N}(\boldsymbol{0},\sigma^2_j\boldsymbol{I}_n) \label{SR}
 	\end{equation}
 		where $\boldsymbol{\alpha}^j \in \mathcal{R}^{(p-p_r)}$ are the sparse vectors of the regression coefficients between the covariates (each sub-regression freely implies different covariates). 
-We also define $I_f=\{I_f^1,\dots,I_f^p \}$ the set of the sets of indices of exogenous covariates whith
+We also define $I_f=\{I_f^1,\dots,I_f^p \}$ the set of the sets of indices of exogenous covariates with
 \begin{eqnarray}
 	\forall j \in I_r, I_f^j&=&\{i|\boldsymbol{\alpha}^j_i\neq 0 \} \\
 	\forall j \notin I_r, I_f^j&=&\emptyset .
@@ -582,11 +613,10 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 			 \\
 			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})]&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_{I_r}\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}^{I_f'} \boldsymbol{X}^{I_f})^{-1})
 	\end{eqnarray}	 
-	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQE1} shows the theoretical MSE evolution with the strength of the sub-regression. In this section, all experiences have been made 100 times to obtain smooth curves. So we have generated 100 times $\boldsymbol{X}$ and $\boldsymbol{Y}$
+	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQEexplOLSp5col} shows the theoretical MSE evolution with the strength of the sub-regression. In this section, all experiences have been made 100 times to obtain smooth curves. So we have generated 100 times $\boldsymbol{X}$ and $\boldsymbol{Y}$
 %	\begin{equation}
 %		1-\mathcal{R}^2=\frac{\operatorname{Var}(\boldsymbol{\varepsilon)_3}}{\operatorname{Var}(\boldsymbol{x}_3)}=\frac{\sigma_3^2}{\sigma_3^2+2}
 %	\end{equation}
-	
 \begin{figure}[h!]
 %	\begin{minipage}[l]{.32\linewidth}
 %			\includegraphics[width=170px]{figures/MQEn15sigmaY10.png} 
@@ -600,22 +630,39 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 %			\includegraphics[width=170px]{figures/MQEn1000sigmaY10.png} 
 %			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
 %   \end{minipage} 
-	\includegraphics[width=500px]{figures/MQEexplOLSp5col.png}\label{MQE1}
-	\caption{Theoretical MSE on $\boldsymbol{\beta}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\includegraphics[width=500px]{figures/MQEexplOLSp5col.png}\label{MQEexplOLSp5col}
+	\caption{Theoretical MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
-It is clear in Figure \ref{MQE1} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($\mathcal{R}^2$ tends to 0) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
+It is clear in Figure \ref{MQEexplOLSp5col} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($\mathcal{R}^2$ tends to 0) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
 We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))=0$.
  Thus, when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear). 
  
-But it is only the theoretical MSE and we want to know what happens in the real life. So we look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$. Here again, each configuration is computed 100 times and we take the mean to smooth the curves. We first observe that real results are better from expected (Figure \ref{MQEreelOLS}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices. Our package CorReg also uses this decomposition. But our marginal model remains better for strong correlations.\\
- 
+But it is only the theoretical MSE and we want to know what happens in the real life. So we look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$. Here again, each configuration is computed 100 times and we take the mean to smooth the curves. The MSE on $\hat{\boldsymbol{Y}}$ is computed on a validation sample with 1 000 individuals. Our marginal model remains better for strong correlations.\\
+
+\section{Observed MSE comparison}
+	We also look at the observed MSE on both $\boldsymbol{\beta}$ and $\boldsymbol{Y}$ for some methods depicted above.
+
+ \begin{figure}[h!]
+	\includegraphics[width=500px]{figures/MQEreel/OLSexpl.png}\label{MSEOLSexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+\end{figure} 
+	
+	 \begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/OLSYexpl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLSYexpl}
+	\end{figure}
+	We see in figures \ref{MSEOLSexpl} and \ref{MQEOLSYexpl} that MSE on $\hat{\boldsymbol{Y}}_{OLS}$ give the same results as those on $\hat{\boldsymbol{\beta}}$.
+	
+	
+		
  
  Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
 	
-	\section{Predictive efficiency}
-		Résultats comme dans l'article	mais sur vrai S	
-		modèles avec beaucoup de variables (car rapide vu que pas de MCMC).
-		Faire avec vrai modèle= modèle complet puis X1 uniquement puis X2 uniquement puis aussi Amax=15 si p largement supérieur à 100
+%	\section{Predictive efficiency}
+%		Résultats comme dans l'article	mais sur vrai S	
+%		modèles avec beaucoup de variables (car rapide vu que pas de MCMC).
+%		Faire avec vrai modèle= modèle complet puis X1 uniquement puis X2 uniquement puis aussi Amax=15 si p largement supérieur à 100
 \chapter{Estimation of the Structure of subregression by MCMC}\label{chapterMCMC}
 \paragraph{Abstract:} La structure de sous-régression est supposée inconnue. Il nous faut donc la trouver. Un algorithme de type MCMC est proposé pour résoudre cette problématique. La mise en oeuvre de celui-ci passe par une modélisation complète du jeu de données et nous pousse à introduire un nouveau critère de choix de modèle tenant compte du nombre de modèles testés.
 \\
@@ -864,7 +911,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 	But we can still use it for initialization, for example by a hadamard product with $G_0$ the adjacency matrix of the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum}. But it is time consuming and has no theoretical properties relied to our problematic of minimizing $\psi$, so the idea was left behind after some tries.		
 	
 \section{CorReg}	
-	The CorReg package is now on CRAN and provides many parameters for the walk. If wanted it can return some curves associated to the walk to have an idea of what happens whith distinct strategies. 		
+	The CorReg package is now on CRAN and provides many parameters for the walk. If wanted it can return some curves associated to the walk to have an idea of what happens with distinct strategies. 		
 	
 We define the complexity of a structure $S$ as the number of elements in the adjacency matrix, that is the number of links between covariates and is obtained by:
 \begin{equation}
