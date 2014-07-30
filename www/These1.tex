@@ -530,7 +530,7 @@ We note $\boldsymbol{\alpha}$ the $(p-p_r)\times p_r$ matrix of the  $\boldsymbo
 	\caption{The bipartite graph associated to the running example}
 	\end{figure}	
 
-\begin{displaymath}\left(	\begin{array}{ccccc}
+\begin{displaymath}G=\left(	\begin{array}{ccccc}
 	0 & 0 & 1 & 0 & 0 \\ 
 	0 & 0 & 1 & 0 & 0 \\ 
 	0 & 0 & 0 & 0 & 0 \\ 
@@ -702,7 +702,106 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
 	\end{figure}
 	
  Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
-	
+	\subsection{On more complex datasets}
+		The \textsc{CorReg} package has been tested on simulated datasets. 
+ For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$, variables in $\boldsymbol{X}_f$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $\boldsymbol{X}^{I_r}$ don't have a greater variance or mean.
+	Results are based on the true $S$ used to generate the dataset.
+	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
+	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
+	We compare different methods with and without CorReg as a pretreatment. All the results are provided by the CorReg package. Here $\boldsymbol{Y}$ depends on all the covariate and the MSE provided were computed on a validation sample of 1 000 individuals each time.
+	\FloatBarrier
+
+\newpage
+
+%OLS	
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplOLSY.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/cplexplOLS.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplOLSbeta.png}
+		\caption{}
+	\end{figure}
+	\FloatBarrier
+
+%LASSO
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexpllarY.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/cplexpllar.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexpllarbeta.png}
+		\caption{}
+	\end{figure}
+	\FloatBarrier
+
+%elasticnet
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplelasticnetY.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/cplexplelasticnet.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplelasticnetbeta.png}
+		\caption{}
+	\end{figure}
+	\FloatBarrier
+
+%stepwise
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplstepwiseY.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/cplexplstepwise.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplstepwisebeta.png}
+		\caption{}
+	\end{figure}
+	\FloatBarrier
+
+%ridge	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplridgeY.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/cplexplridge.png}
+		\caption{}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplridgebeta.png}
+		\caption{}
+	\end{figure}
+	\FloatBarrier
+
 %	\section{Predictive efficiency}
 %		Résultats comme dans l'article	mais sur vrai S	
 %		modèles avec beaucoup de variables (car rapide vu que pas de MCMC).
@@ -1764,7 +1863,9 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective for our method.
 	\section{Numerical results on simulated datastets}
 		\subsection{Estimation of the sub-regression coefficients}
+			
 		\subsection{Multiple imputation for the main regression}
+		
 	\section{Missing values in real life}
 		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same S and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
 		
