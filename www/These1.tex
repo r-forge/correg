@@ -1972,9 +1972,9 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 %	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
 %	
 			
-			In fact we have the same number of parameters to estimate with or without missing values but the problem is that some of the parameters are estimated based only on a portion of the individuals so each parameter has a different weight.
-			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$ so our proposed penalty term is an intuitive way to use a weighted penalty.
-	
+%			In fact we have the same number of parameters to estimate with or without missing values but the problem is that some of the parameters are estimated based only on a portion of the individuals so each parameter has a different weight.
+%			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$ so our proposed penalty term is an intuitive way to use a weighted penalty.
+%	
 \section{SEM}
 	The integrated likelihood depicted above depends on $\boldsymbol{\alpha}$ which was formerly estimated by OLS when there was no missing values. But when missing values occurs in a sub-regression we need another solution.
 	
@@ -2161,7 +2161,10 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 	\section{Numerical results on simulated datastets}
 		\subsection{Estimation of the sub-regression coefficients}
 			
+		\subsection{Imputation by the sub-regression}
+			Missing values in $\boldsymbol{X}^{I_r}$ can be imputed by the corresponding sub-regression.
 		\subsection{Multiple imputation for the main regression}
+		n grand et manquants en zebrures diagonales( 1 par ligne)
 		
 	\section{Missing values in real life}
 		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same S and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
@@ -2188,6 +2191,10 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 		Then we have a model with a smaller noise
 		\begin{equation}
 			\boldsymbol{Y}= \boldsymbol{X}^{I_r}\boldsymbol{\beta}^* + \boldsymbol{\varepsilon}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
+		\end{equation}
+		and we can even find the original model by doing an identification step:
+		\begin{equation}
+			\boldsymbol{Y}= \boldsymbol{X}^{I_r}(\boldsymbol{\beta}^*-\boldsymbol{\alpha}\hat{\boldsymbol{\beta}}_{I_r}) + \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
 		\end{equation}
 	\section{Interpretation and latent variables}
 			$\hat{\boldsymbol{\beta}}_{I_r}$ can be interpreted as the proper effect of $\boldsymbol{X}^{I_r}$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}^{I_r}$ that is independent from other covariates. Then if $\boldsymbol{X}^{I_r}$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}^{I_f}$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_{I_r}=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}^{I_f}$ and dependent of $\boldsymbol{X}^{I_r}$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}}$. Thus, it can reveal some kinds of latent variables.
@@ -2281,17 +2288,19 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 		
 
 	\section{Numerical results}
-
+	
+	
 \chapter{CorReg: the concept}	
 	
 		\textsc{CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with \textsc{CorReg}.
 	\textsc{CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). %More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
-	The objective of CorReg is to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). 
+	The objective of CorReg is to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). One example of graphical tool is the $matplot\_zone$ function that allows to compare several curves according to a criterion and was widely used to compare the MSE and complexities in this document.
 	
 \chapter{Conclusion and perspectives}
 	\section{Conclusion}
-		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, CoMPASS will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method has a positive impact on the way users looks at the statistics.
-			It is good to see that sequential methods (predictive model) and automation can produce good results. Probabilistic models are efficient even without human expertise and let the experts improve the results by adding their expertise in the model (coercing some sub-regression for example).
+		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates.
+		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, CorReg will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method has a positive impact on the way users looks at the statistics.
+			It is good to see that sequential methods (plug-in model) and automation can produce good results. Probabilistic models are efficient even without human expertise and let the experts improve the results by adding their expertise in the model (coercing some sub-regression for example). So we hope that statistics will continue to be a central tool for engineers.
 		
 		
 	\section{Perspective}
@@ -2305,7 +2314,7 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 			The full generative approach could be used to manage missing values without imputation for many classical methods.
 			It can notably be used for clustering and not only in response variable prediction context.
 		\subsection{Interpretation improvements}
-			Ergonomy of the software could be improved to better fit industrial needs.
+			Ergonomy of the software could be improved to better fit industrial needs. This work is in progress and further work wil lbe provided just after this thesis.
 \cleardoublepage
 
 \addcontentsline{toc}{chapter}{References}
