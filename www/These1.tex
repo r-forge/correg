@@ -236,7 +236,7 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a biased esti
 	\begin{equation}
 		 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} -\lambda\boldsymbol{I}_n\right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaridge}
 	\end{equation}
-	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ is done for a given $\lambda$. Methods does exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called \textsc{ridge} is on CRAN \cite{packageridge}. 
+	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ is done for a given $\lambda$. Methods does exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called ridge is on CRAN \cite{packageridge}. 
 	We have computed the same experiment as in previous figure but with the ridge package instead of OLS. It is clear that the ridge regression is efficient in variance reduction (it is what it is built for).
 	 \begin{figure}
 	 \centering
@@ -283,9 +283,17 @@ détailler le graphique
 			 It is notable that the main goal of the LASSO is to select some covariate, thus the penalization is just a mean to achieve selection. But estimation of $\hat{\boldsymbol{\beta}}$ can be improved by a second estimation with OLS based only on selected covariates \cite{SAM10088}.
 		\subsection{Least Angle Regression}
 			Schéma de la géométrie qui motive le nom de la méthode
-			
-			sortie graphique du package lars avec les chemins d'évolution des coefficients.
-			
+\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/LARtheory.png}
+		\caption{The geometry of Least Angle Regression}
+	\end{figure}
+				
+\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/plotlarstoy.png}
+		\caption{The LASSO path computed by lars}
+	\end{figure}			
 			Explication du choix par validation croisée et de la surcouche OLS
 			
 			Résultats comparatifs en modifiant le A du running example pour voir que validation croisée est mieux que le BIC dans ce cas là (au passage, prendre un cas non consistant).	 
@@ -294,7 +302,7 @@ détailler le graphique
 	  \includegraphics[width=500px]{figures/MQEreel/larcompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{lar}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQElarcompl}
 	\end{figure}
-	
+	Results obtained with the package lars for R.
 	
 		\subsection{Elasticnet}		% ne pas oublier de mentionner les packages existants
 
@@ -325,7 +333,7 @@ détailler le graphique
 	  \includegraphics[width=500px]{figures/MQEreel/elasticnetcompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{elasticnet}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEelasticnetcompl}
 	\end{figure}
-	
+	Results obtained with the package elasticnet for R.
 		
 	
 		\subsection{OSCAR: Octogonal Shrinkage and Clustering Algorithm for Regression}		% ne pas oublier de mentionner les packages existants
@@ -716,90 +724,90 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
 %OLS	
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexplOLSY.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplOLSY_zone.png}
+		\caption{}\label{MSEexplOLSY_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/cplexplOLS.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/cplexplOLS_zone.png}
+		\caption{}\label{cplexplOLS_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexplOLSbeta.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplOLSbeta_zone.png}
+		\caption{}\label{MSEexplOLSbeta_zone}
 	\end{figure}
 	\FloatBarrier
 
 %LASSO
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexpllarY.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexpllarY_zone.png}
+		\caption{}\label{MSEexpllarY_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/cplexpllar.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/cplexpllar_zone.png}
+		\caption{}\label{cplexpllar_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexpllarbeta.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexpllarbeta_zone.png}
+		\caption{}\label{MSEexpllarbeta_zone}
 	\end{figure}
 	\FloatBarrier
 
 %elasticnet
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexplelasticnetY.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplelasticnetY_zone.png}
+		\caption{}\label{MSEexplelasticnetY_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/cplexplelasticnet.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/cplexplelasticnet_zone.png}
+		\caption{}\label{cplexplelasticnet_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexplelasticnetbeta.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplelasticnetbeta_zone.png}
+		\caption{}\label{MSEexplelasticnetbeta_zone}
 	\end{figure}
 	\FloatBarrier
 
 %stepwise
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexplstepwiseY.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplstepwiseY_zone.png}
+		\caption{}\label{MSEexplstepwiseY_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/cplexplstepwise.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/cplexplstepwise_zone.png}
+		\caption{}\label{cplexplstepwise_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexplstepwisebeta.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplstepwisebeta_zone.png}
+		\caption{}\label{MSEexplstepwisebeta_zone}
 	\end{figure}
 	\FloatBarrier
 
 %ridge	
 \begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexplridgeY.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplridgeY_zone.png}
+		\caption{}\label{MSEexplridgeY_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/cplexplridge.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/cplexplridge_zone.png}
+		\caption{}\label{cplexplridge_zone}
 	\end{figure}
 	\begin{figure}[h!]
 	\centering
-		  \includegraphics[width=300px]{figures/explvraiS/MSEexplridgebeta.png}
-		\caption{}
+		  \includegraphics[width=300px]{figures/explvraiS/MSEexplridgebeta_zone.png}
+		\caption{}\label{MSEexplridgebeta_zone}
 	\end{figure}
 	\FloatBarrier
 
@@ -1099,11 +1107,11 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 
 \begin{figure}[h!]
 	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/BIC_p2.png} 
+			\includegraphics[height=180px,width=245px]{figures/explvraiS/BIC.png} 
 			\caption{Quality of the subregressions found with classical $BIC$ criterion}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/BICSTAR_P2.png} 
+			\includegraphics[height=180px,width=240px]{figures/explvraiS/BICplus.png} 
 			\caption{Quality of the subregressions found with our $BIC_+$ criterion} 
    \end{minipage}
 \end{figure}
@@ -1115,104 +1123,153 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Sections \
 
 \clearpage
 \section{Results on prediction}\label{compY}
+\subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
+We try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
+ 
+ 
+\FloatBarrier
 
-\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$ (best case for us)}	 \label{tableMSEsimgauche}
+\newpage
+
+%OLS	
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexplOLSY_zonetout.png}
+		\caption{}\label{MSEexplOLSY_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/cplexplOLS_zonetout.png}
+		\caption{}\label{cplexplOLS_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexplOLSbeta_zonetout.png}
+		\caption{}\label{MSEexplOLSbeta_zonetout}
+	\end{figure}
+	\FloatBarrier
+
+%LASSO
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexpllarY_zonetout.png}
+		\caption{}\label{MSEexpllarY_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/cplexpllar_zonetout.png}
+		\caption{}\label{cplexpllar_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexpllarbeta_zonetout.png}
+		\caption{}\label{MSEexpllarbeta_zonetout}
+	\end{figure}
+	\FloatBarrier
+
+%elasticnet
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexplelasticnetY_zonetout.png}
+		\caption{}\label{MSEexplelasticnetY_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/cplexplelasticnet_zonetout.png}
+		\caption{}\label{cplexplelasticnet_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexplelasticnetbeta_zonetout.png}
+		\caption{}\label{MSEexplelasticnetbeta_zonetout}
+	\end{figure}
+	\FloatBarrier
+
+%stepwise
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexplstepwiseY_zonetout.png}
+		\caption{}\label{MSEexplstepwiseY_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/cplexplstepwise_zonetout.png}
+		\caption{}\label{cplexplstepwise_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexplstepwisebeta_zonetout.png}
+		\caption{}\label{MSEexplstepwisebeta_zonetout}
+	\end{figure}
+	\FloatBarrier
+
+%ridge	
 \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X1_MSE_NB.png} 
-			\caption{Comparison of the MSE between OLS and CorReg+OLS}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X1_compl_NB.png} 
-			\caption{Comparison of the complexities between OLS and CorReg+OLS} 
-   \end{minipage}
-\end{figure}
- 
-%\caption{OLS and OLS combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X1_MSE_NB.png} 
-			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X1_compl_NB.png} 
-			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
-   \end{minipage}
-\end{figure}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X1_MSE_NB.png} 
-			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X1_compl_NB.png} 
-			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
-   \end{minipage}
-\end{figure}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X1_MSE_NB.png} 
-			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X1_compl_NB.png} 
-			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
-   \end{minipage}
-\end{figure}
-
-\clearpage
-	\subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We then try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexplridgeY_zonetout.png}
+		\caption{}\label{MSEexplridgeY_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/cplexplridge_zonetout.png}
+		\caption{}\label{cplexplridge_zonetout}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/tout/MSEexplridgebeta_zonetout.png}
+		\caption{}\label{MSEexplridgebeta_zonetout}
+	\end{figure}
+	\FloatBarrier
  
  
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_tout_MSE_NB.png} 
-			\caption{Comparison of the MSE between OLS and CorReg+OLS}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_tout_compl_NB.png} 
-			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
-   \end{minipage}
-\end{figure}
  
-%\caption{OLS and OLS combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/lar_tout_MSE_NB.png} 
-			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/lar_tout_compl_NB.png} 
-			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
-   \end{minipage}
-\end{figure}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_tout_MSE_NB.png} 
-			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_tout_compl_NB.png} 
-			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
-   \end{minipage}
-\end{figure}
-
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_tout_MSE_NB.png} 
-			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_tout_compl_NB.png} 
-			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
-   \end{minipage}
-\end{figure}
+ 
+% 
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_tout_MSE_NB.png} 
+%			\caption{Comparison of the MSE between OLS and CorReg+OLS}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_tout_compl_NB.png} 
+%			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
+%   \end{minipage}
+%\end{figure}
+% 
+%%\caption{OLS and OLS combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
+%
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/lar_tout_MSE_NB.png} 
+%			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/lar_tout_compl_NB.png} 
+%			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
+%   \end{minipage}
+%\end{figure}
+%
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_tout_MSE_NB.png} 
+%			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_tout_compl_NB.png} 
+%			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
+%   \end{minipage}
+%\end{figure}
+%
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_tout_MSE_NB.png} 
+%			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_tout_compl_NB.png} 
+%			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
+%   \end{minipage}
+%\end{figure}
 
 We see that CorReg tends to give more parsimonious models and better predictions, even if the true model is not parsomious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better (CorReg does not allow the true model to be choosen).
 
@@ -1220,53 +1277,292 @@ We see that CorReg tends to give more parsimonious models and better predictions
 
 
 \clearpage
+\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$ (best case for us)}	 \label{tableMSEsimgauche}
+\FloatBarrier
+
+\newpage
+
+%OLS	
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexplOLSY_zoneX1.png}
+		\caption{}\label{MSEexplOLSY_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/cplexplOLS_zoneX1.png}
+		\caption{}\label{cplexplOLS_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexplOLSbeta_zoneX1.png}
+		\caption{}\label{MSEexplOLSbeta_zoneX1}
+	\end{figure}
+	\FloatBarrier
+
+%LASSO
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexpllarY_zoneX1.png}
+		\caption{}\label{MSEexpllarY_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/cplexpllar_zoneX1.png}
+		\caption{}\label{cplexpllar_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexpllarbeta_zoneX1.png}
+		\caption{}\label{MSEexpllarbeta_zoneX1}
+	\end{figure}
+	\FloatBarrier
+
+%elasticnet
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexplelasticnetY_zoneX1.png}
+		\caption{}\label{MSEexplelasticnetY_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/cplexplelasticnet_zoneX1.png}
+		\caption{}\label{cplexplelasticnet_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexplelasticnetbeta_zoneX1.png}
+		\caption{}\label{MSEexplelasticnetbeta_zoneX1}
+	\end{figure}
+	\FloatBarrier
+
+%stepwise
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexplstepwiseY_zoneX1.png}
+		\caption{}\label{MSEexplstepwiseY_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/cplexplstepwise_zoneX1.png}
+		\caption{}\label{cplexplstepwise_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexplstepwisebeta_zoneX1.png}
+		\caption{}\label{MSEexplstepwisebeta_zoneX1}
+	\end{figure}
+	\FloatBarrier
+
+%ridge	
+\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexplridgeY_zoneX1.png}
+		\caption{}\label{MSEexplridgeY_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/cplexplridge_zoneX1.png}
+		\caption{}\label{cplexplridge_zoneX1}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X1/MSEexplridgebeta_zoneX1.png}
+		\caption{}\label{MSEexplridgebeta_zoneX1}
+	\end{figure}
+	\FloatBarrier
+
+%\begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X1_MSE_NB.png} 
+%			\caption{Comparison of the MSE between OLS and CorReg+OLS}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X1_compl_NB.png} 
+%			\caption{Comparison of the complexities between OLS and CorReg+OLS} 
+%   \end{minipage}
+%\end{figure}
+% 
+%%\caption{OLS and OLS combined with constrained \textsc{CorReg}. $\boldsymbol{Y}$  depends on all variables in $\boldsymbol{X}$. \textsc{CorReg} logically wins. When $n<p$ the dataset was reduced to $p=n$ automatically by a $QR$ decomposition as the lm function of R does. Without selection, all models have min$(n,p)$ non-zero coefficients.} \label{YXlinOLS}
+%
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X1_MSE_NB.png} 
+%			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X1_compl_NB.png} 
+%			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
+%   \end{minipage}
+%\end{figure}
+%
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X1_MSE_NB.png} 
+%			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X1_compl_NB.png} 
+%			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
+%   \end{minipage}
+%\end{figure}
+%
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X1_MSE_NB.png} 
+%			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X1_compl_NB.png} 
+%			\caption{Comparison of the compexities between stepwise and CorReg+stepwise} 
+%   \end{minipage}
+%\end{figure}
+
+\clearpage
+	
 	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$ (worst case for us)}	 \label{tableMSEsimgauche}
 We now try the method with a response depending only on variables in $\boldsymbol{X}^{I_r}$. The datasets used here were still those from \ref{compZvrai}.
 Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtain the true model when using the true structure. 
 
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X2_MSE_NB.png} 
-			\caption{Comparison of the MSE between OLS and CorReg+OLS}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X2_compl_NB.png} 
-			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
-   \end{minipage}
-\end{figure}
-\textsc{CorReg} is still better than OLS for strong correlations and limited values of $n$. 
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X2_MSE_NB.png} 
-			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X2_compl_NB.png} 
-			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
-   \end{minipage}
-\end{figure}
 
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X2_MSE_NB.png} 
-			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X2_compl_NB.png} 
-			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
-   \end{minipage}
-\end{figure}
+\FloatBarrier
 
- \begin{figure}[h!]
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X2_MSE_NB.png} 
-			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X2_compl_NB.png} 
-			\caption{Comparison of the compexities between stepwise and CorReg+stepwise}
-   \end{minipage}
-\end{figure}
+\newpage
+
+%OLS	
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexplOLSY_zoneX2.png}
+		\caption{}\label{MSEexplOLSY_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/cplexplOLS_zoneX2.png}
+		\caption{}\label{cplexplOLS_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexplOLSbeta_zoneX2.png}
+		\caption{}\label{MSEexplOLSbeta_zoneX2}
+	\end{figure}
+	\FloatBarrier
+
+%LASSO
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexpllarY_zoneX2.png}
+		\caption{}\label{MSEexpllarY_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/cplexpllar_zoneX2.png}
+		\caption{}\label{cplexpllar_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexpllarbeta_zoneX2.png}
+		\caption{}\label{MSEexpllarbeta_zoneX2}
+	\end{figure}
+	\FloatBarrier
+
+%elasticnet
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexplelasticnetY_zoneX2.png}
+		\caption{}\label{MSEexplelasticnetY_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/cplexplelasticnet_zoneX2.png}
+		\caption{}\label{cplexplelasticnet_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexplelasticnetbeta_zoneX2.png}
+		\caption{}\label{MSEexplelasticnetbeta_zoneX2}
+	\end{figure}
+	\FloatBarrier
+
+%stepwise
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexplstepwiseY_zoneX2.png}
+		\caption{}\label{MSEexplstepwiseY_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/cplexplstepwise_zoneX2.png}
+		\caption{}\label{cplexplstepwise_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexplstepwisebeta_zoneX2.png}
+		\caption{}\label{MSEexplstepwisebeta_zoneX2}
+	\end{figure}
+	\FloatBarrier
+
+%ridge	
+\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexplridgeY_zoneX2.png}
+		\caption{}\label{MSEexplridgeY_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/cplexplridge_zoneX2.png}
+		\caption{}\label{cplexplridge_zoneX2}
+	\end{figure}
+	\begin{figure}[h!]
+	\centering
+		  \includegraphics[width=300px]{figures/explhatS/X2/MSEexplridgebeta_zoneX2.png}
+		\caption{}\label{MSEexplridgebeta_zoneX2}
+	\end{figure}
+	\FloatBarrier
+
+
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_X2_MSE_NB.png} 
+%			\caption{Comparison of the MSE between OLS and CorReg+OLS}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/OLS_X2_compl_NB.png} 
+%			\caption{Comparison of the compexities between OLS and CorReg+OLS} 
+%   \end{minipage}
+%\end{figure}
+%\textsc{CorReg} is still better than OLS for strong correlations and limited values of $n$. 
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/lar_X2_MSE_NB.png} 
+%			\caption{Comparison of the MSE between LASSO and CorReg+LASSO}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/lar_X2_compl_NB.png} 
+%			\caption{Comparison of the compexities between LASSO and CorReg+LASSO} 
+%   \end{minipage}
+%\end{figure}
+%
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/elasticnet_X2_MSE_NB.png} 
+%			\caption{Comparison of the MSE between elasticnet and CorReg+elasticnet}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/elasticnet_X2_compl_NB.png} 
+%			\caption{Comparison of the compexities between elasticnet and CorReg+elasticnet} 
+%   \end{minipage}
+%\end{figure}
+%
+% \begin{figure}[h!]
+%	\begin{minipage}[l]{.48\linewidth}
+%			\includegraphics[height=180px,width=245px]{figures/res_article/stepwise_X2_MSE_NB.png} 
+%			\caption{Comparison of the MSE between stepwise and CorReg+stepwise}
+%	\end{minipage} \
+%   \begin{minipage}[r]{.48\linewidth}
+%			\includegraphics[height=180px,width=240px]{figures/res_article/stepwise_X2_compl_NB.png} 
+%			\caption{Comparison of the compexities between stepwise and CorReg+stepwise}
+%   \end{minipage}
+%\end{figure}
 
 \chapter{Numerical results on real datasets} \label{sectionrealcase}
 	\section{Quality case study} \label{sectionexfos}
