@@ -30,6 +30,8 @@ matplot_zone(x = x, y = y, col = 1:6, alpha = 0.2, what = which.min,
 
 \item{lwd}{(like in matplot)}
 
+\item{lty}{(like in matplot)}
+
 \item{main}{the main title (like in matplot)}
 }
 \description{
