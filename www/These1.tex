@@ -1148,7 +1148,7 @@ We try the method with a response depending on all covariates (\textsc{CorReg} r
 		\caption{}\label{MSEexplOLSbeta_zonetout}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %LASSO
 	\begin{figure}[h!]
 	\centering
@@ -1166,7 +1166,7 @@ We try the method with a response depending on all covariates (\textsc{CorReg} r
 		\caption{}\label{MSEexpllarbeta_zonetout}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %elasticnet
 	\begin{figure}[h!]
 	\centering
@@ -1184,7 +1184,7 @@ We try the method with a response depending on all covariates (\textsc{CorReg} r
 		\caption{}\label{MSEexplelasticnetbeta_zonetout}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %stepwise
 	\begin{figure}[h!]
 	\centering
@@ -1202,7 +1202,7 @@ We try the method with a response depending on all covariates (\textsc{CorReg} r
 		\caption{}\label{MSEexplstepwisebeta_zonetout}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %ridge	
 \begin{figure}[h!]
 	\centering
@@ -1299,7 +1299,7 @@ We see that CorReg tends to give more parsimonious models and better predictions
 		\caption{}\label{MSEexplOLSbeta_zoneX1}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %LASSO
 	\begin{figure}[h!]
 	\centering
@@ -1317,7 +1317,7 @@ We see that CorReg tends to give more parsimonious models and better predictions
 		\caption{}\label{MSEexpllarbeta_zoneX1}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %elasticnet
 	\begin{figure}[h!]
 	\centering
@@ -1335,7 +1335,7 @@ We see that CorReg tends to give more parsimonious models and better predictions
 		\caption{}\label{MSEexplelasticnetbeta_zoneX1}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %stepwise
 	\begin{figure}[h!]
 	\centering
@@ -1353,7 +1353,7 @@ We see that CorReg tends to give more parsimonious models and better predictions
 		\caption{}\label{MSEexplstepwisebeta_zoneX1}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %ridge	
 \begin{figure}[h!]
 	\centering
@@ -1446,7 +1446,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 		\caption{}\label{MSEexplOLSbeta_zoneX2}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %LASSO
 	\begin{figure}[h!]
 	\centering
@@ -1464,7 +1464,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 		\caption{}\label{MSEexpllarbeta_zoneX2}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %elasticnet
 	\begin{figure}[h!]
 	\centering
@@ -1482,7 +1482,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 		\caption{}\label{MSEexplelasticnetbeta_zoneX2}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %stepwise
 	\begin{figure}[h!]
 	\centering
@@ -1500,7 +1500,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 		\caption{}\label{MSEexplstepwisebeta_zoneX2}
 	\end{figure}
 	\FloatBarrier
-
+\newpage
 %ridge	
 \begin{figure}[h!]
 	\centering
@@ -1725,6 +1725,127 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 
 
 \part{Further usage of the structure}	
+			
+		
+\chapter{Taking back the residuals}
+	We have seen that eviction of redundant covariates improves the results by a good trade-off between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back.
+	\section{The model}
+		After the estimation of the marginal model, we know both $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\beta}^*}$.
+		\begin{eqnarray}
+			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{X}^{I_r}&=&\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \\
+			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\underbrace{(\boldsymbol{\beta}_{I_r}+\boldsymbol{\alpha}\boldsymbol{\beta}_{I_f})}_{\boldsymbol{\beta}^*}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{Y}- \boldsymbol{X}^{I_r}\boldsymbol{\beta}^*&=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{\varepsilon}&=&\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\boldsymbol{\alpha}
+		\end{eqnarray}		 
+		So we introduce a plug-in model
+		\begin{eqnarray}
+			\underbrace{\boldsymbol{Y}- \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}^*}}_{\tilde{\boldsymbol{Y}}}&=&\underbrace{(\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}})}_{\tilde{\boldsymbol{X}}}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+		\end{eqnarray}
+		That allows us to estimate $\boldsymbol{\beta}_{I_r}$ with a classical linear model based on previous estimations of $\boldsymbol{\beta}^*$ and $\boldsymbol{\alpha}$.
+		Then we have a model with a smaller noise
+		\begin{equation}
+			\boldsymbol{Y}= \boldsymbol{X}^{I_r}\boldsymbol{\beta}^* + \boldsymbol{\varepsilon}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
+		\end{equation}
+		and we can even find the original model by doing an identification step:
+		\begin{equation}
+			\boldsymbol{Y}= \boldsymbol{X}^{I_r}(\boldsymbol{\beta}^*-\boldsymbol{\alpha}\hat{\boldsymbol{\beta}}_{I_r}) + \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
+		\end{equation}
+	\section{Interpretation and latent variables}
+			$\hat{\boldsymbol{\beta}}_{I_r}$ can be interpreted as the proper effect of $\boldsymbol{X}^{I_r}$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}^{I_r}$ that is independent from other covariates. Then if $\boldsymbol{X}^{I_r}$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}^{I_f}$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_{I_r}=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}^{I_f}$ and dependent of $\boldsymbol{X}^{I_r}$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}}$. Thus, it can reveal some kinds of latent variables.
+			
+	
+\begin{figure}[h!]
+	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}\label{MQE2}
+	\caption{MSE of OLS (plain red) and CorReg marginal(blue dashed) and CorReg full (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
+\end{figure}	
+	
+	\section{Consistency}\label{consistency}
+		Consistency issues of the LASSO are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
+		We have taken the same example to show how our method is more consistent.
+		Here $p=3$ and $n=1000$.\\
+		We define $\boldsymbol{X}^{I_f}, \boldsymbol{X}^{I_r}, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{X} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
+		$\boldsymbol{X}_3=\frac{2}{3}\boldsymbol{X}_1+\frac{2}{3}\boldsymbol{X}_2+\frac{1}{3}\boldsymbol{\varepsilon}_X$ and \\
+		$\boldsymbol{Y}=2\boldsymbol{X}_1+3\boldsymbol{X}_2+\boldsymbol{\varepsilon}_Y$.\\
+		We compare consistencies of complete, marginal and full plug-in model with LASSO (and LAR) for selection.
+		It happens that the algorithm don't find the true structure but a permuted one so we also look at the results obtained with the true $S$ (but $\hat{\boldsymbol{\alpha}}$ is used) and with the structure found by the Markov chain after a few seconds.
+		
+		True $S$ was found $340$ times on $1000$ tries (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
+		
+		\begin{table}[h!]
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+		\hline 
+		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO\\ 
+		\hline 
+		True $S$ &  1.006479 & \textbf{1.005468} & \textbf{1.006093} \\ 
+		\hline 
+		$\hat{Z}$ & \textbf{1.006479} & 1.884175 & 1.006517 \\ 
+		\hline 
+		\end{tabular} 
+		\caption{MSE observed on a validation sample (1000 individuals)}
+		\end{table}
+
+		We observe as we hoped that our marginal model is better when using true $S$ (coercing real zeros) and that marginal with $\hat{S}$ is penalized (coercing wrong coefficients to be zeros when true $S$ is not found).
+		But the main point is that the plug-in model stay better than the classical one with the true $S$ and corrects enough the marginal model to follow the classical LASSO closely when using $\hat{S}$. 
+		And when we look at the consistency :
+		\begin{table}[h!]	
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+		\hline 
+		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
+		\hline 
+		True $S$ &  0 & 1000 & 830 \\ 
+		\hline 
+		$\hat{S}$ & 0 & 340 & \textbf{621} \\ 
+		\hline 
+		\end{tabular} 
+		\caption{Number of consistent model found ($\boldsymbol{Y}$ depending on $\boldsymbol{X}_1,\boldsymbol{X}_2$ and only them) on $1000$ tries}
+		\end{table}				
+		
+		$299$ times on $1000$ tries, the predictive model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
+		
+		We also made the same experiment but with $\boldsymbol{X}_1,\boldsymbol{X}_2$ (and consequently $\boldsymbol{X}_3$) following Gaussian mixtures (to improve identifiability) randomly generated by our CorReg package for R. 
+		True $S$ is now found $714$ times on $1000$ tries \label{testidentifiable}. So it confirms that Gaussian mixture models are easier to identify.
+		
+		
+		\begin{table}[h!]
+		\centering
+		\begin{tabular}{|c|c|c|c|}
+		\hline 
+		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
+		\hline 
+		True $S$ &  1.571029 & \textbf{1.569559} & \textbf{1.570801} \\ 
+		\hline 
+		$\hat{S}$ & 1.005402 & 1.465768 & \textbf{1.005066} \\ 
+		\hline 
+		\end{tabular} 
+		\caption{MSE observed on a validation sample (1000 individuals)}
+		\end{table}
+
+		And when we look at the consistency :
+		\begin{table}[h!]
+		\centering	
+		\begin{tabular}{|c|c|c|c|}
+		\hline 
+		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
+		\hline 
+		True $S$ &  0 & 1000 & 789 \\ 
+		\hline 
+		$\hat{S}$ & 0 & 714 & \textbf{608} \\ 
+		\hline 
+		\end{tabular} 
+		\caption{Number of consistent model found ($Y$ depending on $X_1,X_2$ and only them) on $1000$ tries}
+		\end{table}				
+				
+		
+		$299$ times on $1000$ tries, the predictive model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
+		
+
+	\section{Numerical results}
+	
+	
+
 \chapter{Missing values}
 	\paragraph{Résumé:} Le modèle génératif complet sur les données nous permet d'obtenir la loi des valeurs manquantes. Mais nous pouvons aller encore plus loin car la modélisation explicite des corrélations nous permet d'obtenir les lois conditionnelles de chaque valeur manquante sachant les valeurs observées. Ce chapitre présente comment nous pouvons par un simple algorithme SEM estimer les paramètres des sous-régressions dans la chaîne MCMC de recherche de structure. Enfin, nous pouvons imputer les valeurs manquantes à l'aide d'un Gibbs qui procède par imputations multiples, fournissant au passage un indicateur de précision sur l'imputation proposée. 
 
@@ -2177,9 +2298,27 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective for our method.
 	\section{Numerical results on simulated datastets}
 		\subsection{Estimation of the sub-regression coefficients}
-			
-		\subsection{Imputation by the sub-regression}
-			Missing values in $\boldsymbol{X}^{I_r}$ can be imputed by the corresponding sub-regression.
+			We take datasets from the experiments in part I and then we compare the MSE obtained on $\boldsymbol{\alpha}$ with our SEM to those obtain by classical OLS after imputation of the missing values by the marginal empirical means. Here $p=40$ and $n=30$, missing values position are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values each time. Thus we have 120 missing values and none of the datasets contain a full individual without missing values.
+Both methods were tested with the true structure $S$. Initial value of $\boldsymbol{\alpha}$ for the SEM was the result of the method using imputation by the empirical mean. Only 10 iterations for the SEM after 2 warming steps with only 1 iteration for the Gibbs at each step.
+
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=300px]{figures/MSEalphaSEM.png} 
+	\caption{MSE on $\boldsymbol{\alpha}$ is significantly lower and more robust with our SEM than with imputation by the mean.}\label{MSEalphaSEM}
+\end{figure}
+
+	We see that our SEM is nearly 13 times more efficient in mean that estimation based on imputation by the mean. Our results are extremely good because each sub-regression is true and we have 30 individuals (even if missing values kind of reduce this number) to estimate 3 coefficients only each time. Although, using imputed values lead to learn a true regression with a factually incorrect dataset. 
+
+		
+			\subsection{Imputation by the sub-regression}
+			We have then imputed missing values in $\boldsymbol{X}^{I_r}$  by using the corresponding sub-regressions after $\boldsymbol{\alpha}$ has been estimated  by the SEM.
+			Missing values in $\boldsymbol{X}^{I_f}$ are still estimated by the empiric mean.
+			\begin{figure}[h!]
+	\centering
+	\includegraphics[width=300px]{figures/MSEXsubreg.png} 
+	\caption{MSE on $\boldsymbol{X}$ is significantly lower and more robust when using sub-regressions than with imputation by the mean.}\label{MSEXsubreg}
+\end{figure}
+	In this example (Figure \ref{MSEXsubreg}), we have  $70 \%$ of missing values and still $p=40, n=30$.
 		\subsection{Multiple imputation for the main regression}
 		n grand et manquants en zebrures diagonales( 1 par ligne)
 		
@@ -2187,125 +2326,6 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same S and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
 		
 		To be able to evaluate imputation quality we work with a real dataset but artificial missing values.
-				
-		
-\chapter{Taking back the residuals}
-	We have seen that eviction of redundant covariates improves the results by a good trade-off between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back.
-	\section{The model}
-		After the estimation of the marginal model, we know both $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\beta}^*}$.
-		\begin{eqnarray}
-			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{\varepsilon}_Y \\
-			\boldsymbol{X}^{I_r}&=&\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \\
-			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\underbrace{(\boldsymbol{\beta}_{I_r}+\boldsymbol{\alpha}\boldsymbol{\beta}_{I_f})}_{\boldsymbol{\beta}^*}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
-			\boldsymbol{Y}- \boldsymbol{X}^{I_r}\boldsymbol{\beta}^*&=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
-			\boldsymbol{\varepsilon}&=&\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\boldsymbol{\alpha}
-		\end{eqnarray}		 
-		So we introduce a plug-in model
-		\begin{eqnarray}
-			\underbrace{\boldsymbol{Y}- \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}^*}}_{\tilde{\boldsymbol{Y}}}&=&\underbrace{(\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}})}_{\tilde{\boldsymbol{X}}}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
-		\end{eqnarray}
-		That allows us to estimate $\boldsymbol{\beta}_{I_r}$ with a classical linear model based on previous estimations of $\boldsymbol{\beta}^*$ and $\boldsymbol{\alpha}$.
-		Then we have a model with a smaller noise
-		\begin{equation}
-			\boldsymbol{Y}= \boldsymbol{X}^{I_r}\boldsymbol{\beta}^* + \boldsymbol{\varepsilon}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
-		\end{equation}
-		and we can even find the original model by doing an identification step:
-		\begin{equation}
-			\boldsymbol{Y}= \boldsymbol{X}^{I_r}(\boldsymbol{\beta}^*-\boldsymbol{\alpha}\hat{\boldsymbol{\beta}}_{I_r}) + \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
-		\end{equation}
-	\section{Interpretation and latent variables}
-			$\hat{\boldsymbol{\beta}}_{I_r}$ can be interpreted as the proper effect of $\boldsymbol{X}^{I_r}$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}^{I_r}$ that is independent from other covariates. Then if $\boldsymbol{X}^{I_r}$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}^{I_f}$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_{I_r}=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}^{I_f}$ and dependent of $\boldsymbol{X}^{I_r}$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}}$. Thus, it can reveal some kinds of latent variables.
-			
-	
-\begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}\label{MQE2}
-	\caption{MSE of OLS (plain red) and CorReg marginal(blue dashed) and CorReg full (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
-\end{figure}	
-	
-	\section{Consistency}\label{consistency}
-		Consistency issues of the LASSO are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
-		We have taken the same example to show how our method is more consistent.
-		Here $p=3$ and $n=1000$.\\
-		We define $\boldsymbol{X}^{I_f}, \boldsymbol{X}^{I_r}, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{X} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
-		$\boldsymbol{X}_3=\frac{2}{3}\boldsymbol{X}_1+\frac{2}{3}\boldsymbol{X}_2+\frac{1}{3}\boldsymbol{\varepsilon}_X$ and \\
-		$\boldsymbol{Y}=2\boldsymbol{X}_1+3\boldsymbol{X}_2+\boldsymbol{\varepsilon}_Y$.\\
-		We compare consistencies of complete, marginal and full plug-in model with LASSO (and LAR) for selection.
-		It happens that the algorithm don't find the true structure but a permuted one so we also look at the results obtained with the true $S$ (but $\hat{\boldsymbol{\alpha}}$ is used) and with the structure found by the Markov chain after a few seconds.
-		
-		True $S$ was found $340$ times on $1000$ tries (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
-		
-		\begin{table}[h!]
-		\centering
-		\begin{tabular}{|c|c|c|c|}
-		\hline 
-		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO\\ 
-		\hline 
-		True $S$ &  1.006479 & \textbf{1.005468} & \textbf{1.006093} \\ 
-		\hline 
-		$\hat{Z}$ & \textbf{1.006479} & 1.884175 & 1.006517 \\ 
-		\hline 
-		\end{tabular} 
-		\caption{MSE observed on a validation sample (1000 individuals)}
-		\end{table}
-
-		We observe as we hoped that our marginal model is better when using true $S$ (coercing real zeros) and that marginal with $\hat{S}$ is penalized (coercing wrong coefficients to be zeros when true $S$ is not found).
-		But the main point is that the plug-in model stay better than the classical one with the true $S$ and corrects enough the marginal model to follow the classical LASSO closely when using $\hat{S}$. 
-		And when we look at the consistency :
-		\begin{table}[h!]	
-		\centering
-		\begin{tabular}{|c|c|c|c|}
-		\hline 
-		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
-		\hline 
-		True $S$ &  0 & 1000 & 830 \\ 
-		\hline 
-		$\hat{S}$ & 0 & 340 & \textbf{621} \\ 
-		\hline 
-		\end{tabular} 
-		\caption{Number of consistent model found ($\boldsymbol{Y}$ depending on $\boldsymbol{X}_1,\boldsymbol{X}_2$ and only them) on $1000$ tries}
-		\end{table}				
-		
-		$299$ times on $1000$ tries, the predictive model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
-		
-		We also made the same experiment but with $\boldsymbol{X}_1,\boldsymbol{X}_2$ (and consequently $\boldsymbol{X}_3$) following Gaussian mixtures (to improve identifiability) randomly generated by our CorReg package for R. 
-		True $S$ is now found $714$ times on $1000$ tries \label{testidentifiable}. So it confirms that Gaussian mixture models are easier to identify.
-		
-		
-		\begin{table}[h!]
-		\centering
-		\begin{tabular}{|c|c|c|c|}
-		\hline 
-		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
-		\hline 
-		True $S$ &  1.571029 & \textbf{1.569559} & \textbf{1.570801} \\ 
-		\hline 
-		$\hat{S}$ & 1.005402 & 1.465768 & \textbf{1.005066} \\ 
-		\hline 
-		\end{tabular} 
-		\caption{MSE observed on a validation sample (1000 individuals)}
-		\end{table}
-
-		And when we look at the consistency :
-		\begin{table}[h!]
-		\centering	
-		\begin{tabular}{|c|c|c|c|}
-		\hline 
-		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
-		\hline 
-		True $S$ &  0 & 1000 & 789 \\ 
-		\hline 
-		$\hat{S}$ & 0 & 714 & \textbf{608} \\ 
-		\hline 
-		\end{tabular} 
-		\caption{Number of consistent model found ($Y$ depending on $X_1,X_2$ and only them) on $1000$ tries}
-		\end{table}				
-				
-		
-		$299$ times on $1000$ tries, the predictive model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
-		
-
-	\section{Numerical results}
-	
 	
 \chapter{CorReg: the concept}	
 	
