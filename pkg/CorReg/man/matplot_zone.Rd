@@ -5,7 +5,7 @@
 \usage{
 matplot_zone(x = x, y = y, col = 1:6, alpha = 0.2, what = which.min,
   ylim = NULL, xlim = NULL, type = "p", xlab = NULL, ylab = "NULL",
-  main = NULL, lwd = lwd)
+  main = NULL, lwd = lwd, lty = 1:5)
 }
 \arguments{
 \item{x}{the abscisses}
