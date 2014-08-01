@@ -313,8 +313,13 @@ if(explnew){compl=TRUE;expl=TRUE}
          A_inj=rep(0,times=ncol(Xtilde))
          A_inj[which(respike$gnet.scale!=0)]=OLS(X=Xtilde[,respike$gnet.scale!=0],Y=as.numeric(Ytilde),intercept=intercept)$beta 
       }else{#ridge
-        ridge_pred = linearRidge(Ytilde~0+.,data=data.frame(Xtilde))
-        A_inj=coef(ridge_pred)
+         if(ncol(Xtilde)>1){
+            ridge_pred = linearRidge(Ytilde~0+.,data=data.frame(Xtilde))
+            A_inj=coef(ridge_pred)
+         }else{
+            ridge_pred = OLS(X = Xtilde,Y=Ytilde,intercept=FALSE)#ridge has no sens on only one covariate
+            A_inj=ridge_pred$beta
+         }
       }
       A_pred = rep(0, times = ncol(X) + intercept)
       A_pred[I2 + intercept] = A_inj
