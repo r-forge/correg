@@ -264,12 +264,10 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[width=150px]{figures/lassocircles.png} 
-			\caption{Geometric view of the Penalty for the LASSO}
+			\includegraphics[width=150px]{figures/lasso.png} 
+			\caption{Geometric view of the Penalty for the LASSO (left) compared to ridge regression (right)} \label{lassogeom}
 		\end{figure}
-		
-		
-détailler le graphique
+		Figure \ref{lassogeom} show the contour of error (red) and constraint function (blue) for both lasso (left) and ridge regression (right). We see that the optimum will be found on an axis for the lasso because its constraint zone is a polyhedron whose vertices are on the axis but not for the ridge regression. Here the axis stands for the regression coefficients.
 		
 		Here again we have to choose a value for $\lambda$.
 	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem. This consistency issu is illustrated in section \ref{consistency}.
@@ -283,7 +281,6 @@ détailler le graphique
 			 
 			 It is notable that the main goal of the LASSO is to select some covariate, thus the penalization is just a mean to achieve selection. But estimation of $\hat{\boldsymbol{\beta}}$ can be improved by a second estimation with OLS based only on selected covariates \cite{SAM10088}.
 		\subsection{Least Angle Regression}
-			Schéma de la géométrie qui motive le nom de la méthode
 \begin{figure}[h!]
 	\centering
 		  \includegraphics[width=350px]{figures/LARtheory.png}
@@ -295,16 +292,16 @@ détailler le graphique
 		  \includegraphics[width=350px]{figures/plotlarstoy.png}
 		\caption{The LASSO path computed by lars}
 	\end{figure}			
-			Explication du choix par validation croisée et de la surcouche OLS
-			
-			Résultats comparatifs en modifiant le A du running example pour voir que validation croisée est mieux que le BIC dans ce cas là (au passage, prendre un cas non consistant).	 
-			 	 \begin{figure}
+	
+		 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/larcompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{lar}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQElarcompl}
 	\end{figure}
 	Results obtained with the package lars for R.
-	
+	 
+ 	 
+	 
 		\subsection{Elasticnet}		% ne pas oublier de mentionner les packages existants
 
 			Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and the \textsc{LASSO} by mixing both $L_1$ and $L_2$ penalties: 
