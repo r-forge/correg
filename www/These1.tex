@@ -8,6 +8,7 @@
 \usepackage{placeins}
 \usepackage{graphicx}
 \usepackage{hyperref}
+\usepackage{url}
 \usepackage{lmodern}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \author{Clément THERY}
@@ -107,7 +108,7 @@
 	The stakes are very high because of the high productivity of the steel plants but also because steel making is now well-known and optimized thus new defects only appears on innovative steels with high value. Any improvement on such crisis can have important impact on the market shares and when the customer is implied, each day won by the automation of the data mining process can lead to a gain of hundreds of thousands of euros, sometimes more. So we really need a kind of automatic method, able to manage the correlations without any a priori and giving an easily understandable and flexible model.
 	
 \chapter{State of the art}
-\paragraph{Abstract:} Rapide aperçu de ce qui existe déjà pour tenter de répondre à notre problématique. La plupart des outils présentés le sont plus en détail dans le livre de Hastie, Tibshirani et Friedman : {\it "The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible gratuitement sur le web\footnote{$http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf$}.
+\paragraph{Abstract:} Rapide aperçu de ce qui existe déjà pour tenter de répondre à notre problématique. La plupart des outils présentés le sont plus en détail dans le livre de Hastie, Tibshirani et Friedman : {\it "The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible gratuitement sur le web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}}.
 	\section{Linear regression}
 		\subsection{Historic interest}
 			méthode ancienne et reconnue, remonte aux origines des statistiques, méthode pionnière en prédiction.
@@ -264,13 +265,13 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[width=150px]{figures/lasso.png} 
+			\includegraphics[width=200px]{figures/lasso.png} 
 			\caption{Geometric view of the Penalty for the LASSO (left) compared to ridge regression (right)} \label{lassogeom}
 		\end{figure}
 		Figure \ref{lassogeom} show the contour of error (red) and constraint function (blue) for both lasso (left) and ridge regression (right). We see that the optimum will be found on an axis for the lasso because its constraint zone is a polyhedron whose vertices are on the axis but not for the ridge regression. Here the axis stands for the regression coefficients.
 		
 		Here again we have to choose a value for $\lambda$.
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path and is very attractive. It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates. But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem. This consistency issu is illustrated in section \ref{consistency}.
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path.  But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem. This consistency issu is illustrated in section \ref{consistency}.
 
 
 		% ne pas oublier de mentionner les packages existants
@@ -281,6 +282,9 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			 
 			 It is notable that the main goal of the LASSO is to select some covariate, thus the penalization is just a mean to achieve selection. But estimation of $\hat{\boldsymbol{\beta}}$ can be improved by a second estimation with OLS based only on selected covariates \cite{SAM10088}.
 		\subsection{Least Angle Regression}
+		The least Angle Regression algorithm solves the LASSO problem.
+		It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates.
+		The idea is to start with all coefficients to zero and then grow them beginning with the most correlated with the response variable until another variable is more correlated with the residual. So it is a progressive growth of the coefficient leading to reduce the residual. It finishes with the Ordinary Least Squares solution. We then have a list of models with several numbers of non-zero coefficients and can choose between them with cross-validation for example.
 \begin{figure}[h!]
 	\centering
 		  \includegraphics[width=350px]{figures/LARtheory.png}
@@ -346,12 +350,9 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 \begin{figure}[h!]
 			\centering
 			\includegraphics[width=150px]{figures/oscarcircles.png} 
-			\caption{Geometric view of the Penalty for OSCAR}
+			\caption{Geometric view of the Penalty for OSCAR}\label{oscarcircles}
 		\end{figure} 
-		détailler le graphique			
-			
-			
-			Correlations are only implicitly taken into account and only pairwise. So it lacks of an efficient algorithm and need a supplementary study to interpret the groups found.
+Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It follows the same principle as the LASSO with supplementary vertices in the four quarters to obtain equal values for the $\beta_j$. So the estimator will give both zero coefficients and equal coefficients that can be grouped for interpretation and correspond to a dimension reduction. So two covariates with a similar effect may obtain the same estimated coefficient. But correlations are only implicitly taken into account and only pairwise. It lacks of an efficient algorithm  (to find $c$) and need a supplementary study to interpret the groups found.
 		
 		
 	\section{Modeling the parameters}			% ne pas oublier de mentionner les packages existants
@@ -362,7 +363,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	
 		\subsection{Spike and Slab}			% ne pas oublier de mentionner les packages existants
 
-			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues. 
+			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.  The $\beta_j$ are supposed to come from a mixture distribution as shown in figure \ref{spikeslab}. It allows to have some coefficients set exactly to zero after some draws. 
 			
 \begin{figure}[h!]
 	\centering
@@ -379,8 +380,10 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	\cite{eubank1999nonparametric,hardle1990applied}
 		Non conforme aux exigences d'interprétabilité
 	\subsection{Sliced Inverse Regression}
-		It is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression. But it is not sufficient in terms of ease of use (after estimation) for non-statisticians.
-		\cite{li1991sliced,saracco1999regression}
+		It is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression. 
+		The main idea is to compute the inverse regression $P(\boldsymbol{X}|\boldsymbol{Y})$ instead of $P(\boldsymbol{Y}|\boldsymbol{X})$ to perform a weighted principal component analysis, with which one identifies the effective dimension reducing directions\cite{li1991sliced}. But it needs strong hypothesis on the distribution of $\boldsymbol{X}$ (elliptic hypothesis), even if it is possible to neglect this hypothesis \cite{saracco1999regression} and see what happens. This method has been rejected because it was not sufficient in terms of ease of use (during and after estimation) for non-statisticians and the elliptic hypothesis is compromised on datasets with hundreds of covariates.
+			
+		
 	\subsection{General Linear Model (GLM)}
 		\cite{kiebel2003general,wickens2004general,nelder1972generalized,mccullagh1989generalized}
 		Generalise le modèle linéaire, assez classique dans les outils statistiques, mais pas assez immédiat en interprétation par rapport au modèle linéaire classique ou bien aux arbres de décision (transition vers la section suivante sur CART)
@@ -392,7 +395,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		Gros avantage: les données mixtes	
 	
 	\subsection{Neural networks}	
-		Neural networks \cite{fausett1994fundamentals} seems to be really powerful but it has a predictive only goal and the model obtained can't be interpreted easily (and can't be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes far behind.
+		Neural networks \cite{fausett1994fundamentals} is a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained can't be interpreted easily (and can't be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes far behind.
 		
 	\subsection{Bayesian networks}
 		\cite{heckerman1995learning,jensen2007bayesian,friedman2000using}
