@@ -362,10 +362,13 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	
 		\subsection{Spike and Slab}			% ne pas oublier de mentionner les packages existants
 
-			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.
+			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues. 
 			
-Mettre un dessin du spike et du slab			
-			
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=350px]{figures/spikeslab.png} 
+	\caption{}\label{spikeslab}
+\end{figure}		
 			
 	\section{Miscellaneous}	
 	\subsection{Principal Component Regression}
@@ -638,17 +641,18 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 	\caption{Theoretical MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
 It is clear in Figure \ref{MQEexplOLSp5col} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($\mathcal{R}^2$ tends to 0) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
-We see that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))=0$.
- Thus, when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the model has a strong noise (very usual case on real datasets where true model is not even exactly linear). 
+We know that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))=0$.
+ Thus, when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the main model has a strong noise (very usual case on real datasets where true model is not even exactly linear). 
  
-But it is only the theoretical MSE and we want to know what happens in the real life. So we look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$. Here again, each configuration is computed 100 times and we take the mean to smooth the curves. The MSE on $\hat{\boldsymbol{Y}}$ is computed on a validation sample with 1 000 individuals. Our marginal model remains better for strong correlations.\\
-
+But it is only the theoretical MSE and we want to know what happens in the real life. 
 \section{Observed MSE comparison}
+We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$. Here again, each configuration is computed 100 times and we take the mean to smooth the curves. The MSE on $\hat{\boldsymbol{Y}}$ is computed on a validation sample with 1 000 individuals. Our marginal model remains better for strong correlations.\\
+
 	We also look at the observed MSE on both $\boldsymbol{\beta}$ and $\boldsymbol{Y}$ for some of the methods depicted above.
 	\subsection{On the running example}
  \begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQEreel/OLSexpl.png}\label{MSEOLSexpl}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+	\includegraphics[width=500px]{figures/MQEreel/OLSexpl.png}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEOLSexpl}
 \end{figure} 
 	
 	 \begin{figure}
@@ -656,12 +660,12 @@ But it is only the theoretical MSE and we want to know what happens in the real 
 	  \includegraphics[width=500px]{figures/MQEreel/OLSYexpl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLSYexpl}
 	\end{figure}
-	We see in figures \ref{MSEOLSexpl} and \ref{MQEOLSYexpl} that MSE on $\hat{\boldsymbol{Y}}_{LASSO}$ give the same results as those on $\hat{\boldsymbol{\beta}}$.
+	We see in figures \ref{MSEOLSexpl} and \ref{MQEOLSYexpl} that MSE on $\hat{\boldsymbol{Y}}_{OLS}$ give the same results as those on $\hat{\boldsymbol{\beta}}_{OLS}$.
 	
-	
+	\FloatBarrier
  \begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQEreel/larexpl.png}\label{MSElarexpl}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of LASSO with LAR on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+	\includegraphics[width=500px]{figures/MQEreel/larexpl.png}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of LASSO with LAR on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSElarexpl}
 \end{figure} 
 	
 	 \begin{figure}
@@ -672,8 +676,8 @@ But it is only the theoretical MSE and we want to know what happens in the real 
 	Figure \ref{MSElarexpl} shows that variable selection done the LASSO gives a biased $\hat{\boldsymbol{\beta}}$ by setting some coefficients to 0 but strong correlations makes this bias neutral for prediction. Here the LASSO tends to propose the same model as we do  with our marginal model, but without explanation. We will see  later that it is not sufficient in higher dimension.
 %ridge
 	\begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQEreel/ridgeexpl.png}\label{MSEridgexpl}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{ridge}$ on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+	\includegraphics[width=500px]{figures/MQEreel/ridgeexpl.png}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{ridge}$ on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEridgexpl}
 \end{figure} 
 	
 	 \begin{figure}
