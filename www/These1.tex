@@ -219,7 +219,7 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 	  \includegraphics[width=500px]{figures/MQEreel/OLScompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLScompl}
 	\end{figure}	
-	We first observe that real results are better from expected (Figure \ref{MQEOLScompl}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices. Our package CorReg also uses this decomposition. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$
+	We first observe that real results are better from expected (Figure \ref{MQEOLScompl}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices \cite{bulirsch2002introduction}. Our package CorReg also uses this decomposition. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$
 	
 	\section{Penalized models}
 	
@@ -394,12 +394,35 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 		CorReg propose un outil de mise en oeuvre rapide et avec légendes ainsi qu'une fonctionnalité de sélection pour mieux analyser les problématiques de corrélations.	
 		Gros avantage: les données mixtes	
 	
+		Classification And Regression Trees (CART) are extremely simple to use and interpret, can work simultaneously with quantitative and qualitative covariates and are very fast. They consist in recursive partitioning of the sample according to binary rules on the covariate (only one at a time) to obtain a hierarchy defined by simple rules and containing pure leaves (same value). It is followed by a pruning method to obtain leaves that are quite homogeneous and described with simple rules.
+		
+		\begin{figure}
+			\centering
+				\includegraphics[width=350px]{figures/arbretoy.png} 
+			\caption{Regression tree obtain with the package CorReg (graphical layer on top of  the rpart package) on the running example.}\label{arbretoy}
+		\end{figure}
+		CART is implemented in the package rpart for R. Our CorReg package offers a function to compute and plot the tree in one command with a subtitle to explain how to read the tree and global statistics on the dataset.
+		But it is not convenient for linear regression problems as we see in figure \ref{arbretrivial} because a same variable will be used several times and the tree will fail to give a simple interpretation as " $\boldsymbol{Y}$ and $\boldsymbol{X}_1$ are proportional ". Trivial case : $\boldsymbol{Y}=\boldsymbol{X}_1 + \boldsymbol{\varepsilon}$ where $\boldsymbol{\varepsilon} \sim \mathcal{N}{0, 0.5\boldsymbol{I}_n}$
+		So CART will be used as a complementary tool for datasets with both quantitative and qualitative covariates or when the dependence between $\boldsymbol{Y}$ and $\boldsymbol{X}$ is not linear. We will focus our research on linear models with quantitative only variables.
+	
+\begin{figure}[h!]
+	\subfigure[Tree found for the trivial case]{
+			\includegraphics[height=180px,width=245px]{figures/arbretrivial.png} 
+	} \quad
+   	\subfigure[True linear regression and splits obtained by the tree.]{
+			\includegraphics[height=180px,width=240px]{figures/arbretrivialcoupure.png} 
+	}
+	\caption{Regression trees are not optimal to describe proportionality}\label{arbretrivial}
+\end{figure}
+
+
+	
 	\subsection{Neural networks}	
 		Neural networks \cite{fausett1994fundamentals} is a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained can't be interpreted easily (and can't be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes far behind.
 		
 	\subsection{Bayesian networks}
 		\cite{heckerman1995learning,jensen2007bayesian,friedman2000using}
-		Bayesian networks are quite good in terms of interpretation but suffer from great dimension and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitely not suitable in our industrial context. 
+		Bayesian networks are quite good in terms of interpretation but suffer from great dimension and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). 
 		
 		
 	
@@ -407,10 +430,23 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 		\section{Choice of model}
 		% ne pas oublier de mentionner les packages existants
 			\subsection{Cross validation}
-				\cite{kohavi1995study,arlot2010survey}
+				
+				Time reveals quality of a model. To have an idea of the stability of a model, it is recommended to test it on a validation sample. The model parameters are estimated with a learning sample and then the model is evaluated (by its predictive MSE for example) on a validation sample to avoid over-fitting. But it is not always possible to have a validation sample and over-fitting is a real problem. A solution is to use Cross-Validation \cite{kohavi1995study,arlot2010survey}. It consists in splitting the dataset in $k$ sub-sample ($k$-fold cross-validation) and then each of the $k$ sub-samples is successively used as validation sample for the model learn with the $k-1$ remaining sub-samples. Each time a quality criterion  is computed (predictive MSE or other) and then the mean of this criterion is taken as the global criterion. The global estimator is also the mean of the estimators. The two main issues are:
+				\begin{itemize}
+					\item How to choose $k$ the number of sub-samples ?
+					\item It can be time consuming as the model is estimated $k$ times.
+				\end{itemize}
+				If $k=n$ we call this method the "leave-one-out" cross-validation.
+				Cross-validation allows to learn the model using all individual exactly once for validation.
+				Cross-validation is computed on each model we want to compare and just allows to avoid over-fitting when computing the comparison criterion.
+				It is often used with the Mean Squared Error (MSE), for example on the prediction :
+				\begin{equation}
+					MSE_{\hat{Y}}=\parallel \boldsymbol{Y}-\hat{\boldsymbol{Y}} \parallel^2_2
+				\end{equation}
 			\subsection{Information Criterion}
-			
+			Cross-validation depends on a criterion to be used as a method to choose a model. The mean square error is not the only criterion. Probabilist criteria can also be used when we have an hypothesis on the distribution of the model studied.
 			\cite{BIChuard}
+			
 			\subsection{stepwise}
 			\cite{seber2012linear,miller2002subset}
 			
@@ -421,13 +457,19 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 	\end{figure}
 	
 	
-			\subsection{bootstrap}
-			\cite{efron1979bootstrap,efron1994introduction}
-		\section{SEM}
+%			\subsection{bootstrap}
+%			\cite{efron1979bootstrap,efron1994introduction}
+		
 		\section{MCMC}
 		\cite{gilks1996markov,chib1995understanding,roberts2001optimal}
 		\section{Gibbs}
 		\cite{casella1992explaining}
+		
+		\section{SEM}
+			Sometimes the maximization of a likelihood is too complex to be done analytically. In such a case, we can use Expectation-Maximization algorithms.
+			
+			SEM stands for Stochastic Expectation Maximization and replaces the E step of the EM Algorithm by a stochastic step.
+			
 		\section{Industrial tools}
 			Linear regression, decision trees, bayesian networks, neural network but without confidence
 			Presence of softwares sent as non-statistical methods, based on rules (derivatives of decision trees).			
