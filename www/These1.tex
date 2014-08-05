@@ -271,7 +271,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		Figure \ref{lassogeom} show the contour of error (red) and constraint function (blue) for both lasso (left) and ridge regression (right). We see that the optimum will be found on an axis for the lasso because its constraint zone is a polyhedron whose vertices are on the axis but not for the ridge regression. Here the axis stands for the regression coefficients.
 		
 		Here again we have to choose a value for $\lambda$.
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path.  But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem. This consistency issu is illustrated in section \ref{consistency}.
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path.  But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem. This consistency issue is illustrated in section \ref{consistency}.
 
 
 		% ne pas oublier de mentionner les packages existants
@@ -399,10 +399,13 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 		\begin{figure}
 			\centering
 				\includegraphics[width=350px]{figures/arbretoy.png} 
-			\caption{Regression tree obtain with the package CorReg (graphical layer on top of  the rpart package) on the running example.}\label{arbretoy}
+			\caption{Regression tree obtain with the package {\tt CorReg}
+			 (graphical layer on top of  the {\tt rpart} package) on the running example.}\label{arbretoy}
 		\end{figure}
-		CART is implemented in the package rpart for R. Our CorReg package offers a function to compute and plot the tree in one command with a subtitle to explain how to read the tree and global statistics on the dataset.
-		But it is not convenient for linear regression problems as we see in figure \ref{arbretrivial} because a same variable will be used several times and the tree will fail to give a simple interpretation as " $\boldsymbol{Y}$ and $\boldsymbol{X}_1$ are proportional ". Trivial case : $\boldsymbol{Y}=\boldsymbol{X}_1 + \boldsymbol{\varepsilon}$ where $\boldsymbol{\varepsilon} \sim \mathcal{N}{0, 0.5\boldsymbol{I}_n}$
+		CART is implemented in the package {\tt rpart} 
+		for R. Our {\tt CorReg} 
+		package offers a function to compute and plot the tree in one command with a subtitle to explain how to read the tree and global statistics on the dataset.
+		But it is not convenient for linear regression problems as we see in figure \ref{arbretrivial} because a same variable will be used several times and the tree will fail to give a simple interpretation as " $\boldsymbol{Y}$ and $\boldsymbol{X}_1$ are proportional ". Trivial case : $\boldsymbol{Y}=\boldsymbol{X}_1 + \boldsymbol{\varepsilon}$ where $\boldsymbol{\varepsilon} \sim \mathcal{N}(0, \sigma^2 \boldsymbol{I}_n)$ with $\sigma=0.5$. \\
 		So CART will be used as a complementary tool for datasets with both quantitative and qualitative covariates or when the dependence between $\boldsymbol{Y}$ and $\boldsymbol{X}$ is not linear. We will focus our research on linear models with quantitative only variables.
 	
 \begin{figure}[h!]
@@ -412,10 +415,10 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
    	\subfigure[True linear regression and splits obtained by the tree.]{
 			\includegraphics[height=180px,width=240px]{figures/arbretrivialcoupure.png} 
 	}
-	\caption{Regression trees are not optimal to describe proportionality}\label{arbretrivial}
+	\caption{Predictive model (red) and true model (black)}\label{arbretrivial}
 \end{figure}
 
-
+More details in the book from Hastie \cite{hastie2009elements}. The main issues are the lack of smoothness (prediction function with jumps) and especially instability because of the hierarchical partitioning. Modifying only one value in the dataset can impact a split and then change the range of possible splits in the resulting sub-samples so if a top split is modified the tree can be widely changed. Random Forests are a way to solve this problem and can be seen as a cross-validation method for regression trees.
 	
 	\subsection{Neural networks}	
 		Neural networks \cite{fausett1994fundamentals} is a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained can't be interpreted easily (and can't be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes far behind.
@@ -447,7 +450,7 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 			Cross-validation depends on a criterion to be used as a method to choose a model. The mean square error is not the only criterion. Probabilist criteria can also be used when we have an hypothesis on the distribution of the model studied.
 			\cite{BIChuard}
 			
-			\subsection{stepwise}
+			\subsection{Stepwise}
 			\cite{seber2012linear,miller2002subset}
 			
 				 \begin{figure}
@@ -478,7 +481,7 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 			
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
 		
-		\subsection{SEM and Path Analysis}		% ne pas oublier de mentionner les packages existants
+		\subsection{Simultaneous Equation Model (SEM) and Path Analysis}		% ne pas oublier de mentionner les packages existants
 			\cite{davidson1993estimation,pearl2000causality,pearl1998graphs,brito2006graphical}%mcdonald2002principles
 		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
 
