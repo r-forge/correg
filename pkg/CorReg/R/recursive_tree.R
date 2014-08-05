@@ -7,8 +7,11 @@
 #'@param index to give a number to the plot
 #'@param print boolean to print the tree parameters
 #'@param plot boolean to plot the tree
+#'@param main the main title if plot=TRUE
+#'@param sub the subtitle (if NULL it is automatically added)
+#'@param lang the language for the automatic subtitle in the plot
 #'
-recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=TRUE,plot=TRUE){
+recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=TRUE,plot=TRUE,main=NULL,sub=NULL,lang=c("en","fr")){
    if (is.null(modele)){
       modele=colnames(data)
       modele=modele[modele!=Y]   
@@ -18,12 +21,24 @@ recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=
    }
    
    formule=as.formula(paste(Y," ~",paste(modele,collapse="+")))
-   arbre=rpart(formule,data);par( xpd=NA)
+   arbre=rpart(formule,data)
    if(plot){
-      sub=paste("oui a gauche, non a droite. Moyenne (global", round(arbre$frame$yval[1],digits=3),") et effectif (global ", arbre$frame$n[1],") \n la hauteur indique la significativite")
-      plot(arbre,sub=sub)
+      opar<-par()
+      par( xpd=NA)
+      if(is.null(sub)){
+         lang=lang[1]
+         if(lang=="fr"){
+            sub=paste("oui a gauche, non a droite. Moyenne (global", round(arbre$frame$yval[1],digits=3),") et effectif (global ", arbre$frame$n[1],") ")
+            vertical= "la hauteur indique la significativite"        
+         }else if (lang=="en"){
+            sub=paste("True left, False right. Mean (global", round(arbre$frame$yval[1],digits=3),") and effectives (global ", arbre$frame$n[1],") ")
+            vertical=" heights indicates significativity"         
+         }
+      }
+      plot(arbre)
       text(arbre, use.n=TRUE)
-      #title(main = titre,ylab=vertical,xlab = paste(infos,"\n Oui Ã  gauche, non Ã  droite.",reponse), col.main = "red", col.lab = gray(.5),cex.main = 1.2, cex.lab = 1.0, font.main = 4, font.lab = 3
+      title(main = main,ylab=vertical,xlab = sub, col.main = "red", col.lab = gray(.5),cex.main = 1.2, cex.lab = 1.0, font.main = 4, font.lab = 3)
+      par( xpd=opar$xpd)
    }
    if(print){
       print(arbre)
