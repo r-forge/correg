@@ -3,10 +3,10 @@
 \alias{rforge}
 \title{to upgrade a package to the lastest version on R-forge}
 \usage{
-rforge(package = "CorReg")
+rforge(packages = c("CorReg"), repos = "http://R-Forge.R-project.org")
 }
 \arguments{
-\item{package}{the name of the package to upgrade}
+\item{package}{vector of the name of the packages to upgrade}
 }
 \description{
 to upgrade a package to the lastest version on R-forge

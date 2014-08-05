@@ -1,6 +1,6 @@
 #' to upgrade a package to the lastest version on R-forge
-#' @param package the name of the package to upgrade
+#' @param package vector of the name of the packages to upgrade
 #' @export
-rforge<-function(package="CorReg"){
-   install.packages(package, repos="http://R-Forge.R-project.org")
+rforge<-function(packages=c("CorReg"),repos="http://R-Forge.R-project.org"){
+   install.packages(packages, repos=repos)
 }
