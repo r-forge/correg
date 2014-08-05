@@ -4,7 +4,8 @@
 \title{decision tree in a recursive way}
 \usage{
 recursive_tree(data = data, Y = "Y", modele = NULL, kill = NULL,
-  index = NULL, print = TRUE, plot = TRUE)
+  index = NULL, print = TRUE, plot = TRUE, main = NULL, sub = NULL,
+  lang = c("en", "fr"))
 }
 \arguments{
 \item{data}{the dataset including the response}
@@ -20,6 +21,12 @@ recursive_tree(data = data, Y = "Y", modele = NULL, kill = NULL,
 \item{print}{boolean to print the tree parameters}
 
 \item{plot}{boolean to plot the tree}
+
+\item{main}{the main title if plot=TRUE}
+
+\item{sub}{the subtitle (if NULL it is automatically added)}
+
+\item{lang}{the language for the automatic subtitle in the plot}
 }
 \description{
 decision tree in a recursive way
