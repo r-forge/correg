@@ -10,6 +10,8 @@ Terminator<-function(target="Sarah Connor", wrath=0.1,diag=0,Z=NULL){
    }else if (target[1]=="bender"){
       Bender()
    }else if(diag>0){
+      n=nrow(target)
+      p=ncol(target)
       quidiag=cbind(rep(1:n,length.out=max(n,p)),rep(1:p,length.out=max(n,p)))
       target[quidiag]=NA
       for(j in 2:diag){
