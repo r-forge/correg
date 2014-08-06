@@ -1746,7 +1746,7 @@ We have :
 
 		In terms of interpretation, the main regression comes with the family of regression so it gives a better understanding of the consequences of corrective actions on the whole process. It typically permits to determine the \textit{tuning parameters} whereas variable selection alone would point variables we can't directly act on.	So it becomes easier to take corrective actions on the process to reach the goal. The stakes are so important that even a little improvement leads to consequent benefits, and we don't even talk about the impact on the market shares that is even more important.
 		\FloatBarrier
-		\section{Production case study}
+		\section{Production case study}\label{sectionBV}
 This second example is about a phenomenon that impacts the productivity of a steel plant.
 We have:
 		\begin{itemize}
@@ -2731,20 +2731,31 @@ Both methods were tested with the true structure $S$. Initial value of $\boldsym
 		We use the previously imputed $\boldsymbol{X}$ to estimate $\boldsymbol{Y}$ with $\boldsymbol{\beta}=\boldsymbol{1}$ and $\sigma_Y=10$.
 			\begin{figure}[h!]
 	\centering
-	\includegraphics[width=350px]{figures/MSEYSEM.png} 
-	\caption{MSE on $\hat{\boldsymbol{Y}}$ is lower when using our SEM than with imputation by the mean. But the variance are too important to conclude}\label{MSEYSEM}
-\end{figure}		
-We obtain on a validation sample of 1000 individuals a predictive MSE more than 11 times lower in mean with our method. But the variance are too important to really conclude. We can say that imputation by SEM is more robust, but the Gibbs do not give satisfying results. Maybe the increase of the number of steps allowed by a code optimization would help to improve these results. For now, we can just say that our generative model significantly improves estimation of $\boldsymbol{\alpha}$ and make possible to find $S$ based on a dataset with missing values.
+	\includegraphics[width=350px]{figures/MSESEMYtoymean.png} 
+	\caption{MSE on $\hat{\boldsymbol{Y}}$ are lower when using our SEM (blue) than with imputation by the mean (red) for the three model (complete, marginal and plug-in) using OLS or LASSO}\label{MSESEMYtoymean}
+\end{figure}	
 
-		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same S and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
-	\section{Missing values on real datasets}	
-		To be able to evaluate the results, we have deleted some values in quality dataset from section \ref{sectionexfos}, we focus on the first 20 individuals of the validation sample. Figure \ref{missingexfos} shows the pattern of the missing values without any complete line or column.
 			\begin{figure}[h!]
 	\centering
-	\includegraphics[width=350px]{figures/missingexfos.png} 
-	\caption{MSE on $\hat{\boldsymbol{X}}$ is significantly lower and more robust when using our SEM than with imputation by the mean.}\label{missingexfos}
-\end{figure}
+	\includegraphics[width=350px]{figures/MSESEMYtoysd.png} 
+	\caption{our SEM (blue) provides more robust results than imputation by the mean (red) but the variances are still too wide.}\label{MSESEMYtoysd}
+\end{figure}		
+We obtain on a validation sample of 1000 individuals a predictive MSE more lower in mean with our method. But the variance are too important to really conclude. We can say that imputation by SEM is more robust, but the Gibbs do not give satisfying results. Maybe the increase of the number of steps allowed by a code optimization would help to improve these results. For now, we can just say that our generative model significantly improves estimation of $\boldsymbol{\alpha}$ and make possible to find $S$ based on a dataset with missing values.
 
+		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same $S$ and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
+	\section{Missing values on real datasets}	
+		To be able to evaluate the results, we have deleted some values in quality dataset from section \ref{sectionBV} to obtain $10\%$ of missing values. Figure \ref{missingBV} shows the pattern of the missing values (MCAR). 
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=350px]{figures/missingBV.png} 
+		\caption{Graphical representation of the dataset with $10\%$ of missing values}\label{missingBV}
+	\end{figure}
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=350px]{figures/MSEXmissBV.png} 
+		\caption{MSE on $\hat{\boldsymbol{X}}$ is $1.32$ times lower in mean when using our method (blue) than with imputation by the mean (red).}\label{MSEXmissBV}
+	\end{figure}
 
 
 \chapter{CorReg: the concept}	
