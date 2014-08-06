@@ -2737,8 +2737,16 @@ Both methods were tested with the true structure $S$. Initial value of $\boldsym
 We obtain on a validation sample of 1000 individuals a predictive MSE more than 11 times lower in mean with our method. But the variance are too important to really conclude. We can say that imputation by SEM is more robust, but the Gibbs do not give satisfying results. Maybe the increase of the number of steps allowed by a code optimization would help to improve these results. For now, we can just say that our generative model significantly improves estimation of $\boldsymbol{\alpha}$ and make possible to find $S$ based on a dataset with missing values.
 
 		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same S and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
-		
-	
+	\section{Missing values on real datasets}	
+		To be able to evaluate the results, we have deleted some values in quality dataset from section \ref{sectionexfos}, we focus on the first 20 individuals of the validation sample. Figure \ref{missingexfos} shows the pattern of the missing values without any complete line or column.
+			\begin{figure}[h!]
+	\centering
+	\includegraphics[width=350px]{figures/missingexfos.png} 
+	\caption{MSE on $\hat{\boldsymbol{X}}$ is significantly lower and more robust when using our SEM than with imputation by the mean.}\label{missingexfos}
+\end{figure}
+
+
+
 \chapter{CorReg: the concept}	
 	
 		\textsc{CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with \textsc{CorReg}.
