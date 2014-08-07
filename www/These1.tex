@@ -584,7 +584,7 @@ We note $\boldsymbol{\alpha}$ the $(p-p_r)\times p_r$ matrix of the  $\boldsymbo
 	\includegraphics[width=200px]{figures/graphetoy.png} 
 	\caption{The bipartite graph associated to the running example}
 	\end{figure}	
-
+and the adjacency matrix is:
 \begin{displaymath}G=\left(	\begin{array}{ccccc}
 	0 & 0 & 1 & 0 & 0 \\ 
 	0 & 0 & 1 & 0 & 0 \\ 
@@ -668,7 +668,7 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 			 \\
 			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})]&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_{I_r}\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}^{I_f'} \boldsymbol{X}^{I_f})^{-1})
 	\end{eqnarray}	 
-	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQEexplOLSp5col} shows the theoretical MSE evolution with the strength of the sub-regression. In this section, all experiences have been made 100 times to obtain smooth curves. So we have generated 100 times $\boldsymbol{X}$ and $\boldsymbol{Y}$
+	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQEexplOLSp5col} shows the theoretical MSE evolution with the strength of the sub-regression. In this section, all experiences have been made 100 times to obtain smooth curves. So we have generated 100 times $\boldsymbol{X}$ and $\boldsymbol{Y}$.
 %	\begin{equation}
 %		1-\mathcal{R}^2=\frac{\operatorname{Var}(\boldsymbol{\varepsilon)_3}}{\operatorname{Var}(\boldsymbol{x}_3)}=\frac{\sigma_3^2}{\sigma_3^2+2}
 %	\end{equation}
@@ -686,11 +686,11 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 %			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
 %   \end{minipage} 
 	\includegraphics[width=500px]{figures/MQEexplOLSp5col.png}\label{MQEexplOLSp5col}
-	\caption{Theoretical MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\caption{Theoretical MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and {\tt CorReg}'s marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
 It is clear in Figure \ref{MQEexplOLSp5col} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($\mathcal{R}^2$ tends to 0) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
 We know that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))=0$.
- Thus, when $\sigma_Y^2$ rises it increases the advantage of \textsc{CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the main model has a strong noise (very usual case on real datasets where true model is not even exactly linear). 
+ Thus, when $\sigma_Y^2$ rises it increases the advantage of {\tt CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the main model has a strong noise (very usual case on real datasets where true model is not even exactly linear). 
  
 But it is only the theoretical MSE and we want to know what happens in the real life. 
 \section{Observed MSE comparison}
@@ -700,7 +700,7 @@ We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\bolds
 	\subsection{On the running example}
  \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/OLSexpl.png}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and CorReg's marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEOLSexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and {\tt CorReg}'s marginal model(blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEOLSexpl}
 \end{figure} 
 	
 	 \begin{figure}
@@ -713,7 +713,7 @@ We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\bolds
 	\FloatBarrier
  \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/larexpl.png}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of LASSO with LAR on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSElarexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of LASSO with LAR on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSElarexpl}
 \end{figure} 
 	
 	 \begin{figure}
@@ -725,7 +725,7 @@ We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\bolds
 %ridge
 	\begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/ridgeexpl.png}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{ridge}$ on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEridgexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{ridge}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEridgexpl}
 \end{figure} 
 	
 	 \begin{figure}
@@ -737,7 +737,7 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
  %elasticnet
 	\begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/elasticnetexpl.png}\label{MSEelasticnetexpl}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{elasticnet}$ on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{elasticnet}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
 \end{figure} 
 	
 	 \begin{figure}
@@ -748,7 +748,7 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
   %stepwise
 	\begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/stepwiseexpl.png}\label{MSEstepwiseexpl}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{stepwise}$ on both $\boldsymbol{X}$ (red) and CorReg's marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{stepwise}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
 \end{figure} 
 	
 	 \begin{figure}
@@ -760,12 +760,12 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
  Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
  	\FloatBarrier
 	\subsection{On more complex datasets}
-		The \textsc{CorReg} package has been tested on simulated datasets. 
+		The {\tt CorReg} package has been tested on simulated datasets. 
  For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$, variables in $\boldsymbol{X}_f$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $\boldsymbol{X}^{I_r}$ don't have a greater variance or mean.
 	Results are based on the true $S$ used to generate the dataset.
 	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
-	We compare different methods with and without CorReg as a pretreatment. All the results are provided by the CorReg package. Here $\boldsymbol{Y}$ depends on all the covariate and the MSE provided were computed on a validation sample of 1 000 individuals each time.
+	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the \textbf{CorReg} package. Here $\boldsymbol{Y}$ depends on all the covariate and the MSE provided were computed on a validation sample of 1 000 individuals each time.
 	\FloatBarrier
 
 \newpage
@@ -904,7 +904,7 @@ So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$. It 
 \subsection{Identifiability of the structure} \label{preuveident}
 	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
 	
-		If there are exact sub-regressions ($\exists j, \sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. \textsc{CorReg} (Our R package) prints a warning to point out exact regressions when found.
+		If there are exact sub-regressions ($\exists j, \sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete.{\tt CorReg} (Our R package) prints a warning to point out exact regressions when found.
 	In the followings we suppose $\forall j, \sigma^2_j\neq 0$, then $\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f}$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
 	\\
 	
@@ -1011,7 +1011,7 @@ In the adjacency matrix we just do: $G_{i,j}=1-G_{i,j}$.
 The main advantage of such a neighbourhood is that increasing and decreasing complexities are tested at each step without arbitrary ratio. If we just look at the sub-regression system, we have to choose for each sub-regression if we add, remove or keep covariates and we also have to choose if we had or delete some sub-regression. Adjacency matrix makes the neighbourhood extremely natural with just the modification of a value in a binary matrix.
 
 		\subsection{Strategy}
-			Many strategies can be imagined. First, we can decide to keep the local $\hat{S}$ in the neighbourhood or not, that is allowing or not stationarity. Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $\psi(\boldsymbol{X},S)$ so it is not an evidence to allow or not stationarity. Our package CorReg give the user the choice with stationarity,  included in the neighbourhood by default.
+			Many strategies can be imagined. First, we can decide to keep the local $\hat{S}$ in the neighbourhood or not, that is allowing or not stationarity. Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $\psi(\boldsymbol{X},S)$ so it is not an evidence to allow or not stationarity. Our package {\tt CorReg} give the user the choice with stationarity,  included in the neighbourhood by default.
 			
 
 		The only constraint on $\mathcal{A}_q$ is that $\forall (i,j) \in \mathcal{A}_q, i\neq j$			
@@ -1021,7 +1021,7 @@ The main advantage of such a neighbourhood is that increasing and decreasing com
 			\mathcal{A}_{q|j}=\{ (i,j)|i \neq j \}
 		\end{equation}
 			Such a strategy can be interpreted as the uniform choice of a sub-regression to modify followed by the proposal of each possible unary change.
-			Our package CorReg let the user choose many other strategies like a fixed number of random couples $(i,j)$, or the union of the $j^th$ line and column of $G$.
+			Our package {\tt CorReg} let the user choose many other strategies like a fixed number of random couples $(i,j)$, or the union of the $j^th$ line and column of $G$.
 		\subsection{Active relaxation of the constraints}
 		We have defined the neighbourhood with an intersection with $\mathcal{S}_p$. 
 		In practice, for some of the $(i,j) \in \mathcal{A}_q$, we have $S^{(i,j)}\notin \mathcal{S}_p$. Such candidates are basically rejected so the number of candidates is not constant at each step. Moreover, complex structures reduce the size of the potential neighbourhood because of the uncrossing rule. 
@@ -1057,8 +1057,8 @@ Because the walk follows a regular and thus ergodic markov chain with a finite s
 %		\pi (S) &=&\sum_{\tilde{S}\in \mathcal{S}} \pi(\tilde{S})\mathcal{P}(\tilde{S},S) \\%définition de la lois stationnaire
 %	\end{eqnarray}
 %		
-and the output will be the best structure in terms of $P(S|\boldsymbol{X})$ which weights each candidate. Practically speaking, \textsc{CorReg} returns the best structure seen during the walk (even if the corresponding candidate has never been chosen). The package also give the local structure when the walk stops so user can relaunch the algorithm from the same point if he wants to go further.
-The main criterion to stop the walk is a maximum number of iteration but CorReg can also stop the walk after a given number of step on the best model found.
+and the output will be the best structure in terms of $P(S|\boldsymbol{X})$ which weights each candidate. Practically speaking, {\tt CorReg} returns the best structure seen during the walk (even if the corresponding candidate has never been chosen). The package also give the local structure when the walk stops so user can relaunch the algorithm from the same point if he wants to go further.
+The main criterion to stop the walk is a maximum number of iteration but {\tt CorReg} can also stop the walk after a given number of step on the best model found.
 Numerical results (Section 4) illustrates the efficiency of the walk when the true model contains structures with various strength (section \ref{compZ}) and an example with a non-linear structure (Figure \ref{resnonlin}).
 		
 		
@@ -1119,7 +1119,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 	However, we can still use it for initialization, for example by a hadamard product with $G_0$ the adjacency matrix of the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum}. But it is time consuming and has no theoretical properties relied to our problematic of minimizing $\psi$, so the idea was left behind after some tries.		
 	
 \section{CorReg}	
-	The CorReg package is now on CRAN and provides many parameters for the walk. If wanted it can return some curves associated to the walk to have an idea of what happens with distinct strategies. 		
+	The {\tt CorReg} package is now on CRAN and provides many parameters for the walk. If wanted it can return some curves associated to the walk to have an idea of what happens with distinct strategies. 		
 	
 We define the complexity of a structure $S$ as the number of elements in the adjacency matrix, that is the number of links between covariates and is obtained by:
 \begin{equation}
@@ -1150,15 +1150,15 @@ We define the complexity of a structure $S$ as the number of elements in the adj
 
 
 	\section{The datasets}	
-	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if \textsc{CorReg} 	keeps its promises.
-	The \textsc{CorReg} package has been tested on simulated datasets. 
-Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Section \ref{compY} shows the results obtained using only \textsc{CorReg}, or \textsc{CorReg} combined with other methods. The graph in section \ref{compY} give both mean, first and third quartiles of the chosen indicator. The MSE on $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$ were computed on a validation sample of $1 000$ individuals. \\
+	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if {\tt CorReg} 	keeps its promises.
+	The {\tt CorReg} package has been tested on simulated datasets. 
+Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Section \ref{compY} shows the results obtained using only {\tt CorReg}, or {\tt CorReg} combined with other methods. The graph in section \ref{compY} give both mean, first and third quartiles of the chosen indicator. The MSE on $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$ were computed on a validation sample of $1 000$ individuals. \\
 
 For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$, variables in $\boldsymbol{X}^{I_f}$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $X_r$ don't have a greater variance or mean.
 	We used \textsc{Rmixmod} to estimate the densities of each covariate. For each configuration, the MCMC walk was launched on $10$ initial structures with a maximum of 1 000 steps each time.
 	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
-	We compare different methods with and without CorReg as a pretreatment. All the results are provided by the CorReg package.
+	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the {\tt CorReg} package.
 	
 		\section{Results on $\hat S$}	\label{compZ}
 
@@ -1187,7 +1187,7 @@ When comparing $BIC$ to $BIC_+$ it becomes evident that $BIC_+$ is less confiden
 \clearpage
 \section{Results on prediction}\label{compY}
 \subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
+We try the method with a response depending on all covariates ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
  
  
 \FloatBarrier
@@ -1343,7 +1343,7 @@ We try the method with a response depending on all covariates (\textsc{CorReg} r
 %   \end{minipage}
 %\end{figure}
 
-We see that CorReg tends to give more parsimonious models and better predictions, even if the true model is not parsomious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better (CorReg does not allow the true model to be choosen).
+We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsomious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be choosen).
 
 
 
@@ -1667,10 +1667,10 @@ We have generated a non-linear structure to test the robustess of the model. $\b
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
 			\includegraphics[height=180px,width=240px]{figures/robustY.png} 
-			\caption{MSE on the main regression for OLS(thick) and LASSO (thin) used both with (plain) or without CorReg (dotted).}\label{MSEnonlin}
+			\caption{MSE on the main regression for OLS(thick) and LASSO (thin) used both with (plain) or without {\tt CorReg} (dotted).}\label{MSEnonlin}
    \end{minipage}
 \end{figure}
-Figure \ref{MSEnonlin} illustrates the advantage of using CorReg even with non-linear structures. Figure \ref{resnonlin} shows that the MCMC have more difficulties to find a linear structure as the non-linear part of the sub-regression increases but the model is quite robust (efficient for small values of $a$)
+Figure \ref{MSEnonlin} illustrates the advantage of using {\tt CorReg} even with non-linear structures. Figure \ref{resnonlin} shows that the MCMC have more difficulties to find a linear structure as the non-linear part of the sub-regression increases but the model is quite robust (efficient for small values of $a$)
 
 	\FloatBarrier	
 \chapter{Numerical results on real datasets} \label{sectionrealcase}
@@ -1700,7 +1700,7 @@ We have :
 	We get a training set of $n=3 000$ products described by $p=205$ variables from the industrial process and a validation sample of $847$ products.
 	Let's note $\rho$ the absolute value of correlations between two covariates. Industrial variables are naturally highly correlated as the width and the weight of a steel slab ($\rho=0.905$), the temperature before and after some tool ($\rho=0.983$), the  roughness of both faces of the product ($\rho= 0.919$), a mean and a max ($\rho=0.911$). 
 	
-	The objective here is not only to predict non-quality but to understand and then avoid it. CorReg provides an automatic method without any a priori and is combined with variable selection methods. So it allows to obtain in a small amount of time some indications on the source of the problem, and to use human resources efficiently. When quality crises occurs, time is extremely precious so automation is a real stake. The combinatorial aspect of the sub-regression models makes it impossible to do manually.
+	The objective here is not only to predict non-quality but to understand and then avoid it. {\tt CorReg} provides an automatic method without any a priori and is combined with variable selection methods. So it allows to obtain in a small amount of time some indications on the source of the problem, and to use human resources efficiently. When quality crises occurs, time is extremely precious so automation is a real stake. The combinatorial aspect of the sub-regression models makes it impossible to do manually.
 		
 		
 		\begin{figure}[h!]
@@ -1710,12 +1710,12 @@ We have :
 \end{figure} 
 		
 		
-	\textsc{CorReg} found the above correlations but it also found more complex structures describing physical models, like   Width = f (Mean flow , Mean speed) even if the true Physcial model is not linear : Width = flow / (speed * thickness) (here thickness is constant). Non-linear regulation models used to optimize the process were also found (but are confidential). These first results are easily understandable and meet metallurgists expertise.  Sub-regressions with small values of $R^2$ are associated with non-linear model (chemical kinetics for example).
+	{\tt CorReg} found the above correlations but it also found more complex structures describing physical models, like   Width = f (Mean flow , Mean speed) even if the true Physcial model is not linear : Width = flow / (speed * thickness) (here thickness is constant). Non-linear regulation models used to optimize the process were also found (but are confidential). These first results are easily understandable and meet metallurgists expertise.  Sub-regressions with small values of $R^2$ are associated with non-linear model (chemical kinetics for example).
 			The algorithm gives a structure of $p_r=76$ subregressions with a mean of $\bar{\boldsymbol{p}}_f=5.17$ regressors. In $\boldsymbol{X}^{I_f}$ the number of $\rho>0.7$ is $\textbf{79.33\%}$ smaller than in $\boldsymbol{X}$.		
 	\\
 	
 	
-			It is now time to look at the predictive results (Table \ref{Res_exfos}). We see that CorReg improves the results for each method tested in terms of prediction.
+			It is now time to look at the predictive results (Table \ref{Res_exfos}). We see that {\tt CorReg} improves the results for each method tested in terms of prediction.
 			We get parsimonious models automatically in a small amount of time (several hours but able to work during the night or the week-end)
 %				The best model found when not using \textsc{CorReg} is given by the LASSO. But when using \textsc{CorReg} elasticnet produces a better model in terms of prediction. LASSO gives a model with 21 non-zero coefficients and elasticnet with \textsc{CorReg} gives a model with 40 non-zero parameters but $6.40\%$ better in prediction on the validation sample (847 products). $14$ non-zero coefficients are common between the two models.
 %				Elasticnet alone get a model with 78 parameters that is improved by $9.75\%$ in prediction when used with \textsc{CorReg}. When using LASSO with \textsc{CorReg} we obtain a model with 24 non-zero coefficients that is $4.11\%$ better than LASSO alone. We also computed the OLS model (without selection) and the naive one (estimating the response by the mean of the learning set). All the MSE were modified here to obtain a value of 100 for the best (to preserve confidentiality). Elasticnet with \textsc{CorReg} is $13.51\%$ better than OLS.
@@ -1730,7 +1730,7 @@ We have :
 \centering
 \begin{tabular}{|c c|c|c|}
 	\hline 
-	Method& indicator& With CorReg & without CorReg \\ 
+	Method& indicator& With {\tt CorReg} & without {\tt CorReg} \\ 
 	\hline 
 	OLS & MSE & 13.30 & 14.03 \\
 		& (complexity)& (130) & (206) \\
@@ -1777,7 +1777,7 @@ We have:
 \end{figure} 
   		
   			
-CorReg found 55 sub-regressions as shown in Figure \ref{R2bv}. One of them seems to be weak $R^2=0.17$ but is not linear (points out a link between diameter of a coil and some shape indicator).	
+{\tt CorReg} found 55 sub-regressions as shown in Figure \ref{R2bv}. One of them seems to be weak $R^2=0.17$ but is not linear (points out a link between diameter of a coil and some shape indicator).	
 
 \begin{figure}[h!]
 \centering
@@ -1791,7 +1791,7 @@ The response variable was binary but $n$ was too small compared to $p$ to use lo
 \centering
 \begin{tabular}{|c c|c|c|}
 	\hline 
-	Method& indicator& With CorReg & without CorReg \\ 
+	Method& indicator& With {\tt CorReg} & without {\tt CorReg} \\ 
 	\hline
 	OLS & well-classified & 100& 56 \\
 		& MSE (leave-one-out)& 1.95& 51 810\\
@@ -1813,7 +1813,7 @@ The response variable was binary but $n$ was too small compared to $p$ to use lo
 \caption{Results obtained with leave-one out cross-validation. $n=100, p=145$.}	
 \end{table}
 
-In this precise case, \textsc{CorReg} found a structure that helped to decorrelate covariates in interpretation and to find the relevant part of the process to optimize. This product is made by a long process that requires several steel plants so it was necessary to point out the steel plant where the problem occurred.
+In this precise case, {\tt CorReg} found a structure that helped to decorrelate covariates in interpretation and to find the relevant part of the process to optimize. This product is made by a long process that requires several steel plants so it was necessary to point out the steel plant where the problem occurred.
 
 
 \part{Further usage of the structure}	
@@ -1849,7 +1849,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 	
 \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}\label{MQE2}
-	\caption{MSE of OLS (plain red) and CorReg marginal(blue dashed) and CorReg full (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\caption{MSE of OLS (plain red) and {\tt CorReg} marginal(blue dashed) and {\tt CorReg} full (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure}	
 	
 	\section{Consistency}\label{consistency}
@@ -1868,7 +1868,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO\\ 
+		 & Classical LASSO & {\tt CorReg} + marginal LASSO& {\tt CorReg} + full plug-in LASSO\\ 
 		\hline 
 		True $S$ &  1.006479 & \textbf{1.005468} & \textbf{1.006093} \\ 
 		\hline 
@@ -1885,7 +1885,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
+		 & Classical LASSO & {\tt CorReg} + marginal LASSO& {\tt CorReg} + full plug-in LASSO \\ 
 		\hline 
 		True $S$ &  0 & 1000 & 830 \\ 
 		\hline 
@@ -1897,7 +1897,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 		
 		$299$ times on $1000$ tries, the predictive model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
 		
-		We also made the same experiment but with $\boldsymbol{X}_1,\boldsymbol{X}_2$ (and consequently $\boldsymbol{X}_3$) following Gaussian mixtures (to improve identifiability) randomly generated by our CorReg package for R. 
+		We also made the same experiment but with $\boldsymbol{X}_1,\boldsymbol{X}_2$ (and consequently $\boldsymbol{X}_3$) following Gaussian mixtures (to improve identifiability) randomly generated by our {\tt CorReg} package for R. 
 		True $S$ is now found $714$ times on $1000$ tries \label{testidentifiable}. So it confirms that Gaussian mixture models are easier to identify.
 		
 		
@@ -1905,7 +1905,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
+		 & Classical LASSO & {\tt CorReg} + marginal LASSO& {\tt CorReg} + full plug-in LASSO \\ 
 		\hline 
 		True $S$ &  1.571029 & \textbf{1.569559} & \textbf{1.570801} \\ 
 		\hline 
@@ -1920,7 +1920,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 		\centering	
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & CorReg + marginal LASSO& CorReg + full plug-in LASSO \\ 
+		 & Classical LASSO & {\tt CorReg} + marginal LASSO& {\tt CorReg} + full plug-in LASSO \\ 
 		\hline 
 		True $S$ &  0 & 1000 & 789 \\ 
 		\hline 
@@ -1937,7 +1937,7 @@ In this precise case, \textsc{CorReg} found a structure that helped to decorrela
 	\section{Numerical results}
 	
 	\subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We try the method with a response depending on all covariates (\textsc{CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
+We try the method with a response depending on all covariates ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
  
  
 \FloatBarrier
@@ -2765,14 +2765,14 @@ We obtain on a validation sample of 1000 individuals a predictive MSE more lower
 
 \chapter{CorReg: the concept}	
 	
-		\textsc{CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with \textsc{CorReg}.
-	\textsc{CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). %More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
-	The objective of CorReg is to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). One example of graphical tool is the $matplot\_zone$ function that allows to compare several curves according to a criterion and was widely used to compare the MSE and complexities in this document.
+		{\tt CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with {\tt CorReg}.
+	{\tt CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). %More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
+	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). One example of graphical tool is the $matplot\_zone$ function that allows to compare several curves according to a criterion and was widely used to compare the MSE and complexities in this document.
 	
 \chapter{Conclusion and perspectives}
 	\section{Conclusion}
 		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates.
-		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, CorReg will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method has a positive impact on the way users looks at the statistics.
+		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, {\tt CorReg} will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method has a positive impact on the way users looks at the statistics.
 			It is good to see that sequential methods (plug-in model) and automation can produce good results. Probabilistic models are efficient even without human expertise and let the experts improve the results by adding their expertise in the model (coercing some sub-regression for example). So we hope that statistics will continue to be a central tool for engineers.
 		
 		
