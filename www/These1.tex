@@ -877,7 +877,7 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
 \\
 
 \section{Bayesian approach}
-Structural equations models like \textsc{SEM} are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
+Structural equations models are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
 
 Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $p_r$) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
 Because it is about model selection, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
@@ -1021,7 +1021,7 @@ The main advantage of such a neighbourhood is that increasing and decreasing com
 			\mathcal{A}_{q|j}=\{ (i,j)|i \neq j \}
 		\end{equation}
 			Such a strategy can be interpreted as the uniform choice of a sub-regression to modify followed by the proposal of each possible unary change.
-			Our package {\tt CorReg} let the user choose many other strategies like a fixed number of random couples $(i,j)$, or the union of the $j^th$ line and column of $G$.
+			Our package {\tt CorReg} let the user choose many other strategies like a fixed number of random couples $(i,j)$, or the union of the $j^{th}$ line and column of $G$.
 		\subsection{Active relaxation of the constraints}
 		We have defined the neighbourhood with an intersection with $\mathcal{S}_p$. 
 		In practice, for some of the $(i,j) \in \mathcal{A}_q$, we have $S^{(i,j)}\notin \mathcal{S}_p$. Such candidates are basically rejected so the number of candidates is not constant at each step. Moreover, complex structures reduce the size of the potential neighbourhood because of the uncrossing rule. 
@@ -1068,15 +1068,15 @@ Numerical results (Section 4) illustrates the efficiency of the walk when the tr
 		 If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found and/or initial structure. So the model is really expert-friendly.
 The initial structure can be based on a first warming algorithm taking the correlations into account. Coefficients are randomly placed into $I_f$, according to a Bernoulli draw weighted by the absolute value of the correlations and with respect to the uncrossing constraint. Uncrossing constraint will not allow some strong correlation to be taken into account according to the order of the Bernoulli drawing so we can draw with a random order or by ordering by descending correlations. 
 		
-		We note that the $BIC$ associated to initial model is often better than the $BIC$ of the void structure, so we compare several chains inf Figures \ref{pourcini} and \ref{Bicini}:			
+		We note that the $BIC$ associated to initial model is often worse than the $BIC$ of the void structure, so we compare several chains in Figures \ref{pourcini} and \ref{Bicini}:			
 			
-		\begin{center}
+	\begin{center}
 		\begin{figure}[h!]
 		\centering
 		\includegraphics[width=350px]{figures/pourc_meilleur_marelaxini.png} 
 		\caption{Amount of time each method is better for the 100 first steps of the MCMC. } \label{pourcini}
 		\end{figure}		
-		\end{center}
+	\end{center}
 	
 	\begin{center}
 		\begin{figure}[h!]
@@ -1085,10 +1085,11 @@ The initial structure can be based on a first warming algorithm taking the corre
 		\caption{Evolution of the $BIC$ (criterion to minimize in the MCMC) for each method.}\label{Bicini}
 		\end{figure}
 	\end{center}
-	
-		\subsection{Multiple intialisation}	
-		Local extremas are a known issue for most of optimization methods, and one would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. 
-		We also compare the results obtained with several number of chains. Figure \ref{nbini} shows the evolution of the $BIC$ of the best chain with a number of chains varying from 1 to 10, so the model with 10 chains contain the others and is almost as good as they are. We see that multiple initialization is efficient but the gain is logarithmic in the number of tries so it is recommended to use multiple chains but not too much.		
+	We see that correlation-based initialization quickly beat the void structure. This can be explained by local extrema.
+	\FloatBarrier
+		\subsection{Multiple intialization}	
+		Local extrema are a known issue for most of optimization methods, and one would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. 
+		We also compare the results obtained with several number of chains. Figure \ref{nbini} shows the evolution of the $BIC$ of the best chain with a number of chains varying from 1 to 10, so the model with 10 chains contain the others and is almost as good as they are. We see that multiple initialization is efficient but the gain seems to be logarithmic in the number of tries so it is recommended to use multiple chains but not too much (time consuming). Important remark: multiple chains can be computed in parallel so it is not really time consuming.		
 			
 	\begin{center}
 	\begin{figure}[h!]
@@ -1097,10 +1098,10 @@ The initial structure can be based on a first warming algorithm taking the corre
 		\caption{Comparison of distinct number of correlation-based initialisations for the MCMC.}\label{nbini}
 	\end{figure}
 	\end{center}
-						 In the followings, the chain was launched with twenty initialisations each time, based on the correlation matrix.
+		In the followings, the chain was launched with twenty initialisations each time, based on the correlation matrix.
 
 	\section{Pruning}
-		If the complexity of $S$ remains too high, pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same (for example if the MCMC had time to find a good model).
+		If the complexity of $S$ is too high, pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same (for example if the MCMC had time to find a good model).
 		\subsubsection{Variable selection}
 			We can use variable selection methods like the LASSO on $\boldsymbol{X}^{I_f^j}$ to estimate the coefficients $\boldsymbol{\alpha}_j$ and obtain some supplementary zeros. Working on $\boldsymbol{X}^{I_f^j}$ protects the LASSO against dimension and correlations issues.
 		\subsubsection{$R^2$ thresholding }
@@ -1113,10 +1114,10 @@ The initial structure can be based on a first warming algorithm taking the corre
 				\mathcal{A}_q=\{(i,j)| i \in I_f^j \}
 			\end{equation}
 			It is not based on any arbitrary parameter and change the result only if it founds a better structure in terms of the criterion $\psi$ used in the walk.
-			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE }
+			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE }.
 	\section{The Graphical LASSO}\label{sectionGlasso}
-		Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} is set to give undirectionnal (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It does make sense for exponential family because in these cases, zeros in the precision matrix $\Sigma ^-1$ can be interpreted in terms of conditionnal independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ and we search an oriented graph.
-	However, we can still use it for initialization, for example by a hadamard product with $G_0$ the adjacency matrix of the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum}. But it is time consuming and has no theoretical properties relied to our problematic of minimizing $\psi$, so the idea was left behind after some tries.		
+		Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} is set to give undirectionnal (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It does make sense for exponential family because in these cases, zeros in the precision matrix $\Sigma^{-1}$ can be interpreted in terms of conditional independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ and we search an oriented graph.
+	However, we can still use it for initialization, for example by a Hadamard product with $G_0$ the adjacency matrix of the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum} because trees have no cycles. But it is time consuming and has no theoretical properties relied to our problematic of minimizing $\psi$, so the idea was left behind after some tries.		
 	
 \section{CorReg}	
 	The {\tt CorReg} package is now on CRAN and provides many parameters for the walk. If wanted it can return some curves associated to the walk to have an idea of what happens with distinct strategies. 		
@@ -1188,7 +1189,8 @@ When comparing $BIC$ to $BIC_+$ it becomes evident that $BIC_+$ is less confiden
 \section{Results on prediction}\label{compY}
 \subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
 We try the method with a response depending on all covariates ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
- 
+ We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsomious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be choosen).
+
  
 \FloatBarrier
 
@@ -1343,7 +1345,6 @@ We try the method with a response depending on all covariates ({\tt CorReg} redu
 %   \end{minipage}
 %\end{figure}
 
-We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsomious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be choosen).
 
 
 
@@ -1826,7 +1827,10 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\begin{eqnarray}
 			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{\varepsilon}_Y \\
 			\boldsymbol{X}^{I_r}&=&\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \\
-			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\underbrace{(\boldsymbol{\beta}_{I_r}+\boldsymbol{\alpha}\boldsymbol{\beta}_{I_f})}_{\boldsymbol{\beta}^*}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\underbrace{(\boldsymbol{\beta}_{I_r}+\boldsymbol{\alpha}\boldsymbol{\beta}_{I_f})}_{\boldsymbol{\beta}^*}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y 
+					\end{eqnarray}		 
+		Thus we have
+		\begin{eqnarray}
 			\boldsymbol{Y}- \boldsymbol{X}^{I_r}\boldsymbol{\beta}^*&=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
 			\boldsymbol{\varepsilon}&=&\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\boldsymbol{\alpha}
 		\end{eqnarray}		 
@@ -1837,12 +1841,13 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		That allows us to estimate $\boldsymbol{\beta}_{I_r}$ with a classical linear model based on previous estimations of $\boldsymbol{\beta}^*$ and $\boldsymbol{\alpha}$.
 		Then we have a model with a smaller noise
 		\begin{equation}
-			\boldsymbol{Y}= \boldsymbol{X}^{I_r}\boldsymbol{\beta}^* + \boldsymbol{\varepsilon}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
+			\boldsymbol{Y}= \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}^* + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
 		\end{equation}
 		and we can even find the original model by doing an identification step:
-		\begin{equation}
-			\boldsymbol{Y}= \boldsymbol{X}^{I_r}(\boldsymbol{\beta}^*-\boldsymbol{\alpha}\hat{\boldsymbol{\beta}}_{I_r}) + \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
-		\end{equation}
+		\begin{eqnarray}
+			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}(\hat{\boldsymbol{\beta}}^*-\hat{\boldsymbol{\alpha}}\hat{\boldsymbol{\beta}}_{I_r}) + \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+			&=&\boldsymbol{X}^{I_f}\hat{\boldsymbol{\beta}}_{I_f}+\boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y
+		\end{eqnarray}
 	\section{Interpretation and latent variables}
 			$\hat{\boldsymbol{\beta}}_{I_r}$ can be interpreted as the proper effect of $\boldsymbol{X}^{I_r}$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}^{I_r}$ that is independent from other covariates. Then if $\boldsymbol{X}^{I_r}$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}^{I_f}$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_{I_r}=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}^{I_f}$ and dependent of $\boldsymbol{X}^{I_r}$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}}$. Thus, it can reveal some kinds of latent variables.
 			
