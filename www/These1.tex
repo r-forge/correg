@@ -722,7 +722,7 @@ We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\bolds
 	  \includegraphics[width=500px]{figures/MQEreel/larYexpl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{LASSO}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQElarYexpl}
 	\end{figure}
-	Figure \ref{MSElarexpl} shows that variable selection done the LASSO gives a biased $\hat{\boldsymbol{\beta}}$ by setting some coefficients to 0 but strong correlations makes this bias neutral for prediction (figure \ref{MQElarYexpl}). Here the LASSO tends to propose the same model as we do  with our marginal model, but without explanation. We will see  later that it is not sufficient in higher dimension. \\
+	Figure \ref{MSElarexpl} shows that variable selection done the LASSO gives a biased $\hat{\boldsymbol{\beta}}$ by setting some coefficients to 0 but strong correlations makes this bias neutral for prediction (figure \ref{MQElarYexpl}). Here the LASSO tends to propose the same model as we do  with our marginal model, but without explanation. We will see  later in section \ref{compY} that it is not sufficient in higher dimension. \\
 %ridge
 	\begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/ridgeexpl.png}
@@ -734,13 +734,13 @@ We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\bolds
 	  \includegraphics[width=500px]{figures/MQEreel/ridgeYexpl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEridgeYexpl}
 	\end{figure}	
-Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression provides good results for this running example. But we will see later that high dimension reduces the efficiency of the ridge regression when some covariates begin to be irrelevant or not enough relevant.  \\
+Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression provides good results for this running example. But we will see later in section \ref{compY} that high dimension reduces the efficiency of the ridge regression when some covariates begin to be irrelevant or not enough relevant because ridge regression is not able to select relevant covariates. \\
 
 Elasticnet and stepwise give results quite similar to the LASSO (figures \ref{MSEelasticnetexpl} to \ref{MQEstepwiseYexpl}).
  %elasticnet
 	\begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQEreel/elasticnetexpl.png}\label{MSEelasticnetexpl}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{elasticnet}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+	\includegraphics[width=500px]{figures/MQEreel/elasticnetexpl.png}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{elasticnet}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEelasticnetexpl}
 \end{figure} 
 	
 	 \begin{figure}
@@ -773,6 +773,8 @@ Elasticnet and stepwise give results quite similar to the LASSO (figures \ref{MS
 
 \newpage
 \subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $S$ known}
+Figures \ref{MSEexplOLSY_zone} to \ref{MSEexplOLSbeta_zone} illustrate what happens for OLS. 
+
 %OLS	
 	\begin{figure}[h!]
 	\centering
