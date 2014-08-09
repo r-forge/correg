@@ -768,12 +768,16 @@ Elasticnet and stepwise give results quite similar to the LASSO (figures \ref{MS
 	Results are based on the true $S$ used to generate the dataset.
 	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
-	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the \textbf{CorReg} package. Here $\boldsymbol{Y}$ depends on all the covariate and the MSE provided were computed on a validation sample of 1 000 individuals each time.
+	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the \textbf{CorReg} package. Here $\boldsymbol{Y}$ depends on all the covariate and the MSE provided were computed on a validation sample of 1 000 individuals each time. \\
+	
+	Figures \ref{MSEexplOLSY_zone} to \ref{MSEexplOLSbeta_zone} illustrate what happens for OLS. 
+Our marginal model is better than OLS for $n<p$ and the complete model (that is the true model) only starts to win for values of $n$ many times larger than $p$ and weak correlations. We still have the phenomenon of MSE on $\hat{\boldsymbol{\beta}}$ more impacted by correlations than the MSE on $\hat{\boldsymbol{\beta}}$, and our main goal is interpretation so our marginal model really is efficient in our context. \\
+
+Figures \ref{MSEexpllarY_zone} to \ref{MSEexpllarbeta_zone} show that even if the LASSO is able to select a subset of covariate and even if we have seen with OLS that taking a subset can give better results, the LASSO does not do so and give more complex models than our marginal model until correlations are extremely strong. We also observe that our marginal model combined with the LASSO has varying complexities so our pretreatment by selection is just a pretreatment and not competitor against the LASSO. Such combination improves the results in a significant way when compared to the LASSO on the complete dataset or OLS on the marginal model. We see that the complexity rises with $n$ but the lasso never keeps all the covariates even with $n=400=10p$ when used on the whole dataset but keep all the covariates in $\boldsymbol{X}^{I_f}$ when used on the marginal model. The main result here is that the LASSO can be improved by pretreatment selection both with $n<p$ and $n>>p$ with strong correlations so this well known variable selection method really suffers from correlations.
 	\FloatBarrier
 
 \newpage
 \subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $S$ known}
-Figures \ref{MSEexplOLSY_zone} to \ref{MSEexplOLSbeta_zone} illustrate what happens for OLS. 
 
 %OLS	
 	\begin{figure}[h!]
