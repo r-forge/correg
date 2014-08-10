@@ -955,7 +955,7 @@ The theorem from Maugis guarantee that a sub-regression between Gaussian mixture
 		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
 		It implies then that: $\forall j \in I_r, \boldsymbol{X}^{j} $ is a Gaussian mixture and $\exists i \in I_f^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  \\
 		
-	Tables \ref{testidentifiableG}	and \ref{testidentifiableGM} illustrates this property.
+	%Tables \ref{testidentifiableG}	and \ref{testidentifiableGM} illustrates this property.
 	
 \paragraph{Remark:} Identifiability of $S$ is not necessary to use a given structure but helps to find it.
 In the followings, true $S$ is supposed to be identifiable (at least one Gaussian mixture in each sub-regression).
@@ -1175,7 +1175,6 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Section \r
 
 	We used \textsc{Rmixmod} to estimate the densities of each covariate. For each configuration, the MCMC walk was launched on $10$ initial structures with a maximum of 1 000 steps each time.
 	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
-	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
 	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the {\tt CorReg} package.
 	
 		\section{Results on $\hat S$}	\label{compZ}
@@ -1205,8 +1204,9 @@ When comparing $BIC$ to $BIC_+$ it becomes evident that $BIC_+$ is less confiden
 \clearpage
 \section{Results on prediction}\label{compY}
 \subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We try the method with a response variable depending on all covariates. ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
- We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsomious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be choosen).
+We try the method with a response variable depending on all covariates to compare the results with those from section \ref{thedatasets} (same $\boldsymbol{X}$ and $\boldsymbol{Y}$). ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
+ We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsimonious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be chosen). Results for OLS are similar to those from section \ref{thedatasets} excepted for small correlations because the MCMC using $BIC_+$ does not find the true structure for small correlations and a void structure gives a marginal model equal to the complete one. This phenomenon is not observed with variable selection method where covariates not deleted by the structure are deleted by the variable selection.
+ Having simpler structure is important for interpretation so we keep this choice.
 
  
 \FloatBarrier
