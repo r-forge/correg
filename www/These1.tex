@@ -760,9 +760,8 @@ Elasticnet and stepwise give results quite similar to the LASSO (figures \ref{MS
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEstepwiseYexpl}
 	\end{figure}
 	
- Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
  	\FloatBarrier
-	\subsection{On more complex datasets}
+	\subsection{On more complex datasets}\label{thedatasets}
 		The {\tt CorReg} package has been tested on simulated datasets. 
  For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$, variables in $\boldsymbol{X}_f$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $\boldsymbol{X}^{I_r}$ don't have a greater variance or mean.
 	Results are based on the true $S$ used to generate the dataset.
@@ -780,6 +779,8 @@ Ridge regression (Figures \ref{MSEexplridgeY_zone} to \ref{MSEexplridgebeta_zone
 
 Elasticnet and stepwise (Figures \ref{MSEexplelasticnetY_zone} to \ref{MSEexplstepwisebeta_zone})give results mostly equivalent to the LASSO but stepwise seems to be a bit less efficient (higher MSE values). This last point illustrates why we need a specific algorithm to find the structure $S$ and not only variable selection by stepwise like in the method from Maugis \cite{maugis2009variable}.
 
+
+Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
 	\FloatBarrier
 
 \newpage
@@ -1169,10 +1170,9 @@ We define the complexity of a structure $S$ as the number of elements in the adj
 
 	\section{The datasets}	
 	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if {\tt CorReg} 	keeps its promises.
-	The {\tt CorReg} package has been tested on simulated datasets. 
-Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Section \ref{compY} shows the results obtained using only {\tt CorReg}, or {\tt CorReg} combined with other methods. The graph in section \ref{compY} give both mean, first and third quartiles of the chosen indicator. The MSE on $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$ were computed on a validation sample of $1 000$ individuals. \\
+	The {\tt CorReg} package has been tested on the simulated datasets from section \ref{thedatasets}.
+Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Section \ref{compY} shows the results obtained using only {\tt CorReg}, or {\tt CorReg} combined with other methods. The graph in section \ref{compY} give both mean, first and third quartiles of the chosen indicator. The MSE on $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$ were computed on a validation sample of $1 000$ individuals. Several pattern for $\boldsymbol{Y}$ were tested to evaluate the impact of irrelevant covariates.\\
 
-For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$, variables in $\boldsymbol{X}^{I_f}$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $X_r$ don't have a greater variance or mean.
 	We used \textsc{Rmixmod} to estimate the densities of each covariate. For each configuration, the MCMC walk was launched on $10$ initial structures with a maximum of 1 000 steps each time.
 	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
@@ -1205,7 +1205,7 @@ When comparing $BIC$ to $BIC_+$ it becomes evident that $BIC_+$ is less confiden
 \clearpage
 \section{Results on prediction}\label{compY}
 \subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We try the method with a response depending on all covariates ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
+We try the method with a response variable depending on all covariates. ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
  We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsomious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be choosen).
 
  
