@@ -63,10 +63,16 @@
 \chapter*{Résumé substantiel en français}
 	en gros, un article en français
 \chapter*{Acknowledgments}
+%	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has lead me to be recruited since may but let me work in Villeneuve d'Ascq this last year to reduce road time.\\
+%	
+%	But this work would not have been possible without the help of Gaétan LORIDANT, my hierarchic superior and friend who has convinced ArcelorMittal to fund this thesis and helped me in this work by a strong moral support and spending a great amount of time with me to find the good direction between academic and industrial needs with some technical help when he could. I would not have made all this work without him.\\
+%	
+%	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university and even if I won't pursue a research career. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
+%	
+%	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and rude year just by their presence, giving me the courage to go further. \\
+%	
+%	I finally want to thank my family. My wife who has to support most the charge of the family in top of her work and to let me work during the holidays and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
 
-% ArcelorMittal pour le financement et la confiance
-
-% encadrants soutien moral technique patience
 
 % collègues inria soutien technique package
 
@@ -1856,7 +1862,7 @@ The response variable was binary but $n$ was too small compared to $p$ to use lo
 In this precise case, {\tt CorReg} found a structure that helped to decorrelate covariates in interpretation and to find the relevant part of the process to optimize. This product is made by a long process that requires several steel plants so it was necessary to point out the steel plant where the problem occurred.
 
 
-\part{Further usage of the structure}	
+\part{Further usage of the structure and perspectives}	
 			
 		
 \chapter{Taking back the residuals}
@@ -1890,8 +1896,8 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 	
 	Figure \ref{MQE2} shows the target of this plug-in model: the cases with enough correlations to have problem when using $\boldsymbol{X}$	but not enough correlations to have truly redundant covariates and to be able to delete some of them without significant information loss.
 \begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}\label{MQE2}
-	\caption{MSE of OLS (plain red) and {\tt CorReg} marginal(blue dashed) and {\tt CorReg} plug-in (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}
+	\caption{MSE of OLS (plain red) and {\tt CorReg} marginal(blue dashed) and {\tt CorReg} plug-in (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}\label{MQE2}
 \end{figure}	
 			
 		
@@ -1983,9 +1989,9 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		
 
 	\section{Numerical results}
-		We test the plug-in model with same datasets (both $\boldsymbol{X}$ and $\boldsymbol{Y}$ as for section \ref{compY}.
+		We test the plug-in model with datasets generated the same way as for section \ref{compY}.
 	\subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We try the method with a response depending on all covariates ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). We observe for OLS (Figures \ref{MSEpredOLSY_zonetout} to \ref{MSEpredOLSbeta_zonetout}) that the plug-in model gives results similar in efficiency to the marginal model, but remains better than the complete model for smaller  correlations even for $n=400$. We also observe that we can found a model with more than $n$ coefficients when each estimation step computes less than $n$ coefficients. It means that  we estimate more coefficients than the classical OLS and keep a smaller variance so the plug-in model can also be an alternative to the complete model.
+We try the method with a response depending on all covariates ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). We observe for OLS (Figures \ref{MSEpredOLSY_zonetout} to \ref{MSEpredOLSbeta_zonetout}) that the plug-in model gives results similar in efficiency to the marginal model, but remains better than the complete model for smaller  correlations even for $n=400$. We also observe that we can found a model with more than $n$ coefficients when each estimation step computes less than $n$ coefficients. It means that  we estimate more coefficients than the classical OLS and keep a smaller variance so the plug-in model can also be an alternative to the complete model. It is interesting to see that OLS combined with the plug-in model is a sort of sequential estimation that allows to estimate more than $n$ coefficients.
  
 \FloatBarrier
 
@@ -2095,8 +2101,18 @@ We try the method with a response depending on all covariates ({\tt CorReg} redu
 Combined with variable selection methods (Figures \ref{MSEpredlarY_zonetout} to \ref{MSEpredstepwisebeta_zonetout}) it does converge to the complete model results for large values of $n$ so it improves the marginal model for weak correlations (it is what it was built for) has no significant interest compared to the complete model. Ridge regression (Figures \ref{MSEpredridgeY_zonetout} to \ref{MSEpredridgebeta_zonetout}) leads to the same conclusion.
 
 \subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}	 \label{tableMSEsimdroitepred}
-This case will show the robustness of selection methods, that will have to reject covariates in the plug-in model.
+This case shows the robustness of selection methods, that rejects covariates in the plug-in model.\\ 
 
+	
+	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$ }	 \label{tableMSEsimgauchepred}
+We now try the method with a response depending only on variables in $\boldsymbol{X}^{I_r}$. The datasets used here were still the same.
+Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the marginal model to obtain the true model when using the true structure, so we hope to see an improvement with the plug-in method. This is the reason why we have developed the plug-in model. \\
+
+For OLS (figures \ref{MSEpredOLSY_zoneX2} to \ref{MSEpredOLSbeta_zoneX2}) we note that the plug-in model improves results of the marginal model for large values of $n$. This is still the case with variable selection methods even if it is not sufficient to improve the complete model. \\
+This phenomenon is still observed with the ridge regression with more efficiency.
+
+\subsection{About the plug-in model}
+	The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on a first estimation (the marginal model) thus it does reach the true model but asymptotically, and with a slow convergence speed. Moreover, if $\hat{S}$ is not exactly the true $S$ but the partition is good, the marginal model is not impacted whereas the plug-in model uses both $\hat{\boldsymbol{\beta}}^*_{I_f}$ and $\hat{\boldsymbol{\alpha}}$ so it is does not rely only on one estimation. $\hat{\boldsymbol{\alpha}}$ is another source of bias for finite values of $n$ and it depends itself on $\hat{S}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves OLS any way but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. 
 \newpage
 %OLS	
 \subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}
@@ -2200,10 +2216,6 @@ This case will show the robustness of selection methods, that will have to rejec
 
 
 \clearpage
-	
-	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$ }	 \label{tableMSEsimgauchepred}
-We now try the method with a response depending only on variables in $\boldsymbol{X}^{I_r}$. The datasets used here were still the same.
-Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the marginal model to obtain the true model when using the true structure, so we hope to see an improvement with the plug-in method.
 
 
 \FloatBarrier
@@ -2773,17 +2785,18 @@ Both methods were tested with the true structure $S$. Initial value of $\boldsym
 	\caption{MSE on $\boldsymbol{\alpha}$ is significantly lower and more robust with our SEM than with imputation by the mean.}\label{MSEalphaSEM}
 \end{figure}
 
-	We see that our SEM is nearly 13 times more efficient in mean that estimation based on imputation by the mean. Our results are extremely good because each sub-regression is true and we have 30 individuals (even if missing values kind of reduce this number) to estimate 3 coefficients only each time. Although, using imputed values lead to learn a true regression with a factually incorrect dataset. 
+	We see (Figure \ref{MSEalphaSEM}) that our SEM is nearly 13 times more efficient in mean that estimation based on imputation by the mean. Our results are extremely good because each sub-regression is true and we have 30 individuals (even if missing values kind of reduce this number) to estimate 3 coefficients only each time. Although, using imputed values lead to learn a true regression with a factually incorrect dataset. Thus we should prefer to work without imputing the missing values but using the full generative model and the dependencies it implies. Imputation will always introduce some bias.
 
 		
 			\subsection{Imputation by the sub-regression}
 			We have then imputed missing values in $\boldsymbol{X}^{I_r}$  by using the corresponding sub-regressions after $\boldsymbol{\alpha}$ has been estimated  by the SEM.
-			Missing values in $\boldsymbol{X}^{I_f}$ are estimated by the mean of 50 Gibbs iterations after the SEM and 2 warming steps of the Gibbs.
+			Missing values in $\boldsymbol{X}^{I_f}$ are estimated by the mean of 50 Gibbs iterations after the SEM and 2 warming steps of the Gibbs. Results are shown in figure \ref{MSEXsubreg}.
 			\begin{figure}[h!]
 	\centering
 	\includegraphics[width=350px]{figures/MSEXsubreg.png} 
 	\caption{MSE on $\hat{\boldsymbol{X}}$ is significantly lower and more robust when using our SEM than with imputation by the mean.}\label{MSEXsubreg}
 \end{figure}
+\FloatBarrier
 		\subsection{Multiple imputation for the main regression}
 		We use the previously imputed $\boldsymbol{X}$ to estimate $\boldsymbol{Y}$ with $\boldsymbol{\beta}=\boldsymbol{1}$ and $\sigma_Y=10$.
 			\begin{figure}[h!]
@@ -2797,11 +2810,12 @@ Both methods were tested with the true structure $S$. Initial value of $\boldsym
 	\includegraphics[width=350px]{figures/MSESEMYtoysd.png} 
 	\caption{our SEM (blue) provides more robust results than imputation by the mean (red) but the variances are still too wide.}\label{MSESEMYtoysd}
 \end{figure}		
-We obtain on a validation sample of 1000 individuals a predictive MSE more lower in mean with our method. But the variance are too important to really conclude. We can say that imputation by SEM is more robust, but the Gibbs do not give satisfying results. Maybe the increase of the number of steps allowed by a code optimization would help to improve these results. For now, we can just say that our generative model significantly improves estimation of $\boldsymbol{\alpha}$ and make possible to find $S$ based on a dataset with missing values.
+We obtain on a validation sample of 1000 individuals a predictive MSE smaller in mean with our method (Figure \ref{MSESEMYtoymean}). But the variance are too important to really conclude (Figure \ref{MSESEMYtoysd}). We can say that imputation by SEM is more robust, but the Gibbs do not give satisfying results. Maybe the increase of the number of steps allowed by a code optimization would help to improve these results. For now, we can just say that our generative model significantly improves estimation of $\boldsymbol{\alpha}$ and make possible to find $S$ based on a dataset with missing values.
 
-		One advantage of our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same $S$ and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
+		One big advantage with our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same $S$ and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
+
 	\section{Missing values on real datasets}	
-		To be able to evaluate the results, we have deleted some values in quality dataset from section \ref{sectionBV} to obtain $10\%$ of missing values. Figure \ref{missingBV} shows the pattern of the missing values (MCAR). 
+		To be able to evaluate the results on a real dataset, we have deleted some values in the production dataset from section \ref{sectionBV} to obtain $10\%$ of missing values. Figure \ref{missingBV} shows the pattern of the missing values (MCAR). It confirms that $10\%$ of missing values is sufficient to have no complete line or column in the dataset. 
 	
 	\begin{figure}[h!]
 		\centering
@@ -2813,24 +2827,26 @@ We obtain on a validation sample of 1000 individuals a predictive MSE more lower
 		\includegraphics[width=350px]{figures/MSEXmissBV.png} 
 		\caption{MSE on $\hat{\boldsymbol{X}}$ is $1.32$ times lower in mean when using our method (blue) than with imputation by the mean (red).}\label{MSEXmissBV}
 	\end{figure}
-
+	We see in figure \ref{MSEXmissBV} that our SEM gives a smaller MSE with a smaller variance than imputation by the mean. There is still a lot of work to do in the field of missing values and we have only walked the firsts steps of this huge perspective, but these first results are encouraging and make us feel like this orientation is worthy to be followed.
 
 \chapter{CorReg: the concept}	
 	
-		{\tt CorReg} is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with {\tt CorReg}.
-	{\tt CorReg} also provides tools to interpreat found structures and visualize the dataset (missing values and correlations). %More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}.
-	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). It also provides some small scripts in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel). One example of graphical tool is the $matplot\_zone$ function that allows to compare several curves according to a criterion and was widely used to compare the MSE and complexities in this document.
-	
+		The {\tt CorReg} package is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with {\tt CorReg}.
+	{\tt CorReg} also provides tools to interpret found structures and visualize the dataset (missing values and correlations). \\%More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}. 
+	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). \\
+	It also provides some small scripts put in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel).\\
+	 One example of graphical tool is the {\tt matplot\_zone } function that allows to compare several curves according to a given function (input parameter) and was widely used to compare the MSE and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
+	More features will be added as statistics will continue to be taught to engineers to provide ergonomic and powerful statistical tools to non-statisticians. 
 \chapter{Conclusion and perspectives}
 	\section{Conclusion}
-		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates.
-		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, {\tt CorReg} will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method has a positive impact on the way users looks at the statistics.
+		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates. Moreover, it is only a pretreatment so it could easily be used with future statistical tools. \\
+		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, {\tt CorReg} will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method seems to have a positive impact on the way users looks at the statistics (according to them). \\
 			It is good to see that sequential methods (plug-in model) and automation can produce good results. Probabilistic models are efficient even without human expertise and let the experts improve the results by adding their expertise in the model (coercing some sub-regression for example). So we hope that statistics will continue to be a central tool for engineers.
 		
 		
 	\section{Perspective}
 		\subsection{Non-linear regression}
-			Polynomial regression, logistic regression \cite{hosmer2000applied}, {\it etc.} could be improved by a method like this.
+			Polynomial regression, logistic regression \cite{hosmer2000applied}, {\it etc.} might be improved by a method like this.
 		\subsection{Pretreatment not only for regression}
 			Classification and Regression Tree, and any other method could benefit of the variable selection pretreatment implied by our marginal model.
 		\subsection{Improved programming}
@@ -2839,7 +2855,7 @@ We obtain on a validation sample of 1000 individuals a predictive MSE more lower
 			The full generative approach could be used to manage missing values without imputation for many classical methods.
 			It can notably be used for clustering and not only in response variable prediction context.
 		\subsection{Interpretation improvements}
-			Ergonomy of the software could be improved to better fit industrial needs. This work is in progress and further work wil lbe provided just after this thesis.
+			Ergonomy of the software could be improved to better fit industrial needs. This work is in progress and further work will be provided just after this thesis to reach this goal.
 \cleardoublepage
 
 \addcontentsline{toc}{chapter}{References}
