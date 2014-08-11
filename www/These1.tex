@@ -1983,10 +1983,9 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		
 
 	\section{Numerical results}
-	
+		We test the plug-in model with same datasets (both $\boldsymbol{X}$ and $\boldsymbol{Y}$ as for section \ref{compY}.
 	\subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We try the method with a response depending on all covariates ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
- 
+We try the method with a response depending on all covariates ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). We observe for OLS (Figures \ref{MSEpredOLSY_zonetout} to \ref{MSEpredOLSbeta_zonetout}) that the plug-in model gives results similar in efficiency to the marginal model, but remains better than the complete model for smaller  correlations even for $n=400$. We also observe that we can found a model with more than $n$ coefficients when each estimation step computes less than $n$ coefficients. It means that  we estimate more coefficients than the classical OLS and keep a smaller variance so the plug-in model can also be an alternative to the complete model.
  
 \FloatBarrier
 
@@ -2009,6 +2008,7 @@ We try the method with a response depending on all covariates ({\tt CorReg} redu
 		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredOLSbeta_zonetout}
 	\end{figure}
 	\FloatBarrier
+	
 \newpage
 \subsubsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
@@ -2091,9 +2091,13 @@ We try the method with a response depending on all covariates ({\tt CorReg} redu
 	\FloatBarrier
 
 \clearpage
+
+Combined with variable selection methods (Figures \ref{MSEpredlarY_zonetout} to \ref{MSEpredstepwisebeta_zonetout}) it does converge to the complete model results for large values of $n$ so it improves the marginal model for weak correlations (it is what it was built for) has no significant interest compared to the complete model. Ridge regression (Figures \ref{MSEpredridgeY_zonetout} to \ref{MSEpredridgebeta_zonetout}) leads to the same conclusion.
+
 \subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}	 \label{tableMSEsimdroitepred}
 This case will show the robustness of selection methods, that will have to reject covariates in the plug-in model.
 
+\newpage
 %OLS	
 \subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}
 
