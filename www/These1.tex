@@ -1698,7 +1698,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 \FloatBarrier
 \subsection{Robustness with non-linear case}
 
-We have generated a non-linear structure to test the robustess of the model. $\boldsymbol{X}^{I_f}$ is a set of 6 independent Gaussian mixtures defined as previously but with random signs for the components means. $\boldsymbol{X}^{I_r}=\boldsymbol{X}_7=a\boldsymbol{X}_1^2+\boldsymbol{X}_2+\boldsymbol{X}_3+ \varepsilon$. The matrix $\boldsymbol{X}$ is then scaled before doing $$\boldsymbol{Y}=\sum_{i=1}^7\boldsymbol{X}_i+\varepsilon_Y.$$ We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression.
+We have generated a non-linear structure to test the robustess of the model. $\boldsymbol{X}^{I_f}$ is a set of 6 independent Gaussian mixtures defined as previously but with random signs for the components means. $\boldsymbol{X}^{I_r}=\boldsymbol{X}_7=a\boldsymbol{X}_1^2+\boldsymbol{X}_2+\boldsymbol{X}_3+ \varepsilon$. The matrix $\boldsymbol{X}$ is then scaled before doing $$\boldsymbol{Y}=\sum_{i=1}^7\boldsymbol{X}_i+\varepsilon_Y.$$ We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression. Once again, simulations has been made 100 times and the MSE were computed with 1 000 individuals validation samples.
 
  \begin{figure}[h!] 
 	\begin{minipage}[l]{.48\linewidth}
@@ -1710,7 +1710,7 @@ We have generated a non-linear structure to test the robustess of the model. $\b
 			\caption{MSE on the main regression for OLS(thick) and LASSO (thin) used both with (plain) or without {\tt CorReg} (dotted).}\label{MSEnonlin}
    \end{minipage}
 \end{figure}
-Figure \ref{MSEnonlin} illustrates the advantage of using {\tt CorReg} even with non-linear structures. Figure \ref{resnonlin} shows that the MCMC have more difficulties to find a linear structure as the non-linear part of the sub-regression increases but the model is quite robust (efficient for small values of $a$)
+Figure \ref{MSEnonlin} illustrates the advantage of using {\tt CorReg} even with non-linear structures. Figure \ref{resnonlin} shows that the MCMC have more difficulties to find a linear structure as the non-linear part of the sub-regression increases but the model is quite robust (efficient for small values of $a$).
 
 	\FloatBarrier	
 \chapter{Numerical results on real datasets} \label{sectionrealcase}
@@ -1896,7 +1896,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 			
 		
 	\section{Interpretation and latent variables}
-			$\hat{\boldsymbol{\beta}}_{I_r}$ can be interpreted as the proper effect of $\boldsymbol{X}^{I_r}$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}^{I_r}$ that is independent from other covariates. Then if $\boldsymbol{X}^{I_r}$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}^{I_f}$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_{I_r}=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}^{I_f}$ and dependent of $\boldsymbol{X}^{I_r}$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}}$. Thus, it can reveal some kinds of latent variables.
+			$\hat{\boldsymbol{\beta}}_{I_r}$ can be interpreted as the proper effect of $\boldsymbol{X}^{I_r}$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}^{I_r}$ that is independent from other covariates. Then if $\boldsymbol{X}^{I_r}$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}^{I_f}$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_{I_r}=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}^{I_f}$ and dependent of $\boldsymbol{X}^{I_r}$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}}$. Thus, the plug-in model can reveal some kinds of latent variables.
 			
 	
 
