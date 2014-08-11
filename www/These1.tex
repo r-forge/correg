@@ -1204,9 +1204,15 @@ When comparing $BIC$ to $BIC_+$ it becomes evident that $BIC_+$ is less confiden
 \clearpage
 \section{Results on prediction}\label{compY}
 \subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We try the method with a response variable depending on all covariates to compare the results with those from section \ref{thedatasets} (same $\boldsymbol{X}$ and $\boldsymbol{Y}$). ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. 
- We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsimonious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be chosen). Results for OLS are similar to those from section \ref{thedatasets} excepted for small correlations because the MCMC using $BIC_+$ does not find the true structure for small correlations and a void structure gives a marginal model equal to the complete one. This phenomenon is not observed with variable selection method where covariates not deleted by the structure are deleted by the variable selection.
- Having simpler structure is important for interpretation so we keep this choice.
+We try the method with a response variable depending on all covariates to compare the results with those from section \ref{thedatasets} (same $\boldsymbol{X}$ and $\boldsymbol{Y}$). ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. \\
+
+ We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsimonious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be chosen). The main result here is that results based on $\hat{S}$ are still good so the MCMC is efficient enough to be useful for the study of the response variable $\boldsymbol{Y}$. \\
+ 
+ Results for OLS (Figures \ref{MSEexplOLSY_zonetout} to \ref{MSEexplOLSbeta_zonetout} ) are similar to those from section \ref{thedatasets} excepted for small correlations because the MCMC using $BIC_+$ does not find the true structure for small correlations and a void structure gives a marginal model equal to the complete one.  \\
+ This phenomenon is not observed with variable selection method (Figures \ref{MSEexpllarY_zonetout} to \ref{MSEexplstepwisebeta_zonetout}) where covariates not deleted by the structure are deleted by the variable selection. \\
+ Ridge regression results (Figures \ref{MSEexplridgeY_zonetout} to \ref{MSEexplridgebeta_zonetout} ) are also very similar to the previous (Figures \ref{MSEexplridgeY_zone} to \ref{MSEexplridgebeta_zone}).\\
+ 
+ Having simpler structure is important for interpretation so we keep this choice, but user can use classical $BIC$ with single boolean parameter change.
 
  
 \FloatBarrier
