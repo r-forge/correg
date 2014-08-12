@@ -153,28 +153,51 @@ On note $BIC_+$ ce nouveau critère car il ne modifie pas $BIC$ (on conserve ain
 		La méthode a été testée sur données simulées puis réelles, montrant l'efficacité du modèle marginal s'appuyant sur la vraie structure de sous-régressions (section \ref{MSEvraiS}), l'efficacité de l'algorithme de recherche de structure (section \ref{compZ}), et l'efficacité du modèle marginal s'appuyant sur la structure estimée (section \ref{compY} et chapitre \ref{sectionrealcase}). Le bilan est très positif comme le montrent les graphiques de ces différentes sections.
 	\section{Au-delà du marginal avec le plug-in}
 		Une première perspective a été développée pour compléter le modèle marginal. Il s'agit d'un modèle plug-in permettant de ré-injecter les variables redondantes après estimation du modèle marginal pour obtenir un modèle utilisant toutes les variables mais protégé des corrélations par l'estimation séquentielle.
-	\section{Les valeurs manquantes}
 		
+\begin{eqnarray}
+			%\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{X}^{I_r}&=&\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \\
+			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\underbrace{(\boldsymbol{\beta}_{I_r}+\boldsymbol{\alpha}\boldsymbol{\beta}_{I_f})}_{\boldsymbol{\beta}^*}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y 
+					\end{eqnarray}		 
+Ce qui donne donc
+		\begin{eqnarray}
+			\boldsymbol{Y}- \boldsymbol{X}^{I_r}\boldsymbol{\beta}^*&=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \textrm{ avec}\\
+			\boldsymbol{\varepsilon}&=&\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\boldsymbol{\alpha}
+		\end{eqnarray}		 
+D'où le modèle plugin 
+		\begin{eqnarray}
+			\underbrace{\boldsymbol{Y}- \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}^*}}_{\tilde{\boldsymbol{Y}}}&=&\underbrace{(\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}})}_{\tilde{\boldsymbol{X}}}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+		\end{eqnarray}
+		qui permet d'estimer dans un second temps $\boldsymbol{\beta}_{I_r}$ par un modèle classique de régression linéaire en s'appuyant sur l'estimation de $\boldsymbol{\beta}^*$ issue du modèle marginal et sur $\hat{\boldsymbol{\alpha}}$.
+		Le modèle plug-in réduit le bruit de la régression
+		\begin{equation}
+			\boldsymbol{Y}= \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}^* + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
+		\end{equation}
+		and simple étape d'identification (sans estimation supplémentaire) permet de retouver le vrai modèle:
+		\begin{eqnarray}
+			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}(\hat{\boldsymbol{\beta}}^*-\hat{\boldsymbol{\alpha}}\hat{\boldsymbol{\beta}}_{I_r}) + \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+			&=&\boldsymbol{X}^{I_f}\hat{\boldsymbol{\beta}}_{I_f}+\boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y
+		\end{eqnarray}
+	
+	La figure \ref{MQE2} montre l'efficacié du modèloe plug-in et son champ d'application : les cas avec assez de correlations pour que les méthodes classiques appliquées à $\boldsymbol{X}$ soient handicapées mais pas assez de corrélations pour que le retrait des variables redondantes se fasse sans perte siginificative d'information.
+		
+	\section{Les valeurs manquantes}
+		Une seconde perspective a été entamée concernant les valeurs manquantes. Le fait de disposer d'un modèle génératif complet sur $\boldsymbol{X}$ avec modélisation explicite des dépendances permet en effet de gérer les valeurs manquantes. Tout d'abord, l'estimation de $\boldsymbol{\alpha}$ peut se faire sur les données observées en intégrant sur les données manquantes. On peut alors utiliser un algorithme de type EM (expectation Maximization) pour estimer $\hat{\boldsymbol{\alpha}}$. en pratique, l'étape $E$ n'est pas systématiquement explicite peut nécessiter de faire appel à une variante de EM : l'aglorithme SEM (pour Stochastic EM) qui remplace l'étape $E$ par une étape stochastique d'imputation des valeurs manquantes, par exemple en utilisant un échantillonneur de Gibbs. Cet algorithme de Gibbs peut alors être utilisé pour faire de l'imputation multiple sur les valeurs manquantes en s'appuyant sur le $\hat{\boldsymbol{\alpha}}$ issu du SEM. Comme cette imputation tient compte des corrélations entre les variables, elle est plus précise qu'une simple imputation par la moyenne. Un avantage de l'imputation multiple est que l'on peut avoir une idée de la robustesse des imputations en regardant simplement la variance des valeurs imputées, ce qui donne une information de fiabilité sur les imputations. Encore une fois, on y gagne en qualité d'interprétation.  
 \chapter{The industrial context}
 	\paragraph{Abstract:} Ce chapître explique les contraintes industrielles qui ont orienté les travaux pour répondre aux demandes d'ArcelorMittal qui est le commanditaire de ces travaux de recherche.
 \subsection{Steelmaking process}
-	This work takes place in a steel industry context.
-	Steelmaking starts from raw materials to give highly specific products.
+	This work takes place in a steel industry context, fund by ArcelorMittal, the world leading company in steelmaking.
+	Steelmaking starts from raw materials to give highly specific products found.
 	
-	
-		
-	parler du process de manière  linéaire	
+	We first melt down a mix of iron ore and cock to obtain cast iron that is then transformed in steel by addiction of pure oxygen to reduce the quantity of carbon. Liquid steel is then refreshed in a mold (continuous casting) to obtain steel slabs (nearly 20 tons each). Cold slabs are then warmed to be pressed in a hat rolling mill to obtain coils of steel. If the final product requires a thinner steel, coils pass through a cold rolling mill. Each step of this process involves a whole manufactory and the whole process can take several weeks. The most sensitive products are the thinner and sometimes defects are generated by small inclusion in the steel down to the dozen of microns. So even if quality is evaluated at each step of the process, some defects are only found when the whole process is finished even if the origin comes from the first part of this process. So we have hundreds of parameters to analyse.
 	\begin{center}
           \begin{tabular}{ccc}
          \includegraphics[width=130px,height=130px]{figures/liquid.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame1.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame.jpg} \\
           	\includegraphics[width=130px,height=130px]{figures/ecras_moy.jpg} &\includegraphics[width=130px,height=130px]{figures/tcc2.jpg} & \includegraphics[width=130px,height=130px]{figures/bobines.jpg}
           \end{tabular}
         \end{center}
-
-	faire remarquer la longueur du process et le nombre de paramètres.
-	Faire remarquer les corrélations
-	Conclure avec le côté innovant de la sidérurgie puis transition vers la recherche et donc vers la thèse
-
+Steelmaking is always evolving and we are now able to produce steel that is thinner and stronger at the same time. Steel is completely recyclable so we will always be able to produce it. This quickly evolving industry is associated to a lot of research in metallurgy but also need adapted statistical tools. That is why this thesis has been made.
+	
 	\subsection{Impact of the industrial context}
 	 The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we may have no idea of its origin. The defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process, each implying a whole plant. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates essentially depends on the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
 	We have several constraints :
