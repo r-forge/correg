@@ -124,12 +124,37 @@ On va donc comparer
 		E[MSE(\hat{\boldsymbol{\beta}}|\boldsymbol{X})]&=& \sigma^2_Y \operatorname{Tr}(\boldsymbol{X}'\boldsymbol{X})^{-1}  \\
 		E[MSE(\hat{\boldsymbol{\beta}}^*|\boldsymbol{X}^*)]&=& (\sigma^2_Y+\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2)\operatorname{Tr}(\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})^{-1}
 	\end{eqnarray}
-		La figure 	
+		La figure \ref{MQEexplOLSp5col} compare ces deux erreurs pour différentes valeurs des paramètres, montrant la nette amélioration rendue possible par la marginalisation.
 	
 	\section{Notion de prétraitement}
-	Le modèle marginal peut être interprété comme étant un prétraitement par sélection de variable puisqu'on se ramène à un modèle de régression linéaire classique pour lequel n'importe quel estimateur peut être utilisé. Cela fait de ce modèle un outil générique.
+	Le modèle marginal peut être interprété comme étant un prétraitement par sélection de variable puisqu'on se ramène à un modèle de régression linéaire classique pour lequel n'importe quel estimateur peut être utilisé. Cela fait de ce modèle un outil générique. La préselection permet de cibler des variables qui n'interviendront pas dans le modèle final sans pour autant être indépendante de $\boldsymbol{Y}$ donc le modèle final est parsimonieux mais ne fausse pas l'interprétation. L'estimation de $\boldsymbol{\beta}^*$ peut ensuite se faire en utilisant une quelconque méthode de sélection de variables pour éliminer les variables qui, elles, sont indépendantes de $\boldsymbol{Y}$.\\
+	 On obtient donc deux types de 0 : ceux de la marginalisation qui pointent les variables redondantes et ceux de sélection qui viennent dans un second temps et point les variables indépendantes. L'interprétation est donc enrichie par rapport à une méthode de sélection classique qui fournirait le même modèle final. Or, le contexte industriel de ces travaux rend indispensable d'avoir une bonne qualité d'interprétation. L'objectif est donc atteint pour ce point précis. Notre modèle marginal est un outil de décorrélation de variables par préselection.
+	 
+	 \section{Estimation de la structure}
+		La raison d'être de notre modèle marginal est la fragilité des méthodes de régression face à des covariables fortement corrélées. Il serait donc vain d'essayer les sous-régression en estimant les modèles de régression de chaque variable en fonction de toutes les autres. Pour cette raison, nous avons établi un algorithme MCMC pour trouver le meilleur modèle de sous-régression. L'idée consiste à voir la structure de sous-régression comme un paramètre binaire, une matrice binaire creuse pour être plus précis. Cette matrice $\boldsymbol{G}$ de taille $p\times p$ correspond à une matrice d'adjacence qui indique les liaisons entre covariables de la manière suivante : $\boldsymbol{G}_{i,j}=1$ si, et seulement si $\boldsymbol{X}^j$ est expliqué par $\boldsymbol{X}^i$. \\
+		
+		Chaque étape $(q+1)$ de l'algorithme propose de garder la structure $\boldsymbol{G}^{(q)}$ en cours ou bien de bouger vers une structure candidate qui diffère de $\boldsymbol{G}^{(q)}$ en un unique point. Ainsi, selon les cas, les candidats vont allonger ou réduire des sous-régression, les supprimer ou les créer. \\
+		Pour pouvoir trancher entre plusieurs candidats, nous avons besoin d'une fonction coût qui soit capable de comparer des modèles avec des nombres distincts de sous-régressions. Nous définissons alors un modèle génératif complet sur $\boldsymbol{X}$ qui complète le modèle de sous-régressions en établissant des modèles de mélanges gaussiens indépendants pour les variables de $\boldsymbol{X}^{I_f}$. Une fois ce modèle génératif établi, nous pouvons utiliser le critère $BIC$ pour comparer les différents modèles et conduire chaque étape de la chaîne MCMC par un tirage aléatoire pondéré par les écarts entre les $BIC$ des différents modèles proposés (dont le modèle en cours). L'algorithme continue ainsi sa marche et fournit à l'utilisateur le modèle rencontré (qu'il ait été choisi ou non) qui a le $BIC$ le plus faible. \\
+		La chaîne MCMC est conditionnée par le critère de partitionnement : les variables expliquées ne doivent en expliquer aucune autre ($\boldsymbol{X}^{I_r}\cap \boldsymbol{X}^{I_f}=\emptyset$). Chaque modèle réalisable peut être entièrement construit ou déconstruit pendant la marche aléatoire donc l'algorithme suit une chaîne de Markov régulière. Ainsi, il est certain que, asymptotiquement l'algorithme trouve le modèle ayant le meilleur $BIC$.
+	\section{Relaxation des contraintes et nouveau critère}
+		Pour améliorer la mélangeance de l'algorithme et donc sa vitesse de convergence, on peut jouer avec la contrainte de partitionnement par une méthode de relxation semblable à un recuit simulé. Quand une structure candidate n'est pas réalisable (ne produit pas de partition), on peut la modifier en d'autres endroits pour la rendre réalisable. Il suffit de suivre les formules suivantes pour une modification en $(i,j)$:
+		\begin{eqnarray}
+			\boldsymbol{G}_{i,j}^{(q+1)}&=&1-\boldsymbol{G}_{i,j}^{(q)} \\
+			\boldsymbol{G}_{.,i}^{(q+1)}&=& (\boldsymbol{G}_{i,j}^{(q)})\boldsymbol{G}_{.,i}^{(q)} \textrm{ Si $i$ explique $j$ alors personne ne peut plus expliquer $i$} \\
+			\boldsymbol{G}_{j,.}^{(q+1)}&=&(\boldsymbol{G}_{i,j}^{(q)})\boldsymbol{G}_{j,.}^{(q)} \textrm{ Si $i$ explique $j$ alors $j$ ne peut plus expliquer personne}
+		\end{eqnarray}
+		Cette méthode de relaxation permet de sortir rapidement des extrema locaux et améliore donc significativement l'efficacité de l'algorithme.
+		Mais il reste un problème. Le nombre de modèles envisageable est considérable et le critère $BIC$ ne tient pas compte de cette quantité, menant à des modèles trop complexes. On lui ajoute donc une pénalité qui tient compte du nombre de modèles réalisables pour pénaliser plus lourdement les modèles complexes.
+	De manière générale quand on estime la vraisemblance d'une structure $S$ dans une base de données $\boldsymbol{X}$, $BIC$ est utilisé comme approximation pour $P(S|\boldsymbol{X})\propto  P(\boldsymbol{X}|S)P(S)$  	car $P(S)$ est considéré comme suivant une loi uniforme. On s'appuie donc sur une loi uniforme hiérarchique sur $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$ pour ajouter une pénalité supplémentaire aux structures complexes (même probabilité globale pour un plus grand nombre de structures donc chaque structure devient moins probable). Avec $I_r$ l'ensemble des variables redondantes, $p_r$ le nombre de sous-régressions, $\boldsymbol{p}_f$ le vecteur des complexités des sous-régressions et enfin $I_f$ l'ensemble des ensembles des variables explicatives dans les sous-régressions.
+On note $BIC_+$ ce nouveau critère car il ne modifie pas $BIC$ (on conserve ainsi ses propriétés) mais ajoute simplement une pénalisation.\\
+	Ces deux outils viennent améliorer l'efficacité de l'algorithme sans paramètre utilisateur supplémentaire à optimiser. Tout reste naturel et intuitif pour une meilleur automatisation.
 
-
+	\section{Résultats}
+		La méthode a été testée sur données simulées puis réelles, montrant l'efficacité du modèle marginal s'appuyant sur la vraie structure de sous-régressions (section \ref{MSEvraiS}), l'efficacité de l'algorithme de recherche de structure (section \ref{compZ}), et l'efficacité du modèle marginal s'appuyant sur la structure estimée (section \ref{compY} et chapitre \ref{sectionrealcase}). Le bilan est très positif comme le montrent les graphiques de ces différentes sections.
+	\section{Au-delà du marginal avec le plug-in}
+		Une première perspective a été développée pour compléter le modèle marginal. Il s'agit d'un modèle plug-in permettant de ré-injecter les variables redondantes après estimation du modèle marginal pour obtenir un modèle utilisant toutes les variables mais protégé des corrélations par l'estimation séquentielle.
+	\section{Les valeurs manquantes}
+		
 \chapter{The industrial context}
 	\paragraph{Abstract:} Ce chapître explique les contraintes industrielles qui ont orienté les travaux pour répondre aux demandes d'ArcelorMittal qui est le commanditaire de ces travaux de recherche.
 \subsection{Steelmaking process}
@@ -748,7 +773,7 @@ We know that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\b
  Thus, when $\sigma_Y^2$ rises it increases the advantage of {\tt CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the main model has a strong noise (very usual case on real datasets where true model is not even exactly linear). 
  
 But it is only the theoretical MSE and we want to know what happens in the real life. 
-\section{Observed MSE comparison}
+\section{Observed MSE comparison}\label{MSEvraiS}
 We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$. Here again, each configuration is computed 100 times and we take the mean to smooth the curves. The MSE on $\hat{\boldsymbol{Y}}$ is computed on a validation sample with 1 000 individuals. Our marginal model remains better for strong correlations.\\
 
 	We also look at the observed MSE on both $\boldsymbol{\beta}$ and $\boldsymbol{Y}$ for some of the methods depicted above.
