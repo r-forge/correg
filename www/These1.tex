@@ -60,7 +60,25 @@
 	
 	 	
 \paragraph{Keywords:} Pretreatment, Regression, Correlations, Missing values, MCMC, generative model, Bayesian Criterion, variable selection, plug-in method,\dots
-\chapter*{Résumé substantiel en français}
+	
+
+\chapter*{Acknowledgments}
+	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has lead me to be recruited since may but let me work in Villeneuve d'Ascq this last year to reduce road time.\\
+	
+	But this work would not have been possible without the help of Gaétan LORIDANT, my hierarchic superior and friend who has convinced ArcelorMittal to fund this thesis and helped me in this work by a strong moral support and spending a great amount of time with me to find the good direction between academic and industrial needs with some technical help when he could. I would not have made all this work without him.\\
+	
+	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university and even if I won't pursue a research career. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
+	
+	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and rude year just by their presence, giving me the courage to go further. \\
+	
+	I finally want to thank my family. My wife who has to support most of the charge of the family in top of her work and to let me work during the holidays and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
+
+
+
+
+\tableofcontents
+\chapter{Résumé substantiel en français}
+	\section{Position du problème}
 	La régression linéaire est l'outil de modélisation le plus classique et se résume à une équation bien connue :
 	\begin{equation}
 		\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y
@@ -78,6 +96,7 @@
 	\end{equation}
 	
 	C'est cette situation problèmatique que nous nous proposons d'améliorer.
+	\section{Modélisation explicite des corrélations}
 	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes.	Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition des $p$ variables en 2 blocs:
 	\begin{equation}
 		\boldsymbol{X}^{I_r}=\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
@@ -86,29 +105,30 @@
 	
 	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de 5 variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ et une variable redondante $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ avec $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ ont été testées avec $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_3$ diminue. \\
 	
-	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal
+	\section{Modèle marginal}
+	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal. On peut en effet substituer les variables redondantes par leur sous-régression, ce qui revient à intégrer la régression sur $\boldsymbol{X}^{I_r}$ sachant la structure de sous-régressions.
+\begin{eqnarray}
+		P(\boldsymbol{Y}|\boldsymbol{X}^{I_f})&=& \int_{\boldsymbol{X}^{I_r}}P(\boldsymbol{Y}|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f})P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f}) d \boldsymbol{X} \\
+	\boldsymbol{Y}_{|\boldsymbol{X}^{I_f},S}&=&\boldsymbol{X}^{I_f} (\boldsymbol{\beta}_{I_f}+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \\
+	&=&\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}^*+\boldsymbol{\varepsilon}_Y^*
+\end{eqnarray}
+on se retrouve donc avec un modèle marginal plus parsimonieux, sans biais mais avec une variance accrue. Cet accroissement de la variance est proportionnel à $\boldsymbol{\varepsilon}$ qui est la matrice des résidus des sous-régressions. Plus les sous-régressions sont fortes plus cette variance sera donc faible.
+Tout le principe du modèle marginal repose sur le compromis entre l'amélioration du conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ par suppression des variables redondantes et aussi la réduction de la dimension (le modèle marginal ne nécessite que l'inversion de $(\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})$) face au léger accroissement de la variance issu de la marginalisation. \\
+On va donc comparer 
 	\begin{eqnarray}
-		\boldsymbol{Y}&=& \boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
-		\boldsymbol{Y}&=& \boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+(\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon})\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
-		\boldsymbol{Y}&=& \boldsymbol{X}^{I_f}(\boldsymbol{\beta}_{I_f}+\boldsymbol{\alpha}\boldsymbol{\beta}_{I_r})+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y\\
-		\boldsymbol{Y}&=& \boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}^*\boldsymbol{\varepsilon}_Y^*
+		\hat{\boldsymbol{\beta}}&=& (\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y} \textrm{ au modèle marginal} \\
+		\hat{\boldsymbol{\beta}}^*&=& (\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})^{-1}\boldsymbol{X}^{I_f'}\boldsymbol{Y}
 	\end{eqnarray}
-
-\chapter*{Acknowledgments}
-	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has lead me to be recruited since may but let me work in Villeneuve d'Ascq this last year to reduce road time.\\
+	Les deux modèles sont sans biais et de dimension différente, on compare donc leurs erreurs moyennes quadratiques respectives (MSE):
+	\begin{eqnarray}
+		E[MSE(\hat{\boldsymbol{\beta}}|\boldsymbol{X})]&=& \sigma^2_Y \operatorname{Tr}(\boldsymbol{X}'\boldsymbol{X})^{-1}  \\
+		E[MSE(\hat{\boldsymbol{\beta}}^*|\boldsymbol{X}^*)]&=& (\sigma^2_Y+\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2)\operatorname{Tr}(\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})^{-1}
+	\end{eqnarray}
+		La figure 	
 	
-	But this work would not have been possible without the help of Gaétan LORIDANT, my hierarchic superior and friend who has convinced ArcelorMittal to fund this thesis and helped me in this work by a strong moral support and spending a great amount of time with me to find the good direction between academic and industrial needs with some technical help when he could. I would not have made all this work without him.\\
-	
-	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university and even if I won't pursue a research career. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
-	
-	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and rude year just by their presence, giving me the courage to go further. \\
-	
-	I finally want to thank my family. My wife who has to support most of the charge of the family in top of her work and to let me work during the holidays and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
+	\section{Notion de prétraitement}
+	Le modèle marginal peut être interprété comme étant un prétraitement par sélection de variable puisqu'on se ramène à un modèle de régression linéaire classique pour lequel n'importe quel estimateur peut être utilisé. Cela fait de ce modèle un outil générique.
 
-
-
-
-\tableofcontents
 
 \chapter{The industrial context}
 	\paragraph{Abstract:} Ce chapître explique les contraintes industrielles qui ont orienté les travaux pour répondre aux demandes d'ArcelorMittal qui est le commanditaire de ces travaux de recherche.
@@ -701,7 +721,7 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 		E[\textsc{MSE}(\hat{\boldsymbol{\beta}}|\boldsymbol{X})]&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}})) \\
 			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})]&=& 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}) %\textrm{ for OLS, and then for the marginal model:}
 			 \\
-			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})]&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_{I_r}\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}^{I_f'} \boldsymbol{X}^{I_f})^{-1})
+			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})]&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_{I_r}\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}^{I_f'} \boldsymbol{X}^{I_f})^{-1})
 	\end{eqnarray}	 
 	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQEexplOLSp5col} shows the theoretical MSE evolution with the strength of the sub-regression. In this section, all experiences have been made 100 times to obtain smooth curves. So we have generated 100 times $\boldsymbol{X}$ and $\boldsymbol{Y}$.
 %	\begin{equation}
