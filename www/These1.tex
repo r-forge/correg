@@ -213,34 +213,35 @@ Steelmaking is always evolving and we are now able to produce steel that is thin
 \chapter{State of the art}
 \paragraph{Abstract:} Rapide aperçu de ce qui existe déjà pour tenter de répondre à notre problématique. La plupart des outils présentés le sont plus en détail dans le livre de Hastie, Tibshirani et Friedman : {\it "The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible gratuitement sur le web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}}.
 	\section{Linear regression}
-		\subsection{Historic interest}
-			méthode ancienne et reconnue, remonte aux origines des statistiques, méthode pionnière en prédiction.
-		\subsection{Simplicity}
-			Facile à mettre en oeuvre théoriquement, rapide en pratique et présent partout (même dans Excel)
-			Très simple à interpréter, principe intuitif.
-			donne tout de suite l'impact des variables (positif ou négatif) sur la réponse et leur poids (si scaled dataset) 
-			
-			C'est ici qu'on peut mettre le principe de la régression linéaire (image d'un nuage de point et d'une droite qui le traverse)
+%		\subsection{Historic interest}
+%			méthode ancienne et reconnue, remonte aux origines des statistiques, méthode pionnière en prédiction.
+%		\subsection{Simplicity}
+%			Facile à mettre en oeuvre théoriquement, rapide en pratique et présent partout (même dans Excel)
+%			Très simple à interpréter, principe intuitif.
+%			donne tout de suite l'impact des variables (positif ou négatif) sur la réponse et leur poids (si scaled dataset) 
+%			
+%			C'est ici qu'on peut mettre le principe de la régression linéaire (image d'un nuage de point et d'une droite qui le traverse)
 		\subsection{Industrial context}
-			Manque d'arriere plan statistique
-			besoin de comprendre pour corriger
-			défaut de confiance dans les statistiques d'où besoni accru en interprétation
-			La régression s'y prete bien car déjà connue et utilisée par chacun dans Excel (parfois à tort à travers).
-			
-			
+		
 			Industrial context is often poor in statistical background and the stakes are frequently very high in terms of financial impact. 
 		These two points give strong constraints because methods used has to be accessible for non-statistician in a minimum amount of time and results obtained have to be clearly interpreated (no black-box) because if industrial experts don't understand the result, they will not trust it and then they will not use it. So a powerfull tool without interpretation becomes kind of useless in such a context.
 		
 		Every engineer, even non-statistician use frequently linear regression to seek relationship between some covariates. It is easy to understand, fast to do, it can be done directly in Microsoft Excel that remains the most used software in industry and the software used by engineers to open most of the datasets.
 		 
-		 Regression appears to be the basis of industrial statistics so we have chosen to work in this way. As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative. 
-		 It's simplicity facilitates a wide spread usage in industry and other fields of application.
+\begin{figure}
+\centering
+	\includegraphics[width=350px]{figures/simpleOLS.png} 
+	\caption{An example of simple linear regression}
+\end{figure}		 
+		 
+		 Regression appears to be the basis of industrial statistics so we have chosen to work in this way. As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative (as we will see in the followings). 
+		 It's simplicity facilitates a wide spread usage in industry and other fields of application. It is also a powerful tool for interpretation allowing to know with precision the positive or negative impact of each covariate on the response variable. 
 			
-			
-		\subsection{Flexibility and future of regression}
-			Richesse des types de régression et des méthodes d'estimation
-			On peut faire des choses plus pointues en adaptant un peu le modèle mais en conservant la simplicité : Multilevel Regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel}
-
+%			
+%		\subsection{Flexibility and future of regression}
+%			Richesse des types de régression et des méthodes d'estimation
+%			On peut faire des choses plus pointues en adaptant un peu le modèle mais en conservant la simplicité : Multilevel Regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel}
+%
 
 
 
@@ -282,7 +283,7 @@ We note the linear regression model:
 	
 	%problème
 	Estimation of $\boldsymbol{\beta}$ requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
-For a fixed number $n$ of individuals, conditionning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects: 
+For a fixed number $n$ of individuals, conditioning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects: 
 \begin{itemize}
 	\item The dimension $p$ (number of covariates) of the model (the more covariates you have the greater variance you get)
 	\item The correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
