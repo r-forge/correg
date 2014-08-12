@@ -24,11 +24,11 @@
 	Les travaux effectués durant cette thèse ont pour but de pouvoir pallier le problème des corrélations au sein des bases de données, particulièrement fréquentes dans le cadre des données industrielles. Une modélisation explicite des corrélations par un système de sous-régressions entre covariables permet de pointer les sources des corrélations et d'isoler certaines variables redondantes. 
 	\\
 	
-	Il en découle une pré-sélection de variables nettement moins corrélées sans perte significative d'information et avec un fort potentiel explicatif (la préselection elle-même est expliquée par la structure de sous-régression qui est simple à comprendre car uniquement constituée de modèles linéaires). \\
+	Il en découle une pré-sélection de variables nettement moins corrélées sans perte significative d'information et avec un fort potentiel explicatif (la pré-selection elle-même est expliquée par la structure de sous-régression qui est simple à comprendre car uniquement constituée de modèles linéaires). \\
 	
 	Un algorithme de recherche de structure de sous-régressions est proposé, basé sur un modèle génératif complet sur les données et utilisant une chaîne MCMC (Monte-Carlo Markov Chain). Ce prétraitement est utilisé pour la régression linéaire à des fins illustratives mais ne dépend pas de la variable réponse et peut donc être utilisé de manière générale pour toute problématique de corrélations.\\
 	
-	Par suite, le modèle génératif complet peut être utilisé pour gérer d'éventuelles valeurs manquantes dans les données, tant pour la recherche de structure que pour de l'imputation multiple préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. Cela permet également d'estimer les valeurs manquantes et de fournir un intervalle de confiance sur leur estimation.
+	Par suite, le modèle génératif complet peut être utilisé pour gérer d'éventuelles valeurs manquantes dans les données, tant pour la recherche de structure que pour de l'imputation multiple préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. Cela permet également d'estimer les valeurs manquantes et à terme  de fournir un estimateur de la variance de leur estimation.
 	Encore une fois, la régression linéaire vient illustrer l'apport de la méthode qui reste cependant générique et applicable à d'autres contextes tels que le clustering.
 	\\
 	
@@ -40,7 +40,7 @@
 
 	Le package R intitulé CorReg, disponible sur le CRAN\footnote{http://cran.r-project.org} sous licence CeCILL\footnote{http://www.cecill.info}, implémente les méthodes développées durant cette thèse.
 	
-\paragraph{Mots clés:}Prétraitement, Régression, Corrélations, Valeurs manquantes, MCMC, modèle génératif, Critère Bayésien, sélection de variable, méthode séquentielle.
+\paragraph{Mots clés:}Prétraitement, Régression, Corrélations, Valeurs manquantes, MCMC, modèle génératif, Critère Bayésien, sélection de variable, méthode séquentielle, graphs.
 \chapter*{Abstract}
 	This thesis was motivated by correlation issues in real datasets, in particular industrial datasets. The main idea stands in explicit modeling of the correlations between covariates by a structure of sub-regression, that simply is a system of linear regression between the covariates. It points out redundant covariates that can be deleted in a pre-selection step to improve matrix conditonning without significant loss of information and with strong explicative potential because this pre-selection is explained by the structure of sub-regression, itself easy to interpret.
 	\\
@@ -61,22 +61,45 @@
 	 	
 \paragraph{Keywords:} Pretreatment, Regression, Correlations, Missing values, MCMC, generative model, Bayesian Criterion, variable selection, plug-in method,\dots
 \chapter*{Résumé substantiel en français}
-	en gros, un article en français
+	La régression linéaire est l'outil de modélisation le plus classique et se résume à une équation bien connue :
+	\begin{equation}
+		\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y
+	\end{equation}
+	où $\boldsymbol{Y}$ est la variable réponde de taille $n\times 1$ que l'on souhaite décrire à l'aide de $p$ variables explicatives observées sur $n$ individus et dont les valeurs sont stockées dans la matrice $\boldsymbol{X}$ de taille $n\times p$. Le vecteur $\boldsymbol{\beta}$ est le vecteur des coefficients de régression qui permet de décrire le lien linéaire entre $\boldsymbol{Y}$ et $\boldsymbol{X}$. Le vecteur $\boldsymbol{\varepsilon}_Y$  est un bruit blanc gaussien $\mathcal{N}(0,\sigma_Y^2\boldsymbol{I}_n)$ qui représente l'inexactitude du modèle de régression.\\
+	
+	
+	On connaît l'estimateur sans biais de variance minimale (ESBVM) de $\boldsymbol{\beta}$ qui est obtenu par Moindres Carrés Ordinaires (MCO) selon la formule suivante :
+	\begin{equation}
+		\hat{\boldsymbol{\beta}}=(\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y}
+	\end{equation}
+	Cet estimateur nécessite l'inversion de la matrice $(\boldsymbol{X}'\boldsymbol{X})$ qui est mal conditionnée si les variables explicatives sont corrélées entre elles. Ce mauvais conditionnement nuit à la qualité de l'estimation et vient impacter la variance de l'estimateur comme le montre la formule suivante :
+	\begin{equation}
+		\operatorname{Var}_{\boldsymbol{X}}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}
+	\end{equation}
+	
+	C'est cette situation problèmatique que nous nous proposons d'améliorer.
+	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes.	Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition:
+	\begin{equation}
+		\boldsymbol{X}^{I_r}=\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
+	\end{equation}
+	Avec $\boldsymbol{X}^{I_r}$ sous-matrice de $p_r$ variables redondantes dans $\boldsymbol{X}$.
+	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de 5 variables :
+	
+	 we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
+It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
+
 \chapter*{Acknowledgments}
-%	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has lead me to be recruited since may but let me work in Villeneuve d'Ascq this last year to reduce road time.\\
-%	
-%	But this work would not have been possible without the help of Gaétan LORIDANT, my hierarchic superior and friend who has convinced ArcelorMittal to fund this thesis and helped me in this work by a strong moral support and spending a great amount of time with me to find the good direction between academic and industrial needs with some technical help when he could. I would not have made all this work without him.\\
-%	
-%	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university and even if I won't pursue a research career. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
-%	
-%	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and rude year just by their presence, giving me the courage to go further. \\
-%	
-%	I finally want to thank my family. My wife who has to support most the charge of the family in top of her work and to let me work during the holidays and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
+	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has lead me to be recruited since may but let me work in Villeneuve d'Ascq this last year to reduce road time.\\
+	
+	But this work would not have been possible without the help of Gaétan LORIDANT, my hierarchic superior and friend who has convinced ArcelorMittal to fund this thesis and helped me in this work by a strong moral support and spending a great amount of time with me to find the good direction between academic and industrial needs with some technical help when he could. I would not have made all this work without him.\\
+	
+	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university and even if I won't pursue a research career. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
+	
+	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and rude year just by their presence, giving me the courage to go further. \\
+	
+	I finally want to thank my family. My wife who has to support most the charge of the family in top of her work and to let me work during the holidays and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
 
 
-% collègues inria soutien technique package
-
-% famille ?
 
 
 \tableofcontents
