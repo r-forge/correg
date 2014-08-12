@@ -68,25 +68,31 @@
 	où $\boldsymbol{Y}$ est la variable réponde de taille $n\times 1$ que l'on souhaite décrire à l'aide de $p$ variables explicatives observées sur $n$ individus et dont les valeurs sont stockées dans la matrice $\boldsymbol{X}$ de taille $n\times p$. Le vecteur $\boldsymbol{\beta}$ est le vecteur des coefficients de régression qui permet de décrire le lien linéaire entre $\boldsymbol{Y}$ et $\boldsymbol{X}$. Le vecteur $\boldsymbol{\varepsilon}_Y$  est un bruit blanc gaussien $\mathcal{N}(0,\sigma_Y^2\boldsymbol{I}_n)$ qui représente l'inexactitude du modèle de régression.\\
 	
 	
-	On connaît l'estimateur sans biais de variance minimale (ESBVM) de $\boldsymbol{\beta}$ qui est obtenu par Moindres Carrés Ordinaires (MCO) selon la formule suivante :
+	On connaît l'estimateur sans biais de variance minimale (ESBVM) de $\boldsymbol{\beta}$ qui est obtenu par Moindres Carrés Ordinaires (MCO) selon la formule  :
 	\begin{equation}
 		\hat{\boldsymbol{\beta}}=(\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y}
 	\end{equation}
-	Cet estimateur nécessite l'inversion de la matrice $(\boldsymbol{X}'\boldsymbol{X})$ qui est mal conditionnée si les variables explicatives sont corrélées entre elles. Ce mauvais conditionnement nuit à la qualité de l'estimation et vient impacter la variance de l'estimateur comme le montre la formule suivante :
+	Cet estimateur nécessite l'inversion de la matrice $(\boldsymbol{X}'\boldsymbol{X})$ qui est mal conditionnée si les variables explicatives sont corrélées entre elles. Ce mauvais conditionnement nuit à la qualité de l'estimation et vient impacter la variance de l'estimateur comme le montre la formule :
 	\begin{equation}
 		\operatorname{Var}_{\boldsymbol{X}}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}
 	\end{equation}
 	
 	C'est cette situation problèmatique que nous nous proposons d'améliorer.
-	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes.	Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition:
+	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes.	Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition des $p$ variables en 2 blocs:
 	\begin{equation}
 		\boldsymbol{X}^{I_r}=\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
 	\end{equation}
-	Avec $\boldsymbol{X}^{I_r}$ sous-matrice de $p_r$ variables redondantes dans $\boldsymbol{X}$.
-	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de 5 variables :
+	Avec $\boldsymbol{X}^{I_r}$ sous-matrice de $p_r$ variables redondantes dans $\boldsymbol{X}$. Nous supposons alors l'indépendance entre les variables non redondantes qui définissent $\boldsymbol{X}^{I_f}$. La matrice $\boldsymbol{\alpha}$ de taille $(p-p_r)\times (p_r)$ a pour colonnes les vecteurs $\boldsymbol{\alpha}_j$ qui contiennent les coefficients de régression associées à la $j^{ieme}$ colonne de $\boldsymbol{X}$.
 	
-	 we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
-It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
+	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de 5 variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ et une variable redondante $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ avec $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ ont été testées avec $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_3$ diminue. \\
+	
+	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal
+	\begin{eqnarray}
+		\boldsymbol{Y}&=& \boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+		\boldsymbol{Y}&=& \boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+(\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon})\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+		\boldsymbol{Y}&=& \boldsymbol{X}^{I_f}(\boldsymbol{\beta}_{I_f}+\boldsymbol{\alpha}\boldsymbol{\beta}_{I_r})+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y\\
+		\boldsymbol{Y}&=& \boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}^*\boldsymbol{\varepsilon}_Y^*
+	\end{eqnarray}
 
 \chapter*{Acknowledgments}
 	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has lead me to be recruited since may but let me work in Villeneuve d'Ascq this last year to reduce road time.\\
@@ -97,7 +103,7 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 	
 	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and rude year just by their presence, giving me the courage to go further. \\
 	
-	I finally want to thank my family. My wife who has to support most the charge of the family in top of her work and to let me work during the holidays and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
+	I finally want to thank my family. My wife who has to support most of the charge of the family in top of her work and to let me work during the holidays and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
 
 
 
