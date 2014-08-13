@@ -38,7 +38,7 @@
 	Tout au long de ces travaux, l'accent est mis principalement sur l'interprétabilité des résultats en raison du caractère industriel du financement de cette thèse. 
 \\	
 
-	Le package R intitulé CorReg, disponible sur le CRAN\footnote{http://cran.r-project.org} sous licence CeCILL\footnote{http://www.cecill.info}, implémente les méthodes développées durant cette thèse.
+	Le package R intitulé {\tt CorReg}, disponible sur le CRAN\footnote{http://cran.r-project.org} sous licence CeCILL\footnote{http://www.cecill.info}, implémente les méthodes développées durant cette thèse.
 	
 \paragraph{Mots clés:}Prétraitement, Régression, Corrélations, Valeurs manquantes, MCMC, modèle génératif, Critère Bayésien, sélection de variable, méthode séquentielle, graphs.
 \chapter*{Abstract}
@@ -55,8 +55,8 @@
 \\
 
 	The industrial motivation of this work define interpretation as a stronghold at each step. 	
-	
-	The R package CorReg, is on CRAN\footnote{http://cran.r-project.org} now under CeCILL\footnote{http://www.cecill.info} license. It implements the methods created during this thesis.
+	\\
+	The R package {\tt CorReg}, is on CRAN\footnote{http://cran.r-project.org} now under CeCILL\footnote{http://www.cecill.info} license. It implements the methods created during this thesis.
 	
 	 	
 \paragraph{Keywords:} Pretreatment, Regression, Correlations, Missing values, MCMC, generative model, Bayesian Criterion, variable selection, plug-in method,\dots
@@ -188,7 +188,7 @@ D'où le modèle plugin
 		 Cet algorithme de Gibbs peut alors être utilisé pour faire de l'imputation multiple sur les valeurs manquantes en s'appuyant sur le $\hat{\boldsymbol{\alpha}}$ issu du SEM. Comme cette imputation tient compte des corrélations entre les variables, elle est plus précise qu'une simple imputation par la moyenne. Un avantage de l'imputation multiple est que l'on peut avoir une idée de la robustesse des imputations en regardant simplement la variance des valeurs imputées, ce qui donne une information de fiabilité sur les imputations. Encore une fois, on y gagne en qualité d'interprétation.  
 \chapter{The industrial context}
 	\paragraph{Abstract:} Ce chapître explique les contraintes industrielles qui ont orienté les travaux pour répondre aux demandes d'ArcelorMittal qui est le commanditaire de ces travaux de recherche.
-\subsection{Steelmaking process}
+\section{Steelmaking process}
 	This work takes place in a steel industry context, fund by ArcelorMittal, the world leading company in steelmaking.
 	Steelmaking starts from raw materials to give highly specific products found.
 	
@@ -201,7 +201,7 @@ D'où le modèle plugin
         \end{center}
 Steelmaking is always evolving and we are now able to produce steel that is thinner and stronger at the same time. Steel is completely recyclable so we will always be able to produce it. This quickly evolving industry is associated to a lot of research in metallurgy but also need adapted statistical tools. That is why this thesis has been made.
 	
-	\subsection{Impact of the industrial context}
+	\section{Impact of the industrial context}
 	 The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we may have no idea of its origin. The defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process, each implying a whole plant. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates essentially depends on the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
 	We have several constraints :
 	\begin{itemize}
@@ -296,7 +296,10 @@ For a fixed number $n$ of individuals, conditioning of $\boldsymbol{X}'\boldsymb
 	When matrices are not invertible, classical packages like the function lm of R base package \cite{packagebase} use the Moore-Penrose pseudoinverse \cite{PSP:2043984} to generalize OLS.
 		
 		
-	Last but not least, Ordinary Least Squares is unbiased but if some $\beta_i$ are null (irrelevant covariates) the corresponding $\hat{\beta}_i$ will only asymptotically tend to 0 so the number of covariates in the estimated model remains $p$. This is a major issue because we are searching for a statistical tool able to work without a priori on a big dataset containing many irrelevant datasets. Pointing out some relevant covariate and how they impact the response really is the main goal here. We will need a variable selection method one moment or another. It could be as a pretreatment, during coefficient estimation or by post-treatment.
+	Last but not least, Ordinary Least Squares is unbiased but if some $\beta_i$ are null (irrelevant covariates) the corresponding $\hat{\beta}_i$ will only asymptotically tend to 0 so the number of covariates in the estimated model remains $p$. This is a major issue because we are searching for a statistical tool able to work without a priori on a big dataset containing many irrelevant datasets. Pointing out some relevant covariate and how they impact the response really is the main goal here. We will need a variable selection method one moment or another. It could be as a pretreatment, during coefficient estimation or by post-treatment. \\
+	
+		
+
 	
 \paragraph{Running example:} we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
 It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
@@ -326,7 +329,8 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 	  \includegraphics[width=500px]{figures/MQEreel/OLScompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLScompl}
 	\end{figure}	
-	We first observe that real results are better from expected (Figure \ref{MQEOLScompl}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices \cite{bulirsch2002introduction}. Our package CorReg also uses this decomposition. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$
+	We first observe that real results are better from expected (Figure \ref{MQEOLScompl}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices \cite{bulirsch2002introduction}. Our package CorReg also uses this decomposition. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$.
+	\\
 		 \FloatBarrier
 
 	\section{Penalized models}
@@ -730,6 +734,10 @@ We note that it is simply a linear regression on some of the original covariates
 	for which OLS estimator of the coefficients may be biased.  
 
 \paragraph{Running example:} $\boldsymbol{Y}_{|\boldsymbol{X}^{I_f}}= 2\boldsymbol{x}_1+2\boldsymbol{x}_2+\boldsymbol{x}_4+\boldsymbol{x}_5+\boldsymbol{\varepsilon}_3 +\boldsymbol{\varepsilon}_Y$
+
+
+
+
 \section{Strategy of use: pre-treatment before classical estimation/selection methods}\label{interpretation}
 
 As a pre-treatment, the model allows usage of any method in a second time to estimate $\boldsymbol{\beta}_{I_f}^*$, even with variable selection methods like LASSO or a best subset algorithm like stepwise \cite{seber2012linear}. However, we always have $\boldsymbol{X}^{I_r}=\boldsymbol{0}$
@@ -743,7 +751,7 @@ The explicit structure is parsimonious and simply consists in linear regressions
 Moreover, the uncrossing constraint (partition of $\boldsymbol{X}$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect) and straightforward readable.
 
 	
-			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We just play on the traditional bias-variance tradeoff.
+			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We just play on the traditional bias-variance tradeoff. 
 \chapter{Numerical results with a known structure}	
 \paragraph{Abstract:} Premiers résultats numériques pour une structure (hors coefficients de sous-régression) connue. On constate un net apport de la méthode de préselection.
 		 
@@ -1070,19 +1078,38 @@ The theorem from Maugis guarantee that a sub-regression between Gaussian mixture
 \paragraph{Remark:} Identifiability of $S$ is not necessary to use a given structure but helps to find it.
 In the followings, true $S$ is supposed to be identifiable (at least one Gaussian mixture in each sub-regression).
 		
+	\subsection{Impact of the structure itself}
+		
+	
+	Correlations can lead to serious problems in industrial context. Let's imagine a dataset with two highly correlated covariates. Estimators may give them the same coefficient (grouping effect  when using elasticnet) or only keep one of them (like the LASSO does). \\
+	
+	If only one is kept without explicitly pointing the correlations we will think that the deleted covariate is irrelevant even if it is not and even if it could be more relevant than the kept covariate in terms of possible actions or physical meanings.\\
+	
+	 On the other hand, keeping both without pointing correlations will lead to modify one of the covariates to impact the value of the response as we want and the other covariate will automatically move so we won't obtain the expected result.\\
+	 
+	  Choosing whereas we have to use or not the marginal model as a pretreatment is independent of the utility of the structure. Knowing explicitly the complex correlations that hold the dataset is a real stake when times come to interpret the model and to  decide actions. This is a strength of our method. We don't have to make a choice between grouping effect or variable selection because our explicit structure describes in details the complexity of the situation so we can then act knowing what we do, without having to blindly follow one of the two heuristics.
 
 \section{Sub-regression model selection}	
 
 			\subsection{Bayesian criterion for quality}
+			
+			
 		Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood of the joint law on $\boldsymbol{X}$ according to the complexity of the structure~\cite{BIChuard}. \\
+		
+		
 			 We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context.
 		In the followings we use the $BIC$, that is more classical.
+		
+		
 		\subsection{Penalization of the integrated likelihood by $P(S)$} \label{compstruct}
+		
+		
 When considering (\ref{approxBIC}) we see that uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a minimization of the $BIC$.
-	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model
+	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model.
 	\begin{eqnarray}
 		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)  
 	\end{eqnarray}
+	
 	But $BIC$ tends to give too complex structures because we test a great range of models and the number of model compared is not taken into account\cite{massart2007concentration}. Thus we choose to penalise the complexity a bit more. We don't want to modify the $BIC$ to keep its properties.
 	
 We have the explicit structure characterized by $S=\{I_f,I_r,p_f,p_r\}$, then we suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of the simple uniform law on $S$ that is generally used and provides no penalty.
