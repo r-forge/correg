@@ -488,6 +488,8 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 		The package {\tt spikeslab} for R on CRAN is also included in {\tt CorReg}. \\
 		
 		Modeling the parameters implies to have no exact value to give to the coefficient and it is not really user-friendly, especially in our industrial context. However, these two methods can be used for variable selection in the {\tt correg} function using the parameter {\tt select="clere"} or {\tt select="spikeslab"}.
+		
+		\FloatBarrier
 	\section{Miscellaneous}	
 	\subsection{Principal Component Regression}
 	Principal Component Regression \cite{jackson2005user} consists in using the axis from the Principal Component Analysis (PCA) of $\boldsymbol{X}$ instead of $\boldsymbol{X}$ itself. Then we have orthogonal covariates. Dimension reduction is done by keeping only the $M \leq p$ first components of the PCA.
@@ -496,8 +498,13 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 	
 	
 	\subsection{Partial Least Squares (PLS) Regression}
-	\cite{abdi2003partial,geladi1986partial}
-
+	
+		Partial Least Square Regression \cite{abdi2003partial,geladi1986partial} also relies on a combination of the columns of  $\boldsymbol{X}$ but this combination depends on $\boldsymbol{Y}$.
+		
+	It seems to be influenced more by the variance of the covariates than by their correlation with the response variable so results tends to be similar to Principal Component Regression.
+	
+	The main problem with these two methods is that they give model that do not directly use the original covariates so interpretation is not easy and engineers would have no confidence in a model they don't understand, following rather their physical intuition.
+		
 	\subsection{Sliced Inverse Regression}
 		Sliced Inverse Regression is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression \cite{eubank1999nonparametric,hardle1990applied} that are too complex to interpret for our industrial context. \\
 		
@@ -595,7 +602,7 @@ More details in the book from Hastie \cite{hastie2009elements}. The main issues 
 			
 		\section{Industrial tools}
 			Linear regression, decision trees, bayesian networks, neural network but without confidence
-			Presence of softwares sent as non-statistical methods, based on rules (derivatives of decision trees).			
+			Our engineers are frequently contacted by software resellers. The concerned software are sold as non-statistical methods, based on rules (derivatives of decision trees but without underlying theory). Statistics are often described as too theoretical, without ergonomy and not compatible with the real life. Our goal was to demonstrate that statistics can provide efficient methods for real datasets, easy to use and understand.	This was a battle against correlations but also against scepticism.
 			metre image du flou vert et rouge avec encadré
 			
 			
