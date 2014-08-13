@@ -379,7 +379,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=200px]{figures/lasso.png} 
-			\caption{Geometric view of the Penalty for the LASSO (left) compared to ridge regression (right)} \label{lassogeom}
+			\caption{Geometric view of the Penalty for the LASSO (left) compared to ridge regression (right) as shown in the book from Hastie \cite{hastie2009elements}} \label{lassogeom}
 		\end{figure}
 		Figure \ref{lassogeom} show the contour of error (red) and constraint function (blue) for both lasso (left) and ridge regression (right). We see that the optimum will be found on an axis for the lasso because its constraint zone is a polyhedron whose vertices are on the axis but not for the ridge regression. Here the axis stands for the regression coefficients.
 		
@@ -397,7 +397,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		\subsection{Least Angle Regression}
 		The least Angle Regression algorithm solves the LASSO problem.
 		It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates.
-		The idea is to start with all coefficients to zero and then grow them beginning with the most correlated with the response variable until another variable is more correlated with the residual. So it is a progressive growth of the coefficient leading to reduce the residual. It finishes with the Ordinary Least Squares solution. We then have a list of models with several numbers of non-zero coefficients and can choose between them with cross-validation for example.
+		The idea is to start with all coefficients to zero and then grow them beginning with the most correlated with the response variable until another variable is equally correlated with the residual. So it is a progressive growth of the coefficient leading to reduce the residual. It finishes with the Ordinary Least Squares solution (on the right in figure \ref{plotlarstoy}). We then have a list of models with several numbers of non-zero coefficients and can choose between them with cross-validation for example.
 \begin{figure}[h!]
 	\centering
 		  \includegraphics[width=350px]{figures/LARtheory.png}
@@ -407,7 +407,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 \begin{figure}[h!]
 	\centering
 		  \includegraphics[width=350px]{figures/plotlarstoy.png}
-		\caption{The LASSO path computed by lars}
+		\caption{The LASSO path computed by lars}\label{plotlarstoy}
 	\end{figure}			
 	
 		 \begin{figure}
@@ -415,8 +415,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	  \includegraphics[width=500px]{figures/MQEreel/larcompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{lar}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQElarcompl}
 	\end{figure}
-	Results obtained with the package lars for R.
-	 
+	Results obtained with the package {\tt lars} for R, included in {\tt CorReg}. Figure \ref{MQElarcompl} shows that strong correlations make the MSE explode even with lar. 
  	 
 	 \FloatBarrier
 		\subsection{Elasticnet}		% ne pas oublier de mentionner les packages existants
@@ -448,7 +447,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	  \includegraphics[width=500px]{figures/MQEreel/elasticnetcompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{elasticnet}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEelasticnetcompl}
 	\end{figure}
-	Results obtained with the package elasticnet for R.
+	Results obtained with the package {\tt elasticnet} for R.
 		
 		 \FloatBarrier
 
@@ -473,8 +472,10 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 
 		\subsection{CLERE: CLusterwise Effect REgression}		% ne pas oublier de mentionner les packages existants
 
-			The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independant random variables with grouped $\beta_j$ following a Gaussian Mixture distribution. The idea is to hope that the model have a small number of groups of covariates and that the mixture will have few enough components to have a number of parameters to estimate significantly lower than $p$. In such a case, it improves interpretability and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. 
-	
+			The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independant random variables with grouped $\beta_j$ following a Gaussian Mixture distribution. \\
+			
+			 The idea is to hope that the model have a small number of groups of covariates and that the mixture will have few enough components to have a number of parameters to estimate significantly lower than $p$. In such a case, it improves interpretation and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. A package {\tt clere} for R does exist on CRAN and is included in {\tt CorReg}. But We have to choose the maximum number of components $g$ and have no method to choose this value. Yengo recommends to use $g=5$ in our case. It could be interpreted as the possibility to have a group of irrelevant covariates and groups with small or big values (both positives or negatives). The package is able to choose automatically the best number of components between 1 and $g$ based on a $BIC$ criterion but setting $g=p$ gives over-fitting. \\
+	 Here again, it has no specific protection against or specific model for correlations. 
 		\subsection{Spike and Slab}			% ne pas oublier de mentionner les packages existants
 
 			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.  The $\beta_j$ are supposed to come from a mixture distribution as shown in figure \ref{spikeslab}. It allows to have some coefficients set exactly to zero after some draws. 
@@ -484,17 +485,22 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 	\includegraphics[width=350px]{figures/spikeslab.png} 
 	\caption{}\label{spikeslab}
 \end{figure}		
-			
+		The package {\tt spikeslab} for R on CRAN is also included in {\tt CorReg}. \\
+		
+		Modeling the parameters implies to have no exact value to give to the coefficient and it is not really user-friendly, especially in our industrial context. However, these two methods can be used for variable selection in the {\tt correg} function using the parameter {\tt select="clere"} or {\tt select="spikeslab"}.
 	\section{Miscellaneous}	
 	\subsection{Principal Component Regression}
-	\cite{jackson2005user}
+	Principal Component Regression \cite{jackson2005user} consists in using the axis from the Principal Component Analysis (PCA) of $\boldsymbol{X}$ instead of $\boldsymbol{X}$ itself. Then we have orthogonal covariates. Dimension reduction is done by keeping only the $M \leq p$ first components of the PCA.
+	
+	Principal Component Regression can be hard to interpret because it requires to first interpret the axis given by the PCA. Moreover, we have to choose $M$ the final dimension of the model. Finally, even if dimension reduction is effective when $M<p$ each axis depends on all original covariates so it does not select any covariates and that is also a problem for interpretation. We have to choose arbitrary how to interpret each axis and how many covariates really explain each of them. So it is not really satisfying in our industrial context. Principal Component method can be seen as a truncation method whereas the ridge regression is a shrinkage method. 
+	
+	
 	\subsection{Partial Least Squares (PLS) Regression}
 	\cite{abdi2003partial,geladi1986partial}
-	\subsection{Non-parametric regression}
-	\cite{eubank1999nonparametric,hardle1990applied}
-		Non conforme aux exigences d'interprétabilité
+
 	\subsection{Sliced Inverse Regression}
-		It is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression. 
+		Sliced Inverse Regression is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression \cite{eubank1999nonparametric,hardle1990applied} that are too complex to interpret for our industrial context. \\
+		
 		The main idea is to compute the inverse regression $P(\boldsymbol{X}|\boldsymbol{Y})$ instead of $P(\boldsymbol{Y}|\boldsymbol{X})$ to perform a weighted principal component analysis, with which one identifies the effective dimension reducing directions\cite{li1991sliced}. But it needs strong hypothesis on the distribution of $\boldsymbol{X}$ (elliptic hypothesis), even if it is possible to neglect this hypothesis \cite{saracco1999regression} and see what happens. This method has been rejected because it was not sufficient in terms of ease of use (during and after estimation) for non-statisticians and the elliptic hypothesis is compromised on datasets with hundreds of covariates.
 			
 		
