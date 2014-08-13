@@ -227,7 +227,7 @@ Steelmaking is always evolving and we are now able to produce steel that is thin
 		\subsection{Industrial context}
 		
 			Industrial context is often poor in statistical background and the stakes are frequently very high in terms of financial impact. 
-		These two points give strong constraints because methods used has to be accessible for non-statistician in a minimum amount of time and results obtained have to be clearly interpreated (no black-box) because if industrial experts don't understand the result, they will not trust it and then they will not use it. So a powerfull tool without interpretation becomes kind of useless in such a context.
+		These two points give strong constraints because methods used has to be accessible for non-statistician in a minimum amount of time and results obtained have to be clearly interpreted (no black-box) because if industrial experts don't understand the result, they will not trust it and then they will not use it. So a powerful tool without interpretation becomes kind of useless in such a context.
 		
 		Every engineer, even non-statistician use frequently linear regression to seek relationship between some covariates. It is easy to understand, fast to do, it can be done directly in Microsoft Excel that remains the most used software in industry and the software used by engineers to open most of the datasets.
 		 
@@ -237,7 +237,8 @@ Steelmaking is always evolving and we are now able to produce steel that is thin
 	\caption{An example of simple linear regression}
 \end{figure}		 
 		 
-		 Regression appears to be the basis of industrial statistics so we have chosen to work in this way. As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative (as we will see in the followings). 
+		 Regression appears to be the basis of industrial statistics so we have chosen to work in this way. As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative (as we will see in the followings) and can be generalized 		 \cite{kiebel2003general,wickens2004general,nelder1972generalized,mccullagh1989generalized} 
+. 
 		 It's simplicity facilitates a wide spread usage in industry and other fields of application. It is also a powerful tool for interpretation allowing to know with precision the positive or negative impact of each covariate on the response variable. 
 			
 %			
@@ -329,9 +330,10 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 	  \includegraphics[width=500px]{figures/MQEreel/OLScompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLScompl}
 	\end{figure}	
-	We first observe that real results are better from expected (Figure \ref{MQEOLScompl}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices \cite{bulirsch2002introduction}. Our package CorReg also uses this decomposition. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$.
+	We first observe that real results are better from expected (Figure \ref{MQEOLScompl}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices \cite{bulirsch2002introduction}. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$.  Our package {\tt CorReg} also uses this decomposition.
 	\\
 		 \FloatBarrier
+		
 
 	\section{Penalized models}
 	
@@ -491,37 +493,31 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 		
 		\FloatBarrier
 	\section{Miscellaneous}	
-	\subsection{Principal Component Regression}
-	Principal Component Regression \cite{jackson2005user} consists in using the axis from the Principal Component Analysis (PCA) of $\boldsymbol{X}$ instead of $\boldsymbol{X}$ itself. Then we have orthogonal covariates. Dimension reduction is done by keeping only the $M \leq p$ first components of the PCA.
+	\subsection{Principal Component Regression and Partial Least Squares Regression}
+	Principal Component Regression \cite{jackson2005user} consists in using the axis from the Principal Component Analysis (PCA) of $\boldsymbol{X}$ instead of $\boldsymbol{X}$ itself. Then we have orthogonal covariates. Dimension reduction is done by keeping only the $M \leq p$ first components of the PCA. Because the axis are linear combination of the original covariates we can then express the model in terms of coefficients of the $\boldsymbol{X}^j$.
 	
-	Principal Component Regression can be hard to interpret because it requires to first interpret the axis given by the PCA. Moreover, we have to choose $M$ the final dimension of the model. Finally, even if dimension reduction is effective when $M<p$ each axis depends on all original covariates so it does not select any covariates and that is also a problem for interpretation. We have to choose arbitrary how to interpret each axis and how many covariates really explain each of them. So it is not really satisfying in our industrial context. Principal Component method can be seen as a truncation method whereas the ridge regression is a shrinkage method. 
+	Principal Component Regression requires to choose $M$ the number of axis to keep. Finally, even if dimension reduction is effective when $M<p$ each axis depends on all original covariates so it does not select any covariates and that is also a problem for interpretation. We have to choose arbitrary how to interpret each axis and how many covariates really explain each of them. So it is not really satisfying in our industrial context. Principal Component method can be seen as a truncation method whereas the ridge regression is a shrinkage method. 
 	
-	
-	\subsection{Partial Least Squares (PLS) Regression}
-	
-		Partial Least Square Regression \cite{abdi2003partial,geladi1986partial} also relies on a combination of the columns of  $\boldsymbol{X}$ but this combination depends on $\boldsymbol{Y}$.
+	Partial Least Square Regression \cite{abdi2003partial,geladi1986partial} also relies on a combination of the columns of  $\boldsymbol{X}$ but this combination depends on $\boldsymbol{Y}$.
+		It uses scalar products of the covariates with the response variable
 		
 	It seems to be influenced more by the variance of the covariates than by their correlation with the response variable so results tends to be similar to Principal Component Regression.
-	
-	The main problem with these two methods is that they give model that do not directly use the original covariates so interpretation is not easy and engineers would have no confidence in a model they don't understand, following rather their physical intuition.
+	\\
+	The R package {\tt pls} on CRAN computes both Principal Component Regression and Partial Least Squares Regression.
 		
 	\subsection{Sliced Inverse Regression}
 		Sliced Inverse Regression is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression \cite{eubank1999nonparametric,hardle1990applied} that are too complex to interpret for our industrial context. \\
 		
-		The main idea is to compute the inverse regression $P(\boldsymbol{X}|\boldsymbol{Y})$ instead of $P(\boldsymbol{Y}|\boldsymbol{X})$ to perform a weighted principal component analysis, with which one identifies the effective dimension reducing directions\cite{li1991sliced}. But it needs strong hypothesis on the distribution of $\boldsymbol{X}$ (elliptic hypothesis), even if it is possible to neglect this hypothesis \cite{saracco1999regression} and see what happens. This method has been rejected because it was not sufficient in terms of ease of use (during and after estimation) for non-statisticians and the elliptic hypothesis is compromised on datasets with hundreds of covariates.
+		The main idea is to compute the inverse regression $P(\boldsymbol{X}|\boldsymbol{Y})$ instead of $P(\boldsymbol{Y}|\boldsymbol{X})$ to perform a weighted principal component analysis, with which we can identify the effective dimension reducing directions \cite{li1991sliced}. But it needs strong hypothesis on the distribution of $\boldsymbol{X}$ (elliptic hypothesis), even if it is possible to neglect this hypothesis \cite{saracco1999regression} and see what happens. This method has been rejected because it was not sufficient in terms of ease of use (during and after estimation) for non-statisticians due to the semi-parametric aspect and the elliptic hypothesis is compromised on datasets with hundreds of covariates. It is part of the dimension reduction package {\tt dr} on CRAN.
 			
 		
-	\subsection{General Linear Model (GLM)}
-		\cite{kiebel2003general,wickens2004general,nelder1972generalized,mccullagh1989generalized}
-		Generalise le modèle linéaire, assez classique dans les outils statistiques, mais pas assez immédiat en interprétation par rapport au modèle linéaire classique ou bien aux arbres de décision (transition vers la section suivante sur CART)
+			
+		
 \subsection{Classification and Regression Trees (CART)}
-		\cite{breiman1984classification}%\cite{quinlan1986induction} à vérifier
-		Bonne méthode pour l'industrie
-		Son problème principale est le cas linéaire... donc bon complément à notre modèle.
-		CorReg propose un outil de mise en oeuvre rapide et avec légendes ainsi qu'une fonctionnalité de sélection pour mieux analyser les problématiques de corrélations.	
-		Gros avantage: les données mixtes	
+		%\cite{quinlan1986induction} à vérifier
+
 	
-		Classification And Regression Trees (CART) are extremely simple to use and interpret, can work simultaneously with quantitative and qualitative covariates and are very fast. They consist in recursive partitioning of the sample according to binary rules on the covariate (only one at a time) to obtain a hierarchy defined by simple rules and containing pure leaves (same value). It is followed by a pruning method to obtain leaves that are quite homogeneous and described with simple rules.
+		Classification And Regression Trees (CART) \cite{breiman1984classification} are extremely simple to use and interpret, can work simultaneously with quantitative and qualitative covariates and are very fast to compute. They consist in recursive partitioning of the sample according to binary rules on the covariate (only one at a time) to obtain a hierarchy defined by simple rules and containing pure leaves (same value). It is followed by a pruning method to obtain leaves that are quite homogeneous and described with simple rules.
 		
 		\begin{figure}
 			\centering
@@ -542,17 +538,17 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
    	\subfigure[True linear regression and splits obtained by the tree.]{
 			\includegraphics[height=180px,width=240px]{figures/arbretrivialcoupure.png} 
 	}
-	\caption{Predictive model (red) and true model (black)}\label{arbretrivial}
+	\caption{Predictive model associated to the tree (red) and true model (black)}\label{arbretrivial}
 \end{figure}
 
 More details in the book from Hastie \cite{hastie2009elements}. The main issues are the lack of smoothness (prediction function with jumps) and especially instability because of the hierarchical partitioning. Modifying only one value in the dataset can impact a split and then change the range of possible splits in the resulting sub-samples so if a top split is modified the tree can be widely changed. Random Forests are a way to solve this problem and can be seen as a cross-validation method for regression trees.
 	
 	\subsection{Neural networks}	
-		Neural networks \cite{fausett1994fundamentals} is a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained can't be interpreted easily (and can't be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes far behind.
+		Neural networks \cite{fausett1994fundamentals} are a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained can't be interpreted easily (and can't be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes far behind.
 		
 	\subsection{Bayesian networks}
-		\cite{heckerman1995learning,jensen2007bayesian,friedman2000using}
-		Bayesian networks are quite good in terms of interpretation but suffer from great dimension and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). 
+		
+		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} are quite good in terms of interpretation but suffer from great dimension and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). 
 		
 		
 	
@@ -595,10 +591,9 @@ More details in the book from Hastie \cite{hastie2009elements}. The main issues 
 		\section{Gibbs}
 		\cite{casella1992explaining}
 		
-		\section{SEM}
+		\section{EM}
 			Sometimes the maximization of a likelihood is too complex to be done analytically. In such a case, we can use Expectation-Maximization algorithms.
 			
-			SEM stands for Stochastic Expectation Maximization and replaces the E step of the EM Algorithm by a stochastic step.
 			
 		\section{Industrial tools}
 			Linear regression, decision trees, bayesian networks, neural network but without confidence
