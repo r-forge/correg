@@ -241,7 +241,7 @@ Steelmaking is always evolving and we are now able to produce steel that is thin
 . 
 		 It's simplicity facilitates a wide spread usage in industry and other fields of application. It is also a powerful tool for interpretation allowing to know with precision the positive or negative impact of each covariate on the response variable. 
 	
-	More complex situations can be described by evolved forms of linear regression like the hierarchical linear model \cite{raudenbush2002hierarchical,woltman2012introduction}  or  multilevel regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel} that allows to consider effects of the covariates on nested sub-populations in the dataset. It is like using interactions but with a proper modeling that improves interpretation. It is not really a linear model because it is not linear in $\boldsymbol{X}$ but can be seen as a basis expansion.
+	More complex situations can be described by evolved forms of linear regression like the hierarchical linear model \cite{raudenbush2002hierarchical,woltman2012introduction}  or  multilevel regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel} that allows to consider effects of the covariates on nested sub-populations in the dataset. It is like using interactions but with a proper modeling that improves interpretation. It is not really a linear model because it is not linear in $\boldsymbol{X}$ but can be seen as a basis expansion using new covariates (the interactions) composed by the product of some of the original covariates.
 %			
 %		\subsection{Flexibility and future of regression}
 %			Richesse des types de régression et des méthodes d'estimation
@@ -549,9 +549,11 @@ More details in the book from Hastie \cite{hastie2009elements}. The main issues 
 		
 	\subsection{Bayesian networks}
 		
-		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} are quite good in terms of interpretation but suffer from great dimension and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). 
-		
-		
+		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} model the covariates and their conditional dependencies via a Directed Acyclic Graph (DAG). Such an orientation is very user-friendly because it is similar to the way we imagine causality. But it is only about conditional dependencies. Conditional dependencies allow to use information from independent covariates. The usual example is the case of wet grass in a garden. You don't remember if the sprinkler was on or off, you don't know if it has rain and these two facts are independent. Then you look at the grass in your neighbour's garden and it is not wet \dots \\
+		You will deduce that your sprinkler was on. Such conditionals dependencies are used in chapter \ref{chapmiss} when confronted to missing values. \\
+		Bayesian networks are quite good in terms of interpretation because of that graphical and oriented representation of conditional probabilities but suffer from great dimension (combinatory issue) and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). The choice of the way you discretise the dataset has a great impact on the results and nothing can help if you have no a priori on the result you want to obtain. Computation relies on a table that describes all the possible combinations for each covariate. Hence it is extremely combinatory if the graph has too much edges or is not sparse enough. Moreover, you need to define the graph before computing the bayesian network and without a priori it can be challenging and time consuming.\\
+The concept of representing dependencies with directed acyclic graph is good an we keep it in our model.		
+			
 	
 
 		\section{Choice of model}
@@ -566,18 +568,22 @@ More details in the book from Hastie \cite{hastie2009elements}. The main issues 
 				If $k=n$ we call this method the "leave-one-out" cross-validation.
 				Cross-validation allows to learn the model using all individual exactly once for validation.
 				Cross-validation is computed on each model we want to compare and just allows to avoid over-fitting when computing the comparison criterion.
-				It is often used with the Mean Squared Error (MSE), for example on the prediction :
+				It is often used with the Mean Squared Error (MSE), for example on the prediction:
 				\begin{equation}
 					MSE_{\hat{Y}}=\parallel \boldsymbol{Y}-\hat{\boldsymbol{Y}} \parallel^2_2
 				\end{equation}
-			\subsection{Information Criterion}
+			\subsection{ Bayesian Information Criterion}
 			Cross-validation depends on a criterion to be used as a method to choose a model. The mean square error is not the only criterion. Probabilist criteria can also be used when we have an hypothesis on the distribution of the model studied.
-			\cite{BIChuard}
-			
+			The Bayesian Information Criterion \cite{BIChuard} is a widely used criterion that relies on the likelihood of the dataset knowing the model the estimated parameters. The advantage of $BIC$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. The Akaike Information Criterion \ref{akaike1974new} known as $AIC$ or the Risk Inflation Criterion \cite{foster1994risk} can also be used.
+			In this work we decided to start with the $BIC$ that is approximated by:
+			\begin{equation}
+				BIC=-2\ln(\hat{L})+k\ln(n)
+			\end{equation}
+			where $\hat{L}$ is the estimated likelihood, $k$ the number of free parameters to estimate and $n$ the number of individuals in the dataset.
 			\subsection{Stepwise}
-			\cite{seber2012linear,miller2002subset}
 			
-				 \begin{figure}
+			Stepwise \cite{seber2012linear,miller2002subset} is an algorithm to choose a subset of covariates to use in the final regression model. It is a variable selection method using OLS for estimation. It is proposed in the R package {\tt stats} withe the function {\tt step}.
+\begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/stepwisecompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEstepwisecompl}
@@ -2464,7 +2470,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 
 \FloatBarrier
 
-\chapter{Missing values}
+\chapter{Missing values} \label{chapmiss}
 	\paragraph{Résumé:} Le modèle génératif complet sur les données nous permet d'obtenir la loi des valeurs manquantes. Mais nous pouvons aller encore plus loin car la modélisation explicite des corrélations nous permet d'obtenir les lois conditionnelles de chaque valeur manquante sachant les valeurs observées. Ce chapitre présente comment nous pouvons par un simple algorithme SEM estimer les paramètres des sous-régressions dans la chaîne MCMC de recherche de structure. Enfin, nous pouvons imputer les valeurs manquantes à l'aide d'un Gibbs qui procède par imputations multiples, fournissant au passage un indicateur de précision sur l'imputation proposée. 
 
 \section{Introduction}
@@ -2995,7 +3001,7 @@ We obtain on a validation sample of 1000 individuals a predictive MSE smaller in
 			The full generative approach could be used to manage missing values without imputation for many classical methods.
 			It can notably be used for clustering and not only in response variable prediction context.
 		\subsection{Interpretation improvements}
-			Ergonomy of the software could be improved to better fit industrial needs. This work is in progress and further work will be provided just after this thesis to reach this goal.
+			Ergonomy of the software could be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to reach this goal.
 \cleardoublepage
 
 \addcontentsline{toc}{chapter}{References}
