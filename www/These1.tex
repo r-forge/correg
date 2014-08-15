@@ -644,10 +644,11 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
 		
 		\subsection{Simultaneous Equation Model (SEM) and Path Analysis}		% ne pas oublier de mentionner les packages existants
+		
 			\cite{davidson1993estimation,pearl2000causality,pearl1998graphs,brito2006graphical}%mcdonald2002principles
 		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
-
-			\cite{SURzellner}
+		Seemingly Unrelated Regression \cite{SURzellner} is an estimation method for Multiples equations with correlated error terms. It does not take into account correlations between the covariates but starts to estimate the system jointly instead of independent estimations. This estimation relies on Feasible Generalized Least Squares (FGLS) that depends on the variance-covariance matrix of the error terms. But when the error terms are independent or the subset of covariates are the same it is equivalent to successive independent OLS. The R package {\tt systemfit} on CRAN computes SUR. 
+			
 		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}		% ne pas oublier de mentionner les packages existants
 
 			\cite{chiquetconf}			
