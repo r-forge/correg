@@ -644,15 +644,16 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
 		
 		\subsection{Simultaneous Equation Model (SEM) and Path Analysis}		% ne pas oublier de mentionner les packages existants
-		
-			\cite{davidson1993estimation,pearl2000causality,pearl1998graphs,brito2006graphical}%mcdonald2002principles
+		Applied statistics in for non statisticians are well developed in sociology where interpretation  stakes are fare beyond prediction. Sociologists use simple models like linear regression (often with $R^2<0.2$) and describe complex situations with systems of linear regressions. Such systems are called Structural Equation Model or Simultaneaous Equation Model, better known as SEM \cite{davidson1993estimation}. Several softwares from the open-source GRETL \cite{CottrellLucchetti2007gretlmanual} to proprietary STATA does implement the SEM. The systems allow to describe which covariate influence others with an orientation that users can interpret as causality \cite{pearl2000causality,pearl1998graphs}. \\
+		SEM are easy to understand for non-statisticians and can be resumed by Directed Acyclic Graphs (DAG) as the Bayesian networks do. But the problem is that the structure of regression between the covariates is defined by hand. SEM are used to confirm sociological theories, not to create new theories. \\
+		Moreover, estimation of recursive SEM, without instrumental variables is exactly a succession of independent OLS (confirmed with both GRETL and STATA) so the structure is only used for interpretation, not for estimation \cite{brito2006graphical}. Last but not least, there is no specific status for a response variable, each regression has the same status. We want to be able to model complex dependencies within the covariates and use this knowledge to estimate understand a specific response variable.
+			%mcdonald2002principles
 		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
 		Seemingly Unrelated Regression \cite{SURzellner} is an estimation method for Multiples equations with correlated error terms. It does not take into account correlations between the covariates but starts to estimate the system jointly instead of independent estimations. This estimation relies on Feasible Generalized Least Squares (FGLS) that depends on the variance-covariance matrix of the error terms. But when the error terms are independent or the subset of covariates are the same it is equivalent to successive independent OLS. The R package {\tt systemfit} on CRAN computes SUR. 
 			
 		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}		% ne pas oublier de mentionner les packages existants
 
-			\cite{chiquetconf}			
-			
+\textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}) takes into account correlations between endogenous covariates but without explicit expression of the correlations and thus a reduced interpretation potential. It is similar to SUR in that dependencies are modeled with the variance-covariance matrix of the error terms, but with sparsity constraints in this matrix.  It does not distinguish a response variable from internal structure in a dataset. Every equation in the system has a distinct response variable and the explicative covariates are the same for all equations.		
 		\subsection{Selvarclust: Linear regression within covariates for clustering}		% ne pas oublier de mentionner les packages existants
 
 			\cite{maugis2009variable}
@@ -704,7 +705,7 @@ The partition of $\boldsymbol{X}$ implies the uncrossing rule  $\boldsymbol{X}^{
 The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation} \cite{TIMM}.
 \\
 We note $\boldsymbol{\alpha}$ the $(p-p_r)\times p_r$ matrix of the  $\boldsymbol{\alpha}^j$.
-  	Here we suppose the $\boldsymbol{\varepsilon}_j$ independent but in other cases \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) takes into account correlations between residuals \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) and could be used to estimate $\boldsymbol{\alpha}$. 
+  	Here we suppose the $\boldsymbol{\varepsilon}_j$ independent but in other cases \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) takes into account correlations between residuals and could be used to estimate $\boldsymbol{\alpha}$. 
 		 
 	 
 \paragraph{In the running example:}$\boldsymbol{X}_r=\boldsymbol{x}_3$, $\boldsymbol{X}_f=\{\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5 \}$, $p_r=1$ and $\boldsymbol{\alpha}_3=(1,1,0,0)'$ and we have $S= \left( \{ \{1,2\}\},\{3\},(2),(1)\right)$
