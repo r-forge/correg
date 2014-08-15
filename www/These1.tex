@@ -21,7 +21,7 @@
 
 
 \chapter*{Résumé}
-	Les travaux effectués durant cette thèse ont pour but de pouvoir pallier le problème des corrélations au sein des bases de données, particulièrement fréquentes dans le cadre des données industrielles. Une modélisation explicite des corrélations par un système de sous-régressions entre covariables permet de pointer les sources des corrélations et d'isoler certaines variables redondantes. 
+	Les travaux effectués durant cette thèse ont pour but de pouvoir pallier le problème des corrélations au sein des bases de données, particulièrement fréquentes dans le cadre industriel. Une modélisation explicite des corrélations par un système de sous-régressions entre covariables permet de pointer les sources des corrélations et d'isoler certaines variables redondantes. 
 	\\
 	
 	Il en découle une pré-sélection de variables nettement moins corrélées sans perte significative d'information et avec un fort potentiel explicatif (la pré-selection elle-même est expliquée par la structure de sous-régression qui est simple à comprendre car uniquement constituée de modèles linéaires). \\
@@ -573,7 +573,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 					MSE_{\hat{Y}}=\parallel \boldsymbol{Y}-\hat{\boldsymbol{Y}} \parallel^2_2
 				\end{equation}
 			\subsection{ Bayesian Information Criterion}
-			Cross-validation depends on a criterion to be used as a method to choose a model. The mean square error is not the only criterion. Probabilist criteria can also be used when we have an hypothesis on the distribution of the model studied.
+			Cross-validation depends on a criterion to be used as a method to choose a model. The mean square error is not the only criterion. Probabilist criteria can also be used when we have an hypothesis on the distribution of the model studied. Such criteria can also be used without cross-validation.
 			The Bayesian Information Criterion \cite{BIChuard} is a widely used criterion that relies on the likelihood of the dataset knowing the model the estimated parameters. The advantage of $BIC$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. The Akaike Information Criterion \ref{akaike1974new} known as $AIC$ or the Risk Inflation Criterion \cite{foster1994risk} can also be used.
 			In this work we decided to start with the $BIC$ that is approximated by:
 			\begin{equation}
@@ -582,13 +582,20 @@ The concept of representing dependencies with directed acyclic graph is good an 
 			where $\hat{L}$ is the estimated likelihood, $k$ the number of free parameters to estimate and $n$ the number of individuals in the dataset.
 			\subsection{Stepwise}
 			
-			Stepwise \cite{seber2012linear,miller2002subset} is an algorithm to choose a subset of covariates to use in the final regression model. It is a variable selection method using OLS for estimation. It is proposed in the R package {\tt stats} with the function {\tt step}.
+			Stepwise \cite{seber2012linear} is an algorithm to choose a subset of covariates to use in the final regression model. It is a variable selection method using OLS for estimation. It is proposed in the R package {\tt stats} with the function {\tt step}. The main idea is to start with first model (than can be either void or using the whole dataset or using any subset of covariates) and then to add and remove covariates step by step to improve the chosen criterion. \\
+			\begin{itemize}
+				\item 	Starting with a void model and having only adding steps is called Forward Selection. Covariates are added by choosing first the one that improves the most the criterion and the algorithm stops when all the covariates are in or when remaining covariates does not improve the model.
+				\item Backward Elimination is the same as Forward selection but starting with the full model and deleting at each step the covariates that improves the most the criterion once deleted.
+				\item Bidirectional elimination is more flexible and allows to start from any model. Each proposes to add a covariate and then to delete another so it is not a hierarchical construction any more because succesives models are not necessarily nested into each other.
+			\end{itemize}
+		A critical value can be defined to stop the algorithm when improvement become too small, to try to avoid over-fitting. \\
+		Stepwise regression is subject to overfitting and the algorithm is in trouble when confronted to correlated covariates \ref{miller2002subset} giving unstable results, especially for nested strategies, just like regression trees that are unstable because of their discrete nested nature.
 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/stepwisecompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEstepwisecompl}
 	\end{figure}
-	
+	Figure \ref{MQEstepwisecompl} illustrate the consequences of correlations in the dataset.
 	
 %			\subsection{bootstrap}
 %			\cite{efron1979bootstrap,efron1994introduction}
@@ -596,10 +603,25 @@ The concept of representing dependencies with directed acyclic graph is good an 
 		\section{MCMC}
 		\cite{gilks1996markov,chib1995understanding,roberts2001optimal}
 		\section{Gibbs}
-		\cite{casella1992explaining}
+		Gibbs sampling \cite{casella1992explaining}
 		
 		\section{EM}
-			Sometimes the maximization of a likelihood is too complex to be done analytically. In such a case, we can use Expectation-Maximization algorithms.
+			Sometimes the maximization of a likelihood is too complex to be done analytically. In such a case, we can use Expectation-Maximization algorithms \cite{mclachlan2007algorithm} that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. This kind of algorithm allows to manage missing values \cite{dempster1977maximum}. \\
+EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the latent variables $Z$ with two steps at each iteration $(q)$:
+\begin{itemize}
+	\item The Expectation step in which the expected value of the loglikelihood is computed for the current estimate of the parameters $\boldsymbol{\theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\theta}^{(q)}$.
+	\begin{equation}
+		Q(\boldsymbol{\theta}|\boldsymbol{\theta}^{(q)})=E_{Z|\boldsymbol{X},\boldsymbol{\theta}^{(q)}} [\log L(\boldsymbol{\theta};\boldsymbol{X},Z)]
+	\end{equation}
+	\item The Maximization step that maximizes:
+	\begin{equation}
+		\boldsymbol{\theta}^{(q+1)}=\arg \max_{\boldsymbol{\theta}} Q(\boldsymbol{\theta}|\boldsymbol{\theta}^{(q)})
+	\end{equation}
+\end{itemize}
+	So it alternates between estimation of $Z$ and $\boldsymbol{\theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
+	It requires to choose initial values for $\boldsymbol{\theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and run of the algorithm.
+			
+			Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic,celeux1986algorithme} or the Classification EM \cite{celeux1992classification}.
 			
 			
 		\section{Industrial tools}
@@ -630,7 +652,6 @@ The concept of representing dependencies with directed acyclic graph is good an 
 			\end{itemize}
 			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates. We will see that, as a pretreatment it can be used then for a wide range of statistical tools and not only linear regression.
 			We provide a specific MCMC algorithm to find the structure between the covariates and propose two distinct models to use the structure for prediction: a marginal modal and a plug-in model.	
-			
 			
 \part{Pretreatment for correlations}
 \chapter{Decorrelating covariates by a generative model}
