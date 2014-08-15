@@ -603,7 +603,8 @@ The concept of representing dependencies with directed acyclic graph is good an 
 		\section{MCMC}
 		\cite{gilks1996markov,chib1995understanding,roberts2001optimal}
 		\section{Gibbs}
-		Gibbs sampling \cite{casella1992explaining}
+		Gibbs sampling \cite{casella1992explaining} is a special cas of Markov Chain Monte Carlo algorithm that allows to sample from a complex $p-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $P(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_p^{(q)})$ using the most recent drawn values each time. \\
+		It will be used in this work for imputation of missing values in chapter \ref{chapmiss}.
 		
 		\section{EM}
 			Sometimes the maximization of a likelihood is too complex to be done analytically. In such a case, we can use Expectation-Maximization algorithms \cite{mclachlan2007algorithm} that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. This kind of algorithm allows to manage missing values \cite{dempster1977maximum}. \\
@@ -625,10 +626,20 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 			
 			
 		\section{Industrial tools}
-			Linear regression, decision trees, bayesian networks, neural network but without confidence
-			Our engineers are frequently contacted by software resellers. The concerned software are sold as non-statistical methods, based on rules (derivatives of decision trees but without underlying theory). Statistics are often described as too theoretical, without ergonomy and not compatible with the real life. Our goal was to demonstrate that statistics can provide efficient methods for real datasets, easy to use and understand.	This was a battle against correlations but also against scepticism.
-			metre image du flou vert et rouge avec encadré
-			
+			%Linear regression, decision trees, bayesian networks, neural network but without confidence
+			Our engineers are frequently contacted by software resellers. The concerned software are sold as non-statistical methods, based on rules (derivatives of decision trees but without underlying theory). Statistics are often described as too theoretical, without ergonomy and not compatible with the real life. Our goal was to demonstrate that statistics can provide efficient methods for real datasets, easy to use and understand.	This was a battle against correlations but also against scepticism. \\
+			Figure \ref{Regle2D} shows the kind of results proposed by rule-based softwares. It is just a partition of the sample by binary rules (like regression trees). Some blur is added to the plot to help interpretation. The algorithm used here is somewhere between exhaustive research and decision trees. It is extremely slow (research with $p>10$ would take years) and is less efficient than regression trees. Morever, it requires to discretize the response variable to obtain "good" and "bad" values. The green rectangle is very far from the true green zone even for this toy example provided by the reseller.\\
+			But some engineers are seduced by this kind of tool. Ergonomy of use and quality of interpretation are stakes for us to make engineers use efficient methods instead of this kind of stuff.
+	
+		\begin{figure}[h!]
+	\subfigure[Without blur]{
+			\includegraphics[height=180px,width=245px]{figures/Regle2Dbis.png} 
+	} \quad
+   	\subfigure[With some blur proportional to the density of points]{
+			\includegraphics[height=180px,width=240px]{figures/Regle2D.png} 
+	}
+	\caption{Result on a toy example provided by a non-statistical software, similar to decision trees but less efficient and extremely slower. Colors are part of the learning set.}\label{Regle2D}
+\end{figure}	
 			
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
 		
