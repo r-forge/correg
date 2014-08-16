@@ -672,14 +672,14 @@ Selvarclust is one step beyond SEM with an algorithm to find the structure.
 
 			But:
 			\begin{itemize}
-				\item It is about clustering and not regression (not the same application field) so we don't have here any response variable neither method to use this structure for estimating another regression. 
+				\item It is about clustering and not regression (not the same application field) so we don't have here any response variable neither method to use this structure for estimation of another regression. 
 				\item It uses stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset} in such a context.
 			\end{itemize}
 			
 			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates. We will see that, as a pretreatment it can be used then for a wide range of statistical tools and not only linear regression.\\
 			We provide a specific MCMC algorithm to find the structure between the covariates and propose two distinct models to use the structure for prediction: a marginal model and a plug-in model.	\\
 			
-	Our first intention was to make something different from SelvarClust but our model has evolved during this thesis and finally became this modification of SelvarClust.		
+	Our first intention was to make something different from SelvarClust but our model has evolved during this thesis and finally became more comparable to SelvarClust than expected.		
 			
 \part{Pretreatment for correlations}
 \chapter{Decorrelating covariates by a generative model}
