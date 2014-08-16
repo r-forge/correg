@@ -600,10 +600,10 @@ The concept of representing dependencies with directed acyclic graph is good an 
 %			\subsection{bootstrap}
 %			\cite{efron1979bootstrap,efron1994introduction}
 		\FloatBarrier
-		\section{MCMC}
-		\cite{gilks1996markov,chib1995understanding,roberts2001optimal}
+%		\section{MCMC}
+		
 		\section{Gibbs}
-		Gibbs sampling \cite{casella1992explaining} is a special cas of Markov Chain Monte Carlo algorithm that allows to sample from a complex $p-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $P(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_p^{(q)})$ using the most recent drawn values each time. \\
+		Gibbs sampling \cite{casella1992explaining} is a special cas of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $p-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $P(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_p^{(q)})$ using the most recent drawn values each time. \\
 		It will be used in this work for imputation of missing values in chapter \ref{chapmiss}.
 		
 		\section{EM}
@@ -656,15 +656,28 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 \textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}) takes into account correlations between endogenous covariates but without explicit expression of the correlations and thus a reduced interpretation potential. It is similar to SUR in that dependencies are modeled with the variance-covariance matrix of the error terms, but with sparsity constraints in this matrix.  It does not distinguish a response variable from internal structure in a dataset. Every equation in the system has a distinct response variable and the explicative covariates are the same for all equations.		
 		\subsection{Selvarclust: Linear regression within covariates for clustering}		% ne pas oublier de mentionner les packages existants
 
-			\cite{maugis2009variable}
-			The idea is to allow covariates to have different roles $(S,R,U,W)$ in a clustering context. .
+			Selvarclust is a software written in C++ modeling dependencies within a dataset			 \cite{maugis2009variable} in a clustering context.
+			The idea is to allow covariates to have different roles $(S,R,U,W)$ for the clustering:
+			\begin{itemize}
+				\item $S$ stands for the subset of the relevant covariates for clustering
+				\item $U$ and $W$ form a partition of the complementary subset of $S$, with $U$ the subset of irrelevant covariates depending linearly from relevant covariates and $W$ the subset of totally irrelevant and independent covariates
+				\item $R$ is the subset of $S$ that contain the covariates explaining those in $U$, with $R\cap U=\emptyset$.
+\end{itemize}			 
+So we have a system of linear regression:
+\begin{equation}
+	\boldsymbol{X}^{R}=\boldsymbol{X}^U \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}
+\end{equation}
+where $\boldsymbol{\alpha}$ is the $\operatorname{Card}(U)\times \operatorname{Card}(R)$ matrix of the regression coefficients and $\boldsymbol{\varepsilon}$ the matrix of the error terms.\\
+Selvarclust is one step beyond SEM with an algorithm to find the structure.		
+
 			But:
 			\begin{itemize}
-				\item It is about clustering and not regression (not the same application field)
-				\item Using stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset} in such a context.
+				\item It is about clustering and not regression (not the same application field) so we don't have here any response variable neither method to use this structure for estimating another regression. 
+				\item It uses stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset} in such a context.
 			\end{itemize}
+			
 			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates. We will see that, as a pretreatment it can be used then for a wide range of statistical tools and not only linear regression.
-			We provide a specific MCMC algorithm to find the structure between the covariates and propose two distinct models to use the structure for prediction: a marginal modal and a plug-in model.	
+			We provide a specific MCMC algorithm to find the structure between the covariates and propose two distinct models to use the structure for prediction: a marginal model and a plug-in model.	
 			
 \part{Pretreatment for correlations}
 \chapter{Decorrelating covariates by a generative model}
@@ -714,7 +727,7 @@ We note $\boldsymbol{\alpha}$ the $(p-p_r)\times p_r$ matrix of the  $\boldsymbo
 \section{Graph theory}\label{sectiongraph}
 	We can model $S$ by a Directed Acyclic Graph (DAG) whose vertices are the $p$ covariates and arcs are the link between them described by the adjacency matrix $\boldsymbol{G}$ \cite{bondy1976graph}. This adjacency matrix is a binary $p\times p$ matrix with $\boldsymbol{G}_{i,j}=1$ if and only if $i \in I_f^j$ that is $\boldsymbol{X}^j$ is explained by $\boldsymbol{X}^i$ and can also be seen as $\boldsymbol{\alpha}_i^j\neq 0$.
 	
-	Graphical representation of $S$ helps to understand it and can be compared to the bayesian network representation. It helps to interprete the structure has also been used to construct the algorithm to find $S$ (chapter \ref{chapterMCMC}).
+	Graphical representation of $S$ helps to understand it and can be compared to the bayesian network representation. It helps to interpret the structure has also been used to construct the algorithm to find $S$ (chapter \ref{chapterMCMC}).
 
 
 	
