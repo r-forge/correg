@@ -580,7 +580,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 				\end{equation}
 			\subsection{ Bayesian Information Criterion}
 			Cross-validation depends on a criterion to be used as a method to choose a model. The mean square error is not the only criterion. Probabilist criteria can also be used when we have an hypothesis on the distribution of the model studied. Such criteria can also be used without cross-validation.
-			The Bayesian Information Criterion \cite{BIChuard} is a widely used criterion that relies on the likelihood of the dataset knowing the model the estimated parameters. The advantage of $BIC$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. The Akaike Information Criterion \ref{akaike1974new} known as $AIC$ or the Risk Inflation Criterion \cite{foster1994risk} can also be used.
+			The Bayesian Information Criterion \cite{BIChuard} is a widely used criterion that relies on the likelihood of the dataset knowing the model the estimated parameters. The advantage of $BIC$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. The Akaike Information Criterion \cite{akaike1974new} known as $AIC$ or the Risk Inflation Criterion \cite{foster1994risk} can also be used.
 			In this work we decided to start with the $BIC$ that is approximated by:
 			\begin{equation}
 				BIC=-2\ln(\hat{L})+k\ln(n)
@@ -595,7 +595,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 				\item Bidirectional elimination is more flexible and allows to start from any model. Each proposes to add a covariate and then to delete another so it is not a hierarchical construction any more because succesives models are not necessarily nested into each other.
 			\end{itemize}
 		A critical value can be defined to stop the algorithm when improvement become too small, to try to avoid over-fitting. \\
-		Stepwise regression is subject to overfitting and the algorithm is in trouble when confronted to correlated covariates \ref{miller2002subset} giving unstable results, especially for nested strategies, just like regression trees that are unstable because of their discrete nested nature.
+		Stepwise regression is subject to over-fitting and the algorithm is in trouble when confronted to correlated covariates \cite{miller2002subset} giving unstable results, especially for nested strategies, just like regression trees that are unstable because of their discrete nested nature.
 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/stepwisecompl.png}
@@ -609,7 +609,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 %		\section{MCMC}
 		
 		\section{Gibbs}
-		Gibbs sampling \cite{casella1992explaining} is a special cas of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $p-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $P(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_p^{(q)})$ using the most recent drawn values each time. \\
+		Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $p-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $P(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_p^{(q)})$ using the most recent drawn values each time. \\
 		It will be used in this work for imputation of missing values in chapter \ref{chapmiss}.
 		
 		\section{EM}
