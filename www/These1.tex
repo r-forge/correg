@@ -101,7 +101,7 @@
 	\begin{equation}
 		\boldsymbol{X}^{I_r}=\boldsymbol{X}^{I_f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
 	\end{equation}
-	Avec $\boldsymbol{X}^{I_r}$ sous-matrice de $p_r$ variables redondantes dans $\boldsymbol{X}$. Nous supposons alors l'indépendance entre les variables non redondantes qui définissent $\boldsymbol{X}^{I_f}$. La matrice $\boldsymbol{\alpha}$ de taille $(p-p_r)\times (p_r)$ a pour colonnes les vecteurs $\boldsymbol{\alpha}_j$ qui contiennent les coefficients de régression associées à la $j^{ieme}$ colonne de $\boldsymbol{X}$.
+	Avec $\boldsymbol{X}^{I_r}$ sous-matrice de $p_r$ variables redondantes dans $\boldsymbol{X}$. Nous supposons alors l'indépendance entre les variables non redondantes qui définissent $\boldsymbol{X}^{I_f}$, les variables libres ("free" en anglais). La matrice $\boldsymbol{\alpha}$ de taille $(p-p_r)\times (p_r)$ a pour colonnes les vecteurs $\boldsymbol{\alpha}_j$ qui contiennent les coefficients de régression associées à la $j^{ieme}$ colonne de $\boldsymbol{X}$.
 	
 	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de 5 variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ et une variable redondante $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ avec $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ ont été testées avec $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_3$ diminue. \\
 	
@@ -666,9 +666,9 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 \end{itemize}			 
 So we have a system of linear regression:
 \begin{equation}
-	\boldsymbol{X}^{R}=\boldsymbol{X}^U \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}
+	\boldsymbol{X}^{U}=\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}
 \end{equation}
-where $\boldsymbol{\alpha}$ is the $\operatorname{Card}(U)\times \operatorname{Card}(R)$ matrix of the regression coefficients and $\boldsymbol{\varepsilon}$ the matrix of the error terms.\\
+where $\boldsymbol{\alpha}$ is the $\operatorname{Card}(R)\times \operatorname{Card}(U)$ matrix of the regression coefficients and $\boldsymbol{\varepsilon}$ the matrix of the error terms.\\
 Selvarclust is one step beyond SEM with an algorithm to find the structure.		
 
 			But:
