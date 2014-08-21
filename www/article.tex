@@ -109,7 +109,7 @@ with $\boldsymbol{X}=(\boldsymbol{X}^1,\ldots,\boldsymbol{X}^d)$ the $n\times d$
 	\begin{equation}
 		\operatorname{Var}(\hat{\boldsymbol{\beta}})=\sigma_Y^2\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}. \label{eq:varOLS}
 	\end{equation}
-	This estimate requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which can lead to great variance estimates, so unstable estimates, if it is ill-conditioned. Ill-conditioning increases when the number $d$ of covariates grows and/or when correlations within the covariates grows (in absolute value)  \cite{hoerl1970ridge}. At the limit, when $d>n$ and/or when some correlations are maximum, $\boldsymbol{X}'\boldsymbol{X}$ becomes singular. Note that $d$ and correlations are also two non unrelated factors since, in real applications, increasing $d$ makes the risk to obtain correlated covariates higher.
+	This estimate requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which can lead to great variance estimates, so unstable estimates, if it is ill-conditioned. Ill-conditioning increases when the number $d$ of covariates grows and/or when correlations within the covariates grow (in absolute value)  \cite{hoerl1970ridge}. At the limit, when $d>n$ and/or when some correlations are maximum, $\boldsymbol{X}'\boldsymbol{X}$ becomes singular. Note that $d$ and correlations are also two non unrelated factors since, in real applications, increasing $d$ makes the risk to obtain correlated covariates higher.
 	
 \vspace{3mm}
 
@@ -723,7 +723,7 @@ Table~\ref{Res_prod} displays predictive results associated to different estimat
 
 Future works we plan is to allow {\sc CorReg} to manage missing values. They are very common in industry for instance. Indeed, the structure can be used to estimate missing values in $\boldsymbol{X}$ thanks to the full generative model assumed in {\sc CorReg}. Another perspective would be to take back lost information (the residual of each sub-regression) to improve predictive efficiency when needed. It would only consists in a second step of linear regression between the residuals and would thus still be able to use any selection method.
 
-\paragraph{Package} \textsc{CorReg} is accessible on {\sc cran}: http://cran.r-project.org/web/packages/CorReg/index.html
+\paragraph{Package} {\tt CorReg} is accessible on {\sc cran}: http://cran.r-project.org/web/packages/CorReg/index.html
 
 \paragraph{Acknowledgements}
 We want to thank ArcelorMittal Atlantique \& Lorraine that has granted this work, given the chance to use \textsc{CorReg} on real datasets and authorized the package to be open-sourced licensed (\textsc{CeCILL}), especially Dunkerque's site where most of the work has been done.
