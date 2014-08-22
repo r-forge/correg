@@ -303,7 +303,7 @@ We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\
 \begin{equation}
 \mathcal{V}_{r+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})^{1,\ldots,d_r}=(\boldsymbol{J}_r,\boldsymbol{J}_p), \tilde{J}_r^{d_r+1}\in J_f, \tilde{J}_p^{d_r+1}=\{j\}, j\in J_f \right\}.
 \end{equation}	
-		\item {\bf Removing a sub-regression}: a sub-regression with only one predictor covariate is removed from $\boldsymbol{S}$
+		\item {\bf Removing a sub-regression}: a sub-regression  is removed from $\boldsymbol{S}$
 \begin{equation}
 \mathcal{V}_{r-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})=(\boldsymbol{J}_r,\boldsymbol{J}_p)^{\{1,\ldots,d_r\}\backslash j}, j\in\{1,\ldots,d_r\} \right\}.
 \end{equation}	
@@ -396,7 +396,7 @@ Figure~\ref{toutOLS} (a) shows that {\sc CorReg} improves significantly the pred
 	\caption{Comparison of {\sc ols} (dotted) and {\sc CorReg} + {\sc ols} (plain) when $\boldsymbol{Y}$ depends on all covariates ${\boldsymbol{X}}$. Thickness represents $n=30,50,100,400$.  Inter-quartile intervals are also displayed.}\label{toutOLS}
 \end{figure}
 
-\paragraph{Comparisons 2 to 4} We compare now three variable selections methods: {\sc lasso} with {\sc CorReg}+{\sc lasso}, elasticnet with {\sc CorReg}+electicnet and also stepwise with {\sc CorReg}+stepwise. Figures \ref{toutlar}, \ref{toutelast} and \ref{toutstepwise} respectively display the results on the same manner as the previous {\sc ols} with {\sc CorReg}+{\sc ols}. We see that {\sc CorReg}, used as a pre-treatment, provides similar prediction accuracy as the three variable selection methods (this prediction is often better for small datasets) but with much more parsimonious regression models on $\boldsymbol{Y}$. This is remarkable because the true model depends on all covariates, so it highlight that other variable selection methods may be really penalized by the correlations between the covariates.
+\paragraph{Comparisons 2 to 4} We compare now three variable selections methods: {\sc lasso} with {\sc CorReg}+{\sc lasso}, elasticnet with {\sc CorReg}+electicnet and also stepwise with {\sc CorReg}+stepwise. Figures \ref{toutlar}, \ref{toutelast} and \ref{toutstepwise} respectively display the results on the same manner as the previous {\sc ols} with {\sc CorReg}+{\sc ols}. We see that {\sc CorReg}, used as a pre-treatment, provides similar prediction accuracy as the three variable selection methods (this prediction is often better for small datasets) but with much more parsimonious regression models on $\boldsymbol{Y}$. This is remarkable because the true model depends on all covariates, so it highlights that other variable selection methods may be really penalized by the correlations between the covariates.
 
 \begin{figure}[h!]
 	\subfigure[{\sc mse} on a validation subset]{
