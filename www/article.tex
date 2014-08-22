@@ -309,11 +309,11 @@ We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\
 \end{equation}	
 	\item {\bf Adding a predictor covariate}: a predictor covariate is added to one sub-regression of $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{p+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J}_p^{j}=\tilde{J}_p^{j} \cup \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \right\}.
+\mathcal{V}_{p+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J}_p^{j}=J_p^{j} \cup \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \setminus J_p^j\right\}.
 \end{equation}
 	\item {\bf Removing a predictor covariate}: a predictor covariate is removed from one sub-regression of $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{p-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J}_p^{j}=\tilde{J}_p^{j} \backslash \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \right\}.
+\mathcal{V}_{p-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J}_p^{j}=J_p^{j} \backslash \{h\}, j\in \{1,\ldots,d_r\}, h\in  J_p^j \right\}.
 \end{equation}	
 	\end{itemize}
 
