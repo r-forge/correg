@@ -262,7 +262,7 @@ However, $\mathcal{S}$ being combinatorial, $|\mathcal{S}|$ is huge. It has two 
  & = & \mathbb{P}_U(\boldsymbol{J}_p|\boldsymbol{d}_p,\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{d}_p|\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{J}_r|d_r)\times \mathbb{P}_U(d_r) \\
  & = & \left[\prod_{j=1}^{d_r} \left(\begin{array}{c} d-d_r \\ d_p^j \end{array}\right) \right]^{-1} \times \left[d-d_r\right]^{-d_r} \times \left[\left(\begin{array}{c} d \\ d_r \end{array} \right)\right]^{-1} \times [d+1]^{-1},
 \end{eqnarray}
-where $\left(\begin{array}{c} a \\ b \end{array}\right)$ designs combination of $a$ things taken $b$ at a time without repetition and where all probabilities $\mathbb{P}_U(\cdot)$ denote uniform distribution on the related space at hand. $\mathbb{P}_H(\boldsymbol{S})$ gives decreasing probabilities to more complex models, provided that the following new hypothesis is verified:
+where $\left(\begin{array}{c} a \\ b \end{array}\right)$ designs the number of b-element subsets of an a-element set and where all probabilities $\mathbb{P}_U(\cdot)$ denote uniform distribution on the related space at hand. $\mathbb{P}_H(\boldsymbol{S})$ gives decreasing probabilities to more complex models, provided that the following new hypothesis is verified:
 
 \begin{hyp}\label{H5}
 We set $d_r<d/2$ and also $d_p^j<d/2$ ($j=1,\ldots,d_r$).
@@ -291,7 +291,7 @@ In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc
 \subsection{Exploring the structure space with an {\sc mcmc} algorithm}
 We present now an {\sc mcmc} algorithm devoting to minimize the criterion $\mbox{{\sc bic}}_*$ to find the optimal estimate of the structure $\boldsymbol{S}$. This Markov chain is regular and ergodic with a finite state space, thus it has a stationary distribution $\pi\propto\exp(-\mbox{{\sc bic}}_*)$ on the space $\mathcal{S}$ of $\boldsymbol{S}$ \cite{grinstead1997introduction}. Consequently, the chain is expected to be more concentrated around the mode of $\pi$, where the optimal value of $\boldsymbol{S}$ stands.
 
-This algorithm alternates two steps: the definition of a neighbourhood $\mathcal{V}(\boldsymbol{S})$ around the current structure $\boldsymbol{S}$ distribution and then the generation of a new structure $\boldsymbol{S}^+$ belonging to this neighbourhood according to its posterior probability.
+This algorithm alternates two steps: the definition of a neighbourhood $\mathcal{V}(\boldsymbol{S})$ around the current structure $\boldsymbol{S}$ and then the generation of a new structure $\boldsymbol{S}^+$ belonging to this neighbourhood according to its posterior probability.
 
 Note that the $\mathcal{S}$ has to be a {\it regular} space. It means that it has to verify Hypothesis~1, 2 and~5. In addition, we note below $\boldsymbol{S}$ and $\boldsymbol{S}^+$ the structures at the current and the next iteration of the algorithm, respectively.
 
@@ -301,7 +301,7 @@ We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\
 	\begin{itemize}
 	\item {\bf Adding a sub-regression}: a new sub-regression with only one predictor covariate is added to $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{r+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})^{1,\ldots,d_r}=(\boldsymbol{J}_r,\boldsymbol{J}_p), \tilde{J}_r^{d_r+1}\in J_f, \tilde{\boldsymbol{J}}_p^{d_r+1}=\{j\}, j\in J_f \right\}.
+\mathcal{V}_{r+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})^{1,\ldots,d_r}=(\boldsymbol{J}_r,\boldsymbol{J}_p), \tilde{J}_r^{d_r+1}\in J_f, \tilde{J}_p^{d_r+1}=\{j\}, j\in J_f \right\}.
 \end{equation}	
 		\item {\bf Removing a sub-regression}: a sub-regression with only one predictor covariate is removed from $\boldsymbol{S}$
 \begin{equation}
@@ -309,11 +309,11 @@ We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\
 \end{equation}	
 	\item {\bf Adding a predictor covariate}: a predictor covariate is added to one sub-regression of $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{p+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{\boldsymbol{J}}_p^{j}=\tilde{\boldsymbol{J}}_p^{j} \cup \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \right\}.
+\mathcal{V}_{p+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J}_p^{j}=\tilde{J}_p^{j} \cup \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \right\}.
 \end{equation}
 	\item {\bf Removing a predictor covariate}: a predictor covariate is removed from one sub-regression of $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{p-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{\boldsymbol{J}}_p^{j}=\tilde{\boldsymbol{J}}_p^{j} \backslash \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \right\}.
+\mathcal{V}_{p-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J}_p^{j}=\tilde{J}_p^{j} \backslash \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \right\}.
 \end{equation}	
 	\end{itemize}
 
@@ -321,7 +321,7 @@ We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\
 	
 We then generate $\boldsymbol{S}^+$ from the following transition probability defined in  $\mathcal{V}(\boldsymbol{S})$
 	\begin{equation}
-	\boldsymbol{S}^+ \sim \frac{\exp{(-\mbox{{\sc bic}}_*(\cdot))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}}.
+	\mathbb{P}(\boldsymbol{S}^+|\mathcal{V}(\boldsymbol{S})) \sim \frac{\exp{(-\mbox{{\sc bic}}_*(\cdot))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}}.
 	\end{equation}
 	
  \subsubsection{Detailed use of the algorithm}
