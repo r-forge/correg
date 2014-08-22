@@ -253,14 +253,14 @@ Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {
 -2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\hat{\boldsymbol{\theta}}) + |{\boldsymbol{\theta}}| \ln(n) = \mbox{{\sc bic}}_f(\boldsymbol{S}).
 \end{equation}
 
-\paragraph{Defining $\mathbb{P}(\boldsymbol{S})$} The most standard choice consists of putting a uniform distribution on the model space of $\boldsymbol{S}$, this choice being noted $\mathbb{P}_U(\boldsymbol{S}) = |\boldsymbol{S}|^{-1}$, with $|\boldsymbol{S}|$ the space dimension of $\boldsymbol{S}$.
+\paragraph{Defining $\mathbb{P}(\boldsymbol{S})$} The most standard choice consists of putting a uniform distribution on the model space $\mathcal{S}$, this choice being noted $\mathbb{P}_U(\boldsymbol{S}) = |\mathcal{S}|^{-1}$, with $|\mathcal{S}|$ the space dimension of $\mathcal{S}$.
 
-However, $\boldsymbol{S}$ being combinatorial, $|\boldsymbol{S}|$ is huge. It has two cumulated consequences: First, the {\it exact} probability $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})$ may be of the same order of magnitude for a large number of candidates  $\boldsymbol{S}$, including the best one; Second, the {\sc bic} {\it approximations} of this quantity may introduce additional confusion to wisely distinguish between model probabilities. In order to limit this problem, we propose to introduce some information in $\mathbb{P}(\boldsymbol{S})$ promoting simple models through the following {\it hierarchical} uniform distribution denoted by $\mathbb{P}_H(\boldsymbol{S})$:
+However, $\mathcal{S}$ being combinatorial, $|\mathcal{S}|$ is huge. It has two cumulated consequences: First, the {\it exact} probability $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})$ may be of the same order of magnitude for a large number of candidates  $\boldsymbol{S}$, including the best one; Second, the {\sc bic} {\it approximations} of this quantity may introduce additional confusion to wisely distinguish between model probabilities. In order to limit this problem, we propose to introduce some information in $\mathbb{P}(\boldsymbol{S})$ promoting simple models through the following {\it hierarchical} uniform distribution denoted by $\mathbb{P}_H(\boldsymbol{S})$:
 \begin{eqnarray}
 \mathbb{P}_H(\boldsymbol{S}) & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p) \\
  & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p,d_r,\boldsymbol{d}_p) \\
  & = & \mathbb{P}_U(\boldsymbol{J}_p|\boldsymbol{d}_p,\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{d}_p|\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{J}_r|d_r)\times \mathbb{P}_U(d_r) \\
- & = & \left[\prod_{j\in \boldsymbol{J}_r} \left(\begin{array}{c} d-d_r \\ d_p^j \end{array}\right) \right]^{-1} \times \left[d-d_r\right]^{-d_r} \times \left[\left(\begin{array}{c} d \\ d_r \end{array} \right)\right]^{-1} \times [d+1]^{-1},
+ & = & \left[\prod_{j=1}^{d_r} \left(\begin{array}{c} d-d_r \\ d_p^j \end{array}\right) \right]^{-1} \times \left[d-d_r\right]^{-d_r} \times \left[\left(\begin{array}{c} d \\ d_r \end{array} \right)\right]^{-1} \times [d+1]^{-1},
 \end{eqnarray}
 where $\left(\begin{array}{c} a \\ b \end{array}\right)$ designs combination of $a$ things taken $b$ at a time without repetition and where all probabilities $\mathbb{P}_U(\cdot)$ denote uniform distribution on the related space at hand. $\mathbb{P}_H(\boldsymbol{S})$ gives decreasing probabilities to more complex models, provided that the following new hypothesis is verified:
 
