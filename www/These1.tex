@@ -83,7 +83,7 @@
 \tableofcontents
 \chapter{Résumé substantiel en français}
 	\section{Position du problème}
-	La régression linéaire est l'outil de modélisation le plus classique et se résume à une équation bien connue :
+	La régression linéaire est l'outil de modélisation le plus classique et se résume à une équation bien connue\footnote{En général la constante est ajoutée comme un des régresseurs avec par exemple $\boldsymbol{X}^1=(1,\ldots,1)'$. Le coefficient correspondant dans $\boldsymbol{\beta}$ est alors la constante de régression $\beta_1$.} :
 	\begin{equation}
 		\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y
 	\end{equation}
@@ -101,19 +101,22 @@
 	
 	C'est cette situation problèmatique que nous nous proposons d'améliorer.
 	\section{Modélisation explicite des corrélations}
-	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes. Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition des $p$ variables en 2 blocs:
+	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes. Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition des $d$ variables en 2 blocs:
 	\begin{equation}
 		\boldsymbol{X}_{r}=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
 	\end{equation}
-	Avec $\boldsymbol{X}_{r}$ sous-matrice de $d_r$ variables redondantes dans $\boldsymbol{X}$. Nous supposons alors l'indépendance entre les variables non redondantes qui définissent $\boldsymbol{X}_{f}$, les variables libres ("free" en anglais). La matrice $\boldsymbol{\alpha}$ de taille $(p-p_r)\times (p_r)$ a pour colonnes les vecteurs $\boldsymbol{\alpha}_j$ qui contiennent les coefficients de régression associées à la $j^{ieme}$ colonne de $\boldsymbol{X}$.
+	Avec $\boldsymbol{X}_{r}$ sous-matrice de $d_r$ variables redondantes dans $\boldsymbol{X}$. N
+	ous supposons alors l'indépendance entre les variables non redondantes qui définissent $\boldsymbol{X}_{f}$, les variables libres ("free" en anglais). 
+	La matrice $\boldsymbol{\alpha}$ de taille $(d-d_r)\times (d_r)$ a pour colonnes les vecteurs $\boldsymbol{\alpha}_j$ qui contiennent les coefficients de régression associées à la $j^{ieme}$ colonne de $\boldsymbol{X}_r$. 
+	La matrice $\boldsymbol{\varepsilon}$ est la matrice $d_r \times n$ des bruits des sous-régressions composée des colonnes $\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$ que nous supposons indépendantes entre elles. On note alors $J_r$ l'ensemble des indices des variables de $\boldsymbol{X}_r$ et $J_f=\{1,\dots,d\}\setminus J_r$ son complémentaire.
 	
 	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de 5 variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ et une variable redondante $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ avec $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ ont été testées avec $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_3$ diminue. \\
 	
 	\section{Modèle marginal}
-	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal. On peut en effet substituer les variables redondantes par leur sous-régression, ce qui revient à intégrer la régression sur $\boldsymbol{X}^{I_r}$ sachant la structure de sous-régressions.
+	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal. On peut en effet substituer les variables redondantes par leur sous-régression, ce qui revient à intégrer la régression sur $\boldsymbol{X}_{r}$ sachant la structure de sous-régressions.
 \begin{eqnarray}
-		P(\boldsymbol{Y}|\boldsymbol{X}^{I_f})&=& \int_{\boldsymbol{X}^{I_r}}P(\boldsymbol{Y}|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f})P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f}) d \boldsymbol{X} \\
-	\boldsymbol{Y}_{|\boldsymbol{X}^{I_f},S}&=&\boldsymbol{X}^{I_f} (\boldsymbol{\beta}_{I_f}+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \\
+		P(\boldsymbol{Y}|\boldsymbol{X}_{f})&=& \int_{\boldsymbol{X}_{r}}P(\boldsymbol{Y}|\boldsymbol{X}_{r},\boldsymbol{X}_{f})P(\boldsymbol{X}_{r}|\boldsymbol{X}_{f}) d \boldsymbol{X} \\
+	\boldsymbol{Y}_{|\boldsymbol{X}_{f},S}&=&\boldsymbol{X}_{f} (\boldsymbol{\beta}_{f}+ \sum_{j \in J_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \\
 	&=&\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}^*+\boldsymbol{\varepsilon}_Y^*
 \end{eqnarray}
 on se retrouve donc avec un modèle marginal plus parsimonieux, sans biais mais avec une variance accrue. Cet accroissement de la variance est proportionnel à $\boldsymbol{\varepsilon}$ qui est la matrice des résidus des sous-régressions. Plus les sous-régressions sont fortes plus cette variance sera donc faible.
