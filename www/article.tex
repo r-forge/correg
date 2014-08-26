@@ -192,7 +192,7 @@ Indeed, no correlations between covariates $\boldsymbol{X}_f$ imply that the mat
 	\begin{eqnarray}
 			\textsc{mse}(\hat{\boldsymbol{\beta}})&=& \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}),
 			 \\
-			\textsc{mse}(\hat{\boldsymbol{\beta}}^*)&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_2}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}).
+			\textsc{mse}(\hat{\boldsymbol{\beta}}^*)&=& \parallel\sum_{j =1}^{d_r}\sigma_{j}\beta_{J_r^j} \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}).
 	\end{eqnarray}	 
 
 %\vspace{3mm}
