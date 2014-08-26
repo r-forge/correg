@@ -1,5 +1,7 @@
-Bender<-function(phrase="CorReg rules !"){
-  cat( "\n
+Bender<-function(phrase="CorReg rules !",a=0,b=0,c=0){
+   if(!is.null(c) & !try(c<4) & is.null(try(dim(c)))){
+      inkei(a,b,c)
+   }else{cat( "\n
                   o
                   |
                 ,'~'.
@@ -32,5 +34,5 @@ Bender<-function(phrase="CorReg rules !"){
           .'    '.   '.
          (_CorReg____)____)
   ")
-  
+  } 
 }
