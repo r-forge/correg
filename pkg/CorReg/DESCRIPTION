@@ -10,7 +10,8 @@ Authors@R: c(person("Clement", "THERY", role = c("aut", "cre"),
     person("Florian", "WATRIN", role = "ctb"),
     person("Quentin", "GRIMONPREZ", role = "ctb"),
     person("Vincent", "KUBICKI", role = "ctb"),
-    person("Samuel", "BLANCK", role = "ctb")
+    person("Samuel", "BLANCK", role = "ctb"),
+    person("Jérémie","KELLNER",role="ctb")
     )
 Maintainer: Clement THERY <clement.thery@arcelormittal.com>
 Description: Linear regression based on a recursive structural equation model

@@ -7,7 +7,9 @@
 #' @param alpha matrix of the coefficients (p+1)xp format Matrix
 #' @param X1 boolean for alternative method
 #'
-Estep<-function(X=X,alpha=alpha,M=NULL,Z=NULL,mixmod=mixmod,Zc=Zc,X1=FALSE){
+Estep<-function(X=X,alpha=alpha,M=NULL,Z=NULL,mixmod=NULL,Zc=Zc,X1=FALSE){
+   p=ncol(X)
+   n=nrow(X)
    #X bouge, mais pas alpha ni Z ni M ni mixmod
    if(is.null(M)){
       quimank=which(is.na(X),arr.ind=TRUE)# apriori on stockera les deux formats (M et quimank en permanence) et on fera pareil pour Z
@@ -16,8 +18,7 @@ Estep<-function(X=X,alpha=alpha,M=NULL,Z=NULL,mixmod=mixmod,Zc=Zc,X1=FALSE){
       quimank=which(M!=0,arr.ind=TRUE)# apriori on stockera les deux formats (M et quimank en permanence) et on fera pareil pour Z
    }
    
-   p=ncol(X)
-   n=nrow(X)
+   
    #on liste tout ce qu'il faut (on verra après comment extraire ça pour optimiser)
    nbmank=nrow(quimank)
    Z=alpha[-1,];Z[Z!=0]=1
