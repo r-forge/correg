@@ -3,7 +3,7 @@
 \alias{Terminator}
 \title{Destructing values to have missing ones}
 \usage{
-Terminator(target = "Sarah Connor", wrath = 0.1, diag = 0, Z = NULL)
+Terminator(target = NULL, wrath = 0.1, diag = 0, Z = NULL)
 }
 \arguments{
 \item{wrath}{the ratio of missing values in the output}

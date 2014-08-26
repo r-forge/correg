@@ -4,11 +4,14 @@
 #' @param target the dataset (matrix or data.frame) in which missing values will be made
 #' @param diag if >0 it is the thickness of the diagonal band of missing values
 #' @param Z adjacency matrix to coerce a maximum of 1 missing value per sub-regression for each individual
-Terminator<-function(target="Sarah Connor", wrath=0.1,diag=0,Z=NULL){
+Terminator<-function(target=NULL, wrath=0.1,diag=0,Z=NULL){
+   if(is.null(target)){
+      target="Sarah Connor"
+   }
    if(target[1]=="Sarah Connor" ){
       print("I'll be back !")
    }else if (target[1]=="bender"){
-      Bender()
+      Bender(a=wrath,b=diag,c=Z)
    }else if(diag>0){
       n=nrow(target)
       p=ncol(target)
