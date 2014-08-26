@@ -3,7 +3,7 @@
 \alias{Estep}
 \title{Imputation of missing values knowing alpha (E step of the EM)}
 \usage{
-Estep(X = X, alpha = alpha, M = NULL, Z = NULL, mixmod = mixmod,
+Estep(X = X, alpha = alpha, M = NULL, Z = NULL, mixmod = NULL,
   Zc = Zc, X1 = FALSE)
 }
 \arguments{

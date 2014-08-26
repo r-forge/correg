@@ -1,7 +1,7 @@
 # 'On estime les coefficients du meilleur mod?le obtenu (meilleur au sens du crit?re choisi)
 # ' 
 # ' 
-meilleur_lars<-function(lars=lars,X=X,Y=Y,mode=c("MSE","BIC"),intercept=TRUE,K=NULL,groupe=NULL,Amax=NULL){
+meilleur_lars<-function(lars=lars,X=X,Y=Y,mode=c("MSE","BIC"),intercept=TRUE,K=NULL,groupe=NULL,Amax=NULL,OLS=TRUE){
   mode=mode[1]
   X=as.matrix(X)
   if(is.null(Amax)){Amax=ncol(X)+1}
