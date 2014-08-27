@@ -9,10 +9,34 @@
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{url}
+\usepackage[table]{xcolor}
 \usepackage{lmodern}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \author{Clément TH\'ERY}
 \title{Model-based pretreatment for correlated datasets, Application to linear regression and missing values. \\ Real datasets from steel industry}
+
+%%%% debut macro %%%%
+\newenvironment{changemargin}[2]{\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{0pt}%
+\setlength{\rightmargin}{0pt}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{0pt plus 1pt}%
+\addtolength{\leftmargin}{#1}%
+\addtolength{\rightmargin}{#2}%
+}\item }{\end{list}}
+%%%% fin macro %%%%
+
+\newtheorem{hyp}{Hypothesis}
+\newtheorem{hypfr}{Hypothèse}
+
+
+\definecolor{darkgreen}{rgb}{0,0.4,0}
+	 \definecolor{darkred}{rgb}{0.75,0,0}
+	 \definecolor{darkblue}{rgb}{0,0,0.4}
+
+
 \begin{document}
 %\centering
 	Université Lille 1 \\
@@ -67,13 +91,13 @@
 	
 
 \chapter*{Acknowledgments}
-	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has lead me to be recruited since may but let me work in Villeneuve d'Ascq this last year to reduce road time.\\
+	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has led me to be recruited since may but let me work in Villeneuve d'Ascq this last year to reduce road time.\\
 	
 	But this work would not have been possible without the help of Gaétan LORIDANT, my hierarchic superior and friend who has convinced ArcelorMittal to fund this thesis and helped me in this work by a strong moral support and spending a great amount of time with me to find the good direction between academic and industrial needs with some technical help when he could. I would not have made all this work without him.\\
 	
 	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university and even if I won't pursue a research career. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
 	
-	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and rude year just by their presence, giving me the courage to go further. \\
+	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and tough year just by their presence, giving me the courage to go further. \\
 	
 	I finally want to thank my family. My wife who had to support most of the charge of the family on top of her work and to let me work during the holidays and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
 
@@ -101,12 +125,36 @@
 	
 	C'est cette situation problèmatique que nous nous proposons d'améliorer.
 	\section{Modélisation explicite des corrélations}
-	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes. Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition des $d$ variables en 2 blocs:
+	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes. Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition des $d$ variables en 2 blocs : les variables réponses (expliquées) et les variables prédictives.\\
+	 Notre modèle repose sur 2 hypothèses fondamentales :
+	
+
+\begin{hypfr}\label{H1}
+Les corrélations entre covariables viennent de ce que certaines d'entre elles dépendent linéairement d'autres covariables. Plus précisément, il y a $d_{r}\geq 0$  ``sous-regressions'', chaque sous-regression $j=1,\ldots,d_{r}$ ayant la variable $\boldsymbol{X}^{J_{r}^j}$ comme variable {\it réponse} ($J_{r}^j\in\{1,\ldots,p\}$ et $J_{r}^j\neq J_{r}^{j'}$ pour $j\neq j'$) et ayant les $d_p^j>0$ variables $\boldsymbol{X}^{J_{p}^j}$  comme variables {\it predictives}  ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ et $d_p^j=|J_{p}^j|$ le cardinal de $J_{p}^j$):
+\begin{equation}
+\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR}
+\end{equation}
+où $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ pour tout $j=1,\ldots,d_r$ et $h=1,\ldots,d_p^j$) et $\boldsymbol{\varepsilon}_j \sim\mathcal{N}_n(\boldsymbol{0},\sigma^2_j\boldsymbol{I})$.
+\end{hypfr}
+
+\begin{hypfr}\label{H2}
+Nous supposons également que les variables réponses et les variables prédictives forment deux blocs disjoints dans $\boldsymbol{X}$ :
+ pour toute sous-régression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ où $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ est l'ensemble de toutes les variables réponses et $J_f=\{1,\ldots,d\} \backslash J_{r}$ est l'ensemble des variables non expliquées. Cette seconde hypothèse garantit l'obtention d'un système de sous-régression très simple et sans imbrications ni surtout aucun cycle. Cette hypothèse n'est pas trop restrictives dans la mesure où tout système sans cycle peut (par substitution) être reformulé sous cette forme simplifiée (avec une variance accrue).
+\end{hypfr}
+
+\paragraph{Notations} Par la suite nous noterons $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ le $d_r$-uplet des variables réponses (à ne pas confondre avec $J_r$ défini plus haut), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ le $d_r$-uplet des prédicteurs de toutes les sous-régressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ le nombre correspondant de predicteurs et $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ le {\it model} global (structure de sous-régressions). Pour alléger les notations, on définit alors $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ la matrice des variables réponses et $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ la matrice de {\it toutes} les autres variables, ainsi considérées comme libres ({\it free} en anglais)
+. Les valeurs des paramètres sont également concaténées: $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ est la matrice des coefficients de sous-régression et $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ le vecteur des variances associées.
+Toutes ces notations sont illustrées dans l'exemple ci-après. 
+\paragraph{Remarks}
+\begin{itemize}
+\item Sub-regressions defined in (\ref{eq:SR}) are very easy to understand by any practitioner and, thus, will give a clear view of all the correlations present in the dataset at hand.
+\item As a consequence of Hypothesis~\ref{H1} and~\ref{H2} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated.
+\item We have considered correlations between the covariates of the main regression on $\boldsymbol{Y}$, not between the residuals. Thus $\boldsymbol{S}$ does not depend on $\boldsymbol{Y}$ and it can be estimated independently as we will see in Section~\ref{sec:estimateS}.
+\end{itemize} 
 	\begin{equation}
 		\boldsymbol{X}_{r}=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
 	\end{equation}
-	Avec $\boldsymbol{X}_{r}$ sous-matrice de $d_r$ variables redondantes dans $\boldsymbol{X}$. N
-	ous supposons alors l'indépendance entre les variables non redondantes qui définissent $\boldsymbol{X}_{f}$, les variables libres ("free" en anglais). 
+	Avec $\boldsymbol{X}_{r}$ sous-matrice de $d_r$ variables redondantes dans $\boldsymbol{X}$. Nous supposons alors l'indépendance entre les variables non redondantes qui définissent $\boldsymbol{X}_{f}$, les variables libres ("free" en anglais). 
 	La matrice $\boldsymbol{\alpha}$ de taille $(d-d_r)\times (d_r)$ a pour colonnes les vecteurs $\boldsymbol{\alpha}_j$ qui contiennent les coefficients de régression associées à la $j^{ieme}$ colonne de $\boldsymbol{X}_r$. 
 	La matrice $\boldsymbol{\varepsilon}$ est la matrice $d_r \times n$ des bruits des sous-régressions composée des colonnes $\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$ que nous supposons indépendantes entre elles. On note alors $J_r$ l'ensemble des indices des variables de $\boldsymbol{X}_r$ et $J_f=\{1,\dots,d\}\setminus J_r$ son complémentaire.
 	
@@ -147,8 +195,8 @@ On va donc comparer
 		Pour améliorer la mélangeance de l'algorithme et donc sa vitesse de convergence, on peut jouer avec la contrainte de partitionnement par une méthode de relxation semblable à un recuit simulé. Quand une structure candidate n'est pas réalisable (ne produit pas de partition), on peut la modifier en d'autres endroits pour la rendre réalisable. Il suffit de suivre les formules suivantes pour une modification en $(i,j)$:
 		\begin{eqnarray}
 			\boldsymbol{G}_{i,j}^{(q+1)}&=&1-\boldsymbol{G}_{i,j}^{(q)} \\
-			\boldsymbol{G}_{.,i}^{(q+1)}&=& (\boldsymbol{G}_{i,j}^{(q)})\boldsymbol{G}_{.,i}^{(q)} \textrm{ Si $i$ explique $j$ alors personne ne peut plus expliquer $i$} \\
-			\boldsymbol{G}_{j,.}^{(q+1)}&=&(\boldsymbol{G}_{i,j}^{(q)})\boldsymbol{G}_{j,.}^{(q)} \textrm{ Si $i$ explique $j$ alors $j$ ne peut plus expliquer personne}
+			\boldsymbol{G}_{.,i}^{(q+1)}&=& \boldsymbol{G}_{i,j}^{(q)}\boldsymbol{G}_{.,i}^{(q)} \textrm{ Si $i$ explique $j$ alors personne ne peut plus expliquer $i$} \\
+			\boldsymbol{G}_{j,.}^{(q+1)}&=&\boldsymbol{G}_{i,j}^{(q)}\boldsymbol{G}_{j,.}^{(q)} \textrm{ Si $i$ explique $j$ alors $j$ ne peut plus expliquer personne}
 		\end{eqnarray}
 		Cette méthode de relaxation permet de sortir rapidement des extrema locaux et améliore donc significativement l'efficacité de l'algorithme.\\
 		 
