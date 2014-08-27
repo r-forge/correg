@@ -129,7 +129,7 @@
 	 Notre modèle repose sur 2 hypothèses fondamentales :
 	
 
-\begin{hypfr}\label{H1}
+\begin{hypfr}\label{H1fr}
 Les corrélations entre covariables viennent de ce que certaines d'entre elles dépendent linéairement d'autres covariables. Plus précisément, il y a $d_{r}\geq 0$  ``sous-regressions'', chaque sous-regression $j=1,\ldots,d_{r}$ ayant la variable $\boldsymbol{X}^{J_{r}^j}$ comme variable {\it réponse} ($J_{r}^j\in\{1,\ldots,p\}$ et $J_{r}^j\neq J_{r}^{j'}$ pour $j\neq j'$) et ayant les $d_p^j>0$ variables $\boldsymbol{X}^{J_{p}^j}$  comme variables {\it predictives}  ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ et $d_p^j=|J_{p}^j|$ le cardinal de $J_{p}^j$):
 \begin{equation}
 \boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR}
@@ -137,31 +137,36 @@ Les corrélations entre covariables viennent de ce que certaines d'entre elles d
 où $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ pour tout $j=1,\ldots,d_r$ et $h=1,\ldots,d_p^j$) et $\boldsymbol{\varepsilon}_j \sim\mathcal{N}_n(\boldsymbol{0},\sigma^2_j\boldsymbol{I})$.
 \end{hypfr}
 
-\begin{hypfr}\label{H2}
+\begin{hypfr}\label{H2fr}
 Nous supposons également que les variables réponses et les variables prédictives forment deux blocs disjoints dans $\boldsymbol{X}$ :
- pour toute sous-régression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ où $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ est l'ensemble de toutes les variables réponses et $J_f=\{1,\ldots,d\} \backslash J_{r}$ est l'ensemble des variables non expliquées. Cette seconde hypothèse garantit l'obtention d'un système de sous-régression très simple et sans imbrications ni surtout aucun cycle. Cette hypothèse n'est pas trop restrictives dans la mesure où tout système sans cycle peut (par substitution) être reformulé sous cette forme simplifiée (avec une variance accrue).
+ pour toute sous-régression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ où $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ est l'ensemble de toutes les variables réponses on a $J_f=\{1,\ldots,d\} \backslash J_{r}$ l'ensemble des variables non expliquées. Cette seconde hypothèse garantit l'obtention d'un système de sous-régression très simple et sans imbrications ni surtout aucun cycle. Cette hypothèse n'est pas trop restrictive dans la mesure où tout système sans cycle peut (par substitutions) être reformulé sous cette forme simplifiée (avec une variance accrue).
 \end{hypfr}
 
-\paragraph{Notations} Par la suite nous noterons $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ le $d_r$-uplet des variables réponses (à ne pas confondre avec $J_r$ défini plus haut), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ le $d_r$-uplet des prédicteurs de toutes les sous-régressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ le nombre correspondant de predicteurs et $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ le {\it model} global (structure de sous-régressions). Pour alléger les notations, on définit alors $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ la matrice des variables réponses et $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ la matrice de {\it toutes} les autres variables, ainsi considérées comme libres ({\it free} en anglais)
+\paragraph{Notations} Par la suite nous noterons $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ le $d_r$-uplet des variables réponses (à ne pas confondre avec $J_r$ défini plus haut), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ le $d_r$-uplet des prédicteurs de toutes les sous-régressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ les nombres correspondants de predicteurs et $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ le {\it model} global (structure de sous-régressions). Pour alléger les notations, on définit alors $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ la matrice des variables réponses et $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ la matrice de {\it toutes} les autres variables, ainsi considérées comme libres ({\it free} en anglais)
 . Les valeurs des paramètres sont également concaténées: $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ est la matrice des coefficients de sous-régression et $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ le vecteur des variances associées.
 Toutes ces notations sont illustrées dans l'exemple ci-après. 
-\paragraph{Remarks}
-\begin{itemize}
-\item Sub-regressions defined in (\ref{eq:SR}) are very easy to understand by any practitioner and, thus, will give a clear view of all the correlations present in the dataset at hand.
-\item As a consequence of Hypothesis~\ref{H1} and~\ref{H2} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated.
-\item We have considered correlations between the covariates of the main regression on $\boldsymbol{Y}$, not between the residuals. Thus $\boldsymbol{S}$ does not depend on $\boldsymbol{Y}$ and it can be estimated independently as we will see in Section~\ref{sec:estimateS}.
-\end{itemize} 
 	\begin{equation}
-		\boldsymbol{X}_{r}=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
+		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
 	\end{equation}
-	Avec $\boldsymbol{X}_{r}$ sous-matrice de $d_r$ variables redondantes dans $\boldsymbol{X}$. Nous supposons alors l'indépendance entre les variables non redondantes qui définissent $\boldsymbol{X}_{f}$, les variables libres ("free" en anglais). 
-	La matrice $\boldsymbol{\alpha}$ de taille $(d-d_r)\times (d_r)$ a pour colonnes les vecteurs $\boldsymbol{\alpha}_j$ qui contiennent les coefficients de régression associées à la $j^{ieme}$ colonne de $\boldsymbol{X}_r$. 
-	La matrice $\boldsymbol{\varepsilon}$ est la matrice $d_r \times n$ des bruits des sous-régressions composée des colonnes $\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$ que nous supposons indépendantes entre elles. On note alors $J_r$ l'ensemble des indices des variables de $\boldsymbol{X}_r$ et $J_f=\{1,\dots,d\}\setminus J_r$ son complémentaire.
+	La matrice $\boldsymbol{\varepsilon}$ est la matrice $d_r \times n$ des bruits des sous-régressions composée des colonnes $\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$ que nous supposons indépendantes entre elles. 
 	
-	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de 5 variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ et une variable redondante $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ avec $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ ont été testées avec $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_3$ diminue. \\
-	
+	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de $d=5$ variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{X}_f=(\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5)$ et une variable redondante $\boldsymbol{X}_r=\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ avec $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ ont été testées avec $\boldsymbol{\beta}=(1,1,1,1,1)'$ and $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_1$ diminue. Ici $J_f=\{1,2,4,5\},J_r=\{3\},\boldsymbol{J}_r=(3),\boldsymbol{d}_p=2,\boldsymbol{J}_p=(\{1,2\}),\boldsymbol{\alpha}=(\\boldsymbol{\alpha}_1)=((1,1)'),\boldsymbol{X} ^{J_p^1}=(\boldsymbol{X}^1,\boldsymbol{X}^2),\boldsymbol{S}=((3),(\{1,2\}))$.\\
+	\paragraph{Remarks}
+\begin{itemize}
+\item Les sous-régressions définies en (\ref{eq:SR}) sont très simples à comprendre pour l'utilisateur et donc permettent d'avoir un aperçu net des corrélations présentes dans les données étudiées.
+\item Les hypothesis~\ref{H1} et~\ref{H2} , rendent les variables dans $\boldsymbol{X}_f$ {\it indépendantes}.
+\item $\boldsymbol{S}$ ne dépend pas de $\boldsymbol{Y}$ et peut donc être estimé séparément.
+\end{itemize} 
 	\section{Modèle marginal}
-	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal. On peut en effet substituer les variables redondantes par leur sous-régression, ce qui revient à intégrer la régression sur $\boldsymbol{X}_{r}$ sachant la structure de sous-régressions.
+	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal. On peut en effet substituer les variables redondantes par leur sous-régression, ce qui revient à intégrer la régression sur $\boldsymbol{X}_{r}$ sachant la structure de sous-régressions $\boldsymbol{S}$.
+	
+On fait alors un hypothèse supplémentaire :
+
+\begin{hypfr}\label{H3fr}
+On suppose l'indépendance 2 à 2 entre les erreurs de régression $\boldsymbol{\varepsilon}_Y$ et $\boldsymbol{\varepsilon}_j (j=1,\dots,d_r)$. En particulier on a l'indépendance conditionnelle entre les variables réponses $\{\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{} \}$ 
+\end{hypfr}
+(\ref{eq:SR})	
+	
 \begin{eqnarray}
 		P(\boldsymbol{Y}|\boldsymbol{X}_{f})&=& \int_{\boldsymbol{X}_{r}}P(\boldsymbol{Y}|\boldsymbol{X}_{r},\boldsymbol{X}_{f})P(\boldsymbol{X}_{r}|\boldsymbol{X}_{f}) d \boldsymbol{X} \\
 	\boldsymbol{Y}_{|\boldsymbol{X}_{f},S}&=&\boldsymbol{X}_{f} (\boldsymbol{\beta}_{f}+ \sum_{j \in J_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \\
