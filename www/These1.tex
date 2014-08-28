@@ -170,21 +170,26 @@ On a donc
 	
 \begin{eqnarray}
 		\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2)&=&\prod_{j=1}^{d_r}\mathbb{P}(\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{J_p^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j)	\\
-		\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y ,\boldsymbol{\sigma}^2)&=& \int_{\mathbb{R}^{d_r}}\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{r},\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\boldsymbol{\sigma}^2)\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) d \boldsymbol{X}_{r} \textrm{ \ \ \ \ }\\
-	\boldsymbol{Y}_{|\boldsymbol{X}_{f},S}&=&\boldsymbol{X}_{f} (\boldsymbol{\beta}_{f}+ \sum_{j \in J_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \\
-	&=&\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}^*+\boldsymbol{\varepsilon}_Y^*
+		\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y ,\boldsymbol{\sigma}^2)&=& \int_{\mathbb{R}^{d_r}}\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{r},\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2)\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) d \boldsymbol{X}_{r} \textrm{ \ \ \ \ }\\
+		\end{eqnarray}
+		Ce qui donne
+		\begin{eqnarray}
+		\boldsymbol{Y}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2 &=& \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y\\
+	\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_{f} (\boldsymbol{\beta}_{f}+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}^*_j)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \\
+	&=&\boldsymbol{X}_{f}\boldsymbol{\beta}_{f}^*+\boldsymbol{\varepsilon}_Y^*
 \end{eqnarray}
-on se retrouve donc avec un modèle marginal plus parsimonieux, sans biais mais avec une variance accrue. Cet accroissement de la variance est proportionnel à $\boldsymbol{\varepsilon}$ qui est la matrice des résidus des sous-régressions. Plus les sous-régressions sont fortes plus cette variance sera donc faible.
-Tout le principe du modèle marginal repose sur le compromis entre l'amélioration du conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ par suppression des variables redondantes et aussi la réduction de la dimension (le modèle marginal ne nécessite que l'inversion de $(\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})$) face au léger accroissement de la variance issu de la marginalisation. \\
+où $\boldsymbol{\alpha}^* \in \mathbb{R}^{d_f}$ avec $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ et $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0  $, $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}, \boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}, \boldsymbol{\beta}_f^*=\boldsymbol{\beta}^*_{J_f} $, $\boldsymbol{\beta}^*$ étant l'estimateur de $\boldsymbol{\beta}$ par le modèle marginal avec donc $\boldsymbol{\beta}_r^*=\boldsymbol{\beta}^*_{J_r}$.
+\\On se retrouve donc avec un modèle marginal plus parsimonieux, sans biais mais avec une variance accrue. Cet accroissement de la variance est proportionnel à $\boldsymbol{\varepsilon}$ qui est la matrice des résidus des sous-régressions. Plus les sous-régressions sont fortes plus cette variance sera donc faible.
+Tout le principe du modèle marginal repose sur le compromis entre l'amélioration du conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ par suppression des variables redondantes et aussi la réduction de la dimension (le modèle marginal ne nécessite que l'inversion de $(\boldsymbol{X}_{f}'\boldsymbol{X}_{f})$) face au léger accroissement de la variance issu de la marginalisation. \\
 On va donc comparer 
 	\begin{eqnarray}
 		\hat{\boldsymbol{\beta}}&=& (\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y} \textrm{ au modèle marginal} \\
-		\hat{\boldsymbol{\beta}}^*&=& (\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})^{-1}\boldsymbol{X}^{I_f'}\boldsymbol{Y}
+		\hat{\boldsymbol{\beta}}^*_f&=& (\boldsymbol{X}_{f}'\boldsymbol{X}_{f})^{-1}\boldsymbol{X}_{f}'\boldsymbol{Y}
 	\end{eqnarray}
 	Les deux modèles sont sans biais et de dimension différente, on compare donc leurs erreurs moyennes quadratiques respectives (MSE):
 	\begin{eqnarray}
 		E[MSE(\hat{\boldsymbol{\beta}}|\boldsymbol{X})]&=& \sigma^2_Y \operatorname{Tr}(\boldsymbol{X}'\boldsymbol{X})^{-1}  \\
-		E[MSE(\hat{\boldsymbol{\beta}}^*|\boldsymbol{X}^*)]&=& (\sigma^2_Y+\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2)\operatorname{Tr}(\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})^{-1}
+		E[MSE(\hat{\boldsymbol{\beta}}^*|\boldsymbol{X})]&=& (\sigma^2_Y+\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2)\operatorname{Tr}(\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})^{-1}
 	\end{eqnarray}
 		La figure \ref{MQEexplOLSp5col} compare ces deux erreurs pour différentes valeurs des paramètres, montrant la nette amélioration rendue possible par la marginalisation.
 	
