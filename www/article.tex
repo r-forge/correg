@@ -140,14 +140,14 @@ In addition, we make the complementary hypothesis that the response covariates a
 \subsection{Marginal regression with decorrelated covariates}
 The aim is now to use the model of linear sub-regressions $\boldsymbol{S}$ (that we assume to be known in this part) between some covariates of $\boldsymbol{X}$ to obtain a linear regression on $\boldsymbol{Y}$ relying only on uncorrelated variables $\boldsymbol{X}_f$.  The way to proceed is to marginalize the joint distribution of $\{(\boldsymbol{Y},\boldsymbol{X}_r) |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma^2}\}$ to obtain the distribution of $\{\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma^2}\}$ depending only on uncorrelated variables $\boldsymbol{X}_f$:
 \begin{equation}\label{eq:marginal}
-\mathbb{P}(\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma^2}) = \int_{{\mathbb{R}^{d_r}}}\mathbb{P}(\boldsymbol{Y}| \boldsymbol{X}_f,\boldsymbol{X}_r,\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2) \mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma^2}) d\boldsymbol{X}_r.
+\mathbb{P}(\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2) = \int_{{\mathbb{R}^{d_r}}}\mathbb{P}(\boldsymbol{Y}| \boldsymbol{X}_f,\boldsymbol{X}_r,\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2) \mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) d\boldsymbol{X}_r.
 \end{equation}
 We need the following new hypothesis.
 
 \begin{hyp}\label{H3}
 We assume that all errors $\boldsymbol{\varepsilon}_Y$ and $\boldsymbol{\varepsilon}_j$ ($j=1,\ldots,d_r$) are {\it mutually independent}. It implies in particular that conditional response covariates $\{\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j\}$, with distribution defined in (\ref{eq:SR}), are {\it mutually independent}:
 \begin{equation}\label{eq:H3}
-\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma^2}) = \prod_{j=1}^{d_r} \mathbb{P}(\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j).
+\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) = \prod_{j=1}^{d_r} \mathbb{P}(\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j).
 \end{equation}
 \end{hyp}
 
@@ -157,9 +157,9 @@ Noting $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ and $\boldsymbol{\beta}_f
 \begin{equation}
 			\boldsymbol{Y}{|\boldsymbol{X},\boldsymbol{S}};\boldsymbol{\beta},\sigma_Y^2=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:MainR}
 \end{equation}
-Combining now (\ref{eq:MainR}) with (\ref{eq:SR}), (\ref{eq:marginal}) and (\ref{eq:H3}), and also independence between each $\boldsymbol{\varepsilon}_j$ and $\boldsymbol{\varepsilon}_Y$, we obtain the following closed-form for the distribution of $\{\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma^2}\}$:
+Combining now (\ref{eq:MainR}) with (\ref{eq:SR}), (\ref{eq:marginal}) and (\ref{eq:H3}), and also independence between each $\boldsymbol{\varepsilon}_j$ and $\boldsymbol{\varepsilon}_Y$, we obtain the following closed-form for the distribution of $\{\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2\}$:
 \begin{eqnarray}
-	\boldsymbol{Y}{|\boldsymbol{X}_f,\boldsymbol{S}};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma^2}&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^*)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl} \\
+	\boldsymbol{Y}{|\boldsymbol{X}_f,\boldsymbol{S}};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^*)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl} \\
 	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*,\label{eq:modexpl}
 \end{eqnarray}
 where $\boldsymbol{\alpha}^* \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ and $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0  $. \\
@@ -175,7 +175,7 @@ In the following, we will denote by {\sc CorReg} the new proposed strategy.
 	
 \paragraph{Qualitative illustration} Noting $\boldsymbol{\beta}^*$ the vector of coefficients of the same dimension as $\boldsymbol{\beta}$ with $\boldsymbol{\beta}_{J_r}^*=\boldsymbol{\beta}_{r}^*={\bf 0}$ and $\boldsymbol{\beta}_{J_f}^*=\boldsymbol{\beta}_{f}^*$, (\ref{eq:modexpl}) can be rewritten
 \begin{equation}
-	\boldsymbol{Y}{|\boldsymbol{X}_f,\boldsymbol{S}};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma^2}=\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{X}_r\boldsymbol{\beta}_r^*+\boldsymbol{\varepsilon}_Y^*.\label{eq:modexpl2}
+	\boldsymbol{Y}{|\boldsymbol{X}_f,\boldsymbol{S}};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2=\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{X}_r\boldsymbol{\beta}_r^*+\boldsymbol{\varepsilon}_Y^*.\label{eq:modexpl2}
 \end{equation}
 The {\sc ols} estimate of $\boldsymbol{\beta}^*$ is then given by
 	\begin{equation}
