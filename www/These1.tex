@@ -63,7 +63,7 @@
 	Enfin, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter les variables redondantes de manière séquentielle et donc utiliser toute l'information sans souffrir des corrélations entre covariables.
 	\\
 	
-	Tout au long de ces travaux, l'accent est mis principalement sur l'interprétabilité des résultats en raison du caractère industriel du financement de cette thèse. 
+	Tout au long de ces travaux, l'accent est mis principalement sur l'interprétabilité des résultats en raison du caractère industriel de cette thèse. 
 \\	
 
 	Le package R intitulé {\tt CorReg}, disponible sur le CRAN\footnote{http://cran.r-project.org} sous licence CeCILL\footnote{http://www.cecill.info}, implémente les méthodes développées durant cette thèse.
@@ -73,16 +73,16 @@
 	This thesis was motivated by correlation issues in real datasets, in particular industrial datasets. The main idea stands in explicit modeling of the correlations between covariates by a structure of sub-regression, that simply is a system of linear regression between the covariates. It points out redundant covariates that can be deleted in a pre-selection step to improve matrix conditioning without significant loss of information and with strong explicative potential because this pre-selection is explained by the structure of sub-regression, itself easy to interpret.
 	\\
 	
-	An algorithm to find the sub-regression structure inherent to the dataset is provided, based on full generative model and using Monte-Carlo Markov Chain (MCMC) method. This pretreatment is then illustrated on linear regression to show its efficiency but does not depend on a response variable and thus can be used in a more general way with any correlated datasets.
+	An algorithm to find the sub-regression structure inherent to the dataset is provided, based on a full generative model and using Monte-Carlo Markov Chain (MCMC) method. This pretreatment is then applied on linear regression to show its efficiency but does not depend on a response variable and thus can be used in a more general way with any correlated datasets.
 	\\
 	
 	The generative model defined here allows to manage missing values both during the MCMC and then for imputation (for example multiple imputation) to be able to use classical methods that are not compatible with missing datasets. Missing values can be imputed with a confidence interval to show estimation accuracy. Once again, linear regression is used to illustrate the benefits of this method but it remains a pretreatment that can be used in other contexts, like clustering and so on.
 	\\ 
 	
-	Finally a plug-in estimator is defined to get back the redundant covariates sequentially. Then all the covariates are used but the sequential approach act as a protection against correlations.
+	Finally a plug-in estimator is defined to get back the redundant covariates sequentially. Then all the covariates are used but the sequential approach acts as a protection against correlations.
 \\
 
-	The industrial motivation of this work define interpretation as a stronghold at each step. 	
+	The industrial motivation of this work defines interpretation as a stronghold at each step. 	
 	\\
 	The R package {\tt CorReg}, is on CRAN\footnote{http://cran.r-project.org} now under CeCILL\footnote{http://www.cecill.info} license. It implements the methods created during this thesis.
 	
@@ -91,15 +91,16 @@
 	
 
 \chapter*{Acknowledgments}
-	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has led me to be recruited since may but let me work in Villeneuve d'Ascq this last year to reduce road time.\\
+	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has led me to be recruited since may.% but let me work in Villeneuve d'Ascq this last year to reduce road time.
+	\\
 	
 	But this work would not have been possible without the help of Gaétan LORIDANT, my hierarchic superior and friend who has convinced ArcelorMittal to fund this thesis and helped me in this work by a strong moral support and spending a great amount of time with me to find the good direction between academic and industrial needs with some technical help when he could. I would not have made all this work without him.\\
 	
-	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university and even if I won't pursue a research career. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
+	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
 	
 	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and tough year just by their presence, giving me the courage to go further. \\
 	
-	I finally want to thank my family. My wife who had to support most of the charge of the family on top of her work and to let me work during the holidays and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
+	I finally want to thank my family. My wife who had to support most of the charge of the family on top of her work and to let me work during the holidays, and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
 
 
 
@@ -109,24 +110,21 @@
 	\section{Position du problème}
 	La régression linéaire est l'outil de modélisation le plus classique et se résume à une équation bien connue\footnote{En général la constante est ajoutée comme un des régresseurs avec par exemple $\boldsymbol{X}^1=(1,\ldots,1)'$. Le coefficient correspondant dans $\boldsymbol{\beta}$ est alors la constante de régression $\beta_1$.} :
 	\begin{equation}
-		\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y
+		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma^2_Y=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y
 	\end{equation}
 	où $\boldsymbol{Y}$ est la variable réponse de taille $n\times 1$ que l'on souhaite décrire à l'aide de $d$ variables explicatives observées sur $n$ individus et dont les valeurs sont stockées dans la matrice $\boldsymbol{X}$ de taille $n\times d$. Le vecteur $\boldsymbol{\beta}$ est le vecteur des coefficients de régression qui permet de décrire le lien linéaire entre $\boldsymbol{Y}$ et $\boldsymbol{X}$. Le vecteur $\boldsymbol{\varepsilon}_Y$  est un bruit blanc gaussien $\mathcal{N}(0,\sigma_Y^2\boldsymbol{I}_n)$ qui représente l'inexactitude du modèle de régression.\\
 	
-	
 	On connaît l'estimateur sans biais de variance minimale (ESBVM) de $\boldsymbol{\beta}$ qui est obtenu par Moindres Carrés Ordinaires (MCO) selon la formule  :
 	\begin{equation}
-		\hat{\boldsymbol{\beta}}=(\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y}
+		\hat{\boldsymbol{\beta}}=(\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y}.
 	\end{equation}
 	Cet estimateur nécessite l'inversion de la matrice $(\boldsymbol{X}'\boldsymbol{X})$ qui est mal conditionnée si les variables explicatives sont corrélées entre elles. Ce mauvais conditionnement nuit à la qualité de l'estimation et vient impacter la variance de l'estimateur comme le montre la formule :
 	\begin{equation}
 		\operatorname{Var}_{\boldsymbol{X}}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}
 	\end{equation}
-	
 	C'est cette situation problèmatique que nous nous proposons d'améliorer.
 	\section{Modélisation explicite des corrélations}
-	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes. Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition des $d$ variables en 2 blocs : les variables réponses (expliquées) et les variables prédictives.\\
-	 Notre modèle repose sur 2 hypothèses fondamentales :
+	Le mauvais conditionnement de la matrice provient de la quasi-singularité (parfois singularité numérique) de celle-ci quand les colonnes de $\boldsymbol{X}$ sont presque linéairement dépendantes. Cette quasi dépendance linéaire peut être elle aussi modélisée par régression lineaire. On se propose donc de considérer notre problématique comme l'existence d'un modèle de sous-régressions au sein des variables explicatives avec certaines des variables expliquées par d'autres, formant ainsi une partition des $d$ variables en 2 blocs : les variables réponses (expliquées) et les variables prédictives. Notre modèle repose sur 2 hypothèses fondamentales :
 	
 
 \begin{hypfr}\label{H1fr}
@@ -148,26 +146,22 @@ Toutes ces notations sont illustrées dans l'exemple ci-après.
 	\begin{equation}
 		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
 	\end{equation}
-	La matrice $\boldsymbol{\varepsilon}$ est la matrice $d_r \times n$ des bruits des sous-régressions composée des colonnes $\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$ que nous supposons indépendantes entre elles. 
+	La matrice $\boldsymbol{\varepsilon}\in \mathbb{R}^{n\times d_r}$ est la matrice des bruits des sous-régressions composée des colonnes \mbox{$\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$} que nous supposons indépendantes entre elles. \\
 	
 	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de $d=5$ variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{X}_f=(\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5)$ et une variable redondante $\boldsymbol{X}_r=\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ avec $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ ont été testées avec $\boldsymbol{\beta}=(1,1,1,1,1)'$ and $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_1$ diminue. Ici $J_f=\{1,2,4,5\},J_r=\{3\},\boldsymbol{J}_r=(3),\boldsymbol{d}_p=2,\boldsymbol{J}_p=(\{1,2\}),\boldsymbol{\alpha}=(\\boldsymbol{\alpha}_1)=((1,1)'),\boldsymbol{X} ^{J_p^1}=(\boldsymbol{X}^1,\boldsymbol{X}^2),\boldsymbol{S}=((3),(\{1,2\}))$.\\
 	\paragraph{Remarques}
 \begin{itemize}
-\item Les sous-régressions définies en (\ref{eq:SR}) sont très simples à comprendre pour l'utilisateur et donc permettent d'avoir un aperçu net des corrélations présentes dans les données étudiées.
+\item Les sous-régressions définies en (\ref{eq:SR}) sont très simples à comprendre pour l'utilisateur et permettent donc d'avoir un aperçu net des corrélations présentes dans les données étudiées.
 \item Les hypotheses~\ref{H1fr} et~\ref{H2fr} , rendent les variables dans $\boldsymbol{X}_f$ {\it indépendantes}.
 \item $\boldsymbol{S}$ ne dépend pas de $\boldsymbol{Y}$ et peut donc être estimé séparément.
 \end{itemize} 
 	\section{Modèle marginal}
-	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal. On peut en effet substituer les variables redondantes par leur sous-régression, ce qui revient à intégrer la régression sur $\boldsymbol{X}_{r}$ sachant la structure de sous-régressions $\boldsymbol{S}$.
-	
-On fait alors un hypothèse supplémentaire :
+	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal. On peut en effet substituer les variables redondantes par leur sous-régression, ce qui revient à intégrer la régression sur $\boldsymbol{X}_{r}$ sachant la structure de sous-régressions $\boldsymbol{S}$. On fait alors un hypothèse supplémentaire :
 
 \begin{hypfr}\label{H3fr}
 On suppose l'indépendance 2 à 2 entre les erreurs de régression $\boldsymbol{\varepsilon}_Y$ et $\boldsymbol{\varepsilon}_j (j=1,\dots,d_r)$. En particulier on a l'indépendance conditionnelle entre les variables réponses \\$\{\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{J_p^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma_j^2\}$ définies en (\ref{eq:SR}).
 \end{hypfr}
-
 On a donc 
-	
 \begin{eqnarray}
 		\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2)&=&\prod_{j=1}^{d_r}\mathbb{P}(\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{J_p^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j)	\\
 		\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y ,\boldsymbol{\sigma}^2)&=& \int_{\mathbb{R}^{d_r}}\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{r},\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2)\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) d \boldsymbol{X}_{r} \textrm{ \ \ \ \ }\\
@@ -175,33 +169,38 @@ On a donc
 		Ce qui donne
 		\begin{eqnarray}
 		\boldsymbol{Y}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2 &=& \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y\\
-	\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_{f} (\boldsymbol{\beta}_{f}+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}^*_j)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \\
+	\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_{f} (\boldsymbol{\beta}_{f}+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}^*_j)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \label{marginalfr} \\
 	&=&\boldsymbol{X}_{f}\boldsymbol{\beta}_{f}^*+\boldsymbol{\varepsilon}_Y^*
 \end{eqnarray}
-où $\boldsymbol{\alpha}^* \in \mathbb{R}^{d_f}$ avec $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ et $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0  $, $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}, \boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}, \boldsymbol{\beta}_f^*=\boldsymbol{\beta}^*_{J_f} $, $\boldsymbol{\beta}^*$ étant l'estimateur de $\boldsymbol{\beta}$ par le modèle marginal avec donc $\boldsymbol{\beta}_r^*=\boldsymbol{\beta}^*_{J_r}$.
-\\On se retrouve donc avec un modèle marginal plus parsimonieux, sans biais mais avec une variance accrue. Cet accroissement de la variance est proportionnel à $\boldsymbol{\varepsilon}$ qui est la matrice des résidus des sous-régressions. Plus les sous-régressions sont fortes plus cette variance sera donc faible.
-Tout le principe du modèle marginal repose sur le compromis entre l'amélioration du conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ par suppression des variables redondantes et aussi la réduction de la dimension (le modèle marginal ne nécessite que l'inversion de $(\boldsymbol{X}_{f}'\boldsymbol{X}_{f})$) face au léger accroissement de la variance issu de la marginalisation. \\
+où $\boldsymbol{\alpha}^* \in \mathbb{R}^{d_f\times d_r}$ est la matrice des coefficients des sous-régressions avec $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ et $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0  $, $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}, \boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}, \boldsymbol{\beta}_f^*=\boldsymbol{\beta}^*_{J_f} $, $\boldsymbol{\beta}^*$ étant l'estimateur de $\boldsymbol{\beta}$ par le modèle marginal avec donc $\boldsymbol{\beta}_r^*=\boldsymbol{\beta}^*_{J_r}$.
+\\
+
+On se retrouve donc avec un modèle marginal plus parsimonieux, sans biais mais avec une variance accrue. Cet accroissement de la variance est proportionnel à $\boldsymbol{\varepsilon}$ qui est la matrice des résidus des sous-régressions. Plus les sous-régressions sont fortes et plus cette variance est faible.
+Tout le principe du modèle marginal repose sur le compromis entre l'amélioration du conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ par suppression des variables redondantes et aussi la réduction de la dimension (le modèle marginal ne nécessite que l'inversion de $(\boldsymbol{X}_{f}'\boldsymbol{X}_{f})$) face au léger accroissement de la variance issu de la marginalisation.
 On va donc comparer 
 	\begin{eqnarray}
 		\hat{\boldsymbol{\beta}}&=& (\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y} \textrm{ au modèle marginal} \\
 		\hat{\boldsymbol{\beta}}^*_f&=& (\boldsymbol{X}_{f}'\boldsymbol{X}_{f})^{-1}\boldsymbol{X}_{f}'\boldsymbol{Y}
 	\end{eqnarray}
-	Les deux modèles sont sans biais et de dimension différente, on compare donc leurs erreurs moyennes quadratiques respectives (MSE):
+	Les deux modèles sont de dimension différente, on compare donc leurs erreurs moyennes quadratiques respectives (MSE):
 	\begin{eqnarray}
 		MSE(\hat{\boldsymbol{\beta}}|\boldsymbol{X})&=& \sigma^2_Y \operatorname{Tr}(\boldsymbol{X}'\boldsymbol{X})^{-1}  \\
 		MSE(\hat{\boldsymbol{\beta}}^*|\boldsymbol{X})&=&\parallel \sum_{j=1}^{d_r}\sigma_j \beta_{J_r^j} \parallel_2^2+\parallel\boldsymbol{\beta}_r  \parallel_2^2 +(\sigma^2_Y+\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2)\operatorname{Tr}(\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})^{-1}
 	\end{eqnarray}
+		Ces deux équations illustrent bien le compromis biais-variance du modèle marginal.
 		La figure \ref{MQEexplOLSp5col} compare ces deux erreurs pour différentes valeurs des paramètres, montrant la nette amélioration rendue possible par la marginalisation.
 	
 	\section{Notion de prétraitement}
-	Le modèle marginal peut être interprété comme étant un prétraitement par sélection de variable puisqu'on se ramène à un modèle de régression linéaire classique pour lequel n'importe quel estimateur peut être utilisé. Cela fait de ce modèle un outil générique. La préselection permet de cibler des variables qui n'interviendront pas dans le modèle final sans pour autant être indépendante de $\boldsymbol{Y}$ donc le modèle final est parsimonieux mais ne fausse pas l'interprétation. L'estimation de $\boldsymbol{\beta}^*$ peut ensuite se faire en utilisant une quelconque méthode de sélection de variables pour éliminer les variables qui, elles, sont indépendantes de $\boldsymbol{Y}$.\\
+	Le modèle marginal peut être interprété comme étant un prétraitement par sélection de variables puisqu'on se ramène à un modèle de régression linéaire classique pour lequel n'importe quel estimateur peut être utilisé. Cela fait de ce modèle un outil générique. La préselection permet de cibler des variables qui n'interviendront pas dans le modèle final sans pour autant être indépendante de $\boldsymbol{Y}$ donc le modèle final est parsimonieux mais ne fausse pas l'interprétation. L'estimation de $\boldsymbol{\beta}^*$ peut ensuite se faire en utilisant une quelconque méthode de sélection de variables pour éliminer les variables qui, elles, sont indépendantes de $\boldsymbol{Y}$.\\
+	
 	 On obtient donc deux types de 0 : ceux de la marginalisation qui pointent les variables redondantes et ceux de sélection qui viennent dans un second temps et pointent les variables indépendantes. L'interprétation est donc enrichie par rapport à une méthode de sélection classique qui fournirait le même modèle final. Or, le contexte industriel de ces travaux rend indispensable d'avoir une bonne qualité d'interprétation. L'objectif est donc atteint pour ce point précis. Notre modèle marginal est un outil de décorrélation de variables par préselection.
 	 
 	 \section{Estimation de la structure}
-		La raison d'être de notre modèle marginal est la fragilité des méthodes de régression face à des covariables fortement corrélées. Il serait donc vain d'essayer les sous-régression en estimant les modèles de régression de chaque variable en fonction de toutes les autres. Pour cette raison, nous avons établi un algorithme MCMC pour trouver le meilleur modèle de sous-régression. L'idée consiste à voir la structure de sous-régression comme un paramètre binaire, une matrice binaire creuse pour être plus précis. Cette matrice $\boldsymbol{G}$ de taille $p\times p$ correspond à une matrice d'adjacence qui indique les liaisons entre covariables de la manière suivante : $\boldsymbol{G}_{i,j}=1$ si, et seulement si $\boldsymbol{X}^j$ est expliqué par $\boldsymbol{X}^i$. \\
+		La raison d'être de notre modèle marginal est la fragilité des méthodes de régression face à des covariables fortement corrélées. Il serait donc vain d'essayer les sous-régression en estimant les modèles de régression de chaque variable en fonction de toutes les autres. Pour cette raison, nous avons établi un algorithme MCMC pour trouver le meilleur modèle de sous-régressions. L'idée consiste à voir la structure de sous-régression comme un paramètre binaire, une matrice binaire creuse pour être plus précis. Cette matrice $\boldsymbol{G}$ de taille $p\times p$ correspond à une matrice d'adjacence qui indique les liaisons entre covariables de la manière suivante : $\boldsymbol{G}_{i,j}=1$ si, et seulement si $\boldsymbol{X}^j$ est expliqué par $\boldsymbol{X}^i$. \\
 		
 		Chaque étape $(q+1)$ de l'algorithme propose de garder la structure $\boldsymbol{G}^{(q)}$ en cours ou bien de bouger vers une structure candidate qui diffère de $\boldsymbol{G}^{(q)}$ en un unique point. Ainsi, selon les cas, les candidats vont allonger ou réduire des sous-régression, les supprimer ou les créer. \\
 		Pour pouvoir trancher entre plusieurs candidats, nous avons besoin d'une fonction coût qui soit capable de comparer des modèles avec des nombres distincts de sous-régressions. Nous définissons alors un modèle génératif complet sur $\boldsymbol{X}$ qui complète le modèle de sous-régressions en établissant des modèles de mélanges gaussiens indépendants pour les variables de $\boldsymbol{X}_{f}$. Une fois ce modèle génératif établi, nous pouvons utiliser le critère $BIC$ pour comparer les différents modèles et conduire chaque étape de la chaîne MCMC par un tirage aléatoire pondéré par les écarts entre les $BIC$ des différents modèles proposés (dont le modèle en cours). L'algorithme continue ainsi sa marche et fournit à l'utilisateur le modèle rencontré (qu'il ait été choisi ou non) qui a le $BIC$ le plus faible. \\
+		
 		La chaîne MCMC est conditionnée par le critère de partitionnement : les variables expliquées ne doivent en expliquer aucune autre (hypothèse \ref{H2fr}). Chaque modèle réalisable peut être entièrement construit ou déconstruit pendant la marche aléatoire donc l'algorithme suit une chaîne de Markov régulière. Ainsi, il est certain que, asymptotiquement l'algorithme trouve le modèle ayant le meilleur $BIC$.
 	\section{Relaxation des contraintes et nouveau critère}
 		Pour améliorer la mélangeance de l'algorithme et donc sa vitesse de convergence, on peut jouer avec la contrainte de partitionnement par une méthode de relaxation semblable à un recuit simulé. Quand une structure candidate n'est pas réalisable (ne produit pas de partition), on peut la modifier en d'autres endroits pour la rendre réalisable. Il suffit de suivre les formules suivantes pour une modification en $(i,j)$ de la  matrice $\boldsymbol{G}$:
@@ -210,78 +209,81 @@ On va donc comparer
 			\boldsymbol{G}_{.,i}^{(q+1)}&=& \boldsymbol{G}_{i,j}^{(q)}\boldsymbol{G}_{.,i}^{(q)} \textrm{ Si $i$ explique $j$ alors personne ne peut plus expliquer $i$} \\
 			\boldsymbol{G}_{j,.}^{(q+1)}&=&\boldsymbol{G}_{i,j}^{(q)}\boldsymbol{G}_{j,.}^{(q)} \textrm{ Si $i$ explique $j$ alors $j$ ne peut plus expliquer personne}
 		\end{eqnarray}
-		Cette méthode de relaxation permet de sortir rapidement des extrema locaux et améliore donc significativement l'efficacité de l'algorithme.\\
+		Cette méthode de relaxation permet de sortir rapidement des extrema locaux et améliore donc significativement l'efficacité de l'algorithme (Figure \ref{comparecomplrelax}).\\
 		 
-		Mais il reste un problème. Le nombre de modèles envisageable est considérable et le critère $BIC$ ne tient pas compte de cette quantité, menant à des modèles trop complexes. On lui ajoute donc une pénalité qui tient compte du nombre de modèles réalisables pour pénaliser plus lourdement les modèles complexes.
+		Mais il reste un problème. Le nombre de modèles envisageables est considérable et le critère $BIC$ ne tient pas compte de cette quantité, menant à des modèles trop complexes. On lui ajoute donc une pénalité qui tient compte du nombre de modèles réalisables pour pénaliser plus lourdement les modèles complexes.
 	De manière générale quand on estime la vraisemblance d'une structure $\boldsymbol{S}$ dans une base de données $\boldsymbol{X}$, $BIC$ est utilisé comme approximation pour $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})\propto  \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})\mathbb{P}(\boldsymbol{S})$  	car $\mathbb{P}(\boldsymbol{S})$ est considéré comme suivant une loi uniforme. On s'appuie donc sur une loi uniforme hiérarchique $\mathbb{P}_{H}(\boldsymbol{S})=\mathbb{P}_{U}(\boldsymbol{J}_p | \boldsymbol{d}_p,\boldsymbol{J}_r,d_r)\mathbb{P}_{U}(\boldsymbol{d}_p|\boldsymbol{J}_r,d_r)\mathbb{P}_{U}(\boldsymbol{J}_r|d_r)\mathbb{P}_{U}(d_r)$ pour ajouter une pénalité supplémentaire aux structures complexes (même probabilité globale pour un plus grand nombre de structures donc chaque structure devient moins probable). 
 On note $BIC_H$ ce nouveau critère. Il ne modifie pas $BIC$ (on conserve ainsi ses propriétés) mais ajoute simplement une pénalisation.\\
-	Ces deux outils viennent améliorer l'efficacité de l'algorithme sans paramètre utilisateur à optimiser par ailleurs. Tout reste naturel et intuitif pour une meilleur automatisation.
+
+	Ces deux outils viennent améliorer l'efficacité de l'algorithme sans paramètre utilisateur à optimiser par ailleurs. Tout reste naturel et intuitif pour une meilleure automatisation.
 
 	\section{Résultats}
 		La méthode a été testée sur données simulées puis réelles, montrant l'efficacité du modèle marginal s'appuyant sur la vraie structure de sous-régressions (section \ref{MSEvraiS}), l'efficacité de l'algorithme de recherche de structure (section \ref{compZ}), et l'efficacité du modèle marginal s'appuyant sur la structure estimée (section \ref{compY} et chapitre \ref{sectionrealcase}). Le bilan est très positif comme le montrent les graphiques de ces différentes sections.
-	\section{Au-delà du marginal avec le plug-in}
+	\section{Modèle plug-in pour réduire l'erreur}
 		Une première perspective a été développée pour compléter le modèle marginal. Il s'agit d'un modèle plug-in permettant de ré-injecter les variables redondantes après estimation du modèle marginal pour obtenir un modèle utilisant toutes les variables mais protégé des corrélations par l'estimation séquentielle.
 		
 \begin{eqnarray}
 			%\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{\varepsilon}_Y \\
 			\boldsymbol{X}_{r}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2&=&\boldsymbol{X}_{f}\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \\
-			\boldsymbol{Y}&=& \boldsymbol{X}_{f}\underbrace{(\boldsymbol{\beta}_{f}+\boldsymbol{\alpha}^*\boldsymbol{\beta}_{r})}_{\boldsymbol{\beta}^*_f}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
+			\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma^2_Y &=& \boldsymbol{X}_{f}\underbrace{(\boldsymbol{\beta}_{f}+\boldsymbol{\alpha}^*\boldsymbol{\beta}_{r})}_{\boldsymbol{\beta}^*_f}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
 					\end{eqnarray}		 
-Ce qui donne donc
+Ce qui donne 
 		\begin{eqnarray}
-			\boldsymbol{Y}- \boldsymbol{X}_{r}\boldsymbol{\beta}^*_r&=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y \textrm{ avec}\\
-			\boldsymbol{\varepsilon}&=&\boldsymbol{X}_{r}-\boldsymbol{X}_{f}\boldsymbol{\alpha}^*
+			(\boldsymbol{Y}- \boldsymbol{X}_{f}\boldsymbol{\beta}^*_f)|\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\boldsymbol{\sigma}^2,\sigma^2_Y &=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y \textrm{ avec}\\
+			\boldsymbol{\varepsilon}|\boldsymbol{X}_f,\boldsymbol{X}_r,\boldsymbol{S};\boldsymbol{\alpha} &=&\boldsymbol{X}_{r}-\boldsymbol{X}_{f}\boldsymbol{\alpha}^*
 		\end{eqnarray}		 
-D'où le modèle plugin 
+D'où le modèle plug-in 
 		\begin{eqnarray}
-			\underbrace{\boldsymbol{Y}- \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}^*}}_{\tilde{\boldsymbol{Y}}}&=&\underbrace{(\boldsymbol{X}^{I_r}-\boldsymbol{X}^{I_f}\hat{\boldsymbol{\alpha}})}_{\tilde{\boldsymbol{X}}}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon}_Y \\
+			(\underbrace{\boldsymbol{Y}- \boldsymbol{X}_{f}\hat{\boldsymbol{\beta}^*_f}}_{\tilde{\boldsymbol{Y}}})|\boldsymbol{X}_r,\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\hat{\boldsymbol{\alpha}},\sigma^2_Y &=&\underbrace{(\boldsymbol{X}_{r}-\boldsymbol{X}_{f}\hat{\boldsymbol{\alpha}}^*)}_{\hat{\boldsymbol{\varepsilon}}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
 		\end{eqnarray}
-		qui permet d'estimer dans un second temps $\boldsymbol{\beta}_{I_r}$ par un modèle classique de régression linéaire en s'appuyant sur l'estimation de $\boldsymbol{\beta}^*$ issue du modèle marginal et sur $\hat{\boldsymbol{\alpha}}$.
-		Le modèle plug-in réduit le bruit de la régression
-		\begin{equation}
-			\boldsymbol{Y}= \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}^* + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y 
-		\end{equation}
-		and simple étape d'identification (sans estimation supplémentaire) permet de retouver le vrai modèle:
+		qui permet d'estimer dans un second temps $\boldsymbol{\beta}_{r}$ par un modèle classique de régression linéaire en s'appuyant sur l'estimation de $\boldsymbol{\beta}^*$ issue du modèle marginal et sur $\hat{\boldsymbol{\alpha}}$.
+		Le modèle plug-in réduit le bruit de la régression (\ref{marginalfr}) et
+%		\begin{equation}
+%			\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\hat{\boldsymbol{\alpha}}^*,\sigma^2_Y= \boldsymbol{X}_{f}\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
+%		\end{equation}
+		une simple étape d'identification (sans estimation supplémentaire) permet d'estimer le vrai modèle :
 		\begin{eqnarray}
-			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}(\hat{\boldsymbol{\beta}}^*-\hat{\boldsymbol{\alpha}}\hat{\boldsymbol{\beta}}_{I_r}) + \boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y \\
-			&=&\boldsymbol{X}^{I_f}\hat{\boldsymbol{\beta}}_{I_f}+\boldsymbol{X}^{I_r}\hat{\boldsymbol{\beta}}_{I_r}+\boldsymbol{\varepsilon}_Y
+			\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\hat{\boldsymbol{\alpha}},\sigma^2_Y&=& \boldsymbol{X}_{f}(\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}) + \boldsymbol{X}_{r}\hat{\boldsymbol{\beta}}_{r}+\boldsymbol{\varepsilon}_Y \\
+			&=&\boldsymbol{X}_{f}\hat{\boldsymbol{\beta}}_{f}+\boldsymbol{X}_{r}\hat{\boldsymbol{\beta}}_{r}+\boldsymbol{\varepsilon}_Y
 		\end{eqnarray}
 	
-	La figure \ref{MQE2} montre l'efficacié du modèloe plug-in et son champ d'application : les cas avec assez de correlations pour que les méthodes classiques appliquées à $\boldsymbol{X}$ soient handicapées mais pas assez de corrélations pour que le retrait des variables redondantes se fasse sans perte siginificative d'information.
+	La figure \ref{MQE2} montre l'efficacité du modèle plug-in et son champ d'application : les cas avec assez de correlations pour que les méthodes classiques appliquées à $\boldsymbol{X}$ soient handicapées mais pas assez de corrélations pour que le retrait des variables redondantes se fasse sans perte siginificative d'information.
 		
 	\section{Valeurs manquantes}
-		Une seconde perspective a été entamée concernant les valeurs manquantes. Le fait de disposer d'un modèle génératif complet sur $\boldsymbol{X}$ avec modélisation explicite des dépendances permet en effet de gérer les valeurs manquantes. Tout d'abord, l'estimation de $\boldsymbol{\alpha}$ peut se faire sur les données observées en intégrant sur les données manquantes. On peut alors utiliser un algorithme de type EM (expectation Maximization) pour estimer $\hat{\boldsymbol{\alpha}}$.\\
-		 En pratique, l'étape $E$ n'est pas systématiquement explicite et peut nécessiter de faire appel à une variante de EM : l'aglorithme SEM (pour Stochastic EM) qui remplace l'étape $E$ par une étape stochastique d'imputation des valeurs manquantes, par exemple en utilisant un échantillonneur de Gibbs. \\
-		 Cet algorithme de Gibbs peut alors être utilisé pour faire de l'imputation multiple sur les valeurs manquantes en s'appuyant sur le $\hat{\boldsymbol{\alpha}}$ issu du SEM. Comme cette imputation tient compte des corrélations entre les variables, elle est plus précise qu'une simple imputation par la moyenne. Un avantage de l'imputation multiple est que l'on peut avoir une idée de la robustesse des imputations en regardant simplement la variance des valeurs imputées, ce qui donne une information de fiabilité sur les imputations. Encore une fois, on y gagne en qualité d'interprétation.  
+		Une seconde perspective a été entamée concernant les valeurs manquantes. Le fait de disposer d'un modèle génératif complet sur $\boldsymbol{X}$ avec modélisation explicite des dépendances permet en effet de composer avec les valeurs manquantes. Tout d'abord, l'estimation de $\boldsymbol{\alpha}$ peut se faire sur les données observées en intégrant sur les données manquantes. On peut alors utiliser un algorithme de type EM (expectation Maximization) pour estimer $\hat{\boldsymbol{\alpha}}$.\\
+		 
+		 En pratique, l'étape $E$ n'est pas systématiquement explicite et peut nécessiter de faire appel à une variante de EM : l'aglorithme SEM (pour Stochastic EM) qui remplace l'étape $E$ par une étape stochastique d'imputation des valeurs manquantes, par exemple en utilisant un échantillonneur de Gibbs. Cet algorithme de Gibbs peut alors être utilisé pour faire de l'imputation multiple sur les valeurs manquantes en s'appuyant sur le $\hat{\boldsymbol{\alpha}}$ issu du SEM. Comme cette imputation tient compte des corrélations entre les variables, elle est plus précise qu'une simple imputation par la moyenne. Un avantage de l'imputation multiple est que l'on peut avoir une idée de la robustesse des imputations en regardant simplement la variance des valeurs imputées. Encore une fois, on y gagne en qualité d'interprétation.  
 \chapter{The industrial context}
-	\paragraph{Abstract:} Ce chapître explique les contraintes industrielles qui ont orienté les travaux pour répondre aux demandes d'ArcelorMittal qui est le commanditaire de ces travaux de recherche.
+	\paragraph{Abstract:} This chapter describes the industrial constraints that has led this work. This work takes place in a steel industry context and was funded by ArcelorMittal, the world leading company in steelmaking. 
 \section{Steelmaking process}
-	This work takes place in a steel industry context, fund by ArcelorMittal, the world leading company in steelmaking.
-	Steelmaking starts from raw materials to give highly specific products found.
+	Steelmaking starts from raw materials and aims to give highly specific products used in automotive, beverage cans, {\it etc}.
+	We first melt down a mix of iron ore and cock to obtain cast iron that is then transformed in steel by addiction of pure oxygen to remove carbon. Liquid steel is then refreshed in a mold (continuous casting) to obtain steel slabs (nearly 20 tons each, 23 cm thick). \\
 	
-	We first melt down a mix of iron ore and cock to obtain cast iron that is then transformed in steel by addiction of pure oxygen to reduce the quantity of carbon. Liquid steel is then refreshed in a mold (continuous casting) to obtain steel slabs (nearly 20 tons each). Cold slabs are then warmed to be pressed in a hat rolling mill to obtain coils of steel. If the final product requires a thinner steel, coils pass through a cold rolling mill. Each step of this process involves a whole manufactory and the whole process can take several weeks. The most sensitive products are the thinner and sometimes defects are generated by small inclusion in the steel down to the dozen of microns. So even if quality is evaluated at each step of the process, some defects are only found when the whole process is finished even if the origin comes from the first part of this process. So we have hundreds of parameters to analyse.
+	Cold slabs are then warmed to be pressed in a hot rolling mill to obtain coils (nearly half a  millimeter thick or less). This warming phase also allows to adjust mechanical properties of the final product. It is the process that gave its name to the simulated annealing algorithm that allows to escape from local extrema thanks to a parameter called "temperature" in allusion to the steelmaking process.  \\
+	 
+	 If the final product requires a thinner strip of stell, coils pass through a cold rolling mill. Each step of this process involves a whole manufactory and the whole process can take several weeks. The most sensitive products are the thinner ones and sometimes defects are generated by small inclusions in the steel down to the dozen of microns. So even if quality is evaluated at each step of the process, some defects are only found when the whole process is finished even if the origin comes from the first part of this process. So we have hundreds of parameters to analyse.
 	\begin{center}
           \begin{tabular}{ccc}
          \includegraphics[width=130px,height=130px]{figures/liquid.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame1.jpg} & \includegraphics[width=130px,height=130px]{figures/Brame.jpg} \\
           	\includegraphics[width=130px,height=130px]{figures/ecras_moy.jpg} &\includegraphics[width=130px,height=130px]{figures/tcc2.jpg} & \includegraphics[width=130px,height=130px]{figures/bobines.jpg}
           \end{tabular}
         \end{center}
-Steelmaking is always evolving and we are now able to produce steel that is thinner and stronger at the same time. Steel is completely recyclable so we will always be able to produce it. This quickly evolving industry is associated to a lot of research in metallurgy but also need adapted statistical tools. That is why this thesis has been made.
+Steelmaking is continuously improving and we are now able to produce steel that is both thinner and stronger. Steel is 100$\%$ recyclable unlike petroleum so we will continue to use it widely in the future. This quickly evolving industry is associated to a lot of research in metallurgy but also need adapted statistical tools. That is why this thesis has been made.
 	
 	\section{Impact of the industrial context}
-	 The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we may have no idea of its origin. The defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process, each implying a whole plant. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates essentially depends on the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
+	 The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we may have no idea of its origin. Defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process does include several sub-process. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariates are linked to the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
 	We have several constraints :
 	\begin{itemize}
-		\item To be able to predict the defect and stop the process as early as possible to gain time (and money)
-		\item To be able to understand the origin of the defect to try to optimize the process
-		\item To be able to find parameters that can be changed because the objective is not only to understand but to correct the problematic part of the process.
-		\item It also must be fast and automatic (without any a priori).
+		\item Being able to predict the defect and stop the process as early as possible to gain time (and money)
+		\item Being able to find parameters that can be changed and to understand the origin of the defect because the objective is not only to understand but to adapt the problematic part of the process.
+		\item It also must be fast and automatic (without any a priori) to manage totally new phenomenon on new products.
 	\end{itemize}
 	We will see in the state of the art that correlations are a real issue and that the number of variables increases the problem.	
-	The stakes are very high because of the high productivity of the steel plants but also because steel making is now well-known and optimized thus new defects only appears on innovative steels with high value. Any improvement on such crisis can have important impact on the market shares and when the customer is implied, each day won by the automation of the data mining process can lead to a gain of hundreds of thousands of euros, sometimes more. So we really need a kind of automatic method, able to manage the correlations without any a priori and giving an easily understandable and flexible model.
+	The stakes are very high because of the high productivity of the steel plants and the extreme competition between steelmakers but also because steel making is now well-known and optimized thus new defects only appears on innovative steels with high added value. Any improvement on such crisis can have important impact on market shares and when the customer is impacted, each day won by the automation of the data mining process can lead to substantial savings. So we really need a kind of automatic method, able to manage correlations without any a priori and giving an easily understandable and flexible model.
 	
 \chapter{State of the art}
-\paragraph{Abstract:} Rapide aperçu de ce qui existe déjà pour tenter de répondre à notre problématique. La plupart des outils présentés le sont plus en détail dans le livre de Hastie, Tibshirani et Friedman : {\it "The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible gratuitement sur le web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}}.
+\paragraph{Abstract:} Brief state of the art to have a glimpse of existing method we could try to solve our problematic.
+Most of the tools described here are explained with more details in the book from  Hastie, Tibshirani et Friedman : {\it "The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible on web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}}.
 	\section{Linear regression}
 %		\subsection{Historic interest}
 %			méthode ancienne et reconnue, remonte aux origines des statistiques, méthode pionnière en prédiction.
@@ -293,10 +295,10 @@ Steelmaking is always evolving and we are now able to produce steel that is thin
 %			C'est ici qu'on peut mettre le principe de la régression linéaire (image d'un nuage de point et d'une droite qui le traverse)
 		\subsection{Industrial context}
 		
-			Industrial context is often poor in statistical background and the stakes are frequently very high in terms of financial impact. 
-		These two points give strong constraints because methods used has to be accessible for non-statistician in a minimum amount of time and results obtained have to be clearly interpreted (no black-box) because if industrial experts don't understand the result, they will not trust it and then they will not use it. So a powerful tool without interpretation becomes kind of useless in such a context.
+			Industrial context necessitates easily understandable models and the stakes are frequently very high in terms of financial impact. 
+		These two points give strong constraints because methods used has to be accessible for non-statistician in a minimum amount of time and results obtained have to be clearly interpretable (no black-box). So a powerful tool without interpretation becomes kind of useless in such a context.\\
 		
-		Every engineer, even non-statistician use frequently linear regression to seek relationship between some covariates. It is easy to understand, fast to do, it can be done directly in Microsoft Excel that remains the most used software in industry and the software used by engineers to open most of the datasets.
+		Every engineer, even non-statistician use frequently linear regression to seek relationship between some covariates. It is easy to understand, fast to do, and is used in nearly all the fields where statistics are made\cite{montgomery2012introduction}: Astronomy \cite{isobe1990linear}, Sociology \cite{longford2012revision}, and so on. It can be done directly in Microsoft Excel which is well known and often used by engineers to open and analyse most of their datasets. Thus we have chosen to work in this way.\\
 		 
 \begin{figure}
 \centering
@@ -304,9 +306,8 @@ Steelmaking is always evolving and we are now able to produce steel that is thin
 	\caption{An example of simple linear regression}
 \end{figure}		 
 		 
-		 Regression appears to be the basis of industrial statistics so we have chosen to work in this way. As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative (as we will see in the followings) and can be generalized 		 \cite{kiebel2003general,wickens2004general,nelder1972generalized,mccullagh1989generalized} 
-. 
-		 It's simplicity facilitates a wide spread usage in industry and other fields of application. It is also a powerful tool for interpretation allowing to know with precision the positive or negative impact of each covariate on the response variable. 
+		 As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivative (as we will see in the followings) and can be generalized 		 \cite{kiebel2003general,wickens2004general,nelder1972generalized,mccullagh1989generalized}. 
+	It's simplicity facilitates a wide spread usage in industry and other fields of application. It is also a good tool for interpretation with the sign of the coefficients indicating whether the associated covariate has a positive or negative impact on the response variable. \\
 	
 	More complex situations can be described by evolved forms of linear regression like the hierarchical linear model \cite{raudenbush2002hierarchical,woltman2012introduction}  or  multilevel regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel} that allows to consider effects of the covariates on nested sub-populations in the dataset. It is like using interactions but with a proper modeling that improves interpretation. It is not really a linear model because it is not linear in $\boldsymbol{X}$ but can be seen as a basis expansion using new covariates (the interactions) composed by the product of some of the original covariates.
 %			
@@ -318,17 +319,17 @@ Steelmaking is always evolving and we are now able to produce steel that is thin
 
 
 \paragraph{Notations:}	
-In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_p|)$. Vectors are in bold characters.
+In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_p|)$. Vectors, matrices and tuples are in bold characters.
 	\section{Ordinary least squares and associated problems}\label{sectionOLS}		% ne pas oublier de mentionner les packages existants
 
 We note the linear regression model:
 \begin{equation}
-		\boldsymbol{Y}_{|\boldsymbol{X}}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon} \label{regressionsimple}
+		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma^2_Y=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}_Y \label{regressionsimple}
 	\end{equation}
-	where $\boldsymbol{X}$ is the $n\times p$ matrix of the explicative variables,% (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates)
-	 $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon} \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $p\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
+	where $\boldsymbol{X}$ is the $n\times d$ matrix of the explicative variables,% (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates)
+	 $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon}_Y \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $d\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
 	\begin{equation}
-		\boldsymbol{\hat{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaOLS}
+		\boldsymbol{\hat{\beta}}_{OLS}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaOLS}
 	\end{equation}
 	with variance matrix
 	\begin{equation}
@@ -337,14 +338,14 @@ We note the linear regression model:
 	and without any bias \cite{saporta2006probabilites,dodge2004analyse}. In fact it is the Best Linear Unbiased Estimator (BLUE).
 	The theoretical MSE is given by
 	\begin{equation}
-	E[\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})]= 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1})
+	\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})= 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1})
 	\end{equation}
 	\\
-	Equation \ref{regressionsimple}	has no intercept but can be generalized by adding to $\boldsymbol{X}$ a first column full of 1. So we don't consider the intercept to simplify notations. In practice, an intercept is added by default.
+	Equation \ref{regressionsimple}	has no intercept but can be generalized by adding to $\boldsymbol{X}$ a first column full of 1. In the followings we don't consider the intercept to simplify notations. In practice, an intercept is added by default.\\
 	
-	Ordinary Least Squares find a $p-$dimensional hyperplane that minimizes the distance with each individual $(\boldsymbol{X}_i,Y_i)$. It can be written
+	Ordinary Least Squares find a $d-$dimensional hyperplane that minimises the distance with each individual $(\boldsymbol{X}_i,Y_i)$. It can be written
 	\begin{equation}
-		\boldsymbol{\hat{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace
+		\boldsymbol{\hat{\beta}}_{OLS}=\operatorname{argmin}_{\boldsymbol{\beta}}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace
 	\end{equation}
 	So estimation of $\boldsymbol{Y}$ by OLS can be viewed as a projection onto the linear space spanned by the regressors $\boldsymbol{X}$ as shown in figure \ref{geomOLS}.% that is in public domain\footnote{"OLS geometric interpretation" by Stpasha - Own work. Licensed under Public domain via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:OLS\_ geometric\_ interpretation.svg\#mediaviewer/File:OLS\_geometric\_interpretation.svg}.
 	\begin{figure}[h!]
@@ -355,40 +356,39 @@ We note the linear regression model:
 	
 	%problème
 	Estimation of $\boldsymbol{\beta}$ requires the inversion of $\boldsymbol{X}'\boldsymbol{X}$ which will be ill-conditioned or even singular if some covariates depend linearly from each other. 
-For a fixed number $n$ of individuals, conditioning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects: 
+For a given number $n$ of individuals, conditioning of $\boldsymbol{X}'\boldsymbol{X}$ get worse based on two aspects: 
 \begin{itemize}
-	\item The dimension $p$ (number of covariates) of the model (the more covariates you have the greater variance you get)
+	\item The dimension $d$ (number of covariates) of the model (the more covariates you have the greater variance you get)
 	\item The correlations within the covariates: strongly correlated covariates give bad-conditioning and increase variance of the estimators .
 \end{itemize}
 	When correlations between covariates are strong, the matrix to invert is ill-conditioned and the variance increases, giving unstable and unusable estimator \cite{hoerl1970ridge}.
-	Another problem is that matrix inversion requires to have more individuals than covariates ($n\geq p$).
-	When matrices are not invertible, classical packages like the function lm of R base package \cite{packagebase} use the Moore-Penrose pseudoinverse \cite{PSP:2043984} to generalize OLS.
+	Another problem is that matrix inversion requires to have more individuals than covariates ($n\geq d$).
+	When matrices are not invertible, classical packages like the function lm of R base package \cite{packagebase} use the Moore-Penrose pseudoinverse \cite{PSP:2043984} to generalize OLS.	\\	
 		
-		
-	Last but not least, Ordinary Least Squares is unbiased but if some $\beta_i$ are null (irrelevant covariates) the corresponding $\hat{\beta}_i$ will only asymptotically tend to 0 so the number of covariates in the estimated model remains $p$. This is a major issue because we are searching for a statistical tool able to work without a priori on a big dataset containing many irrelevant datasets. Pointing out some relevant covariate and how they impact the response really is the main goal here. We will need a variable selection method one moment or another. It could be as a pretreatment, during coefficient estimation or by post-treatment. \\
+	Last but not least, Ordinary Least Squares is unbiased but if some $\beta_i$ are null (irrelevant covariates) the corresponding $\hat{\beta}_i$ will only asymptotically tend to 0 so the number of covariates in the estimated model remains $d$. This is a major issue because we are searching for a statistical tool able to work without a priori on a big dataset containing many irrelevant datasets. Pointing out some relevant covariate and how they impact the response really is the main goal here. We will need a variable selection method one moment or another. It could be as a pretreatment, during coefficient estimation or by post-treatment. \\
 	
 		
 
 	
-\paragraph{Running example:} we look at a simple case with $p=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5$ and $\boldsymbol{x}_3=\boldsymbol{x}_1+\boldsymbol{x}_2+\boldsymbol{\varepsilon}_3$ where $\boldsymbol{\varepsilon}_3\sim{\mathcal{N}(\boldsymbol{0},\sigma_3^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
-It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_3$ gets smaller.
+\paragraph{Running example:} We look at a simple case with $d=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5$ and $\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ where $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
+It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_1$ gets smaller.
 	
 	 \begin{figure}
 	 \centering
-	  \includegraphics[width=500px]{figures/MQEOLS.png}
-	  \caption{Evolution of theoretical Mean Squared error on $\hat{\boldsymbol{\beta}}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLS1}
+	  \includegraphics[width=500px]{figures/MQEOLS0.png}
+	  \caption{Evolution of theoretical Mean Squared error on $\hat{\boldsymbol{\beta}}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEOLS1}
 	\end{figure}
 	
 	Figure \ref{MQEOLS1} shows the theoretical MSE obtained on $\hat{\boldsymbol{\beta}}$ with OLS. These results are based on equation \ref{eqOLS}, we show the mean obtained after 100 experiences computed on our running example.
 	
 	The $R^2$ stands for:
 	\begin{equation}\label{defR2}
-	R^2=1-\frac{\sum_i (y_i - x_i\beta)^2}{\sum_i (y_i-\bar{y})^2}
+	R^2=1-\frac{\operatorname{Var}()}{}=1-\frac{\sum_i (y_i - x_i\beta)^2}{\sum_i (y_i-\bar{y})^2}
 	\end{equation}
 	where $\bar{\boldsymbol{Y}}=\frac{1}{n}\sum_{i=1}^n y_i $
 	
 	
-	Many other estimation methods were created to obtain better estimations by playing on the bias/variance tradeoff or by making additionnal hypothesis.
+	Many other estimation methods were created to obtain better estimations by playing on the bias/variance tradeoff or by making additional hypothesis.
 	To have an easier comparison, we also look at the empiric MSE obtained on $\hat{\boldsymbol{\beta}}$.
 		
 	
@@ -396,7 +396,7 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/OLScompl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLScompl}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEOLScompl}
 	\end{figure}	
 	We first observe that real results are better from expected (Figure \ref{MQEOLScompl}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices \cite{bulirsch2002introduction}. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$.  Our package {\tt CorReg} also uses this decomposition.
 	\\
@@ -754,7 +754,7 @@ Selvarclust is one step beyond SEM with an algorithm to find the structure.
 \paragraph{Abstract:} Nous modélisons explicitement les corrélations entre covariables par un système de régressions linéaires entre covariables. Cela permet une meilleure compréhension des données mais aussi une préselection de variables mettant de côté les variables redondantes pour réduire fortement les corrélations tout en ne perdant que peu d'information. La préselection prend un sens particulier grâce à la structure de sous-régression qui permet de distinguer par suite les variables indépendantes de la variable réponse de celles qui sont juste redondantes mais potentiellement liées à la variable réponse. 
 \\
 
-\section{Our proposal: modelisation of the correlations}
+\section{Explicit modeling of the correlations}
 	Let $\boldsymbol{X}$ be a $n \times p$ matrix of observed covariates and $\boldsymbol{Y}$ be the $n \times 1$ matrix of the observed response variable. In the following, we note $\boldsymbol{X}^j$ the $j^{th}$ column of $\boldsymbol{X}$ and $\boldsymbol{X}^{J}$ where $J=\{j_1,\dots,j_k\}$ the $n\times k$ sub-matrix of $\boldsymbol{X}$ composed by the columns of $\boldsymbol{X}$ whose indices are in the set $J$. 
 \\
 
@@ -1309,7 +1309,7 @@ The main advantage of such a neighbourhood is that increasing and decreasing com
 		\end{equation}
 			Such a strategy can be interpreted as the uniform choice of a sub-regression to modify followed by the proposal of each possible unary change.
 			Our package {\tt CorReg} let the user choose many other strategies like a fixed number of random couples $(i,j)$, or the union of the $j^{th}$ line and column of $G$.
-		\subsection{Active relaxation of the constraints}
+		\subsection{Active relaxation of constraints}
 		We have defined the neighbourhood with an intersection with $\mathcal{S}_p$. 
 		In practice, for some of the $(i,j) \in \mathcal{A}_q$, we have $S^{(i,j)}\notin \mathcal{S}_p$. Such candidates are basically rejected so the number of candidates is not constant at each step. Moreover, complex structures reduce the size of the potential neighbourhood because of the uncrossing rule. 
 		Thus we propose a relaxation method by a new definition of $S^{(i,j)}$:
@@ -1402,7 +1402,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 			\end{equation}
 			It is not based on any arbitrary parameter and change the result only if it founds a better structure in terms of the criterion $\psi$ used in the walk.
 			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE }.
-	\section{The Graphical LASSO}\label{sectionGlasso}
+	\section{Graphical LASSO}\label{sectionGlasso}
 		Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} is set to give undirectionnal (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It does make sense for exponential family because in these cases, zeros in the precision matrix $\Sigma^{-1}$ can be interpreted in terms of conditional independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ and we search an oriented graph.
 	However, we can still use it for initialization, for example by a Hadamard product with $G_0$ the adjacency matrix of the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum} because trees have no cycles. But it is time consuming and has no theoretical properties relied to our problematic of minimizing $\psi$, so the idea was left behind after some tries.		
 	
@@ -1437,7 +1437,7 @@ We define the complexity of a structure $S$ as the number of elements in the adj
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 
 
-	\section{The datasets}	
+	\section{Simulated datasets}	
 	Now we have defined the model and the way to obtain it, we can have a look on some numerical results to see if {\tt CorReg} 	keeps its promises.
 	The {\tt CorReg} package has been tested on the simulated datasets from section \ref{thedatasets}.
 Section \ref{compZ} shows the results obtained in terms of $\hat{S}$. Section \ref{compY} shows the results obtained using only {\tt CorReg}, or {\tt CorReg} combined with other methods. The graph in section \ref{compY} give both mean, first and third quartiles of the chosen indicator. The MSE on $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$ were computed on a validation sample of $1 000$ individuals. Several pattern for $\boldsymbol{Y}$ were tested to evaluate the impact of irrelevant covariates.\\
@@ -1643,7 +1643,7 @@ We try the method with a response variable depending on all covariates to compar
 
 \clearpage
 \newpage
-\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$ (best case for us)}	 \label{tableMSEsimdroite}
+\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_{f}}$ (best case for us)}	 \label{tableMSEsimdroite}
 \FloatBarrier
  We want to see what happens in real life, when some covariates are irrelevant to describe $\boldsymbol{Y}$ according to the given dataset. We could generate $\boldsymbol{Y}$ with a random subset of $\boldsymbol{X}$ but in such a case, it would be impossible to say whether results come from sparsity or from the ratio of covariates in the subset that are in $\boldsymbol{X}^{I_r}$. Moreover, we will study real datasets in the next chapter so the only pattern to test here are those with some irrelevant covariates and relevant covariates only in one part of the partition on $\boldsymbol{X}$. \\
  	We start with $\boldsymbol{Y}$ depending only on covariates in $\boldsymbol{X^{I_f}}$. It is the best case for us because our marginal model is then the true model and the complete model will need variable selection to reach the truth. Here $\boldsymbol{Y}$ depends on the 24 covariates in $\boldsymbol{X}^{I_f}$ with an intercept.\\
@@ -1806,7 +1806,7 @@ We try the method with a response variable depending on all covariates to compar
 
 \clearpage
 	
-	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$ (worst case for us)}	 \label{tableMSEsimgauche}
+	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_{r}}$ (worst case for us)}	 \label{tableMSEsimgauche}
 We now try the method with a response depending only on variables in $\boldsymbol{X}^{I_r}$. The datasets used here were still the same.
 Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtain the true model when using the true structure.  We get unbiased models but with an increase in the variance as described in equation \ref{Trueexpl}. \\
 	In such a case, usage of $BIC_+$ instead of $BIC$ is more obvious because each additional sub-regression deletes a covariate in our marginal model and reduces the probability to find the true model. \\
@@ -2129,8 +2129,8 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 			
 		
 \chapter{Taking back the residuals}
-	We have seen that eviction of redundant covariates improves the results by a good trade-off between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back.
-	\section{The model}
+	We have seen that eviction of redundant covariates improves the results by a good tradeoff between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back.
+	\section{Plug-in model}
 		After the estimation of the marginal model, we know both $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\beta}^*}$.
 		\begin{eqnarray}
 			\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{\varepsilon}_Y \\
@@ -2602,8 +2602,8 @@ This phenomenon is still observed with the ridge regression with more efficiency
 %Detailler Les 6 types de méthodes	 
 %	 
 	We have a full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates. So when a value is missing, we know its distribution but more than that, we know its conditional distribution based on observed values for the same individual. Thus we are able to make imputation and to describe the missing values with their conditional distribution. This is a positive side-effect of the explicit generative model on $\boldsymbol{X}$. 
-\section{Estimation of the sub-regressions with missing values}
-\subsection{The integrated likelihood}
+\section{Estimation of sub-regressions with missing values}
+\subsection{Integrated likelihood}
 The first thing we do with $\boldsymbol{X}$ is to estimate S.
 	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients.
 We start with the complete likelihood of $\boldsymbol{X}$
