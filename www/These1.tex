@@ -112,7 +112,7 @@
 	\begin{equation}
 		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma^2_Y=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y
 	\end{equation}
-	où $\boldsymbol{Y}$ est la variable réponse de taille $n\times 1$ que l'on souhaite décrire à l'aide de $d$ variables explicatives observées sur $n$ individus et dont les valeurs sont stockées dans la matrice $\boldsymbol{X}$ de taille $n\times d$. Le vecteur $\boldsymbol{\beta}$ est le vecteur des coefficients de régression qui permet de décrire le lien linéaire entre $\boldsymbol{Y}$ et $\boldsymbol{X}$. Le vecteur $\boldsymbol{\varepsilon}_Y$  est un bruit blanc gaussien $\mathcal{N}(0,\sigma_Y^2\boldsymbol{I}_n)$ qui représente l'inexactitude du modèle de régression.\\
+	où $\boldsymbol{Y}$ est la variable réponse de taille $n\times 1$ que l'on souhaite décrire à l'aide de $d$ variables explicatives\footnote{En général on ajoute une constante parmi les régresseurs. Par exemple $\boldsymbol{X}^1=(1,\ldots,1)'$. Le coefficient associé dans $\boldsymbol{\beta}$ est alors la constante de régression $\beta_1$.} observées sur $n$ individus et dont les valeurs sont stockées dans la matrice $\boldsymbol{X}$ de taille $n\times d$. Le vecteur $\boldsymbol{\beta}$ est le vecteur des coefficients de régression qui permet de décrire le lien linéaire entre $\boldsymbol{Y}$ et $\boldsymbol{X}$. Le vecteur $\boldsymbol{\varepsilon}_Y$  est un bruit blanc gaussien $\mathcal{N}(0,\sigma_Y^2\boldsymbol{I}_n)$ qui représente l'inexactitude du modèle de régression.\\
 	
 	On connaît l'estimateur sans biais de variance minimale (ESBVM) de $\boldsymbol{\beta}$ qui est obtenu par Moindres Carrés Ordinaires (MCO) selon la formule  :
 	\begin{equation}
@@ -130,7 +130,7 @@
 \begin{hypfr}\label{H1fr}
 Les corrélations entre covariables viennent de ce que certaines d'entre elles dépendent linéairement d'autres covariables. Plus précisément, il y a $d_{r}\geq 0$  ``sous-regressions'', chaque sous-regression $j=1,\ldots,d_{r}$ ayant la variable $\boldsymbol{X}^{J_{r}^j}$ comme variable {\it réponse} ($J_{r}^j\in\{1,\ldots,p\}$ et $J_{r}^j\neq J_{r}^{j'}$ pour $j\neq j'$) et ayant les $d_p^j>0$ variables $\boldsymbol{X}^{J_{p}^j}$  comme variables {\it predictives}  ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ et $d_p^j=|J_{p}^j|$ le cardinal de $J_{p}^j$):
 \begin{equation}
-\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR}
+\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR_fr}
 \end{equation}
 où $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ pour tout $j=1,\ldots,d_r$ et $h=1,\ldots,d_p^j$) et $\boldsymbol{\varepsilon}_j \sim\mathcal{N}_n(\boldsymbol{0},\sigma^2_j\boldsymbol{I})$.
 \end{hypfr}
@@ -151,7 +151,7 @@ Toutes ces notations sont illustrées dans l'exemple ci-après.
 	La figure \ref{MQEOLS1} illustre la déterioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur un modèle composé de $d=5$ variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{X}_f=(\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5)$ et une variable redondante $\boldsymbol{X}_r=\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ avec $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ ont été testées avec $\boldsymbol{\beta}=(1,1,1,1,1)'$ and $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_1$ diminue. Ici $J_f=\{1,2,4,5\},J_r=\{3\},\boldsymbol{J}_r=(3),\boldsymbol{d}_p=2,\boldsymbol{J}_p=(\{1,2\}),\boldsymbol{\alpha}=(\\boldsymbol{\alpha}_1)=((1,1)'),\boldsymbol{X} ^{J_p^1}=(\boldsymbol{X}^1,\boldsymbol{X}^2),\boldsymbol{S}=((3),(\{1,2\}))$.\\
 	\paragraph{Remarques}
 \begin{itemize}
-\item Les sous-régressions définies en (\ref{eq:SR}) sont très simples à comprendre pour l'utilisateur et permettent donc d'avoir un aperçu net des corrélations présentes dans les données étudiées.
+\item Les sous-régressions définies en (\ref{eq:SR_fr}) sont très simples à comprendre pour l'utilisateur et permettent donc d'avoir un aperçu net des corrélations présentes dans les données étudiées.
 \item Les hypotheses~\ref{H1fr} et~\ref{H2fr} , rendent les variables dans $\boldsymbol{X}_f$ {\it indépendantes}.
 \item $\boldsymbol{S}$ ne dépend pas de $\boldsymbol{Y}$ et peut donc être estimé séparément.
 \end{itemize} 
@@ -159,7 +159,7 @@ Toutes ces notations sont illustrées dans l'exemple ci-après.
 	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal. On peut en effet substituer les variables redondantes par leur sous-régression, ce qui revient à intégrer la régression sur $\boldsymbol{X}_{r}$ sachant la structure de sous-régressions $\boldsymbol{S}$. On fait alors un hypothèse supplémentaire :
 
 \begin{hypfr}\label{H3fr}
-On suppose l'indépendance 2 à 2 entre les erreurs de régression $\boldsymbol{\varepsilon}_Y$ et $\boldsymbol{\varepsilon}_j (j=1,\dots,d_r)$. En particulier on a l'indépendance conditionnelle entre les variables réponses \\$\{\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{J_p^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma_j^2\}$ définies en (\ref{eq:SR}).
+On suppose l'indépendance 2 à 2 entre les erreurs de régression $\boldsymbol{\varepsilon}_Y$ et $\boldsymbol{\varepsilon}_j (j=1,\dots,d_r)$. En particulier on a l'indépendance conditionnelle entre les variables réponses \\$\{\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{J_p^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma_j^2\}$ définies en (\ref{eq:SR_fr}).
 \end{hypfr}
 On a donc 
 \begin{eqnarray}
@@ -326,7 +326,7 @@ We note the linear regression model:
 \begin{equation}
 		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma^2_Y=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}_Y \label{regressionsimple}
 	\end{equation}
-	where $\boldsymbol{X}$ is the $n\times d$ matrix of the explicative variables,% (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates)
+	where $\boldsymbol{X}$ is the $n\times d$ matrix of the explicative variables\footnote{Usually a constant is included as one of the regressors. For example we can take $\boldsymbol{X}^1=(1,\ldots,1)'$. The corresponding element of $\boldsymbol{\beta}$ is then the intercept $\beta_1$.},% (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates)
 	 $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon}_Y \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $d\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
 	\begin{equation}
 		\boldsymbol{\hat{\beta}}_{OLS}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaOLS}
@@ -372,33 +372,32 @@ For a given number $n$ of individuals, conditioning of $\boldsymbol{X}'\boldsymb
 	
 \paragraph{Running example:} We look at a simple case with $d=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5$ and $\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ where $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
 It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_1$ gets smaller.
+	\\
 	
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEOLS0.png}
 	  \caption{Evolution of theoretical Mean Squared error on $\hat{\boldsymbol{\beta}}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEOLS1}
 	\end{figure}
-	
 	Figure \ref{MQEOLS1} shows the theoretical MSE obtained on $\hat{\boldsymbol{\beta}}$ with OLS. These results are based on equation \ref{eqOLS}, we show the mean obtained after 100 experiences computed on our running example.
 	
 	The $R^2$ stands for:
 	\begin{equation}\label{defR2}
-	R^2=1-\frac{\operatorname{Var}()}{}=1-\frac{\sum_i (y_i - x_i\beta)^2}{\sum_i (y_i-\bar{y})^2}
+	R^2=1-\frac{\operatorname{Var}(\boldsymbol{\varepsilon}_1)}{\operatorname{Var}(\boldsymbol{X}^3)}
 	\end{equation}
-	where $\bar{\boldsymbol{Y}}=\frac{1}{n}\sum_{i=1}^n y_i $
+	%where $\bar{\boldsymbol{Y}}=\frac{1}{n}\sum_{i=1}^n y_i $
 	
 	
 	Many other estimation methods were created to obtain better estimations by playing on the bias/variance tradeoff or by making additional hypothesis.
 	To have an easier comparison, we also look at the empiric MSE obtained on $\hat{\boldsymbol{\beta}}$.
-		
-	
+		\\
 	
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/OLScompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEOLScompl}
 	\end{figure}	
-	We first observe that real results are better from expected (Figure \ref{MQEOLScompl}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices \cite{bulirsch2002introduction}. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$.  Our package {\tt CorReg} also uses this decomposition.
+	We first observe that real results (Figure \ref{MQEOLScompl}) figure are better from expected (Figure \ref{MQEOLS1}). This comes from usage of $QR$ decomposition to inverse matrices, that are less impacted by ill-conditioned matrices \cite{bulirsch2002introduction}. But the correlations issue remains and so do the impact of $n$ and $\sigma_Y$.  Our package {\tt CorReg} also uses this decomposition.
 	\\
 		 \FloatBarrier
 		
@@ -410,27 +409,28 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 
 			%\cite{hoerl1970ridge}
 			%\cite{marquardt1975ridge}
-Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a biased estimator for $\boldsymbol{\beta}$ that can be written in terms of a parametric $L_2$ penalty:
+Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a possibly biased estimator for $\boldsymbol{\beta}$ that can be written in terms of a parametric $L_2$ penalty:
 	\begin{equation}
 		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel \boldsymbol{\beta} \parallel_2^2\leq \lambda \textrm{ with } \lambda>0
 	\end{equation}
-	But this penalty is not guided by the correlations. It introduce an additional parameter $\lambda$ to choose for the whole dataset  whereas correlations may concern only some of the covariates with several intensities.
+	But this penalty is not guided by correlations. It introduce an additional parameter $\lambda$ to choose for the whole dataset  whereas correlations may concern only some of the covariates with several intensities.
 	
 	The solution of the ridge regression is given by
 	\begin{equation}
 		 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} -\lambda\boldsymbol{I}_n\right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaridge}
 	\end{equation}
-	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ is done for a given $\lambda$. Methods does exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called {\tt ridge} is on CRAN \cite{packageridge}. 
-	We have computed the same experiment as in previous figure but with the {\tt ridge} package instead of OLS. It is clear that the ridge regression is efficient in variance reduction (it is what it is built for).
+	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ is done for a given $\lambda$. Methods do exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called {\tt ridge} is on CRAN \cite{packageridge}. 
+	We have computed the same experiment as in previous figure but with the {\tt ridge} package instead of OLS. It is clear that the ridge regression is efficient in variance reduction (it is what it is built for). Moreover, ridge allows to have $n<d$.\\
+	
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/ridgecompl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEridgecompl}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEridgecompl}
 	\end{figure}
 	
 	
 	%It is the same for each covariates and will be too large for independent covariates and/or too small for correlated ones. So the efficiency of such a method is limited. 
-	Moreover, like OLS, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $p$. Ridge regression is efficient to improve conditioning of the estimator but gives no clue to the origin of ill-conditioning and keep irrelevant covariates. It remains a good candidate for prediction-only studies. But our industrial context makes necessary to have a variable selection method.
+	Like OLS, coefficients tend to 0 but don't reach 0 so it gives difficult interpretations for large values of $d$. Ridge regression is efficient to improve conditioning of the estimator but gives no clue to the origin of ill-conditioning and keep irrelevant covariates. It remains a good candidate for prediction-only studies. Our industrial context makes necessary to have a variable selection method so we look further.
 	
 		 \FloatBarrier
 		
@@ -451,23 +451,24 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 			\includegraphics[width=200px]{figures/lasso.png} 
 			\caption{Geometric view of the Penalty for the LASSO (left) compared to ridge regression (right) as shown in the book from Hastie \cite{hastie2009elements}} \label{lassogeom}
 		\end{figure}
-		Figure \ref{lassogeom} show the contour of error (red) and constraint function (blue) for both lasso (left) and ridge regression (right). We see that the optimum will be found on an axis for the lasso because its constraint zone is a polyhedron whose vertices are on the axis but not for the ridge regression. Here the axis stands for the regression coefficients.
+		Figure \ref{lassogeom} shows the contour of error (red) and constraint function (blue) for both lasso (left) and ridge regression (right). We see that the optimum will be found on an axis for the lasso because its constraint zone is a polyhedron whose vertices are on the axis but not for the ridge regression. Here the axis stands for the regression coefficients.\\
 		
 		Here again we have to choose a value for $\lambda$.
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path.  But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another that was selected from an irrelevant covariate. And that is a problem. This consistency issue is illustrated in section \ref{consistency}.
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path.  It can be used through the {\tt lars } package on CRAN (\cite{packagelars}). But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another already selected covariate from an irrelevant covariate. And that is a problem. This consistency issue is illustrated in section \ref{consistency}.\\
 
 
 		% ne pas oublier de mentionner les packages existants
 
 			%\cite{zou2006adaptive}% adaptive lasso
 			%\cite{wang2011random}%random lasso
-			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptive \textsc{LASSO} \cite{zou2006adaptive} or the random \textsc{LASSO} \cite{wang2011random}.  But the consistency issues remains because it is still the same model. Only the choices of $\lambda$ differ.
+			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptive \textsc{LASSO} \cite{zou2006adaptive} with the {\tt parcor} package on CRAN (\cite{packageparcor}) or the random \textsc{LASSO} \cite{wang2011random}.  But the consistency issues remains because it is still the same model. Only the choices of $\lambda$ differ.\\
 			 
 			 It is notable that the main goal of the LASSO is to select some covariate, thus the penalization is just a mean to achieve selection. But estimation of $\hat{\boldsymbol{\beta}}$ can be improved by a second estimation with OLS based only on selected covariates \cite{SAM10088}.
 		\subsection{Least Angle Regression}
 		The least Angle Regression algorithm solves the LASSO problem.
 		It requires only the same order of magnitude of computational effort as \textsc{OLS} applied to the full set of covariates.
-		The idea is to start with all coefficients to zero and then grow them beginning with the most correlated with the response variable until another variable is equally correlated with the residual. So it is a progressive growth of the coefficient leading to reduce the residual. It finishes with the Ordinary Least Squares solution (on the right in figure \ref{plotlarstoy}). We then have a list of models with several numbers of non-zero coefficients and can choose between them with cross-validation for example.
+		The idea is to start with all coefficients to zero and then grow them beginning with the most correlated with the response variable until another variable is equally correlated with the residual. So it is a progressive growth of the coefficient leading to reduce the residual. It finishes with the Ordinary Least Squares solution (on the right in figure \ref{plotlarstoy}). We then have a list of models with several numbers of non-zero coefficients and can choose between them with cross-validation for example.\\
+		
 \begin{figure}[h!]
 	\centering
 		  \includegraphics[width=350px]{figures/LARtheory.png}
@@ -483,9 +484,9 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/larcompl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{lar}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQElarcompl}
-	\end{figure}
-	Results obtained with the package {\tt lars} for R, included in {\tt CorReg}. Figure \ref{MQElarcompl} shows that strong correlations make the MSE explode even with lar. 
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{lar}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQElarcompl}
+	\end{figure}	
+	 Figure \ref{MQElarcompl} shows that strong correlations make the MSE explode even with lar. Results obtained with the package {\tt lars} for R, included in {\tt CorReg}.
  	 
 	 \FloatBarrier
 		\subsection{Elasticnet}		% ne pas oublier de mentionner les packages existants
@@ -510,32 +511,32 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		\end{figure}	
 	
 	%It seems to give good predictions. 
-	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. 
+	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. Results obtained with the package {\tt elasticnet} (\cite{packageelasticnet}) for R are given in Figure \ref{MQEelasticnetcompl}.
+
 	
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/elasticnetcompl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{elasticnet}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEelasticnetcompl}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{elasticnet}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEelasticnetcompl}
 	\end{figure}
-	Results obtained with the package {\tt elasticnet} for R.
 		
 		 \FloatBarrier
 
 		\subsection{OSCAR: Octagonal Shrinkage and Clustering Algorithm for Regression}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{bondell2008simultaneous}%Oscar
-			Like elasticnet, \textsc{OSCAR} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect (by a pairwise $L_\infty$ norm) and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (implied by the $L_1$ norm).
+			Like elasticnet, \textsc{OSCAR} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect (by a pairwise $L_\infty$ norm) and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (implied by the $L_1$ norm). Thus correlations are avoided if correlated covariates are in the same cluster (not extremely flexible). A possible bias is added by the dimension reduction inherent to the coefficients clustering.
 			\begin{equation}
-				\hat{\boldsymbol{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \parallel\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \parallel^2_2 \textrm{ subject to } \sum_{j=1}^p|\beta_j|+c\sum_{j<k}\operatorname{max}(|\beta_j|,|\beta_k|) \leq \lambda		
+				\hat{\boldsymbol{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \parallel\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \parallel^2_2 \textrm{ subject to } \sum_{j=1}^d|\beta_j|+c\sum_{j<k}\operatorname{max}(|\beta_j|,|\beta_k|) \leq \lambda		
 			\end{equation}						
-			But \textsc{OSCAR} depends on two tuning parameters: $c$ anf $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{LAR} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
+			Moreover \textsc{OSCAR} depends on two tuning parameters: $c$ anf $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{LAR} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
 			
 \begin{figure}[h!]
 			\centering
 			\includegraphics[width=150px]{figures/oscarcircles.png} 
 			\caption{Geometric view of the Penalty for OSCAR}\label{oscarcircles}
 		\end{figure} 
-Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It follows the same principle as the LASSO with supplementary vertices in the four quarters to obtain equal values for the $\beta_j$. So the estimator will give both zero coefficients and equal coefficients that can be grouped for interpretation and correspond to a dimension reduction. So two covariates with a similar effect may obtain the same estimated coefficient. But correlations are only implicitly taken into account and only pairwise. It lacks of an efficient algorithm  (to find $c$) and need a supplementary study to interpret the groups found.
+Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It follows the same principle as the LASSO with supplementary vertices in the four quarters to obtain equal values for the $\beta_j$. So estimator will give both zero coefficients and equal coefficients that can be grouped for interpretation and correspond to a dimension reduction. So two covariates with a similar effect may obtain the same estimated coefficient. But correlations are only implicitly taken into account and only pairwise. It lacks of an efficient algorithm  (to find $c$) and need a supplementary study to interpret the groups found.
 		
 		
 	\section{Modeling the parameters}			% ne pas oublier de mentionner les packages existants
@@ -544,40 +545,41 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 
 			The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independent random variables with $\beta_j$ following a Gaussian Mixture distribution, allowing to group them into by their component membership. \\
 			
-			 The idea is to hope that the model have a small number of groups of covariates so that the mixture will have few enough components to have a number of parameters to estimate significantly lower than $p$. In such a case, it improves interpretation and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. A package {\tt clere} for R does exist on CRAN and is included in {\tt CorReg}. \\
-			 But We have to choose the maximum number of components $g$ and have no method to choose this value. Yengo recommends to use $g=5$ in our case. It could be interpreted as the possibility to have a group of irrelevant covariates and groups with small or big values (both positives or negatives). The package is able to choose automatically the best number of components between 1 and $g$ based on a $BIC$ criterion but setting $g=p$ gives over-fitting. \\
+			 The idea is that if the model has a small number of groups of covariates then the mixture will have few enough components to have a number of parameters to estimate significantly lower than $d$. In such a case, it improves interpretation and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. A package {\tt clere} for R does exist on CRAN (\cite{packageclere}).%and is included in {\tt CorReg}. \\
+			 \\
+			 
+			 But We have to choose the maximum number of components $g$ and have no method to choose this value. Yengo recommends to use $g=5$ in our case. It could be interpreted as the possibility to have a group of irrelevant covariates and groups with small or big values (both positives or negatives). The package is able to choose automatically the best number of components between 1 and $g$ based on a $BIC$ criterion but setting $g=d$ gives over-fitting.
 	 Here again, it has no specific protection against or specific model for correlations. 
 		\subsection{Spike and Slab}			% ne pas oublier de mentionner les packages existants
 
-			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.  The $\beta_j$ are supposed to come from a mixture distribution as shown in figure \ref{spikeslab}. It allows to have some coefficients set exactly to zero after some draws. 
+			Spike and Slab variable selection \cite{ishwaran2005spike} also relies on Gaussian mixture (the spike and the slab) hypothesis for the $\beta_j$ and gives a subset of covariates (not grouped) on which to compute \textsc{OLS} but has no specific protection against correlations issues.  The $\beta_j$ are supposed to come from a mixture distribution as shown in figure \ref{spikeslab}. It allows to have some coefficients set exactly to zero after some draws. The package {\tt spikeslab} for R is on CRAN. \\
 			
 \begin{figure}[h!]
 	\centering
 	\includegraphics[width=350px]{figures/spikeslab.png} 
 	\caption{}\label{spikeslab}
 \end{figure}		
-		The package {\tt spikeslab} for R on CRAN is also included in {\tt CorReg}. \\
 		
-		Modeling the parameters implies to have no exact value to give to the coefficient and it is not really user-friendly, especially in our industrial context. However, these two methods can be used for variable selection in the {\tt correg} function using the parameter {\tt select="clere"} or {\tt select="spikeslab"}.
+		Modeling the parameters implies to have no exact value to give to the coefficient and it is not really user-friendly, especially in our industrial context. %However, these two methods can be used for variable selection in the {\tt correg} function using the parameter {\tt select="clere"} or {\tt select="spikeslab"}.
 		
 		\FloatBarrier
 	\section{Miscellaneous}	
 	\subsection{Principal Component Regression and Partial Least Squares Regression}
-	Principal Component Regression \cite{jackson2005user} consists in using the axis from the Principal Component Analysis (PCA) of $\boldsymbol{X}$ instead of $\boldsymbol{X}$ itself. Then we have orthogonal covariates. Dimension reduction is done by keeping only the $M \leq p$ first components of the PCA. Because the axis are linear combination of the original covariates we can then express the model in terms of coefficients of the $\boldsymbol{X}^j$.
+	Principal Component Regression \cite{jackson2005user} consists in using the axis from the Principal Component Analysis (PCA) of $\boldsymbol{X}$ instead of $\boldsymbol{X}$ itself. Then we have orthogonal covariates. Dimension reduction is done by keeping only the $M \leq d$ first components of the PCA. Because the axis are linear combination of the original covariates we can then express the model in terms of coefficients of the $\boldsymbol{X}^j$.\\
 	
-	Principal Component Regression requires to choose $M$ the number of axis to keep. Finally, even if dimension reduction is effective when $M<p$ each axis depends on all original covariates so it does not select any covariates and that is also a problem for interpretation. We have to choose arbitrary how to interpret each axis and how many covariates really explain each of them. So it is not really satisfying in our industrial context. Principal Component method can be seen as a truncation method whereas the ridge regression is a shrinkage method. 
+	Principal Component Regression requires to choose $M$ the number of axis to keep. Finally, even if dimension reduction is effective when $M<d$ each axis depends on all original covariates so it does not select any covariates and that is also a problem for interpretation. We have to choose arbitrary how to interpret each axis and how many covariates really explain each of them. So it is not really satisfying in our industrial context. Principal Component method can be seen as a truncation method whereas the ridge regression is a shrinkage method. \\
 	
 	Partial Least Square Regression \cite{abdi2003partial,geladi1986partial} also relies on a combination of the columns of  $\boldsymbol{X}$ but this combination depends on $\boldsymbol{Y}$.
-		It uses scalar products of the covariates with the response variable
-		
+		It uses scalar products of the covariates with the response variable.	
 	It seems to be influenced more by the variance of the covariates than by their correlation with the response variable so results tends to be similar to Principal Component Regression.
 	\\
-	The R package {\tt pls} on CRAN computes both Principal Component Regression and Partial Least Squares Regression.
+	
+	The R package {\tt pls} on CRAN computes both Principal Component Regression and Partial Least Squares Regression (\cite{packagepls}).
 		
 	\subsection{Sliced Inverse Regression}
 		Sliced Inverse Regression is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression \cite{eubank1999nonparametric,hardle1990applied} that are too complex to interpret for our industrial context. \\
 		
-		The main idea is to compute the inverse regression $P(\boldsymbol{X}|\boldsymbol{Y})$ instead of $P(\boldsymbol{Y}|\boldsymbol{X})$ to perform a weighted principal component analysis, with which we can identify the effective dimension reducing directions \cite{li1991sliced}. But it needs strong hypothesis on the distribution of $\boldsymbol{X}$ (elliptic hypothesis), even if it is possible to neglect this hypothesis \cite{saracco1999regression} and see what happens. This method has been rejected because it was not sufficient in terms of ease of use (during and after estimation) for non-statisticians due to the semi-parametric aspect and the elliptic hypothesis is compromised on datasets with hundreds of covariates. It is part of the dimension reduction package {\tt dr} on CRAN.
+		The main idea is to compute the inverse regression $\mathbb{P}(\boldsymbol{X}|\boldsymbol{Y})$ instead of $\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X})$ to perform a weighted principal component analysis, with which we can identify the effective dimension reducing directions \cite{li1991sliced}. But it needs strong hypothesis on the distribution of $\boldsymbol{X}$ (elliptic hypothesis), even if it is possible to neglect this hypothesis \cite{saracco1999regression} and see what happens. This method has been rejected because it was not sufficient in terms of ease of use (during and after estimation) for non-statisticians due to the semi-parametric aspect and the elliptic hypothesis is compromised on datasets with hundreds of covariates. It is part of the dimension reduction package {\tt dr} on CRAN (\cite{packagedr}).
 			
 		
 			
@@ -586,7 +588,7 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 		%\cite{quinlan1986induction} à vérifier
 
 	
-		Classification And Regression Trees (CART) \cite{breiman1984classification} are extremely simple to use and interpret, can work simultaneously with quantitative and qualitative covariates and are very fast to compute. They consist in recursive partitioning of the sample according to binary rules on the covariate (only one at a time) to obtain a hierarchy defined by simple rules and containing pure leaves (same value). It is followed by a pruning method to obtain leaves that are quite homogeneous and described with simple rules.
+		Classification And Regression Trees (CART) \cite{breiman1984classification} are extremely simple to use and interpret, can work simultaneously with quantitative and qualitative covariates and are very fast to compute. They consist in recursive partitioning of the sample according to binary rules on the covariate (only one at a time) to obtain a hierarchy defined by simple rules and containing pure leaves (same value). It is followed by a pruning method to obtain leaves that are quite homogeneous and described with simple rules.\\
 		
 		\begin{figure}
 			\centering
@@ -594,11 +596,13 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 			\caption{Regression tree obtain with the package {\tt CorReg}
 			 (graphical layer on top of  the {\tt rpart} package) on the running example.}\label{arbretoy}
 		\end{figure}
-		CART is implemented in the package {\tt rpart} 
-		for R. Our {\tt CorReg} 
+		CART are implemented in the package {\tt rpart} 
+		for R, on CRAN (\cite{packagerpart}). Our {\tt CorReg} 
 		package offers a function to compute and plot the tree in one command with a subtitle to explain how to read the tree and global statistics on the dataset.
-		But it is not convenient for linear regression problems as we see in figure \ref{arbretrivial} because a same variable will be used several times and the tree will fail to give a simple interpretation as " $\boldsymbol{Y}$ and $\boldsymbol{X}_1$ are proportional ". Trivial case : $\boldsymbol{Y}=\boldsymbol{X}_1 + \boldsymbol{\varepsilon}$ where $\boldsymbol{\varepsilon} \sim \mathcal{N}(0, \sigma^2 \boldsymbol{I}_n)$ with $\sigma=0.5$. \\
+		But it is not convenient for linear regression problems as we see in figure \ref{arbretrivial} because a same variable will be used several times and the tree will fail to give a simple interpretation as " $\boldsymbol{Y}$ and $\boldsymbol{X}^1$ are proportional ". Trivial case : $\boldsymbol{Y}=\boldsymbol{X}^1 + \boldsymbol{\varepsilon}_Y$ where $\boldsymbol{\varepsilon}_Y \sim \mathcal{N}(0, \sigma^2_Y \boldsymbol{I}_n)$ with $\sigma^2=0.5$. \\
+		
 		So CART will be used as a complementary tool for datasets with both quantitative and qualitative covariates or when the dependence between $\boldsymbol{Y}$ and $\boldsymbol{X}$ is not linear. We will focus our research on linear models with quantitative only variables.
+	\\
 	
 \begin{figure}[h!]
 	\subfigure[Tree found for the trivial case]{
@@ -610,16 +614,18 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 	\caption{Predictive model associated to the tree (red) and true model (black)}\label{arbretrivial}
 \end{figure}
 
-More details in the book from Hastie \cite{hastie2009elements}. The main issues are the lack of smoothness (prediction function with jumps) and especially instability because of the hierarchical partitioning. Modifying only one value in the dataset can impact a split and then change the range of possible splits in the resulting sub-samples so if a top split is modified the tree can be widely changed. Random Forests are a way to solve this problem and can be seen as a cross-validation method for regression trees.
+ Apart from linear models, the main issues are the lack of smoothness (prediction function with jumps) and especially instability because of the hierarchical partitioning. Modifying only one value in the dataset can impact a split and then change the range of possible splits in the resulting sub-samples so if a top split is modified the tree can be widely changed. Random Forests are a way to solve this problem and can be seen as a cross-validation method for regression trees. More details in the book from Hastie \cite{hastie2009elements}.
 	
 	\subsection{Neural networks}	
-		Neural networks \cite{fausett1994fundamentals} are a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained can't be interpreted easily (and can't be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes far behind.
+		Neural networks \cite{fausett1994fundamentals} are a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained cannot be interpreted easily (and cannot be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes only in second place.
 		
 	\subsection{Bayesian networks}
 		
 		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} model the covariates and their conditional dependencies via a Directed Acyclic Graph (DAG). Such an orientation is very user-friendly because it is similar to the way we imagine causality. But it is only about conditional dependencies. Conditional dependencies allow to use information from independent covariates. The usual example is the case of wet grass in a garden. You don't remember if the sprinkler was on or off, you don't know if it has rain and these two facts are independent. Then you look at the grass in your neighbour's garden and it is not wet \dots \\
 		You will deduce that your sprinkler was on. Such conditionals dependencies are used in chapter \ref{chapmiss} when confronted to missing values. \\
-		Bayesian networks are quite good in terms of interpretation because of that graphical and oriented representation of conditional probabilities but suffer from great dimension (combinatory issue) and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). The choice of the way you discretise the dataset has a great impact on the results and nothing can help if you have no a priori on the result you want to obtain. Computation relies on a table that describes all the possible combinations for each covariate. Hence it is extremely combinatory if the graph has too much edges or is not sparse enough. Moreover, you need to define the graph before computing the bayesian network and without a priori it can be challenging and time consuming.\\
+		
+		Bayesian networks are quite good in terms of interpretation because of that graphical and oriented representation of conditional probabilities. But they suffer from great dimension (combinatory issue) and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). The choice of the way to discretise the dataset has a great impact on the results and nothing can help if you have no a priori on the result you want to obtain. Computation relies on a table that describes all possible combinations for each covariate. Hence it is extremely combinatory if the graph has too much edges or is not sparse enough. Moreover, you need to define the graph before computing the bayesian network and without a priori it can be challenging and time consuming.\\
+		
 The concept of representing dependencies with directed acyclic graph is good an we keep it in our model.		
 			
 	
@@ -628,7 +634,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 		% ne pas oublier de mentionner les packages existants
 			\subsection{Cross validation}
 				
-				Time reveals quality of a model. To have an idea of the stability of a model, it is recommended to test it on a validation sample. The model parameters are estimated with a learning sample and then the model is evaluated (by its predictive MSE for example) on a validation sample to avoid over-fitting. But it is not always possible to have a validation sample and over-fitting is a real problem. A solution is to use Cross-Validation \cite{kohavi1995study,arlot2010survey}. It consists in splitting the dataset in $k$ sub-sample ($k$-fold cross-validation) and then each of the $k$ sub-samples is successively used as validation sample for the model learn with the $k-1$ remaining sub-samples. Each time a quality criterion  is computed (predictive MSE or other) and then the mean of this criterion is taken as the global criterion. The global estimator is also the mean of the estimators. The two main issues are:
+				Time reveals quality of a model. To have an idea of the stability of a model, it is recommended to test it on a validation sample. Model parameters are estimated with a learning sample and then the model is evaluated (by its predictive MSE for example) on a validation sample to avoid over-fitting. But it is not always possible to have a validation sample and over-fitting is a real problem. A solution is to use Cross-Validation \cite{kohavi1995study,arlot2010survey}. It consists in splitting the dataset in $k$ sub-samples ($k$-fold cross-validation) and then each of the $k$ sub-samples is successively used as validation sample for the model learnt with the $k-1$ remaining sub-samples. Each time a quality criterion  is computed (predictive MSE or other) and then the mean of this criterion is taken as the global criterion. The global estimator is also the mean of the estimators. The two main issues are:
 				\begin{itemize}
 					\item How to choose $k$ the number of sub-samples ?
 					\item It can be time consuming as the model is estimated $k$ times.
@@ -642,7 +648,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 				\end{equation}
 			\subsection{ Bayesian Information Criterion}
 			Cross-validation depends on a criterion to be used as a method to choose a model. The mean square error is not the only criterion. Probabilist criteria can also be used when we have an hypothesis on the distribution of the model studied. Such criteria can also be used without cross-validation.
-			The Bayesian Information Criterion \cite{BIChuard} is a widely used criterion that relies on the likelihood of the dataset knowing the model the estimated parameters. The advantage of $BIC$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. The Akaike Information Criterion \cite{akaike1974new} known as $AIC$ or the Risk Inflation Criterion \cite{foster1994risk} can also be used.
+			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $BIC$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. The Akaike Information Criterion \cite{akaike1974new} known as $AIC$ or the Risk Inflation Criterion \cite{foster1994risk} can also be used.
 			In this work we decided to start with the $BIC$ that is approximated by:
 			\begin{equation}
 				BIC=-2\ln(\hat{L})+k\ln(n)
@@ -650,18 +656,19 @@ The concept of representing dependencies with directed acyclic graph is good an 
 			where $\hat{L}$ is the estimated likelihood, $k$ the number of free parameters to estimate and $n$ the number of individuals in the dataset.
 			\subsection{Stepwise}
 			
-			Stepwise \cite{seber2012linear} is an algorithm to choose a subset of covariates to use in the final regression model. It is a variable selection method using OLS for estimation. It is proposed in the R package {\tt stats} with the function {\tt step}. The main idea is to start with first model (than can be either void or using the whole dataset or using any subset of covariates) and then to add and remove covariates step by step to improve the chosen criterion. \\
+			Stepwise \cite{seber2012linear} is an algorithm to choose a subset of covariates to use in the final regression model. It is a variable selection method using OLS for estimation. It is proposed in the R package {\tt stats} with the function {\tt step}. The main idea is to start with a first model (than can be either void or using the whole dataset or using any subset of covariates) and then to add and remove covariates step by step to improve the chosen criterion. \\
 			\begin{itemize}
-				\item 	Starting with a void model and having only adding steps is called Forward Selection. Covariates are added by choosing first the one that improves the most the criterion and the algorithm stops when all the covariates are in or when remaining covariates does not improve the model.
-				\item Backward Elimination is the same as Forward selection but starting with the full model and deleting at each step the covariates that improves the most the criterion once deleted.
-				\item Bidirectional elimination is more flexible and allows to start from any model. Each proposes to add a covariate and then to delete another so it is not a hierarchical construction any more because succesives models are not necessarily nested into each other.
+				\item 	Starting with a void model and having only adding steps is called Forward Selection. Covariates are added by choosing first the one that improves the most the criterion. The algorithm stops when all the covariates are in or when remaining covariates does not improve the model.
+				\item Backward Elimination is the same as Forward selection but starting with the full model and removing at each step the covariates that improves the most the criterion once deleted.
+				\item Bidirectional elimination is more flexible and allows to start from any model. Each step proposes to add a covariate or to delete another so it is not a hierarchical construction any more because successive models are not necessarily nested into each other.
 			\end{itemize}
-		A critical value can be defined to stop the algorithm when improvement become too small, to try to avoid over-fitting. \\
+		A critical value can be defined to stop the algorithm when improvement becomes too small, in order to avoid over-fitting. \\
+		
 		Stepwise regression is subject to over-fitting and the algorithm is in trouble when confronted to correlated covariates \cite{miller2002subset} giving unstable results, especially for nested strategies, just like regression trees that are unstable because of their discrete nested nature.
 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/stepwisecompl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEstepwisecompl}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEstepwisecompl}
 	\end{figure}
 	Figure \ref{MQEstepwisecompl} illustrate the consequences of correlations in the dataset.
 	
@@ -671,11 +678,12 @@ The concept of representing dependencies with directed acyclic graph is good an 
 %		\section{MCMC}
 		
 		\section{Gibbs}
-		Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $p-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $P(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_p^{(q)})$ using the most recent drawn values each time. \\
+		Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $d-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $\mathbb{P}(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_d^{(q)})$ using the most recent drawn values each time. \\
 		It will be used in this work for imputation of missing values in chapter \ref{chapmiss}.
 		
 		\section{EM}
-			Sometimes the maximization of a likelihood is too complex to be done analytically. In such a case, we can use Expectation-Maximization algorithms \cite{mclachlan2007algorithm} that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. This kind of algorithm allows to manage missing values \cite{dempster1977maximum}. \\
+			Sometimes the maximization of a likelihood is too complex to be solved analytically. In such a case, we can use Expectation-Maximization algorithms \cite{mclachlan2007algorithm} that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. This kind of algorithm allows to manage missing values \cite{dempster1977maximum}. \\
+			
 EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the latent variables $Z$ with two steps at each iteration $(q)$:
 \begin{itemize}
 	\item The Expectation step in which the expected value of the loglikelihood is computed for the current estimate of the parameters $\boldsymbol{\theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\theta}^{(q)}$.
@@ -688,16 +696,20 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 	\end{equation}
 \end{itemize}
 	So it alternates between estimation of $Z$ and $\boldsymbol{\theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
-	It requires to choose initial values for $\boldsymbol{\theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and run of the algorithm.
+	It requires to set initial values for $\boldsymbol{\theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and run of the algorithm.\\
 			
 			Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic,celeux1986algorithme} or the Classification EM \cite{celeux1992classification}.
 			
 			
 		\section{Industrial tools}
 			%Linear regression, decision trees, bayesian networks, neural network but without confidence
-			Our engineers are frequently contacted by software resellers. The concerned software are sold as non-statistical methods, based on rules (derivatives of decision trees but without underlying theory). Statistics are often described as too theoretical, without ergonomy and not compatible with the real life. Our goal was to demonstrate that statistics can provide efficient methods for real datasets, easy to use and understand.	This was a battle against correlations but also against scepticism. \\
-			Figure \ref{Regle2D} shows the kind of results proposed by rule-based softwares. It is just a partition of the sample by binary rules (like regression trees). Some blur is added to the plot to help interpretation. The algorithm used here is somewhere between exhaustive research and decision trees. It is extremely slow (research with $p>10$ would take years) and is less efficient than regression trees. Morever, it requires to discretize the response variable to obtain "good" and "bad" values. The green rectangle is very far from the true green zone even for this toy example provided by the reseller.\\
-			But some engineers are seduced by this kind of tool. Ergonomy of use and quality of interpretation are stakes for us to make engineers use efficient methods instead of this kind of stuff.
+			%Our engineers are frequently contacted by software resellers. The concerned software are sold as non-statistical methods, based on rules (derivatives of decision trees but without underlying theory). Statistics are often described as too theoretical, without ergonomy and not compatible with the real life. 
+			Our goal was also to demonstrate that statistics can provide efficient methods for real datasets, easy to use and understand.	This was a battle against correlations but also against scepticism. \\
+			
+			Figure \ref{Regle2D} shows the kind of results proposed by a rule-based software that is sold as a non-statistical tool. It is just a partition of the sample by binary rules (like regression trees). Some blur is added to the plot to help interpretation. The algorithm used here is somewhere between exhaustive research and decision trees. It is extremely slow (research with $d>10$ would take years) and is less efficient than regression trees. Morever, it requires to discretize the response variable to obtain "good" and "bad" values. The green rectangle is very far from the true green zone even for this toy example provided by the reseller.\\
+			
+			%But some engineers may be seduced by this kind of tool. 
+			Ergonomy and quality of interpretation are stakes for us to make engineers use efficient methods instead of this kind of stuff.
 	
 		\begin{figure}[h!]
 	\subfigure[Without blur]{
@@ -712,16 +724,18 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
 		
 		\subsection{Simultaneous Equation Model (SEM) and Path Analysis}		% ne pas oublier de mentionner les packages existants
-		Applied statistics in for non statisticians are well developed in sociology where interpretation  stakes are fare beyond prediction. Sociologists use simple models like linear regression (often with $R^2<0.2$) and describe complex situations with systems of linear regressions. Such systems are called Structural Equation Model or Simultaneaous Equation Model, better known as SEM \cite{davidson1993estimation}. Several softwares from the open-source GRETL \cite{CottrellLucchetti2007gretlmanual} to proprietary STATA does implement the SEM. The systems allow to describe which covariate influence others with an orientation that users can interpret as causality \cite{pearl2000causality,pearl1998graphs}. \\
-		SEM are easy to understand for non-statisticians and can be resumed by Directed Acyclic Graphs (DAG) as the Bayesian networks do. But the problem is that the structure of regression between the covariates is defined by hand. SEM are used to confirm sociological theories, not to create new theories. \\
-		Moreover, estimation of recursive SEM, without instrumental variables is exactly a succession of independent OLS (confirmed with both GRETL and STATA) so the structure is only used for interpretation, not for estimation \cite{brito2006graphical}. Last but not least, there is no specific status for a response variable, each regression has the same status. We want to be able to model complex dependencies within the covariates and use this knowledge to estimate understand a specific response variable.
+		Applied statistics in for non statisticians are well developed in sociology where interpretation  stakes are fare beyond prediction. Sociologists use simple models like linear regression (often with $R^2<0.2$) and describe complex situations with systems of linear regressions. Such systems are called Structural Equation Model or Simultaneaous Equation Model, better known as SEM \cite{davidson1993estimation}. Several softwares, from the open-source GRETL \cite{CottrellLucchetti2007gretlmanual} to proprietary STATA, does implement the SEM. The systems allow to describe which covariate influence others with an orientation that users can interpret as causality \cite{pearl2000causality,pearl1998graphs}. \\
+		
+		SEM are easy to understand for non-statisticians and can be resumed by Directed Acyclic Graphs (DAG) as the Bayesian networks do. But the problem is that the structure of regression between the covariates is defined {\it a priori}. SEM are used to confirm sociological theories, not to create new theories. \\
+		
+		Moreover, estimation of recursive SEM, without instrumental variables is exactly a succession of independent OLS (confirmed with both GRETL and STATA) so the structure is only used for interpretation, not for estimation \cite{brito2006graphical}. Last but not least, there is no specific status for a response variable, each regression has the same status. We want to be able to model complex dependencies within the covariates and use this knowledge to estimate and understand a specific response variable.
 			%mcdonald2002principles
 		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
-		Seemingly Unrelated Regression \cite{SURzellner} is an estimation method for Multiples equations with correlated error terms. It does not take into account correlations between the covariates but starts to estimate the system jointly instead of independent estimations. This estimation relies on Feasible Generalized Least Squares (FGLS) that depends on the variance-covariance matrix of the error terms. But when the error terms are independent or the subset of covariates are the same it is equivalent to successive independent OLS. The R package {\tt systemfit} on CRAN computes SUR. 
+		Seemingly Unrelated Regression \cite{SURzellner} is an estimation method for Multiples equations with correlated error terms. It does not take into account correlations between the covariates but starts to estimate the system jointly instead of independent estimations. This estimation relies on Feasible Generalized Least Squares (FGLS) that depends on the variance-covariance matrix of the error terms. But when the error terms are independent or the subset of covariates are the same it is equivalent to successive independent OLS. The R package {\tt systemfit} on CRAN computes SUR (\cite{packagesystemfit}). 
 			
 		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}		% ne pas oublier de mentionner les packages existants
 
-\textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model \cite{chiquetconf}) takes into account correlations between endogenous covariates but without explicit expression of the correlations and thus a reduced interpretation potential. It is similar to SUR in that dependencies are modeled with the variance-covariance matrix of the error terms, but with sparsity constraints in this matrix.  It does not distinguish a response variable from internal structure in a dataset. Every equation in the system has a distinct response variable and the explicative covariates are the same for all equations.		
+\textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model ) takes into account correlations between endogenous covariates but without explicit expression of the correlations and thus a reduced interpretability \cite{chiquetconf}. It is similar to SUR in that dependencies are modeled with the variance-covariance matrix of the error terms, but with sparsity constraints in this matrix.  It does not distinguish a response variable from internal structure in a dataset. Every equation in the system has a distinct response variable and the explicative covariates are the same for all equations.		
 		\subsection{Selvarclust: Linear regression within covariates for clustering}		% ne pas oublier de mentionner les packages existants
 
 			Selvarclust is a software written in C++ modeling dependencies within a dataset			 \cite{maugis2009variable} in a clustering context.
@@ -729,7 +743,7 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 			\begin{itemize}
 				\item $S$ stands for the subset of the relevant covariates for clustering
 				\item $U$ and $W$ form a partition of the complementary subset of $S$, with $U$ the subset of irrelevant covariates depending linearly from relevant covariates and $W$ the subset of totally irrelevant and independent covariates
-				\item $R$ is the subset of $S$ that contain the covariates explaining those in $U$, with $R\cap U=\emptyset$.
+				\item $R$ is the subset of $S$ that contains the covariates explaining those in $U$, with $R\cap U=\emptyset$.
 \end{itemize}			 
 So we have a system of linear regression:
 \begin{equation}
@@ -741,87 +755,139 @@ Selvarclust is one step beyond SEM with an algorithm to find the structure.
 			But:
 			\begin{itemize}
 				\item It is about clustering and not regression (not the same application field) so we don't have here any response variable neither method to use this structure for estimation of another regression. 
-				\item It uses stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even it is known to be often unstable \cite{miller2002subset} in such a context.
+				\item It uses stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even if it is known to be often unstable \cite{miller2002subset} in such a context.
 			\end{itemize}
 			
-			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates. We will see that, as a pretreatment it can be used then for a wide range of statistical tools and not only linear regression.\\
+			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates. We will see that, as a pretreatment, it can be used then for a wide range of statistical tools and not only linear regression.\\
 			We provide a specific MCMC algorithm to find the structure between the covariates and propose two distinct models to use the structure for prediction: a marginal model and a plug-in model.	\\
 			
-	Our first intention was to make something different from SelvarClust but our model has evolved during this thesis and finally became more comparable to SelvarClust than expected.		
+	%Our first intention was to make something different from SelvarClust but our model has evolved during this thesis and finally became more comparable to SelvarClust than expected.		
 			
 \part{Pretreatment for correlations}
 \chapter{Decorrelating covariates by a generative model}
-\paragraph{Abstract:} Nous modélisons explicitement les corrélations entre covariables par un système de régressions linéaires entre covariables. Cela permet une meilleure compréhension des données mais aussi une préselection de variables mettant de côté les variables redondantes pour réduire fortement les corrélations tout en ne perdant que peu d'information. La préselection prend un sens particulier grâce à la structure de sous-régression qui permet de distinguer par suite les variables indépendantes de la variable réponse de celles qui sont juste redondantes mais potentiellement liées à la variable réponse. 
+\paragraph{Abstract:} 
+We give an explicit model for correlation between covariates by a linear regression system. It helps to better understand the dataset and leads to a pretreatment by variable selection. This pretreatment allows to reduce variance of the estimator and then to distinguish irrelevant covariates from redundant covariates.
 \\
 
 \section{Explicit modeling of the correlations}
-	Let $\boldsymbol{X}$ be a $n \times p$ matrix of observed covariates and $\boldsymbol{Y}$ be the $n \times 1$ matrix of the observed response variable. In the following, we note $\boldsymbol{X}^j$ the $j^{th}$ column of $\boldsymbol{X}$ and $\boldsymbol{X}^{J}$ where $J=\{j_1,\dots,j_k\}$ the $n\times k$ sub-matrix of $\boldsymbol{X}$ composed by the columns of $\boldsymbol{X}$ whose indices are in the set $J$. 
+	Let $\boldsymbol{X}=(\boldsymbol{X}^1,\dots,\boldsymbol{X}^d)$ be a $n \times d$ matrix of observed covariates and $\boldsymbol{Y}$ be the $n \times 1$ matrix of the observed response variable. In the following, we note $\boldsymbol{X}^j$ the $j^{th}$ column of $\boldsymbol{X}$ and $\boldsymbol{X}^{J}$ where $J=\{j_1,\dots,j_k\}$ the $n\times k$ sub-matrix of $\boldsymbol{X}$ composed by the columns of $\boldsymbol{X}$ whose indices are in the set $J$. 
 \\
 
-We make the hypothesis that $\boldsymbol{X}$ can be described by a partition $\boldsymbol{X}=(\boldsymbol{X}^{I_f},\boldsymbol{X}^{I_r}) $ given by an explicit structure $S$ where variables in the $n\times p_r$ sub-matrix $\boldsymbol{X}^{I_r}$ are redundant endogenous covariates resulting from linear sub-regressions based on $\boldsymbol{X}^{I_f}$, the  $n\times (p-p_r)$ sub-matrix of free (mutually independent) exogenous covariates.
-So we model the correlations by $P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f}) $ with $\boldsymbol{X}^{I_f}$ orthogonal covariates.
- 
- 
 
-The structure $S$ of $p_r$ sub-regressions within correlated covariates in $\boldsymbol{X}$ is described by:
-	\begin{equation}
-		\boldsymbol{X}^{I_r}_{|\boldsymbol{X}^{I_f},S} \textrm{ defined by }\forall j \in I_r: \boldsymbol{X}^j_{|\boldsymbol{X}^{I_f},S}=\boldsymbol{X}^{I_f}\boldsymbol{\alpha}^j+\boldsymbol{\varepsilon}^j \textrm{ with } \boldsymbol{\varepsilon}^j \sim\mathcal{N}(\boldsymbol{0},\sigma^2_j\boldsymbol{I}_n) \label{SR}
-	\end{equation}
-		where $\boldsymbol{\alpha}^j \in \mathcal{R}^{(p-p_r)}$ are the sparse vectors of the regression coefficients between the covariates (each sub-regression freely implies different covariates). 
-We also define $I_f=\{I_f^1,\dots,I_f^p \}$ the set of the sets of indices of exogenous covariates with
+
+
+We focus now on an original manner to solve the covariates correlation problem. The covariates number problem will be solved at a second stage by standard methods, once only decorrelated covariates will be identified. The proposed method relies on the two following hypotheses.
+
+\begin{hyp}\label{H1}
+In order to take into account the covariates correlation problem, we make the hypothesis correlation between covariates is {\it only} the consequence that some covariates {\it linearly} depend on some other covariates. More precisely, there are $d_{r}\geq 0$ such ``sub-regressions'', each sub-regression $j=1,\ldots,d_{r}$ having the covariate $\boldsymbol{X}^{J_{r}^j}$ as {\it response} variable ($J_{r}^j\in\{1,\ldots,p\}$ and $J_{r}^j\neq J_{r}^{j'}$ if $j\neq j'$) and having the $d_p^j>0$ covariates $\boldsymbol{X}^{J_{p}^j}$  as {\it predictor} variables ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ and $d_p^j=|J_{p}^j|$ the cardinal of $J_{p}^j$):
+\begin{equation}
+\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR}
+\end{equation}
+where $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ for all $j=1,\ldots,d_r$ and $h=1,\ldots,d_p^j$) and $\boldsymbol{\varepsilon}_j \sim\mathcal{N}_n(\boldsymbol{0},\sigma^2_j\boldsymbol{I})$.
+\end{hyp}
+
+\begin{hyp}\label{H2}
+In addition, we make the complementary hypothesis that the response covariates and the predictor covariates are totally disjoint: for any sub-regression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ where $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ is set of all response covariates and $J_f=\{1,\ldots,d\} \backslash J_{r}$ is the set of all {\it non} response covariates of cardinal $d_f=d-d_r=|J_f|$. This new assumption allows to obtain very simple sub-regressions sequences, discarding hierarchical ones, in particular uninteresting cyclic sub-regressions. However it is not too much restrictive since any hierarchical (but non-cyclic) sequence of sub-regressions can be agglomerated into a non-hierarchical sequence of sub-regressions, even if it may implies to partially loose information through variance increase in the new non-hierarchical sub-regressions. It is made by just successively replacing endogenous covariates by their sub-regression when they are also exogenous in some other sub-regressions. We call this hypothesis the uncrossing rule.
+\end{hyp}
+
+\paragraph{Further notations} In the following, we will note also $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ the $d_r$-uple of all the response variable (to be not confused with the corresponding set $J_r$ previously defined), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ the $d_r$-uple of all the predictors for all the sub-regressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ the associated number of predictors and $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ the global {\it model} of all the sub-regressions. As more compact notations, we define also $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ the whole set of response covariates and also $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ the {\it all} other covariates, denominating now as {\it free} covariates, including those used as predictor covariates in $\boldsymbol{J}_p$. An illustration of all these notations is applied on the running example at the end of this section. The parameters are also stacked together: $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ denotes the global coefficient of sub-regressions and $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ denotes the corresponding global variance.
+
+\paragraph{Remarks}
+\begin{itemize}
+\item Sub-regressions defined in (\ref{eq:SR}) are very easy to understand by any practitioner and, thus, will give a clear view of all the correlations present in the dataset at hand.
+\item As a consequence of Hypothesis~\ref{H1} and~\ref{H2} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated.
+\item We have considered correlations between the covariates of the main regression on $\boldsymbol{Y}$, not between the residuals. Thus $\boldsymbol{S}$ does not depend on $\boldsymbol{Y}$ and it can be estimated independently as we will see in Chapter~\ref{chapterMCMC}, even with a larger dataset (if missing values in $\boldsymbol{Y}$).
+\item The model of sub-regressions $\boldsymbol{S}$ gives a system of linear regressions that can be viewed as a recursive Simultaneous Equation Model (\textsc{sem})\cite{davidson1993estimation,TIMM} or also as a Seemingly Unrelated Regression (\textsc{sur}) \cite{SURzellner} with $\boldsymbol{X}_r$ the set of endogenous covariates.
+\item Each sub-regression may imply a distinct subset of explicative covariates from $\boldsymbol{X}_f$.
+\item Here we suppose the $\boldsymbol{\varepsilon}_j$ independent so we estimate them by separate OLS. But in other cases \textsc{SUR} takes into account correlations between residuals and could be used to estimate the $\boldsymbol{\alpha}^j$. 
+\end{itemize} 
+
+	 
+\paragraph{In the running example:}$J_f=\{1,2,4,5\}$, $d_f=4$ and $\boldsymbol{X}_f=(\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5)$. We have $d_r=1$ response covariate $\boldsymbol{X}^3|\boldsymbol{X}^1,\boldsymbol{X}^2=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ where $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}_n(\boldsymbol{0},\sigma_1^2\boldsymbol{I})}$. Thus, $\boldsymbol{\alpha}_1=(1,1)'$, $\boldsymbol{J}_r=(3)$, $J_r=\{3\}$, $\boldsymbol{X}_r=(\boldsymbol{X}^3)$, $\boldsymbol{d}_p=(2)$, $\boldsymbol{J}_p=(\{1,2\})$, $\boldsymbol{X}^{\boldsymbol{J}_p^1}=(\boldsymbol{X}^1,\boldsymbol{X}^2)$ and $\boldsymbol{S}=((3),(\{1,2\}))$.  
+
+
+
+\section{A by-product model: marginal regression with decorrelated covariates}
+The aim is now to use the model of linear sub-regressions $\boldsymbol{S}$ (that we assume to be known in this part) between some covariates of $\boldsymbol{X}$ to obtain a linear regression on $\boldsymbol{Y}$ relying only on uncorrelated variables $\boldsymbol{X}_f$.  The way to proceed is to marginalize the joint distribution of $\{(\boldsymbol{Y},\boldsymbol{X}_r) |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma^2}\}$ to obtain the distribution of $\{\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma^2}\}$ depending only on uncorrelated variables $\boldsymbol{X}_f$:
+\begin{equation}\label{eq:marginal}
+\mathbb{P}(\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2) = \int_{{\mathbb{R}^{d_r}}}\mathbb{P}(\boldsymbol{Y}| \boldsymbol{X}_f,\boldsymbol{X}_r,\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2) \mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) d\boldsymbol{X}_r.
+\end{equation}
+We need the following new hypothesis:
+
+\begin{hyp}\label{H3}
+We assume that all errors $\boldsymbol{\varepsilon}_Y$ and $\boldsymbol{\varepsilon}_j$ ($j=1,\ldots,d_r$) are {\it mutually independent}. It implies in particular that conditional response covariates $\{\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j\}$, with distribution defined in (\ref{eq:SR}), are {\it mutually independent}:
+\begin{equation}\label{eq:H3}
+\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) = \prod_{j=1}^{d_r} \mathbb{P}(\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j).
+\end{equation}
+\end{hyp}
+
+\vspace{3mm}
+
+Noting $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ and $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ the regression coefficients associated respectively to the responses and to the free covariates, we can rewrite (\ref{regressionsimple}):
+\begin{equation}
+			\boldsymbol{Y}{|\boldsymbol{X},\boldsymbol{S}};\boldsymbol{\beta},\sigma_Y^2=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:MainR}
+\end{equation}
+Combining now (\ref{eq:MainR}) with (\ref{eq:SR}), (\ref{eq:marginal}) and (\ref{eq:H3}), and also independence between each $\boldsymbol{\varepsilon}_j$ and $\boldsymbol{\varepsilon}_Y$, we obtain the following closed-form for the distribution of $\{\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2\}$:
 \begin{eqnarray}
-	\forall j \in I_r, I_f^j&=&\{i|\boldsymbol{\alpha}^j_i\neq 0 \} \\
-	\forall j \notin I_r, I_f^j&=&\emptyset .
+	\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^*)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl} \\
+	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*,\label{eq:modexpl}
 \end{eqnarray}
-%We see that $I_f$ defines the non-null coefficients in $\boldsymbol{\alpha}_j$ (each sub-regression can be very parsimonious).
-Then we have the explicit structure characterized by $S=\{I_f,I_r,\boldsymbol{p}_f,p_r\}$ where $p_r=|I_r|$, $\boldsymbol{p}_f=(p_f^1,\dots,p_f^{p_r})$ is the vector of the number of covariates in each sub-regression  and $p_f^j=|I_f^j|$, with $|.|$ the cardinal of an ensemble. 
-\\
-\\
+where $\boldsymbol{\alpha}^*_j \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ and $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0  $. \\
+
+Consequently, we have obtained a new regression expression of $\boldsymbol{Y}$ but relying now {\it only} on uncorrelated covariates $\boldsymbol{X}_f$. This decorrelation process has also acted like a specific variable selection process because $\boldsymbol{X}_f \subseteq \boldsymbol{X}$. These two statements are expected to decrease the variance of further estimates of $\boldsymbol{\beta}$.\\
+
+ However, the counterpart is twofold. First, this regression has a higher residual variance than the initial one since it is now $\sigma^{2*}_Y=\sigma^2_Y+\sum_{j =1}^{d_r}\beta_{J_r^j}^2\sigma^2_j$ instead of $\sigma^2_Y$. Second, variable selection being equivalent to set $\hat{\boldsymbol{\beta}}_r=\boldsymbol{0}$, it implies possibly biased estimates of $\boldsymbol{\beta}_r$. As a conclusion, we are faced with a typical {\it bias-variance trade off}. We will illustrate it in the chapter~\ref{chaptersimulexpl}.\\
 
 
-The partition of $\boldsymbol{X}$ implies the uncrossing rule  $\boldsymbol{X}^{I_r} \cap \boldsymbol{X}^{I_f}$ 
-{\it i.e.} endogenous variables don't explain other covariates. This hypothesis ensures that $S$ contains no cycle and is straightforward readable (no need to order the sub-regressions). It is not so restrictive because cyclic structures have no sense and any non-cyclic structure can be associated with a structure that verifies the uncrossing constraint by just successively replacing endogenous covariates by their sub-regression when they are also exogenous in some other sub-regressions.
+In practice, the strategy we propose is to rely estimate of  $\hat{\boldsymbol{\beta}}$ upon Equation~(\ref{eq:modexpl}). The practitioner can choose any estimate of its choice, like {\sc ols} or any variable selection procedure like {\sc lasso}. In other words, it is possible to see $(\ref{eq:modexpl})$ as a kind of {\it pretreatment} for decorrelating covariates, while assuming nothing on the subsequent estimate process.\\
 
+In the following, we will denote by {\sc CorReg} (for {\it Correlations} and {\it Regression})the new proposed strategy.
+
+\paragraph{Running example:} $\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2= 2\boldsymbol{X}^1+2\boldsymbol{X}^2+\boldsymbol{X}^4+\boldsymbol{X}^5+\boldsymbol{\varepsilon}_1 +\boldsymbol{\varepsilon}_Y$
+
+
+
+\section{Strategy of use: pre-treatment before classical estimation/selection methods}\label{interpretation}
+
+As a pre-treatment, the model allows usage of any method in a second time to estimate $\boldsymbol{\beta}_{f}^*$, even with variable selection methods like LASSO or a best subset algorithm like stepwise \cite{seber2012linear}. However, we always have $\boldsymbol{\beta}^*_r=\boldsymbol{0}$.\\
+
+After selection and estimation we will obtain a model with { \it two steps of variable selection}: the decorrelation step by marginalization(coerced selection associated to redundant information defined in $\boldsymbol{S}$) and the classical selection step, with different meanings for obtained zeros in $\hat{\boldsymbol{\beta}}^*_{f}$ (irrelevant covariates) and for $\hat{\boldsymbol{\beta}}^*_{r}=0$ (redundant information). 
+ Thus we are able to distinguish the reasons that have lead to keep or remove each covariate and consistency issues do not mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.\\
+
+
+The explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset and to take better actions. Expert knowledge can even be added to the structure, physical models for example.\\
+
+Moreover, the uncrossing constraint (partition of $\boldsymbol{X}$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect) and straightforward readable.\\
 	
-	  We make the choice to distinguish the response variable from the other endogenous variables (that are on the left of a sub-regression). Thus we have one regression on the response variable ($P(\boldsymbol{Y}|\boldsymbol{X}))$ and a system of sub-regressions (without the response variable: $P(\boldsymbol{X}_r|\boldsymbol{X}_f,S)$). Then we consider correlations between the explicative covariates of the main regression, not between the residuals. We see that the $S$ does not depend on $\boldsymbol{Y}$ so it can be learnt independently, even with a larger dataset (if missing values in $\boldsymbol{Y}$).
-	 
-The structure obtained gives a system of linear regression that can be viewed as a recursive Simultaneous Equation Model (\textsc{SEM})\cite{davidson1993estimation} \cite{TIMM}.
-\\
-We note $\boldsymbol{\alpha}$ the $(p-p_r)\times p_r$ matrix of the  $\boldsymbol{\alpha}^j$.
-  	Here we suppose the $\boldsymbol{\varepsilon}_j$ independent but in other cases \textsc{SUR} (Seemingly Unrelated Regression \cite{SURzellner}) takes into account correlations between residuals and could be used to estimate $\boldsymbol{\alpha}$. 
-		 
-	 
-\paragraph{In the running example:}$\boldsymbol{X}_r=\boldsymbol{x}_3$, $\boldsymbol{X}_f=\{\boldsymbol{x}_1,\boldsymbol{x}_2,\boldsymbol{x}_4,\boldsymbol{x}_5 \}$, $p_r=1$ and $\boldsymbol{\alpha}_3=(1,1,0,0)'$ and we have $S= \left( \{ \{1,2\}\},\{3\},(2),(1)\right)$
+			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We just play on the traditional bias-variance tradeoff. 
+			
 
 
 \section{Graph theory}\label{sectiongraph}
-	We can model $S$ by a Directed Acyclic Graph (DAG) whose vertices are the $p$ covariates and arcs are the link between them described by the adjacency matrix $\boldsymbol{G}$ \cite{bondy1976graph}. This adjacency matrix is a binary $p\times p$ matrix with $\boldsymbol{G}_{i,j}=1$ if and only if $i \in I_f^j$ that is $\boldsymbol{X}^j$ is explained by $\boldsymbol{X}^i$ and can also be seen as $\boldsymbol{\alpha}_i^j\neq 0$.
+	We can also model $\boldsymbol{S}$ by a Directed Acyclic Graph (DAG) whose vertices are the $d$ covariates and arcs are the links between them described by the adjacency matrix $\boldsymbol{G}$ \cite{bondy1976graph}. This adjacency matrix is a binary $d\times d$ matrix with $\boldsymbol{G}_{i,j}=1$ if and only if $i \in J_p^j$ that is $\boldsymbol{X}^j$ is explained by $\boldsymbol{X}^i$ and can also be seen as $\boldsymbol{\alpha}^*_{i,j}\neq 0$.\\
 	
-	Graphical representation of $S$ helps to understand it and can be compared to the bayesian network representation. It helps to interpret the structure has also been used to construct the algorithm to find $S$ (chapter \ref{chapterMCMC}).
-
-
+	Graphical representation of $\boldsymbol{S}$ helps to understand it and can be compared to the Bayesian network representation. It helps to interpret the structure and has also been used to construct the algorithm to find $\boldsymbol{S}$ (chapter \ref{chapterMCMC}).
+	The partition of $\boldsymbol{X}$ mean that the associated graph is bipartite: vertices follow a partition $(\boldsymbol{X}_r,\boldsymbol{X}_f)$ with arcs only going from $\boldsymbol{X}_f$ to $\boldsymbol{X}_r$.
+	We know (\cite{biggs1993algebraic})as a classical result of graph theory that the power of adjacency matrices give the paths in the graph: $\boldsymbol{G}^k_{i,j}\neq 0$ means that there is almost a path of length $k$ going from $\boldsymbol{X}^i$ to $\boldsymbol{X}^j$. We note $\mathcal{S}_d$ the set of feasible structures (verifying hypothesis \ref{H2}) with $d$ covariates.\\
 	
-	The partition of $\boldsymbol{X}$ mean that the associated graph is bipartite (vertices follow a partition $(\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f})$) with arcs only going from $\boldsymbol{X}^{I_f}$ to $\boldsymbol{X}^{I_r}$.
+	\paragraph{Theorem:} Because the graph is bipartite we can deduce that $\boldsymbol{G}$ is nilpotent: $\boldsymbol{G}^2=0$. And we have the following result: every binary nilpotent matrix of order 2 can be seen as an adjacency matrix of a structure that respects the uncrossing rule. We can deduce that the number of feasible structure with $d$ covariates is the number of binary nilpotent matrix of order 2. \\
+	 
+	\paragraph{proof:} Every binary matrix can be associated to a structure as an adjacency matrix and every structure can be described by its adjacency matrix. Thus we just have to demonstrate equivalence between uncrossing and nilpotent $\boldsymbol{G}$. If there exist a path of length 2 between some vertices $i$ and $j$ (uncrossing rule violated) then $\boldsymbol{G}^2_{i,j}\neq 0$ so the matrix is not nilpotent of order 2. So the set of nilpotent matrices is included the set of adjacency matrices associated to $\mathcal{S}_d$. If $\boldsymbol{G}$ is nilpotent then there is no path of length 2 in the graph (uncrossing rule verified). So we have the reverse inclusion and then equivalence between the set of adjacency matrices associated to $\mathcal{S}_d$ and the set of nilpotent matrices.\\
 	
-	We know (\cite{biggs1993algebraic})as a classical result of graph theory that the power of adjacency matrices give the paths in the graph: $\boldsymbol{G}^k_{i,j}\neq 0$ means that there is a path of length $k$ going from $\boldsymbol{X}^i$ to $\boldsymbol{X}^j$. Because the graph is bipartite and arcs are only going from $\boldsymbol{X}^{I_f}$ to $\boldsymbol{X}^{I_r}$ we can deduce that $\boldsymbol{G}$ is nilpotent: $\boldsymbol{G}^2=0$. And we have the following result: every binary nilpotent matrix of order 2 can be seen as an adjacency matrix of a structure that respects the uncrossing rule. proof by contradiction: if there exist a path of length 2 between some vertices $i$ and $j$ then $\boldsymbol{G}^2_{i,j}\neq 0$ so the matrix is not nilpotent of order 2. We can deduce that the number of feasible structure with $p$ covariates is the number of binary nilpotent matrix of order 2.
-	
-	We see that $\boldsymbol{G}$ completely describe $S$ and that the sparse storage of $G$ gives $I_f$ which is sufficient to obtain $S$ by doing $\forall 1\leq j\leq p :  p_f^j=|I_f^j|$, $I_r=\{j |p_f^j>0 \}$ and $p_r=|I_r|$.
-	This decomposition helps us to enumerate all the feasible structure (and thus all the binary nilpotent matrix of order 2).\\
-	We note $\mathcal{S}_p$ the set of the feasible structure with $p$ covariates. If we consider all the structure with equiprobability:
+	We see that $\boldsymbol{G}$ completely describe $\boldsymbol{S}$ that is in fact a sparse storage of $G$.
+	We decompose the structure to enumerate all the feasible structure (and thus all the binary nilpotent matrix of order 2).
+	 If we consider equiprobability within $\mathcal{S}_d$:
 	\begin{eqnarray}
-		S&=&\{I_f,I_r,\boldsymbol{p}_f,p_r\} \\
-		P(S|p_r)&=&P(I_f , \boldsymbol{p}_f|I_r,p_r)P(I_r|p_r) \\
-		&=&P(\boldsymbol{p}_f|I_f, I_r,p_r)P(I_f |I_r,p_r)P(I_r|p_r) \\
-		&=&P(I_f |I_r,p_r)P(I_r|p_r) \\
-		%&=&\sum_{p_r=0}^{p-1}P(I_f |I_r,p_r)P(I_r|p_r)\\
-		P(I_r|p_r)&=& \frac{1}{{p \choose p_r}} \\
-		P(I_f|I_r,p_r)&=& \frac{1}{(2^{p-p_r}-1)^{p_r}}\\
-		|\mathcal{S}_p|&=&\sum_{p_r=0}^{p-1}|\mathcal{S}_{p|p_r}|= \sum_{p_r=0}^{p-1}\frac{1}{P(S|p_r)} =\sum_{p_r=0}^{p-1}{p \choose p_r}(2^{p-p_r}-1)^{p_r}
+		\mathbb{P}(\boldsymbol{S})&=& \mathbb{P}(\boldsymbol{J}_p,\boldsymbol{J}_r)=\mathbb{P}(\boldsymbol{J}_p,\boldsymbol{J}_r,d_r) \\
+		&=& \mathbb{P}(\boldsymbol{J}_p|\boldsymbol{J}_r,d_r) \times  \mathbb{P}(\boldsymbol{J}_r|d_r)\times \mathbb{P}(d_r) \\
+		 \mathbb{P}(\boldsymbol{J}_r|d_r)&=& \frac{1}{{d \choose d_r}} \\
+		\mathbb{P}(\boldsymbol{J}_p|\boldsymbol{J}_r,d_r)&=& \frac{1}{(2^{d-d_r}-1)^{d_r}}\\
+		|\mathcal{S}_d|&=&\sum_{d_r=0}^{d-1}|\mathcal{S}_{d|d_r}|= \sum_{d_r=0}^{d-1}\frac{1}{\mathbb{P}(\boldsymbol{S}|d_r)} =\sum_{d_r=0}^{d-1}{d \choose d_r}(2^{d-d_r}-1)^{d_r}
 	\end{eqnarray}
 	where \begin{equation}
 	{n \choose k}=\frac{n!}{k!(n-k)!}
 	\end{equation} is the binomial coefficient.\\
-	We have then $|\mathcal{S}_2| =3 $,$|\mathcal{S}_3| =13 $ and $|\mathcal{S}_{10}| >13.26\times10^9 $ so the number of feasible structures really explodes when $p$ is growing.
+	We have then $|\mathcal{S}_2| =3 $,$|\mathcal{S}_3| =13 $ and $|\mathcal{S}_{10}| >13.26\times10^9 $ so the number of feasible structures really explodes when $d$ is growing. Next chapter shows results with $d=40$ and it corresponds to $|\mathcal{S}_{10}| >7.32\times10^{131} $ feasible structures. The function {\tt ProbaZ } of the package { \tt CorReg} gives the number of feasible structures for a given value of $d$, but {\tt R} returns $\infty$ for $d>62$.
 
 \paragraph{In the running example:} $|\mathcal{S}_5| =841 $
 
@@ -840,85 +906,43 @@ and the adjacency matrix is:
 	\end{array} \right)
 \end{displaymath}
 
-
-
-\section{A by-product model: marginal regression with decorrelated covariates}
-Now we know $P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S)$ by the structure of sub-regressions, we are able to define a marginal regression model $P(\boldsymbol{Y}|\boldsymbol{X}^{I_f},S)$ based on the reduced set of independent covariates $\hat{\boldsymbol{\beta}}_f$ without significant information loss. We use the information of the correlations structure to rewrite the true model without bias in the marginal space defined by the independent covariates.
- 	\\
-Using the partition $\boldsymbol{X}=[\boldsymbol{X}^{I_f},\boldsymbol{X}^{I_f}]$ we can rewrite (\ref{regressionsimple}):
-	\begin{equation}
-			\boldsymbol{Y}_{|\boldsymbol{X}^{I_f},\boldsymbol{X}^{I_r},S}=\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{\varepsilon_Y} \label{MainR}
-		\end{equation}
-		where $\boldsymbol{\beta}=(\boldsymbol{\beta}_{I_f},\boldsymbol{\beta}_{I_r}) \in  \mathcal{R}^p$ is the vector of the regression coefficients associated respectively to $\boldsymbol{X}^{I_f}$ and $\boldsymbol{I}_n$ the identity matrix. 
-We note that (\ref{SR}) and (\ref{MainR}) give also by simple integration on $\boldsymbol{X}^{I_r}$ a marginal regression model on $\boldsymbol{Y}$ {\it depending only on uncorrelated covariates $\boldsymbol{X}^{I_f}$}:
-\begin{eqnarray}
-		P(\boldsymbol{Y}|\boldsymbol{X}^{I_f})&=& \int_{\boldsymbol{X}^{I_r}}P(\boldsymbol{Y}|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f})P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f}) d \boldsymbol{X} \\
-	\boldsymbol{Y}_{|\boldsymbol{X}^{I_f},S}&=&\boldsymbol{X}^{I_f} (\boldsymbol{\beta}_{I_f}+ \sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j)+  \sum_{j \in I_r}\beta_{j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{Trueexpl} \\
-	&=&\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}^*+\boldsymbol{\varepsilon}_Y^*\label{modexpl}
-\end{eqnarray}
- This model is still the true model and OLS estimator will still give an unbiased estimator, but its variance will be reduced by both dimension reduction and decorrelation (variables in $\boldsymbol{X}^{I_f}$ are independent so the matrix $\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f}$ will be well-conditioned). So the information given by the structure $S$ allows to reduce the variance without adding bias, by simple marginalization.
-\\
-Nevertheless, to be able to compare the bias-variance tradeoff, we can see this model as a variable pre-selection independent of the response in $\boldsymbol{Y}_{|\boldsymbol{X}}$.
-We note that it is simply a linear regression on some of the original covariates so we only made a pre-treatment on the dataset by selecting $\boldsymbol{X}^{I_f}$ because of the correlations given by $S$. So we also get the model
-\begin{equation}
-\boldsymbol{Y}_{|\boldsymbol{X},S}=\boldsymbol{X}\boldsymbol{\beta}^*+\boldsymbol{\varepsilon}_Y^* \textrm{ where }\boldsymbol{\beta}^*=(\boldsymbol{\beta}_{I_f}^*,\boldsymbol{\beta}_{I_r}^*) \textrm{ and } \boldsymbol{\beta}_{I_r}^*=\boldsymbol{0}
-\end{equation}
-	for which OLS estimator of the coefficients may be biased.  
-
-\paragraph{Running example:} $\boldsymbol{Y}_{|\boldsymbol{X}^{I_f}}= 2\boldsymbol{x}_1+2\boldsymbol{x}_2+\boldsymbol{x}_4+\boldsymbol{x}_5+\boldsymbol{\varepsilon}_3 +\boldsymbol{\varepsilon}_Y$
-
-
-
-
-\section{Strategy of use: pre-treatment before classical estimation/selection methods}\label{interpretation}
-
-As a pre-treatment, the model allows usage of any method in a second time to estimate $\boldsymbol{\beta}_{I_f}^*$, even with variable selection methods like LASSO or a best subset algorithm like stepwise \cite{seber2012linear}. However, we always have $\boldsymbol{X}^{I_r}=\boldsymbol{0}$
-
-After selection and estimation we will obtain a model with { \it two steps of variable selection}: the decorrelation step by marginalization(coerced selection associated to redundant information defined in $S$) and the classical selection step, with different meanings for obtained zeros in $\hat{\boldsymbol{\beta}}^*_{I_f}$ (irrelevant covariates) and for $\hat{\boldsymbol{\beta}}^*_{I_r}=0$ (redundant information). 
- Thus we are able to distinguish the reasons of selection and consistency issues don't mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.
-
-
-The explicit structure is parsimonious and simply consists in linear regressions and thus is easily understood by non statistician, allowing them to have a better knowledge of the phenomenon inside the dataset and to take better actions. Expert knowledge can even be added to the structure, physical models for example.
-
-Moreover, the uncrossing constraint (partition of $\boldsymbol{X}$) guarantee to keep a simple structure easily interpretable (no cycles and no chain-effect) and straightforward readable.
-
-	
-			There is no theoretical guarantee that our model is better. It's just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypothesis. We just play on the traditional bias-variance tradeoff. 
-\chapter{Numerical results with a known structure}	
-\paragraph{Abstract:} Premiers résultats numériques pour une structure (hors coefficients de sous-régression) connue. On constate un net apport de la méthode de préselection.
+			
+			
+			
+			
+\chapter{Numerical results with a known structure}	\label{chaptersimulexpl}
+\paragraph{Abstract:} First numerical results for a known structure $\boldsymbol{S}$ (but $\boldsymbol{\alpha}^* $ still has to be estimated). It illustrates efficiency of the variable selection pretreatment made by the marginal model.
 		 
 	\section{Illustration of the tradeoff conveyed by the pre-treatment}	
-	We compare the OLS estimator on $\boldsymbol{X}$ defined in section \ref{sectionOLS} with the estimator obtained by the pre-treatment that is $\boldsymbol{X}^{I_f}$ selection.
+	We compare the OLS estimator on $\boldsymbol{X}$ defined in section \ref{sectionOLS} with the estimator obtained by the pre-treatment that is $\boldsymbol{X}_f$ selection.
   
-For the marginal regression model defined in (\ref{modexpl})
+For the marginal regression model defined in (\ref{eq:modexpl})
 %	\begin{equation}
 %		\boldsymbol{Y}_{|\boldsymbol{X}_f}= \boldsymbol{X}_f\boldsymbol{\beta}_f^*+ \boldsymbol{\varepsilon}_Y^*
 %	\end{equation}			
 %		So 
 we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$: 
 		\begin{equation}
-			\hat{\boldsymbol{\beta}}_{I_f}^* = (\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f})^{-1}\boldsymbol{X}^{I_f'}\boldsymbol{Y}  \textrm{ and }\boldsymbol{\hat\beta}_{I_r}^* = \boldsymbol{0}
+			\hat{\boldsymbol{\beta}}_{f}^* = (\boldsymbol{X}_{f}'\boldsymbol{X}_{f})^{-1}\boldsymbol{X}_{f}'\boldsymbol{Y}  \textrm{ and }\boldsymbol{\hat\beta}_{r}^* = \boldsymbol{0}
 		\end{equation}
-		We see in (\ref{Trueexpl}) that it gives an unbiased estimation of $\boldsymbol{Y}$ and $\boldsymbol{\beta^*}$
-		but in terms of $\boldsymbol{\beta}$ this estimator is biased:
+		We see in (\ref{eq:Trueexpl}) that it gives an unbiased estimation of $\boldsymbol{Y}$ and $\boldsymbol{\beta^*}$
+		but in terms of $\boldsymbol{\beta}$ this estimator could be biased:
 		\begin{equation}
-			\operatorname{E}[\hat{\boldsymbol{\beta}}_{I_f}^*|\boldsymbol{X}^{I_f}]=\boldsymbol{\beta}_{I_f}+\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \textrm{ and }\operatorname{E}[\hat{\boldsymbol{\beta}}_{I_r}^*|\boldsymbol{X}^{I_f}]=\boldsymbol{0}
+			\mathbb{E}(\hat{\boldsymbol{\beta}}_{f}^*)=\boldsymbol{\beta}_{f}+\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j \textrm{ and }\mathbb{E}(\hat{\boldsymbol{\beta}}_{r}^*)=\boldsymbol{0}
 		\end{equation}
-		with variance:
+		In return, its variance could be reduced compared to this one of $\hat{\boldsymbol{\beta}}$ given in (\ref{eq:varOLS}) as soon as values of $\sigma_j$ are small enough (it means strong correlations in sub-regressions) as we can see in the following expression
 		\begin{equation}
-			\operatorname{Var}[\hat{\boldsymbol{\beta}}_{I_f}^*|\boldsymbol{X}^{I_f}]= (\sigma^2_Y+\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2 )(\boldsymbol{X}^{I_f'} \boldsymbol{X}^{I_f})^{-1}  \textrm{ and }\operatorname{Var}[\hat{\boldsymbol{\beta}}_{I_r}^*|\boldsymbol{X}^{I_f}]= \boldsymbol{0} 
+			\operatorname{Var}(\hat{\boldsymbol{\beta}}_f^*)= (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2)(\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1} \quad \textrm{and} \quad\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^*)= \boldsymbol{0}. \label{eq:varOLS*}
 		\end{equation}
-		We see that the variance is reduced compared to OLS described in equation (\ref{eqOLS})(no correlations and smaller matrix give better conditioning ) for small values of $\sigma_j$ $i.e.$ strong correlations. So we play on the bias-variance tradeoff, reducing the variance by adding a bias. 				  
-		  
-		  
-	 The theoretical Mean Squared Error (\textsc{MSE}) on $\hat{\boldsymbol{\beta}}$ is:
+Indeed, no correlations between covariates $\boldsymbol{X}_f$ imply that the matrix $\boldsymbol{X}_f' \boldsymbol{X}_f$ could be sufficiently better conditioned than the matrix $\boldsymbol{X}' \boldsymbol{X}$ involved in (\ref{eq:varOLS}) to balance the added variance $\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2$ in (\ref{eq:varOLS*}). This bias-variance trade off can be resumed by the Mean Squared Error (\textsc{mse}) associated to both estimates:
 	\begin{eqnarray}
-		E[\textsc{MSE}(\hat{\boldsymbol{\beta}}|\boldsymbol{X})]&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}})) \\
-			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})]&=& 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}) %\textrm{ for OLS, and then for the marginal model:}
+	\textsc{MSE}(\hat{\boldsymbol{\beta}}|\boldsymbol{X})]&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}})) \\
+			\textsc{mse}(\hat{\boldsymbol{\beta}})&=& \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}),
 			 \\
-			E[\textsc{MSE}(\hat{\boldsymbol{\beta}}^*_{OLS}|\boldsymbol{X})]&=& \parallel\sum_{j \in I_r}\beta_{j}\boldsymbol{\alpha}_j \parallel_2^2 +\parallel \boldsymbol{\beta}_{I_r}\parallel^2_2 + (\sigma^2_Y+\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2 ) \operatorname{Tr}((\boldsymbol{X}^{I_f'} \boldsymbol{X}^{I_f})^{-1})
+			\textsc{mse}(\hat{\boldsymbol{\beta}}^*)&=& \parallel\sum_{j =1}^{d_r}\sigma_{j}\beta_{J_r^j} \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}).
 	\end{eqnarray}	 
-	To better illustrate the bias-variance tradeoff, we look at the running example. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_3$ (strength of the sub-regression) and $n$. Figure \ref{MQEexplOLSp5col} shows the theoretical MSE evolution with the strength of the sub-regression. In this section, all experiences have been made 100 times to obtain smooth curves. So we have generated 100 times $\boldsymbol{X}$ and $\boldsymbol{Y}$.
+ 				  
+	This bias-variance tradeoff is illustrated with the running example in Figure \ref{MQEexplOLSp5col}. We observe the theoretical Mean Squared Error (MSE) of the estimator of both OLS and \textsc{CorReg}'s marginal  model for several values of $\sigma_1$ and $n$. Figure \ref{MQEexplOLSp5col} shows the theoretical MSE evolution with the strength of the sub-regression expressed by the standard coefficient of determination. In this section, all experiences have been made 100 times to obtain smooth curves. So we have generated 100 times $\boldsymbol{X}$ and $\boldsymbol{Y}$.
 %	\begin{equation}
 %		1-\mathcal{R}^2=\frac{\operatorname{Var}(\boldsymbol{\varepsilon)_3}}{\operatorname{Var}(\boldsymbol{x}_3)}=\frac{\sigma_3^2}{\sigma_3^2+2}
 %	\end{equation}
@@ -936,12 +960,12 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 %			\caption{For $n=1000$. Dotted: \textsc{Correg}, plain: OLS.} \label{MQE3}
 %   \end{minipage} 
 	\includegraphics[width=500px]{figures/MQEexplOLSp5col.png}\label{MQEexplOLSp5col}
-	\caption{Theoretical MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and {\tt CorReg}'s marginal model (blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
+	\caption{Theoretical MSE on $\hat{\boldsymbol{\beta}}$ of OLS (plain red) and {\tt CorReg}'s marginal model (dotted blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}
 \end{figure} 
 It is clear in Figure \ref{MQEexplOLSp5col} that the marginal model is more robust than \textsc{OLS} on $\boldsymbol{X}$. And when sub-regression get weaker ($\mathcal{R}^2$ tends to 0) it remains stable until extreme values (sub-regression nearly fully explained by the noise). We also see that the error implied by strong correlations shrinks with the rise of $n$. 
-We know that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{I_r}))=0$.
- Thus, when $\sigma_Y^2$ rises it increases the advantage of {\tt CorReg} versus \textsc{OLS}. It illustrates the importance of dimension reduction when the main model has a strong noise (very usual case on real datasets where true model is not even exactly linear). 
- 
+We know that $\sigma_Y$ multiplies $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))=\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{f}))+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))$ for both models but for the marginal model $\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}_{r}))=0$. \\
+
+	Thus, the estimate $\hat{\boldsymbol{\beta}^*}$ should be particularly useful when some covariates are highly correlated, when the sample size is small or when the residual variance of $\boldsymbol{Y}$ is large. These three classical problems for OLS make \textsc{CorReg} better. It illustrates the importance of dimension reduction when the main model has a strong noise (very usual case on real datasets where true model is not even exactly linear). 
 But it is only the theoretical MSE and we want to know what happens in the real life. 
 \section{Observed MSE comparison}\label{MSEvraiS}
 We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\boldsymbol{Y}}$. Here again, each configuration is computed 100 times and we take the mean to smooth the curves. The MSE on $\hat{\boldsymbol{Y}}$ is computed on a validation sample with 1 000 individuals. Our marginal model remains better for strong correlations.\\
@@ -950,13 +974,13 @@ We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\bolds
 	\subsection{On the running example}
  \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/OLSexpl.png}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of OLS (red) and {\tt CorReg}'s marginal model (blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEOLSexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of OLS (plain red) and {\tt CorReg}'s marginal model (dotted blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSEOLSexpl}
 \end{figure} 
 	
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/OLSYexpl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEOLSYexpl}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEOLSYexpl}
 	\end{figure}
 	We see in figures \ref{MSEOLSexpl} and \ref{MQEOLSYexpl} that MSE on $\hat{\boldsymbol{Y}}_{OLS}$ give the same results as those on $\hat{\boldsymbol{\beta}}_{OLS}$: the marginal model is better for stronger sub-regressions, smaller samples and weaker main regression. But we notice that when the MSE on $\hat{\boldsymbol{\beta}}_{OLS}$ explodes, the MSE on $\hat{\boldsymbol{Y}}_{OLS}$ does not grow so much. This is a good illustration of the problem generated by the correlations. The model seems to be good in prediction but coefficients are very far from the real value and interpretation can be extremely misleading.\\
 	Once again, usage of QR decomposition to invert matrices does improve the results significantly compared to the theoretical MSE. Mathematics offer a wide range of tools and this is a good example of how linear algebra can be used in statistical fields. \\
@@ -964,25 +988,25 @@ We look at the empirical MSE on both $\hat{\boldsymbol{\beta}}$ and $\hat{\bolds
 	
  \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/larexpl.png}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of LASSO with LAR on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSElarexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}$ of LASSO with LAR on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSElarexpl}
 \end{figure} 
 	
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/larYexpl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{LASSO}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQElarYexpl}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{LASSO}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQElarYexpl}
 	\end{figure}
 	Figure \ref{MSElarexpl} shows that variable selection done the LASSO gives a biased $\hat{\boldsymbol{\beta}}$ by setting some coefficients to 0 but strong correlations makes this bias neutral for prediction (figure \ref{MQElarYexpl}). Here the LASSO tends to propose the same model as we do  with our marginal model, but without explanation. We will see  later in section \ref{compY} that it is not sufficient in higher dimension. \\
 %ridge
 	\begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/ridgeexpl.png}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{ridge}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEridgexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{ridge}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}_f$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSEridgexpl}
 \end{figure} 
 	
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/ridgeYexpl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEridgeYexpl}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEridgeYexpl}
 	\end{figure}	
 Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression provides good results for this running example. But we will see later in section \ref{compY} that high dimension reduces the efficiency of the ridge regression when some covariates begin to be irrelevant or not enough relevant because ridge regression is not able to select relevant covariates. \\
 
@@ -990,41 +1014,42 @@ Elasticnet and stepwise give results quite similar to the LASSO (figures \ref{MS
  %elasticnet
 	\begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/elasticnetexpl.png}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{elasticnet}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}\label{MSEelasticnetexpl}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{elasticnet}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}_f$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSEelasticnetexpl}
 \end{figure} 
 	
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/elasticnetYexpl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{elasticnet}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEelasticnetYexpl}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{elasticnet}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEelasticnetYexpl}
 	\end{figure}
   %stepwise
 	\begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/stepwiseexpl.png}\label{MSEstepwiseexpl}
-	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{stepwise}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $p=5$ covariates.}
+	\caption{Observed MSE on $\hat{\boldsymbol{\beta}}_{stepwise}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}_f$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}
 \end{figure} 
 	
 	 \begin{figure}
 	 \centering
 	  \includegraphics[width=500px]{figures/MQEreel/stepwiseYexpl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $p=5$ covariates. } \label{MQEstepwiseYexpl}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEstepwiseYexpl}
 	\end{figure}
 	
  	\FloatBarrier
 	\subsection{On more complex datasets}\label{thedatasets}
-		The {\tt CorReg} package has been tested on simulated datasets. 
- For each simulation,  $p=40$, the $R^2$ of the main regression is $0.4$, variables in $\boldsymbol{X}_f$ follow Gaussian mixture models of $\lambda=5$ classes which means follow Poisson's law of parameter $\lambda=5$ and which standard deviation is $\lambda$. The $\beta_j$ and the coefficients of the $\boldsymbol{\alpha}_j$ are generated according to the same Poisson law but with a random sign. $\forall j \in I_r, p_1^j=2$ (sub-regressions of length 2) and we have $p_r=16$ sub-regressions. The datasets were then scaled so that covariates $\boldsymbol{X}^{I_r}$ don't have a greater variance or mean.
-	Results are based on the true $S$ used to generate the dataset.
-	When $n<p$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<p$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
+		
+We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R^2$ value equal to $0.4$. Sub-regressions will have $R^2$ successively set to $(0.1,0.3,0.5,0.7,0.99)$. Variables in $\boldsymbol{X}_f$ arise from a Gaussian mixture model whose the number of components follows a Poisson's law of mean parameter equal to $5$. The coefficients of $\boldsymbol{\beta}$ and of the $\boldsymbol{\alpha}_j$'s are independently generated according to the same Poisson distribution but with a uniform random sign. All sub-regressions are of length two ($\forall j=1,\ldots,d_r, d_p^j=2$ and we have $d_r=16$ sub-regressions. The datasets are then scaled, to avoid large distortions for variances or for means due to the sub-regressions.	Different sample sizes  $n\in (30,50,100,400)$ are chosen, thus considering experiments in both situations $n<d$ and $n>d$. 
+	Results are based on the true $\boldsymbol{S}$ used to generate the dataset (function {\tt mixture\_genererator} in the package {\tt CorReg}.\\
+	
+	When $n<d$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<d$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
 	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the {\tt CorReg} package. Here $\boldsymbol{Y}$ depends on all the covariate and the MSE provided were computed on a validation sample of 1 000 individuals each time. \\
 	
 	Figures \ref{MSEexplOLSY_zone} to \ref{MSEexplOLSbeta_zone} illustrate what happens for OLS. 
-Our marginal model is better than OLS for $n<p$ and the complete model (that is the true model) only starts to win for values of $n$ many times larger than $p$ and weak correlations. We still have the phenomenon of MSE on $\hat{\boldsymbol{\beta}}$ more impacted by correlations than the MSE on $\hat{\boldsymbol{\beta}}$, and our main goal is interpretation so our marginal model really is efficient in our context. \\
+Our marginal model is better than OLS for $n<d$ and the complete model (that is the true model) only starts to win for values of $n$ many times larger than $d$ and weak correlations. We still have the phenomenon of MSE on $\hat{\boldsymbol{\beta}}$ more impacted by correlations than the MSE on $\hat{\boldsymbol{\beta}}$, and our main goal is interpretation so our marginal model really is efficient in our context. \\
 
-Figures \ref{MSEexpllarY_zone} to \ref{MSEexpllarbeta_zone} show that even if the LASSO is able to select a subset of covariate and even if we have seen with OLS that taking a subset can give better results, the LASSO does not do so and give more complex models than our marginal model until correlations are extremely strong. We also observe that our marginal model combined with the LASSO has varying complexities so our pretreatment by selection is just a pretreatment and not competitor against the LASSO. Such combination improves the results in a significant way when compared to the LASSO on the complete dataset or OLS on the marginal model. We see that the complexity rises with $n$ but the lasso never keeps all the covariates even with $n=400=10p$ when used on the whole dataset but keep all the covariates in $\boldsymbol{X}^{I_f}$ when used on the marginal model. The main result here is that the LASSO can be improved by pretreatment selection both with $n<p$ and $n>>p$ with strong correlations so this well known variable selection method really suffers from correlations. \\
+Figures \ref{MSEexpllarY_zone} to \ref{MSEexpllarbeta_zone} show that even if the LASSO is able to select a subset of covariate and even if we have seen with OLS that taking a subset can give better results, the LASSO does not do so and give more complex models than our marginal model until correlations are extremely strong. We also observe that our marginal model combined with the LASSO has varying complexities so our pretreatment by selection is just a pretreatment and not competitor against the LASSO. Such combination improves the results in a significant way when compared to the LASSO on the complete dataset or OLS on the marginal model. We see that the complexity rises with $n$ but the lasso never keeps all the covariates even with $n=400=10\times d$ when used on the whole dataset but keep all the covariates in $\boldsymbol{X}_f$ when used on the marginal model. The main result here is that the LASSO can be improved by pretreatment selection both with $n<d$ and $n>>d$ with strong correlations so this well known variable selection method really suffers from correlations. \\
 
-Ridge regression (Figures \ref{MSEexplridgeY_zone} to \ref{MSEexplridgebeta_zone}) is not improved by the marginal model. Ridge regression is protected against correlations but we see that ridge regression applied on $\boldsymbol{X}^{If}$ (even if it is not the true model) give predictions quite similar to those from ridge regression but with less covariates. Ridge regression will only be damaged when variable selection is needed. \\
+Ridge regression (Figures \ref{MSEexplridgeY_zone} to \ref{MSEexplridgebeta_zone}) is not improved by the marginal model. Ridge regression is protected against correlations but we see that ridge regression applied on $\boldsymbol{X}_f$ (even if it is not the true model) give predictions quite similar to those from ridge regression but with less covariates. Ridge regression will only be damaged when variable selection is needed. \\
 
 
 Elasticnet and stepwise (Figures \ref{MSEexplelasticnetY_zone} to \ref{MSEexplstepwisebeta_zone})give results mostly equivalent to the LASSO but stepwise seems to be a bit less efficient (higher MSE values). This last point illustrates why we need a specific algorithm to find the structure $S$ and not only variable selection by stepwise like in the method from Maugis \cite{maugis2009variable}.
@@ -1034,7 +1059,7 @@ Further results are provided in sections \ref{sectionsimul} and \ref{sectionreal
 	\FloatBarrier
 
 \newpage
-\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $S$ known}
+\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
 
 %OLS	
 	\begin{figure}[h!]
@@ -1055,7 +1080,7 @@ Further results are provided in sections \ref{sectionsimul} and \ref{sectionreal
 	\FloatBarrier
 \newpage
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $S$ known}
+\subsubsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
 	\begin{figure}[h!]
 	\centering
 		  \includegraphics[width=350px]{figures/explvraiS/MSEexpllarY_zone.png}
@@ -1074,7 +1099,7 @@ Further results are provided in sections \ref{sectionsimul} and \ref{sectionreal
 	\FloatBarrier
 \newpage
 %elasticnet
-\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $S$ known}
+\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
 
 	\begin{figure}[h!]
 	\centering
@@ -1094,7 +1119,7 @@ Further results are provided in sections \ref{sectionsimul} and \ref{sectionreal
 	\FloatBarrier
 \newpage
 %stepwise
-\subsubsection{Stepwise when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $S$ known}
+\subsubsection{Stepwise when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
 
 	\begin{figure}[h!]
 	\centering
@@ -1114,7 +1139,7 @@ Further results are provided in sections \ref{sectionsimul} and \ref{sectionreal
 	\FloatBarrier
 \newpage
 %ridge	
-\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $S$ known}
+\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
 
 \begin{figure}[h!]
 	\centering
@@ -1138,82 +1163,110 @@ Further results are provided in sections \ref{sectionsimul} and \ref{sectionreal
 %		modèles avec beaucoup de variables (car rapide vu que pas de MCMC).
 %		Faire avec vrai modèle= modèle complet puis X1 uniquement puis X2 uniquement puis aussi Amax=15 si p largement supérieur à 100
 \chapter{Estimation of the Structure of subregression by MCMC}\label{chapterMCMC}
-\paragraph{Abstract:} La structure de sous-régression est supposée inconnue. Il nous faut donc la trouver. Un algorithme de type MCMC est proposé pour résoudre cette problématique. La mise en oeuvre de celui-ci passe par une modélisation complète du jeu de données et nous pousse à introduire un nouveau critère de choix de modèle tenant compte du nombre de modèles testés.
-\\
+\paragraph{Abstract:} $\boldsymbol{S}$ is supposed unknown so we need to find it. An MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
+ \\
 \\
 
 \section{Bayesian approach}
-Structural equations models are often used in social sciences and economy where a structure is supposed "by hand" but here we want to find it automatically. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $S$ to avoid cycles.
+Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
 
-Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $p_r$) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
+Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $d_r$) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
 Because it is about model selection, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
 	
-We want to find the most probable structure $S$ knowing the dataset, so we search for the structure that maximizes $P(S|\boldsymbol{X})$ and we have:	
-	\begin{eqnarray}
-	 \label{approxBIC} P(S|\boldsymbol{X})&\propto & P(\boldsymbol{X}|S)P(S)
-	=P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S)P(\boldsymbol{X}^{I_f}|S)P(S)
-	\end{eqnarray}
-So we will try to maximize $\psi(\boldsymbol{X},S)=P(\boldsymbol{X}|S)P(S)$. It will be done with a Markov chain Monte-Carlo algorithm (MCMC).
+
 	
 
 \section{Sub-regression structure in details}
+We want to find the most probable structure $\boldsymbol{S}$ knowing the dataset, so we search for the structure that maximizes $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})$ and we have:	
+	\begin{eqnarray}
+	 \label{approxBIC} \mathbb{P}(\boldsymbol{S}|\boldsymbol{X})&\propto & \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})\mathbb{P}(\boldsymbol{S})
+	=\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})\mathbb{P}(\boldsymbol{S})
+	\end{eqnarray}
+In order to implement this paradigm, we need first to define the three probabilities which are in the right hand of the previous equation.
 	\subsection{Modeling the uncorrelated covariates: a full generative approach on $P(\boldsymbol{X})$} \label{sectionfullgen}
-	To be able to compare structures with $P(S|\boldsymbol{X})$, we need a full generative model on $\boldsymbol{X}$. Sub-regressions give $P(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},S) $ but $P(\boldsymbol{X}^{I_f}|S)$ is still undefined. We suppose that variables in $\boldsymbol{X}^{I_f}$ follow Gaussian mixtures of $K_j >0$ components: 
-	\begin{equation}
-			\forall \boldsymbol{X}^j \notin \boldsymbol{X}^{I_r} : \boldsymbol{X}^j_{|S} \sim f(\boldsymbol{\theta}_j)=\mathcal{GM}(\boldsymbol{\pi}_j;\boldsymbol{\mu}_j;\boldsymbol{\sigma}^2_j) \textrm{ with } \boldsymbol{\pi}_j,\boldsymbol{\mu}_j,\boldsymbol{\sigma}^2_j \textrm{ vectors of size } K_j. \label{mixtureX1}
-		\end{equation}
-		The great flexibility \cite{mclachlan2004finite} of such models makes our model more robust. Gaussian case is just a special case ($K_j=1$) of Gaussian mixture so it is included in our hypothesis.
+	
+
+\paragraph{Defining $\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})$} corresponds to the integrated likelihood based on $\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma^2})$. It can be approximated by a {\sc bic}-like approach \cite{Sch1978}
+\begin{equation}
+-2\ln \mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}}^2) + (|{\boldsymbol{\alpha}}| + |{\boldsymbol{\sigma}}^2|) \ln(n) = \mbox{{\sc bic}}_r(\boldsymbol{S}),
+\end{equation}
+where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate respectively the Maximum Likelihood Estimates ({\sc mle}) of ${\boldsymbol{\alpha}}$ and ${\boldsymbol{\sigma}}^2$, and $|\boldsymbol{\psi}|$ designates the number of free continuous parameters associated to the space of any parameter $\boldsymbol{\psi}$.
+
+\paragraph{Defining $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})$} It corresponds to the integrated likelihood based on a not yet defined distribution $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\boldsymbol{\theta})$ on the uncorrelated covariates $\boldsymbol{X}_f$ and parameterized by $\boldsymbol{\theta}$. In this purpose, we need the following new hypothesis.
+
+\begin{hyp}\label{H4}
+All variates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and arise from the following Gaussian mixture of $k_j$ components
+\begin{equation}
+\mathbb{P}(\boldsymbol{X}_f^j|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\lambda}^2_j) = \sum_{h=1}^{k_j} \pi_{hj} \mathcal{N}_n(\mu_{hj} . (1,\ldots,1)',\lambda_{hj}^2\boldsymbol{I}),
+\end{equation}
+where $\boldsymbol{\pi}_{j}=(\pi_{1j},\ldots,\pi_{k_jj})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{hj}>0$ and $\sum_{h=1}^{k_j}\pi_{hj}=1$, $\boldsymbol{\mu}_j=(\mu_{1j},\ldots,\mu_{k_jj})$  is the vector of centers and $\boldsymbol{\lambda}^2_j=(\lambda^2_{1j},\ldots,\lambda^2_{k_jj})$ is the vector of variances. We stack together all the mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\lambda}^2_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
+
+\end{hyp}
+		 
+
+\vspace{3mm}
+
+Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {\sc bic} approximation can then be used again:
+\begin{equation}
+-2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\hat{\boldsymbol{\theta}}) + |{\boldsymbol{\theta}}| \ln(n) = \mbox{{\sc bic}}_f(\boldsymbol{S}).
+\end{equation}
+
+\paragraph{Defining $\mathbb{P}(\boldsymbol{S})$} The most standard choice consists of putting a uniform distribution on the model space $\mathcal{S}_d$, this choice being noted $\mathbb{P}_U(\boldsymbol{S}) = |\mathcal{S}_d|^{-1}$, with $|\mathcal{S}_d|$ the space dimension of $\mathcal{S}_d$ as defined in section \ref{sectiongraph}.
 		
 	%Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
-	We now have a full generative model on $\boldsymbol{X}$.
+	
+\paragraph{Remarks}\begin{itemize}
+	\item Hypothesis~\ref{H4} is the keystone to define a full generative model on the whole covariates $\boldsymbol{X}$. On the one hand, the {\sc bic} criterion can be applied in this context, avoiding to use a cross-validation criterion which can be much more time-consuming. On the other hand, the great flexibility  of Gaussian mixture models \cite{mclachlan2004finite}, provided that the number of components $k_j$ has to be estimated, implies that Hypothesis~\ref{H4} is particularly weak in fact.
+\item In practice, Gaussian mixture models are estimated only once for each variable $\boldsymbol{X}^j$ ($j=1,\ldots,d$). Thus, there is no combinatorial difficulty associated with them. An {\sc em} algorithm \cite{dempster1977maximum} will be used for estimating the mixture parameters and a classical {\sc bic} criterion \cite{Sch1978} will be used for selecting the different number of components $k_j$.
+\end{itemize}	
+	
 	
 \subsection{Identifiability of the structure} \label{preuveident}
-	The model presented above relies on a discrete structure $S$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{S}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
+	The model presented above relies on a discrete structure $\boldsymbol{S}$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{\boldsymbol{S}}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
 	
-		If there are exact sub-regressions ($\exists j, \sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete.{\tt CorReg} (Our R package) prints a warning to point out exact regressions when found.
-	In the followings we suppose $\forall j, \sigma^2_j\neq 0$, then $\boldsymbol{X}^{I_f'}\boldsymbol{X}^{I_f}$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
+		If there are exact sub-regressions ($\exists j\in \{1,\dots,d_r\}, \sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. {\tt CorReg} prints a warning to point out exact regressions when found.
+	In the followings we suppose $\forall j\in \{1,\dots,d_r\}, \sigma^2_j\neq 0$, then $\boldsymbol{X}_f'\boldsymbol{X}_f$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
 	\\
 	
-Our full generative model is a $p$-sized Gaussian mixture model of $K$ distinct components and 
+Our full generative model is a $d$-sized Gaussian mixture model of $K$ distinct components and 
 %	\begin{equation}
 %	f(\boldsymbol{X}|K,S)=f(\boldsymbol{X}_f|K,S)f(\boldsymbol{X}_r|\boldsymbol{X}_f,S)
 %	\end{equation}	
 %	
 	can be seen as a $\mathbf{SR}$ model defined by Maugis \cite{maugis2009variable}. In this section, $S$ will denote the set of variable as in the paper from Maugis and we call Gaussian mixtures the Gaussian mixtures with at least two distinct components. The equivalence with Maugis's model is defined by:
-	$\boldsymbol{X}^{I_r}=\boldsymbol{y}^{S^c}$ and $\boldsymbol{X}^{I_f}=\boldsymbol{y}^R$. We have supposed independence between variables in $\boldsymbol{X}^{I_f}$ so the identifiability theorem from Maugis tells that our model is identifiable if variables in $\boldsymbol{X}^{I_f}$ are Gaussian mixtures.% (what we supposed in section \ref{sectionfullgen}).
+	$\boldsymbol{X}_r=\boldsymbol{y}^{S^c}$ and $\boldsymbol{X}_f=\boldsymbol{y}^R$. We have supposed independence between variables in $\boldsymbol{X}_f$ so the identifiability theorem from Maugis tells that our model is identifiable if variables in $\boldsymbol{X}_f$ are Gaussian mixtures.% (what we supposed in section \ref{sectionfullgen}).
 	\\
 	
 	
 %First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there must be at least one Gaussian mixture on the right of each sub-regression. 
-We define $\boldsymbol{X}^G \subsetneq \boldsymbol{X}^{I_f}$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}^{I_f}$.
-We suppose that variables in $\boldsymbol{X}^{I_r}$ are all Gaussian mixtures. It implies that $\forall j  \in I_r,\exists i \in I_f^j $ so that $\boldsymbol{X}^i \subset \boldsymbol{X}^{G^c} $ since any linear combination of Gaussian variable would only give a Gaussian (so each sub-regression contain at least one Gaussian mixture as a regressor).
+We define $\boldsymbol{X}^G \subsetneq \boldsymbol{X}_f$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
+We suppose that variables in $\boldsymbol{X}_r$ are all Gaussian mixtures. It implies that $\forall j\in \{1,\dots,d_r\},\exists i \in J_p^j $ so that $\boldsymbol{X}^i \subset \boldsymbol{X}^{G^c} $ since any linear combination of Gaussian variable would only give a Gaussian (so each sub-regression contain at least one Gaussian mixture as a regressor).
 \\
-	We introduce the matricial notation
-		$\boldsymbol{X}^{I_r}=\boldsymbol{X}^{I_f}\boldsymbol{\alpha} + \boldsymbol{\varepsilon}$ where
-		 $\boldsymbol{\alpha}$ is the $(p-p_r)\times p_r$ matrix whose columns are the $\boldsymbol{\alpha}_j$ and $\boldsymbol{\varepsilon}$ is the $n\times p_r$ matrix whose columns are the $\boldsymbol{\varepsilon}_j$
+	We have $\boldsymbol{X}_r=\boldsymbol{X}_f\boldsymbol{\alpha}^* + \boldsymbol{\varepsilon}$. 
+	
 		%\\We note $\Theta$ the parameter of the model.We want to know if $P(\boldsymbol{X}|S,\Theta)=P(\boldsymbol{X}|\tilde{S},\tilde{\Theta})$ does imply $(S,\Theta)=(\tilde{S},\tilde{\Theta})$.
-		
 The theorem from Maugis guarantee that a sub-regression between Gaussian mixtures is identifiable in terms of which one is regressed by others.
 		\begin{eqnarray}
 %			\forall j \in I_r, \boldsymbol{X}^j_{|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_j^G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c}+ \boldsymbol{\varepsilon}_j \\
 %			\boldsymbol{X}^j_{|\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c} + \tilde{\boldsymbol{\varepsilon}}_j \textrm{ is identifiable where} \\
 %			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian. 
-		 \boldsymbol{X}_{r|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}+ \boldsymbol{\varepsilon} \\
-			\boldsymbol{X}_{r|\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c} + \tilde{\boldsymbol{\varepsilon}} \textrm{ is identifiable where} \\
-			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian.}  
+		 \boldsymbol{X}_{r}|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}+ \boldsymbol{\varepsilon} \\
+			%\boldsymbol{X}_{r|\boldsymbol{X}^{G^c}}
+			&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c} + \tilde{\boldsymbol{\varepsilon}} \textrm{ which is identifiable whith} \\
+			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ that is Gaussian.}  
 		\end{eqnarray}
 		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
-		It implies then that: $\forall j \in I_r, \boldsymbol{X}^{j} $ is a Gaussian mixture and $\exists i \in I_f^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  \\
+		It implies then that: $\forall j \in \{1,\dots,d_r \}, \boldsymbol{X}^{J_r^j} $ is a Gaussian mixture and $\exists i \in J_p^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  \\
 		
 	%Tables \ref{testidentifiableG}	and \ref{testidentifiableGM} illustrates this property.
 	
-\paragraph{Remark:} Identifiability of $S$ is not necessary to use a given structure but helps to find it.
-In the followings, true $S$ is supposed to be identifiable (at least one Gaussian mixture in each sub-regression).
+\paragraph{Remark:} Identifiability of $\boldsymbol{S}$ is not necessary to use a given structure but helps to find it. Moreover, uncrossing rule restricts the size of $\mathcal{S}_d$ and improves identifiability.
+In the followings, true $\boldsymbol{S}$ is supposed to be identifiable (at least one Gaussian mixture in each sub-regression).
 		
 	\subsection{Impact of the structure itself}
 		
 	
-	Correlations can lead to serious problems in industrial context. Let's imagine a dataset with two highly correlated covariates. Estimators may give them the same coefficient (grouping effect  when using elasticnet) or only keep one of them (like the LASSO does). \\
+	Correlations can lead to serious problems in industrial context. Let's imagine a dataset with two highly correlated covariates. Estimators may give them the same coefficient (grouping effect when using elasticnet) or only keep one of them (like the LASSO does). \\
 	
 	If only one is kept without explicitly pointing the correlations we will think that the deleted covariate is irrelevant even if it is not and even if it could be more relevant than the kept covariate in terms of possible actions or physical meanings.\\
 	
@@ -1229,60 +1282,60 @@ In the followings, true $S$ is supposed to be identifiable (at least one Gaussia
 		Our full generative generative model allows us to compare structures with criterions like the Bayesian Information Criterion ($BIC$) which penalize the log-likelihood of the joint law on $\boldsymbol{X}$ according to the complexity of the structure~\cite{BIChuard}. \\
 		
 		
-			 We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context.
+			 We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion ) that choose a penalty in $\log d$ instead of $\log n$ \cite{foster1994risk} and thus gives more parsimonious models when $d$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context.
 		In the followings we use the $BIC$, that is more classical.
 		
 		
-		\subsection{Penalization of the integrated likelihood by $P(S)$} \label{compstruct}
+		\subsection{Penalization of the integrated likelihood by $\mathbb{P}(\boldsymbol{S})$} \label{compstruct}
 		
-		
-When considering (\ref{approxBIC}) we see that uniform law on $P(S)$ gives $\psi(\boldsymbol{X},S)\propto P(\boldsymbol{X}|S)$ so it is equivalent to a minimization of the $BIC$.
-	We note $\boldsymbol{\Theta}$ the set of the parameters of the generative model.
-	\begin{eqnarray}
-		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n)  
-	\end{eqnarray}
-	
-	But $BIC$ tends to give too complex structures because we test a great range of models and the number of model compared is not taken into account\cite{massart2007concentration}. Thus we choose to penalise the complexity a bit more. We don't want to modify the $BIC$ to keep its properties.
-	
-We have the explicit structure characterized by $S=\{I_f,I_r,p_f,p_r\}$, then we suppose a hierarchical uniform {\it a priori} distribution $P(S)=P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r)$  instead of the simple uniform law on $S$ that is generally used and provides no penalty.
-It goes against the fact that the number of models with $p_r$ sub-regressions and the number of possible combination for each sub-regression depends on $p_r$ and thus provides distinct penalties according to the complexity. 
-	 Thus we have :
-		\begin{eqnarray}
-		BIC_+(X|S)&=&BIC(X|S) -\ln(P(S)) \label{Bicstar}
-	\end{eqnarray}		
-	The hierarchical uniform hypothesis gives:
-	\begin{eqnarray}
-	P(S)&=&P(I_f | \boldsymbol{p}_f,I_r,p_r)P(\boldsymbol{p}_f|I_r,p_r)P(I_r|p_r)P(p_r) \textrm{ with} \\
-	P(p_r)&=&\frac{1}{p} \\
-	P(I_r|p_r)&=& \frac{1}{ { p \choose p_r} }\\
-	P(\boldsymbol{p}_f|I_r,p_r)&=& \frac{1}{p_r \times \frac{1}{p-p_r}}=\frac{p-p_r}{p_r}\\
-	P(I_f | \boldsymbol{p}_f,I_r,p_r)&=&\frac{1}{\prod_{j \in I_r}{ p-p_r \choose p_f^j }}  
-	\end{eqnarray}
-	instead of $P(S)=\frac{1}{|\mathcal{S}_p|}$ as defined in section \ref{sectiongraph} for the classical uniform hypothesis.
-	It increases penalty on complexity for $p_r\leq\frac{p}{2}$ and $p_f^j\leq\frac{p}{2}$ because probability of a complex model is under-estimated. Hence %when using $BIC*$ 
-	this constraint on $\hat{p}_r$ and $\hat{p}_f^j$ is given in the research algorithm when the Hierarchical Uniform hypothesis is made instead of Uniform one in numerical experiments (section \ref{sectionsimul} and \ref{sectionrealcase}).
-		$BIC_+$ does not change $BIC$ but only $P(S)$ so the properties of $BIC_+$ are the same as classical $BIC$ but we obtain better results when the constraints on the complexity are verified.  %With the Hierarchical Uniform hypothesis we maximize $\psi(\boldsymbol{X},S)\approx BIC + P(S)$.
+	$\mathcal{S}$ being combinatorial, $|\mathcal{S}|$ is huge. It has two cumulated consequences: First, the {\it exact} probability $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})$ may be of the same order of magnitude for a large number of candidates  $\boldsymbol{S}$, including the best one; Second, the {\sc bic} {\it approximations} of this quantity may introduce additional confusion to wisely distinguish between model probabilities because the number of model compared is not taken into account\cite{massart2007concentration}. In order to limit this problem, we propose to introduce some information in $\mathbb{P}(\boldsymbol{S})$ promoting simple models through the following {\it hierarchical} uniform distribution denoted by $\mathbb{P}_H(\boldsymbol{S})$:
+\begin{eqnarray}
+\mathbb{P}_H(\boldsymbol{S}) & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p) \\
+ & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p,d_r,\boldsymbol{d}_p) \\
+ & = & \mathbb{P}_U(\boldsymbol{J}_p|\boldsymbol{d}_p,\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{d}_p|\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{J}_r|d_r)\times \mathbb{P}_U(d_r) \\
+ & = & \left[\prod_{j=1}^{d_r} \left(\begin{array}{c} d-d_r \\ d_p^j \end{array}\right) \right]^{-1} \times \left[d-d_r\right]^{-d_r} \times \left[\left(\begin{array}{c} d \\ d_r \end{array} \right)\right]^{-1} \times [d+1]^{-1},
+\end{eqnarray}
+where $\left(\begin{array}{c} a \\ b \end{array}\right)$ means the number of b-element subsets of an a-element set and where all probabilities $\mathbb{P}_U(\cdot)$ denote uniform distribution on the related space at hand. $\mathbb{P}_H(\boldsymbol{S})$ gives decreasing probabilities to more complex models, provided that the following new hypothesis is verified:
+
+\begin{hyp}\label{H5}
+We set $d_r<d/2$ and also $d_p^j<d/2$ ($j=1,\ldots,d_r$).
+\end{hyp}
+
+These two thresholds are sufficiently large to be wholly realistic.
+
+\paragraph{Final approximation of $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})$}
+Merging the previous three expressions, it leads to the following two {\it global} {\sc bic} criteria, to be minimized, denoted by {\sc bic}$_U$ or {\sc bic}$_H$, depending on the choice of $\mathbb{P}_U(\boldsymbol{S})$ or $\mathbb{P}_H(\boldsymbol{S})$ respectively:
+\begin{eqnarray}
+\mbox{{\sc bic}}_U(\boldsymbol{S}) & = & \mbox{{\sc bic}}_r(\boldsymbol{S}) + \mbox{{\sc bic}}_f(\boldsymbol{S}) - 2\ln \mathbb{P}_U(\boldsymbol{S}) \\
+\mbox{{\sc bic}}_H(\boldsymbol{S}) & = & \mbox{{\sc bic}}_r(\boldsymbol{S}) + \mbox{{\sc bic}}_f(\boldsymbol{S}) - 2\ln \mathbb{P}_H(\boldsymbol{S}).
+\end{eqnarray}
+In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc bic}}_U$ and $\mbox{{\sc bic}}_H$. Numerical results in Section~\ref{compZ} will allow to compare behaviour of both criteria.
+
+\paragraph{Remarks}
+\begin{itemize}
+\item As any {\sc bic} criterion, the {\sc bic}$_U$ and {\sc bic}$_H$ criteria are consistent \cite{BIChuard}.
+\item Even if it favors more parsimonious models, $\mathbb{P}_H(\boldsymbol{S})$ can be also viewed as a poor informative prior on $\boldsymbol{S}$ since it is a combination of non informative priors.
+\end{itemize}
+
 
 
 %	 
 %	
 		\subsection{Some indicators for proximity}
-		The first criterion is $\psi(\boldsymbol{X},S)$ which is maximized in the MCMC. But in our case, it is estimated by the likelihood (see (\ref{approxBIC}))whose value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $S$ we define some indicators to compare the true model $S$ and the found one $\hat{S}$.
+		The first criterion is $\mbox{{\sc bic}}_*$ which is maximized in the MCMC. But it's value don't have any intrinsic meaning. To show how far the found structure is from the true one in terms of $\boldsymbol{S}$ we define some indicators to compare the true model $\boldsymbol{S}$ and the found one $\hat{S}$.
 			Global indicators :
 			\begin{itemize}
-				\item $TL$ (True left) : the number of found dependent variables that really are dependent\\ $TL=|I_r\cap \hat{I}_r|$ 
-				\item $WL$ (Wrong left) : the number of found dependent variables that are not dependent \\ $WL=|\hat{I}_r|-TL$
-				\item $ML$ (Missing left) : the number of really dependent variables not found\\ $ML=|I_r|-TL$
-				\item $\Delta p_r$ : the gap between the number of sub-regression in both model: \\ $\Delta p_r=|I_r|-|\hat{I}_r|$. The sign defines if $\hat{S}$ is too complex or too simple compared to the true model
-				\item $\Delta compl$ : the difference in complexity between both model: \\$\Delta compl=\sum_{j \in p_r}p_f^j-\sum_{j \in \hat{p}_r}\hat{p}_f^j$
+				\item $T_r=|J_r \cap \hat{J}_r|$ (``True Response''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are {\it truly} response covariates in the true model $\boldsymbol{S}$.
+				\item $W_r=|\hat{J}_r|-T_r$ (``Wrong Response''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are are {\it wrongfully} response covariates in the true model $\boldsymbol{S}$.
+				\item $M_r=d_r-T_r$ (``Missing Response'') : the number of true response variables not found.
+				\item $\Delta d_r=d_r-\hat{d_r}$ : the gap between the number of sub-regression in both model. The sign defines if $\hat{S}$ is too complex or too simple compared to the true model.
+				\item $\Delta compl=\sum_{j=1}^{d_r}d_p^j$ : the difference in complexity between both model.
 			\end{itemize}
-			
+
 			
 			
 	\section{Neighbourhood}
-	We note $\mathcal{S}_p$ the ensemble of feasible structures of size $p$ (those uncrossed, {\it i.e.} with $I_f\cap I_r=\emptyset$).
-	\\
-	For each step $q$, starting from $S \in \mathcal{S}_p$ we define a neighbourhood:
+	For each step $q$, starting from $S \in \mathcal{S}_d$ we define a neighbourhood:
 		\begin{eqnarray}
 		\mathcal{V}_{S}&=& \{S \}\cup \{ S^{(i,j)} |(i,j) \in \mathcal{A}_q\}\cap{\mathcal{S}_p} 
 	\end{eqnarray}	
