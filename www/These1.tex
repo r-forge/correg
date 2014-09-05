@@ -724,7 +724,7 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 	\section{Multiple Equations}		% ne pas oublier de mentionner les packages existants
 		
 		\subsection{Simultaneous Equation Model (SEM) and Path Analysis}		% ne pas oublier de mentionner les packages existants
-		Applied statistics in for non statisticians are well developed in sociology where interpretation  stakes are fare beyond prediction. Sociologists use simple models like linear regression (often with $R^2<0.2$) and describe complex situations with systems of linear regressions. Such systems are called Structural Equation Model or Simultaneaous Equation Model, better known as SEM \cite{davidson1993estimation}. Several softwares, from the open-source GRETL \cite{CottrellLucchetti2007gretlmanual} to proprietary STATA, does implement the SEM. The systems allow to describe which covariate influence others with an orientation that users can interpret as causality \cite{pearl2000causality,pearl1998graphs}. \\
+		Applied statistics  for non statisticians are well developed in sociology where interpretation  stakes are fare beyond prediction. Sociologists use simple models like linear regression (often with $R^2<0.2$) and describe complex situations with systems of linear regressions. Such systems are called Structural Equation Model or Simultaneaous Equation Model, better known as SEM \cite{davidson1993estimation}. Several softwares, from the open-source GRETL \cite{CottrellLucchetti2007gretlmanual} to proprietary STATA, does implement the SEM. The systems allow to describe which covariate influence others with an orientation that users can interpret as causality \cite{pearl2000causality,pearl1998graphs}. \\
 		
 		SEM are easy to understand for non-statisticians and can be resumed by Directed Acyclic Graphs (DAG) as the Bayesian networks do. But the problem is that the structure of regression between the covariates is defined {\it a priori}. SEM are used to confirm sociological theories, not to create new theories. \\
 		
@@ -1248,7 +1248,7 @@ The theorem from Maugis guarantee that a sub-regression between Gaussian mixture
 %			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian. 
 		 \boldsymbol{X}_{r}|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_G^*+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^*+ \boldsymbol{\varepsilon} \\
 			%\boldsymbol{X}_{r|\boldsymbol{X}^{G^c}}
-			&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^* + \tilde{\boldsymbol{\varepsilon}} \textrm{ which is identifiable whith} \\
+			&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^* + \tilde{\boldsymbol{\varepsilon}} \textrm{ which is identifiable with} \\
 			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_{j,G}^*+ \boldsymbol{\varepsilon}_j \textrm{ that is Gaussian.}  
 		\end{eqnarray}
 		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
@@ -1516,7 +1516,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{\boldsymbol{S}}
 
 	We used the package { \tt Rmixmod} from CRAN \cite{packageRmixmod} to estimate the densities of each covariate. For each configuration, the MCMC walk was launched on $10$ initial structures with a maximum of 1 000 steps each time.
 	When $n<d$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<d$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
-	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the {\tt CorReg} package.
+	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the {\tt CorReg} package. Associated figures will display both mean and inter-quartile intervals.
 	
 		\section{Results on $\hat{\boldsymbol{S}}$}	\label{compZ}
 
@@ -2284,7 +2284,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 	Figure \ref{MQE2} shows the target of this plug-in model: the cases with enough correlations to have problem when using $\boldsymbol{X}$	but not enough correlations to have truly redundant covariates and to be able to delete some of them without significant information loss.
 \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}
-	\caption{MSE of OLS (plain red) and {\tt CorReg} marginal (blue dashed) and {\tt CorReg} plug-in (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$.}\label{MQE2}
+	\caption{MSE of OLS (plain red) and {\tt CorReg} marginal (blue dashed) and {\tt CorReg} plug-in (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. Results obtained on the running example with $d=5$ covariates.}\label{MQE2}
 \end{figure}	
 			
 		
@@ -2298,8 +2298,11 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		We have taken the same example to show how our method is more consistent.
 		Here $d=3$ and $n=1\;000$.\\
 		We define $\boldsymbol{X}_{f}, \boldsymbol{X}_{r}, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{1} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
-		$\boldsymbol{X}^3=\frac{2}{3}\boldsymbol{X}^1+\frac{2}{3}\boldsymbol{X}^2+\frac{1}{3}\boldsymbol{\varepsilon}_1$ and \\
-		$\boldsymbol{Y}=2\boldsymbol{X}^1+3\boldsymbol{X}^2+\boldsymbol{\varepsilon}_Y$.\\
+		\begin{eqnarray}
+		\boldsymbol{X}^3&=&\frac{2}{3}\boldsymbol{X}^1+\frac{2}{3}\boldsymbol{X}^2+\frac{1}{3}\boldsymbol{\varepsilon}_1 \textrm{ and} \\
+		\boldsymbol{Y}&=&2\boldsymbol{X}^1+3\boldsymbol{X}^2+\boldsymbol{\varepsilon}_Y.
+		\end{eqnarray}
+		
 		
 		We compare consistencies of complete, marginal and full plug-in model with LASSO (and LAR) for selection.
 		It happens on some tries that our MCMC algorithm don't find the true structure but a permuted one so we both look at the results obtained with the true $\boldsymbol{S}$ (but $\hat{\boldsymbol{\alpha}}$ is used) and with the structure found by the Markov chain after a few seconds.
@@ -2327,7 +2330,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & {\tt CorReg} + marginal LASSO& {\tt CorReg} + full plug-in LASSO \\ 
+		 & Classical LASSO & {\tt CorReg}  marginal + LASSO& {\tt CorReg}  full plug-in  + LASSO \\ 
 		\hline 
 		True $\boldsymbol{S}$ &  0 & \textbf{1000} & 830 \\ 
 		\hline 
@@ -2347,10 +2350,10 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & {\tt CorReg} + marginal LASSO& {\tt CorReg} + full plug-in LASSO \\ 
-		\hline 
-		True $S$ &  1.571029 & \textbf{1.569559} & \textbf{1.570801} \\ 
-		\hline 
+		 & Classical LASSO & {\tt CorReg} marginal + LASSO& {\tt CorReg} full plug-in + LASSO \\ 
+%		\hline 
+%		True $S$ &  1.571029 & \textbf{1.569559} & \textbf{1.570801} \\ 
+     	\hline 
 		$\hat{S}$ & 1.005402 & 1.465768 & \textbf{1.005066} \\ 
 		\hline 
 		\end{tabular} 
@@ -2362,9 +2365,9 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\centering	
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & {\tt CorReg} + marginal LASSO& {\tt CorReg} + full plug-in LASSO \\ 
-		\hline 
-		True $S$ &  0 & 1000 & 789 \\ 
+		 & Classical LASSO & {\tt CorReg} marginal + LASSO& {\tt CorReg} full plug-in  + LASSO \\ 
+%		\hline 
+%		True $S$ &  0 & 1000 & 789 \\ 
 		\hline 
 		$\hat{S}$ & 0 & 714 & \textbf{608} \\ 
 		\hline 
@@ -2378,8 +2381,24 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 
 	\section{Numerical results}
 		We test the plug-in model with datasets generated the same way as for section \ref{compY}.
-	\subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 	
-We try the method with a response depending on all covariates ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). We observe for OLS (Figures \ref{MSEpredOLSY_zonetout} to \ref{MSEpredOLSbeta_zonetout}) that the plug-in model gives results similar in efficiency to the marginal model, but remains better than the complete model for smaller  correlations even for $n=400$. We also observe that we can found a model with more than $n$ coefficients when each estimation step computes less than $n$ coefficients. It means that  we estimate more coefficients than the classical OLS and keep a smaller variance so the plug-in model can also be an alternative to the complete model. It is interesting to see that OLS combined with the plug-in model is a sort of sequential estimation that allows to estimate more than $n$ coefficients.
+We first try the method with a response depending on all covariates. ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). We observe for OLS (Figures \ref{MSEpredOLSY_zonetout} to \ref{MSEpredOLSbeta_zonetout}) that the plug-in model gives results similar in efficiency to the marginal model, but remains better than the complete model for smaller  correlations even for $n=400$. We also observe that we can found a model with more than $n$ coefficients when each estimation step computes less than $n$ coefficients. It means that  we estimate more coefficients than the classical OLS and keep a smaller variance so the plug-in model can also be an alternative to the complete model. It is interesting to see that OLS combined with the plug-in model is a sort of sequential estimation that allows to estimate more than $n$ coefficients.\\
+ 
+ 
+Combined with variable selection methods (Figures \ref{MSEpredlarY_zonetout} to \ref{MSEpredstepwisebeta_zonetout}) it does converge to the complete model results for large values of $n$ so it improves the marginal model for weak correlations (it is what it was built for) has no significant interest compared to the complete model. Ridge regression (Figures \ref{MSEpredridgeY_zonetout} to \ref{MSEpredridgebeta_zonetout}) leads to the same conclusion. \\
+ 
+When $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$	 then the plug-in modelis not efficient because variable selection methods keep some covariate from $\boldsymbol{X}_r$ (Figures \ref{MSEpredOLSY_zoneX1} to \ref{MSEpredridgebeta_zoneX1}) \label{tableMSEsimdroitepred}\\
+
+	
+	 \label{tableMSEsimgauchepred}
+We then try the method with a response depending only on variables in $\boldsymbol{X}_r$. The datasets used here were still the same.
+Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the marginal model to obtain the true model when using the true structure, so we hope to see an improvement with the plug-in method. This is the reason why we have developed the plug-in model. \\
+
+For OLS (Figures \ref{MSEpredOLSY_zoneX2} to \ref{MSEpredOLSbeta_zoneX2}) we note that the plug-in model improves results of the marginal model for large values of $n$. This is still the case with variable selection methods (Figures \ref{MSEpredlarY_zoneX2} to \ref{MSEpredstepwisebeta_zoneX2}) even if it is not sufficient to improve the complete model. \\
+This phenomenon is still observed with the ridge regression (Figures \ref{MSEpredstepwiseY_zoneX2} to \ref{MSEpredridgebeta_zoneX2})with more efficiency.\\
+
+	The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on a first estimation (the marginal model) thus it does reach the true model but asymptotically, and with a slow convergence speed. Moreover, if $\hat{\boldsymbol{S}}$ is not exactly the true $\boldsymbol{S}$ but the partition is good, the marginal model is not impacted whereas the plug-in model uses both $\hat{\boldsymbol{\beta}}^*_{f}$ and $\hat{\boldsymbol{\alpha}}$ so it is does not rely only on one estimator. $\hat{\boldsymbol{\alpha}}$ is another source of bias for finite values of $n$ and it depends itself on $\hat{\boldsymbol{S}}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves OLS anyway but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. 
+
+ 
  
 \FloatBarrier
 
@@ -2486,24 +2505,12 @@ We try the method with a response depending on all covariates ({\tt CorReg} redu
 
 \clearpage
 
-Combined with variable selection methods (Figures \ref{MSEpredlarY_zonetout} to \ref{MSEpredstepwisebeta_zonetout}) it does converge to the complete model results for large values of $n$ so it improves the marginal model for weak correlations (it is what it was built for) has no significant interest compared to the complete model. Ridge regression (Figures \ref{MSEpredridgeY_zonetout} to \ref{MSEpredridgebeta_zonetout}) leads to the same conclusion.
 
-\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}	 \label{tableMSEsimdroitepred}
-This case shows the robustness of selection methods, that rejects covariates in the plug-in model.\\ 
 
-	
-	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$ }	 \label{tableMSEsimgauchepred}
-We now try the method with a response depending only on variables in $\boldsymbol{X}^{I_r}$. The datasets used here were still the same.
-Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the marginal model to obtain the true model when using the true structure, so we hope to see an improvement with the plug-in method. This is the reason why we have developed the plug-in model. \\
 
-For OLS (figures \ref{MSEpredOLSY_zoneX2} to \ref{MSEpredOLSbeta_zoneX2}) we note that the plug-in model improves results of the marginal model for large values of $n$. This is still the case with variable selection methods even if it is not sufficient to improve the complete model. \\
-This phenomenon is still observed with the ridge regression with more efficiency.
-
-\subsection{About the plug-in model}
-	The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on a first estimation (the marginal model) thus it does reach the true model but asymptotically, and with a slow convergence speed. Moreover, if $\hat{S}$ is not exactly the true $S$ but the partition is good, the marginal model is not impacted whereas the plug-in model uses both $\hat{\boldsymbol{\beta}}^*_{I_f}$ and $\hat{\boldsymbol{\alpha}}$ so it is does not rely only on one estimation. $\hat{\boldsymbol{\alpha}}$ is another source of bias for finite values of $n$ and it depends itself on $\hat{S}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves OLS any way but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. 
 \newpage
 %OLS	
-\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}
+\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
 	\begin{figure}[h!]
 	\centering
@@ -2523,7 +2530,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 	\FloatBarrier
 \newpage
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}
+\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
 	\begin{figure}[h!]
 	\centering
@@ -2543,7 +2550,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 	\FloatBarrier
 \newpage
 %elasticnet
-\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}
+\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
 	\begin{figure}[h!]
 	\centering
@@ -2563,7 +2570,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 	\FloatBarrier
 \newpage
 %stepwise
-\subsubsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}
+\subsubsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
 	\begin{figure}[h!]
 	\centering
@@ -2583,7 +2590,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 	\FloatBarrier
 \newpage
 %ridge	
-\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_f}}$}
+\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
 \begin{figure}[h!]
 	\centering
@@ -2611,7 +2618,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 \newpage
 
 %OLS	
-\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$}
+\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
 	\centering
@@ -2631,7 +2638,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 	\FloatBarrier
 \newpage
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$}
+\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
 	\centering
@@ -2651,7 +2658,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 	\FloatBarrier
 \newpage
 %elasticnet
-\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$}
+\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
 	\centering
@@ -2671,7 +2678,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 	\FloatBarrier
 \newpage
 %stepwise
-\subsubsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$}
+\subsubsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
 	\centering
@@ -2691,7 +2698,7 @@ This phenomenon is still observed with the ridge regression with more efficiency
 	\FloatBarrier
 \newpage
 %ridge	
-\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X^{I_r}}$}
+\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 \begin{figure}[h!]
 	\centering
@@ -2713,12 +2720,12 @@ This phenomenon is still observed with the ridge regression with more efficiency
 \FloatBarrier
 
 \chapter{Missing values} \label{chapmiss}
-	\paragraph{Résumé:} Le modèle génératif complet sur les données nous permet d'obtenir la loi des valeurs manquantes. Mais nous pouvons aller encore plus loin car la modélisation explicite des corrélations nous permet d'obtenir les lois conditionnelles de chaque valeur manquante sachant les valeurs observées. Ce chapitre présente comment nous pouvons par un simple algorithme SEM estimer les paramètres des sous-régressions dans la chaîne MCMC de recherche de structure. Enfin, nous pouvons imputer les valeurs manquantes à l'aide d'un Gibbs qui procède par imputations multiples, fournissant au passage un indicateur de précision sur l'imputation proposée. 
-
-\section{Introduction}
-	Real datasets often have missing values and it is a very recurrent issue in industry. We note $\boldsymbol{M}$ the $n\times p$ binary matrix indicating whereas a value is missing (1) or not (0) in $\boldsymbol{X}$.
+	\paragraph{Résumé:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to make multiple imputations based on the sub-regression structure. The full generative model also helps to manage missing values in the MCMC with the ability to compute $BIC_*$ only on the observed values. 
+	
+	 \section{Introduction}
+	Real datasets often have missing values and it is a very recurrent issue in industry. We note $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whereas a value is missing (1) or not (0) in $\boldsymbol{X}$.
 	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{O}$ the observed values. $\Theta=\{\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
-	$\boldsymbol{\alpha}$ is the matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\ 
+	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\ 
 			Here we suppose that missing values are Missing Completely At Random (MCAR). 
 	 Many methods does exist to manage such problems \cite{little1992regression} but they make approximation , add noise (imputation methods) or delete information (cutting methods).	
 	 
@@ -2729,16 +2736,17 @@ This phenomenon is still observed with the ridge regression with more efficiency
 	We have a full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates. So when a value is missing, we know its distribution but more than that, we know its conditional distribution based on observed values for the same individual. Thus we are able to make imputation and to describe the missing values with their conditional distribution. This is a positive side-effect of the explicit generative model on $\boldsymbol{X}$. 
 \section{Estimation of sub-regressions with missing values}
 \subsection{Integrated likelihood}
-The first thing we do with $\boldsymbol{X}$ is to estimate S.
-	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients.
+The first thing we do with $\boldsymbol{X}$ is to estimate $\boldsymbol{S}$.
+	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. The first challenge is to compute the observed likelihood.\\
+	 
 We start with the complete likelihood of $\boldsymbol{X}$
 \begin{eqnarray}
-	L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{I_r}|\boldsymbol{X}_i^{I_f};\boldsymbol{\alpha},\Theta,S)f(\boldsymbol{X}_i^{I_f};\boldsymbol{\alpha},\Theta,S) \right] \\
-	&=&\prod_{i=1}^n\left[\prod_{j \in I_r}f(x_{i,j}|\boldsymbol{X}_i^{I_f};\boldsymbol{\alpha},\Theta,S)\prod_{j \notin I_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,S) \right] \\
-	&=&\prod_{i=1}^n\left[\prod_{j \in I_r}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j};\boldsymbol{\alpha},\Theta,S)\prod_{j \notin I_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,S) \right] \\
+	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{J_r}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+	&=&\prod_{i=1}^n\left[\prod_{j \in J_r}f(x_{i,j}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+	&=&\prod_{i=1}^n\left[\prod_{j =1}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
 %	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
 %			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
-	\mathcal{L}(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j \in I_r}\log \left(f(x_{i,j}|\boldsymbol{X}_i^{I_f^j};\boldsymbol{\alpha},\Theta,S)\right)+\sum_{j \notin I_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,S)\right) \right] \label{loglikmiss}
+	\mathcal{L}(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j =1}^{d_r}\log \left(f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right)+\sum_{j \notin J_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right) \right] \label{loglikmiss}
 \end{eqnarray}
 		In the MCMC we need to compute the likelihood of the dataset knowing the structure. When missing values occurs, we restrict the likelihood to the known values by integration on $\boldsymbol{X}_M$.
 %		We have 
@@ -2762,15 +2770,15 @@ We start with the complete likelihood of $\boldsymbol{X}$
 %		
 %	 Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. \\
 
-We know that $\boldsymbol{X}$ is a Gaussian mixture ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}^{I_f}$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}^{I_r}$) with $K$ the number of its components.
+We know that $\boldsymbol{X}$ is a Gaussian mixture ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ the number of its components.
 \begin{eqnarray}
-	L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X}_0)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X})d\boldsymbol{X} 
-	=\int_{\boldsymbol{X}_M}\sum_{k=1}^K \pi_k \phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,S)d\boldsymbol{X} \\
-	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,S)d\boldsymbol{X} 
-	=\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\prod_{i=1}^n\phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,S)d\boldsymbol{X} \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\boldsymbol{X}_{i,M}}\phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,S)d\boldsymbol{X}_i 
-	=\sum_{k=1}^K \pi_k \prod_{i=1}^n\phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,S)\\
-	&=&\sum_{k=1}^K \pi_k \phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,S)=f(\boldsymbol{X}_{O},\boldsymbol{\alpha},\Theta,S)
+	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X} 
+	=\int_{\boldsymbol{X}_M}\sum_{k=1}^K \pi_k \phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
+	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
+	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\prod_{i=1}^n\phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
+	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\boldsymbol{X}_{i,M}}\phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_i \\
+	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
+	&=&\sum_{k=1}^K \pi_k \phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})
 \end{eqnarray}
 
 
@@ -2784,99 +2792,107 @@ We know that $\boldsymbol{X}$ is a Gaussian mixture ({\it iid} individuals, vect
 %	 \end{equation}	
 To compute this likelihood, we will use the decomposition
 \begin{eqnarray}
-	L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X}_0)&=&f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,S)=\prod_{i=1}^nf(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)f(\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S) \\
-	&=&\prod_{i=1}^nf(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)\prod_{\substack{j \in I_f \\ M_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\Theta,S)
+	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})=\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \\
+	&=&\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in J_f \\ M_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})
 \end{eqnarray}
 
-with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \notin I_r $:
+with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \notin J_r $:
 	 \begin{equation}
-	 f(x_{i,j};\boldsymbol{\alpha},\Theta,S)=\sum_{k=1}^{K_j}\pi_{j,k}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{likmissdroite}
-	 \end{equation} with $K_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated once (for example by RMixmod \cite{packageRmixmod}) before the MCMC starts. 
+	 f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})=\sum_{k=1}^{K_j}\pi_{j,k}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{likmissdroite}
+	 \end{equation} with $K_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated once (for example by {\tt RMixmod} \cite{packageRmixmod}) before the MCMC starts. 
 %	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 %	 \begin{equation}
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
 %	 \end{equation}
 \\
-	 And, $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \in I_r $:
+	 And, $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \in \{1,\dots,d_r \} $:
 		\begin{eqnarray}
- f(x_{i,j}|\boldsymbol{X}_{i,O}^{I_f^j};\boldsymbol{\alpha},\Theta,S)&=& \sum_{k=1}^{K_{ij}}\pi_{ij,k}\Phi(x_{i,j};\mu_{ij,k},\Sigma_{ij,k}) \textrm{ where }  \label{Missingdensity}\\
-				\boldsymbol{\pi}_{ij} &=& \bigotimes_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }K_{ij}=|\boldsymbol{\pi}_{ij}| ,\\
-				\boldsymbol{\mu}_{ij}&=& \sum_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=0  }}\alpha_{l,j}x_{i,l} + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1  }} \alpha_{l,j} \boldsymbol{\mu}_l \\
-				\boldsymbol{\Sigma}_{ij} &=& \sigma_j^2 + \bigoplus_{\substack{l \in I_f^j \\ \boldsymbol{M}_{i,l}=1 }}\alpha_{i,l}^2 \boldsymbol{\Sigma}_l		
+ f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})&=& \sum_{k=1}^{K_{iJ_r^j}}\pi_{iJ_r^j,k}\Phi(x_{i,J_r^j};\mu_{iJ_r^j,k},\Sigma_{iJ_r^j,k}) \textrm{ where }  \label{Missingdensity}\\
+				\boldsymbol{\pi}_{iJ_r^j} &=& \bigotimes_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }K_{iJ_r^j}=|\boldsymbol{\pi}_{iJ_r^j}| ,\\
+				\boldsymbol{\mu}_{iJ_r^j}&=& \sum_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0  }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}x_{i,l} + \bigoplus_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1  }} \bar{\boldsymbol{\alpha}}_{l,J_r^j} \boldsymbol{\mu}_l \\
+				\boldsymbol{\Sigma}_{iJ_r^j} &=& \sigma_{J_r^j}^2 + \bigoplus_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l		
 		\end{eqnarray}		 
-		This could be easily used for imputation of the missing values in $\boldsymbol{X}^{I_r}$ knowing the parameters $\boldsymbol{\alpha}, \Theta$ and $S$. We note that we obtain a Gaussian when there is no missing value in $I_f^j$.
-		But we see that	$f(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)$ is not the product of the $f(x_{i,j}|\boldsymbol{X}_{i,O}^{I_f^j};\boldsymbol{\alpha},\Theta,S) $	if a same missing value occurs in distinct sub-regressions. Thus if every sub-regression are distinct connex component then we can use (\ref{Missingdensity}) and we have
+		This could be easily used for imputation of the missing values in $\boldsymbol{X}_r$ knowing the parameters $\boldsymbol{\alpha}, \Theta$ and $\boldsymbol{S}$. We note that we obtain a Gaussian when there is no missing value in $J_p^j$.
+		But we see that	$f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions. Thus if each sub-regression is a distinct connex component then we can use (\ref{Missingdensity}) and we have
 		\begin{equation}
-		L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X}_0)=\prod_{i=1}^n\prod_{\substack{j \in I_r \\ M_{i,j}=0}}f(x_{i,j}|\boldsymbol{X}^{I_f^j}_{i,O};\boldsymbol{\alpha},\Theta,S)\prod_{\substack{j \in I_f \\ M_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\Theta,S) \label{simplemisslik}
-\end{equation}		 
-		But for the general case we need to manage the dependencies implied by missing values in common covariates in the $I_f^j$.
+		L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_0)=\prod_{i=1}^n\prod_{\substack{j =1 \\ M_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in I_f \\ M_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \label{simplemisslik}
+\end{equation}		
+	In such a case, computation is fast and easy.\\
+
+ 
+		But for the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$.
 %		Because $\forall 1\leq i \leq n, \boldsymbol{X}_i$ is a Gaussian Mixture, $\boldsymbol{X}_{i,O}$ and then $(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}_{i,O}^{I_f})$ are Gaussian mixtures too. \\
-		We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
+		%We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
 		
 \begin{eqnarray}
-L(\boldsymbol{\alpha},\Theta,S;\boldsymbol{X}_0)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,S)\\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{I_r}|\boldsymbol{X}_{i,O}^{I_f};\boldsymbol{\alpha},\Theta,S)\Phi_k(\boldsymbol{X}_{i,O}^{I_f};\boldsymbol{\alpha},\Theta,S)\\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{I_r}|\boldsymbol{X}_{i,O}^{I_f};\boldsymbol{\alpha},\Theta,S)\prod_{\substack{j \in I_f \\ M_{i,j}=0}}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{liklihoodmissglobal}
+L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_0)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\Phi_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{I_r}|\boldsymbol{X}_{i,O}^{I_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in J_f \\ M_{i,j}=0}}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{liklihoodmissglobal}
 \end{eqnarray}		
 
 %définintion des objets génériques
 Where	
 \begin{eqnarray}
-	\boldsymbol{\pi}&=&\bigotimes_{\substack{j \in I_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}\\
-	K&=& |\boldsymbol{\pi}| \\
-	\boldsymbol{\mu}_{X^{I_f}}&=&  \prod_{\substack{j \in I_f}}\boldsymbol{\mu}_{j} \textrm{ (Cartesian product) } \\	
-	\boldsymbol{\sigma}_{X}&=&\prod_{\substack{j \in I_f}}\boldsymbol{\sigma}_{j} \textrm{ (Cartesian product) }
+	\boldsymbol{\pi}=(\pi_1,\dots,\pi_K)&=&\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}\\
+	K&=& |\boldsymbol{\pi}|% \\	
 \end{eqnarray}
 		with $ \boldsymbol{\pi}_j, \mu_{j,k},\Sigma_{j,k}$ are estimated once before the MCMC starts (by Mixmod for example).
-		
-		
+		We note 
+		\begin{eqnarray}
+		\boldsymbol{\mu}_{\boldsymbol{X}^{J_f}}&=&  \prod_{\substack{j \in J_f}}\boldsymbol{\mu}_{j} \textrm{ (Cartesian product) and } \\	
+	\boldsymbol{\sigma}_{\boldsymbol{X}^{J_f}}&=&\prod_{\substack{j \in J_f}}\boldsymbol{\sigma}_{j} \textrm{ (Cartesian product). }
+		\end{eqnarray}
+		The we can describe the paramaters as following:
 		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we have
 \begin{eqnarray}
-		\Phi_k(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
-				P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
-		\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k}&=& 
-				\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O},k}+
-				\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_f},k})^{-1}
-				( ^t\boldsymbol{X}_{i,O}^{I_f}-\boldsymbol{\mu}_{X^{I_f}_{i,O},k})\\
-		\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k}&=&\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{I_r},X_{i,O}^{I_f},k}
-		(\boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{I_f},X_{i,O}^{I_r},k} \\
-		\forall j \in I_r: \ \  \boldsymbol{\mu}_{X_{i,O}^{j}}&=&\sum_{l \in I_f^j}\alpha_{l,j}\mu_{l,k} 
+		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k})\\
+				%P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
+		\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k}&=& 
+				\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O},k}+
+				\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1}
+				( ^t\boldsymbol{X}_{i,O}^{J_f}-\boldsymbol{\mu}_{X^{J_f}_{i,O},k}) \ \ \ \\
+		\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k}&=&\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}
+		(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_r},k} \\
+		\forall j \in \{1,\dots,d_r\}: \ \  \boldsymbol{\mu}_{X_{i,O}^{J_r^j}}&=&\sum_{l \in J_p^j}\bar{\boldsymbol{\alpha}}_{l,J_r^j}\mu_{l,k} 
 \end{eqnarray}		
-		$\forall j \in I_r \textrm{ with } M_{i,j}=0$ 
-\begin{equation}
-	\operatorname{var}_{k}(x_{i,j})=\sigma_{j}^2+ \sum_{l \in I_f^j} \alpha_{l,j}^2\sigma_{X^l,k}^2
-\end{equation}			
-	$\forall j \notin I_r \textrm{ with } M_{i,j}=0$
+$\forall j \in \{1,\dots,d_r\} \textrm{ with } M_{i,J_r^j}=0$ 
+	\begin{equation}
+		\operatorname{var}_{k}(x_{i,J_r^j})=\sigma_{j}^2+ \sum_{l \in J_p^j} \bar{\boldsymbol{\alpha}}_{l,J_r^j}^2\sigma_{\boldsymbol{X}^l,k}^2
+	\end{equation}			
+	$\forall j \in J_f \textrm{ with } M_{i,j}=0$
 \begin{equation}
 	\operatorname{var}_{k}(x_{i,j})=\sigma_{X^j,k}^2
-\end{equation}			
-	$\forall j_1 \in I_r, j_2 \in I_r,I_f^{j_1}\cap I_f^{j_2}\neq \emptyset \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
+\end{equation}		
+	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in \{1,\dots,d_r\},J_p^{j_1}\cap J_p^{j_2}\neq \emptyset \textrm{ with } M_{i,J_r^{j_1}}=M_{i,J_r^{j_2}}=0$
 	\begin{equation}
-	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})=\sum_{l\in I_f^{j_1}\cap I_f^{j_2}}\alpha_{l,j_1}\alpha_{l,j_2}\operatorname{var}_{k}(x_{i,l}) =\sum_{l\in I_f^{j_1}\cap I_f^{j_2}}\alpha_{l,j_1}\alpha_{l,j_2}\sigma_{X^l,k}^2
+		\operatorname{cov}_{k}(x_{i,J_r^{j_1}},x_{i,J_r^{j_2}})=\sum_{l\in J_p^{j_1}\cap J_p^{j_2}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_1}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_2}}	\operatorname{var}_{k}(x_{i,l})
+		 =\sum_{l\in J_p^{j_1}\cap J_p^{j_2}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_1}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_2}}\sigma_{\boldsymbol{X}^l,k}^2
+	\end{equation}
+	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in \{1,\dots,d_r\},J_p^{j_1}\cap J_p^{j_2}= \emptyset \textrm{ with } M_{i,J_r^{j_1}}=M_{i,J_r^{j_2}}=0$
+	\begin{equation}
+	\operatorname{cov}_{k}(x_{i,J_r^{j_1}},x_{i,J_r^{j_2}})=0
 \end{equation}
-	$\forall j_1 \in I_r, j_2 \in I_r,I_f^{j_1}\cap I_f^{j_2}= \emptyset \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
+	$\forall j_1 \in J_f, j_2 \in J_f \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
 	\begin{equation}
 	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})=0
 \end{equation}
-	$\forall j_1 \in I_f, j_2 \in I_f \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
+	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in J_p^{j_1} \textrm{ with } M_{i,J_r^{j_1}}=M_{i,j_2}=0$
 	\begin{equation}
-	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})=0
+	\operatorname{cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= \bar{\boldsymbol{\alpha}}_{j_2,J_r^{j_1}}\sigma_{X^{j_2},k}^2
 \end{equation}
-	$\forall j_1 \in I_r, j_2 \in I_f^{j_1} \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
+
+
+$\forall j_1 \in \{1,\dots,d_r\}, j_2 \notin J_p^{j_1}\cup J_r \textrm{ with } M_{i,J_r{j_1}}=M_{i,j_2}=0$
 	\begin{equation}
-	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})= \alpha_{j_2,j_1}\sigma_{X^{j_2},k}^2
-\end{equation}
-$\forall j_1 \in I_r, j_2 \notin I_f^{j_1}\cup I_r \textrm{ with } M_{i,j_1}=M_{i,j_2}=0$
-	\begin{equation}
-	\operatorname{cov}_{k}(x_{i,j_1},x_{i,j_2})= 0
+	\operatorname{cov}_{k}(x_{i,J_r{j_1}},x_{i,j_2})= 0
 \end{equation}
 	\subsection{Likelihood computation optimized}
 	The main problem with the likelihood in its global form (\ref{liklihoodmissglobal}) is that the number of components explodes so we can't use it in practice. But in many case, it can be simplified.
-We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.  Another strictly technical tip would be to use sparse matrix storage to avoid null value storage and useless zero multiplications.
+We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $\boldsymbol{S}$ to reduce computing time.  Another strictly technical tip would be to use sparse matrix storage to avoid null value storage and useless zero multiplications.
 		Moreover, we can look if there are missing values shared by several sub-regression. 
 		Connex component detection could be done to reduce the dimension down to strictly dependent covariates and use equation (\ref{Missingdensity}) elsewhere.
-		We just need to compute the  row-sums of the adjacency matrix $G$ or to search for redundancy in $I_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^nM_{i,j}=0$ then we can use the simplified form of the likelihood given in (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
-		So the true value of the likelihood can be computed efficiently in most of cases but in the MCMC, it remains the possibility to have a structure with explosive likelihood expression when combined with the missing values and we need to compute the likelihood for a great number of candidates. Then it is possible to use directly the simplified form of the likelihood, that can be seen as an approximation of the likelihood, not taking into account some of the dependencies but it would offer no guarantee in terms of efficiency for the MCMC. %Numerical results on simulated datasets will show if this approximation is effective.
+		We just need to compute the  row-sums of the adjacency matrix $G$ or to search for redundancy in $J_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^nM_{i,j}=0$ then we can use the simplified form of the likelihood given in (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
+		So the true value of the likelihood can be computed efficiently in most of cases but in the MCMC, it remains the possibility to evaluate a structure with explosive likelihood expression when combined with the missing values and we need to compute the likelihood for a great number of candidates. Then it is possible to use directly the simplified form of the likelihood, that can be seen as an approximation of the likelihood, not taking into account some of the dependencies but it would offer no guarantee in terms of efficiency for the MCMC. %Numerical results on simulated datasets will show if this approximation is effective.
 
 %		In first approximation we can suppose independence between the sub-regression:
 %		\begin{equation}
@@ -2960,18 +2976,18 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 %
 	\subsection{Weighted penalty}
 			Now we have defined the way to compute the likelihood, other questions remain : how to define the number of parameters in the structure ?		How to take into account missingness (structures relying on highly missing covariates should be penalized) ?
-			We have seen that for a same covariate $X^j$ with $ j \in I_r$, the number of parameters is not the same for each individual depending whether or not $M_{i,j}=0$. But the penalty (for $\psi=BIC$) can't be added at the individual level (because $\log(1)=0$ so it would be annihilated). 
+			We have seen that for a same covariate $X^j$ with $ j \in J_r$, the number of parameters is not the same for each individual depending whether or not $M_{i,j}=0$. But the penalty (for $BIC_*$) can't be added at the individual level (because $\log(1)=0$ so it would be annihilated). \\
 			
 			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate.
 			\begin{equation}
 			k_j=\frac{1}{n}\sum_{i=1}^nk_{i,j}
-\end{equation}						where $k_{i,j}$ is the number of parameter to estimate in $P(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$.
+\end{equation}						where $k_{i,j}$ is the number of parameter to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$.
 			\begin{eqnarray}
-		-2\log P(\boldsymbol{X}|S)&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n) \\
-		&=& -2\mathcal{L}(\boldsymbol{X},S,\boldsymbol{\Theta})+(\sum_{j=1}^pk_j)\log(n)
+		-2\log \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})&\approx & BIC=-2\mathcal{L}(\boldsymbol{X},\boldsymbol{S},\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n) \\
+		&=& -2\mathcal{L}(\boldsymbol{X},\boldsymbol{S},\boldsymbol{\Theta})+(\sum_{j=1}^dk_j)\log(n)
 	\end{eqnarray}
 			 Thus if a structure is only touched by one missing value the penalty will be smaller than another same shaped structure but with more missing values implied.
-			Another way would be to use $\psi=RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(p)$ and can be added individually. Or to make a compromise and penalize by $\frac{k_i\log(p)}{\log(n)}$.
+			Another way would be to use $RIC$ (see \cite{foster1994risk}) so the complexity is associated with $\log(d)$ and can be added individually. Or to make a compromise and penalize by $\frac{k_i\log(d)}{\log(n)}$.
 		
 %	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
 %	
@@ -2980,45 +2996,54 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 %			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$ so our proposed penalty term is an intuitive way to use a weighted penalty.
 %	
 \section{SEM}
-	The integrated likelihood depicted above depends on $\boldsymbol{\alpha}$ which was formerly estimated by OLS when there was no missing values. But when missing values occurs in a sub-regression we need another solution.
+	The integrated likelihood depicted above depends on $\boldsymbol{\alpha}$ which was formerly estimated by OLS when there was no missing values. But when missing values occurs in a sub-regression we need another solution.\\
 	
-	We use a  Stochastic Expectation Maximization (SEM) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use OLS and  the log-likelihood (\ref{loglikmiss}) is not linear so a simple Expectation-Maximization (EM) would be difficult to compute.
+	We use a  Stochastic Expectation Maximization (SEM) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use OLS and  the log-likelihood (\ref{loglikmiss}) is not linear so a simple Expectation-Maximization (EM) would be difficult to compute.\\
+	
+	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with OLS applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (cutting method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regression have only few parameters and can be estimated with only a small number of individuals.
 		
 	\subsection{Our implementation of SEM}
 	\paragraph{initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by cutting method	(sparse structure) or using imputed values in $\boldsymbol{X}$.
 	At iteration $h$,
 	\paragraph{SE step:}
-		We generate the missing values according to $P(\boldsymbol{X}_M|\boldsymbol{X}_O; \alpha^{(h)},\Theta,S)$, that is stochastic imputation.
+		We generate the missing values according to $P(\boldsymbol{X}_M|\boldsymbol{X}_O; \boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})$, that is stochastic imputation.
 	\paragraph{M step:}
 		We estimate 
 		\begin{equation}
-	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha},S,\Theta) \right]
+	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha},\boldsymbol{S},\Theta) \right]
 \end{equation}
-and we can use the same method as the one for classical case without missing values (OLS, SUR, {\it etc.}).
-		We continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance). Then we make $m$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m$ last iterations.
+and we can use the same method as the one for classical case without missing values (OLS, SUR, {\it etc.}).\\
+
+		We continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance). Then we make $m$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m$ last iterations.\\
 		
 		
-Another (faster but not optimal) way would be to only use the structure for $\boldsymbol{X}^{I_r}$ and use the distribution given by Mixmod for $\boldsymbol{X}^{I_f}$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
+Another (faster but not optimal) way would be to only use the structure for $\boldsymbol{X}_r$ and use the distribution given by {\tt RMixmod} for $\boldsymbol{X}_f$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
 
 
 	\subsection{Stochastic imputation by Gibbs sampling}
-		We use a Gibbs sampling method to generate the missing values at the SE step. $\boldsymbol{X}$ follows a multivariate Gaussian mixture with $K$ component and we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ is generated.
-		\paragraph{Initialisation:} all the $z_{i,j}$ are set to the first component (such an initialisation does not depend on $K$) and $\boldsymbol{X}_M$ are imputed by the marginal means.
+		Gibbs sampling method can be used to generate the missing values at the SE step. We note $Z$ the set of the $Z_{i,j}$ indicating the component from which $\boldsymbol{X}_{i,j}$ is generated.
+		\paragraph{Initialisation:} all the $Z_{i,j}$ are randomly set. For example to the first component (such an initialisation does not depend on $K$). $\boldsymbol{X}_M$ are imputed by the marginal means.
 		\paragraph{Iteration:} At each iteration of the Gibbs sampler: \\
-			$\forall x_{i,j} \in \boldsymbol{X}_M^{I_r}$:  $x_{i,j}$ is generated according to 
+			$\forall 1\leq i \leq n, \forall j \in \{1,\dots,d_r \}, M_{i,J_r^j}=1  $:  $x_{i,J_r^j}$ is generated according to 
 			\begin{eqnarray}
-			P(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,S)&=&P(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}};\alpha^{(h)},\Theta,S) \\
-			&=&P(x_{i,j}|\boldsymbol{X}_i^{I_f^j};\boldsymbol{\alpha}^{(h)},\Theta,S)=\mathcal{N}(\boldsymbol{X}_i^{I_f^j}\boldsymbol{\alpha}^{(h)}_{I_f^j,j};\sigma_j^2 )
+			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}\setminus x_{i,J_r^j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})&=&
+			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}^{J_p^j};\boldsymbol{\alpha}^{(h)}_j,\Theta,{S})\\
+			%&=&\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}\setminus x_{i,J_r^j},z_{i, J_r^j};\boldsymbol{\alpha}^{(h)},\Theta,{S})
+		%	\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}};\alpha^{(h)},\Theta,S) \\
+			%&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_i^{I_f^j};\boldsymbol{\alpha}^{(h)},\Theta,S)
+			&=&\phi(\boldsymbol{X}_i^{J_p^j}\boldsymbol{\alpha}^{(h)}_{j};\sigma_j^2 ) \textrm{ Gaussian}
 			\end{eqnarray}		
-			We have $P(\boldsymbol{X}|Z)=\mathcal{N}(\boldsymbol{\mu}_{|Z},\boldsymbol{\Sigma}_{|Z})$. \\
-			$\forall x_{i,j} \in \boldsymbol{X}_M^{I_f}$:  $x_{i,j}$ is generated according to 
+			And
+			%We have $\mathbb{P}(\boldsymbol{X}|Z)=\mathcal{N}(\boldsymbol{\mu}_{|Z},\boldsymbol{\Sigma}_{|Z})$. \\
+			$\forall (i,j) \in \{1,\dots,n \}\times J_f,M_{i,j}=0$:  $x_{i,j}$ is generated according to 
 			\begin{eqnarray}
-			P(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,S)&=&P(x_{i,j}|\boldsymbol{X}_{i,\bar{j}},Z_i;\boldsymbol{\alpha}^{(h)},\Theta,S)			
+			\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i}\setminus x_{i,j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,\bar{j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})			
 			\end{eqnarray}			
 			\begin{eqnarray}
-			=\mathcal{N}(\mu_{j|Z_{i,j}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}(X_{\bar{ij}}-\boldsymbol{\mu}_{X_{\bar{ij}}|Z_i}) ;  \sigma_{j|Z_{i,j}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}')
+			=\phi(\mu_{j|Z_{i,j}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}(X_{\bar{ij}}-\boldsymbol{\mu}_{X_{\bar{ij}}|Z_i}) ;  \sigma_{j|Z_{i,j}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}')
 			\end{eqnarray}		
-			Where all the values needed here were described above for the likelihood computation.
+			Where all the values needed here were described above for the likelihood computation with $\boldsymbol{X}_{\bar{ij}}=\boldsymbol{X}_i\setminus x_{i,j}$ and $Z_i=\{Z_{i,j}:j=1,\dots,d \}$.\\
+			
 %With $\forall j \in I_r$ 
 %\begin{equation}
 %	\operatorname{var}_{|Z_{i}}(x_{i,j})=\sigma_{j|Z_{i,j}}^2+ \sum_{l \in I_f^j} \alpha_{l,j}^2\sigma_{l|Z_i,l}^2=\sigma_{j}^2+ \sum_{l \in I_f^j} \alpha_{l,j}^2\sigma_{l|Z_i,l}^2
@@ -3049,53 +3074,49 @@ Another (faster but not optimal) way would be to only use the structure for $\bo
 %\end{equation}
 %We see that the $0$ in the variance-covariance matrix does not depend on $Z$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.
 
-	Then, $\forall 1\leq i \leq n, \forall j \in I_f$ we draw new values for $Z_{i,j}$ according to
+	Then, $\forall 1\leq i \leq n, \forall j \in J_f$ we draw new values for $Z_{i,j}$ according to
 	\begin{eqnarray}
-		P(Z_{i,j}|\boldsymbol{X},Z_{\bar{i,j}};\Theta,\boldsymbol{\alpha},S)&=&P(Z_{i,j}|\boldsymbol{X}_i,Z_{i,\bar{j}};\Theta,\boldsymbol{\alpha},S)=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j}) \\
+		\mathbb{P}(Z_{i,j}|\boldsymbol{X},Z\setminus Z_{i,j};\Theta,\boldsymbol{\alpha},\boldsymbol{S})&=&P(Z_{i,j}|\boldsymbol{X}_i,Z\setminus Z_{i,j};\Theta,\boldsymbol{\alpha},\boldsymbol{S})=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j}) \\
 		\textrm{where } t_{i,j,k}&=&\frac{\pi_{j,k}\Phi(x_{i,j};\mu_{j,k},\sigma_{j,k}^2)}{\sum_{l=1}^{K_j}\pi_{j,l}\Phi(x_{i,j};\mu_{j,l},\sigma_{j,l}^2) }
 	\end{eqnarray}
 		
 	
 	
 	We see that $Z_{i,j}$ are not used if there is no missing values in $\boldsymbol{X}_i$ and others are not all needed so we can also optimize computation time by  computing only the $Z_{i,j}$ that are needed in the Gibbs.
-	For the last iteration of the Gibbs, in the last iteration of the SEM, we do not need to draw $Z$.	
+	For the last iteration of the Gibbs, in the last iteration of the SEM, we do not need to draw $Z$.	\\
 	
 	Instead of using long chain for each Gibbs, we can use small chains because SEM iteration will simulate longer chains so it remains efficient with a smaller computation cost.
-	
 	Computation cost will be the main purpose here because we need an iterative algorithm (Gibbs sampler) at each iteration of another iterative algorithm (SEM) for each candidate of the MCMC.
-	So alternative method should be preferred for large datasets with many missing values and only a small amount of time.
+	So alternative method should be preferred for large datasets with many missing values and only a small amount of time.\\
 	
-	Because $K$ can be very large we search a way to compute the likelihood.
+	Because $K$ can be very large we search a way to estimate the likelihood.
 	We can use a Gibbs algorithm to estimate the likelihood:
 	\begin{eqnarray}
-	P(\boldsymbol{X}_O;\Theta, S, \boldsymbol{\alpha})&=& 
-		\sum_{Z\in \mathcal{Z}}\int_{\boldsymbol{X}_M}\frac{P(\boldsymbol{X}_M,Z,\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},S)}{P(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},S)}P(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},S) dX \\
-		&\approx &\frac{1}{Q} \sum_{q=1}^Q\frac{P(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},S)}{P(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},S)} \textrm{ by the law of large numbers}
+	\mathbb{P}(\boldsymbol{X}_O;\Theta, \boldsymbol{S}, \boldsymbol{\alpha})&=& 
+		\sum_{Z\in \mathcal{Z}}\int_{\boldsymbol{X}_M}\frac{\mathbb{P}(\boldsymbol{X}_M,Z,\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},S)}{\mathbb{P}(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S})}\mathbb{P}(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S}) dX \\
+		&\approx &\frac{1}{Q} \sum_{q=1}^Q\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},\boldsymbol{S})} \textrm{ by the law of large numbers} \ \ \ 
 	\end{eqnarray}		
 	where $Q$ is the number of iterations of the Gibbs sampler.
 	But to be faster, we use the previous Gibbs algorithm with:
 	\begin{eqnarray}
-	P(\boldsymbol{X}_O;\Theta, S, \boldsymbol{\alpha})&\approx & \frac{1}{Q} \sum_{q=1}^Q\frac{P(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},S)}{P(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},S)}
+	\mathbb{P}(\boldsymbol{X}_O;\Theta, \boldsymbol{S}, \boldsymbol{\alpha})&\approx & \frac{1}{Q} \sum_{q=1}^Q\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},\boldsymbol{S})}
 	\end{eqnarray}	
 		
 \subsection{Alternative E step}
-	If we can't (or don't want to) compute the SE step described above, then we can use alternative imputation step for missing data based on $\boldsymbol{\alpha}$ (and keep the alternate optimisation to find the best $\boldsymbol{\alpha}$). 
+	An alternative to the SE step described above would be to make imputation of missing data based on $\boldsymbol{\alpha}$ (and keep the alternate optimisation to find the best $\boldsymbol{\alpha}$). 
 	
-	$\forall x_{i,j} \in \boldsymbol{X}_M $ we have:
+	$\forall x_{i,j} \in \boldsymbol{X}_M $ :
 	\\
-if $j\in I_r$, Equation(\ref{Missingdensity}) gives: 
-	\begin{eqnarray}
-	E[x_{i,j}|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S]&=&E[\sum_{k=1}^{k_{ij}}\pi_{ij,k}\Phi(x_{i,j}|\mu_{ij,k},\Sigma_{ij,k})|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S] 
-	\end{eqnarray}
+if $j\in J_r$, we can use Equation(\ref{Missingdensity}) as an approximation of $E[x_{i,j}|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,\boldsymbol{S}]$. Using only the sub-regression explaining $x_{i,j}$ but not the potential other sub-regression that could have add some information.
 	  
-	Let $r_{i,j}=\{l \in I_r| \boldsymbol{\alpha}_{j,l}\neq 0, \boldsymbol{M}_{i,j}=0 \}$ the set of observed covariates for individual $i$ that are explained by $x_{i,j}$ according to $S$.
+	$\forall j \in J_f$, we note $r_{i,j}=\{l \in J_r|\bar{ \boldsymbol{\alpha}}_{j,l}\neq 0, \boldsymbol{M}_{i,j}=0 \}$ the set of observed covariates for individual $i$ that are explained by $x_{i,j}$ according to $\boldsymbol{S}$.
 	\\
-	If $j\notin I_r$ we can do:
+	If $j\in J_f$ and $M_{i,j}=1$ we can do:
 	\begin{eqnarray}
-	E[x_{i,j}|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S]&=&\frac{1}{|r_{i,j}|}\sum_{k \in r_{i,j}}E_{|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S}\left[\frac{1}{\alpha_{j,k}}\left(x_{i,k}-\varepsilon_{k}(i)-\sum_{l \in I_f^k} x_{i,l}\alpha_{l,k}\right)\right] \\
-	&=& \frac{1}{|r_{i,j}|}\sum_{k \in r_{i,j}}E_{|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S}\left[\frac{1}{\alpha_{j,k}}\left(x_{i,k}- \sum_{l \in I_f^k} x_{i,l}\alpha_{l,k}\right)\right]
+	E[x_{i,j}|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,\boldsymbol{S}]%&=&\frac{1}{|r_{i,j}|}\sum_{k \in r_{i,j}}E_{|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,\boldsymbol{S}}\left[\frac{1}{\bar{\boldsymbol{\alpha}}_{j,k}}\left(x_{i,k}-\varepsilon_{k}(i)-\sum_{l \in J_p^k} x_{i,l}\bar{\boldsymbol{\alpha}}_{l,k}\right)\right] \ \ \ \\
+	&=& \frac{1}{|r_{i,j}|}\sum_{k \in r_{i,j}}E_{|\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{X}_O,S}\left[\frac{1}{\bar{\boldsymbol{\alpha}}_{j,k}}\left(x_{i,k}- \sum_{l \in J_p^k} x_{i,l}\bar{\boldsymbol{\alpha}}_{l,k}\right)\right]
 	\end{eqnarray}
-	that is the mean of the expectations of the inverse sub-regressions implying $x_i,j$ with value in $\boldsymbol{X}^{I_r}_i$ not missing.
+	that is the mean of the expectations of the inverse sub-regressions implying $x_{i,j}$ with value in $\boldsymbol{X}^{J_r}_i$ not missing.
 
 
 
@@ -3159,13 +3180,13 @@ if $j\in I_r$, Equation(\ref{Missingdensity}) gives:
 %			
 			
 	\section{Missing values in the main regression}
-		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest. One great advantage of multiple draw procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. 
+		The easier way would be to draw missing values with the SEM described above and then use classical methods on the completed dataset, with the possibility to repeat this procedure a few times and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest. One great advantage of multiple draw procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. \\
 		
-		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective for our method.
+		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective.
 	\section{Numerical results on simulated datastets}
 		\subsection{Estimation of the sub-regression coefficients}
-			We take datasets from the experiments in part I and then we compare the MSE obtained on $\boldsymbol{\alpha}$ with our SEM to those obtain by classical OLS after imputation of the missing values by the marginal empirical means. Here $p=40$ and $n=30$, missing values position are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values each time. Thus we have 120 missing values and none of the datasets contain a full individual without missing values.
-Both methods were tested with the true structure $S$. Initial value of $\boldsymbol{\alpha}$ for the SEM was the result of the method using imputation by the empirical mean. Only 10 iterations for the SEM after 2 warming steps with only 1 iteration for the Gibbs at each step.
+			We take datasets from the experiments in part I and then we compare the MSE obtained on $\boldsymbol{\alpha}$ with our SEM to those obtain by classical OLS after imputation of the missing values by the marginal empirical means. Here $d=40$ and $n=30$, missing values position are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values each time. Thus we have 120 missing values and none of the datasets contain a full individual without missing values.
+Both methods were tested with the true structure $\boldsymbol{S}$. Initial value of $\boldsymbol{\alpha}$ for the SEM was the result of the method using imputation by the empirical mean. Only 10 iterations for the SEM after 2 warming steps with only 1 iteration for the Gibbs at each step.
 
 \begin{figure}[h!]
 	\centering
@@ -3173,12 +3194,12 @@ Both methods were tested with the true structure $S$. Initial value of $\boldsym
 	\caption{MSE on $\boldsymbol{\alpha}$ is significantly lower and more robust with our SEM than with imputation by the mean.}\label{MSEalphaSEM}
 \end{figure}
 
-	We see (Figure \ref{MSEalphaSEM}) that our SEM is nearly 13 times more efficient in mean that estimation based on imputation by the mean. Our results are extremely good because each sub-regression is true and we have 30 individuals (even if missing values kind of reduce this number) to estimate 3 coefficients only each time. Although, using imputed values lead to learn a true regression with a factually incorrect dataset. Thus we should prefer to work without imputing the missing values but using the full generative model and the dependencies it implies. Imputation will always introduce some bias.
+	We see (Figure \ref{MSEalphaSEM}) that our SEM is nearly 13 times more efficient in mean that estimation based on imputation by the mean. Our results are extremely good because each sub-regression is true and we have 30 individuals (even if missing values kind of reduce this number) to estimate 3 coefficients only each time. Although, using imputed values lead to learn a true regression with a factually incorrect dataset. Thus we should prefer to work without imputing the missing values but using the full generative model and the dependencies it implies. Imputation will always introduce some noise.
 
 		
 			\subsection{Imputation by the sub-regression}
-			We have then imputed missing values in $\boldsymbol{X}^{I_r}$  by using the corresponding sub-regressions after $\boldsymbol{\alpha}$ has been estimated  by the SEM.
-			Missing values in $\boldsymbol{X}^{I_f}$ are estimated by the mean of 50 Gibbs iterations after the SEM and 2 warming steps of the Gibbs. Results are shown in figure \ref{MSEXsubreg}.
+			We have then imputed missing values in $\boldsymbol{X}_r$  by using the corresponding sub-regressions after $\boldsymbol{\alpha}$ has been estimated  by the SEM.
+			Missing values in $\boldsymbol{X}_f$ are estimated by the mean of 50 Gibbs iterations after the SEM and 2 warming steps of the Gibbs. Figure \ref{MSEXsubreg} shows the significative gain in MSE produced by our method.
 			\begin{figure}[h!]
 	\centering
 	\includegraphics[width=350px]{figures/MSEXsubreg.png} 
@@ -3198,9 +3219,9 @@ Both methods were tested with the true structure $S$. Initial value of $\boldsym
 	\includegraphics[width=350px]{figures/MSESEMYtoysd.png} 
 	\caption{our SEM (blue) provides more robust results than imputation by the mean (red) but the variances are still too wide.}\label{MSESEMYtoysd}
 \end{figure}		
-We obtain on a validation sample of 1000 individuals a predictive MSE smaller in mean with our method (Figure \ref{MSESEMYtoymean}). But the variance are too important to really conclude (Figure \ref{MSESEMYtoysd}). We can say that imputation by SEM is more robust, but the Gibbs do not give satisfying results. Maybe the increase of the number of steps allowed by a code optimization would help to improve these results. For now, we can just say that our generative model significantly improves estimation of $\boldsymbol{\alpha}$ and make possible to find $S$ based on a dataset with missing values.
+We obtain on a validation sample of 1000 individuals a predictive MSE smaller in mean with our method (Figure \ref{MSESEMYtoymean}). But the variance are too important to really conclude (Figure \ref{MSESEMYtoysd}). We can say that imputation by SEM is more robust, but the Gibbs do not give satisfying results at the moment. Maybe the increase of the number of steps allowed by a code optimization would help to improve these results. For now, we can just say that our generative model significantly improves estimation of $\boldsymbol{\alpha}$ and make possible to find $\boldsymbol{S}$ based on a dataset with missing values.
 
-		One big advantage with our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same $S$ and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
+		One big advantage with our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same $\boldsymbol{S}$ and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the SEM. 
 
 	\section{Missing values on real datasets}	
 		To be able to evaluate the results on a real dataset, we have deleted some values in the production dataset from section \ref{sectionBV} to obtain $10\%$ of missing values. Figure \ref{missingBV} shows the pattern of the missing values (MCAR). It confirms that $10\%$ of missing values is sufficient to have no complete line or column in the dataset. 
@@ -3219,20 +3240,24 @@ We obtain on a validation sample of 1000 individuals a predictive MSE smaller in
 
 \chapter{CorReg: the concept}	
 	
-		The {\tt CorReg} package is already downloadable on the CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with {\tt CorReg}.
+		The {\tt CorReg} package is already downloadable on CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the \textsc{lars} package). So every simulation presented above can be done with {\tt CorReg}.
 	{\tt CorReg} also provides tools to interpret found structures and visualize the dataset (missing values and correlations). \\%More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}. 
-	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made  available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). \\
+	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made available in Microsoft Excel for the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). \\
+	
 	It also provides some small scripts put in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel).\\
 	 One example of graphical tool is the {\tt matplot\_zone } function that allows to compare several curves according to a given function (input parameter) and was widely used to compare the MSE and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
-	More features will be added as statistics will continue to be taught to engineers to provide ergonomic and powerful statistical tools to non-statisticians. 
+	 
+	More features will be added as statistics will continue to be taught to engineers at ArcelorMittal Dunkerque to provide ergonomic and powerful statistical tools to non-statisticians. 
 \chapter{Conclusion and perspectives}
 	\section{Conclusion}
 		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates. Moreover, it is only a pretreatment so it could easily be used with future statistical tools. \\
+		
 		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, {\tt CorReg} will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method seems to have a positive impact on the way users looks at the statistics (according to them). \\
+		
 			It is good to see that sequential methods (plug-in model) and automation can produce good results. Probabilistic models are efficient even without human expertise and let the experts improve the results by adding their expertise in the model (coercing some sub-regression for example). So we hope that statistics will continue to be a central tool for engineers.
 		
 		
-	\section{Perspective}
+	\section{Perspectives}
 		\subsection{Non-linear regression}
 			Polynomial regression, logistic regression \cite{hosmer2000applied}, {\it etc.} might be improved by a method like this.
 		\subsection{Pretreatment not only for regression}
@@ -3243,13 +3268,13 @@ We obtain on a validation sample of 1000 individuals a predictive MSE smaller in
 			The full generative approach could be used to manage missing values without imputation for many classical methods.
 			It can notably be used for clustering and not only in response variable prediction context.
 		\subsection{Interpretation improvements}
-			Ergonomy of the software could be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to reach this goal.
+			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to reach this goal.
 \cleardoublepage
 
 \addcontentsline{toc}{chapter}{References}
 \bibliographystyle{apalike}
 %\bibliographystyle{plain}
-\nocite{*}
+%\nocite{*}
 \bibliography{biblio}
 %\addcontentsline{toc}{chapter}{Appendices}
 %\appendix
