@@ -3,6 +3,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <Rmath.h>
 using namespace Rcpp ;
 using namespace Eigen;
 using namespace std;
@@ -19,6 +20,7 @@ SEXP rechercheZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP method
   const Map<MatrixXd> matX(as<Map<MatrixXd> >(X));//X
   const Map<VectorXd> Bic_vide_vect(as<Map<VectorXd> >(bic_vide_vect));//bic_vide_vect
   
+    
   Rcpp::NumericVector met_tirage(methode_tirage),met_newZ(methode_newZ),met_BIC(methode_BIC),rmax(Rmax),P2max(p2max),maxiter(Maxiter),Plot(plot),Best(best),Better(better),Random(random),Bla(bla),Nb_opt_max(nb_opt_max);
   typedef Rcpp::NumericVector::iterator vec_iterator;
   vec_iterator imet_tirage = met_tirage.begin(),imet_newZ=met_newZ.begin(),imet_BIC=met_BIC.begin(),irmax=rmax.begin(),ip2max=P2max.begin(),imaxiter=maxiter.begin(),iplot=Plot.begin(),ibest=Best.begin(),ibetter=Better.begin(),irandom=Random.begin(),ibla=Bla.begin(),inb_opt_max=Nb_opt_max.begin();
@@ -54,7 +56,8 @@ SEXP rechercheZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP method
   Eigen::VectorXd etape (imaxiter[0]);//vecteur qui stock le type de changement de chaque etapes
   bool station;//permet de savoir si on est stationnaire ou non
 
-    
+ 
+   
   //initialisation
   Zopt = MatrixXd::Zero(p,p);
 //somme a la main
@@ -115,7 +118,7 @@ SEXP rechercheZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP method
   //liste candidats (couples [i,j])
     if (imet_tirage[0]==0)//methode de changement de la ligne et de la colonne
     {
-      k=rand() % p;//on tire un numero aleatoire pour savoir quel est la ligne et la colonne de candidats
+      k= int(runif(0,p)[0]);//on tire un numero aleatoire pour savoir quel est la ligne et la colonne de candidats
       for(i=0;i<p;i++)
       {
         if(i!=k)//on ne veut pas avoir de 1 sur la diagonale
@@ -131,7 +134,7 @@ SEXP rechercheZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP method
     }
     else if (imet_tirage[0]==-1)//seulement la colonne
     {
-      k=rand() % p;
+      k=int(runif(0,p)[0]);
       for(i=0;i<p;i++)
       {
         if(i!=k)
@@ -146,8 +149,8 @@ SEXP rechercheZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP method
     {
       for(i=0;i<nbcand;i++)
       {
-        rand1=rand() % p;//nombres aleatoire pour avoir le numero de la ligne
-        rand2=rand() % p;//nombres aleatoire pour avoir le numero de la colonne
+        rand1=int(runif(0,p)[0]);//nombres aleatoire pour avoir le numero de la ligne
+        rand2=int(runif(0,p)[0]);//nombres aleatoire pour avoir le numero de la colonne
         if (rand1==rand2)//on ne veut pas de 1 sur la diagonale
         {
           if(rand1<p-1)
