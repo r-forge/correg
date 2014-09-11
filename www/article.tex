@@ -116,11 +116,11 @@ with $\boldsymbol{X}=(\boldsymbol{X}^1,\ldots,\boldsymbol{X}^d)$ the $n\times d$
 We focus now on an original manner to solve the covariates correlation problem. The covariates number problem will be solved at a second stage by standard methods, once only decorrelated covariates will be identified. The proposed method relies on the two following hypotheses.
 
 \begin{hyp}\label{H1}
-In order to take into account the covariates correlation problem, we make the hypothesis correlation between covariates is {\it only} the consequence that some covariates {\it linearly} depend on some other covariates. More precisely, there are $d_{r}\geq 0$ such ``sub-regressions'', each sub-regression $j=1,\ldots,d_{r}$ having the covariate $\boldsymbol{X}^{J_{r}^j}$ as {\it response} variable ($J_{r}^j\in\{1,\ldots,p\}$ and $J_{r}^j\neq J_{r}^{j'}$ if $j\neq j'$) and having the $d_p^j>0$ covariates $\boldsymbol{X}^{J_{p}^j}$  as {\it predictor} variables ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ and $d_p^j=|J_{p}^j|$ the cardinal of $J_{p}^j$):
+In order to take into account the covariates correlation problem, we make the hypothesis correlation between covariates is {\it only} the consequence that some covariates {\it linearly} depend on some other covariates. More precisely, there are $d_{r}\geq 0$ such ``sub-regressions'', each sub-regression $j=1,\ldots,d_{r}$ having the covariate $\boldsymbol{X}^{J_{r}^j}$ as {\it response} variable ($J_{r}^j\in\{1,\ldots,d\}$ and $J_{r}^j\neq J_{r}^{j'}$ if $j\neq j'$) and having the $d_p^j>0$ covariates $\boldsymbol{X}^{J_{p}^j}$  as {\it predictor} variables ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ and $d_p^j=|J_{p}^j|$ the cardinal of $J_{p}^j$):
 \begin{equation}
 \boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR}
 \end{equation}
-where $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ for all $j=1,\ldots,d_r$ and $h=1,\ldots,d_p^j$) and $\boldsymbol{\varepsilon}_j \sim\mathcal{N}_n(\boldsymbol{0},\sigma^2_j\boldsymbol{I})$.
+where $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ for all $j=1,\ldots,d_r$ and $h=1,\ldots,d_p^j$) and $\boldsymbol{\varepsilon}_j \sim\mathcal{N}_n(\boldsymbol{0},\sigma^2_j\boldsymbol{I})$.cf
 \end{hyp}
 
 \begin{hyp}\label{H2}
