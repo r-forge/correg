@@ -1,2 +1,4 @@
+#15.4
+Changing random generator in C to use runif() instead.
 #14.3
 bug removal when X was a data.frame in density_estimation

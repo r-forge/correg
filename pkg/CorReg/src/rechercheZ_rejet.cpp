@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <math.h>
+#include <Rmath.h>
 #include <stdlib.h>     /* exit, EXIT_FAILURE */
 using namespace Rcpp ;
 using namespace Eigen;
@@ -131,7 +132,7 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
   //liste candidats (couples [i,j])
     if (imet_tirage[0]==0)//methode de changement de la ligne et de la colonne
     {
-      k=rand() % p;//on tire un numero aleatoire pour savoir quel est la ligne et la colonne de candidats
+      k=int(runif(0,p)[0]);//on tire un numero aleatoire pour savoir quel est la ligne et la colonne de candidats
       for(i=0;i<p;i++)
       {
         if(i!=k)//on ne veut pas avoir de 1 sur la diagonale
@@ -147,7 +148,7 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
     }
     else if (imet_tirage[0]==-1)//seulement la colonne
     {
-      k=rand() % p;
+      k=int(runif(0,p)[0]);
       for(i=0;i<p;i++)
       {
         if(i!=k)
@@ -206,8 +207,8 @@ SEXP rechercheZ_rejet(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
     {
       for(i=0;i<nbcand;i++)
       {
-        rand1=rand() % p;//nombres aleatoire pour avoir le numero de la ligne
-        rand2=rand() % p;//nombres aleatoire pour avoir le numero de la colonne
+        rand1=int(runif(0,p)[0]);//nombres aleatoire pour avoir le numero de la ligne
+        rand2=int(runif(0,p)[0]);//nombres aleatoire pour avoir le numero de la colonne
         if (rand1==rand2)//on ne veut pas de 1 sur la diagonale
         {
           if(rand1<p-1)

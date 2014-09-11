@@ -7,7 +7,7 @@
 #' @import mclust 
 #' @import ridge
 #' @import MASS
-#' @import parcor
+# ' @import parcor
 #' @import  clere
 #' @import spikeslab
 #' @import  rpart
@@ -61,6 +61,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, 
   if(select=="NULL"){
     returning=FALSE
   }
+  if(select=="adalasso"){require(parcor)}
   if(final){pred=TRUE}
 if(explnew){compl=TRUE;expl=TRUE}
   criterion = criterion[1]
