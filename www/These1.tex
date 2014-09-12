@@ -1397,31 +1397,32 @@ The main criterion to stop the walk is a maximum number of iteration but {\tt Co
 	\subsection{Stochastic neighbourhood}
 	We see that $|\mathcal{V}(\boldsymbol{S})|$ can be large so the best transition probability may not be far enough from the other to be chosen with a sufficient probability. A classical way to avoid such a problem is to reduce the neighbourhood to a random subset and to allow stationarity (to keep the walk's properties). But then we face a problem: how to choose candidates in a determinist neighbourhood made of several sub-neighbourhood? We would have to index them (time consuming) and then to choose random indexes or to choose a number of candidates to choose from each neighbourhood. One idea would be to choose only one candidate to compare to the current structure, allowing to choose first a sub-neighbourhood and then a candidate. But we observe that each candidate can be described by the way it differs from $\boldsymbol{S}$. Then we redefine a neighbourhood based on the modification of the adjacency matrix $\boldsymbol{G}$ associated to $\boldsymbol{S}$.\\
 	
-	For each step $q$, starting from $\boldsymbol{S} \in \mathcal{S}_d$ we define a neighbourhood:
+	For each step $(q)$, starting from $\boldsymbol{S} \in \mathcal{S}_d$ we define a neighbourhood:
 		\begin{eqnarray}
-		\mathcal{V}(\boldsymbol{S})&=& \{\boldsymbol{S} \}\cup \{ \boldsymbol{S}^{(i,j)} \in \mathcal{S}_d|(i,j) \in \mathcal{A}_q\} 
+		\mathcal{V}(\boldsymbol{S})&=& \{\boldsymbol{S} \}\cup \{ \boldsymbol{S}^{(i,j)} \in \mathcal{S}_d|(i,j) \in \mathcal{A}_{(q)}\} 
 	\end{eqnarray}	
-	where $\mathcal{A}_q$ is a set of couples $(i,j) \in \{1,\dots,d \}^2$ with $i\neq j$ corresponding to arcs of the graph to modify (add or remove), defined according to a strategy.
+	where $\mathcal{A}_{(q)}$ is a set of couples $(i,j) \in \{1,\dots,d \}^2$ with $i\neq j$ drawn at the step $(q)$ according to a strategy and corresponding to arcs of the graph to modify (add or remove).
 	And we have for  $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$:
 	\begin{eqnarray}
 		\forall (k,l)\neq (i,j), \quad	\tilde{\boldsymbol{G}}_{k,l}&=&\boldsymbol{G}_{k,l} \\
 		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j} 
 	\end{eqnarray}
-	where $\tilde{\boldsymbol{G}}$ is the adjacency matrix associated to $\tilde{\boldsymbol{S}}$. Any strategy can be chosen for $\mathcal{A}_q$, from uniform distribution to specific heuristics.\\
+	where $\tilde{\boldsymbol{G}}$ is the adjacency matrix associated to $\tilde{\boldsymbol{S}}$. Any strategy can be chosen for $\mathcal{A}_{(q)}$, from uniform distribution to specific heuristics.\\
 	
-The main advantage of such a neighbourhood is that increasing and decreasing complexities are tested at each step without arbitrary ratio. If we just look at the sub-regression system, we have to choose for each sub-regression if we add, remove or keep covariates and we also have to choose if we had or delete some sub-regression. Adjacency matrix makes the neighbourhood extremely natural with just the modification of a value in a binary matrix.
+The main advantage of such a neighbourhood is that increasing and decreasing complexities are tested at each step without arbitrary ratio. If we just look at the sub-regression system, we have to choose for each sub-regression if we add, remove or keep covariates and we also have to choose if we had or delete some sub-regression. Adjacency matrix makes the neighbourhood extremely natural with just the modification of a value in a binary matrix. \\
+Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $BIC_*$ so it is not an evidence to allow or not stationarity. Our package {\tt CorReg} give the user the choice with stationarity,  included in the neighbourhood by default.
 
-		\subsubsection{Strategy}
-			Many strategies can be imagined. First, we can decide to keep the local $\hat{\boldsymbol{S}}$ in the neighbourhood or not, that is allowing or not stationarity. Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $BIC_*$ so it is not an evidence to allow or not stationarity. Our package {\tt CorReg} give the user the choice with stationarity,  included in the neighbourhood by default.
-		The only constraint on $\mathcal{A}_q$ is that $\forall (i,j) \in \mathcal{A}_q, i\neq j$.				
-		We propose, for step $q$ to draw $j$ from $\mathcal{U}(\{1,\dots,d\})$ and then 
+		\subsubsection{Strategy to draw $\mathcal{A}_{(q)}$}
+			Many strategies can be imagined. 
+		The only constraint on $\mathcal{A}_{(q)}$ is that $\forall (i,j) \in \mathcal{A}_{(q)}, i\neq j$.				
+		We propose, for step $(q)$ to draw $j$ from $\mathcal{U}(\{1,\dots,d\})$ and then 
 		\begin{equation}
-			\mathcal{A}_{q}|j=\{ (i,j) \in  \{1,\dots,d\}^2 :i \neq j \}
+			\mathcal{A}_{(q)}|j=\{ (i,j) \in  \{1,\dots,d\}^2 :i \neq j \}
 		\end{equation}
 			Such a strategy can be interpreted as the uniform choice of a sub-regression to modify followed by the proposal of each possible unary change.
-			Our package {\tt CorReg} let the user choose many other strategies like a fixed number of random couples $(i,j)$ , or the union of the $j^{th}$ line and column of $\boldsymbol{G}$. For large values of $d$, the number of candidate at each step can become critical. Each candidate requires to re-estimate the $\boldsymbol{\alpha}^j$'s for each modified sub-regression and it requires matricial inversion (estimation by OLS) so computational cost can be high if $n$ is also large.
+			Our package {\tt CorReg} let the user choose many other strategies for $\mathcal{A}_{(q)}$ like a fixed number of random couples $(i,j)$ , or the union of the $j^{th}$ line and column of $\boldsymbol{G}$. For large values of $d$, the number of candidate at each step can become critical. Each candidate requires to re-estimate the $\boldsymbol{\alpha}^j$'s for each modified sub-regression and it requires matricial inversion (estimation by OLS) so computational cost can be high if $n$ is also large.
 		\subsubsection{Active relaxation of constraints}
-		In practice, for some of the $(i,j) \in \mathcal{A}_q$, we have $\boldsymbol{S}^{(i,j)}\notin \mathcal{S}_d$ because of the uncrossing rule. Such candidates are basically rejected so the number of candidates is not constant at each step. Moreover, complex structures reduce the size of the potential neighbourhood because of this uncrossing rule. Last but not least, even if the walk is regular, local extrema may significantly slow down the research of the optimal structure.
+		In practice, for some of the $(i,j) \in \mathcal{A}_{(q)}$, we have $\boldsymbol{S}^{(i,j)}\notin \mathcal{S}_d$ because of the uncrossing rule. Such candidates are basically rejected so the number of candidates is not constant at each step. Moreover, complex structures reduce the size of the potential neighbourhood because of this uncrossing rule. Last but not least, even if the walk is regular, local extrema may significantly slow down the research of the optimal structure.
 		Thus we propose a constraints relaxation method by a new definition of $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$ relying on a new definition of $\tilde{\boldsymbol{G}}$:
 	\begin{eqnarray}
 		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j} \textrm{ as usual}\\
