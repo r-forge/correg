@@ -2749,20 +2749,25 @@ This phenomenon is still observed with the ridge regression (Figures \ref{MSEpre
 \FloatBarrier
 
 \chapter{Missing values} \label{chapmiss}
+%http://mathworld.wolfram.com/KroneckerSum.html
 	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to make multiple imputations based on the sub-regression structure. The full generative model also helps to manage missing values in the MCMC with the ability to compute $BIC_*$ only on the observed values. 
 	
 	 \section{Introduction}
-	Real datasets often have missing values and it is a very recurrent issue in industry. We note $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whereas a value is missing (1) or not (0) in $\boldsymbol{X}$.
-	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{O}$ the observed values. $\Theta=\{\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
-	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\ 
-			Here we suppose that missing values are Missing Completely At Random (MCAR). 
+	Real datasets often have missing values and it is a very recurrent issue in industry. 
+			Here we suppose that missing values are Missing Completely At Random (MCAR) but other pattern does exist for missing values.
 	 Many methods does exist to manage such problems \cite{little1992regression} but they make approximation , add noise (imputation methods) or delete information (cutting methods).	
 	 
 %Détailler les différents pattern de valeurs manquantes
 %	 
 %Detailler Les 6 types de méthodes	 
 %	 
-	We have a full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates. So when a value is missing, we know its distribution but more than that, we know its conditional distribution based on observed values for the same individual. Thus we are able to make imputation and to describe the missing values with their conditional distribution. This is a positive side-effect of the explicit generative model on $\boldsymbol{X}$. 
+	We have a full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates. So when a value is missing, we know its distribution but more than that, we know its conditional distribution based on observed values for the same individual. Thus we are able to make imputation and to describe the missing values with their conditional distribution. This is a positive side-effect of the explicit generative model on $\boldsymbol{X}$.
+	This chapter is a perspective of this thesis that we have already started to work on.
+	\\
+	
+	In the followings we note $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whereas a value is missing (1) or not (0) in $\boldsymbol{X}$.
+	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{O}$ the observed values. $\Theta=\{\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
+	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\  
 \section{Estimation of sub-regressions with missing values}
 \subsection{Integrated likelihood}
 The first thing we do with $\boldsymbol{X}$ is to estimate $\boldsymbol{S}$.
