@@ -760,8 +760,12 @@ where $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ for a
 \end{hyp}
 
 \begin{hyp}\label{H2}
-In addition, we make the complementary hypothesis that the response covariates and the predictor covariates are totally disjoint: for any sub-regression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ where $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ is set of all response covariates and $J_f=\{1,\ldots,d\} \backslash J_{r}$ is the set of all {\it non} response covariates of cardinal $d_f=d-d_r=|J_f|$. This new assumption allows to obtain very simple sub-regressions sequences, discarding hierarchical ones, in particular uninteresting cyclic sub-regressions. However it is not too much restrictive since any hierarchical (but non-cyclic) sequence of sub-regressions can be agglomerated into a non-hierarchical sequence of sub-regressions, even if it may implies to partially loose information through variance increase in the new non-hierarchical sub-regressions. It is made by just successively replacing endogenous covariates by their sub-regression when they are also exogenous in some other sub-regressions. We call this hypothesis the uncrossing rule.
+In addition, we make the complementary hypothesis that the response covariates and the predictor covariates are totally disjoint: for any sub-regression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ where $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ is set of all response covariates and $J_f=\{1,\ldots,d\} \backslash J_{r}$ is the set of all {\it non} response covariates of cardinal $d_f=d-d_r=|J_f|$. We call this hypothesis the uncrossing rule.
 \end{hyp}
+
+
+
+ This second assumption allows to obtain very simple sub-regressions sequences, discarding hierarchical ones, in particular uninteresting cyclic sub-regressions. However it is not too much restrictive since any hierarchical (but non-cyclic) sequence of sub-regressions can be agglomerated into a non-hierarchical sequence of sub-regressions, even if it may implies to partially loose information through variance increase in the new non-hierarchical sub-regressions. It is made by just successively replacing endogenous covariates by their sub-regression when they are also exogenous in some other sub-regressions. 
 
 \paragraph{Further notations} In the following, we will note also $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ the $d_r$-uple of all the response variable (to be not confused with the corresponding set $J_r$ previously defined), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ the $d_r$-uple of all the predictors for all the sub-regressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ the associated number of predictors and $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ the global {\it model} of all the sub-regressions. As more compact notations, we define also $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ the whole set of response covariates and also $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ the {\it all} other covariates, denominating now as {\it free} covariates, including those used as predictor covariates in $\boldsymbol{J}_p$. An illustration of all these notations is applied on the running example at the end of this section. The parameters are also stacked together: $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ denotes the global coefficient of sub-regressions and $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ denotes the corresponding global variance.
 
@@ -3348,12 +3352,55 @@ We obtain on a validation sample of 1000 individuals a predictive MSE smaller in
 		\subsection{Definition}
 		We call identifiability :
 \begin{eqnarray}
-	\nexists (\boldsymbol{S}_M,\boldsymbol{S}_{M'}) \in \mathcal{S}_d\times \mathcal{S}_d \textrm{ with } \boldsymbol{S}_M \neq \boldsymbol{S}_{M'} \textrm{ and }
-	\mathbb{P}(\boldsymbol{X};\boldsymbol{S}_{M})=\mathbb{P}(\boldsymbol{X};\boldsymbol{S}_{M'})
+	\nexists (\boldsymbol{S},\tilde{\boldsymbol{S}}) \in \mathcal{S}_d\times \mathcal{S}_d \textrm{ with } \boldsymbol{S} \neq \tilde{\boldsymbol{S}} \textrm{ and }
+	\mathbb{P}(\boldsymbol{X};\boldsymbol{S})=\mathbb{P}(\boldsymbol{X};\tilde{\boldsymbol{S}})
  \end{eqnarray}
-	Hence identifiability is paired with the hypothesis we made on $ \mathcal{S}_d$. It is not sufficient to find a structure of linear sub-regression, the structure also has to verify the uncrossing rule and to exhaustively describe dependency between the covariates. As a consequence, the covariance between to covariates is not null if and only if these covariates are linked by some sub-regressions.
+	Hence identifiability is paired with the hypothesis we made on $ \mathcal{S}_d$. It is not sufficient to find a structure of linear sub-regression, the structure also has to verify hypothesis \ref{H1} and \ref{H2} (uncrossing rule + dependencies exhaustively described by the structure and then independence between the predictors). As a consequence, the covariance between to covariates is not null if and only if these covariates are linked by some sub-regressions.
  
-		\subsection{With Gaussian covariates}
+		\subsection{Sufficient condition for identifiability}
+
+\paragraph{Identifability criterion:} The model $(\boldsymbol{X},\boldsymbol{S})$ is identifiable if
+			\begin{equation}
+				\forall j \in \{1,\dots,d_r\},  d_p^j>1\label{identcondition}
+			\end{equation}
+That is to have almost two regressors in each sub-regression.
+
+\paragraph{Lemma:} In a model $(\boldsymbol{X},\boldsymbol{S})$ following hypothesis \ref{H1} to \ref{H3}, covariance between two distinct covariates does differ from $0$ in only two cases:
+\begin{enumerate}
+	\item One of the two variables is a regressor of the other in a sub-regression	
+	\begin{eqnarray}
+		j \in \{1,\dots,d_r\}, i \in J_p^j \textrm{ then } \operatorname{cov}(\boldsymbol{X}^{i},\boldsymbol{X}^{J_r^j})\neq 0
+	\end{eqnarray}
+	\item Both variable are regressed by a common covariate in their respective sub-regression:
+	\begin{eqnarray}
+		\exists k \in J_f, \exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\} \textrm{ with } i\neq j,&&  k\in J_p^i \textrm{ and } k\in J_p^j \\
+		\textrm{ then } \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})&\neq &0 \nonumber
+	\end{eqnarray}
+\end{enumerate}
+
+\paragraph{proof of the lemma:}
+The two cases lead immediately to non-zero covariance so we just look at other combinations to see how they infringe our hypothesis.
+\begin{itemize}
+	\item if $\exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\}, \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})\neq 0$ then  (H3 pour ind du bruit) et H2 pour non croisement
+	\item indépendance à droite
+	\item gauche + droite mais équation différente...
+\end{itemize}
+$\square$
+
+\paragraph{proof of the identifiability criterion:} We suppose that \ref{identcondition} is verified and the model is not identifiable:
+\begin{eqnarray}
+	\exists (\boldsymbol{S},\tilde{\boldsymbol{S}}) \in \mathcal{S}_d\times \mathcal{S}_d \textrm{ with } \boldsymbol{S} \neq \tilde{\boldsymbol{S}} \textrm{ and }
+	\mathbb{P}(\boldsymbol{X};\boldsymbol{S})=\mathbb{P}(\boldsymbol{X};\tilde{\boldsymbol{S}})
+ \end{eqnarray}
+ $\tilde{\boldsymbol{S}}$ contains $\tilde{d}_r$ sub-regressions and is characterized by $\tilde{\boldsymbol{J}}_r=(\tilde{J}_r^1,\dots,\tilde{J}_r^{\tilde{d}_r}), ????????$.\\
+Because $\boldsymbol{S}\neq \tilde{\boldsymbol{S}} $ we almost have $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$ or $\boldsymbol{J}_p\neq \tilde{\boldsymbol{J}}_p$.\\
+if $\boldsymbol{J}_r = \tilde{\boldsymbol{J}}_r$ then $\exists j \in \{1,\dots,d_r\}, \tilde{J}_p^j\neq J_p^j$.
+This leads to only two possibilities (both can be true at the same time:
+\begin{itemize}
+	\item $\exists i \in J_p^j$ with $i \notin \tilde{J}_p^j$
+	\item $\exists i \in \tilde{J}_p^j$ with $i \notin J_p^j$, so 
+\end{itemize} 
+  	$\square$		
 			
 			\subsection{With Gaussian mixtures by comparison with SelvarClust} \label{preuveident}
 	The model presented above relies on a discrete structure $\boldsymbol{S}$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{\boldsymbol{S}}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
