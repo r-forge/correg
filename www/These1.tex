@@ -3363,7 +3363,9 @@ We obtain on a validation sample of 1000 individuals a predictive MSE smaller in
 			\begin{equation}
 				\forall j \in \{1,\dots,d_r\},  d_p^j>1\label{identcondition}
 			\end{equation}
-That is to have almost two regressors in each sub-regression.
+That is to have almost two regressors in each sub-regression.\\
+
+To prove the sufficiency of this criterion for identifiability we rely on a the following lemma.
 
 \paragraph{Lemma:} In a model $(\boldsymbol{X},\boldsymbol{S})$ following hypothesis \ref{H1} to \ref{H3}, covariance between two distinct covariates does differ from $0$ in only two cases:
 \begin{enumerate}
@@ -3382,8 +3384,8 @@ That is to have almost two regressors in each sub-regression.
 The two cases lead immediately to non-zero covariance so we just look at other combinations to see how they infringe our hypothesis.
 \begin{itemize}
 	\item if $\exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\}, \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})\neq 0$ then  (H3 pour ind du bruit) et H2 pour non croisement
-	\item indépendance à droite
-	\item gauche + droite mais équation différente...
+	\item if $(i,j)\in J_f\times J_f$ then  $\operatorname{cov}(\boldsymbol{X}^i,\boldsymbol{X}^j)=0 $ because covariates in $\boldsymbol{X}_f$ are orthogonal.
+	\item if $j \in \{1,\dots,d_r\}, i \in J_f\setminus J_p^j$
 \end{itemize}
 $\square$
 
