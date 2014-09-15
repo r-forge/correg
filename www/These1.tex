@@ -821,6 +821,10 @@ In practice, the strategy we propose is to rely estimate of  $\hat{\boldsymbol{\
 
 In the following, we will denote by {\sc CorReg} (for {\it Correlations} and {\it Regression}) the new proposed strategy.
 
+\paragraph{Remark:} Identifiability of $\boldsymbol{S}$ is not necessary to use a given structure but helps to find it. Moreover, uncrossing rule restricts the size of $\mathcal{S}_d$ and improves identifiability. A sufficient condition for identifiability is to have at least two regressors in each sub-regression (definition of identifiability and proof this criterion in appendix \ref{sectionident}.
+In the followings, true $\boldsymbol{S}$ is supposed to be identifiable.
+	
+
 \fcolorbox{vertfonce}{vertclair}{\begin{minipage}{0.95\textwidth}
 \paragraph{Running example:} $\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2= 2\boldsymbol{X}^1+2\boldsymbol{X}^2+\boldsymbol{X}^4+\boldsymbol{X}^5+\boldsymbol{\varepsilon}_1 +\boldsymbol{\varepsilon}_Y$
 \end{minipage}}
@@ -1066,7 +1070,7 @@ Further results are provided in sections \ref{sectionsimul} and \ref{sectionreal
 	\centering
 	\begin{tabular}[c]{m{5px} m{450px}}
 	\setcellgapes{0pt}
-	(a) & \includegraphics[width=450px]{figures/explvraiS/MSEexplOLSY_zone.png}\label{MSEexplOLSY_zone}
+	(a) & \includegraphics[width=450px]{figures/explvraiS/MSEexplOLSY_zone.png}\label{MSEexplOLSY_zone} 
 \end{tabular}		%\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}
 	\end{subfigure}
 	\begin{subfigure}
@@ -3348,7 +3352,7 @@ We obtain on a validation sample of 1000 individuals a predictive MSE smaller in
 %		\section{Industrial examples}
 \chapter{Appendices}
 
-	\section{Identifiability}
+	\section{Identifiability}\label{sectionident}
 		\subsection{Definition}
 		We call identifiability :
 \begin{eqnarray}
@@ -3402,55 +3406,55 @@ This leads to only two possibilities (both could be true at the same time):
 	\item $\exists i \in J_p^j$ with $i \notin \tilde{J}_p^j$ so $\operatorname{cov}_{S}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})\neq 0$ and $\operatorname{cov}_{\tilde{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})= 0$ (from the lemma) so the two structure don't give the same joint distribution, leading to a contradiction.
 	\item $\exists i \in \tilde{J}_p^j$ with $i \notin J_p^j$, so $\operatorname{cov}_{S}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})= 0$ (from the lemma) and $\operatorname{cov}_{\tilde{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})\neq 0$, leading to the same contradiction.
 \end{itemize} 
-We deduce then that $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$. In such a case we also have two possibilities:
+We deduce then that $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$.\\
+ In such a case we also have two possibilities:
 \begin{itemize}
-	\item $\exists J_r^j \in J_r$ with $J_r^j \notin \tilde{J}_r$ then $j\in \tilde{J_f}$. We note that $J_r^j \in J_r$ means $\exists k_1\neq k_2, \{k_1,k_2 \}\in J_p^j$ 
-	\item $\exists \tilde{J}_r^j \in \tilde{J}_r$ with $\tilde{J}_r^j \notin J_r$
+	\item removed sub-regression in $\tilde{\boldsymbol{S}}$ compared to $\boldsymbol{S}$: $\exists J_r^j \in J_r$ with $J_r^j \notin \tilde{J}_r$ then $J_r^j\in \tilde{J_f}$. We note that $J_r^j \in J_r$ means $\exists k_1\neq k_2, \{k_1,k_2 \}\in J_p^j \subset J_f$. Then $\operatorname{cov}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{k_1})\neq 0$ and $\operatorname{cov}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{k_2})\neq 0 $ so by the lemma $k_1$ and $k_2$ are responses variables in $\tilde{\boldsymbol{S}}$: $\exists (l_1,l_2) \in \{1,\dots,\tilde{d}_r \}\times \{1,\dots,\tilde{d}_r \}, \tilde{J}_r^{l_1}=k_1,\tilde{J}_r^{l_2}=k_2$ and $J_r^j$ is a regressor of $k_1$ and $k_2$: $J_r^j \in J_p^{l_1}, J_r^j \in J_p^{l_2}$ thus $\operatorname{cov}(\boldsymbol{X}^{k_1},\boldsymbol{X}^{k_2})\neq 0$ that is not possible because $ \{k_1,k_2 \}\in J_p^j \subset J_f$.
+	\item removed sub-regression in $\boldsymbol{S}$ compared to $\tilde{\boldsymbol{S}}$: $\exists \tilde{J}_r^j \in \tilde{J}_r$ with $\tilde{J}_r^j \notin J_r$ that leads exactly to the same contradiction (just permute $\boldsymbol{S}$ and $\tilde{\boldsymbol{S}}$.)
 \end{itemize}
+Finally, condition \ref{identcondition} is sufficient for identifiability of $\boldsymbol{S}$.
   	$\square$		
 			
-			\subsection{With Gaussian mixtures by comparison with SelvarClust} \label{preuveident}
-	The model presented above relies on a discrete structure $\boldsymbol{S}$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{\boldsymbol{S}}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
-	
-		If there are exact sub-regressions ($\exists j\in \{1,\dots,d_r\}, \sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. {\tt CorReg} prints a warning to point out exact regressions when found.
-	In the followings we suppose $\forall j\in \{1,\dots,d_r\}, \sigma^2_j\neq 0$, then $\boldsymbol{X}_f'\boldsymbol{X}_f$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
-	\\
-	
-Our full generative model is a $d$-sized Gaussian mixture model of $K$ distinct components and 
-%	\begin{equation}
-%	f(\boldsymbol{X}|K,S)=f(\boldsymbol{X}_f|K,S)f(\boldsymbol{X}_r|\boldsymbol{X}_f,S)
-%	\end{equation}	
+%			\subsection{With Gaussian mixtures by comparison with SelvarClust} \label{preuveident}
+%	The model presented above relies on a discrete structure $\boldsymbol{S}$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{\boldsymbol{S}}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
 %	
-	can be seen as a $\mathbf{SR}$ model defined by Maugis \cite{maugis2009variable}. In this section, $S$ will denote the set of variable as in the paper from Maugis and we call Gaussian mixtures the Gaussian mixtures with at least two distinct components. The equivalence with Maugis's model is defined by:
-	$\boldsymbol{X}_r=\boldsymbol{y}^{S^c}$ and $\boldsymbol{X}_f=\boldsymbol{y}^R$. We have supposed independence between variables in $\boldsymbol{X}_f$ so the identifiability theorem from Maugis tells that our model is identifiable if variables in $\boldsymbol{X}_f$ are Gaussian mixtures.% (what we supposed in section \ref{sectionfullgen}).
-	\\
-	
-	
-%First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there must be at least one Gaussian mixture on the right of each sub-regression. 
-We define $\boldsymbol{X}^G \subsetneq \boldsymbol{X}_f$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
-We suppose that variables in $\boldsymbol{X}_r$ are all Gaussian mixtures. It implies that $\forall j\in \{1,\dots,d_r\},\exists i \in J_p^j $ so that $\boldsymbol{X}^i \subset \boldsymbol{X}^{G^c} $ since any linear combination of Gaussian variable would only give a Gaussian (so each sub-regression contain at least one Gaussian mixture as a regressor).
-\\
-	We have $\boldsymbol{X}_r=\boldsymbol{X}_f\boldsymbol{\alpha}^* + \boldsymbol{\varepsilon}$. 
-	
-		%\\We note $\Theta$ the parameter of the model.We want to know if $P(\boldsymbol{X}|S,\Theta)=P(\boldsymbol{X}|\tilde{S},\tilde{\Theta})$ does imply $(S,\Theta)=(\tilde{S},\tilde{\Theta})$.
-The theorem from Maugis guarantee that a sub-regression between Gaussian mixtures is identifiable in terms of which one is regressed by others.
-		\begin{eqnarray}
-%			\forall j \in I_r, \boldsymbol{X}^j_{|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_j^G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c}+ \boldsymbol{\varepsilon}_j \\
-%			\boldsymbol{X}^j_{|\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c} + \tilde{\boldsymbol{\varepsilon}}_j \textrm{ is identifiable where} \\
-%			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian. 
-		 \boldsymbol{X}_{r}|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_G^*+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^*+ \boldsymbol{\varepsilon} \\
-			%\boldsymbol{X}_{r|\boldsymbol{X}^{G^c}}
-			&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^* + \tilde{\boldsymbol{\varepsilon}} \textrm{ which is identifiable with} \\
-			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_{j,G}^*+ \boldsymbol{\varepsilon}_j \textrm{ that is Gaussian.}  
-		\end{eqnarray}
-		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
-		It implies then that: $\forall j \in \{1,\dots,d_r \}, \boldsymbol{X}^{J_r^j} $ is a Gaussian mixture and $\exists i \in J_p^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  \\
-		
+%		If there are exact sub-regressions ($\exists j\in \{1,\dots,d_r\}, \sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. {\tt CorReg} prints a warning to point out exact regressions when found.
+%	In the followings we suppose $\forall j\in \{1,\dots,d_r\}, \sigma^2_j\neq 0$, then $\boldsymbol{X}_f'\boldsymbol{X}_f$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
+%	\\
+%	
+%Our full generative model is a $d$-sized Gaussian mixture model of $K$ distinct components and 
+%%	\begin{equation}
+%%	f(\boldsymbol{X}|K,S)=f(\boldsymbol{X}_f|K,S)f(\boldsymbol{X}_r|\boldsymbol{X}_f,S)
+%%	\end{equation}	
+%%	
+%	can be seen as a $\mathbf{SR}$ model defined by Maugis \cite{maugis2009variable}. In this section, $S$ will denote the set of variable as in the paper from Maugis and we call Gaussian mixtures the Gaussian mixtures with at least two distinct components. The equivalence with Maugis's model is defined by:
+%	$\boldsymbol{X}_r=\boldsymbol{y}^{S^c}$ and $\boldsymbol{X}_f=\boldsymbol{y}^R$. We have supposed independence between variables in $\boldsymbol{X}_f$ so the identifiability theorem from Maugis tells that our model is identifiable if variables in $\boldsymbol{X}_f$ are Gaussian mixtures.% (what we supposed in section \ref{sectionfullgen}).
+%	\\
+%	
+%	
+%%First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there must be at least one Gaussian mixture on the right of each sub-regression. 
+%We define $\boldsymbol{X}^G \subsetneq \boldsymbol{X}_f$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
+%We suppose that variables in $\boldsymbol{X}_r$ are all Gaussian mixtures. It implies that $\forall j\in \{1,\dots,d_r\},\exists i \in J_p^j $ so that $\boldsymbol{X}^i \subset \boldsymbol{X}^{G^c} $ since any linear combination of Gaussian variable would only give a Gaussian (so each sub-regression contain at least one Gaussian mixture as a regressor).
+%\\
+%	We have $\boldsymbol{X}_r=\boldsymbol{X}_f\boldsymbol{\alpha}^* + \boldsymbol{\varepsilon}$. 
+%	
+%		%\\We note $\Theta$ the parameter of the model.We want to know if $P(\boldsymbol{X}|S,\Theta)=P(\boldsymbol{X}|\tilde{S},\tilde{\Theta})$ does imply $(S,\Theta)=(\tilde{S},\tilde{\Theta})$.
+%The theorem from Maugis guarantee that a sub-regression between Gaussian mixtures is identifiable in terms of which one is regressed by others.
+%		\begin{eqnarray}
+%%			\forall j \in I_r, \boldsymbol{X}^j_{|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_j^G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c}+ \boldsymbol{\varepsilon}_j \\
+%%			\boldsymbol{X}^j_{|\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c} + \tilde{\boldsymbol{\varepsilon}}_j \textrm{ is identifiable where} \\
+%%			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian. 
+%		 \boldsymbol{X}_{r}|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_G^*+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^*+ \boldsymbol{\varepsilon} \\
+%			%\boldsymbol{X}_{r|\boldsymbol{X}^{G^c}}
+%			&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^* + \tilde{\boldsymbol{\varepsilon}} \textrm{ which is identifiable with} \\
+%			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_{j,G}^*+ \boldsymbol{\varepsilon}_j \textrm{ that is Gaussian.}  
+%		\end{eqnarray}
+%		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
+%		It implies then that: $\forall j \in \{1,\dots,d_r \}, \boldsymbol{X}^{J_r^j} $ is a Gaussian mixture and $\exists i \in J_p^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  \\
+%		
 	%Tables \ref{testidentifiableG}	and \ref{testidentifiableGM} illustrates this property.
 	
-\paragraph{Remark:} Identifiability of $\boldsymbol{S}$ is not necessary to use a given structure but helps to find it. Moreover, uncrossing rule restricts the size of $\mathcal{S}_d$ and improves identifiability.
-In the followings, true $\boldsymbol{S}$ is supposed to be identifiable (at least one Gaussian mixture in each sub-regression).
-	
+
 	
 \section{CorReg: the concept}	
 	
