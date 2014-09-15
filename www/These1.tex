@@ -795,7 +795,7 @@ We need the following new hypothesis:
 \begin{hyp}\label{H3}
 We assume that all errors $\boldsymbol{\varepsilon}_Y$ and $\boldsymbol{\varepsilon}_j$ ($j=1,\ldots,d_r$) are {\it mutually independent}. It implies in particular that conditional response covariates $\{\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j\}$, with distribution defined in (\ref{eq:SR}), are {\it mutually independent}:
 \begin{equation}\label{eq:H3}
-\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) = \prod_{j=1}^{d_r} \mathbb{P}(\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j).
+\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) = \prod_{j=1}^{d_r} \mathbb{P}(\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j). 
 \end{equation}
 \end{hyp}
 
@@ -3381,11 +3381,11 @@ To prove the sufficiency of this criterion for identifiability we rely on a the 
 \end{enumerate}
 
 \paragraph{proof of the lemma:}
-The two cases lead immediately to non-zero covariance so we just look at other combinations to see how they infringe our hypothesis.
+The two cases lead immediately to non-zero covariance so we just look at other combinations of covariates.
 \begin{itemize}
-	\item if $\exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\}, \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})\neq 0$ then  (H3 pour ind du bruit) et H2 pour non croisement
-	\item if $(i,j)\in J_f\times J_f$ then  $\operatorname{cov}(\boldsymbol{X}^i,\boldsymbol{X}^j)=0 $ because covariates in $\boldsymbol{X}_f$ are orthogonal.
-	\item if $j \in \{1,\dots,d_r\}, i \in J_f\setminus J_p^j$
+	\item if $\exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\}, \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})\neq 0$ then hypothesis \ref{H2} (uncrossing rule) guarantee that the two covariates are not in a same sub-regression so the covariance must come from the noises of the sub-regression but hypothesis \ref{H3} say that they are independent. The only remaining case is then the second case of the lemma: common covariate in the sub-regressions.
+	\item if $(i,j)\in J_f\times J_f$ then  $\operatorname{cov}(\boldsymbol{X}^i,\boldsymbol{X}^j)=0 $ because covariates in $\boldsymbol{X}_f$ are orthogonal (by hypothesis \ref{H1} and \ref{H2}).
+	\item if $j \in \{1,\dots,d_r\}, i \in J_f$ and $\operatorname{cov}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^i)\neq 0$ then $i\in J_p^j$ by hypothesis \ref{H1} and \ref{H3} and equation \ref{eq:H3}.
 \end{itemize}
 $\square$
 
@@ -3394,14 +3394,19 @@ $\square$
 	\exists (\boldsymbol{S},\tilde{\boldsymbol{S}}) \in \mathcal{S}_d\times \mathcal{S}_d \textrm{ with } \boldsymbol{S} \neq \tilde{\boldsymbol{S}} \textrm{ and }
 	\mathbb{P}(\boldsymbol{X};\boldsymbol{S})=\mathbb{P}(\boldsymbol{X};\tilde{\boldsymbol{S}})
  \end{eqnarray}
- $\tilde{\boldsymbol{S}}$ contains $\tilde{d}_r$ sub-regressions and is characterized by $\tilde{\boldsymbol{J}}_r=(\tilde{J}_r^1,\dots,\tilde{J}_r^{\tilde{d}_r}), ????????$.\\
+ $\tilde{\boldsymbol{S}}=(\tilde{\boldsymbol{J}}_r,\tilde{\boldsymbol{J}}_p)$ contains $\tilde{d}_r$ sub-regressions and is characterized by $\tilde{\boldsymbol{J}}_r=(\tilde{J}_r^1,\dots,\tilde{J}_r^{\tilde{d}_r}),\tilde{\boldsymbol{J}}_p=(\tilde{J}_p^1,\dots,\tilde{J}_p^{\tilde{d}_r})$.\\
 Because $\boldsymbol{S}\neq \tilde{\boldsymbol{S}} $ we almost have $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$ or $\boldsymbol{J}_p\neq \tilde{\boldsymbol{J}}_p$.\\
 if $\boldsymbol{J}_r = \tilde{\boldsymbol{J}}_r$ then $\exists j \in \{1,\dots,d_r\}, \tilde{J}_p^j\neq J_p^j$.
-This leads to only two possibilities (both can be true at the same time:
+This leads to only two possibilities (both could be true at the same time):
 \begin{itemize}
-	\item $\exists i \in J_p^j$ with $i \notin \tilde{J}_p^j$
-	\item $\exists i \in \tilde{J}_p^j$ with $i \notin J_p^j$, so 
+	\item $\exists i \in J_p^j$ with $i \notin \tilde{J}_p^j$ so $\operatorname{cov}_{S}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})\neq 0$ and $\operatorname{cov}_{\tilde{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})= 0$ (from the lemma) so the two structure don't give the same joint distribution, leading to a contradiction.
+	\item $\exists i \in \tilde{J}_p^j$ with $i \notin J_p^j$, so $\operatorname{cov}_{S}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})= 0$ (from the lemma) and $\operatorname{cov}_{\tilde{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})\neq 0$, leading to the same contradiction.
 \end{itemize} 
+We deduce then that $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$. In such a case we also have two possibilities:
+\begin{itemize}
+	\item $\exists J_r^j \in J_r$ with $J_r^j \notin \tilde{J}_r$ then $j\in \tilde{J_f}$. We note that $J_r^j \in J_r$ means $\exists k_1\neq k_2, \{k_1,k_2 \}\in J_p^j$ 
+	\item $\exists \tilde{J}_r^j \in \tilde{J}_r$ with $\tilde{J}_r^j \notin J_r$
+\end{itemize}
   	$\square$		
 			
 			\subsection{With Gaussian mixtures by comparison with SelvarClust} \label{preuveident}
