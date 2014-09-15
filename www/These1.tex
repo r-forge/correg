@@ -3414,6 +3414,9 @@ We deduce then that $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$.\\
 \end{itemize}
 Finally, condition \ref{identcondition} is sufficient for identifiability of $\boldsymbol{S}$.
   	$\square$		
+	
+\paragraph{Remark:} The only non-identifiable sub-regressions are those with only one regressor, leading only to pairwise correlations that can be seen directly in the correlation matrix. Such sub-regression can be permuted without any impact on interpretation so such trivial sub-regression are not a problem even if they may occur with real datasets. One more thing: exact sub-regression with at least two sub-regressors are identifiable with our hypothesis. 	
+	
 			
 %			\subsection{With Gaussian mixtures by comparison with SelvarClust} \label{preuveident}
 %	The model presented above relies on a discrete structure $\boldsymbol{S}$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{\boldsymbol{S}}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
