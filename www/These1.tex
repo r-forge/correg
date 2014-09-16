@@ -674,15 +674,25 @@ The concept of representing dependencies with directed acyclic graph is good an 
  Apart from linear models, the main issues are the lack of smoothness (prediction function with jumps) and especially instability because of the hierarchical partitioning. Modifying only one value in the dataset can impact a split and then change the range of possible splits in the resulting sub-samples so if a top split is modified the tree can be widely changed. Random Forests are a way to solve this problem and can be seen as a cross-validation method for regression trees. More details in the book from Hastie \cite{hastie2009elements}.	
 	
 	
-		
+		\FloatBarrier
 			
 	\section{Taking correlations into account}		% ne pas oublier de mentionner les packages existants
 		\subsection{Principal Component Regression and Partial Least Squares Regression}
-	Principal Component Regression \cite{jackson2005user} consists in using the axis from the Principal Component Analysis (PCA) of $\boldsymbol{X}$ instead of $\boldsymbol{X}$ itself. Then we have orthogonal covariates. Dimension reduction is done by keeping only the $M \leq d$ first components of the PCA. Because the axis are linear combination of the original covariates we can then express the model in terms of coefficients of the $\boldsymbol{X}^j$.\\
+	Principal Component Regression (PCR)\cite{jackson2005user} consists in using the axis from the Principal Component Analysis (PCA) of $\boldsymbol{X}$ instead of $\boldsymbol{X}$ itself. Then we have orthogonal covariates. It requires centering of the dataset $\boldsymbol{X}$. Dimension reduction is done by keeping only the $M \leq d$ first components of the PCA. Because the axis are linear combination of the original covariates we can then express the model in terms of coefficients of the $\boldsymbol{X}^j$.\\
+	\begin{eqnarray}
+		\hat{\boldsymbol{\beta}}_M&=&\boldsymbol{V}_M\hat{\boldsymbol{\gamma}}_M \in \mathbb{R}^d \textrm{ where}\\
+		\hat{\boldsymbol{\gamma}}_M&=&(\boldsymbol{W}_M'\boldsymbol{W}_M)^{-1}\boldsymbol{W}_M'\boldsymbol{Y} \textrm{ with} \\
+		\boldsymbol{W}_M&=&\boldsymbol{X}\boldsymbol{V}_M
+	\end{eqnarray}
+	with $\boldsymbol{V}_M$ the submatrix of the $M$ first columns of $\boldsymbol{V}$ $d$-square matrix of the orthonormal set of right singular vectors of $\boldsymbol{X}$ defined by:
+	\begin{eqnarray}
+		\boldsymbol{X}&=&\boldsymbol{U}\boldsymbol{\Delta}\boldsymbol{V}'
+	\end{eqnarray}
+	with $\boldsymbol{\Delta}$ the $d\times d$ diagonal matrix which has on its diagonal the positive eigen values of $\boldsymbol{X}$ in descending order and $\boldsymbol{U}$ is the $n\times d$ matrix of the orthonormal set of left singular vectors of $\boldsymbol{X}$.\\
 	
 	Principal Component Regression requires to choose $M$ the number of axis to keep. Finally, even if dimension reduction is effective when $M<d$ each axis depends on all original covariates so it does not select any covariates and that is also a problem for interpretation. We have to choose arbitrary how to interpret each axis and how many covariates really explain each of them. So it is not really satisfying in our industrial context. Principal Component method can be seen as a truncation method whereas the ridge regression is a shrinkage method. \\
 	
-	Partial Least Square Regression \cite{abdi2003partial,geladi1986partial} also relies on a combination of the columns of  $\boldsymbol{X}$ but this combination depends on $\boldsymbol{Y}$.
+	Partial Least Square Regression (PLS)\cite{abdi2003partial,geladi1986partial} also relies on a combination of the columns of  $\boldsymbol{X}$ but this combination depends on $\boldsymbol{Y}$.
 		It uses scalar products of the covariates with the response variable.	
 	It seems to be influenced more by the variance of the covariates than by their correlation with the response variable so results tends to be similar to Principal Component Regression.
 	\\
@@ -712,19 +722,19 @@ The concept of representing dependencies with directed acyclic graph is good an 
 \end{itemize}			 
 So we have a system of linear regression:
 \begin{equation}
-	\boldsymbol{X}^{U}=\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}
+	\boldsymbol{X}^{U}|\boldsymbol{X}^{R};\boldsymbol{\alpha},\boldsymbol{\Sigma}=\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}
 \end{equation}
-where $\boldsymbol{\alpha}$ is the $\operatorname{Card}(R)\times \operatorname{Card}(U)$ matrix of the regression coefficients and $\boldsymbol{\varepsilon}$ the matrix of the error terms.\\
-Selvarclust is one step beyond SEM with an algorithm to find the structure.		
+where $\boldsymbol{X}$ is the $n\times d$ dataset as above, $\boldsymbol{X}^R$ and$ \boldsymbol{X}^U$ are the sub-matrix of  $\boldsymbol{X}$ formed by the covariates in $R$ and $U$ respectively, $\boldsymbol{\alpha}$ is the $\operatorname{Card}(R)\times \operatorname{Card}(U)$ matrix of the regression coefficients and $\boldsymbol{\varepsilon}$ the $n\times \operatorname{Card}(U) $ matrix of the Gaussian error terms with zero mean and variance $\boldsymbol{\Sigma}\in \mathbb{R}^{\operatorname{Card}(U)\times \operatorname{Card}(U)}$.\\
+Selvarclust is one step beyond Siimultaneous Equation Modeling with an algorithm to find the structure.		
 
 			But:
 			\begin{itemize}
-				\item It is about clustering and not regression (not the same application field) so we don't have here any response variable neither method to use this structure for estimation of another regression. 
+				\item It is about clustering and not regression (not the same application field) so we don't have here any response variable neither method to use this structure for estimation of another regression.  And the goal is not to find the structure but to find a Gaussian clustering.
 				\item It uses stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even if it is known to be often unstable \cite{miller2002subset} in such a context.
 			\end{itemize}
 			
 			In this work we propose to adapt this model for linear regression and to use it as a pretreatment on correlated covariates. We will see that, as a pretreatment, it can be used then for a wide range of statistical tools and not only linear regression.\\
-			We provide a specific MCMC algorithm to find the structure between the covariates and propose two distinct models to use the structure for prediction: a marginal model and a plug-in model.	\\
+			We provide a specific MCMC algorithm to find the structure between the covariates and propose two distinct models to use the structure for prediction: a marginal model and a plug-in model. Both algorithm are compared on a dataset from Maugis in section \ref{compMaugis}	\\
 			
 	%Our first intention was to make something different from SelvarClust but our model has evolved during this thesis and finally became more comparable to SelvarClust than expected.		
 			
@@ -821,7 +831,7 @@ In practice, the strategy we propose is to rely estimate of  $\hat{\boldsymbol{\
 
 In the following, we will denote by {\sc CorReg} (for {\it Correlations} and {\it Regression}) the new proposed strategy.
 
-\paragraph{Remark:} Identifiability of $\boldsymbol{S}$ is not necessary to use a given structure but helps to find it. Moreover, uncrossing rule restricts the size of $\mathcal{S}_d$ and improves identifiability. A sufficient condition for identifiability is to have at least two regressors in each sub-regression (definition of identifiability and proof this criterion in appendix \ref{sectionident}.
+\paragraph{Remark:} Identifiability of $(\boldsymbol{X},\boldsymbol{S})$ is not necessary to use a given structure but helps to find it. Moreover, uncrossing rule restricts the size of $\mathcal{S}_d$ and improves identifiability. A sufficient condition for identifiability is to have at least two regressors in each sub-regression (definition of identifiability and proof this criterion in appendix \ref{sectionident}.
 In the followings, true $\boldsymbol{S}$ is supposed to be identifiable.
 	
 
@@ -1038,32 +1048,33 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
 	\caption{The bipartite graph associated to the running example. $\boldsymbol{X}_r$ is green and $\boldsymbol{X}_f$ is blue.}
 	\end{figure}			
 			
-\chapter{Numerical results with a known structure}	\label{chaptersimulexpl}
+\chapter{Numerical results with a known structure on more complex datasets}	\label{chaptersimulexpl}
 \paragraph{Abstract:} First numerical results for a known structure $\boldsymbol{S}$ (but $\boldsymbol{\alpha}^* $ still has to be estimated). It illustrates efficiency of the variable selection pretreatment made by the marginal model.
 		 
 	
-	\subsection{On more complex datasets}\label{thedatasets}
+	\section{The datasets}\label{thedatasets}
 		
 We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R^2$ value equal to $0.4$. Sub-regressions will have $R^2$ successively set to $(0.1,0.3,0.5,0.7,0.99)$. Variables in $\boldsymbol{X}_f$ arise from a Gaussian mixture model whose the number of components follows a Poisson's law of mean parameter equal to $5$. The coefficients of $\boldsymbol{\beta}$ and of the $\boldsymbol{\alpha}_j$'s are independently generated according to the same Poisson distribution but with a uniform random sign. All sub-regressions are of length two ($\forall j=1,\ldots,d_r, d_p^j=2$ and we have $d_r=16$ sub-regressions. The datasets are then scaled, to avoid large distortions for variances or for means due to the sub-regressions.	Different sample sizes  $n\in (30,50,100,400)$ are chosen, thus considering experiments in both situations $n<d$ and $n>d$. 
 	Results are based on the true $\boldsymbol{S}$ used to generate the dataset (function {\tt mixture\_genererator} in the package {\tt CorReg}.\\
 	
-	When $n<d$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus OLS can obtain some results even with $n<d$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
+	When $n<d$, a frequently used method is the Moore-Penrose \cite{katsikis2008fast} generalized inverse , thus OLS can obtain some results even with $n<d$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
 	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the {\tt CorReg} package. Here $\boldsymbol{Y}$ depends on all the covariate and the MSE provided were computed on a validation sample of 1 000 individuals each time. \\
+	\section{Results}	
 	
-	Figure \ref{MSEexplOLS}%Y_zone} to \ref{MSEexplOLSbeta_zone} 
+	Figure \ref{MSEexplOLS} %Y_zone} to \ref{MSEexplOLSbeta_zone} 
 	illustrates what happens for OLS. 
 Our marginal model is better than OLS for $n<d$ and the complete model (that is the true model) only starts to win for values of $n$ many times larger than $d$ and weak correlations. We still have the phenomenon of MSE on $\hat{\boldsymbol{\beta}}$ more impacted by correlations than the MSE on $\hat{\boldsymbol{\beta}}$, and our main goal is interpretation so our marginal model really is efficient in our context. \\
 
-Figures \ref{MSEexpllarY_zone} to \ref{MSEexpllarbeta_zone} show that even if the LASSO is able to select a subset of covariate and even if we have seen with OLS that taking a subset can give better results, the LASSO does not do so and give more complex models than our marginal model until correlations are extremely strong. We also observe that our marginal model combined with the LASSO has varying complexities so our pretreatment by selection is just a pretreatment and not competitor against the LASSO. Such combination improves the results in a significant way when compared to the LASSO on the complete dataset or OLS on the marginal model. We see that the complexity rises with $n$ but the lasso never keeps all the covariates even with $n=400=10\times d$ when used on the whole dataset but keep all the covariates in $\boldsymbol{X}_f$ when used on the marginal model. The main result here is that the LASSO can be improved by pretreatment selection both with $n<d$ and $n>>d$ with strong correlations so this well known variable selection method really suffers from correlations. Elasticnet and stepwise (Figures \ref{MSEexplelasticnetY_zone} to \ref{MSEexplstepwisebeta_zone})give results mostly equivalent to the LASSO but stepwise seems to be a bit less efficient (higher MSE values). This last point illustrates why we need a specific algorithm to find the structure $S$ and not only variable selection by stepwise like in the method from Maugis \cite{maugis2009variable}. \\
+Figure \ref{MSEexpllar} shows that even if the LASSO is able to select a subset of covariate and even if we have seen with OLS that taking a subset can give better results, the LASSO does not do so and give more complex models than our marginal model until correlations are extremely strong. We also observe that our marginal model combined with the LASSO has varying complexities so our pretreatment by selection is just a pretreatment and not competitor against the LASSO. Such combination improves the results in a significant way when compared to the LASSO on the complete dataset or OLS on the marginal model. We see that the complexity rises with $n$ but the lasso never keeps all the covariates even with $n=400=10\times d$ when used on the whole dataset but keep all the covariates in $\boldsymbol{X}_f$ when used on the marginal model. The main result here is that the LASSO can be improved by pretreatment selection both with $n<d$ and $n>>d$ with strong correlations so this well known variable selection method really suffers from correlations. Elasticnet and stepwise (Figure \ref{MSEexplelasticnet})gives results mostly equivalent to the LASSO but stepwise seems to be a bit less efficient (higher MSE values). This last point illustrates why we need a specific algorithm to find the structure $S$ and not only variable selection by stepwise like in the method from Maugis \cite{maugis2009variable}. \\
 
-Ridge regression (Figures \ref{MSEexplridgeY_zone} to \ref{MSEexplridgebeta_zone}) is not improved by the marginal model. Ridge regression is protected against correlations but we see that ridge regression applied on $\boldsymbol{X}_f$ (even if it is not the true model) give predictions quite similar to those from ridge regression but with less covariates. Ridge regression will only be damaged when variable selection is needed. \\
+Ridge regression (Figure \ref{MSEexplridge}) is not improved by the marginal model. Ridge regression is protected against correlations but we see that ridge regression applied on $\boldsymbol{X}_f$ (even if it is not the true model) give predictions quite similar to those from ridge regression but with less covariates. Ridge regression will only be damaged when variable selection is needed. \\
 
 Further results are provided in sections \ref{sectionsimul} and \ref{sectionrealcase}.
 	\FloatBarrier
 
 \newpage
-\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+\subsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
 \begin{figure}[h!]
 \centering
 \begin{subfigure}
@@ -1114,83 +1125,123 @@ Further results are provided in sections \ref{sectionsimul} and \ref{sectionreal
 %	\FloatBarrier
 %\newpage
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/MSEexpllarY_zone.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexpllarY_zone}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/cplexpllar_zone.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexpllar_zone}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/MSEexpllarbeta_zone.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexpllarbeta_zone}
-	\end{figure}
-	\FloatBarrier
-\newpage
-%elasticnet
-\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
-
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/MSEexplelasticnetY_zone.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetY_zone}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/cplexplelasticnet_zone.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplelasticnet_zone}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/MSEexplelasticnetbeta_zone.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetbeta_zone}
-	\end{figure}
-	\FloatBarrier
-\newpage
-%stepwise
-\subsubsection{Stepwise when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
-
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/MSEexplstepwiseY_zone.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplstepwiseY_zone}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/cplexplstepwise_zone.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplstepwise_zone}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/MSEexplstepwisebeta_zone.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplstepwisebeta_zone}
-	\end{figure}
-	\FloatBarrier
-\newpage
-%ridge	
-\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
-
+\subsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
 \begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/MSEexplridgeY_zone.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplridgeY_zone}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explvraiS/MSEexpllarY_zone.png}\label{MSEexpllarY_zone} 
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/cplexplridge_zone.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplridge_zone}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explvraiS/cplexpllar_zone.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explvraiS/MSEexplridgebeta_zone.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplridgebeta_zone}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explvraiS/MSEexpllarbeta_zone.png}
+		\label{MSEexpllarbeta_zone}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexpllar}
+\end{figure}
 	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
+%elasticnet
+\subsection{Elasticnet when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+
+	\begin{figure}[h!]
+\centering
+\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explvraiS/MSEexplelasticnetY_zone.png}\label{MSEexplelasticnetY_zone} 
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explvraiS/cplexplelasticnet_zone.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explvraiS/MSEexplelasticnetbeta_zone.png}
+		\label{MSEexplelasticnetbeta_zone}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnet}
+\end{figure}
+	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
+%stepwise
+\subsection{Stepwise when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+
+	\begin{figure}[h!]
+\centering
+\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explvraiS/MSEexplstepwiseY_zone.png}\label{MSEexplstepwiseY_zone} 
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explvraiS/cplexplstepwise_zone.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explvraiS/MSEexplstepwisebeta_zone.png}
+		\label{MSEexplstepwisebeta_zone}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplstepwise}
+\end{figure}
+	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
+%ridge	
+\subsection{Ridge regression when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+
+	\begin{figure}[h!]
+\centering
+\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explvraiS/MSEexplridgeY_zone.png}\label{MSEexplridgeY_zone} 
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explvraiS/cplexplridge_zone.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explvraiS/MSEexplridgebeta_zone.png}
+		\label{MSEexplridgebeta_zone}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplridge}
+\end{figure}
+	\FloatBarrier
+	\setcellgapes{1pt}
 
 %	\section{Predictive efficiency}
 %		Résultats comme dans l'article	mais sur vrai S	
@@ -1222,9 +1273,9 @@ In the previous chapters, $\boldsymbol{S}$ was supposed to be known. But in fact
 			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $BIC$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset.$BIC$ is convergent so it asymptotically points out the true model when $n$ rises. The Akaike Information Criterion \cite{akaike1974new} known as $AIC$ or the Risk Inflation Criterion \cite{foster1994risk} can also be used.
 			In this work we decided to start with the $BIC$ that is approximated by:
 			\begin{equation}
-				BIC=-2\ln(\hat{L})+|\theta|\ln(n)
+				BIC=-2\ln(\hat{L(\boldsymbol{\theta}|\boldsymbol{X})})+|\boldsymbol{\theta}|\ln(n)
 			\end{equation}
-			where $\hat{L}$ is the estimated likelihood, $|\theta|$ the number of free parameters to estimate and $n$ the number of individuals in the dataset.
+			where $L(\boldsymbol{\theta}|\boldsymbol{X})=\mathbb{P}(\boldsymbol{X}|\boldsymbol{\theta})$ is the estimated likelihood of the parameters $\boldsymbol{\theta}$ given the dataset $\boldsymbol{X}$, $|\boldsymbol{\theta}|$ is the number of free parameters to estimate and $n$ the number of individuals in the dataset.
 			
 
 
@@ -1361,19 +1412,19 @@ We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\
 	%\begin{itemize}
 	\paragraph{Adding a sub-regression}: a new sub-regression with only one predictor covariate is added to $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{r+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})^{1,\ldots,d_r}=(\boldsymbol{J}_r,\boldsymbol{J}_p), \tilde{J}_r^{d_r+1}\in J_f, \tilde{J}_p^{d_r+1}=\{j\}, j\in J_f \right\}.
+\mathcal{V}_{r+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})^{1,\ldots,d_r}=(\boldsymbol{J}_r,\boldsymbol{J}_p), \tilde{J}_r^{d_r+1}\in J_f, \tilde{J}_p^{d_r+1}=\{j\}, j\in J_f \right\}.
 \end{equation}	
 		\paragraph{Removing a sub-regression}: a sub-regression  is removed from $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{r-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})=(\boldsymbol{J}_r,\boldsymbol{J}_p)^{\{1,\ldots,d_r\}\backslash j}, j\in\{1,\ldots,d_r\} \right\}.
+\mathcal{V}_{r-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})=(\boldsymbol{J}_r,\boldsymbol{J}_p)^{\{1,\ldots,d_r\}\backslash j}, j\in\{1,\ldots,d_r\} \right\}.
 \end{equation}	
 	\paragraph{Adding a predictor covariate}: a predictor covariate is added to one sub-regression of $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{p+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J_p}^{\{1,\dots,d_r \}\setminus \{j\}}=J_p^{\{1,\dots,d_r \}\setminus \{j\}} ,\tilde{J}_p^{j}=J_p^{j} \cup \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \setminus J_p^j\right\}.
+\mathcal{V}_{p+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J_p}^{\{1,\dots,d_r \}\setminus \{j\}}=J_p^{\{1,\dots,d_r \}\setminus \{j\}} ,\tilde{J}_p^{j}=J_p^{j} \cup \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \setminus J_p^j\right\}.
 \end{equation}
 	\paragraph{Removing a predictor covariate}: a predictor covariate is removed from one sub-regression of $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{p-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r,\tilde{J_p}^{\{1,\dots,d_r \}\setminus \{j\}}=J_p^{\{1,\dots,d_r \}\setminus \{j\}} , \tilde{J}_p^{j}=J_p^{j} \backslash \{h\}, j\in \{1,\ldots,d_r\}, h\in  J_p^j \right\}.
+\mathcal{V}_{p-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r,\tilde{J_p}^{\{1,\dots,d_r \}\setminus \{j\}}=J_p^{\{1,\dots,d_r \}\setminus \{j\}} , \tilde{J}_p^{j}=J_p^{j} \backslash \{h\}, j\in \{1,\ldots,d_r\}, h\in  J_p^j \right\}.
 \end{equation}	
 	%\end{itemize}	
 	We just want to find the best model and this neighbourhood is determinist so it does not need to contain the current structure $\boldsymbol{S}$.
@@ -1389,7 +1440,7 @@ The walk follows a time-homogeneous Markov Chain whose transition matrix $\mathc
 	\end{eqnarray}
 	And $\mathcal{S}_p$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
 	 
-Because the walk follows a regular and thus ergodic markov chain with a finite state space, it has exactly one stationary distribution \cite{grinstead1997introduction} %: $\pi$ and every rows of $\operatorname{lim}_{k\rightarrow \infty}\mathcal{P}^k=W$ equals $\pi$.
+Because the walk follows a regular and thus ergodic markov chain with a finite state space, it has exactly one stationary distribution \cite{grinstead1997introduction}. %: $\pi$ and every rows of $\operatorname{lim}_{k\rightarrow \infty}\mathcal{P}^k=W$ equals $\pi$.
 %	
 %	
 %	With $\forall S \in  \mathcal{S}$ :
@@ -1398,8 +1449,10 @@ Because the walk follows a regular and thus ergodic markov chain with a finite s
 %		\sum_{S \in \mathcal{S}}\pi(S) &=&1 \nonumber \\
 %		\pi (S) &=&\sum_{\tilde{S}\in \mathcal{S}} \pi(\tilde{S})\mathcal{P}(\tilde{S},S) \\%définition de la lois stationnaire
 %	\end{eqnarray}
-%		
-and the output will be the best structure in terms of $P(\boldsymbol{S}|\boldsymbol{X})$ which weights each candidate. Practically speaking, {\tt CorReg} returns the best structure seen during the walk (even if the corresponding candidate has never been chosen). The package also give the local structure when the walk stops so user can relaunch the algorithm from the same point if he wants to go further.
+%	
+But the walk can also be seen as a Gibbs sampler \cite{casella1992explaining} that alternate draws of $\boldsymbol{S}$ and  $\mathcal{V}(\boldsymbol{S})$ with stationary distribution $\pi \propto \operatorname{exp}(-BIC_*)$ on the space $\mathcal{S}_d$.
+	
+The output of the algorithm will be the best structure in terms of $P(\boldsymbol{S}|\boldsymbol{X})$ which weights each candidate. Practically speaking, {\tt CorReg} returns the best structure seen during the walk (even if the corresponding candidate has never been chosen). The package also give the local structure when the walk stops so user can relaunch the algorithm from the same point if he wants to go further.
 The main criterion to stop the walk is a maximum number of iteration but {\tt CorReg} can also stop the walk after a given number of step on the best model found.	
 	
 	\subsection{Stochastic neighbourhood}
@@ -1409,7 +1462,7 @@ The main criterion to stop the walk is a maximum number of iteration but {\tt Co
 		\begin{eqnarray}
 		\mathcal{V}(\boldsymbol{S})&=& \{\boldsymbol{S} \}\cup \{ \boldsymbol{S}^{(i,j)} \in \mathcal{S}_d|(i,j) \in \mathcal{A}_{(q)}\} 
 	\end{eqnarray}	
-	where $\mathcal{A}_{(q)}$ is a set of couples $(i,j) \in \{1,\dots,d \}^2$ with $i\neq j$ drawn at the step $(q)$ according to a strategy and corresponding to arcs of the graph to modify (add or remove).
+	where $\mathcal{A}_{(q)}$ is a set of couples $(i,j) \in \{1,\dots,d \}^2$ with $i\neq j$ drawn at the step $(q)$ according to a strategy defined below and corresponding to arcs of the graph to modify (add or remove).
 	And we have for  $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$:
 	\begin{eqnarray}
 		\forall (k,l)\neq (i,j), \quad	\tilde{\boldsymbol{G}}_{k,l}&=&\boldsymbol{G}_{k,l} \\
@@ -1432,17 +1485,19 @@ Here the MCMC is not used for sampling or density estimation. We just want to fi
 		\subsubsection{Active relaxation of constraints}
 		In practice, for some of the $(i,j) \in \mathcal{A}_{(q)}$, we have $\boldsymbol{S}^{(i,j)}\notin \mathcal{S}_d$ because of the uncrossing rule. Such candidates are basically rejected so the number of candidates is not constant at each step. Moreover, complex structures reduce the size of the potential neighbourhood because of this uncrossing rule. Last but not least, even if the walk is regular, local extrema may significantly slow down the research of the optimal structure.
 		Thus we propose a constraints relaxation method by a new definition of $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$ relying on a new definition of $\tilde{\boldsymbol{G}}$:
+		\paragraph{Modification of the selected arc $(i,j)$ on the graph:}
 	\begin{eqnarray}
 		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j} \textrm{ as usual and}\\
 		\forall k \neq i, l\neq j, \quad	\tilde{\boldsymbol{G}}_{k,l}&=&\boldsymbol{G}_{k,l}
-\end{eqnarray}			
-but newly predictive covariate cannot be regressed anymore:
+\end{eqnarray}	
+\paragraph{Column-wise relaxation:}		
+newly predictive covariate cannot be regressed anymore:
 		\begin{eqnarray}
-		\forall k \in \{1,\dots,d\}\setminus \{i\}, \tilde{\boldsymbol{G}}_{k,j}&=&(1-\boldsymbol{G}_{i,j})\boldsymbol{G}_{k,j} \textrm{ column-wise relaxation} \\
+		\forall k \in \{1,\dots,d\}\setminus \{i\}, \tilde{\boldsymbol{G}}_{k,j}&=&(1-\boldsymbol{G}_{i,j})\boldsymbol{G}_{k,j}  \\
 				\end{eqnarray}
-And newly regressed covariate cannot be predictive anymore:
+\paragraph{Row-wise relaxation:} newly regressed covariate cannot be predictive anymore:
 		\begin{eqnarray}
-		\forall l \in \{1,\dots,d\}\setminus \{j\}, \tilde{\boldsymbol{G}}_{i,l}&=&(1-\boldsymbol{G}_{i,j})\boldsymbol{G}_{i,l} \textrm{ row-wise relaxation}
+		\forall l \in \{1,\dots,d\}\setminus \{j\}, \tilde{\boldsymbol{G}}_{i,l}&=&(1-\boldsymbol{G}_{i,j})\boldsymbol{G}_{i,l} \textrm{ (row-wise relaxation)}
 	\end{eqnarray} \\
 	
 	It can be seen as forcing the modification by removing what would have made the structure not feasible. So in one step we can test a model that remove completely a sub-regression, remove the explicative role of a covariate in all sub-regression (that was not possible with the determinist neighbourhood) and create a new pairwise sub-regression. It drastically increases the scope of the neighbourhood and guarantee to always have the same number of candidates during the MCMC. It can be compared to simulated annealing that sometimes proposes exotic candidates to avoid local extrema, but here without any temperature to set. Here again, the neighbourhood remains natural, without arbitrary parameters to tune. \\
@@ -1458,8 +1513,9 @@ Numerical results (Section 4) illustrates the efficiency of the walk when the tr
 		 If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found and/or initial structure. So the model is really expert-friendly.
 The initial structure can be based on a first warming algorithm taking the correlations into account. Coefficients are randomly set to 1 into $\boldsymbol{G}$, according to a Bernoulli draw weighted by the absolute value of the correlations and with respect to the uncrossing constraint. Uncrossing constraint will not allow some strong correlation to be taken into account according to the ordering of the Bernoulli drawing so we can draw with a random order or by ordering by descending correlations.\\
 		
-		We note then that the $BIC_*$ associated to initial model is often worse than the $BIC_*$ of the void structure, so we compare several chains in Figures \ref{pourcini} and \ref{Bicini}:			
-			
+		We note then that the $BIC_*$ associated to initial model is often worse than the $BIC_*$ of the void structure, so we compare several chains in Figures \ref{pourcini} and \ref{Bicini}.			
+				We see that correlation-based initialization quickly beat the void structure. This can be explained by local extrema. Correlations-based initialization gives structures with a smaller "structural distance" to the true model and then the chains are less subject to local extrema.
+
 	\begin{center}
 		\begin{figure}[h!]
 		\centering
@@ -1475,7 +1531,6 @@ The initial structure can be based on a first warming algorithm taking the corre
 		\caption{Evolution of the $BIC$ (criterion to minimize in the MCMC) for each method.}\label{Bicini}
 		\end{figure}
 	\end{center}
-	We see that correlation-based initialization quickly beat the void structure. This can be explained by local extrema.
 	\FloatBarrier
 		\subsection{Multiple intialization}	
 		Local extrema are a known issue for most of optimization methods, and one would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. 
@@ -1573,7 +1628,44 @@ When comparing $BIC_U$ to $BIC_H$ it becomes evident that $BIC_H$ is less confid
 \end{figure}
 
 
+\subsection{Comparison with Selvarclust}\label{compMaugis}
+		Maugis provides results\footnote{http://www.math.univ-toulouse.fr/\~maugis/SelvarClustHomepage.html} of {\tt SelvarClust} on a dataset {\it Data2.txt} containing 2 000 data points from a mixture of four Gaussian distributions $\mathcal{N}(\mu_k,\boldsymbol{I}_2)$ with $\mu_1=(-2,-2),\mu_2=(-3,-3),\mu_4=(2,2)$ and with a proportion vector $\boldsymbol{\pi}=(0.3,0.2,0.3,0.2)$. Variables $\boldsymbol{X}^1,\boldsymbol{X}^2$ corresponds to the coordinates. Eight irrelevant variables (for clustering) are appended, simulated according to $\forall 1\leq i \leq 2\; 000$:
+		\begin{displaymath}
+		 \boldsymbol{X}_i^{\{3,\dots , 6 \}}\sim \mathcal{N}(\boldsymbol{X}_i^{\{1,2\}}\boldsymbol{\alpha^*},\boldsymbol{\Omega})
+		 \textrm{ with } \boldsymbol{\alpha}^*= \left( \begin{array}{cccc}
+		0.5 & 0 & 2 & 0 \\ 
+		0 & 1 & 0 & 3
+		\end{array} \right) \textrm{ and } \boldsymbol{\Omega}=\operatorname{diag}(1,1,0.5,0.5)
+		\end{displaymath}
+		\begin{displaymath}
+		 \boldsymbol{X}_i^{\{7,\dots , 10 \}}\sim \mathcal{N}(0,\boldsymbol{I}_4).
+		\end{displaymath}
+		
+Both {\tt SelvarClust} and {\tt CorReg} add an intercept (default parameter) that is using a constant covariate $\boldsymbol{X}^0=\boldsymbol{1}$ and then adding a first row to $\boldsymbol{\alpha}^*$ containing the intercept of the sub-regressions. This intercept is not part of the selection procedure so it will never have zero value in practice.\\
 
+{\tt SelvarClust} founds $\hat{\boldsymbol{\alpha}}^*_{Selvarclust}=$
+\begin{displaymath}
+	\left (\begin{array}{cccccccc}
+	0.006052 &-0.025386 &-0.006845& -0.015952 &0.003420& 0.007839 &-0.047422& -0.005811 \\
+	\hline
+\textbf{0.504791} &-0.002147& \textbf{2.007127} &-0.001010 &-0.000105 &0.022403 &0.013361 &0.000083 \\
+-0.006709 &\textbf{1.000927} &0.007463&\textbf{2.997941}& -0.005955 &-0.021958 &-0.010387 &0.010765
+	\end{array} \right )
+\end{displaymath}		
+	
+	{\tt CorReg} founds:
+\begin{displaymath}
+	\hat{\boldsymbol{\alpha}}^*_{CorReg}=\left(
+	\begin{array}{cccc}
+	0.008698209 &-0.02540033 &-0.00978779 &-0.01595849 \\
+	\hline
+ \textbf{0.504672402}  &0&           \textbf{2.00725861} &0          \\
+ 0&            \textbf{1.00088836}  &0&           \textbf{2.99792339} 
+	\end{array} 
+	\right)
+\end{displaymath}		
+Both software found that $\boldsymbol{X}^1,\boldsymbol{X}^2$ are not in $\boldsymbol{J}_r=(3,\dots,6)$ but only {\tt CorReg} found $\boldsymbol{J}_r$ and $\boldsymbol{J}_p=(\{ 1\},\{ 2\},\{1 \},\{ 2\},)$. 
+Our algorithm gives better results with more parsimonious results because it does not suffer from correlations like stepwise does in the algorithm from Maugis and also because the goal is not the same. {\tt Selvarclust} aims to find the relevant covariates for clustering ($\boldsymbol{X}^1,\boldsymbol{X}^2$) and achieves this goal. We focus on the explicit structure of regression between the covariate instead of Gaussian clustering. Distinct goals, distinct results even if the model is quite the same. 
 
 \clearpage
 \section{Results on prediction}\label{compY}
@@ -1582,9 +1674,9 @@ We try the method with a response variable depending on all covariates to compar
 
  We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsimonious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be chosen). The main result here is that results based on $\hat{\boldsymbol{S}}$ are still good so the MCMC is efficient enough to be useful for the study of the response variable $\boldsymbol{Y}$. \\
  
- Results for OLS (Figures \ref{MSEexplOLSY_zonetout} to \ref{MSEexplOLSbeta_zonetout} ) are similar to those from section \ref{thedatasets} excepted for small correlations because the MCMC using $BIC_H$ does not find the true structure for small correlations and a void structure gives a marginal model equal to the complete one.  \\
- This phenomenon is not observed with variable selection method (Figures \ref{MSEexpllarY_zonetout} to \ref{MSEexplstepwisebeta_zonetout}) where covariates not deleted by the structure are deleted by the variable selection. \\
- Ridge regression results (Figures \ref{MSEexplridgeY_zonetout} to \ref{MSEexplridgebeta_zonetout} ) are also very similar to the previous (Figures \ref{MSEexplridgeY_zone} to \ref{MSEexplridgebeta_zone}).\\
+ Results for OLS (Figure \ref{MSEexplOLStout} ) are similar to those from section \ref{thedatasets} excepted for small correlations because the MCMC using $BIC_H$ does not find the true structure for small correlations and a void structure gives a marginal model equal to the complete one.  \\
+ This phenomenon is not observed with variable selection method (Figure \ref{MSEexpllartout}) where covariates not deleted by the structure are deleted by the variable selection. \\
+ Ridge regression results (Figure \ref{MSEexplridgetout} ) is also very similar to the previous (Figure \ref{MSEexplridge} ).\\
  
  Having simpler structure is important for interpretation so we keep this choice, but user can use classical $BIC_U$ with single boolean parameter change.
 
@@ -1593,112 +1685,172 @@ We try the method with a response variable depending on all covariates to compar
 
 \newpage
 \subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
-
-%OLS	
+	%OLS	
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplOLSY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplOLSY_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/tout/MSEexplOLSY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/cplexplOLS_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplOLS_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/tout/cplexplOLS_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplOLSbeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplOLSbeta_zonetout}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/tout/MSEexplOLSbeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplOLStout}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
+%	\begin{figure}[h!]
+%	\centering
+%		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplOLSY_zonetout.png}
+%		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplOLSY_zonetout}
+%	\end{figure}
+%	\begin{figure}[h!]
+%	\centering
+%		  \includegraphics[width=350px]{figures/explhatS/tout/cplexplOLS_zonetout.png}
+%		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplOLS_zonetout}
+%	\end{figure}
+%	\begin{figure}[h!]
+%	\centering
+%		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplOLSbeta_zonetout.png}
+%		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplOLSbeta_zonetout}
+%	\end{figure}
+%	\FloatBarrier
+%\newpage
 %LASSO
 \subsubsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexpllarY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexpllarY_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/tout/MSEexpllarY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/cplexpllar_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexpllar_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/tout/cplexpllar_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexpllarbeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexpllarbeta_zonetout}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/tout/MSEexpllarbeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexpllartout}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %elasticnet
 \subsubsection{Elasticnet when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
-	\begin{figure}[h!]
+		\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplelasticnetY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetY_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/tout/MSEexplelasticnetY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/cplexplelasticnet_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplelasticnet_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/tout/cplexplelasticnet_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplelasticnetbeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetbeta_zonetout}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/tout/MSEexplelasticnetbeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnettout}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %stepwise
 \subsubsection{Stepwise when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
-	\begin{figure}[h!]
+		\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplstepwiseY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplstepwiseY_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/tout/MSEexplstepwiseY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/cplexplstepwise_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplstepwise_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/tout/cplexplstepwise_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplstepwisebeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplstepwisebeta_zonetout}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/tout/MSEexplstepwisebeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplstepwisetout}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %ridge	
 \subsubsection{Ridge regression when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
-\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplridgeY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplridgeY_zonetout}
-	\end{figure}
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/cplexplridge_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplridge_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/tout/MSEexplridgeY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/tout/MSEexplridgebeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplridgebeta_zonetout}
-	\end{figure}
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/tout/cplexplridge_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/tout/MSEexplridgebeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplridgetout}
+\end{figure}
 	\FloatBarrier
- 
- 
+\newpage
+	\setcellgapes{1pt}
  
  
 % 
 % \begin{figure}[h!]
 %	\begin{minipage}[l]{.48\linewidth}
-%			\includegraphics[height=180px,width=245px]{figures/res_article/OLS_tout_MSE_NB.png} 
+%			\includegraphics[height=180px,width=245px]{figures/res_article/ridge_tout_MSE_NB.png} 
 %			\caption{Comparison of the MSE between OLS and CorReg+OLS}
 %	\end{minipage} \
 %   \begin{minipage}[r]{.48\linewidth}
@@ -1753,11 +1905,11 @@ We try the method with a response variable depending on all covariates to compar
  We want to see what happens in real life, when some covariates are irrelevant to describe $\boldsymbol{Y}$ according to the given dataset. We could generate $\boldsymbol{Y}$ with a random subset of $\boldsymbol{X}$ but in such a case, it would be impossible to say whether results come from sparsity or from the ratio of covariates in the subset that are in $\boldsymbol{X}_{r}$. Moreover, we will study real datasets in the next chapter so the only pattern to test here are those with some irrelevant covariates and relevant covariates only in one part of the partition on $\boldsymbol{X}$. \\
  	We start with $\boldsymbol{Y}$ depending only on covariates in $\boldsymbol{X_{f}}$. It is the best case for us because our marginal model is then the true model and the complete model will need variable selection to reach the truth. Here $\boldsymbol{Y}$ depends on the 24 covariates in $\boldsymbol{X}_{f}$ with an intercept.\\
  	Smaller dimension makes the coefficients easier to learn and we observe that MSE are smaller for both model with any method compared to those from section \ref{explsimtout}.\\
- 	For OLS (Figures \ref{MSEexplOLSY_zoneX1} to \ref{MSEexplOLSbeta_zoneX1}) we note the global improvement of the MSE but also a specific improvement for large values of $n$ where our marginal model resists to the complete model. It is logical because the complete model tends to reduce the coefficients associated to irrelevant covariates whereas our marginal delete them. \\
+ 	For OLS (Figure \ref{MSEexplOLSX1}) we note the global improvement of the MSE but also a specific improvement for large values of $n$ where our marginal model resists to the complete model. It is logical because the complete model tends to reduce the coefficients associated to irrelevant covariates whereas our marginal delete them. \\
  	
  	When looking at variable selection methods we also have this improvement so it confirm the already observed fact that variable selection method are theoretically able to find the true model but efficiency is not really great when confronted to correlated covariates. There is no surprise here after the results for $\boldsymbol{Y}$ depending on the whole dataset $\boldsymbol{X}$. \\
  	
- 	Ridge regression (figures \ref{MSEexplOLSY_zoneX1} to \ref{MSEexplOLSbeta_zoneX1}) is finally  improved here by our pretreatment by selection, like if we had added variable selection feature to the ridge regression. It is the method that provides the best results, but only because $\boldsymbol{Y}$ depends on all covariates in $\boldsymbol{X}_{f}$. Our pretreatment is limited in terms of variable selection.
+ 	Ridge regression (figures \ref{MSEexplridgeX1}) is finally  improved here by our pretreatment by selection, like if we had added variable selection feature to the ridge regression. It is the method that provides the best results, but only because $\boldsymbol{Y}$ depends on all covariates in $\boldsymbol{X}_{f}$. Our pretreatment is limited in terms of variable selection.
  	
  	
  
@@ -1767,101 +1919,151 @@ We try the method with a response variable depending on all covariates to compar
 \subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_{f}}$}
 
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexplOLSY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplOLSY_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X1/MSEexplOLSY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/cplexplOLS_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplOLS_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X1/cplexplOLS_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexplOLSbeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplOLSbeta_zoneX1}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X1/MSEexplOLSbeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplOLSX1}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
+
+
 %LASSO
 \subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
+
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexpllarY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexpllarY_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X1/MSEexpllarY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/cplexpllar_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexpllar_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X1/cplexpllar_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexpllarbeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexpllarbeta_zoneX1}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X1/MSEexpllarbeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexpllarX1}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %elasticnet
 \subsubsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
+	
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexplelasticnetY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetY_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X1/MSEexplelasticnetY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/cplexplelasticnet_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplelasticnet_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X1/cplexplelasticnet_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexplelasticnetbeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetbeta_zoneX1}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X1/MSEexplelasticnetbeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetX1}
+\end{figure}
 	\FloatBarrier
 \newpage
-%stepwise
+	\setcellgapes{1pt}
 \subsubsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
+	
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexplstepwiseY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplstepwiseY_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X1/MSEexplstepwiseY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/cplexplstepwise_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplstepwise_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X1/cplexplstepwise_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexplstepwisebeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplstepwisebeta_zoneX1}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X1/MSEexplstepwisebeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplstepwiseX1}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %ridge
 \subsubsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
-	
-\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexplridgeY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplridgeY_zoneX1}
-	\end{figure}
+
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/cplexplridge_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplridge_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X1/MSEexplridgeY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X1/MSEexplridgebeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplridgebeta_zoneX1}
-	\end{figure}
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X1/cplexplridge_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X1/MSEexplridgebeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplridgeX1}
+\end{figure}
 	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
 
 %\begin{figure}[h!]
 %	\begin{minipage}[l]{.48\linewidth}
@@ -1916,7 +2118,7 @@ We now try the method with a response depending only on variables in $\boldsymbo
 Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtain the true model when using the true structure.  We get unbiased models but with an increase in the variance as described in equation \ref{eq:Trueexpl}. \\
 	In such a case, usage of $BIC_H$ instead of $BIC_U$ is more obvious because each additional sub-regression deletes a covariate in our marginal model and reduces the probability to find the true model. \\
 	
-	We first look at OLS (Figures \ref{MSEexplOLSY_zoneX2} to \ref{MSEexplOLSbeta_zoneX2}) and see that we still obtain better results for small values of $n$ or strong correlations. In real studies we will never know the true model but we can be confident that if correlations are strong or if sample is small, using our marginal model can helps whatever the true model is. This is a really powerful result. Improvement for small correlations but $n<d$ comes from dimension reduction. When you don't have enough individual it becomes better to use a small model that does not contain the true one but only covariates correlated to the relevant one instead of trying to work with all the covariates. Let's remember that OLS confronted to $n<d$ only delete covariates to have $n=d$ (or $d+1$ when there is an intercept). QR decomposition leads to delete the last  covariates in the dataset but in our simulations, covariates in $\boldsymbol{X}_r$ are placed randomly in the dataset so deletion by QR can be seen as random deletion. The gain implied by dimension reduction remains for $n>d$ if correlations are high enough because the matrix to invert is ill-conditioned and OLS needs a lot of individuals to reduce the variance of the estimator. Correlations really put OLS in trouble and our marginal model seems to be a good solution. \\
+	We first look at OLS (Figure \ref{MSEexplOLSX2}) and see that we still obtain better results for small values of $n$ or strong correlations. In real studies we will never know the true model but we can be confident that if correlations are strong or if sample is small, using our marginal model can helps whatever the true model is. This is a really powerful result. Improvement for small correlations but $n<d$ comes from dimension reduction. When you don't have enough individual it becomes better to use a small model that does not contain the true one but only covariates correlated to the relevant one instead of trying to work with all the covariates. Let's remember that OLS confronted to $n<d$ only delete covariates to have $n=d$ (or $d+1$ when there is an intercept). QR decomposition leads to delete the last  covariates in the dataset but in our simulations, covariates in $\boldsymbol{X}_r$ are placed randomly in the dataset so deletion by QR can be seen as random deletion. The gain implied by dimension reduction remains for $n>d$ if correlations are high enough because the matrix to invert is ill-conditioned and OLS needs a lot of individuals to reduce the variance of the estimator. Correlations really put OLS in trouble and our marginal model seems to be a good solution. \\
 	
 	Variable selection methods still are impacted by correlations but not enough to be improved by our marginal model. Neither is the ridge regression.\\
 	 Real datasets will provide $\boldsymbol{Y}$ depending on a mix of covariates from both $\boldsymbol{X}_f$ and $\boldsymbol{X}_r$ so our marginal could help. We also have to recall that the structure $\boldsymbol{S}$ is useful by itself to have a better comprehension of the dataset and help the final client to be confident in statistical tools because he sees small models that are known to be true and were found automatically by the method. {\tt CorReg } also has a psychological impact on a study that should not be overlooked. Once $\hat{\boldsymbol{S}}$ is found, trying the marginal model has no cost and should be tested.
@@ -1927,104 +2129,149 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 \newpage
 \subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
-%OLS	
+
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexplOLSY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplOLSY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X2/MSEexplOLSY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/cplexplOLS_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplOLS_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X2/cplexplOLS_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexplOLSbeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplOLSbeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X2/MSEexplOLSbeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplOLSX2}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %LASSO
 \subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexpllarY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexpllarY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X2/MSEexpllarY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/cplexpllar_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexpllar_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X2/cplexpllar_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexpllarbeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexpllarbeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X2/MSEexpllarbeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexpllarX2}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %elasticnet
 \subsubsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexplelasticnetY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X2/MSEexplelasticnetY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/cplexplelasticnet_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplelasticnet_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X2/cplexplelasticnet_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexplelasticnetbeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetbeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X2/MSEexplelasticnetbeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplelasticnetX2}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %stepwise
 \subsubsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexplstepwiseY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplstepwiseY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X2/MSEexplstepwiseY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/cplexplstepwise_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplstepwise_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X2/cplexplstepwise_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexplstepwisebeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplstepwisebeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X2/MSEexplstepwisebeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplstepwiseX2}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %ridge	
 \subsubsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 \begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexplridgeY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplridgeY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/explhatS/X2/MSEexplridgeY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/cplexplridge_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model}\label{cplexplridge_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/explhatS/X2/cplexplridge_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/explhatS/X2/MSEexplridgebeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model}\label{MSEexplridgebeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/explhatS/X2/MSEexplridgebeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEexplridgeX2}
+\end{figure}
 	\FloatBarrier
-
+\newpage
+	\setcellgapes{1pt}
 
 % \begin{figure}[h!]
 %	\begin{minipage}[l]{.48\linewidth}
@@ -2077,7 +2324,7 @@ We have generated a non-linear structure to test the robustess of the model. $\b
  \begin{figure}[h!] 
 	\begin{minipage}[l]{.48\linewidth}
 			\includegraphics[height=180px,width=240px]{figures/robust_S.png} 
-			\caption{Evolution of the quality of $\hat{S}$ when the paramater $a$ increases}\label{resnonlin}
+			\caption{Evolution of the quality of $\hat{\boldsymbol{S}}$ when the paramater $a$ increases}\label{resnonlin}
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
 			\includegraphics[height=180px,width=240px]{figures/robustY.png} 
@@ -2087,6 +2334,9 @@ We have generated a non-linear structure to test the robustess of the model. $\b
 Figure \ref{MSEnonlin} illustrates the advantage of using {\tt CorReg} even with non-linear structures. Figure \ref{resnonlin} shows that the MCMC have more difficulties to find a linear structure as the non-linear part of the sub-regression increases but the model is quite robust (efficient for small values of $a$).
 
 	\FloatBarrier	
+
+		
+		
 \chapter{Numerical results on real datasets} \label{sectionrealcase}
 	\section{Quality case study} \label{sectionexfos}
 This work takes place in steel industry context, with quality oriented objective : to understand and prevent quality problems on finished product, knowing the whole process. The correlations are strong here (many parameters of the whole process without any a priori and highly correlated because of physical laws, process rules, {\it etc.}). 
@@ -2296,26 +2546,33 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\begin{eqnarray}
 			\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f;\boldsymbol{\beta},\sigma_Y^2&=& \boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{\varepsilon}_Y \\
 			\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \\
-			\boldsymbol{Y}&=& \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y
+			\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2&=& \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y
 					\end{eqnarray}		 
 		we have
 		\begin{eqnarray}
-			\boldsymbol{Y}- \boldsymbol{X}_f\boldsymbol{\beta}^*_f&=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \\
-			\boldsymbol{\varepsilon}&=&\boldsymbol{X}_r-\boldsymbol{X}_f\boldsymbol{\alpha}^*.
+			\boldsymbol{Y}- \boldsymbol{X}_f\boldsymbol{\beta}^*_f|\boldsymbol{\varepsilon},\boldsymbol{S};\boldsymbol{\beta}_r,\sigma_Y^2 &=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \textrm{ where}\\
+			\boldsymbol{\varepsilon}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\alpha}&=&\boldsymbol{X}_r-\boldsymbol{X}_f\boldsymbol{\alpha}^*.
 		\end{eqnarray}		 
 		So we introduce a plug-in model
 		\begin{eqnarray}
-			\underbrace{\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}}_{\tilde{\boldsymbol{Y}}}&=&\underbrace{(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}^*})}_{\tilde{\boldsymbol{X}}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\alpha},\sigma_Y^2&=&\underbrace{(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}^*})}_{\hat{\boldsymbol{\varepsilon}}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \\
 		\end{eqnarray}
 		That allows us to estimate $\boldsymbol{\beta}_{r}$ with a classical linear model based on previous estimations of $\boldsymbol{\beta}^*$ and $\boldsymbol{\alpha}$.
+\begin{eqnarray}
+	\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \label{epsilonchapeau} \\
+	\hat{\boldsymbol{\beta}}_r&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})
+\end{eqnarray}		
+		
+		
 		Then we have a model with a smaller noise
 		\begin{equation}
-			\boldsymbol{Y}= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}+\boldsymbol{\varepsilon}_Y 
+			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
 		\end{equation}
 		and we can even find the original model by doing an identification step:
 		\begin{eqnarray}
-			\boldsymbol{Y}&=& \boldsymbol{X}_f(\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}) + \boldsymbol{X}_r\hat{\boldsymbol{\beta}}_{r}+\boldsymbol{\varepsilon}_Y \\
-			&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f+\boldsymbol{X}_r\hat{\boldsymbol{\beta}}_r+\boldsymbol{\varepsilon}_Y
+			\hat{\boldsymbol{Y}}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\hat{\alpha}},\hat{\boldsymbol{\beta}}^*,\hat{\boldsymbol{\beta}}_r&=& \boldsymbol{X}_f(\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}) + \boldsymbol{X}_r\hat{\boldsymbol{\beta}}_{r}+\boldsymbol{\varepsilon}_Y \\
+			\hat{\boldsymbol{Y}}|\boldsymbol{X},\boldsymbol{S};\hat{\boldsymbol{\beta}}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f+\boldsymbol{X}_r\hat{\boldsymbol{\beta}}_r+\boldsymbol{\varepsilon}_Y \textrm{ with}\\
+		\hat{\boldsymbol{\beta}}_f&=&\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}
 		\end{eqnarray}
 	
 	Figure \ref{MQE2} shows the target of this plug-in model: the cases with enough correlations to have problem when using $\boldsymbol{X}$	but not enough correlations to have truly redundant covariates and to be able to delete some of them without significant information loss.
@@ -2326,7 +2583,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 			
 		
 	\section{Interpretation and latent variables}
-			$\hat{\boldsymbol{\beta}}_{r}$ can be interpreted as the proper effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}_r$ that is independent from other covariates. Then if $\boldsymbol{X}_r$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}_f$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_r=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}_f$ and dependent of $\boldsymbol{X}_r$ so we can appreciate its meaning and we also know its value by $\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*$. Thus, the plug-in model can reveal some kinds of latent variables.
+			$\hat{\boldsymbol{\beta}}_{r}$ can be interpreted as the proper effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}_r$ that is independent from other covariates. Then if $\boldsymbol{X}_r$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}_f$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_r=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}_f$ and dependent of $\boldsymbol{X}_r$ so we can appreciate its meaning and we also know its value by equation (\ref{epsilonchapeau}). Thus, the plug-in model can reveal some kinds of latent variables.
 			
 	
 
@@ -2334,17 +2591,17 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		Consistency issues of the LASSO are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
 		We have taken the same example to show how our method is more consistent.
 		Here $d=3$ and $n=1\;000$.\\
-		We define $\boldsymbol{X}_{f}, \boldsymbol{X}_{r}, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{1} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
+		We define $\boldsymbol{X}^1,\boldsymbol{X}^2, \boldsymbol{X}_{r}=\boldsymbol{X}^3, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{1} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
 		\begin{eqnarray}
-		\boldsymbol{X}^3&=&\frac{2}{3}\boldsymbol{X}^1+\frac{2}{3}\boldsymbol{X}^2+\frac{1}{3}\boldsymbol{\varepsilon}_1 \textrm{ and} \\
-		\boldsymbol{Y}&=&2\boldsymbol{X}^1+3\boldsymbol{X}^2+\boldsymbol{\varepsilon}_Y.
+		\boldsymbol{X}^3|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_1^2&=&\frac{2}{3}\boldsymbol{X}^1+\frac{2}{3}\boldsymbol{X}^2+\frac{1}{3}\boldsymbol{\varepsilon}_1 \textrm{ and} \\
+		\boldsymbol{Y}|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_Y^2&=&2\boldsymbol{X}^1+3\boldsymbol{X}^2+\boldsymbol{\varepsilon}_Y.
 		\end{eqnarray}
 		
 		
 		We compare consistencies of complete, marginal and full plug-in model with LASSO (and LAR) for selection.
-		It happens on some tries that our MCMC algorithm don't find the true structure but a permuted one so we both look at the results obtained with the true $\boldsymbol{S}$ (but $\hat{\boldsymbol{\alpha}}$ is used) and with the structure found by the Markov chain after a few seconds.
+		It happens on some tries that our MCMC algorithm don't find the true structure but a permuted one so we both look at the results obtained with the true $\boldsymbol{S}=((3),(\{1,2\}))$ (but $\hat{\boldsymbol{\alpha}}$ is used) and with the structure found by the Markov chain after a few seconds.
 		
-		True $\boldsymbol{S}$ was found $340$ times on $1\;000$ tries (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
+		True $\boldsymbol{S}$ was found $987$ times on $1\;000$ tries.% (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
 		
 		\begin{table}[h!]
 		\centering
@@ -2352,9 +2609,9 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\hline 
 		 & Classical LASSO & {\tt CorReg} + marginal LASSO& {\tt CorReg} + full plug-in LASSO\\ 
 		\hline 
-		True $S$ &  1.006479 & \textbf{1.005468} & \textbf{1.006093} \\ 
+		True $\boldsymbol{S}$ &  1.006784 & \textbf{1.005468} & \textbf{1.006093} \\ 
 		\hline 
-		$\hat{\boldsymbol{S}}$ & \textbf{1.006479} & 1.884175 & 1.006517 \\ 
+		$\hat{\boldsymbol{S}}$ & 1.006784 & 1.028154 & \textbf{1.006350} \\ 
 		\hline 
 		\end{tabular} 
 		\caption{MSE observed on a validation sample (1 000 individuals)}
@@ -2369,9 +2626,9 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\hline 
 		 & Classical LASSO & {\tt CorReg}  marginal + LASSO& {\tt CorReg}  full plug-in  + LASSO \\ 
 		\hline 
-		True $\boldsymbol{S}$ &  0 & \textbf{1000} & 830 \\ 
+		True $\boldsymbol{S}$ &  0 & \textbf{1000} & \textbf{820} \\ 
 		\hline 
-		$\hat{\boldsymbol{S}}$ & 0 & 340 & \textbf{621} \\ 
+		$\hat{\boldsymbol{S}}$ & 0 & \textbf{987} & \textbf{809} \\ 
 		\hline 
 		\end{tabular} 
 		\caption{Number of consistent model found ($\boldsymbol{Y}$ depending on $\boldsymbol{X}_1,\boldsymbol{X}_2$ and only them) on $1\;000$ tries}\label{testidentifiableG}
@@ -2379,43 +2636,44 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		it is clear that the plug-in model significantly improves the consistency of the model estimated on $\boldsymbol{S}$. Model using the true structure can't be improved because the marginal is already consistent. On the other hand, classical LASSO is never consistent.\\
 	%	$299$ times on $1000$ tries, the plug-in model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
 		
-		We also made the same experiment but with $\boldsymbol{X}^1,\boldsymbol{X}^2$ (and consequently $\boldsymbol{X}^3$) following Gaussian mixtures (to improve identifiability) randomly generated by our {\tt CorReg} package for R. 
-		True $\boldsymbol{S}$ is now found $714$ times on $1\;000$ tries (Table \ref{testidentifiableGM}) . So it confirms that Gaussian mixture models are easier to identify.
-		
-		
-		\begin{table}[h!]
-		\centering
-		\begin{tabular}{|c|c|c|c|}
-		\hline 
-		 & Classical LASSO & {\tt CorReg} marginal + LASSO& {\tt CorReg} full plug-in + LASSO \\ 
+%		We also made the same experiment but with $\boldsymbol{X}^1,\boldsymbol{X}^2$ (and consequently $\boldsymbol{X}^3$) following Gaussian mixtures %(to improve identifiability) 
+%		randomly generated by our {\tt CorReg} package for R. 
+%		True $\boldsymbol{S}$ is now found $714$ times on $1\;000$ tries (Table \ref{testidentifiableGM}) . So it confirms that Gaussian mixture models are easier to identify.
+%		
+%		
+%		\begin{table}[h!]
+%		\centering
+%		\begin{tabular}{|c|c|c|c|}
 %		\hline 
-%		True $S$ &  1.571029 & \textbf{1.569559} & \textbf{1.570801} \\ 
-     	\hline 
-		$\hat{S}$ & 1.005402 & 1.465768 & \textbf{1.005066} \\ 
-		\hline 
-		\end{tabular} 
-		\caption{MSE observed on a validation sample (1000 individuals)}
-		\end{table}
-
-		And when we look at the consistency :
-		\begin{table}[h!]
-		\centering	
-		\begin{tabular}{|c|c|c|c|}
-		\hline 
-		 & Classical LASSO & {\tt CorReg} marginal + LASSO& {\tt CorReg} full plug-in  + LASSO \\ 
+%		 & Classical LASSO & {\tt CorReg} marginal + LASSO& {\tt CorReg} full plug-in + LASSO \\ 
+%%		\hline 
+%%		True $S$ &  1.571029 & \textbf{1.569559} & \textbf{1.570801} \\ 
+%     	\hline 
+%		$\hat{S}$ & 1.005402 & 1.465768 & \textbf{1.005066} \\ 
 %		\hline 
-%		True $S$ &  0 & 1000 & 789 \\ 
-		\hline 
-		$\hat{S}$ & 0 & 714 & \textbf{608} \\ 
-		\hline 
-		\end{tabular} 
-		\caption{Number of consistent model found ($Y$ depending on $X_1,X_2$ and only them) on $1000$ tries}\label{testidentifiableGM}
-		\end{table}				
+%		\end{tabular} 
+%		\caption{MSE observed on a validation sample (1000 individuals)}
+%		\end{table}
+%
+%		And when we look at the consistency :
+%		\begin{table}[h!]
+%		\centering	
+%		\begin{tabular}{|c|c|c|c|}
+%		\hline 
+%		 & Classical LASSO & {\tt CorReg} marginal + LASSO& {\tt CorReg} full plug-in  + LASSO \\ 
+%%		\hline 
+%%		True $S$ &  0 & 1000 & 789 \\ 
+%		\hline 
+%		$\hat{S}$ & 0 & 714 & \textbf{608} \\ 
+%		\hline 
+%		\end{tabular} 
+%		\caption{Number of consistent model found ($Y$ depending on $X_1,X_2$ and only them) on $1000$ tries}\label{testidentifiableGM}
+%		\end{table}				
 				
 		
 	%	$299$ times on $1000$ tries, the predictive model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
 		
-
+\FloatBarrier
 	\section{Numerical results}
 		We test the plug-in model with datasets generated the same way as for section \ref{compY}.
 We first try the method with a response depending on all covariates. ({\tt CorReg} reduces the dimension and can't give the true model if there is a structure). We observe for OLS (Figures \ref{MSEpredOLSY_zonetout} to \ref{MSEpredOLSbeta_zonetout}) that the plug-in model gives results similar in efficiency to the marginal model, but remains better than the complete model for smaller  correlations even for $n=400$. We also observe that we can found a model with more than $n$ coefficients when each estimation step computes less than $n$ coefficients. It means that  we estimate more coefficients than the classical OLS and keep a smaller variance so the plug-in model can also be an alternative to the complete model. It is interesting to see that OLS combined with the plug-in model is a sort of sequential estimation that allows to estimate more than $n$ coefficients.\\
@@ -2440,324 +2698,451 @@ This phenomenon is still observed with the ridge regression (Figures \ref{MSEpre
 \FloatBarrier
 
 \newpage
-\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
-%OLS	
-	\begin{figure}[h!]
+\subsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
+\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredOLSY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredOLSY_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/tout/MSEpredOLSY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/cplpredOLS_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredOLS_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/tout/cplpredOLS_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredOLSbeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredOLSbeta_zonetout}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/tout/MSEpredOLSbeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredOLStout}
+\end{figure}
 	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
+
+%OLS	
+	
 	
 \newpage
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
+\subsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
 %LASSO
-	\begin{figure}[h!]
+\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredlarY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredlarY_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/tout/MSEpredlarY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/cplpredlar_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredlar_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/tout/cplpredlar_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredlarbeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredlarbeta_zonetout}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/tout/MSEpredlarbeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredlartout}
+\end{figure}
 	\FloatBarrier
 \newpage
-\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
+	\setcellgapes{1pt}
+\subsection{Elasticnet when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
 %elasticnet
-	\begin{figure}[h!]
+\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredelasticnetY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredelasticnetY_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/tout/MSEpredelasticnetY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/cplpredelasticnet_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredelasticnet_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/tout/cplpredelasticnet_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredelasticnetbeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredelasticnetbeta_zonetout}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/tout/MSEpredelasticnetbeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredelasticnettout}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %stepwise
-\subsubsection{Stepwise when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
-
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredstepwiseY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredstepwiseY_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/cplpredstepwise_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredstepwise_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredstepwisebeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredstepwisebeta_zonetout}
-	\end{figure}
-	\FloatBarrier
-\newpage
-%ridge	
-\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
+\subsection{Stepwise when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
 \begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredridgeY_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredridgeY_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/tout/MSEpredstepwiseY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/cplpredridge_zonetout.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredridge_zonetout}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/tout/cplpredstepwise_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/tout/MSEpredridgebeta_zonetout.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredridgebeta_zonetout}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/tout/MSEpredstepwisebeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredstepwisetout}
+\end{figure}
 	\FloatBarrier
-
-\clearpage
-
-
-
-
 \newpage
+	\setcellgapes{1pt}
+%ridge	
+\subsection{Ridge regression when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/tout/MSEpredridgeY_zonetout.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/tout/cplpredridge_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/tout/MSEpredridgebeta_zonetout.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredridgetout}
+\end{figure}
+	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
 %OLS	
-\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
-
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredOLSY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredOLSY_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/cplpredOLS_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredOLS_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredOLSbeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredOLSbeta_zoneX1}
-	\end{figure}
-	\FloatBarrier
-\newpage
-%LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
-
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredlarY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredlarY_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/cplpredlar_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredlar_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredlarbeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredlarbeta_zoneX1}
-	\end{figure}
-	\FloatBarrier
-\newpage
-%elasticnet
-\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
-
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredelasticnetY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredelasticnetY_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/cplpredelasticnet_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredelasticnet_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredelasticnetbeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredelasticnetbeta_zoneX1}
-	\end{figure}
-	\FloatBarrier
-\newpage
-%stepwise
-\subsubsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
-
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredstepwiseY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredstepwiseY_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/cplpredstepwise_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredstepwise_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
-	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredstepwisebeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredstepwisebeta_zoneX1}
-	\end{figure}
-	\FloatBarrier
-\newpage
-%ridge	
-\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
+\subsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
 \begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredridgeY_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredridgeY_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X1/MSEpredOLSY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/cplpredridge_zoneX1.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredridge_zoneX1}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X1/cplpredOLS_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X1/MSEpredridgebeta_zoneX1.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredridgebeta_zoneX1}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X1/MSEpredOLSbeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredOLSX1}
+\end{figure}
 	\FloatBarrier
-
-
-\clearpage
-
-
-\FloatBarrier
-
 \newpage
+	\setcellgapes{1pt}
+%LASSO
+\subsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
+
+	
+\begin{figure}[h!]
+\centering
+\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X1/MSEpredlarY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X1/cplpredlar_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X1/MSEpredlarbeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredlarX1}
+\end{figure}
+	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
+%elasticnet
+\subsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
+
+	
+\begin{figure}[h!]
+\centering
+\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X1/MSEpredelasticnetY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X1/cplpredelasticnet_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X1/MSEpredelasticnetbeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredelasticnetX1}
+\end{figure}
+	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
+%stepwise
+\subsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
+
+	
+\begin{figure}[h!]
+\centering
+\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X1/MSEpredstepwiseY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X1/cplpredstepwise_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X1/MSEpredstepwisebeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredstepwiseX1}
+\end{figure}
+	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
+%ridge	
+\subsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
+
+\begin{figure}[h!]
+\centering
+\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X1/MSEpredridgeY_zoneX1.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X1/cplpredridge_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X1/MSEpredridgebeta_zoneX1.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredridgeX1}
+\end{figure}
+	\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
 
 %OLS	
-\subsubsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
+\subsection{Ordinary Least Squares when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
-	\begin{figure}[h!]
+	
+\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredOLSY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredOLSY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X2/MSEpredOLSY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/cplpredOLS_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredOLS_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X2/cplpredOLS_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredOLSbeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredOLSbeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X2/MSEpredOLSbeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredOLSX2}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
+\subsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredlarY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredlarY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X2/MSEpredlarY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/cplpredlar_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredlar_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X2/cplpredlar_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredlarbeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredlarbeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X2/MSEpredlarbeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredlarX2}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %elasticnet
-\subsubsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
+\subsection{Elasticnet when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredelasticnetY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredelasticnetY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X2/MSEpredelasticnetY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/cplpredelasticnet_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredelasticnet_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X2/cplpredelasticnet_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredelasticnetbeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredelasticnetbeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X2/MSEpredelasticnetbeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredelasticnetX2}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %stepwise
-\subsubsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
+\subsection{Stepwise when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredstepwiseY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredstepwiseY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X2/MSEpredstepwiseY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/cplpredstepwise_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredstepwise_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X2/cplpredstepwise_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredstepwisebeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredstepwisebeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X2/MSEpredstepwisebeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredstepwiseX2}
+\end{figure}
 	\FloatBarrier
 \newpage
+	\setcellgapes{1pt}
 %ridge	
-\subsubsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
+\subsection{Ridge regression when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 \begin{figure}[h!]
+\centering
+\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredridgeY_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredridgeY_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	\setcellgapes{0pt}
+	(a) & \includegraphics[width=450px]{figures/predhatS/X2/MSEpredridgeY_zoneX2.png}
+\end{tabular}		
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/cplpredridge_zoneX2.png}
-		\caption{Comparison of the complexities, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{cplpredridge_zoneX2}
-	\end{figure}
-	\begin{figure}[h!]
+	\begin{tabular}[c]{m{5px} m{450px}}
+	(b) &  \includegraphics[width=450px]{figures/predhatS/X2/cplpredridge_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\begin{subfigure}
 	\centering
-		  \includegraphics[width=350px]{figures/predhatS/X2/MSEpredridgebeta_zoneX2.png}
-		\caption{Comparison of the MSE on $\hat{\boldsymbol{\beta}}$, red=classical (complete) model, blue=marginal model, green=plug-in model}\label{MSEpredridgebeta_zoneX2}
-	\end{figure}
+		 \begin{tabular}[c]{m{5px} m{450px}}
+	(c) &  \includegraphics[width=450px]{figures/predhatS/X2/MSEpredridgebeta_zoneX2.png}
+		\end{tabular}
+	\end{subfigure}
+	\caption{Comparison of the MSE on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and MSE on $\hat{\boldsymbol{\beta}}$ (c), red=classical (complete) model, blue=marginal model}\label{MSEpredridgeX2}
+\end{figure}
 	\FloatBarrier
-
-\FloatBarrier
+\newpage
+	\setcellgapes{1pt}
 
 \chapter{Missing values} \label{chapmiss}
-%http://mathworld.wolfram.com/KroneckerSum.html
 	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to make multiple imputations based on the sub-regression structure. The full generative model also helps to manage missing values in the MCMC with the ability to compute $BIC_*$ only on the observed values. 
 	
 	 \section{Introduction}
@@ -2853,7 +3238,9 @@ with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \
 				\boldsymbol{\pi}_{iJ_r^j} &=& \bigotimes_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }K_{iJ_r^j}=|\boldsymbol{\pi}_{iJ_r^j}| ,\\
 				\boldsymbol{\mu}_{iJ_r^j}&=& \sum_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0  }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}x_{i,l} + \bigoplus_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1  }} \bar{\boldsymbol{\alpha}}_{l,J_r^j} \boldsymbol{\mu}_l \\
 				\boldsymbol{\Sigma}_{iJ_r^j} &=& \sigma_{J_r^j}^2 + \bigoplus_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l		
-		\end{eqnarray}		 
+		\end{eqnarray}	
+		
+	Where $\bigotimes$ is the Kronecker product and and $\bigoplus$ is the Kronecker sum with $A\bigoplus B= A\bigotimes\boldsymbol{I}_b+\boldsymbol{I}_a\bigotimes B$ where $A$ and $B$ are two squares matrices of order $a$ and $b$ respectively and $\boldsymbol{I}_a,\boldsymbol{I}_b$ are the two associated identity matrices.
 		This could be easily used for imputation of the missing values in $\boldsymbol{X}_r$ knowing the parameters $\boldsymbol{\alpha}, \Theta$ and $\boldsymbol{S}$. We note that we obtain a Gaussian when there is no missing value in $J_p^j$.
 		But we see that	$f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions. Thus if each sub-regression is a distinct connex component then we can use (\ref{Missingdensity}) and we have
 		\begin{equation}
@@ -2884,7 +3271,7 @@ Where
 		\boldsymbol{\mu}_{\boldsymbol{X}^{J_f}}&=&  \prod_{\substack{j \in J_f}}\boldsymbol{\mu}_{j} \textrm{ (Cartesian product) and } \\	
 	\boldsymbol{\sigma}_{\boldsymbol{X}^{J_f}}&=&\prod_{\substack{j \in J_f}}\boldsymbol{\sigma}_{j} \textrm{ (Cartesian product). }
 		\end{eqnarray}
-		The we can describe the paramaters as following:
+		Then we can describe the paramaters as following:
 		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we have
 \begin{eqnarray}
 		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k})\\
@@ -3354,11 +3741,12 @@ We obtain on a validation sample of 1000 individuals a predictive MSE smaller in
 
 	\section{Identifiability}\label{sectionident}
 		\subsection{Definition}
-		We call identifiability :
+		We call identifiability:
 \begin{eqnarray}
 	\nexists (\boldsymbol{S},\tilde{\boldsymbol{S}}) \in \mathcal{S}_d\times \mathcal{S}_d \textrm{ with } \boldsymbol{S} \neq \tilde{\boldsymbol{S}} \textrm{ and }
 	\mathbb{P}(\boldsymbol{X};\boldsymbol{S})=\mathbb{P}(\boldsymbol{X};\tilde{\boldsymbol{S}})
  \end{eqnarray}
+ To avoid label-switching consideration, we suppose here (without loss of generality) that $\boldsymbol{J}_r$ is ordered by ascending order of the labels of the covariates.
 	Hence identifiability is paired with the hypothesis we made on $ \mathcal{S}_d$. It is not sufficient to find a structure of linear sub-regression, the structure also has to verify hypothesis \ref{H1} to \ref{H3} (uncrossing rule + dependencies exhaustively described by the structure and then independence between the conditionnal response covariates). As a consequence, the covariance between to covariates is not null if and only if these covariates are linked by some sub-regressions.
  
 		\subsection{Sufficient condition for identifiability}
