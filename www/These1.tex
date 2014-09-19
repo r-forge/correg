@@ -80,10 +80,10 @@
 	
 \paragraph{Mots clés:}Prétraitement, Régression, Corrélations, Valeurs manquantes, MCMC, modèle génératif, Critère Bayésien, sélection de variable, méthode séquentielle, graphs.
 \chapter*{Abstract}
-	This thesis was motivated by correlation issues in real datasets, in particular industrial datasets. The main idea stands in explicit modeling of the correlations between covariates by a structure of sub-regression, that simply is a system of linear regression between the covariates. It points out redundant covariates that can be deleted in a pre-selection step to improve matrix conditioning without significant loss of information and with strong explicative potential because this pre-selection is explained by the structure of sub-regression, itself easy to interpret.
+	This thesis was motivated by correlation issues in real datasets, in particular industrial datasets. The main idea stands in explicit modeling of the correlations between covariates by a structure of sub-regressions, that simply is a system of linear regressions between the covariates. It points out redundant covariates that can be deleted in a pre-selection step to improve matrix conditioning without significant loss of information and with strong explicative potential because this pre-selection is explained by the structure of sub-regressions, itself easy to interpret.
 	\\
 	
-	An algorithm to find the sub-regression structure inherent to the dataset is provided, based on a full generative model and using Monte-Carlo Markov Chain (MCMC) method. This pretreatment is then applied on linear regression to show its efficiency but does not depend on a response variable and thus can be used in a more general way with any correlated datasets.
+	An algorithm to find the sub-regressions structure inherent to the dataset is provided, based on a full generative model and using Monte-Carlo Markov Chain (MCMC) method. This pretreatment is then applied on linear regression to show its efficiency but does not depend on a response variable and thus can be used in a more general way with any correlated datasets.
 	\\
 	
 	In a second part, a plug-in estimator is defined to get back the redundant covariates sequentially. Then all the covariates are used but the sequential approach acts as a protection against correlations.
@@ -101,14 +101,14 @@
 	
 
 \chapter*{Acknowledgments}
-	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has led me to be recruited since may.% but let me work in Villeneuve d'Ascq this last year to reduce road time.
+	I want to thank ArcelorMittal for the funding of this thesis, the opportunity to make this thesis with real datasets and the confidence in this work that has led me to be recruited since May.% but let me work in Villeneuve d'Ascq this last year to reduce road time.
 	\\
 	
 	But this work would not have been possible without the help of Gaétan LORIDANT, my hierarchic superior and friend who has convinced ArcelorMittal to fund this thesis and helped me in this work by a strong moral support and spending a great amount of time with me to find the good direction between academic and industrial needs with some technical help when he could. I would not have made all this work without him.\\
 	
 	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
 	
-	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also help me in this last and tough year just by their presence, giving me the courage to go further. \\
+	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also helped me in this last and tough year just by their presence, giving me the courage to go further. \\
 	
 	I finally want to thank my family. My wife who had to support most of the charge of the family on top of her work and to let me work during the holidays, and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
 
@@ -332,14 +332,14 @@ Most of the tools described here are explained with more details in the book fro
 
 
 \paragraph{Notations:}	
-In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^p(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^p|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_p|)$. Vectors, matrices and tuples are in bold characters.
+In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^d(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^d|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_d|)$. Vectors, matrices and tuples are in bold characters.
 	\subsection{Ordinary least squares and associated problems}\label{sectionOLS}		% ne pas oublier de mentionner les packages existants
 
 We note the linear regression model:
 \begin{equation}
 		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma^2_Y=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}_Y \label{regressionsimple}
 	\end{equation}
-	where $\boldsymbol{X}$ is the $n\times d$ matrix of the explicative variables\footnote{Usually a constant is included as one of the regressors. For example we can take $\boldsymbol{X}^1=(1,\ldots,1)'$. The corresponding element of $\boldsymbol{\beta}$ is then the intercept $\beta_1$.},% (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates)
+	where $\boldsymbol{X}$ is the $n\times d$ matrix of the explicative variables\footnote{Usually a constant is included as one of the regressors. For example we can take $\boldsymbol{X}^1=(1,\ldots,1)'$. The corresponding element of $\boldsymbol{\beta}$ is then the intercept $\beta_1$.}, % (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates)
 	 $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon}_Y \sim \mathcal{N}(\boldsymbol{0},\sigma_Y^2\boldsymbol{I}_n)$ the noise of the regression, with $\boldsymbol{I}_n$ the $n$-sized identity matrix and $\sigma_Y >0$. The $d\times 1$ vector $\boldsymbol{\beta}$ is the vector of the coefficients of the regression, that can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{OLS}): %As shown in section \ref{sectionOLS}, 
 	\begin{equation}
 		\boldsymbol{\hat{\beta}}_{OLS}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaOLS}
@@ -351,7 +351,7 @@ We note the linear regression model:
 	and without any bias \cite{saporta2006probabilites,dodge2004analyse}. In fact it is the Best Linear Unbiased Estimator (BLUE).
 	The theoretical \textsc{mse} is given by
 	\begin{equation}
-	\textsc{MSE}(\hat{\boldsymbol{\beta}}_{OLS}|\boldsymbol{X})= 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1})
+	\textsc{mse}(\hat{\boldsymbol{\beta}}_{OLS})= 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1})
 	\end{equation}
 	\\
 	Equation \ref{regressionsimple}	has no intercept but can be generalized by adding to $\boldsymbol{X}$ a first column full of 1. In the followings we don't consider the intercept to simplify notations. In practice, an intercept is added by default.\\
@@ -601,7 +601,7 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 			 The idea is that if the model has a small number of groups of covariates then the mixture will have few enough components to have a number of parameters to estimate significantly lower than $d$. In such a case, it improves interpretation and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. A package {\tt clere} for R does exist on CRAN (\cite{packageclere}).%and is included in {\tt CorReg}. \\
 			 \\
 			 
-			 But We have to choose the maximum number of components $g$ and have no method to choose this value. Yengo recommends to use $g=5$ in our case. It could be interpreted as the possibility to have a group of irrelevant covariates and groups with small or big values (both positives or negatives). The package is able to choose automatically the best number of components between 1 and $g$ based on a $\mbox{{\sc bic}}$ criterion but setting $g=d$ gives over-fitting.
+			 But we have to choose the maximum number of components $g$ and have no method to choose this value. Yengo recommends to use $g=5$ in our case. It could be interpreted as the possibility to have a group of irrelevant covariates and groups with small or big values (both positives or negatives). The package is able to choose automatically the best number of components between 1 and $g$ based on a $\mbox{{\sc bic}}$ criterion but setting $g=d$ gives over-fitting.
 	 Here again, it has no specific protection against or specific model for correlations. 
 		\subsection{Spike and Slab}			% ne pas oublier de mentionner les packages existants
 
@@ -659,7 +659,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 		CART are implemented in the package {\tt rpart} 
 		for R, on CRAN (\cite{packagerpart}). Our {\tt CorReg} 
 		package offers a function to compute and plot the tree in one command with a subtitle to explain how to read the tree and global statistics on the dataset.
-		But it is not convenient for linear regression problems as we see in figure \ref{arbretrivial} because a same variable will be used several times and the tree will fail to give a simple interpretation as " $\boldsymbol{Y}$ and $\boldsymbol{X}^1$ are proportional ". Trivial case : $\boldsymbol{Y}=\boldsymbol{X}^1 + \boldsymbol{\varepsilon}_Y$ where $\boldsymbol{\varepsilon}_Y \sim \mathcal{N}(0, \sigma^2_Y \boldsymbol{I}_n)$ with $\sigma^2=0.5$. \\
+		But it is not convenient for linear regression problems as we see in figure \ref{arbretrivial} because a same variable will be used several times and the tree will fail to give a simple interpretation as ``$\boldsymbol{Y}$ and $\boldsymbol{X}^1$ are proportional". Trivial case : $\boldsymbol{Y}=\boldsymbol{X}^1 + \boldsymbol{\varepsilon}_Y$ where $\boldsymbol{\varepsilon}_Y \sim \mathcal{N}(0, \sigma^2_Y \boldsymbol{I}_n)$ with $\sigma_Y^2=0.5$. \\
 		
 		So CART will be used as a complementary tool for datasets with both quantitative and qualitative covariates or when the dependence between $\boldsymbol{Y}$ and $\boldsymbol{X}$ is not linear. We will focus our research on linear models with only quantitative variables.
 	\\
@@ -710,7 +710,7 @@ of components (called latent vectors) that performs a simultaneous decomposition
 	\item Output the sequence of fitted vectors $\{\hat{\boldsymbol{Y}}^{(m)}\}_1^d$. Since the $\{ \boldsymbol{z}_l\}_1^M$ are linear in $\boldsymbol{X}$, so is $\hat{\boldsymbol{Y}}^{(M)}=\boldsymbol{X}\hat{\boldsymbol{\beta}}_{PLS}(M)$ where $\hat{\boldsymbol{\beta}}_{PLS}(M)$ for a given value of $M$ can be recovered from the sequence of PLS transformations.
 \end{enumerate}
 where $\langle \boldsymbol{A},\boldsymbol{B} \rangle=\sum_i A_iB_i$ is the classical scalar product for two equally sized vectors $\boldsymbol{A}$ and $\boldsymbol{B}$.\\
-Like the PCR, PLS regression can gives en efficient dimension reduction (with small values $M$) but does not really select relevant covariates and interpretation need to first interpret the latent variables generated so it is not adapted to our needs.
+Like the PCR, PLS regression can give an efficient dimension reduction (with small values of $M$) but does not really select relevant covariates and interpretation requires to first interpret the latent variables generated so it is not adapted to our needs.
 
 %When all the covariates are used it is equivalent to PCR so results tends to be similar to Principal Component Regression. PLS uses the following decomposition:
 %\begin{eqnarray}
@@ -723,35 +723,53 @@ Like the PCR, PLS regression can gives en efficient dimension reduction (with sm
 	
 	The R package {\tt pls} on CRAN computes both Principal Component Regression and Partial Least Squares Regression (\cite{packagepls}).
 		\subsection{Simultaneous Equation Model (SEM) and Path Analysis}		% ne pas oublier de mentionner les packages existants
-		Applied statistics  for non statisticians are well developed in sociology where interpretation  stakes are fare beyond prediction. Sociologists use simple models like linear regression (often with $R^2<0.2$) and describe complex situations with systems of linear regressions. Such systems are called Structural Equation Model or Simultaneaous Equation Model, better known as SEM \cite{davidson1993estimation}. Several softwares, from the open-source GRETL \cite{CottrellLucchetti2007gretlmanual} to proprietary STATA, does implement the SEM. The systems allow to describe which covariate influence others with an orientation that users can interpret as causality \cite{pearl2000causality,pearl1998graphs}. \\
+		Applied statistics  for non statisticians are well developed in sociology where interpretation  stakes are fare beyond prediction. Sociologists use simple models like linear regression (often with $R^2<0.2$) and describe complex situations with systems of linear regressions. Such systems are called Structural Equation Model or Simultaneaous Equation Model, better known as SEM \cite{davidson1993estimation}. Several softwares, from the open-source GRETL \cite{CottrellLucchetti2007gretlmanual} to proprietary STATA, does implement the SEM. The systems allow to describe which covariates have an influence on others with an orientation that users can interpret as causality \cite{pearl2000causality,pearl1998graphs}. \\
 		
 		SEM are easy to understand for non-statisticians and can be resumed by Directed Acyclic Graphs (DAG) as the Bayesian networks do. But the problem is that the structure of regression between the covariates is defined {\it a priori}. SEM are used to confirm sociological theories, not to create new theories. \\
 		
-		Moreover, estimation of recursive SEM, without instrumental variables is exactly a succession of independent OLS (confirmed with both GRETL and STATA) so the structure is only used for interpretation, not for estimation \cite{brito2006graphical}. Last but not least, there is no specific status for a response variable, each regression has the same status. We want to be able to model complex dependencies within the covariates and use this knowledge to estimate and understand a specific response variable.
+		Moreover, estimation of recursive SEM, without instrumental variables is exactly a succession of independent OLS (confirmed with both GRETL and STATA) so the structure is only used for interpretation, not for estimation \cite{brito2006graphical}. Last but not least, there is no specific status for a response variable, each regression has the same status. We want to be able to model complex dependencies within the covariates and use this knowledge to estimate and understand a specific distinct response variable.
 			%mcdonald2002principles
 		\subsection{SUR: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
-		Seemingly Unrelated Regression \cite{SURzellner} is an estimation method for Multiples equations with correlated error terms. It does not take into account correlations between the covariates but starts to estimate the system jointly instead of independent estimations. This estimation relies on Feasible Generalized Least Squares (FGLS) that depends on the variance-covariance matrix of the error terms. But when the error terms are independent or the subset of covariates are the same it is equivalent to successive independent OLS. The R package {\tt systemfit} on CRAN computes SUR (\cite{packagesystemfit}). 
+		Seemingly Unrelated Regression \cite{SURzellner} is an estimation method for multiples equations with correlated error terms. It does not take into account correlations between the covariates but starts to estimate the system jointly instead of independent estimations. This estimation relies on Feasible Generalized Least Squares (FGLS) that depends on the variance-covariance matrix of the error terms. But when the error terms are independent or the subset of covariates are the same it is equivalent to successive independent OLS. The R package {\tt systemfit} on CRAN computes SUR (\cite{packagesystemfit}). 
 %			
 %		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}		% ne pas oublier de mentionner les packages existants
 %
 %\textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model ) takes into account correlations between endogenous covariates but without explicit expression of the correlations and thus a reduced interpretability \cite{chiquetconf}. It is similar to SUR in that dependencies are modeled with the variance-covariance matrix of the error terms, but with sparsity constraints in this matrix.  It does not distinguish a response variable from internal structure in a dataset. Every equation in the system has a distinct response variable and the explicative covariates are the same for all equations.		
 		\subsection{Selvarclust: Linear regression within covariates for clustering}		% ne pas oublier de mentionner les packages existants
 
-			{\tt Selvarclust} is a software written in C++ modeling dependencies within a dataset			 \cite{maugis2009variable} in a Gaussian clustering context \footnote{http://www.math.univ-toulouse.fr/\~maugis/SelvarClustHomepage.html}.
+			{\tt Selvarclust} is a software written in C++ modeling dependencies within a dataset			 \cite{maugis2009variable} in a Gaussian clustering context\footnote{\url{http://www.math.univ-toulouse.fr/~maugis/SelvarClustHomepage.html}}.
 			The idea is to allow covariates to have different roles $(S,R,U,W)$ for the clustering:
 			\begin{itemize}
 				\item $S$ stands for the subset of the relevant covariates for clustering
-				\item $U$ and $W$ form a partition of the complementary subset of $S$, with $U$ the subset of irrelevant covariates depending linearly from relevant covariates and $W$ the subset of totally irrelevant and independent covariates
+				\item $U$ and $W$ form a partition of the complementary subset of $S$, with $U$ the subset of irrelevant covariates depending linearly from relevant covariates and $W$ the subset of covariates totally irrelevant and independent from relevant covariates
 				\item $R$ is the subset of $S$ that contains the covariates explaining those in $U$, with $R\cap U=\emptyset$.
 \end{itemize}			 
 So we have a system of linear regression:
 \begin{equation}
-	\boldsymbol{X}^{U}|\boldsymbol{X}^{R};\boldsymbol{\alpha},\boldsymbol{\Sigma}=\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}
+	\boldsymbol{X}^{U}|\boldsymbol{X}^{R};\boldsymbol{\alpha},\boldsymbol{\Omega}=a+\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}
 \end{equation}
-where $\boldsymbol{X}$ is the $n\times d$ dataset as above, $\boldsymbol{X}^R$ and$ \boldsymbol{X}^U$ are the sub-matrix of  $\boldsymbol{X}$ formed by the covariates in $R$ and $U$ respectively, $\boldsymbol{\alpha}$ is the $\operatorname{Card}(R)\times \operatorname{Card}(U)$ matrix of the regression coefficients and $\boldsymbol{\varepsilon}$ the $n\times \operatorname{Card}(U) $ matrix of the Gaussian error terms with zero mean and variance $\boldsymbol{\Sigma}\in \mathbb{R}^{\operatorname{Card}(U)\times \operatorname{Card}(U)}$.\\
-{\tt Selvarclust} is one step beyond Simultaneous Equation Modeling with an algorithm to find the structure.		
+where $\boldsymbol{X}$ is the $n\times d$ dataset as above, $\boldsymbol{X}^R$ and $\boldsymbol{X}^U$ are the sub-matrix of  $\boldsymbol{X}$ formed by the covariates in $R$ and $U$ respectively, $\boldsymbol{\alpha}$ is the $\operatorname{Card}(R)\times \operatorname{Card}(U)$ matrix of the regression coefficients, $a$ is the $1\times \operatorname{Card}(U)$ intercept vector and $\boldsymbol{\varepsilon}$ the $n\times \operatorname{Card}(U) $ matrix of the Gaussian error terms with zero mean and variance $\boldsymbol{\Omega}\in \mathbb{R}^{\operatorname{Card}(U)\times \operatorname{Card}(U)}$.\\
 
-			But:
+It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},f_{reg},f_{indep}$ whose product will give the joint density of $\boldsymbol{X}$:
+\begin{itemize}
+	\item The relevant variables for clustering of $\boldsymbol{X}$ are assumed to follow a Gaussian mixture with $K$ components and a form $m$ (see \cite{biernacki2006model} for more details about the possible forms):
+	\begin{equation}
+		f_{clust}(\boldsymbol{X}^S|K,m,\boldsymbol{\theta})=\sum_{k=1}^K p_k \Phi (\boldsymbol{X}^S|\mu_k,\Sigma_k)
+	\end{equation}
+	where the parameter vector is $\boldsymbol{\theta}=(p_1,\dots,p_k,\mu_1,\dots,\mu_k,\Sigma_1,\dots,\Sigma_k)$, with $\sum_{k=1}^K p_k=1$, the proportion vector and the variance matrices satisfying the form $m$.
+	\item The likelihood associated to the linear regression of $\boldsymbol{X}^U$ on $\boldsymbol{X}^R$ is then
+	\begin{equation}
+		f_{reg}(\boldsymbol{X}^U|r,a+\boldsymbol{X}^R\boldsymbol{\alpha},\boldsymbol{\Omega})=\prod_{i=1}^n \Phi(\boldsymbol{X}_i^U|a+\boldsymbol{X}_i^R \boldsymbol{\alpha},\boldsymbol{\Omega})
+	\end{equation}
+	where $r$ is the form of $\boldsymbol{\Omega}$, the variance matrix of the residual $\boldsymbol{\varepsilon}$.
+	\item Variables independent of the variables that are relevant for clustering are assumed to follow a Gaussian distribution (If they were independent and following a Gaussian mixture they would then be relevant for clustering) with mean vector $\gamma$ and variance matrix $\tau$ with form $l$:
+	\begin{equation}
+		f_{indep}(\boldsymbol{X}^{W}|l,\gamma,\tau)=\prod_{i=1}^n \Phi (\boldsymbol{X}_i^W|\gamma,\tau)
+	\end{equation}
+\end{itemize}
+
+
+{\tt Selvarclust} is one step beyond Simultaneous Equation Modeling with an algorithm to find the structure but:
 			\begin{itemize}
 				\item It is about clustering and not regression (not the same application field) so we don't have here any response variable neither method to use this structure for estimation of another regression.  And the goal is not to find the structure but to find a Gaussian clustering.
 				\item It uses stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even if it is known to be often unstable \cite{miller2002subset} in such a context.
@@ -771,7 +789,7 @@ We give an explicit model for correlation between covariates by a linear regress
 \section{Introduction}
 Most of the above methods do not take explicitly the correlations into account, even if the clustering methods may group the correlated covariates together.
 The idea of the present thesis is that if we know explicitly the correlations, we could use this knowledge to avoid specific problem it causes. Correlations are thus new information to reduce the variance without adding any bias. 
-Modeling explicitly linear correlation between variables already exists in statistics. In Gaussian model-based clustering, \cite{maugis2009variable} consider that some irrelevant covariates for clustering are in linear regression with some relevant ones.
+Modeling explicitly linear correlation between variables already exists in statistics. In Gaussian model-based clustering, {\tt Selvarclust} \cite{maugis2009variable} considers that some irrelevant covariates for clustering are in linear regression with some relevant ones.
  We propose to transpose this method for linear regression.
 More precisely, correlations are modeled through a system of linear sub-regressions between covariates. The set of covariates which are {\it never} at the place of a response variable in these sub-regressions is finally the greatest set of orthogonal covariates.\\
 
@@ -903,16 +921,16 @@ we have the \textsc{OLS} unbiased estimator of $\boldsymbol{\beta}^*$:
 		\begin{equation}
 			\operatorname{Var}(\hat{\boldsymbol{\beta}}_f^*)= (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2)(\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1} \quad \textrm{and} \quad\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^*)= \boldsymbol{0}. \label{eq:varOLS*}
 		\end{equation}
-Indeed, no correlations between covariates $\boldsymbol{X}_f$ imply that the matrix $\boldsymbol{X}_f' \boldsymbol{X}_f$ could be sufficiently better conditioned than the matrix $\boldsymbol{X}' \boldsymbol{X}$ involved in (\ref{eq:varOLS}) to balance the added variance $\sum_{j \in I_r}\sigma^2_{j}\beta_{j}^2$ in (\ref{eq:varOLS*}). This bias-variance trade off can be resumed by the Mean Squared Error (\textsc{mse}) associated to both estimates:
+Indeed, no correlations between covariates $\boldsymbol{X}_f$ imply that the matrix $\boldsymbol{X}_f' \boldsymbol{X}_f$ could be sufficiently better conditioned than the matrix $\boldsymbol{X}' \boldsymbol{X}$ involved in (\ref{eq:varOLS}) to balance the added variance $\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2$ in (\ref{eq:varOLS*}). This bias-variance trade off can be resumed by the Mean Squared Error (\textsc{mse}) associated to both estimates:
 	\begin{eqnarray}
-	\textsc{mse}(\hat{\boldsymbol{\beta}}|\boldsymbol{X})]&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}})) \\
+	\textsc{mse}(\hat{\boldsymbol{\beta}})&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}})) \\
 			\textsc{mse}(\hat{\boldsymbol{\beta}})&=& \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}),
 			 \\
 			\textsc{mse}(\hat{\boldsymbol{\beta}}^*)&=& \parallel\sum_{j =1}^{d_r}\sigma_{j}\beta_{J_r^j} \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}).
 	\end{eqnarray}	 
  				  
 	This bias-variance tradeoff is illustrated with the running example.
-	\section{\textsc{mse} comparison on the running example}\label{MSEvraiS}
+	\section{{\sc mse} comparison on the running example}\label{MSEvraiS}
 In this section, all experiences have been made 100 times and we take the mean to obtain smooth curves. So we have generated 100 times $\boldsymbol{X}$ and $\boldsymbol{Y}$.\\	
 	The \textsc{mse} on $\hat{\boldsymbol{Y}}$ is computed on a validation sample with 1 000 individuals.\\
 %\paragraph{Theoretical MSE for OLS:}
@@ -1644,7 +1662,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 			\begin{equation}
 				\mathcal{A}_{(q)}=\{(i,J_r^j), i \in J_f, j \in \{1,\dots,d_r \}: i \in J_p^j \}
 			\end{equation}
-			It is not based on any arbitrary parameter and change the result only if it founds a better structure in terms of the criterion $\mbox{{\sc bic}}_*$ used in the walk.
+			It is not based on any arbitrary parameter and change the result only if it finds a better structure in terms of the criterion $\mbox{{\sc bic}}_*$ used in the walk.
 			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE }.
 			
 	\section{Graphical LASSO}\label{sectionGlasso}
@@ -1694,7 +1712,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{\boldsymbol{S}}
 	
 		\section{Results on $\hat{\boldsymbol{S}}$}	\label{compZ}
 
-Figure \ref{compZBIC} illustrates the impact of large samples. For $n>>d$ the MCMC founds most of the truly redundant covariates and only few wrong redundant covariates. We also observe that strong correlations ($R^2\geq 0.7$) get more wrong sub-regressions for a same total number of sub-regressions. It comes from induced correlations. If two covariates are explained by the same others, they may have a strong induced pairwise correlation and if the walk tries to combine them in a single sub-regression we can have a local extremum. The walk is ergodic but in a finite number of steps it can keep such a wrong sub-regression, that's why we launch the walk several times with distinct initial structures. Such a wrong sub-regressions is not totally wrong in that it describes real correlations. So interpretation is not compromise and neither is the predictive efficiency as shown in section \ref{compY}. \\
+Figure \ref{compZBIC} illustrates the impact of large samples. For $n>>d$ the MCMC found most of the truly redundant covariates and only few wrong redundant covariates. We also observe that strong correlations ($R^2\geq 0.7$) get more wrong sub-regressions for a same total number of sub-regressions. It comes from induced correlations. If two covariates are explained by the same others, they may have a strong induced pairwise correlation and if the walk tries to combine them in a single sub-regression we can have a local extremum. The walk is ergodic but in a finite number of steps it can keep such a wrong sub-regression, that's why we launch the walk several times with distinct initial structures. Such a wrong sub-regressions is not totally wrong in that it describes real correlations. So interpretation is not compromise and neither is the predictive efficiency as shown in section \ref{compY}. \\
 For smaller values of $n$ we observe that the number of true sub-regressions found increases with their strength (growing $R^2$).\\
 When comparing $\mbox{{\sc bic}}_U$ to $\mbox{{\sc bic}}_H$ it becomes evident that $\mbox{{\sc bic}}_H$ is less confident to keep sub-regressions (it is what it was made for). Weak sub-regressions are kept only if the sample is large enough to be confident and when the $R^2$ rises, the number of kept true sub-regressions grows quickly whereas wrong sub-regressions remain exceptional. Induced pairwise correlations give weaker sub-regressions so the walk is less attracted by them. We can then conclude that $\mbox{{\sc bic}}_H$ does achieve its main purpose that was to reduce the complexity of the structure by keeping only strong sub-regressions. In these simulated datasets, the $R^2$ were equal for each sub-regression. We can see several reasons to explain why the sub-regression are not all kept or all missing. 
 \begin{itemize}
@@ -1715,9 +1733,9 @@ When comparing $\mbox{{\sc bic}}_U$ to $\mbox{{\sc bic}}_H$ it becomes evident t
 
 
 \subsection{Comparison with {\tt Selvarclust}}\label{compMaugis}
-		Maugis provides results\footnote{http://www.math.univ-toulouse.fr/\~maugis/SelvarClustHomepage.html} of {\tt SelvarClust} on a dataset {\it Data2.txt} containing 2 000 data points from a mixture of four Gaussian distributions $\mathcal{N}(\mu_k,\boldsymbol{I}_2)$ with $\mu_1=(-2,-2),\mu_2=(-3,-3),\mu_4=(2,2)$ and with a proportion vector $\boldsymbol{\pi}=(0.3,0.2,0.3,0.2)$. Variables $\boldsymbol{X}^1,\boldsymbol{X}^2$ corresponds to the coordinates. Eight irrelevant variables (for clustering) are appended, simulated according to $\forall 1\leq i \leq 2\; 000$:
+		Maugis provides results\footnote{\url{http://www.math.univ-toulouse.fr/~maugis/SelvarClustHomepage.html}} of {\tt SelvarClust} on a dataset {\it Data2.txt} containing 2 000 data points from a mixture of four Gaussian distributions $\mathcal{N}(\mu_k,\boldsymbol{I}_2)$ with $\mu_1=(-2,-2),\mu_2=(-3,-3),\mu_4=(2,2)$ and with a proportion vector $\boldsymbol{\pi}=(0.3,0.2,0.3,0.2)$. Variables $\boldsymbol{X}^1,\boldsymbol{X}^2$ corresponds to the coordinates. Eight irrelevant variables (for clustering) are appended, simulated according to $\forall 1\leq i \leq 2\; 000$:
 		\begin{displaymath}
-		 \boldsymbol{X}_i^{\{3,\dots , 6 \}}|\boldsymbol{X}_i^{\{1,2\}}\sim \mathcal{N}(\boldsymbol{X}_i^{\{1,2\}}\boldsymbol{\alpha^*},\boldsymbol{\Omega})
+		 \boldsymbol{X}_i^{\{3,\dots , 6 \}}|\boldsymbol{X}_i^{\{1,2\}};\boldsymbol{\alpha}^*,\boldsymbol{\Omega} \sim \mathcal{N}(\boldsymbol{X}_i^{\{1,2\}}\boldsymbol{\alpha^*},\boldsymbol{\Omega})
 		 \textrm{ with } \boldsymbol{\alpha}^*= \left( \begin{array}{cccc}
 		0.5 & 0 & 2 & 0 \\ 
 		0 & 1 & 0 & 3
@@ -1730,7 +1748,7 @@ When comparing $\mbox{{\sc bic}}_U$ to $\mbox{{\sc bic}}_H$ it becomes evident t
 We compare results obtained on	$\hat{\boldsymbol{\alpha}}^*$ by both {\tt CorReg} and {\tt Selvarclust}.		
 Both {\tt SelvarClust} and {\tt CorReg} add an intercept (default parameter) that is like using a constant covariate $\boldsymbol{X}^0=\boldsymbol{1}$ and then adding a first row to $\boldsymbol{\alpha}^*$ containing the intercept of the sub-regressions. This intercept is not part of the selection procedure so it will never have zero value in practice. Hence we compare the second and third lines of the matrices (an horizontal line is drawn to distinguish the intercept from the rest of the matrix).\\
 
-{\tt SelvarClust} founds $\hat{\boldsymbol{\alpha}}^*_{Selvarclust}=$
+{\tt SelvarClust} finds $\hat{\boldsymbol{\alpha}}^*_{Selvarclust}=$
 \begin{displaymath}
 	\left (\begin{array}{cccccccc}
 	\textcolor{gray}{0.006052} &\textcolor{gray}{-0.025386} &\textcolor{gray}{-0.006845}&\textcolor{gray}{ -0.015952} &\textcolor{gray}{0.003420}& \textcolor{gray}{0.007839} &\textcolor{gray}{-0.047422}& \textcolor{gray}{-0.005811} \\
@@ -1740,7 +1758,7 @@ Both {\tt SelvarClust} and {\tt CorReg} add an intercept (default parameter) tha
 	\end{array} \right )
 \end{displaymath}		
 	
-	{\tt CorReg} founds:
+	{\tt CorReg} finds:
 \begin{displaymath}
 	\hat{\boldsymbol{\alpha}}^*_{CorReg}=\left(
 	\begin{array}{cccc}
@@ -3277,7 +3295,8 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 \section{Estimation of sub-regressions with missing values}
 \subsection{Integrated likelihood}
 Maugis \cite{maugis2012selvarclustmv} has developed another software that manage missing values: {\tt SelvarclustMV}. It relies on the assumption of Missing At Random (MAR) values and on the more constraining hypothesis that regressor covariates are completely observed (with our notations: $\forall j \in \{1,\dots,d_r \}, \forall k \in J_p^j, \forall 1\leq i \leq n, M_{i,k}=0$). The model (Partition, sub-regression parameters and Gaussian mixtures parameters) is then estimated with an Expectation-Maximization algorithm using all the observed values (even incomplete individuals) without any imputation. Numerical results shows that {\tt SelvarclustMV} is highly competitive compared to imputation methods.\\
- Here again the algorithm used in {\tt SelvarclustMV} stands in a Gaussian clustering context and is not exactly adapted to our situation. Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
+ Here again the algorithm used in {\tt SelvarclustMV} stands in a Gaussian clustering context and is not exactly adapted to our situation. Estimation of $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ was inconclusive (see section \ref{compMaugis}) without missing values so the situation would not be improved with missing values.
+ Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
 
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$.
 	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high. We choose to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood.\\
@@ -3316,12 +3335,12 @@ We start with the complete likelihood of $\boldsymbol{X}$:
 We know that $\boldsymbol{X}$ is a Gaussian mixture ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ the number of its components.
 \begin{eqnarray}
 	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X} 
-	=\int_{\boldsymbol{X}_M}\sum_{k=1}^K \pi_k \phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
-	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
-	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\prod_{i=1}^n\phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\boldsymbol{X}_{i,M}}\phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_i \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
-	&=&\sum_{k=1}^K \pi_k \phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})
+	=\int_{\boldsymbol{X}_M}\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
+	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
+	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\prod_{i=1}^n\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
+	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\boldsymbol{X}_{i,M}}\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_i \\
+	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
+	&=&\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})
 \end{eqnarray}
 
 
@@ -3602,7 +3621,7 @@ and we can use the same method as the one for classical case without missing val
 			%&=&\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}\setminus x_{i,J_r^j},z_{i, J_r^j};\boldsymbol{\alpha}^{(h)},\Theta,{S})
 		%	\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}};\alpha^{(h)},\Theta,S) \\
 			%&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_i^{I_f^j};\boldsymbol{\alpha}^{(h)},\Theta,S)
-			&=&\phi(\boldsymbol{X}_i^{J_p^j}\boldsymbol{\alpha}^{(h)}_{j};\sigma_j^2 ) \textrm{ Gaussian}
+			&=&\Phi(\boldsymbol{X}_i^{J_p^j}\boldsymbol{\alpha}^{(h)}_{j};\sigma_j^2 ) \textrm{ Gaussian}
 			\end{eqnarray}		
 			And
 			%We have $\mathbb{P}(\boldsymbol{X}|Z)=\mathcal{N}(\boldsymbol{\mu}_{|Z},\boldsymbol{\Sigma}_{|Z})$. \\
@@ -3611,7 +3630,7 @@ and we can use the same method as the one for classical case without missing val
 			\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i}\setminus x_{i,j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,\bar{j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})			
 			\end{eqnarray}			
 			\begin{eqnarray}
-			=\phi(\mu_{j|Z_{i,j}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}(X_{\bar{ij}}-\boldsymbol{\mu}_{X_{\bar{ij}}|Z_i}) ;  \sigma_{j|Z_{i,j}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}')
+			=\Phi(\mu_{j|Z_{i,j}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}(X_{\bar{ij}}-\boldsymbol{\mu}_{X_{\bar{ij}}|Z_i}) ;  \sigma_{j|Z_{i,j}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}')
 			\end{eqnarray}		
 			Where all the values needed here were described above for the likelihood computation with $\boldsymbol{X}_{\bar{ij}}=\boldsymbol{X}_i\setminus x_{i,j}$ and $Z_i=\{Z_{i,j}:j=1,\dots,d \}$.\\
 			
