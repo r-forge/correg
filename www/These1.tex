@@ -3264,7 +3264,162 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	\FloatBarrier
 \newpage
 	\setcellgapes{1pt}
-\part{Advanced Perspectives}
+
+
+\chapter{Conclusion and perspectives}
+	\section{Conclusion}
+		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates. Moreover, it is only a pretreatment so it could easily be used with future statistical tools. \\
+		
+		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, {\tt CorReg} will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method seems to have a positive impact on the way users looks at the statistics (according to them). \\
+		
+			It is good to see that sequential methods (plug-in model) and automation can produce good results. Probabilistic models are efficient even without human expertise and let the experts improve the results by adding their expertise in the model (coercing some sub-regression for example). So we hope that statistics will continue to be a central tool for engineers.
+		
+		
+	\section{Perspectives}
+		\subsection{Non-linear regression}
+			Polynomial regression, logistic regression \cite{hosmer2000applied}, {\it etc.} might be improved by a method like this.
+		\subsection{Pretreatment not only for regression}
+			Classification and Regression Tree, and any other method could benefit of the variable selection pretreatment implied by our marginal model.
+		\subsection{Improved programming}
+			Even if it is written in C++, the algorithm could be optimized by a better usage of sparse matrices, memory usage optimization, and other small things that could reduce computational cost to be faster and allow to work with larger datasets (already works with thousands of covariates).
+		\subsection{Missing values in classical methods}
+			The full generative approach could be used to manage missing values without imputation for many classical methods.
+			It can notably be used for clustering and not only in response variable prediction context.
+			Missing values were just introduced here and represents a consequent perspective.
+		\subsection{Interpretation improvements}
+			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to reach this goal.
+		\subsubsection{Regression mixture models}
+			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions with some parameters and sub-regressions common to several classes and some other with distinct values.
+\cleardoublepage
+
+\addcontentsline{toc}{chapter}{References}
+\bibliographystyle{apalike}
+%\bibliographystyle{plain}
+%\nocite{*}
+\bibliography{biblio}
+%\addcontentsline{toc}{chapter}{Appendices}
+%\appendix
+%	\chapter{Graphs and CorReg}
+%		\section{Matricial notations}
+%		\section{Properties}
+%		Toute matrice binaire est associable à une matrice d'adjacence d'un graphe orienté (DAG)
+%		
+%		Matrice nilpotente = carré nul
+%		
+%		carré d'une matrice d'adjacence => chemins de longueur 2
+%		
+%		donc matrices binaires nilpotentes = graphes orientés sans chemins de longueur 2 donc celui qui reçoit n'emet pas donc graphe bi-partie
+%		
+%		dénombrement : liste systématique des possibilités (par décompostion comme dans la hiérarchie)		
+%		
+%	\chapter{Mixture models}
+%		\section{Linear combination}
+%			
+%		\section{Industrial examples}
+\part{Appendices}
+
+	\chapter{Identifiability}\label{sectionident}
+		\section{Definition}
+		We call identifiability:
+\begin{eqnarray}
+	\nexists (\boldsymbol{S},\tilde{\boldsymbol{S}}) \in \mathcal{S}_d\times \mathcal{S}_d \textrm{ with } \boldsymbol{S} \neq \tilde{\boldsymbol{S}} \textrm{ and }
+	\mathbb{P}(\boldsymbol{X};\boldsymbol{S})=\mathbb{P}(\boldsymbol{X};\tilde{\boldsymbol{S}})
+ \end{eqnarray}
+ To avoid label-switching consideration, we suppose here (without loss of generality) that $\boldsymbol{J}_r$ is ordered by ascending order of the labels of the covariates.
+	Hence identifiability is paired with the hypotheses we made on $ \mathcal{S}_d$. It is not sufficient to find a structure of linear sub-regression, the structure also has to verify hypotheses \ref{H1} to \ref{H3} (uncrossing rule + dependencies exhaustively described by the structure and then independence between the conditional response covariates). As a consequence, the covariance between two covariates is not null if and only if these covariates are linked by some sub-regressions.
+ 
+		\section{Sufficient condition for identifiability}
+
+\paragraph{Identifability criterion:} The model $\boldsymbol{S}$ is identifiable if
+			\begin{equation}
+				\forall j \in \{1,\dots,d_r\},  d_p^j>1\label{identcondition}.
+			\end{equation}
+That is to have at least two regressors in each sub-regression.\\
+
+To prove the sufficiency of this condition for identifiability we rely on the following lemma.
+
+\paragraph{Lemma:} With $\boldsymbol{X}$ and $\boldsymbol{S}$ following hypotheses \ref{H1} to \ref{H3}, covariance between two distinct covariates does differ from $0$ in only two cases:
+\begin{enumerate}
+	\item One of the two variables is a regressor of the other in a sub-regression	
+	\begin{eqnarray}
+		j \in \{1,\dots,d_r\}, i \in J_p^j \textrm{ then } \operatorname{cov}(\boldsymbol{X}^{i},\boldsymbol{X}^{J_r^j})\neq 0
+	\end{eqnarray}
+	\item Both variables are regressed by a common covariate in their respective sub-regression:
+	\begin{eqnarray}
+		\exists k \in J_f, \exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\} \textrm{ with } i\neq j,&&  k\in J_p^i \textrm{ and } k\in J_p^j \\
+		\textrm{ then } \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})&\neq &0 \nonumber
+	\end{eqnarray}
+\end{enumerate}
+
+\paragraph{proof of the lemma:}
+The two cases lead immediately to non-zero covariance so we just look at other combinations of covariates.
+\begin{itemize}
+	\item if $\exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\}, \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})\neq 0$ then hypothesis \ref{H2} (uncrossing rule) guarantee that the two covariates are not in a same sub-regression so the covariance must come from the noises of the sub-regression but hypothesis \ref{H3} say that they are independent. The only remaining case is then the second case of the lemma: common covariate in the sub-regressions.
+	\item if $(i,j)\in J_f\times J_f$ then  $\operatorname{cov}(\boldsymbol{X}^i,\boldsymbol{X}^j)=0 $ because covariates in $\boldsymbol{X}_f$ are orthogonal (by hypotheses \ref{H1} and \ref{H2}).
+	\item if $j \in \{1,\dots,d_r\}, i \in J_f$ and $\operatorname{cov}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^i)\neq 0$ then $i\in J_p^j$ by hypotheses \ref{H1} and \ref{H3} and equation \ref{eq:H3}.
+\end{itemize}
+$\square$
+
+\paragraph{proof of the identifiability criterion:} We suppose that \ref{identcondition} is verified and the model is not identifiable:
+\begin{eqnarray}
+	\exists (\boldsymbol{S},\tilde{\boldsymbol{S}}) \in \mathcal{S}_d\times \mathcal{S}_d \textrm{ with } \boldsymbol{S} \neq \tilde{\boldsymbol{S}} \textrm{ and }
+	\mathbb{P}(\boldsymbol{X};\boldsymbol{S})=\mathbb{P}(\boldsymbol{X};\tilde{\boldsymbol{S}})
+ \end{eqnarray}
+ $\tilde{\boldsymbol{S}}=(\tilde{\boldsymbol{J}}_r,\tilde{\boldsymbol{J}}_p)$ contains $\tilde{d}_r$ sub-regressions and is characterized by $\tilde{\boldsymbol{J}}_r=(\tilde{J}_r^1,\dots,\tilde{J}_r^{\tilde{d}_r}),\tilde{\boldsymbol{J}}_p=(\tilde{J}_p^1,\dots,\tilde{J}_p^{\tilde{d}_r})$.\\
+Because $\boldsymbol{S}\neq \tilde{\boldsymbol{S}} $ we have $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$ or $\boldsymbol{J}_p\neq \tilde{\boldsymbol{J}}_p$.
+\begin{itemize}
+\item If $\boldsymbol{J}_r = \tilde{\boldsymbol{J}}_r$ and $\boldsymbol{S}\neq \tilde{\boldsymbol{S}}$ then one sub-regression as a predictor that stands only in one of the two structures. We suppose (without loss of generality) that $\exists j \in \{1,\dots,d_r\}$ for which
+$\exists i \in J_p^j$ with $i \notin \tilde{J}_p^j$ so $\operatorname{cov}_{S}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})\neq 0$ and $\operatorname{cov}_{\tilde{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})= 0$ (from the lemma) so the two structure don't give the same joint distribution, leading to a contradiction.
+\item If $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$ then one of the two models has a sub-regression that is not in the other. We suppose (without loss of generality) that
+ $\exists J_r^j \in J_r$ with $J_r^j \notin \tilde{J}_r$ then $J_r^j\in \tilde{J_f}$ (recall $J_f=\{1,\dots,d \}\setminus J_r$). We note that $J_r^j \in J_r$ means $\exists k_1\neq k_2, \{k_1,k_2 \}\subset J_p^j \subset J_f$. Then $\operatorname{cov}_{\boldsymbol{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{k_1})\neq 0$ and $\operatorname{cov}_{\boldsymbol{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{k_2})\neq 0 $ so by the lemma $k_1$ and $k_2$ are responses variables in $\tilde{\boldsymbol{S}}$: $\exists (l_1,l_2) \in \{1,\dots,\tilde{d}_r \}\times \{1,\dots,\tilde{d}_r \}, \tilde{J}_r^{l_1}=k_1,\tilde{J}_r^{l_2}=k_2$ and $J_r^j$ is a regressor of $k_1$ and $k_2$: $J_r^j \in J_p^{l_1}, J_r^j \in J_p^{l_2}$ thus $\operatorname{cov}_{\tilde{\boldsymbol{S}}}(\boldsymbol{X}^{k_1},\boldsymbol{X}^{k_2})\neq 0$ that is not possible because $ \{k_1,k_2 \}\subset J_p^j \subset J_f$ and covariates in $\boldsymbol{X}^{J_f}$ are orthogonal by hypotheses.
+\end{itemize}
+
+Finally, condition \ref{identcondition} is sufficient for identifiability of $\boldsymbol{S}$.
+  	$\square$		
+	
+\paragraph{Remark:} Because sub-regressions with at least two regressors are identifiable, 
+the only non-identifiable sub-regressions could be those with only one regressor, leading only to pairwise correlations that can be seen directly in the correlation matrix. Such sub-regression can be permuted without any impact on interpretation so such trivial sub-regression are not a problem even if they may occur with real datasets. One more thing: exact sub-regression with at least two sub-regressors are identifiable with our hypotheses. 	
+	
+			
+%			\subsection{With Gaussian mixtures by comparison with SelvarClust} \label{preuveident}
+%	The model presented above relies on a discrete structure $\boldsymbol{S}$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{\boldsymbol{S}}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
+%	
+%		If there are exact sub-regressions ($\exists j\in \{1,\dots,d_r\}, \sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. {\tt CorReg} prints a warning to point out exact regressions when found.
+%	In the followings we suppose $\forall j\in \{1,\dots,d_r\}, \sigma^2_j\neq 0$, then $\boldsymbol{X}_f'\boldsymbol{X}_f$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
+%	\\
+%	
+%Our full generative model is a $d$-sized Gaussian mixture model of $K$ distinct components and 
+%%	\begin{equation}
+%%	f(\boldsymbol{X}|K,S)=f(\boldsymbol{X}_f|K,S)f(\boldsymbol{X}_r|\boldsymbol{X}_f,S)
+%%	\end{equation}	
+%%	
+%	can be seen as a $\mathbf{SR}$ model defined by Maugis \cite{maugis2009variable}. In this section, $S$ will denote the set of variable as in the paper from Maugis and we call Gaussian mixtures the Gaussian mixtures with at least two distinct components. The equivalence with Maugis's model is defined by:
+%	$\boldsymbol{X}_r=\boldsymbol{y}^{S^c}$ and $\boldsymbol{X}_f=\boldsymbol{y}^R$. We have supposed independence between variables in $\boldsymbol{X}_f$ so the identifiability theorem from Maugis tells that our model is identifiable if variables in $\boldsymbol{X}_f$ are Gaussian mixtures.% (what we supposed in section \ref{sectionfullgen}).
+%	\\
+%	
+%	
+%%First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there must be at least one Gaussian mixture on the right of each sub-regression. 
+%We define $\boldsymbol{X}^G \subsetneq \boldsymbol{X}_f$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
+%We suppose that variables in $\boldsymbol{X}_r$ are all Gaussian mixtures. It implies that $\forall j\in \{1,\dots,d_r\},\exists i \in J_p^j $ so that $\boldsymbol{X}^i \subset \boldsymbol{X}^{G^c} $ since any linear combination of Gaussian variable would only give a Gaussian (so each sub-regression contain at least one Gaussian mixture as a regressor).
+%\\
+%	We have $\boldsymbol{X}_r=\boldsymbol{X}_f\boldsymbol{\alpha}^* + \boldsymbol{\varepsilon}$. 
+%	
+%		%\\We note $\Theta$ the parameter of the model.We want to know if $P(\boldsymbol{X}|S,\Theta)=P(\boldsymbol{X}|\tilde{S},\tilde{\Theta})$ does imply $(S,\Theta)=(\tilde{S},\tilde{\Theta})$.
+%The theorem from Maugis guarantee that a sub-regression between Gaussian mixtures is identifiable in terms of which one is regressed by others.
+%		\begin{eqnarray}
+%%			\forall j \in I_r, \boldsymbol{X}^j_{|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_j^G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c}+ \boldsymbol{\varepsilon}_j \\
+%%			\boldsymbol{X}^j_{|\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c} + \tilde{\boldsymbol{\varepsilon}}_j \textrm{ is identifiable where} \\
+%%			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian. 
+%		 \boldsymbol{X}_{r}|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_G^*+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^*+ \boldsymbol{\varepsilon} \\
+%			%\boldsymbol{X}_{r|\boldsymbol{X}^{G^c}}
+%			&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^* + \tilde{\boldsymbol{\varepsilon}} \textrm{ which is identifiable with} \\
+%			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_{j,G}^*+ \boldsymbol{\varepsilon}_j \textrm{ that is Gaussian.}  
+%		\end{eqnarray}
+%		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
+%		It implies then that: $\forall j \in \{1,\dots,d_r \}, \boldsymbol{X}^{J_r^j} $ is a Gaussian mixture and $\exists i \in J_p^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  \\
+%		
+	%Tables \ref{testidentifiableG}	and \ref{testidentifiableGM} illustrates this property.
+	
 \chapter{Missing values} \label{chapmiss}
 	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to make multiple imputations based on the sub-regression structure. The full generative model also helps to manage missing values in the MCMC with the ability to compute $\mbox{{\sc bic}}_*$ only on the observed values. 
 	
@@ -3834,163 +3989,8 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 	We see in figure \ref{MSEXmissBV} that our SEM gives a smaller \textsc{mse} with a smaller variance than imputation by the mean. There is still a lot of work to do in the field of missing values and we have only walked the firsts steps of this huge perspective, but these first results are encouraging and make us feel like this orientation is worthy to be followed.
 
 
-\chapter{Conclusion and perspectives}
-	\section{Conclusion}
-		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates. Moreover, it is only a pretreatment so it could easily be used with future statistical tools. \\
-		
-		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, {\tt CorReg} will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method seems to have a positive impact on the way users looks at the statistics (according to them). \\
-		
-			It is good to see that sequential methods (plug-in model) and automation can produce good results. Probabilistic models are efficient even without human expertise and let the experts improve the results by adding their expertise in the model (coercing some sub-regression for example). So we hope that statistics will continue to be a central tool for engineers.
-		
-		
-	\section{Perspectives}
-		\subsection{Non-linear regression}
-			Polynomial regression, logistic regression \cite{hosmer2000applied}, {\it etc.} might be improved by a method like this.
-		\subsection{Pretreatment not only for regression}
-			Classification and Regression Tree, and any other method could benefit of the variable selection pretreatment implied by our marginal model.
-		\subsection{Improved programming}
-			Even if it is written in C++, the algorithm could be optimized by a better usage of sparse matrices, memory usage optimization, and other small things that could reduce computational cost to be faster and allow to work with larger datasets (already works with thousands of covariates).
-		\subsection{Missing values in classical methods}
-			The full generative approach could be used to manage missing values without imputation for many classical methods.
-			It can notably be used for clustering and not only in response variable prediction context.
-			Missing values were just introduced here and represents a consequent perspective.
-		\subsection{Interpretation improvements}
-			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to reach this goal.
-		\subsubsection{Regression mixture models}
-			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions with some parameters and sub-regressions common to several classes and some other with distinct values.
-\cleardoublepage
-
-\addcontentsline{toc}{chapter}{References}
-\bibliographystyle{apalike}
-%\bibliographystyle{plain}
-%\nocite{*}
-\bibliography{biblio}
-%\addcontentsline{toc}{chapter}{Appendices}
-%\appendix
-%	\chapter{Graphs and CorReg}
-%		\section{Matricial notations}
-%		\section{Properties}
-%		Toute matrice binaire est associable à une matrice d'adjacence d'un graphe orienté (DAG)
-%		
-%		Matrice nilpotente = carré nul
-%		
-%		carré d'une matrice d'adjacence => chemins de longueur 2
-%		
-%		donc matrices binaires nilpotentes = graphes orientés sans chemins de longueur 2 donc celui qui reçoit n'emet pas donc graphe bi-partie
-%		
-%		dénombrement : liste systématique des possibilités (par décompostion comme dans la hiérarchie)		
-%		
-%	\chapter{Mixture models}
-%		\section{Linear combination}
-%			
-%		\section{Industrial examples}
-\chapter{Appendices}
-
-	\section{Identifiability}\label{sectionident}
-		\subsection{Definition}
-		We call identifiability:
-\begin{eqnarray}
-	\nexists (\boldsymbol{S},\tilde{\boldsymbol{S}}) \in \mathcal{S}_d\times \mathcal{S}_d \textrm{ with } \boldsymbol{S} \neq \tilde{\boldsymbol{S}} \textrm{ and }
-	\mathbb{P}(\boldsymbol{X};\boldsymbol{S})=\mathbb{P}(\boldsymbol{X};\tilde{\boldsymbol{S}})
- \end{eqnarray}
- To avoid label-switching consideration, we suppose here (without loss of generality) that $\boldsymbol{J}_r$ is ordered by ascending order of the labels of the covariates.
-	Hence identifiability is paired with the hypotheses we made on $ \mathcal{S}_d$. It is not sufficient to find a structure of linear sub-regression, the structure also has to verify hypotheses \ref{H1} to \ref{H3} (uncrossing rule + dependencies exhaustively described by the structure and then independence between the conditional response covariates). As a consequence, the covariance between two covariates is not null if and only if these covariates are linked by some sub-regressions.
- 
-		\subsection{Sufficient condition for identifiability}
-
-\paragraph{Identifability criterion:} The model $\boldsymbol{S}$ is identifiable if
-			\begin{equation}
-				\forall j \in \{1,\dots,d_r\},  d_p^j>1\label{identcondition}.
-			\end{equation}
-That is to have at least two regressors in each sub-regression.\\
-
-To prove the sufficiency of this condition for identifiability we rely on the following lemma.
-
-\paragraph{Lemma:} With $\boldsymbol{X}$ and $\boldsymbol{S}$ following hypotheses \ref{H1} to \ref{H3}, covariance between two distinct covariates does differ from $0$ in only two cases:
-\begin{enumerate}
-	\item One of the two variables is a regressor of the other in a sub-regression	
-	\begin{eqnarray}
-		j \in \{1,\dots,d_r\}, i \in J_p^j \textrm{ then } \operatorname{cov}(\boldsymbol{X}^{i},\boldsymbol{X}^{J_r^j})\neq 0
-	\end{eqnarray}
-	\item Both variables are regressed by a common covariate in their respective sub-regression:
-	\begin{eqnarray}
-		\exists k \in J_f, \exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\} \textrm{ with } i\neq j,&&  k\in J_p^i \textrm{ and } k\in J_p^j \\
-		\textrm{ then } \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})&\neq &0 \nonumber
-	\end{eqnarray}
-\end{enumerate}
-
-\paragraph{proof of the lemma:}
-The two cases lead immediately to non-zero covariance so we just look at other combinations of covariates.
-\begin{itemize}
-	\item if $\exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\}, \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})\neq 0$ then hypothesis \ref{H2} (uncrossing rule) guarantee that the two covariates are not in a same sub-regression so the covariance must come from the noises of the sub-regression but hypothesis \ref{H3} say that they are independent. The only remaining case is then the second case of the lemma: common covariate in the sub-regressions.
-	\item if $(i,j)\in J_f\times J_f$ then  $\operatorname{cov}(\boldsymbol{X}^i,\boldsymbol{X}^j)=0 $ because covariates in $\boldsymbol{X}_f$ are orthogonal (by hypotheses \ref{H1} and \ref{H2}).
-	\item if $j \in \{1,\dots,d_r\}, i \in J_f$ and $\operatorname{cov}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^i)\neq 0$ then $i\in J_p^j$ by hypotheses \ref{H1} and \ref{H3} and equation \ref{eq:H3}.
-\end{itemize}
-$\square$
-
-\paragraph{proof of the identifiability criterion:} We suppose that \ref{identcondition} is verified and the model is not identifiable:
-\begin{eqnarray}
-	\exists (\boldsymbol{S},\tilde{\boldsymbol{S}}) \in \mathcal{S}_d\times \mathcal{S}_d \textrm{ with } \boldsymbol{S} \neq \tilde{\boldsymbol{S}} \textrm{ and }
-	\mathbb{P}(\boldsymbol{X};\boldsymbol{S})=\mathbb{P}(\boldsymbol{X};\tilde{\boldsymbol{S}})
- \end{eqnarray}
- $\tilde{\boldsymbol{S}}=(\tilde{\boldsymbol{J}}_r,\tilde{\boldsymbol{J}}_p)$ contains $\tilde{d}_r$ sub-regressions and is characterized by $\tilde{\boldsymbol{J}}_r=(\tilde{J}_r^1,\dots,\tilde{J}_r^{\tilde{d}_r}),\tilde{\boldsymbol{J}}_p=(\tilde{J}_p^1,\dots,\tilde{J}_p^{\tilde{d}_r})$.\\
-Because $\boldsymbol{S}\neq \tilde{\boldsymbol{S}} $ we have $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$ or $\boldsymbol{J}_p\neq \tilde{\boldsymbol{J}}_p$.
-\begin{itemize}
-\item If $\boldsymbol{J}_r = \tilde{\boldsymbol{J}}_r$ and $\boldsymbol{S}\neq \tilde{\boldsymbol{S}}$ then one sub-regression as a predictor that stands only in one of the two structures. We suppose (without loss of generality) that $\exists j \in \{1,\dots,d_r\}$ for which
-$\exists i \in J_p^j$ with $i \notin \tilde{J}_p^j$ so $\operatorname{cov}_{S}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})\neq 0$ and $\operatorname{cov}_{\tilde{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{i})= 0$ (from the lemma) so the two structure don't give the same joint distribution, leading to a contradiction.
-\item If $\boldsymbol{J}_r\neq \tilde{\boldsymbol{J}}_r$ then one of the two models has a sub-regression that is not in the other. We suppose (without loss of generality) that
- $\exists J_r^j \in J_r$ with $J_r^j \notin \tilde{J}_r$ then $J_r^j\in \tilde{J_f}$ (recall $J_f=\{1,\dots,d \}\setminus J_r$). We note that $J_r^j \in J_r$ means $\exists k_1\neq k_2, \{k_1,k_2 \}\subset J_p^j \subset J_f$. Then $\operatorname{cov}_{\boldsymbol{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{k_1})\neq 0$ and $\operatorname{cov}_{\boldsymbol{S}}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{k_2})\neq 0 $ so by the lemma $k_1$ and $k_2$ are responses variables in $\tilde{\boldsymbol{S}}$: $\exists (l_1,l_2) \in \{1,\dots,\tilde{d}_r \}\times \{1,\dots,\tilde{d}_r \}, \tilde{J}_r^{l_1}=k_1,\tilde{J}_r^{l_2}=k_2$ and $J_r^j$ is a regressor of $k_1$ and $k_2$: $J_r^j \in J_p^{l_1}, J_r^j \in J_p^{l_2}$ thus $\operatorname{cov}_{\tilde{\boldsymbol{S}}}(\boldsymbol{X}^{k_1},\boldsymbol{X}^{k_2})\neq 0$ that is not possible because $ \{k_1,k_2 \}\subset J_p^j \subset J_f$ and covariates in $\boldsymbol{X}^{J_f}$ are orthogonal by hypotheses.
-\end{itemize}
-
-Finally, condition \ref{identcondition} is sufficient for identifiability of $\boldsymbol{S}$.
-  	$\square$		
-	
-\paragraph{Remark:} Because sub-regressions with at least two regressors are identifiable, 
-the only non-identifiable sub-regressions could be those with only one regressor, leading only to pairwise correlations that can be seen directly in the correlation matrix. Such sub-regression can be permuted without any impact on interpretation so such trivial sub-regression are not a problem even if they may occur with real datasets. One more thing: exact sub-regression with at least two sub-regressors are identifiable with our hypotheses. 	
-	
-			
-%			\subsection{With Gaussian mixtures by comparison with SelvarClust} \label{preuveident}
-%	The model presented above relies on a discrete structure $\boldsymbol{S}$ between the covariates. But to find it we need identifiability property to insure that we will asymptotically find the true model. Identifiability of the structure is asked in following terms: Is it possible to find another structure $\tilde{\boldsymbol{S}}$ of linear regression between the covariates leading to the same joint distribution and marginal distributions? 
-%	
-%		If there are exact sub-regressions ($\exists j\in \{1,\dots,d_r\}, \sigma^2_j=0$), the structure won't be identifiable. But it only means that several structure will have the same likelihood and they will have the same interpretation. So it's not really a problem. Moreover, when an exact sub-regression is found, we can delete one of the implied variables without any loss of information and the structure will define a list of variable from which to delete. {\tt CorReg} prints a warning to point out exact regressions when found.
-%	In the followings we suppose $\forall j\in \{1,\dots,d_r\}, \sigma^2_j\neq 0$, then $\boldsymbol{X}_f'\boldsymbol{X}_f$ and $\boldsymbol{X}'\boldsymbol{X}$ are of full rank (but the later is ill-conditioned for small values of $\sigma^2_j$).
-%	\\
-%	
-%Our full generative model is a $d$-sized Gaussian mixture model of $K$ distinct components and 
-%%	\begin{equation}
-%%	f(\boldsymbol{X}|K,S)=f(\boldsymbol{X}_f|K,S)f(\boldsymbol{X}_r|\boldsymbol{X}_f,S)
-%%	\end{equation}	
-%%	
-%	can be seen as a $\mathbf{SR}$ model defined by Maugis \cite{maugis2009variable}. In this section, $S$ will denote the set of variable as in the paper from Maugis and we call Gaussian mixtures the Gaussian mixtures with at least two distinct components. The equivalence with Maugis's model is defined by:
-%	$\boldsymbol{X}_r=\boldsymbol{y}^{S^c}$ and $\boldsymbol{X}_f=\boldsymbol{y}^R$. We have supposed independence between variables in $\boldsymbol{X}_f$ so the identifiability theorem from Maugis tells that our model is identifiable if variables in $\boldsymbol{X}_f$ are Gaussian mixtures.% (what we supposed in section \ref{sectionfullgen}).
-%	\\
-%	
-%	
-%%First, we observe that if each variable in $\boldsymbol{X}_r$ is a Gaussian mixture, then there must be at least one Gaussian mixture on the right of each sub-regression. 
-%We define $\boldsymbol{X}^G \subsetneq \boldsymbol{X}_f$ containing Gaussian variables and we note the Gaussian mixtures $\boldsymbol{X}^{G^c}\neq \emptyset$ its complement in $\boldsymbol{X}_f$.
-%We suppose that variables in $\boldsymbol{X}_r$ are all Gaussian mixtures. It implies that $\forall j\in \{1,\dots,d_r\},\exists i \in J_p^j $ so that $\boldsymbol{X}^i \subset \boldsymbol{X}^{G^c} $ since any linear combination of Gaussian variable would only give a Gaussian (so each sub-regression contain at least one Gaussian mixture as a regressor).
-%\\
-%	We have $\boldsymbol{X}_r=\boldsymbol{X}_f\boldsymbol{\alpha}^* + \boldsymbol{\varepsilon}$. 
-%	
-%		%\\We note $\Theta$ the parameter of the model.We want to know if $P(\boldsymbol{X}|S,\Theta)=P(\boldsymbol{X}|\tilde{S},\tilde{\Theta})$ does imply $(S,\Theta)=(\tilde{S},\tilde{\Theta})$.
-%The theorem from Maugis guarantee that a sub-regression between Gaussian mixtures is identifiable in terms of which one is regressed by others.
-%		\begin{eqnarray}
-%%			\forall j \in I_r, \boldsymbol{X}^j_{|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_j^G+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c}+ \boldsymbol{\varepsilon}_j \\
-%%			\boldsymbol{X}^j_{|\boldsymbol{X}^{G^c}}&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_j^{G^c} + \tilde{\boldsymbol{\varepsilon}}_j \textrm{ is identifiable where} \\
-%%			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_j^{G}+ \boldsymbol{\varepsilon}_j \textrm{ is Gaussian. 
-%		 \boldsymbol{X}_{r}|\boldsymbol{X}^G,\boldsymbol{X}^{G^c}&=& \boldsymbol{X}^G\boldsymbol{\alpha}_G^*+\boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^*+ \boldsymbol{\varepsilon} \\
-%			%\boldsymbol{X}_{r|\boldsymbol{X}^{G^c}}
-%			&=& \boldsymbol{X}^{G^c}\boldsymbol{\alpha}_{G^c}^* + \tilde{\boldsymbol{\varepsilon}} \textrm{ which is identifiable with} \\
-%			\tilde{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{G}\boldsymbol{\alpha}_{j,G}^*+ \boldsymbol{\varepsilon}_j \textrm{ that is Gaussian.}  
-%		\end{eqnarray}
-%		So a sufficient condition for identifiability is to have at least one Gaussian mixture in each sub-regression.	
-%		It implies then that: $\forall j \in \{1,\dots,d_r \}, \boldsymbol{X}^{J_r^j} $ is a Gaussian mixture and $\exists i \in J_p^j,\boldsymbol{X}^{i} \subset \boldsymbol{X}^G $.  \\
-%		
-	%Tables \ref{testidentifiableG}	and \ref{testidentifiableGM} illustrates this property.
-	
-
 	\newpage
-\section{CorReg: the concept}	
+\chapter{CorReg: the concept}	
 	
 		The {\tt CorReg} package is already downloadable on CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (OLS,stepwise,LASSO,elasticnet,clere,spike and slab, adaptive lasso and every models in the {\tt lars} package). So every simulation presented above can be done with {\tt CorReg}.
 	{\tt CorReg} also provides tools to interpret found structures and visualize the dataset (missing values and correlations). \\%More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}. 
