@@ -448,7 +448,7 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a possibly bi
 	
 		 \FloatBarrier
 	\section{Variable selection method}
-		\subsection{LASSO: Least Absolute Shrinkage and Selection Operator }		% ne pas oublier de mentionner les packages existants
+		\subsection{Least Absolute Shrinkage and Selection Operator ({\sc lasso})}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{tibshiranilasso}  
 			%\cite{tibshirani1996regression} 
@@ -463,23 +463,23 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[width=200px]{figures/lasso.png} 
-			\caption{Geometric view of the Penalty for the LASSO (left) compared to ridge regression (right) as shown in the book from Hastie \cite{hastie2009elements}} \label{lassogeom}
+			\caption{Geometric view of the Penalty for the \textsc{lasso} (left) compared to ridge regression (right) as shown in the book from Hastie \cite{hastie2009elements}} \label{lassogeom}
 		\end{figure}
-		Figure \ref{lassogeom} shows the contour of error (red) and constraint function (blue) for both lasso (left) and ridge regression (right). We see that the optimum will be found on an axis for the lasso because its constraint zone is a polyhedron whose vertices are on the axis but not for the ridge regression. Here the axis stands for the regression coefficients.\\
+		Figure \ref{lassogeom} shows the contour of error (red) and constraint function (blue) for both \textsc{lasso} (left) and ridge regression (right). We see that the optimum will be found on an axis for the \textsc{lasso} because its constraint zone is a polyhedron whose vertices are on the axis but not for the ridge regression. Here the axis stands for the regression coefficients.\\
 		
 		Here again we have to choose a value for $\lambda$.
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole LASSO path.  It can be used through the {\tt lars } package on CRAN (\cite{packagelars}). But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the LASSO faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the LASSO will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The LASSO does not distinguish a covariate not selected because it is totally redundant with another already selected covariate from an irrelevant covariate. And that is a problem. This consistency issue is illustrated in section \ref{consistency}.\\
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole \textsc{lasso} path.  It can be used through the {\tt lars } package on CRAN (\cite{packagelars}). But like the ridge regression, the penalty does not distinguish correlated and independent covariates so there is no guarantee to have less correlated covariates. In practice, we know that the \textsc{lasso} faces consistency issues when confronted to correlated covariates \cite{Zhao2006MSC}. When two covariates are correlated, it tends to keep only one of them. For example, if two covariates are equal and have the same effect, the \textsc{lasso} will keep only one of them. As explained earlier, variable selection is a real stake for us but is necessary to have a good interpretation. The \textsc{lasso} does not distinguish a covariate not selected because it is totally redundant with another already selected covariate from an irrelevant covariate. And that is a problem. This consistency issue is illustrated in section \ref{consistency}.\\
 
 
 		% ne pas oublier de mentionner les packages existants
 
 			%\cite{zou2006adaptive}% adaptive lasso
 			%\cite{wang2011random}%random lasso
-			 Some recent variants of the \textsc{LASSO} do exist for the choice of the penalization coefficient like the adaptive \textsc{LASSO} \cite{zou2006adaptive} with the {\tt parcor} package on CRAN (\cite{packageparcor}) or the random \textsc{LASSO} \cite{wang2011random}.  But the consistency issue remains because it is still the same model. Only the choices of $\lambda$ differ.\\
+			 Some recent variants of the \textsc{lasso} do exist for the choice of the penalization coefficient like the adaptive \textsc{lasso} \cite{zou2006adaptive} with the {\tt parcor} package on CRAN (\cite{packageparcor}) or the random \textsc{lasso} \cite{wang2011random}.  But the consistency issue remains because it is still the same model. Only the choices of $\lambda$ differ.\\
 			 
-			 It is notable that the main goal of the LASSO is to select some covariates, thus the penalization is just a mean to achieve selection. But estimation of $\hat{\boldsymbol{\beta}}$ can be improved by a second estimation with \textsc{ols} based only on selected covariates \cite{SAM10088}.
+			 It is notable that the main goal of the \textsc{lasso} is to select some covariates, thus the penalization is just a mean to achieve selection. But estimation of $\hat{\boldsymbol{\beta}}$ can be improved by a second estimation with \textsc{ols} based only on selected covariates \cite{SAM10088}.
 		\subsection{Least Angle Regression}
-		The least Angle Regression algorithm solves the LASSO problem.
+		The least Angle Regression algorithm solves the \textsc{lasso} problem.
 		It requires only the same order of magnitude of computational effort as \textsc{ols} applied to the full set of covariates.
 		The idea is to start with all coefficients to zero and then grow them starting with the most correlated with the response variable until another variable is equally correlated with the residual. So it is a progressive growth of the coefficient leading to reduce the residual. It finishes with the Ordinary Least Squares solution (on the right in figure \ref{plotlarstoy}). We then have a list of models with several numbers of non-zero coefficients and can choose between them with cross-validation for example.\\
 		
@@ -492,7 +492,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 \begin{figure}[h!]
 	\centering
 		  \includegraphics[width=350px]{figures/plotlarstoy.png}
-		\caption{The LASSO path computed by lars}\label{plotlarstoy}
+		\caption{The \textsc{lasso} path computed by lars}\label{plotlarstoy}
 	\end{figure}			
 	
 		 \begin{figure}
@@ -500,12 +500,12 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 	  \includegraphics[width=500px]{figures/MQEreel/larcompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{lar}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQElarcompl}
 	\end{figure}	
-	 Figure \ref{MQElarcompl} shows that strong correlations make the \textsc{mse} explode even with lar. Results obtained with the package {\tt lars} for R, included in {\tt CorReg}.
+	 Figure \ref{MQElarcompl} shows that strong correlations make the \textsc{mse} explode even with \textsc{lar}. Results obtained with the package {\tt lars} for R, included in {\tt CorReg}.
  	 
 	 \FloatBarrier
 		\subsection{Elasticnet}		% ne pas oublier de mentionner les packages existants
 
-			Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and \textsc{LASSO} by mixing both $L_1$ and $L_2$ penalties: 
+			Elastic net \cite{zou2005regularization} is a method developed to be a compromise between Ridge regression and \textsc{lasso} by mixing both $L_1$ and $L_2$ penalties: 
 %	Given data set $(Y,X)$ and two parameters $(\lambda_1,\lamda_2)$, define artificial data set $(Y^*,X^*)$ by :
 %	\begin{equation}
 %		X^*_{(n+p)\times p}=(1+\lambda_2)^{-1/2}\left( X  \sqrt{\lambda_2}I \right), \ \ \  Y^*_{(n+p)}=\left( Y 0 \right)
@@ -525,7 +525,7 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		\end{figure}	
 	
 	%It seems to give good predictions. 
-	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas LASSO will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. Results obtained with the package {\tt elasticnet} (\cite{packageelasticnet}) for R are given in Figure \ref{MQEelasticnetcompl}.
+	But it is based on the grouping effect so correlated covariates get similar coefficients and are selected together whereas \textsc{lasso} will choose between one of them and will then obtain same predictions with a more parsimonious model. Once again, nothing specifically aims to reduce the correlations. Results obtained with the package {\tt elasticnet} (\cite{packageelasticnet}) for R are given in Figure \ref{MQEelasticnetcompl}.
 
 	
 	 \begin{figure}
@@ -536,21 +536,21 @@ The Least Absolute Shrinkage and Selection Operator (\textsc{LASSO} \cite{tibshi
 		
 		 \FloatBarrier
 
-		\subsection{OSCAR: Octagonal Shrinkage and Clustering Algorithm for Regression}		% ne pas oublier de mentionner les packages existants
+		\subsection{{\sc oscar}: Octagonal Shrinkage and Clustering Algorithm for Regression }		% ne pas oublier de mentionner les packages existants
 
 			%\cite{bondell2008simultaneous}%Oscar
-			Like elasticnet, \textsc{OSCAR} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect (by a pairwise $L_\infty$ norm) and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (implied by the $L_1$ norm). Thus correlations are avoided if correlated covariates are in the same cluster (not extremely flexible). A possible bias is added by the dimension reduction inherent to the coefficients clustering.
+			Like elasticnet, \textsc{oscar} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect (by a pairwise $L_\infty$ norm) and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (implied by the $L_1$ norm). Thus correlations are avoided if correlated covariates are in the same cluster (not extremely flexible). A possible bias is added by the dimension reduction inherent to the coefficients clustering.
 			\begin{equation}
 				\hat{\boldsymbol{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \parallel\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \parallel^2_2 \textrm{ subject to } \sum_{j=1}^d|\beta_j|+c\sum_{j<k}\operatorname{max}(|\beta_j|,|\beta_k|) \leq \lambda		
 			\end{equation}						
-			Moreover \textsc{OSCAR} depends on two tuning parameters: $c$ anf $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{LAR} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
+			Moreover \textsc{oscar} depends on two tuning parameters: $c$ and $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{lar} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
 			
 \begin{figure}[h!]
 			\centering
 			\includegraphics[width=150px]{figures/oscarcircles.png} 
-			\caption{Geometric view of the Penalty for OSCAR}\label{oscarcircles}
+			\caption{Geometric view of the Penalty for {\sc oscar}}\label{oscarcircles}
 		\end{figure} 
-Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It follows the same principle as the LASSO with supplementary vertices in the four quarters to obtain equal values for the $\beta_j$. So estimator will give both zero coefficients and equal coefficients that can be grouped for interpretation and correspond to a dimension reduction. So two covariates with a similar effect may obtain the same estimated coefficient. But correlations are only implicitly taken into account and only pairwise. It lacks of an efficient algorithm  (to find $c$) and need a supplementary study to interpret the groups found.
+Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It follows the same principle as the \textsc{lasso} with supplementary vertices in the four quarters to obtain equal values for the $\beta_j$. So estimator will give both zero coefficients and equal coefficients that can be grouped for interpretation and correspond to a dimension reduction. So two covariates with a similar effect may obtain the same estimated coefficient. But correlations are only implicitly taken into account and only pairwise. It lacks of an efficient algorithm  (to find $c$) and need a supplementary study to interpret the groups found.
 		\subsection{Stepwise}
 			
 			Stepwise \cite{seber2012linear} is an algorithm to choose a subset of covariates to use in the final regression model. It is a variable selection method using \textsc{ols} for estimation. It is proposed in the R package {\tt stats} with the function {\tt step}. The main idea is to start with a first model (than can be either void or using the whole dataset or using any subset of covariates) and then to add and remove covariates step by step to improve the chosen criterion. \\
@@ -594,9 +594,9 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 
 	\section{Modeling the parameters}			% ne pas oublier de mentionner les packages existants
 
-		\subsection{CLERE: CLusterwise Effect REgression}		% ne pas oublier de mentionner les packages existants
+		\subsection{CLusterwise Effect REgression (\textsc{clere})}		% ne pas oublier de mentionner les packages existants
 
-			The CLusterwise Effect REgression (\textsc{CLERE} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independent random variables with $\beta_j$ following a Gaussian Mixture distribution, allowing to group them into by their component membership. \\
+			The CLusterwise Effect REgression (\textsc{clere} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independent random variables with $\beta_j$ following a Gaussian Mixture distribution, allowing to group them into by their component membership. \\
 			
 			 The idea is that if the model has a small number of groups of covariates then the mixture will have few enough components to have a number of parameters to estimate significantly lower than $d$. In such a case, it improves interpretation and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. A package {\tt clere} for R does exist on CRAN (\cite{packageclere}).%and is included in {\tt CorReg}. \\
 			 \\
@@ -693,7 +693,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 	\end{eqnarray}
 	with $\boldsymbol{\Delta}$ the $d\times d$ diagonal matrix which has on its diagonal the positive eigen values of $\boldsymbol{X}$ in descending order and $\boldsymbol{U}$ is the $n\times d$ matrix of the orthonormal set of left singular vectors of $\boldsymbol{X}$.\\
 	
-	Principal Component Regression requires to choose $M$ the number of axis to keep. Finally, even if dimension reduction is effective when $M<d$ each axis depends on all original covariates so it does not select any covariates and that is also a problem for interpretation. We have to choose arbitrary how to interpret each axis and how many covariates really explain each of them. So it is not really satisfying in our industrial context. Principal Component method can be seen as a truncation method whereas the ridge regression is a shrinkage method. Another problem is that principal components are constructed to explain $\boldsymbol{X}$ instead of $\boldsymbol{Y}$ even if there is no reason that relevant variables to explain $\boldsymbol{X}$ stay relevant to explain $Y$. \\
+	Principal Component Regression requires to choose $M$ the number of axis to keep. Finally, even if dimension reduction is effective when $M<d$ each axis depends on all original covariates so it does not select any covariates and that is also a problem for interpretation. We have to choose arbitrary how to interpret each axis and how many covariates really explain each of them. So it is not really satisfying in our industrial context. Principal Component method can be seen as a truncation method whereas the ridge regression is a shrinkage method. Another problem is that principal components are constructed to explain $\boldsymbol{X}$ instead of $\boldsymbol{Y}$ even if there is no reason that relevant variables to explain $\boldsymbol{X}$ stay relevant to explain $\boldsymbol{Y}$. \\
 			\subsection{Partial Least Squares Regression (PLS)}
 
 	Partial Least Square Regression (PLS)\cite{abdi2003partial,geladi1986partial} also relies on a combination of the columns of  $\boldsymbol{X}$ but this combination depends on $\boldsymbol{Y}$. The dataset $\boldsymbol{X}$ is also standardized to have 0 mean and variance 1 for each of the covariates. PLS regression searches for a set
@@ -885,7 +885,7 @@ In the followings, true $\boldsymbol{S}$ is supposed to be identifiable.
 
 \section{Strategy of use: pre-treatment before classical estimation/selection methods}\label{interpretation}
 
-As a pre-treatment, the model allows usage of any method in a second time to estimate $\boldsymbol{\beta}_{f}^*$, even with variable selection methods like LASSO or a best subset algorithm like stepwise \cite{seber2012linear}. However, we always have $\boldsymbol{\beta}^*_r=\boldsymbol{0}$.\\
+As a pre-treatment, the model allows usage of any method in a second time to estimate $\boldsymbol{\beta}_{f}^*$, even with variable selection methods like \textsc{lasso} or a best subset algorithm like stepwise \cite{seber2012linear}. However, we always have $\boldsymbol{\beta}^*_r=\boldsymbol{0}$.\\
 
 After selection and estimation we will obtain a model with { \it two steps of variable selection}: the decorrelation step by marginalization(coerced selection associated to redundant information defined in $\boldsymbol{S}$) and the classical selection step, with different meanings for obtained zeros in $\hat{\boldsymbol{\beta}}^*_{f}$ (irrelevant covariates) and for $\hat{\boldsymbol{\beta}}^*_{r}=0$ (redundant information). 
  Thus we are able to distinguish the reasons that have lead to keep or remove each covariate and consistency issues do not mean interpretation issues any more. So we dodge the drawbacks of both grouping effect and variable selection.\\
@@ -963,7 +963,7 @@ When sub-regression get weaker ($R^2$ tends to 0) \textsc{CorReg} remains stable
 	
  \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/larexpl.png}
-	\caption{Observed \textsc{mse} on $\hat{\boldsymbol{\beta}}$ of LASSO with LAR on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSElarexpl}
+	\caption{Observed \textsc{mse} on $\hat{\boldsymbol{\beta}}$ of \textsc{lasso} with LAR on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSElarexpl}
 \end{figure} 
 	
 	 \begin{figure}
@@ -973,7 +973,7 @@ When sub-regression get weaker ($R^2$ tends to 0) \textsc{CorReg} remains stable
 	\end{figure}
 	
 		\paragraph{Observed \textsc{mse} for variable selection methods:}
-	Figure \ref{MSElarexpl} shows that variable selection done by the LASSO gives a biased $\hat{\boldsymbol{\beta}}$ by setting some coefficients to 0 but strong correlations makes this bias neutral for prediction (figure \ref{MQElarYexpl}). Here the LASSO tends to propose the same model as we do  with our marginal model, but without explanation. We will see  later in section \ref{compY} that it is not sufficient in higher dimension. Elasticnet and stepwise give results quite similar to the LASSO (figures \ref{MSEelasticnetexpl} to \ref{MQEstepwiseYexpl}). \\
+	Figure \ref{MSElarexpl} shows that variable selection done by the \textsc{lasso} gives a biased $\hat{\boldsymbol{\beta}}$ by setting some coefficients to 0 but strong correlations makes this bias neutral for prediction (figure \ref{MQElarYexpl}). Here the \textsc{lasso} tends to propose the same model as we do  with our marginal model, but without explanation. We will see  later in section \ref{compY} that it is not sufficient in higher dimension. Elasticnet and stepwise give results quite similar to the \textsc{lasso} (figures \ref{MSEelasticnetexpl} to \ref{MQEstepwiseYexpl}). \\
 %ridge
 	\begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQEreel/ridgeexpl.png}
@@ -1084,11 +1084,11 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 	We compare different methods with and without {\tt CorReg} as a pretreatment. All the results are provided by the {\tt CorReg} package. Here $\boldsymbol{Y}$ depends on all the covariate and the \textsc{mse} provided were computed on a validation sample of 1 000 individuals each time. Figures will display both mean and inter-quartile intervals, coloration of the background indicates which curve is lower ({\it i.e.} better in our case). \\
 	\section{Results}	
 	
-\paragraph{With \textsc{ols}:} Figure \ref{MSEexplOLS} %Y_zone} to \ref{MSEexplOLSbeta_zone} 
+\paragraph{With {\sc ols}:} Figure \ref{MSEexplOLS} %Y_zone} to \ref{MSEexplOLSbeta_zone} 
 	compares \textsc{ols} alone to \textsc{CorReg} + \textsc{ols}. 
 {\sc CorReg} improves significantly the prediction power of {\sc ols} for small values of $n$ and/or heavy sub-regression structures. This advantage then shrinks when $n$ increases because the matrix to invert becomes better-conditioned and since {\sc CorReg} does not allow to retrieve that $\boldsymbol{Y}$ depends on all $\boldsymbol{X}$ because of the marginalization of some covariates implicated in the sub-regressions. It also illustrates that the model regression in $\boldsymbol{Y}$ retained by {\sc CorReg} is more parsimonious.%, provided that sub-regressions are strong enough.
 
-\paragraph{Variable selection methods:} Figure \ref{MSEexpllar} shows that even if the LASSO is able to select a subset of covariate and even if we have seen with \textsc{ols} that taking a subset can give better results, the LASSO does not do so and give more complex models than our marginal model until correlations are extremely strong. We also observe that our marginal model combined with the LASSO has varying complexities so our pretreatment by selection is just a pretreatment and not competitor against the LASSO. Such combination improves the results in a significant way when compared to the LASSO on the complete dataset or \textsc{ols} on the marginal model. We see that the complexity rises with $n$ but the lasso never keeps all the covariates even with $n=400=10\times d$ when used on the whole dataset but keep all the covariates in $\boldsymbol{X}_f$ when used on the marginal model. The main result here is that the LASSO can be improved by pretreatment selection both with $n<d$ and $n>>d$ with strong correlations so this well known variable selection method really suffers from correlations. Elasticnet and stepwise (Figures \ref{MSEexplelasticnet} and \ref{MSEexplstepwise})gives results mostly equivalent to the LASSO but stepwise seems to be a bit less efficient (higher \textsc{mse} values). This last point illustrates why we need a specific algorithm to find the structure $\boldsymbol{S}$ and not only variable selection by stepwise like in the method from Maugis \cite{maugis2009variable}. \\
+\paragraph{Variable selection methods:} Figure \ref{MSEexpllar} shows that even if the \textsc{lasso} is able to select a subset of covariate and even if we have seen with \textsc{ols} that taking a subset can give better results, the \textsc{lasso} does not do so and give more complex models than our marginal model until correlations are extremely strong. We also observe that our marginal model combined with the \textsc{lasso} has varying complexities so our pretreatment by selection is just a pretreatment and not competitor against the \textsc{lasso}. Such combination improves the results in a significant way when compared to the \textsc{lasso} on the complete dataset or \textsc{ols} on the marginal model. We see that the complexity rises with $n$ but the \textsc{lasso} never keeps all the covariates even with $n=400=10\times d$ when used on the whole dataset but keep all the covariates in $\boldsymbol{X}_f$ when used on the marginal model. The main result here is that the \textsc{lasso} can be improved by pretreatment selection both with $n<d$ and $n>>d$ with strong correlations so this well known variable selection method really suffers from correlations. Elasticnet and stepwise (Figures \ref{MSEexplelasticnet} and \ref{MSEexplstepwise})gives results mostly equivalent to the \textsc{lasso} but stepwise seems to be a bit less efficient (higher \textsc{mse} values). This last point illustrates why we need a specific algorithm to find the structure $\boldsymbol{S}$ and not only variable selection by stepwise like in the method from Maugis \cite{maugis2009variable}. \\
 
 \paragraph{Ridge regression:} Figure \ref{MSEexplridge} shows that the predictive power of ridge regression is not improved by the marginal model. Ridge regression is protected against correlations but we see that ridge regression applied on $\boldsymbol{X}_f$ (even if it is not the true model) give predictions quite similar to those from ridge regression but with less covariates. Ridge regression will only be damaged by correlations when variable selection is needed. \\
 
@@ -1096,7 +1096,7 @@ Further results are provided  with estimated $\tilde{\boldsymbol{S}}$ (section \
 	\FloatBarrier
 
 \newpage
-\subsection{\textsc{ols} when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+\subsection{{\sc ols} when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
 \begin{figure}[h!]
 \centering
 \begin{subfigure}
@@ -1147,7 +1147,7 @@ Further results are provided  with estimated $\tilde{\boldsymbol{S}}$ (section \
 %	\FloatBarrier
 %\newpage
 %LASSO
-\subsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+\subsection{{\sc lasso} when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
 \begin{figure}[h!]
 \centering
 \begin{subfigure}
@@ -1301,7 +1301,7 @@ In the previous chapters, $\boldsymbol{S}$ was supposed to be known. But in fact
 
 
 \section{Bayesian approach}
-Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical LASSO \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
+Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical \textsc{lasso} \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
 
 Cross-validation is very time-consuming and thus not friendly with combinatory problematics. Moreover, we need a criterion compatible with structures of different sizes (varying $d_r$) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
 Because it is about model selection, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
@@ -1358,7 +1358,7 @@ Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {
 	\subsection{Usage of the structure $\boldsymbol{S}$ for interpretation}
 		
 	
-	Correlations can lead to serious problems in industrial context. Let's imagine a dataset with two highly correlated covariates. Estimators may give them the same coefficient (grouping effect when using elasticnet) or only keep one of them (like the LASSO does). \\
+	Correlations can lead to serious problems in industrial context. Let's imagine a dataset with two highly correlated covariates. Estimators may give them the same coefficient (grouping effect when using elasticnet) or only keep one of them (like the \textsc{lasso} does). \\
 	
 	If only one is kept without explicitly pointing the correlations we will think that the deleted covariate is irrelevant even if it is not and even if it could be more relevant than the kept covariate in terms of possible actions or physical meanings.\\
 	
@@ -1652,7 +1652,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 	\section{Pruning}
 		If the complexity of $\boldsymbol{S}$ is too high, pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same (for example if the MCMC had time to find a good model).
 		\subsubsection{Variable selection}
-			We can use variable selection methods like the LASSO on $\boldsymbol{X}^{J_p^j}$ to estimate the coefficients $\boldsymbol{\alpha}_j$ and obtain some supplementary zeros. Working on $\boldsymbol{X}^{J_p^j}$ protects the LASSO against dimension and correlations issues.
+			We can use variable selection methods like the \textsc{lasso} on $\boldsymbol{X}^{J_p^j}$ to estimate the coefficients $\boldsymbol{\alpha}_j$ and obtain some supplementary zeros. Working on $\boldsymbol{X}^{J_p^j}$ protects the \textsc{lasso} against dimension and correlations issues.
 		\subsubsection{$R^2$ thresholding }
 			We can also define a minimal value for the $R^2$ of the sub-regression to maintain them in the final structure. But this minimal value would be totally arbitrary and we know that it is frequent to use linear regression with real datasets that only show a $R^2$ between $0.1$ and $0.2$. It is particularly true in social sciences.
 		\subsubsection{Test of hypotheses}
@@ -1665,8 +1665,8 @@ The initial structure can be based on a first warming algorithm taking the corre
 			It is not based on any arbitrary parameter and change the result only if it finds a better structure in terms of the criterion $\mbox{{\sc bic}}_*$ used in the walk.
 			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE }.
 			
-	\section{Graphical LASSO}\label{sectionGlasso}
-		Graphical LASSO \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} is set to give undirectionnal (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It does make sense for exponential family because in these cases, zeros in the precision matrix $\boldsymbol{\Sigma}^{-1}$ can be interpreted in terms of conditional independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ and we search an oriented graph.\\
+	\section{Graphical { \sc lasso}}\label{sectionGlasso}
+		Graphical \textsc{lasso} \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} is set to give undirectionnal (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It does make sense for exponential family because in these cases, zeros in the precision matrix $\boldsymbol{\Sigma}^{-1}$ can be interpreted in terms of conditional independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ and we search an oriented graph.\\
 		
 	However, we can still use it for initialization, for example by a Hadamard product with $\boldsymbol{G}^{(0)}$ the adjacency matrix of the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum} because trees have no cycles. But it is time consuming (especially for an initialisation method) and has no theoretical properties relied to our problematic of minimizing $\mbox{{\sc bic}}_*$, so the idea was left behind after some tries.		
 	
@@ -1842,7 +1842,7 @@ Results for \textsc{ols} (Figure \ref{MSEexplOLStout} ) are similar to those fro
 %	\FloatBarrier
 %\newpage
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
+\subsubsection{{\sc LASSO} when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
 	\begin{figure}[h!]
 \centering
@@ -2062,7 +2062,7 @@ Results for \textsc{ols} (Figure \ref{MSEexplOLStout} ) are similar to those fro
 
 
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
+\subsubsection{{\sc lasso} when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
 
 	\begin{figure}[h!]
@@ -2273,7 +2273,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 \newpage
 	\setcellgapes{1pt}
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
+\subsubsection{{\sc lasso} when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
 \centering
@@ -2444,7 +2444,7 @@ We have generated a non-linear structure to test the robustess of the model. $\b
 	\end{minipage} \
    \begin{minipage}[r]{.48\linewidth}
 			\includegraphics[height=180px,width=240px]{figures/robustY.png} 
-			\caption{\textsc{mse} on the main regression for \textsc{ols}(thick) and LASSO (thin) used both with (plain) or without {\tt CorReg} (dotted).}\label{MSEnonlin}
+			\caption{\textsc{mse} on the main regression for \textsc{ols}(thick) and \textsc{lasso} (thin) used both with (plain) or without {\tt CorReg} (dotted).}\label{MSEnonlin}
    \end{minipage}
 \end{figure}
 Figure \ref{MSEnonlin} illustrates the advantage of using {\tt CorReg} even with non-linear structures. Figure \ref{resnonlin} shows that the MCMC have more difficulties to find a linear structure as the non-linear part of the sub-regression increases but the model is quite robust (efficient for small values of $a$).
@@ -2703,8 +2703,8 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 			
 	
 
-	\section{Consistency of the LASSO}\label{consistency}
-		Consistency issues of the LASSO are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
+	\section{Consistency of the {\sc lasso}}\label{consistency}
+		Consistency issues of the {\sc lasso} are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
 		We have taken the same example to show how our method is more consistent.
 		Here $d=3$ and $n=1\;000$.\\
 		We define $\boldsymbol{X}^1,\boldsymbol{X}^2, \boldsymbol{X}_{r}=\boldsymbol{X}^3, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{1} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
@@ -2714,7 +2714,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\end{eqnarray}
 		
 		
-		We compare consistencies of complete, marginal and full plug-in model with LASSO (and LAR) for selection.
+		We compare consistencies of complete, marginal and full plug-in model with {\sc lasso} (and LAR) for selection.
 		It happens on some tries that our MCMC algorithm don't find the true structure but a permuted one so we both look at the results obtained with the true $\boldsymbol{S}=((3),(\{1,2\}))$ (but $\hat{\boldsymbol{\alpha}}$ is used) and with the structure found by the Markov chain after a few seconds.
 		
 		True $\boldsymbol{S}$ was found $987$ times on $1\;000$ tries.% (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
@@ -2723,7 +2723,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & {\tt CorReg} + marginal LASSO& {\tt CorReg} + full plug-in LASSO\\ 
+		 & Classical {\sc lasso} & {\tt CorReg} + marginal {\sc lasso}& {\tt CorReg} + full plug-in {\sc lasso}\\ 
 		\hline 
 		True $\boldsymbol{S}$ &  1.006784 & \textbf{1.005468} & \textbf{1.006093} \\ 
 		\hline 
@@ -2734,13 +2734,13 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\end{table}
 
 		We observe as we hoped that our marginal model is better when using true $\boldsymbol{S}$ (coercing real zeros) and that marginal with $\hat{\boldsymbol{S}}$ is penalised (coercing wrong coefficients to be zeros when true $\boldsymbol{S}$ is not found).
-		But the main point is that the plug-in model stays better than the classical one with the true $\boldsymbol{S}$ and corrects enough the marginal model to be better than the classical LASSO when using $\hat{\boldsymbol{S}}$. 
+		But the main point is that the plug-in model stays better than the classical one with the true $\boldsymbol{S}$ and corrects enough the marginal model to be better than the classical {\sc lasso} when using $\hat{\boldsymbol{S}}$. 
 		And when we look at the consistency (Table \ref{testidentifiableG}):
 		\begin{table}[h!]	
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical LASSO & {\tt CorReg}  marginal + LASSO& {\tt CorReg}  full plug-in  + LASSO \\ 
+		 & Classical {\sc lasso} & {\tt CorReg}  marginal + {\sc lasso}& {\tt CorReg}  full plug-in  + {\sc lasso} \\ 
 		\hline 
 		True $\boldsymbol{S}$ &  0 & \textbf{1000} & \textbf{820} \\ 
 		\hline 
@@ -2749,7 +2749,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\end{tabular} 
 		\caption{Number of consistent model found ($\boldsymbol{Y}$ depending on $\boldsymbol{X}^1,\boldsymbol{X}^2$ and only them) on $1\;000$ tries}\label{testidentifiableG}
 		\end{table}				
-		it is clear that the plug-in model significantly improves the consistency of the model estimated on $\boldsymbol{S}$ when compared to the classical LASSO. Both model have the choice to keep or not each covariate but only the plug-in model is consistent. Model using the true structure can't be improved because the marginal is already consistent so the plug-in is worse or equal to the marginal one in terms of consistency. Classical LASSO is never consistent on this example but we don't only improve this situation, we give consistent models in most of the cases.\\
+		it is clear that the plug-in model significantly improves the consistency of the model estimated on $\boldsymbol{S}$ when compared to the classical {\sc lasso}. Both model have the choice to keep or not each covariate but only the plug-in model is consistent. Model using the true structure can't be improved because the marginal is already consistent so the plug-in is worse or equal to the marginal one in terms of consistency. Classical {\sc lasso} is never consistent on this example but we don't only improve this situation, we give consistent models in most of the cases.\\
 	%	$299$ times on $1000$ tries, the plug-in model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
 		
 %		We also made the same experiment but with $\boldsymbol{X}^1,\boldsymbol{X}^2$ (and consequently $\boldsymbol{X}^3$) following Gaussian mixtures %(to improve identifiability) 
@@ -2853,7 +2853,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	
 	
 \newpage
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
+\subsubsection{{\sc lasso} when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}
 
 %LASSO
 \begin{figure}[h!]
@@ -2999,7 +2999,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 \newpage
 	\setcellgapes{1pt}
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
+\subsubsection{{\sc lasso} when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$}
 
 	
 \begin{figure}[h!]
@@ -3149,7 +3149,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 \newpage
 	\setcellgapes{1pt}
 %LASSO
-\subsubsection{LASSO when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
+\subsubsection{{\sc lasso} when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}
 
 	\begin{figure}[h!]
 \centering
@@ -3925,14 +3925,14 @@ and we can use the same method as the one for classical case without missing val
 %			
 			
 	\section{Missing values in the main regression}
-		The easier way to manage missing values in the main regression would be to draw missing values and then use classical methods. Imputation could be done with the Stochastic EM described above, with the possibility to repeat the estimation of the coefficients of regression a few times (with distinct imputations) and then take the mean. We should for example try multiple draw and LASSO for variable selection like variable selection by random forest. One great advantage of multiple imputation procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. \\
+		The easier way to manage missing values in the main regression would be to draw missing values and then use classical methods. Imputation could be done with the Stochastic EM described above, with the possibility to repeat the estimation of the coefficients of regression a few times (with distinct imputations) and then take the mean. We should for example try multiple draw and {\sc lasso} for variable selection like variable selection by random forest. One great advantage of multiple imputation procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. \\
 		
 		
 				
 %Another (faster but not optimal) way would be to estimating missing values in $\boldsymbol{X}_r$only use the structure for $\boldsymbol{X}_r$ and use the distribution given by {\tt RMixmod} for $\boldsymbol{X}_f$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
 
 		
-		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use LASSO without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective.
+		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use {\sc lasso} without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective.
 	\section{Numerical results on simulated datastets}
 		\subsection{Estimation of the sub-regression coefficients}
 			We take datasets from the experiments in part I and then we compare the \textsc{mse} obtained on $\boldsymbol{\alpha}$ with our Stochastic EM to those obtain by classical \textsc{ols} after imputation of the missing values by the marginal empirical means. Here $d=40$ and $n=30$, missing values position are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values each time. Thus we have 120 missing values and none of the datasets contain a full individual without missing values.
