@@ -1779,6 +1779,21 @@ Moreover {\tt Selvarclust} does not make the same hypotheses on the dataset and 
 We suppose independence between the regressors and between the conditional distributions so we only estimate the univariate marginal distribution and we make it only once.
 	 Then, at each step {\tt Selvarclust} has to estimate the whole distribution. Our algorithm does not allow to find complex distributions with dependencies as {\tt Selvarclust} does. Both models use a sub-regression structure and propose an algorithm that find it, but the comparison stops here. So {\tt CorReg} does not really beats {\tt Selvarclust} because hypotheses and objectives are not the same,  so the result cannot really be compared. {\tt Selvarclust} is not a competitor (it could have been but it is not the case) to {\tt CorReg } but a source of inspiration for the concept of sub-regressions within the covariates and the concept of redundant and irrelevant covariates. To obtain better results was just a necessary confirmation of that.
 
+\subsection{Computational time}
+	In terms of computation time, the most expansive step in the MCMC is the computation of \textsc{ols} to estimate $\boldsymbol{\alpha}$ for each candidate, that is mainly successive inversion of the $(\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_p^j}$. \\
+	Figure \ref{tempsn} illustrate the evolution of the time needed to achieve 1 000 steps 
+\begin{figure}[h]
+\centering
+	\begin{subfigure}[with n from 30 to 100]
+	\centering
+		\includegraphics[width=200px]{figures/tempsn3.png} 
+	\end{subfigure}
+	\begin{subfigure}[with n=400]
+	\centering
+		\includegraphics[width=200px]{figures/tempsn4.png} 
+	\end{subfigure}
+	\caption{Evolution of the mean time for 1 000 steps of the MCMC, 39 candidates each time (constraint relaxation). $d=40$ covariates with $d_r=16$ sub-regressions}\label{tempsn}
+\end{figure}
 \clearpage
 \section{Results on prediction}\label{compY}
 \subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 \label{explsimtout}	
@@ -3454,7 +3469,7 @@ the only non-identifiable sub-regressions could be those with only one regressor
 \subsection{Integrated likelihood}
 
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$.
-	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high. We see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood.\\
+	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood.\\
 	 
 We start with the complete likelihood of $\boldsymbol{X}$:
 \begin{eqnarray}
