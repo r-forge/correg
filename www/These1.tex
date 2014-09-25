@@ -863,7 +863,11 @@ Combining now (\ref{eq:MainR}) with (\ref{eq:SR}), (\ref{eq:marginal}) and (\ref
 	\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^*)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl} \\
 	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*,\label{eq:modexpl}
 \end{eqnarray}
-where $\boldsymbol{\alpha}^*_j \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ and $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0  $. \\
+where $\boldsymbol{\alpha}^*_j \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ and $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0 $. We can then define the matrix $\boldsymbol{\alpha}^* \in \mathbb{R}^{(d-d_r \times d_r)}$ of the coefficient of sub-regression to use more compact notation:
+\begin{equation}
+	\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon}
+\end{equation} 
+Where $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.\\
 
 Consequently, we have obtained a new regression expression of $\boldsymbol{Y}$ but relying now {\it only} on uncorrelated covariates $\boldsymbol{X}_f$. This decorrelation process has also acted like a specific variable selection process because $\boldsymbol{X}_f \subseteq \boldsymbol{X}$. These two statements are expected to decrease the variance of further estimates of $\boldsymbol{\beta}$.\\
 
@@ -915,7 +919,7 @@ we have the \textsc{ols} unbiased estimator of $\boldsymbol{\beta}^*$:
 		We see in (\ref{eq:Trueexpl}) that it gives an unbiased estimation of $\boldsymbol{Y}$ and $\boldsymbol{\beta^*}$
 		but in terms of $\boldsymbol{\beta}$ this estimator could be biased:
 		\begin{equation}
-			\mathbb{E}(\hat{\boldsymbol{\beta}}_{f}^*)=\boldsymbol{\beta}_{f}+\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j \textrm{ and }\mathbb{E}(\hat{\boldsymbol{\beta}}_{r}^*)=\boldsymbol{0}
+			\mathbb{E}(\hat{\boldsymbol{\beta}}_{f}^*)=\boldsymbol{\beta}_{f}+\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \textrm{ and }\mathbb{E}(\hat{\boldsymbol{\beta}}_{r}^*)=\boldsymbol{0}
 		\end{equation}
 		In return, its variance could be reduced compared to this one of $\hat{\boldsymbol{\beta}}$ given in (\ref{eq:varOLS}) as soon as values of $\sigma_j$ are small enough (it means strong correlations in sub-regressions) as we can see in the following expression
 		\begin{equation}
