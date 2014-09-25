@@ -3500,7 +3500,7 @@ the only non-identifiable sub-regressions could be those with only one regressor
 \subsection{Integrated likelihood}
 
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$.
-	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood.\\
+	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood. We note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate.\\
 	 
 We start with the complete likelihood of $\boldsymbol{X}$:
 \begin{eqnarray}
@@ -3660,7 +3660,7 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 
 		Moreover, we can look if there are missing values shared by several sub-regression. 
 		Connex component detection could be done to reduce the dimension down to strictly dependent covariates and use equation (\ref{Missingdensity}) elsewhere.
-		We just need to compute the  row-sums of the adjacency matrix $G$ or to search for redundancy in $J_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^nM_{i,j}=0$ then we can use the simplified form of the likelihood given in (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
+		We just need to compute the  row-sums of the adjacency matrix $\boldsymbol{G}:$ or to search for redundancy in $J_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^nM_{i,j}=0$ then we can use the simplified form of the likelihood given in (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
 		So the true value of the likelihood can be computed efficiently in most of cases but in the MCMC, it remains the possibility to evaluate a structure with explosive likelihood expression when combined with the missing values and we need to compute the likelihood for a great number of candidates. Then it is possible to use directly the simplified form of the likelihood, that can be seen as an approximation of the likelihood, not taking into account some of the dependencies but it would offer no guarantee in terms of efficiency for the MCMC. %Numerical results on simulated datasets will show if this approximation is effective.
 
 %		In first approximation we can suppose independence between the sub-regression:
@@ -3811,7 +3811,7 @@ and we can use the same method as the one for classical case without missing val
 	\subsection{Stochastic imputation by Gibbs sampling}
 		Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $d-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $\mathbb{P}(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_d^{(q)})$ using the most recent drawn values each time. \\
 		
-		Gibbs sampling method can be used to generate the missing values at the SE step. We note $Z$ the set of the $Z_{i,j}$ indicating the component from which $\boldsymbol{X}_{i,j}$ is generated.
+		Gibbs sampling method can be used to generate the missing values at the SE step. We note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ (the $i^{th}$ individual of the $j^{th}$ covariate) is generated.
 		\paragraph{Initialisation:}  %For example to the first component (such an initialisation does not depend on $K$). 
 		$\boldsymbol{X}_M$ are imputed by the marginal means of drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example). all the $Z_{i,j}$ are randomly set based on the $t_{i,j,k}$ as explained below (we just need those of $\boldsymbol{X}_f$). 
 		\paragraph{Iteration:} At each iteration of the Gibbs sampler we first make successive imputation on the missing values: \\
