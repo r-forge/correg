@@ -1780,20 +1780,51 @@ We suppose independence between the regressors and between the conditional distr
 	 Then, at each step {\tt Selvarclust} has to estimate the whole distribution. Our algorithm does not allow to find complex distributions with dependencies as {\tt Selvarclust} does. Both models use a sub-regression structure and propose an algorithm that find it, but the comparison stops here. So {\tt CorReg} does not really beats {\tt Selvarclust} because hypotheses and objectives are not the same,  so the result cannot really be compared. {\tt Selvarclust} is not a competitor (it could have been but it is not the case) to {\tt CorReg } but a source of inspiration for the concept of sub-regressions within the covariates and the concept of redundant and irrelevant covariates. To obtain better results was just a necessary confirmation of that.
 
 \subsection{Computational time}
-	In terms of computation time, the most expansive step in the MCMC is the computation of \textsc{ols} to estimate $\boldsymbol{\alpha}$ for each candidate, that is mainly successive inversion of the $(\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_p^j}$. \\
-	Figure \ref{tempsn} illustrate the evolution of the time needed to achieve 1 000 steps 
+	In terms of computation time, the most expansive thing in the MCMC is the computation of \textsc{ols} to estimate $\boldsymbol{\alpha}$ for each candidate, that is mainly successive inversion of the $(\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_p^j}$. \\
+	Figure \ref{tempsn} illustrate the evolution of the time needed to achieve 10 times (distinct initializations) 1 000 steps on the datasets described above with the $R^2$ of the sub-regressions set to $0.7$. We see that time increases with $n$ from less than 2 seconds for $n=30$ to more than 12 seconds for $n=400$.\\	
 \begin{figure}[h]
 \centering
-	\begin{subfigure}[with n from 30 to 100]
+	\begin{subfigure}
 	\centering
 		\includegraphics[width=200px]{figures/tempsn3.png} 
 	\end{subfigure}
-	\begin{subfigure}[with n=400]
+	\begin{subfigure}
 	\centering
 		\includegraphics[width=200px]{figures/tempsn4.png} 
 	\end{subfigure}
-	\caption{Evolution of the mean time for 1 000 steps of the MCMC, 39 candidates each time (constraint relaxation). $d=40$ covariates with $d_r=16$ sub-regressions}\label{tempsn}
+	\caption{Evolution of the mean time for 10 times 1 000 steps of the MCMC, 39 candidates each time (constraint relaxation). $d=40$ covariates with $d_r=16$ sub-regressions}\label{tempsn}
 \end{figure}
+The main impact of a change of $d$ will be the expansion of $\mathcal{S}_d$ that will require more iteration/candidates to find the true structure. But the cost of each sub-regression remains the same. Figure \ref{tempsdrelax} show the evolution of the time for $n=30$ and $d_r=0.4\times d$ sub-regressions with $R^2=0.7$ each time. $40$ candidates were tested each time.
+We first observe that the increase seems slower for small values of $d$ it is because of the amount of time needed for initializations and other annex steps, when $d$ rises they become less significant and it reveals the non-linear time increase. 
+For $d=1\ 000$ time raises up to 26 minutes. This time could be reduced by using sparse matrices instead of full binary matrices $\boldsymbol{G}$, it would also be more efficient with memory usage. Another way to reduce this time is to compute each initializations in parallel, dividing this time by nearly 10.
+ \\
+\begin{figure}[h]
+\centering
+	\begin{subfigure}
+	\centering
+		\includegraphics[width=200px]{figures/tempsd6relax.png} 
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		\includegraphics[width=200px]{figures/tempsd7relax.png} 
+	\end{subfigure}
+	\caption{Evolution of the mean time for 10 times 1 000 steps of the MCMC, 40 candidates each time (constraint relaxation). $d_r=0.4\times d$ sub-regressions, $n=30$.}\label{tempsdrelax}
+\end{figure}
+ 
+ Without constraint relaxation (Figure \ref{tempsdrejet}) the number of candidates evolves at each step, reducing computational cost (but also convergence speed) and we know that only one sub-regression is changed compared to the current so we only have to compute one sub-regression (some candidates requires to compute several sub-regressions with constraint relaxation) reducing again the time of each step. Hence, rejecting candidates is a good way to achieve quickly a fixed number of step, so it could be used as a warming phase before using constraint relaxation to avoid local extrema. All the results were obtained on a laptop with intel(R) core(TM) i5 CPU with 2.4GHz and 2Go of RAM running Windows XP.
+\begin{figure}[h]
+\centering
+	\begin{subfigure}
+	\centering
+		\includegraphics[width=200px]{figures/tempsd6rejet.png} 
+	\end{subfigure}
+	\begin{subfigure}
+	\centering
+		\includegraphics[width=200px]{figures/tempsd7rejet.png} 
+	\end{subfigure}
+	\caption{Evolution of the mean time for 10 times 1 000 steps of the MCMC, 40 candidates each time (without constraint relaxation). $d_r=0.4\times d$ sub-regressions, $n=30$.}\label{tempsdrejet}
+\end{figure} 
+  
 \clearpage
 \section{Results on prediction}\label{compY}
 \subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 \label{explsimtout}	
@@ -3618,9 +3649,9 @@ $\forall j \in \{1,\dots,d_r\} \textrm{ with } M_{i,J_r^j}=0$
 \end{equation}
 
 
-$\forall j_1 \in \{1,\dots,d_r\}, j_2 \notin J_p^{j_1}\cup J_r \textrm{ with } M_{i,J_r{j_1}}=M_{i,j_2}=0$
+$\forall j_1 \in \{1,\dots,d_r\}, j_2 \notin J_p^{j_1}\cup J_r \textrm{ with } M_{i,J_r^{j_1}}=M_{i,j_2}=0$
 	\begin{equation}
-	\operatorname{cov}_{k}(x_{i,J_r{j_1}},x_{i,j_2})= 0
+	\operatorname{cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= 0
 \end{equation}
 Then we are able to maximize this likelihood to find $\boldsymbol{\alpha}$.
 	\subsection{Likelihood computation optimized}
