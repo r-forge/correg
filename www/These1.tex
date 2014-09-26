@@ -2721,7 +2721,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 		\end{eqnarray}		 
 		So we introduce a plug-in model
 		\begin{eqnarray}
-			\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta}_r,\sigma_Y^2&=&\underbrace{(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}^*})}_{\hat{\boldsymbol{\varepsilon}}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \\
+			\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta}_r,\sigma_Y^2&=&\underbrace{(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}^*})}_{\hat{\boldsymbol{\varepsilon}}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y 
 		\end{eqnarray}
 		That allows us to estimate $\boldsymbol{\beta}_{r}$ with a classical linear model based on previous estimations of $\boldsymbol{\beta}^*$ and $\boldsymbol{\alpha}$.
 \begin{eqnarray}
@@ -3319,7 +3319,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 \chapter{Missing values} \label{chapmiss}
 	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to make multiple imputations based on the sub-regression structure. The full generative model also helps to manage missing values in the MCMC with the ability to compute $\mbox{{\sc bic}}_*$ only on the observed values. 
 	
-	 \section{Introduction}
+	 \section{State of the art}
 	Real datasets often have missing values and it is a very recurrent issue in industry. 
 			Here we suppose that missing values are Missing Completely At Random (MCAR) but other missing-data mechanisms do exist for missing values. For example, Missing values can depends on the observed values and then we say that they are Missing At Random (MAR), Missing value can also simply be not missing at random.
 	 Many methods does exist to manage such problems in a regression context\cite{little1992regression}:
@@ -3338,7 +3338,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	This chapter is a perspective of this thesis that we have already started to work on, but missing values is a wide subject and we only propose some results.
 	\\
 	
-	In the followings we note $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whereas a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $\boldsymbol{X}_{i}^j$ is missing, 0 else.
+	In the followings we note $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $\boldsymbol{X}_{i}^j$ is missing, 0 else.
 	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{O}$ the observed values. $\Theta=\{\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
 	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\  
 	
@@ -3347,8 +3347,8 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
  Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
 
 \section{Estimation of $\boldsymbol{S}$ with missing values}
-\subsection{Integrated likelihood}
-
+Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values.
+\subsection{Marginal likelihood}
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$.
 	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood. We note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate.\\
 	 
@@ -3843,7 +3843,7 @@ Both methods were tested with the true structure $\boldsymbol{S}$. Initial value
 	We see (Figure \ref{MSEalphaSEM}) that our Stochastic EM is nearly 13 times more efficient in mean that estimation based on imputation by the mean. Our results are extremely good because each sub-regression is true and we have 30 individuals (even if missing values kind of reduce this number) to estimate 3 coefficients only each time. Although, using imputed values lead to learn a true regression with a factually incorrect dataset. Thus we should prefer to work without imputing the missing values but using the full generative model and the dependencies it implies. Imputation will always introduce some noise.
 
 		
-			\subsection{Imputation by the sub-regression}
+			\subsection{Multiple imputation}
 			We have then imputed missing values in $\boldsymbol{X}_r$  by using the corresponding sub-regressions after $\boldsymbol{\alpha}$ has been estimated  by the Stochastic EM.
 			Missing values in $\boldsymbol{X}_f$ are estimated by the mean of 50 Gibbs iterations after the Stochastic EM and 2 warming steps of the Gibbs. Figure \ref{MSEXsubreg} shows the significative gain in \textsc{mse} produced by our method.
 			\begin{figure}[h!]
@@ -3852,7 +3852,7 @@ Both methods were tested with the true structure $\boldsymbol{S}$. Initial value
 	\caption{\textsc{mse} on $\hat{\boldsymbol{X}}$ is significantly lower when using our Stochastic EM than with imputation by the mean.}\label{MSEXsubreg}
 \end{figure}
 \FloatBarrier
-		\subsection{Multiple imputation for the main regression}
+		\subsection{Results on the main regression}
 		We use the previously imputed $\hat{\boldsymbol{X}}$ to estimate $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,\dots,1)$ and $\sigma_Y=10$.
 			\begin{figure}[h!]
 	\centering
@@ -3904,7 +3904,7 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 		\subsection{Missing values in classical methods}
 			The full generative approach could be used to manage missing values without imputation for many classical methods.
 			It can notably be used for clustering and not only in response variable prediction context.
-			Missing values were just introduced here and represents a consequent perspective.
+			Missing values were just introduced here and represent a consequent perspective.
 		\subsection{Interpretation improvements}
 			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to reach this goal.
 		\subsubsection{Regression mixture models}
