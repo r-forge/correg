@@ -2702,43 +2702,87 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 			
 		
 \chapter{Estimation of the residuals}
-	\paragraph{Abstract:} We have seen that eviction of redundant covariates improves the results by a good tradeoff between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back. So we propose a plug-in model to use the redundant covariate in a second step of estimation.
+	\paragraph{Abstract:} We have seen that eviction of redundant covariates improves the results by a good tradeoff between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back. So we propose a plug-in model to use the redundant covariate in a second estimation step.
 	\section{Introduction}
-		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}. But even if the sub-regressions are strong, we face a loss information that can be damageable as we have seen in section \ref{tableMSEsimgauche}. \\
+		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}). But even if the sub-regressions are strong, we face a loss information that can be damageable as we have seen in section \ref{tableMSEsimgauche}. \\
 		
 		We know that using all the covariates simultaneously (classical \textsc{ols}) gives bad results due to correlations. But we can use them sequentially by modeling the residuals of the marginal model with the redundant covariates. Thus we obtain a plug-in model that uses all the covariates and allows to find back the true generative model.
 	\section{Plug-in model}
-		After the estimation of the marginal model in section \ref{sectionmarginal}, we know both $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\beta}^*}$. Reminding that
-		\begin{eqnarray}
-			\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f;\boldsymbol{\beta},\sigma_Y^2&=& \boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{\varepsilon}_Y \\
-			\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \\
-			\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2&=& \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y
-					\end{eqnarray}		 
-		we have
-		\begin{eqnarray}
-			\boldsymbol{Y}- \boldsymbol{X}_f\boldsymbol{\beta}^*_f|\boldsymbol{\varepsilon},\boldsymbol{S};\boldsymbol{\beta}_r,\sigma_Y^2 &=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \textrm{ where}\\
-			\boldsymbol{\varepsilon}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\alpha}&=&\boldsymbol{X}_r-\boldsymbol{X}_f\boldsymbol{\alpha}^*.
-		\end{eqnarray}		 
-		So we introduce a plug-in model
-		\begin{eqnarray}
-			\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta}_r,\sigma_Y^2&=&\underbrace{(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}^*})}_{\hat{\boldsymbol{\varepsilon}}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y 
-		\end{eqnarray}
-		That allows us to estimate $\boldsymbol{\beta}_{r}$ with a classical linear model based on previous estimations of $\boldsymbol{\beta}^*$ and $\boldsymbol{\alpha}$.
-\begin{eqnarray}
-	\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \label{epsilonchapeau} \\
-	\hat{\boldsymbol{\beta}}_r&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})
-\end{eqnarray}		
-		
-		
-		Then we have a model with a smaller noise
+		After the estimation of the marginal model in section \ref{sectionmarginal}, we have both $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\beta}^*}$. Reminding the marginal model 
 		\begin{equation}
-			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
+		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*},
 		\end{equation}
-		and we can even find the original model by doing an identification step:
+		the residual of the marginal model is decomposed as follows:
+\begin{eqnarray}
+	\boldsymbol{\varepsilon}_Y^*&=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{regressnoise}
+\end{eqnarray}
+And because we have already estimated the structure and the marginal model we can provide some new estimators: 
+\begin{itemize}
+	\item Estimation of  $\boldsymbol{\varepsilon}_Y^*$ relying on $\hat{\boldsymbol{\beta}}^*_f$:
+	\begin{equation}
+		\hat{\boldsymbol{\varepsilon}}_Y^*=\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f.
+	\end{equation}
+	\item Estimation of $\boldsymbol{\varepsilon}$ relying on $\hat{\boldsymbol{\alpha}}^*$:
+	\begin{equation}
+		\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* .\label{epsilonchapeau}
+	\end{equation}
+\end{itemize}
+These two new estimators allow us to reduce the noise of the marginal model by linear regression based on equation (\ref{regressnoise}) and to obtain an estimator of $\boldsymbol{\beta}_r$ better than $\hat{\boldsymbol{\beta}}^*_r=\boldsymbol{0}$.
+\begin{itemize}
+	\item Improved estimation of $\boldsymbol{\beta}_r$:
+	\begin{equation}
+		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})
+	\end{equation}
+\end{itemize}
+This estimator is consistent (\textsc{ols} and Slutsky's theorem) so we have
+\begin{equation}
+	\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\boldsymbol{\beta}_r
+\end{equation}
+and 
+\begin{eqnarray}
+	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})&=& \operatorname{Var}(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\\
+	%&=&(\sigma_Y^2(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1})(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}
+\end{eqnarray}
+%		\begin{equation}
+%		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}
+%		\end{equation}
+%		\begin{eqnarray}
+%		\textrm{the true main regression }	\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f;\boldsymbol{\beta},\sigma_Y^2&=& \boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{\varepsilon}_Y \\
+%			\textrm{the sub-regressions system }\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} 
+%			\textrm{the marginal model} 
+%%					\end{eqnarray}		 
+%		we have
+%		\begin{eqnarray}
+%			\boldsymbol{Y}- \boldsymbol{X}_f\boldsymbol{\beta}^*_f|\boldsymbol{\varepsilon},\boldsymbol{S};\boldsymbol{\beta}_r,\sigma_Y^2 &=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \textrm{ where}\\
+%			\boldsymbol{\varepsilon}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\alpha}&=&\boldsymbol{X}_r-\boldsymbol{X}_f\boldsymbol{\alpha}^*.
+%		\end{eqnarray}		 
+%		So we introduce a plug-in model
+%		\begin{eqnarray}
+%			\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta}_r,\sigma_Y^2&=&\underbrace{(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}^*})}_{\hat{\boldsymbol{\varepsilon}}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y 
+%		\end{eqnarray}
+%		That allows us to estimate $\boldsymbol{\beta}_{r}$ with a classical linear model based on previous estimations of $\boldsymbol{\beta}^*$ and $\boldsymbol{\alpha}$.
+%\begin{eqnarray}
+%	\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \label{epsilonchapeau} \\
+%	\hat{\boldsymbol{\beta}}_r&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})
+%\end{eqnarray}		
+%		
+%		
+		Then we can estimate $\boldsymbol{Y} $ with a smaller noise:
+%		\begin{equation}
+%			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
+%		\end{equation}
+\begin{equation}
+	\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}.
+\end{equation}
+This an asymptotically unbiased estimator of $\boldsymbol{Y}$ because the marginal model is unbiased and all the estimators are consistent. 
+		We can even improve estimation of $\boldsymbol{\beta}_f$ by doing an identification step:
 		\begin{eqnarray}
-			\hat{\boldsymbol{Y}}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\hat{\alpha}},\hat{\boldsymbol{\beta}}^*,\hat{\boldsymbol{\beta}}_r,\sigma_Y^2 &=& \boldsymbol{X}_f(\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}) + \boldsymbol{X}_r\hat{\boldsymbol{\beta}}_{r}+\boldsymbol{\varepsilon}_Y \\
-			\hat{\boldsymbol{Y}}|\boldsymbol{X},\boldsymbol{S};\hat{\boldsymbol{\beta}},\sigma_Y^2 &=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f+\boldsymbol{X}_r\hat{\boldsymbol{\beta}}_r+\boldsymbol{\varepsilon}_Y \textrm{ with}\\
-		\hat{\boldsymbol{\beta}}_f&=&\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}
+%			\hat{\boldsymbol{Y}}%|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\hat{\alpha}},\hat{\boldsymbol{\beta}}^*,\hat{\boldsymbol{\beta}}_r,\sigma_Y^2 
+%			&=& \boldsymbol{X}_f(\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}) + \boldsymbol{X}_r\hat{\boldsymbol{\beta}}_{r}%+\boldsymbol{\varepsilon}_Y 
+%			\\
+%			\hat{\boldsymbol{Y}}|\boldsymbol{X},\boldsymbol{S};\hat{\boldsymbol{\beta}},\sigma_Y^2 &=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f+\boldsymbol{X}_r\hat{\boldsymbol{\beta}}_r+\boldsymbol{\varepsilon}_Y \textrm{ with}\\
+	\boldsymbol{\beta}^*_f&=&\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r \\
+		\hat{\boldsymbol{\beta}}_f^{\varepsilon}&=&\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}
 		\end{eqnarray}
 	
 	Figure \ref{MQE2} shows the target of this plug-in model: the cases with enough correlations to have problem when using $\boldsymbol{X}$	but not enough correlations to have truly redundant covariates and to be able to delete some of them without significant information loss.
