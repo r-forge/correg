@@ -48,9 +48,9 @@
 
 \begin{document}
 %\centering
-	Université Lille 1 \\
-	\'Ecole Doctorale Sciences Pour l'Ingénieur Université Lille Nord-de-France
-	
+%	Université Lille 1 \\
+%	\'Ecole Doctorale Sciences Pour l'Ingénieur Université Lille Nord-de-France
+%	
 \maketitle
 
 \newpage
@@ -2864,6 +2864,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 \paragraph{Better but not sufficient:} Concerning \textsc{ols} (Figure \ref{MSEpredOLSX2}) we note that the plug-in model improves results of the marginal model for large values of $n$. This is still the case with variable selection methods (Figures \ref{MSEpredlarX2} to \ref{MSEpredstepwiseX2}) even if it is not sufficient to improve the complete model. This phenomenon is still observed with the ridge regression (Figure \ref{MSEpredridgeX2}) with more efficiency but the complete model stays better.\\
 
 	The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on a first estimation (the marginal model) thus it does reach the true model but asymptotically, and with a slow convergence speed. \\
+	
 	Moreover, if $\hat{\boldsymbol{S}}$ is not exactly the true $\boldsymbol{S}$ but the partition is good, the marginal model is not impacted whereas the plug-in model uses both $\hat{\boldsymbol{\beta}}^*_{f}$ and $\hat{\boldsymbol{\alpha}}$ so it is does not rely only on one estimator. $\hat{\boldsymbol{\alpha}}$ is another source of bias for finite values of $n$ and it depends itself on $\hat{\boldsymbol{S}}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves \textsc{ols} anyway but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. However, like the marginal model, the plug-in model has a small computational cost compared to the estimation of $\boldsymbol{S}$. So we recommend to compute both complete, marginal and plug-in model and to compare the results in a second time.
 
  
