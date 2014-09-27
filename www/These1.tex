@@ -3406,8 +3406,9 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	This chapter is a perspective of this thesis that we have already started to work on, but missing values is a wide subject and we only propose some results.
 	\\
 	
-	In the followings we note $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $\boldsymbol{X}_{i}^j$ is missing, 0 else.
-	We note $\boldsymbol{X}_M$ the missing values and $\boldsymbol{X}_{O}$ the observed values. $\Theta=\{\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
+	In the followings we note $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $\boldsymbol{X}_{i}^j$ is missing, 0 else. We also note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate.
+	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ M_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ M_{i,j}=0}}$ of the observed values for individual $i$, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ M_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ M_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ M_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the followings.\\
+	$\Theta=\{\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
 	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\  
 	
 	Maugis  has developed another software \cite{maugis2012selvarclustmv} that manage missing values: {\tt SelvarclustMV}. It relies on the assumption of Missing At Random (MAR) values and on the more constraining hypothesis that regressor covariates are completely observed (with our notations: $\forall j \in \{1,\dots,d_r \}, \forall k \in J_p^j, \forall 1\leq i \leq n, M_{i,k}=0$). The model (Partition, sub-regression parameters and Gaussian mixtures parameters) is then estimated with an Expectation-Maximization algorithm using all the observed values (even incomplete individuals) without any imputation. Numerical results shows that {\tt SelvarclustMV} is highly competitive compared to imputation methods.\\
@@ -3415,10 +3416,11 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
  Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
 
 \section{Estimation of $\boldsymbol{S}$ with missing values}
-Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values.
+
 \subsection{Marginal likelihood}
-The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$.
-	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood. We note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate.\\
+The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that rely on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihood are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
+
+	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We will see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood and then the $\textsc{bic}_*$. \\
 	 
 We start with the complete likelihood of $\boldsymbol{X}$:
 \begin{eqnarray}
@@ -3427,9 +3429,12 @@ We start with the complete likelihood of $\boldsymbol{X}$:
 	&=&\prod_{i=1}^n\left[\prod_{j =1}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
 %	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
 %			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
-	\mathcal{L}(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j =1}^{d_r}\log \left(f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right)+\sum_{j \notin J_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right) \right] \label{loglikmiss}
 \end{eqnarray}
-		In the MCMC we need to compute the likelihood of the dataset knowing the structure. When missing values occurs, we restrict the likelihood to the known values by integration on $\boldsymbol{X}_M$.
+To compute the $\textsc{bic}_*$ we use then the log-likelihood:
+\begin{eqnarray}
+	\mathcal{L}(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j =1}^{d_r}\log \left(f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right)+\sum_{j \notin J_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right) \right]. \label{loglikmiss}
+\end{eqnarray}
+	 When missing values occurs, we restrict the likelihood to the known values by integration on $X_M$.
 %		We have 
 %	\begin{equation}
 %		g(\boldsymbol{X}|\Theta)=\int_{\boldsymbol{X}_M}f(\boldsymbol{X}|\Theta)d \boldsymbol{X} \label{integralmiss}
@@ -3453,11 +3458,11 @@ We start with the complete likelihood of $\boldsymbol{X}$:
 
 We know that $\boldsymbol{X}$ is a Gaussian mixture ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ the number of its components.
 \begin{eqnarray}
-	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X} 
-	=\int_{\boldsymbol{X}_M}\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
-	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
-	&=&\sum_{k=1}^K \pi_k \int_{\boldsymbol{X}_M}\prod_{i=1}^n\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X} \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\boldsymbol{X}_{i,M}}\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_i \\
+	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M 
+	=\int_{\mathbb{R}^{d_M}}\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_M \\
+	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_M \\
+	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\prod_{i=1}^n\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_M \\
+	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\mathbb{R}^{d_{i,M}}}\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_{i,M} \\
 	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
 	&=&\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})
 \end{eqnarray}
@@ -3500,7 +3505,7 @@ with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \
 		We note that we obtain a Gaussian when there is no missing value in $J_p^j$.
 		But we see that	$f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions. Thus if each sub-regression is a distinct connex component then we can use (\ref{Missingdensity}) and we have
 		\begin{equation}
-		L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_0)=\prod_{i=1}^n\prod_{\substack{j =1 \\ M_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in I_f \\ M_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \label{simplemisslik}
+		L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ M_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in I_f \\ M_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \label{simplemisslik}
 \end{equation}		
 	In such a case, computation is fast and easy.\\
 
@@ -3510,9 +3515,9 @@ with	  $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \
 		%We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
 		
 \begin{eqnarray}
-L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_0)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
+L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O0)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
 &=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\Phi_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{I_r}|\boldsymbol{X}_{i,O}^{I_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in J_f \\ M_{i,j}=0}}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{liklihoodmissglobal}
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in J_f \\ M_{i,j}=0}}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{liklihoodmissglobal}
 \end{eqnarray}		
 
 %définintion des objets génériques
@@ -3538,7 +3543,7 @@ Where
 				( ^t\boldsymbol{X}_{i,O}^{J_f}-\boldsymbol{\mu}_{X^{J_f}_{i,O},k}) \ \ \ \\
 		\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k}&=&\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}
 		(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_r},k} \\
-		\forall j \in \{1,\dots,d_r\}: \ \  \boldsymbol{\mu}_{X_{i,O}^{J_r^j}}&=&\sum_{l \in J_p^j}\bar{\boldsymbol{\alpha}}_{l,J_r^j}\mu_{l,k} 
+		\forall j \in \{1,\dots,d_r\}\textrm{ with }\boldsymbol{M}_{i,J_r^j}=0: \ \  \boldsymbol{\mu}_{X_{i}^{J_r^j}}&=&\sum_{l \in J_p^j}\bar{\boldsymbol{\alpha}}_{l,J_r^j}\mu_{l,k} 
 \end{eqnarray}		
 $\forall j \in \{1,\dots,d_r\} \textrm{ with } M_{i,J_r^j}=0$ 
 	\begin{equation}
@@ -3733,7 +3738,7 @@ and we can use the same method as the one for classical case without missing val
 		\paragraph{Initialisation:}  %For example to the first component (such an initialisation does not depend on $K$). 
 		$\boldsymbol{X}_M$ are imputed by the marginal means of drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example). all the $Z_{i,j}$ are randomly set based on the $t_{i,j,k}$ as explained below (we just need those of $\boldsymbol{X}_f$). 
 		\paragraph{Iteration:} At each iteration of the Gibbs sampler we first make successive imputation on the missing values: \\
-			$\forall 1\leq i \leq n, \forall j \in \{1,\dots,d_r \}, M_{i,J_r^j}=1  $:  $x_{i,J_r^j}$ is generated according to 
+			Regressed covariates: $\forall 1\leq i \leq n, \forall j \in \{1,\dots,d_r \}, M_{i,J_r^j}=1  $:  $x_{i,J_r^j}$ is generated according to 
 			\begin{eqnarray}
 			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}\setminus x_{i,J_r^j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})&=&
 			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}^{J_p^j};\boldsymbol{\alpha}^{(h)}_j,\Theta,{S})\\
@@ -3742,9 +3747,9 @@ and we can use the same method as the one for classical case without missing val
 			%&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_i^{I_f^j};\boldsymbol{\alpha}^{(h)},\Theta,S)
 			&=&\Phi(\boldsymbol{X}_i^{J_p^j}\boldsymbol{\alpha}^{(h)}_{j};\sigma_j^2 ) \textrm{ Gaussian}
 			\end{eqnarray}		
-			And
+			And for regressors:
 			%We have $\mathbb{P}(\boldsymbol{X}|Z)=\mathcal{N}(\boldsymbol{\mu}_{|Z},\boldsymbol{\Sigma}_{|Z})$. \\
-			$\forall (i,j) \in \{1,\dots,n \}\times J_f,M_{i,j}=1$:  $x_{i,j}$ is generated according to 
+			$\forall (i,j) \in \{1,\dots,n \}\times J_f,M_{i,j}=1$:  $x_{i,j}$ is generated according (using Schur complement and Gaussian conditional distribution) to 
 			\begin{eqnarray}
 			\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i}\setminus x_{i,j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,\bar{j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})			
 			\end{eqnarray}			
