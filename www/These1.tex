@@ -2709,7 +2709,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 			
 		
 \chapter{Estimation of the residuals}
-	\paragraph{Abstract:} We have seen that eviction of redundant covariates improves the results by a good tradeoff between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back. So we propose a plug-in model to use the redundant covariate in a second estimation step.
+	\paragraph{Abstract:} We have seen that eviction of redundant covariates improves the results by a good tradeoff between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back. So we propose a plug-in model to use the redundant covariates in a second estimation step.
 	\section{Introduction}
 		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}). But even if the sub-regressions are strong, we face a loss information that can be damageable as we have seen in section \ref{tableMSEsimgauche}. \\
 		
@@ -2741,7 +2741,7 @@ These two new estimators allow us to reduce the noise of the marginal model by l
 		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})
 	\end{equation}
 \end{itemize}
-This estimator is consistent (\textsc{ols} and Slutsky's theorem) so we have
+We suppose that $\hat{\boldsymbol{\beta}^*_f}$ and $\hat{\boldsymbol{\alpha}}^*$ are consistent (for example using \textsc{ols}). The new estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent (\textsc{ols} and Slutsky's theorem) so we have
 \begin{equation}
 	\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\boldsymbol{\beta}_r 
 \end{equation}
@@ -2802,7 +2802,10 @@ Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are obtained as above a
 		\operatorname{Var}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})&=&\operatorname{Var}[\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}] \\
 		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}(\hat{\boldsymbol{\alpha}}^*)']
 	\end{eqnarray}
-	Figure \ref{MQE2} points out the target of this plug-in model: the cases with enough correlations to have problem when using $\boldsymbol{X}$	but not enough correlations to have truly redundant covariates and to be able to remove some of them (marginal model) without significant information loss.
+	
+Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ has supplementary terms but relies on smaller and better conditioned matrices than classical \textsc{ols} applied on $\boldsymbol{X}$ so we hope that correlations are strong enough to make the difference.	\\
+	
+	Figure \ref{MQE2} points out the target of this plug-in model: the cases with enough correlations to have problem when using $\boldsymbol{X}$	but not enough correlations to have truly redundant covariates and to be able to remove some of them (marginal model) without significant information loss. We see that our new model is efficient.
 \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}
 	\caption{\textsc{mse} on $\hat{\boldsymbol{\beta}}$ of \textsc{ols} (plain red) and {\tt CorReg} marginal (blue dashed) and {\tt CorReg} plug-in (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. Results obtained on the running example with $d=5$ covariates.}\label{MQE2}
