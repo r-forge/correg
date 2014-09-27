@@ -230,34 +230,41 @@ On note $\mbox{{\sc bic}}_H$ ce nouveau critère. Il ne modifie pas {\sc bic} (o
 	\section{Résultats}
 		La méthode a été testée sur données simulées puis réelles, montrant l'efficacité du modèle marginal s'appuyant sur la vraie structure de sous-régressions (section \ref{MSEvraiS}), l'efficacité de l'algorithme de recherche de structure (section \ref{compZ}), et l'efficacité du modèle marginal s'appuyant sur la structure estimée (section \ref{compY} et chapitre \ref{sectionrealcase}). Le bilan est très positif comme le montrent les graphiques de ces différentes sections.
 	\section{Modèle plug-in pour réduire l'erreur}
-		Une première perspective a été développée pour compléter le modèle marginal. Il s'agit d'un modèle plug-in permettant de ré-injecter les variables redondantes après estimation du modèle marginal pour obtenir un modèle utilisant toutes les variables mais protégé des corrélations par l'estimation séquentielle.
+		Une première perspective a été développée pour compléter le modèle marginal. Il s'agit de mettre à profit la formulation exacte du modèle marginal pour estimer $\boldsymbol{\beta}_r$ et ainsi réduire le bruit de la régression marginale puis d'utiliser ce nouvel estimateur pour identifier $\boldsymbol{\beta}_f$ et ainsi obtenir un nouveau modèle complet s'appuyant sur $\boldsymbol{X}$ entier mais protégé des corrélations par l'estimation séquentielle.\\
 		
-\begin{eqnarray}
-			%\boldsymbol{Y}&=& \boldsymbol{X}^{I_r}\boldsymbol{\beta}_{I_r}+\boldsymbol{X}^{I_f}\boldsymbol{\beta}_{I_f}+\boldsymbol{\varepsilon}_Y \\
-			\boldsymbol{X}_{r}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2&=&\boldsymbol{X}_{f}\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \\
-			\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma^2_Y &=& \boldsymbol{X}_{f}\underbrace{(\boldsymbol{\beta}_{f}+\boldsymbol{\alpha}^*\boldsymbol{\beta}_{r})}_{\boldsymbol{\beta}^*_f}+\boldsymbol{\varepsilon}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
-					\end{eqnarray}		 
-Ce qui donne 
-		\begin{eqnarray}
-			(\boldsymbol{Y}- \boldsymbol{X}_{f}\boldsymbol{\beta}^*_f)|\boldsymbol{\varepsilon},\boldsymbol{S};\boldsymbol{\beta},\sigma^2_Y &=&\boldsymbol{\varepsilon}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y \textrm{ avec}\\
-			\boldsymbol{\varepsilon}|\boldsymbol{X}_f,\boldsymbol{X}_r,\boldsymbol{S};\boldsymbol{\alpha} &=&\boldsymbol{X}_{r}-\boldsymbol{X}_{f}\boldsymbol{\alpha}^*
-		\end{eqnarray}		 
-D'où le modèle plug-in 
-		\begin{eqnarray}
-			(\underbrace{\boldsymbol{Y}- \boldsymbol{X}_{f}\hat{\boldsymbol{\beta}^*_f}}_{\tilde{\boldsymbol{Y}}})|\boldsymbol{X}_r,\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\hat{\boldsymbol{\alpha}},\sigma^2_Y &=&\underbrace{(\boldsymbol{X}_{r}-\boldsymbol{X}_{f}\hat{\boldsymbol{\alpha}}^*)}_{\hat{\boldsymbol{\varepsilon}}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
-		\end{eqnarray}
-		qui permet d'estimer dans un second temps $\boldsymbol{\beta}_{r}$ par un modèle classique de régression linéaire en s'appuyant sur l'estimation de $\boldsymbol{\beta}^*$ issue du modèle marginal et sur $\hat{\boldsymbol{\alpha}}$.
-		Le modèle plug-in réduit le bruit de la régression (\ref{marginalfr}) et
-%		\begin{equation}
-%			\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\hat{\boldsymbol{\alpha}}^*,\sigma^2_Y= \boldsymbol{X}_{f}\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
-%		\end{equation}
-		une simple étape d'identification (sans estimation supplémentaire) permet d'estimer le vrai modèle :
-		\begin{eqnarray}
-			\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f,\boldsymbol{S};\hat{\boldsymbol{\beta}}_f^*,\hat{\boldsymbol{\beta}}_r,\hat{\boldsymbol{\alpha}},\sigma^2_Y&=& \boldsymbol{X}_{f}(\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}) + \boldsymbol{X}_{r}\hat{\boldsymbol{\beta}}_{r}+\boldsymbol{\varepsilon}_Y \\
-			&=&\boldsymbol{X}_{f}\hat{\boldsymbol{\beta}}_{f}+\boldsymbol{X}_{r}\hat{\boldsymbol{\beta}}_{r}+\boldsymbol{\varepsilon}_Y
-		\end{eqnarray}
+Après estimation du modèle marginal on s'applique à améliorer l'estimation de $\boldsymbol{\beta}$: 
+\begin{itemize}
+	\item Estimation de  $\boldsymbol{\varepsilon}_Y^*$ à partir de $\hat{\boldsymbol{\beta}}^*_f$:
+	\begin{equation}
+		\hat{\boldsymbol{\varepsilon}}_Y^*=\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f.
+	\end{equation}
+	\item Estimation de $\boldsymbol{\varepsilon}$ à partir de $\hat{\boldsymbol{\alpha}}^*$:
+	\begin{equation}
+		\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* .\label{epsilonchapeau}
+	\end{equation}
+\end{itemize}
+Ces deux nouveaux estimateurs permettent alors d'obtenir un estimateur de $\boldsymbol{\beta}_r$ meilleur que le marginal $\hat{\boldsymbol{\beta}}^*_r=\boldsymbol{0}$.
+\begin{itemize}
+	\item Amélioration de l'estimation de $\boldsymbol{\beta}_r$:
+	\begin{equation}
+		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})
+	\end{equation}
+\end{itemize}
+Cet estimateur est consistant et nous permet de réduire le bruit du modèle marginal, donc d'estimer  $\boldsymbol{Y} $ avec une variance réduite.
+
+\begin{equation}
+	\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}.
+\end{equation}
+
+		On peut ensuite dans une nouvelle phase d'estimation se rapprocher de $\boldsymbol{\beta}_f$.\\On a $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $.
+		\begin{itemize}
+			\item Amélioration de l'estimation de $\boldsymbol{\beta}_f $:
+			\begin{equation}
+			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}.
+			\end{equation}
+		\end{itemize}
 	
-	La figure \ref{MQE2} montre l'efficacité du modèle plug-in et son champ d'application : les cas avec assez de correlations pour que les méthodes classiques appliquées à $\boldsymbol{X}$ soient handicapées mais pas assez de corrélations pour que le retrait des variables redondantes se fasse sans perte siginificative d'information.
+	La figure \ref{MQE2} montre l'efficacité du modèle plug-in et son champ d'application : les cas avec assez de correlations pour que les méthodes classiques appliquées à $\boldsymbol{X}$ soient handicapées mais pas assez de corrélations pour que le retrait des variables redondantes (modèle marginal)  se fasse sans perte siginificative d'information.
 		
 	\section{Valeurs manquantes}
 		Une seconde perspective a été entamée concernant les valeurs manquantes. Le fait de disposer d'un modèle génératif complet sur $\boldsymbol{X}$ avec modélisation explicite des dépendances permet en effet de composer avec les valeurs manquantes. Tout d'abord, l'estimation de $\boldsymbol{\alpha}$ peut se faire sur les données observées en intégrant sur les données manquantes. On peut alors utiliser un algorithme de type EM (expectation Maximization) pour estimer $\hat{\boldsymbol{\alpha}}$.\\
@@ -863,7 +870,7 @@ Combining now (\ref{eq:MainR}) with (\ref{eq:SR}), (\ref{eq:marginal}) and (\ref
 	\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^*)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl} \\
 	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*,\label{eq:modexpl}
 \end{eqnarray}
-where $\boldsymbol{\alpha}^*_j \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ and $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0 $. We can then define the matrix $\boldsymbol{\alpha}^* \in \mathbb{R}^{(d-d_r \times d_r)}$ of the coefficient of sub-regression to use more compact notation:
+where $\boldsymbol{\alpha}^*_j \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ and $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0 $. We can then define the matrix $\boldsymbol{\alpha}^* \in \mathbb{R}^{(d_f \times d_r)}$ of the coefficient of sub-regression to use more compact notation:
 \begin{equation}
 	\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon}
 \end{equation} 
@@ -3954,9 +3961,9 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 		
 	\section{Perspectives}
 		\subsection{Non-linear regression}
-			Polynomial regression, logistic regression \cite{hosmer2000applied}, {\it etc.} might be improved by a method like this.
+			Polynomial regression, {\it etc.} might be improved by a method like this. Logistic regression \cite{hosmer2000applied} is in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain same phenomenon. It is an easy generalization of \textsc{CorReg}.
 		\subsection{Pretreatment not only for regression}
-			Classification and Regression Tree, and any other method could benefit of the variable selection pretreatment implied by our marginal model.
+			Classification and Regression Tree, and any other method could also benefit from the variable selection pretreatment implied by our marginal model.
 		\subsection{Improved programming}
 			Even if it is written in C++, the algorithm could be optimized by a better usage of sparse matrices, memory usage optimization, and other small things that could reduce computational cost to be faster and allow to work with larger datasets (already works with thousands of covariates).
 		\subsection{Missing values in classical methods}
@@ -3964,7 +3971,7 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 			It can notably be used for clustering and not only in response variable prediction context.
 			Missing values were just introduced here and represent a consequent perspective.
 		\subsection{Interpretation improvements}
-			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to reach this goal.
+			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to get closer to this goal.
 		\subsubsection{Regression mixture models}
 			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions with some parameters and sub-regressions common to several classes and some other with distinct values.
 \cleardoublepage
