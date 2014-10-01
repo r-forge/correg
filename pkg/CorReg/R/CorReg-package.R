@@ -45,8 +45,9 @@
 #'    compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
 #'    
 #'    #Regression coefficients estimation
+#'     select="NULL"
 #'    resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,
-#'                select="NULL",K=10,returning=TRUE)
+#'                select=select,K=10,returning=TRUE)
 #'    
 #'    MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$compl$A)
 #'    MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)
