@@ -452,7 +452,7 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
         jret=list_cand(ind_stock_bool1(w-1),1);
         Zcand=newZ;
         Zcand(iret,jret)=1-Zcand(iret,jret);
-        if (Zcand(iret,jret)==1)//si on a ajouter
+        if (Zcand(iret,jret)==1)//i we have added
         {
           for(cha=0;cha<p;cha++)
           { 

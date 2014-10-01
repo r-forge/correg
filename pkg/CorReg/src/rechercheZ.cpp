@@ -32,7 +32,7 @@ SEXP rechercheZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP method
   Eigen::MatrixXd list_cand;//matrice qui contient les coordonnées des candidats
   int nbcand;//nombre de candidats
   int nb_opt;//nombre de fois ou on a retrouve bicbest
-  int k;//nombre du tirage aleatoire (liste candidats)
+  int k=0;//nombre du tirage aleatoire (liste candidats)
   int compte;//permet de cree la matrice liste en désignant le numéro du candidat (liste candidats)
   int i;//coordonnée (x ou y) des candidats (liste candidats)
   int rand1;//nombre aleatoire pour la 3ème méthode de tirage des candidats (liste candidats)
@@ -323,7 +323,7 @@ SEXP rechercheZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP method
           sumexp=sumexp+bicweight(v);
         }
         w=-1;//initialisation candidat choisi (il est a -1 car on va rajouter un "+1" avec le while)
-        ran=runif(1);
+        ran=runif(0,1);
         sumcum=0;
         while (ran[0]>=sumcum)//choix du candidat
         { 
@@ -392,7 +392,7 @@ SEXP rechercheZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP method
       }
       
       w=-1;//initialisation candidat choisi (il est a -1 car on va rajouter un "+1" avec le while)
-      ran=runif(1);
+      ran=runif(0,1);
       sumcum=0;
       while (ran[0]>=sumcum)//choix du candidat
       { 

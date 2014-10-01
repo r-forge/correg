@@ -613,8 +613,8 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           sumexp=sumexp+bicweight(v);
         }
         w=-1;//initialisation candidat choisi (il est a -1 car on va rajouter un "+1" avec le while)
-        ran=rand();
-        ran=ran/32767;
+        ran=runif(0,1)[0];
+        //ran=ran/32767;
         sumcum=0;
         while (ran>=sumcum)//choix du candidat
         { 
@@ -902,8 +902,8 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
       }
       
       w=-1;//initialisation candidat choisi (il est a -1 car on va rajouter un "+1" avec le while)
-      ran=rand();
-      ran=ran/32767;
+          ran=runif(0,1)[0];
+        //ran=ran/32767;
       sumcum=0;
       while (ran>=sumcum)//choix du candidat
       { 
