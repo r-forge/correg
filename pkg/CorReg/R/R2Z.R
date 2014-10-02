@@ -1,4 +1,4 @@
-#' Estimates R2 of each subression
+#' Estimates R2 of each subregression
 #'@param Z binary adjacency matrix of the structure (size p)
 #' @param X the dataset
 #' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
