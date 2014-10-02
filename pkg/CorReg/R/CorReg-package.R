@@ -1,4 +1,4 @@
-#' CorReg: the concept
+#' CorReg: see www.correg.org for article and Phd Thesis about CorReg.
 #' @name CorReg-package
 #' @aliases CorReg-package
 #' @docType package
