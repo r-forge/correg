@@ -59,5 +59,6 @@
 #'    compZ$true_left;compZ$false_left
 #'    \dontrun{
 #'   barplot(as.matrix(MSE),main="MSE on validation dataset", sub=paste("select=",select))
+#'   abline(h=MSE_complete,col="red")
 #'    }
 NULL
