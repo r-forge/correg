@@ -4,8 +4,8 @@
 \title{draws matplot with conditionnal background for easier comparison of curves.}
 \usage{
 matplot_zone(x = x, y = y, col = 1:6, alpha = 0.2, what = which.min,
-  ylim = NULL, xlim = NULL, type = "p", xlab = NULL, ylab = "NULL",
-  main = NULL, lwd = lwd, lty = 1:5)
+  ylim = NULL, xlim = NULL, type = "p", xlab = NULL, ylab = NULL,
+  main = NULL, ...)
 }
 \arguments{
 \item{x}{the abscisses}
@@ -29,10 +29,6 @@ matplot_zone(x = x, y = y, col = 1:6, alpha = 0.2, what = which.min,
 \item{ylab}{(like in matplot)}
 
 \item{main}{the main title (like in matplot)}
-
-\item{lwd}{(like in matplot)}
-
-\item{lty}{(like in matplot)}
 }
 \description{
 draws matplot with conditionnal background for easier comparison of curves.

@@ -95,6 +95,7 @@ searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1
         res$Z_opt=resclean$Z_opt
         res$bic_opt=resclean$bic_opt
      }
+     res$Bic_null_vect=Bic_null_vect
      return(res)
   }
 

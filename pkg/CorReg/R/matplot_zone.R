@@ -9,12 +9,12 @@
 #' @param type the type of curve (like in matplot)
 #' @param xlab (like in matplot)
 #' @param ylab (like in matplot)
-#' @param lwd  (like in matplot)
-#' @param lty  (like in matplot)
+
 #' @param main the main title (like in matplot)
 #' @export
-matplot_zone<-function(x=x,y=y,col=1:6,alpha=0.2,what=which.min,ylim=NULL,xlim=NULL,type="p",xlab=NULL,ylab="NULL",main=NULL,lwd=lwd,lty = 1:5){
-   matplot(x,y,ylim=ylim,type=type,xlab=xlab,ylab=ylab,main=main,lwd=lwd,xlim=xlim)
+matplot_zone<-function(x=x,y=y,col=1:6,alpha=0.2,what=which.min,ylim=NULL,xlim=NULL,type="p",xlab=NULL,ylab=NULL,main=NULL,...){
+   matplot(x,y,ylim=ylim,type=type,xlab=xlab,ylab=ylab,main=main,xlim=xlim,...)
+   if(missing(x)){x<-seq_len(NROW(y))}
    victory_int(x=x,y=y,col=col,what=what,alpha=alpha)
-   matplot(x,y,ylim=ylim,add=TRUE,col=col,type=type,xlab=xlab,ylab=ylab,main=main,lwd=lwd,xlim=xlim)
+   matplot(x,y,ylim=ylim,add=TRUE,col=col,type=type,xlab=xlab,ylab=ylab,main=main,xlim=xlim,...)
 }

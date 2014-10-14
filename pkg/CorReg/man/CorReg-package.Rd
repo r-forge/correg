@@ -7,7 +7,7 @@
 Sequential linear regression based on a structural equation model(explicit correlations). It permits to face highly correlated datasets.
 }
 \details{
-CorReg: the concept
+CorReg: see www.correg.org for article and Phd Thesis about CorReg.
 }
 \examples{
 #dataset generation
