@@ -298,7 +298,7 @@ Steelmaking is continuously improving and we are now able to produce steel that 
 	We will see in the state of the art that correlations are a real issue and that the number of variables increases the problem.	
 	The stakes are very high because of the high productivity of the steel plants and the extreme competition between steelmakers but also because steel making is now well-known and optimized thus new defects only appears on innovative steels with high added value. Any improvement on such crisis can have important impact on market shares and when the customer is impacted, each day won by the automation of the data mining process can lead to substantial savings. So we really need a kind of automatic method, able to manage correlations without any a priori and giving an easily understandable and flexible model.
 	
-\chapter{State of the art}
+\chapter{State of the art on linear regression}
 \paragraph{Abstract:} Brief state of the art to have a glimpse of existing method we could try to solve our problematic.
 Most of the tools described here are explained with more details in the book from  Hastie, Tibshirani et Friedman : {\it "The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible on web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}} for free.
 	
@@ -628,7 +628,7 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 %		\section{MCMC}
 		
 		
-		\section{Miscellaneous regression methods}	
+		\section{Non-linear regression methods}	
 			
 	\subsection{Sliced Inverse Regression}
 		Sliced Inverse Regression is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression \cite{eubank1999nonparametric,hardle1990applied} that are too complex to interpret for our industrial context. \\
@@ -2708,7 +2708,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 \part{Extensions}	
 			
 		
-\chapter{Estimation of the residuals}
+\chapter{Using coefficients of regression and sub-regression to improve prediction}
 	\paragraph{Abstract:} We have seen that eviction of redundant covariates improves the results by a good tradeoff between dimension reduction and better conditioning versus keeping all the information. But The fact is that we lost some information and we want to get it back. So we propose a plug-in model to use the redundant covariates in a second estimation step.
 	\section{Introduction}
 		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}). But even if the sub-regressions are strong, we face a loss information that can be damageable as we have seen in section \ref{tableMSEsimgauche}. \\
@@ -3998,7 +3998,9 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 		\subsection{Interpretation improvements}
 			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to get closer to this goal.
 		\subsubsection{Regression mixture models}
-			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions with some parameters and sub-regressions common to several classes and some other with distinct values.
+			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values.
+		\subsubsection{Using $\boldsymbol{Y}$ to estimate $S$}
+			Like PLS regression, we could imagine to estimate $S$ using also $\boldsymbol{Y}$ to find a structure that will give the best results when applied on $\boldsymbol{Y}$. But it would probably give distinct structures according to the chosen model (marginal or plug-in). It would also require a criterion that could be the $BIC$ of the combination of both $S$ and the chosen regression on $\boldsymbol{Y}$ or a {\sc MSE}  but with added computational cost if the LASSO (for example) has to be computed for each candidate structure in the MCMC.
 \cleardoublepage
 
 \addcontentsline{toc}{chapter}{References}
