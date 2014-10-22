@@ -21,7 +21,7 @@
 #'@param ... parameters to be passed (for Winitial).
 #'@return step 0:delete, 1: add, 2: stationnarity
 #'@export
-searchZ<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1,p1max=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,verbose=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,clean=TRUE,...){
+structureFinder<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1,p1max=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,verbose=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,clean=TRUE,...){
   params=match.call()
   Wini=FALSE
   X=1*as.matrix(X)

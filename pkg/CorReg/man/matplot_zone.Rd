@@ -29,6 +29,8 @@ matplot_zone(x = x, y = y, col = 1:6, alpha = 0.2, what = which.min,
 \item{ylab}{(like in matplot)}
 
 \item{main}{the main title (like in matplot)}
+
+\item{...}{Graphical parameters}
 }
 \description{
 draws matplot with conditionnal background for easier comparison of curves.
