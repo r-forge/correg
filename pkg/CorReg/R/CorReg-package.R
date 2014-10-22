@@ -27,7 +27,7 @@
 #'    BIC_empty_vect=mixmod$BIC_vect
 #'    
 #'    #MCMC to find the structure
-#'    res=searchZ(X=X_appr,verbose=0,reject=0,Maxiter=900,
+#'    res=structureFinder(X=X_appr,verbose=0,reject=0,Maxiter=900,
 #'                nbini=30,candidates=-1,Bic_null_vect=BIC_empty_vect,star=TRUE,p1max=15,clean=TRUE)
 #'    hatZ=res$Z_opt
 #'    hatBic=res$bic_opt
