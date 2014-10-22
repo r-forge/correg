@@ -9,7 +9,7 @@
 #' @param type the type of curve (like in matplot)
 #' @param xlab (like in matplot)
 #' @param ylab (like in matplot)
-
+#' @param ... Graphical parameters 
 #' @param main the main title (like in matplot)
 #' @export
 matplot_zone<-function(x=x,y=y,col=1:6,alpha=0.2,what=which.min,ylim=NULL,xlim=NULL,type="p",xlab=NULL,ylab=NULL,main=NULL,...){
