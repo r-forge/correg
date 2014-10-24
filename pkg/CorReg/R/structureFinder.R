@@ -36,7 +36,7 @@ structureFinder<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,m
     nb_opt_max=Maxiter
   }
   if(is.null(Bic_null_vect)){
-     Bic_null_vect=density_estimation(X=X,nbclustmax=10,verbose=FALSE,detailed=FALSE,mclust=TRUE)$BIC_vect
+     Bic_null_vect=density_estimation(X=X,nbclustmax=10,verbose=FALSE,detailed=FALSE)$BIC_vect
   }
   if(!is.null(nbini)){
      if (nbini<1){nbini=NULL}
