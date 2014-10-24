@@ -4,8 +4,8 @@
 \title{BIC of estimated  marginal gaussian mixture densities}
 \usage{
 density_estimation(X = X, nbclustmax = 10, nbclustmin = 1,
-  verbose = FALSE, detailed = FALSE, max = TRUE, mclust = TRUE,
-  nbini = 20, matshape = FALSE)
+  verbose = FALSE, detailed = FALSE, max = TRUE, package = c("mclust",
+  "Rmixmod", "rtkpp"), nbini = 20, matshape = FALSE, ...)
 }
 \arguments{
 \item{X}{the dataset (matrix)}
@@ -20,11 +20,13 @@ density_estimation(X = X, nbclustmax = 10, nbclustmin = 1,
 
 \item{max}{boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset}
 
-\item{mclust}{boolean. Use mclust instead of Rmixmod}
+\item{package}{package to use (Rmixmod,mclust,rtkpp)}
 
 \item{nbini}{number of initial points for Rmixmod}
 
 \item{matshape}{boolean to give the detail in matricial shape}
+
+\item{...}{additional parameters}
 }
 \description{
 Estimates the density of each covariates with gaussian mixture models and then gives the associated BIC.

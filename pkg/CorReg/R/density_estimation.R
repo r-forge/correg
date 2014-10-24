@@ -8,23 +8,27 @@
 #' @param detailed boolean to give the details of the mixtures found
 #' @param matshape boolean to give the detail in matricial shape
 #' @param max boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset
-#' @param mclust boolean. Use mclust instead of Rmixmod
+#' @param package package to use (Rmixmod,mclust,rtkpp)
 #' @param nbini number of initial points for Rmixmod
-density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detailed=FALSE,max=TRUE,mclust=TRUE,nbini=20,matshape=FALSE){
+#' @param ... additional parameters
+density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detailed=FALSE,max=TRUE,package=c("mclust","Rmixmod","rtkpp"),nbini=20,matshape=FALSE,...){
   #X est la matrice sans constante
    X=1*as.matrix(X)
   n=nrow(X)
+  package=package[1]
   if(max){
      nbclustmax=round(min(nbclustmax,1+n^(0.3)))
      nbclustmin=round(min(nbclustmin,1+n^(0.3)))
   }
+  if(nbclustmin>=1 & package=="rtkpp"){package="Rmixmod"}
   p=ncol(X)
   nbclust=c()
   BIC_vect=c()
   if(detailed){
     detailsmat=list() 
   }
-  if(mclust==F){#si on veut utiliser mixmod
+  if(package=="Rmixmod"){#si on veut utiliser mixmod
+     require(Rmixmod)
     for (i in 1:p){
       vect=X[!is.na(X[,i]),i]#donnees observees seulement
       nbclustmaxloc=nbclustmax
@@ -46,7 +50,8 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
         }      
       }
     }
-  }else{#on utilise mclust
+  }else if(package=="mclust"){#on utilise mclust
+     require(mclust)
     options(warn=-1)
     for (i in 1:p){
       vect=X[!is.na(X[,i]),i]#donnees observees seulement
@@ -87,6 +92,29 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
       }
     }
     options(warn=1)
+  }else{#on utilise rtkpp
+     require(rtkpp)
+     for (i in 1:p){
+        vect=X[!is.na(X[,i]),i]#donnees observees seulement
+        nbclustmaxloc=nbclustmax
+        combien=length(unique(vect))
+        if(combien<=nbclustmaxloc){nbclustmaxloc=max(1,round(combien/2))}
+        res=clusterDiagGaussian(data = vect,nbCluster = c(nbclustmin:nbclustmaxloc),criterion = "BIC",modelNames ="gaussian_pk_sjk",... )
+        if(verbose){print(res)}
+        nbclust[i]=res@nbCluster
+        BIC_vect[i]=res@criterion
+        if(detailed){
+           prop=res@pk#proportions
+           meansvect=res@mean#means
+           varvect=res@sigma^2#variances
+           if(matshape){
+              detailsmat=rbind(detailsmat,cbind(prop,meansvect,varvect,i))
+           }else{
+              detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+              detailsmat[[i]]=detailsmat[[i]][order(detailsmat[[i]][,1]),]
+           }      
+        }
+     }
   }
   if(detailed){#boucle à la main pour sortie utilisable
     return(list(BIC_vect=BIC_vect,nbclust=nbclust,BIC=sum(BIC_vect),details=detailsmat))

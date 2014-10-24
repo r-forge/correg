@@ -4,14 +4,15 @@
 \title{Fill the missing values in the dataset}
 \usage{
 fillmiss(X = X, Z = NULL, mixmod = FALSE, B = NULL, Bt = NULL,
-  res_mixmod = NULL, nbclustmax = 10, X1 = FALSE, mclust = FALSE)
+  res_mixmod = NULL, nbclustmax = 10, X1 = FALSE, package = c("mclust",
+  "Rmixmod", "rtkpp"))
 }
 \arguments{
 \item{X}{the dataset (matrix) with missing values}
 
 \item{Z}{the structure associated to X. Can be a matrix of zeros if non structure.}
 
-\item{mixmod}{boolean to say if the function has to use mixmod hypothesis or just the observed mean.}
+\item{mixmod}{boolean to say if the function has to use mixture model hypothesis or just the observed mean.}
 
 \item{B}{the matrix of the coefficients for sub-regressions}
 
@@ -23,7 +24,7 @@ fillmiss(X = X, Z = NULL, mixmod = FALSE, B = NULL, Bt = NULL,
 
 \item{X1}{boolean to say if dependent variables on the right will be filled based on the structure}
 
-\item{mclust}{boolean indicates wether to use Mixmod or mclust}
+\item{package}{package to use (Rmixmod,mclust,rtkpp) to estimate the Gaussian mixtures if mixmod=TRUE.}
 }
 \description{
 Fill the missing values in the dataset

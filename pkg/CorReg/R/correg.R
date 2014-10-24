@@ -1,10 +1,10 @@
 #' Estimates the response variable using a structure
 #'  @import Rcpp
-#'  @import Rmixmod
+# '   @import Rmixmod
 #' @import lars
 #' @import elasticnet
 #' @import Matrix
-#' @import mclust 
+# ' @import mclust 
 #' @import ridge
 #' @import MASS
 # ' @import parcor

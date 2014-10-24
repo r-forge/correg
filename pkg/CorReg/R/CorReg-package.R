@@ -23,18 +23,18 @@
 #'    TrueZ=base$Z#True generative structure (binary matrix)
 #'    
 #'    #density estimation for the MCMC
-#'    mixmod=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE,mclust=TRUE)
-#'    BIC_empty_vect=mixmod$BIC_vect
+#'    density=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE)
+#'    Bic_null_vect=density$BIC_vect
 #'    
 #'    #MCMC to find the structure
 #'    res=structureFinder(X=X_appr,verbose=0,reject=0,Maxiter=900,
-#'                nbini=30,candidates=-1,Bic_null_vect=BIC_empty_vect,star=TRUE,p1max=15,clean=TRUE)
+#'                nbini=30,candidates=-1,Bic_null_vect=Bic_null_vect,star=TRUE,p1max=15,clean=TRUE)
 #'    hatZ=res$Z_opt
 #'    hatBic=res$bic_opt
 #'    
 #'    #BIC comparison between true and found structure
-#'    bicopt_vect=BicZ(X=X_appr,Z=hatZ,Bic_null_vect=BIC_empty_vect)
-#'    bicopt_vrai=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=BIC_empty_vect)
+#'    bicopt_vect=BicZ(X=X_appr,Z=hatZ,Bic_null_vect=Bic_null_vect)
+#'    bicopt_vrai=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=Bic_null_vect)
 #'    sum(bicopt_vect);sum(bicopt_vrai)
 #'    
 #'    #interpretation of found and true structure ordered by increasing R2
