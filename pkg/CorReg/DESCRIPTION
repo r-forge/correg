@@ -28,7 +28,6 @@ Imports:
     Rcpp(>= 0.11.0),
     lars(>= 1.2),
     elasticnet(>= 1.1),
-    spikeslab(>= 1.1.5),
     corrplot(>= 0.73),
     Matrix(>= 1.1),
     ridge(>= 2.1),
@@ -38,6 +37,7 @@ Imports:
 LinkingTo: Rcpp, RcppEigen
 Suggests:
    clere(>= 1.1),
+    spikeslab(>= 1.1.5),
     parcor(>= 0.2),
     Rmixmod(>= 2.0.1),
     rtkpp (>= 0.8.3),
