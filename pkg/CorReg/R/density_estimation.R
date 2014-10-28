@@ -34,7 +34,7 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
       nbclustmaxloc=nbclustmax
       combien=length(unique(vect))
       if(combien<=nbclustmaxloc){nbclustmaxloc=max(1,round(combien/2))}
-      res=mixmodCluster(data=vect,criterion="BIC",nbCluster=c(nbclustmin:nbclustmaxloc),strategy=mixmodStrategy(nbTryInInit=nbini))["bestResult"]
+      res=Rmixmod::mixmodCluster(data=vect,criterion="BIC",nbCluster=c(nbclustmin:nbclustmaxloc),strategy=mixmodStrategy(nbTryInInit=nbini))["bestResult"]
       if(verbose){print(res)}
       nbclust[i]=res[1]
       BIC_vect[i]=res[3]
@@ -60,9 +60,9 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
       if(combien<=nbclustmaxloc){
             nbclustmaxloc=max(1,round(combien/2))
       }
-      res=Mclust(vect,G=c(nbclustmin:nbclustmaxloc),modelNames="V")[c("bic","parameters")]
+      res=mclust::Mclust(vect,G=c(nbclustmin:nbclustmaxloc),modelNames="V")[c("bic","parameters")]
       if(is.na(res$bic)){
-         res=mixmodCluster(data=vect,criterion="BIC",nbCluster=c(nbclustmin:nbclustmaxloc),strategy=mixmodStrategy(nbTryInInit=nbini))["bestResult"]
+         res=Rmixmod::mixmodCluster(data=vect,criterion="BIC",nbCluster=c(nbclustmin:nbclustmaxloc),strategy=mixmodStrategy(nbTryInInit=nbini))["bestResult"]
          if(verbose){print(res)}
          nbclust[i]=res[1]
          BIC_vect[i]=res[3]
@@ -99,7 +99,7 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
         nbclustmaxloc=nbclustmax
         combien=length(unique(vect))
         if(combien<=nbclustmaxloc){nbclustmaxloc=max(1,round(combien/2))}
-        res=clusterDiagGaussian(data = vect,nbCluster = c(nbclustmin:nbclustmaxloc),criterion = "BIC",modelNames ="gaussian_pk_sjk",... )
+        res=rtkpp::clusterDiagGaussian(data = vect,nbCluster = c(nbclustmin:nbclustmaxloc),criterion = "BIC",modelNames ="gaussian_pk_sjk",... )
         if(verbose){print(res)}
         nbclust[i]=res@nbCluster
         BIC_vect[i]=res@criterion
