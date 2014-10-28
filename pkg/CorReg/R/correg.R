@@ -8,8 +8,8 @@
 #' @import ridge
 #' @import MASS
 # ' @import parcor
-#' @import  clere
-#' @import spikeslab
+# ' @import  clere
+# ' @import spikeslab
 #' @import  rpart
 #' @import corrplot
 #' @import mvtnorm
