@@ -103,6 +103,7 @@ if(explnew){compl=TRUE;expl=TRUE}
        res$compl$A[res$compl$A!=0]=c(OLS(X=Xloc,Y=Y,intercept=intercept)$beta)
        res$compl$A=c(res$compl$A)
     }else if(select=="clere"){
+       require(clere)
        res$compl$A=A_clere(y=as.numeric(Y),x=X,g=g)
     }else if(select=="spikeslab"){
        respike=spikeslab(x=X,y=Y)
