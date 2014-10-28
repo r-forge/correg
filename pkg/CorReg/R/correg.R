@@ -72,7 +72,6 @@ if(explnew){compl=TRUE;expl=TRUE}
     compl = TRUE
   }
   if(!is.null(alpha)){
-     expl=TRUE
   }
   if (compl) {
     if (select == "NULL") {
