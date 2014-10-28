@@ -33,10 +33,12 @@ Imports:
     ridge(>= 2.1),
     rpart(>= 4.1-5),
     MASS(>= 7.3-30),
+    stats(>=3.0.2),
     mvtnorm(>= 0.9)
 LinkingTo: Rcpp, RcppEigen
 Suggests:
-   clere(>= 1.1),
+   
+    clere(>= 1.1),
     spikeslab(>= 1.1.5),
     parcor(>= 0.2),
     Rmixmod(>= 2.0.1),
