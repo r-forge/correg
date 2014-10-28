@@ -106,7 +106,7 @@ if(explnew){compl=TRUE;expl=TRUE}
        require(clere)
        res$compl$A=A_clere(y=as.numeric(Y),x=X,g=g)
     }else if(select=="spikeslab"){
-       respike=spikeslab(x=X,y=Y)
+       respike=spikeslab::spikeslab(x=X,y=Y)
        res$compl$A=rep(0,times=ncol(X)+intercept)
        if(intercept){
           res$compl$A[c(1,1+which(respike$gnet.scale!=0))]=OLS(X=X[,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
@@ -158,7 +158,7 @@ if(explnew){compl=TRUE;expl=TRUE}
     }else if(select=="clere"){
        res$expl$A=A_clere(y=as.numeric(Y),x=X[,I1],g=g)
     }else if(select=="spikeslab"){
-       respike=spikeslab(x=X[,I1],y=Y)
+       respike=spikeslab::spikeslab(x=X[,I1],y=Y)
        res$expl$A=rep(0,times=ncol(X[,I1])+intercept)
        if(intercept){
           res$expl$A[c(1,1+which(respike$gnet.scale!=0))]=OLS(X=X[,I1][,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
@@ -230,7 +230,7 @@ if(explnew){compl=TRUE;expl=TRUE}
           }else if(select=="clere"){
              res$expl2$A=A_clere(y=as.numeric(Y),x=X[,I1],g=g)
           }else if(select=="spikeslab"){
-             respike=spikeslab(x=X[,I1],y=Y)
+             respike=spikeslab::spikeslab(x=X[,I1],y=Y)
              res$expl2$A=rep(0,times=ncol(X[,I1])+intercept)
              if(intercept){
                 res$expl2$A[c(1,1+which(respike$gnet.scale!=0))]=OLS(X=X[,I1][,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta
@@ -311,7 +311,7 @@ if(explnew){compl=TRUE;expl=TRUE}
          A_inj=A_clere(y=as.numeric(Ytilde),x=Xtilde,g=g)
          A_inj=A_inj[-1]#vraiment pas propre
       }else if(select=="spikeslab"){
-         respike=spikeslab(x=X[,I1],y=Ytilde)
+         respike=spikeslab::spikeslab(x=X[,I1],y=Ytilde)
          A_inj=rep(0,times=ncol(Xtilde))
          A_inj[which(respike$gnet.scale!=0)]=OLS(X=Xtilde[,respike$gnet.scale!=0],Y=as.numeric(Ytilde),intercept=intercept)$beta 
       }else{#ridge
@@ -353,7 +353,7 @@ if(explnew){compl=TRUE;expl=TRUE}
          }else if(select=="clere"){
             A_retour=A_clere(y=as.numeric(Y),x=X[,I1],g=g)
          }else if(select=="spikeslab"){
-            respike=spikeslab(x=X[,I1],y=Y)
+            respike=spikeslab::spikeslab(x=X[,I1],y=Y)
             res$compl$A=rep(0,times=ncol(X[,I1])+intercept)
             if(intercept){
                res$compl$A[c(1,1+which(respike$gnet.scale!=0))]=OLS(X=X[,I1][,respike$gnet.scale!=0],Y=as.numeric(Y),intercept=intercept)$beta

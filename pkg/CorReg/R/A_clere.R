@@ -1,5 +1,6 @@
 # '
 A_clere<-function(y=y,x=x,g=NULL,analysis="aic"){
+   require(clere)
    x=1*as.matrix(x)
    if(is.null(g)){
       g=min(5,ncol(x))#ncol(x)
