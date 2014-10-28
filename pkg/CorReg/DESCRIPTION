@@ -37,7 +37,6 @@ Imports:
     mvtnorm(>= 0.9)
 LinkingTo: Rcpp, RcppEigen
 Suggests:
-   
     clere(>= 1.1),
     spikeslab(>= 1.1.5),
     parcor(>= 0.2),
