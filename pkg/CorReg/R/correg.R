@@ -11,6 +11,7 @@
 # ' @import  clere
 # ' @import spikeslab
 #' @import  rpart
+# ' @import  stats
 #' @import corrplot
 #' @import mvtnorm
 #' @useDynLib CorReg

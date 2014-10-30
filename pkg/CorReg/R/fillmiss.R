@@ -45,14 +45,14 @@ fillmiss<-function(X=X,Z=NULL,mixmod=FALSE,B=NULL,Bt=NULL,res_mixmod=NULL,nbclus
             strategy=strategy[1]
             if(package=="mclust"){
                require(Rmixmod)
-               res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
+               res_mixmod=Rmixmod::mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
             }else if(package=="Rmixmod"){
                require(Rmixmod)
-               res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
+               res_mixmod=Rmixmod::mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
             }
             else{#rtkpp
                require(Rmixmod)
-               res_mixmod=mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
+               res_mixmod=Rmixmod::mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
             }
          } 
          resmix=list()
