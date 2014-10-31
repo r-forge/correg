@@ -62,7 +62,7 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
       }
       res=mclust::Mclust(vect,G=c(nbclustmin:nbclustmaxloc),modelNames="V")[c("bic","parameters")]
       if(is.na(res$bic)){
-         res=Rmixmod::mixmodCluster(data=vect,criterion="BIC",nbCluster=c(nbclustmin:nbclustmaxloc),strategy=mixmodStrategy(nbTryInInit=nbini))["bestResult"]
+         res=Rmixmod::mixmodCluster(data=vect,criterion="BIC",nbCluster=c(nbclustmin:nbclustmaxloc),strategy=Rmixmod::mixmodStrategy(nbTryInInit=nbini))["bestResult"]
          if(verbose){print(res)}
          nbclust[i]=res[1]
          BIC_vect[i]=res[3]
