@@ -132,7 +132,7 @@ In addition, we make the complementary hypothesis that the response covariates a
 \paragraph{Remarks}
 \begin{itemize}
 \item Sub-regressions defined in (\ref{eq:SR}) are very easy to understand by any practitioner and, thus, will give a clear view of all the correlations present in the dataset at hand.
-\item As a consequence of Hypothesis~\ref{H1} and~\ref{H2} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated.
+%\item As a consequence of Hypothesis~\ref{H1} and~\ref{H2} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated.
 \item We have considered correlations between the covariates of the main regression on $\boldsymbol{Y}$, not between the residuals. Thus $\boldsymbol{S}$ does not depend on $\boldsymbol{Y}$ and it can be estimated independently as we will see in Section~\ref{sec:estimateS}.
 \item The model of sub-regressions $\boldsymbol{S}$ gives a system of linear regressions that can be viewed as a recursive Simultaneous Equation Model (\textsc{sem})\cite{davidson1993estimation,TIMM} or also as a Seemingly Unrelated Regression (\textsc{sur}) \cite{SURzellner}. 
 \end{itemize} 
@@ -168,7 +168,13 @@ Consequently, we have obtained a new regression expression of $\boldsymbol{Y}$ b
 \vspace{3mm}
 
 In practice, the strategy we propose is to rely estimate of  $\hat{\boldsymbol{\beta}}$ upon Equation~(\ref{eq:modexpl}). The practitioner can choose any estimate of its choice, like {\sc ols} or any variable selection procedure like {\sc lasso}. In other words, it is possible to see $(\ref{eq:modexpl})$ as a kind of {\it pretreatment} for decorrelating covariates, while assuming nothing on the subsequent estimate process.
-
+\paragraph{Remark}
+\begin{itemize}
+%\item Sub-regressions defined in (\ref{eq:SR}) are very easy to understand by any practitioner and, thus, will give a clear view of all the correlations present in the dataset at hand.
+\item As a consequence of Hypothesis~\ref{H1} to~\ref{H3} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated (see the Lemma in the Appendix about identifiability).
+%\item We have considered correlations between the covariates of the main regression on $\boldsymbol{Y}$, not between the residuals. Thus $\boldsymbol{S}$ does not depend on $\boldsymbol{Y}$ and it can be estimated independently as we will see in Section~\ref{sec:estimateS}.
+%\item The model of sub-regressions $\boldsymbol{S}$ gives a system of linear regressions that can be viewed as a recursive Simultaneous Equation Model (\textsc{sem})\cite{davidson1993estimation,TIMM} or also as a Seemingly Unrelated Regression (\textsc{sur}) \cite{SURzellner}. 
+\end{itemize} 
 In the following, we will denote by {\sc CorReg} the new proposed strategy.
 
 	\subsection{Illustration of the bias-variance trade off with {\sc ols}}	\label{sec:tradeoff}
@@ -193,7 +199,7 @@ Indeed, no correlations between covariates $\boldsymbol{X}_f$ imply that the mat
 	\begin{eqnarray}
 			\textsc{mse}(\hat{\boldsymbol{\beta}})&=& \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}),
 			 \\
-			\textsc{mse}(\hat{\boldsymbol{\beta}}^*)&=& \parallel\sum_{j =1}^{d_r}\sigma_{j}\beta_{J_r^j} \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}).
+			\textsc{mse}(\hat{\boldsymbol{\beta}}^*)&=& \parallel\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}).
 	\end{eqnarray}	 
 
 %\vspace{3mm}
@@ -240,7 +246,7 @@ where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate re
 \paragraph{Defining $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})$} It corresponds to the integrated likelihood based on a not yet defined distribution $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\boldsymbol{\theta})$ on the uncorrelated covariates $\boldsymbol{X}_f$ and parameterized by $\boldsymbol{\theta}$. In this purpose, we need the following new hypothesis.
 
 \begin{hyp}\label{H4}
-All variates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and arise from the following Gaussian mixture of $k_j$ components
+All covariates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and arise from the following Gaussian mixture of $k_j$ components
 \begin{equation}
 \mathbb{P}(\boldsymbol{X}_f^j|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\lambda}^2_j) = \sum_{h=1}^{k_j} \pi_{hj} \mathcal{N}_n(\mu_{hj} . (1,\ldots,1)',\lambda_{hj}^2\boldsymbol{I}),
 \end{equation}
@@ -518,7 +524,7 @@ Since the structure $\boldsymbol{S}$ does not depend on $\boldsymbol{Y}$, it can
 
 %\FloatBarrier
 
-We have generated a non-linear sub-regression to test the robustness of our model. $\boldsymbol{X}_f$ is a set of 6 independent Gaussian mixtures defined as before. We design a unique, possibly non linear, sub-regression $\boldsymbol{X}_7=a\boldsymbol{X}_1^2+\boldsymbol{X}_2+\boldsymbol{X}_3+ \varepsilon_1$. The matrix $\boldsymbol{X}$ is then scaled and we set $\boldsymbol{Y}=\sum_{i=1}^7\boldsymbol{X}_i+\varepsilon_Y$. We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression.
+We have generated a non-linear sub-regression to test the robustness of our model. $\boldsymbol{X}_f$ is a set of 6 independent Gaussian mixtures defined as before. We design a unique, possibly non linear, sub-regression $\boldsymbol{X}_7=a\boldsymbol{X}_1^2+\boldsymbol{X}_2+\boldsymbol{X}_3+ \boldsymbol{\varepsilon}_1$. The matrix $\boldsymbol{X}$ is then scaled and we set $\boldsymbol{Y}=\sum_{i=1}^7\boldsymbol{X}_i+\boldsymbol{\varepsilon}_Y$. We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression.
 Figure~\ref{resnonlin} shows that the {\sc mcmc} algorithm has more difficulties to find a linear structure (by  $\mbox{{\sc bic}}_H$ as the non-linear part of the sub-regression increases with $a$. But the model is quite robust, preserving good efficient for small values of $a$.
 In addition, Figure~\ref{MSEnonlin} illustrates the advantage of using {\sc CorReg}, even with non-linear sub-regressions, concerning the quality of the {\sc mse}.
 
