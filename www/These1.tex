@@ -271,7 +271,7 @@ Après estimation du modèle marginal on s'applique à améliorer l'estimation d
 	\end{equation}
 	\item Estimation de $\boldsymbol{\varepsilon}$ à partir de $\hat{\boldsymbol{\alpha}}^*$:
 	\begin{equation}
-		\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* .\label{epsilonchapeau}
+		\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* .\label{epsilonchapeaufr}
 	\end{equation}
 \end{itemize}
 Ces deux nouveaux estimateurs permettent alors d'obtenir un estimateur de $\boldsymbol{\beta}_r$ plus consistant que le marginal $\hat{\boldsymbol{\beta}}^*_r=\boldsymbol{0}$.
@@ -1383,11 +1383,11 @@ where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate re
 \paragraph{Defining $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})$} It corresponds to the integrated likelihood based on a not yet defined distribution $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\boldsymbol{\theta})$ on the uncorrelated covariates $\boldsymbol{X}_f$ and parameterized by $\boldsymbol{\theta}$. In this purpose, we need the following new hypothesis.
 
 \begin{hyp}\label{H4}
-All covariates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and arise from the following Gaussian mixture of $k_j$ components
+All covariates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and arise from the following Gaussian mixture of $K_j$ components
 \begin{equation}
-\mathbb{P}(\boldsymbol{X}_f^j|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\lambda}^2_j) = \sum_{h=1}^{k_j} \pi_{hj} \mathcal{N}_n(\mu_{hj} . (1,\ldots,1)',\lambda_{hj}^2\boldsymbol{I}),
+\mathbb{P}(\boldsymbol{X}_f^j|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j) = \sum_{h=1}^{K_j} \pi_{j,h} \mathcal{N}_n(\mu_{j,h} . (1,\ldots,1)',\Sigma_{j,h}\boldsymbol{I}_n),
 \end{equation}
-where $\boldsymbol{\pi}_{j}=(\pi_{1j},\ldots,\pi_{k_jj})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{hj}>0$ and $\sum_{h=1}^{k_j}\pi_{hj}=1$, $\boldsymbol{\mu}_j=(\mu_{1j},\ldots,\mu_{k_jj})$  is the vector of centers and $\boldsymbol{\lambda}^2_j=(\lambda^2_{1j},\ldots,\lambda^2_{k_jj})$ is the vector of variances. We stack together all the mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\lambda}^2_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
+where $\boldsymbol{\pi}_{j}=(\pi_{j,1},\ldots,\pi_{j,K_j})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{j,h}>0$ and $\sum_{h=1}^{K_j}\pi_{j,h}=1$, $\boldsymbol{\mu}_j=(\mu_{j,1},\ldots,\mu_{j,K_j})$  is the vector of centers and $\boldsymbol{\Sigma}_j=(\Sigma_{j,1},\ldots,\Sigma_{j,K_j})$ is the vector of variances. We stack together all these mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
 
 \end{hyp}
 		 
@@ -3464,7 +3464,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	
 	In the followings we note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate and $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $x_{i,j}$ is missing, 0 else. 
 	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the followings.\\
-	$\Theta=\{\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$ stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
+	
 	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\  
 	
 	Maugis  has developed another software \cite{maugis2012selvarclustmv} that manage missing values: {\tt SelvarclustMV}. It relies on the assumption of Missing At Random (MAR) values and on the more constraining hypothesis that regressor covariates are completely observed (with our notations: $\forall j \in \{1,\dots,d_r \}, \forall k \in J_p^j, \forall 1\leq i \leq n, \boldsymbol{M}_{i,k}=0$). The model (Partition, sub-regression parameters and Gaussian mixtures parameters) is then estimated with an Expectation-Maximization algorithm using all the observed values (even incomplete individuals) without any imputation. Numerical results shows that {\tt SelvarclustMV} is highly competitive compared to imputation methods.\\
@@ -3478,18 +3478,41 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 
 	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the matrix of the sub-regression coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We will see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood and then the $\textsc{bic}_*$. \\
 	 
-We start with the complete likelihood of $\boldsymbol{X}$:
-\begin{eqnarray}
-	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{J_r}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
-	&=&\prod_{i=1}^n\left[\prod_{j \in J_r}f(x_{i,j}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
-	&=&\prod_{i=1}^n\left[\prod_{j =1}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
-%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
-%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
-\end{eqnarray}
-To compute the $\textsc{bic}_*$ we use then the log-likelihood:
-\begin{eqnarray}
-	\mathcal{L}(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j =1}^{d_r}\log \left(f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right)+\sum_{j \notin J_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right) \right]. \label{loglikmiss}
-\end{eqnarray}
+\paragraph{Gaussian mixture:}
+	We know that $\boldsymbol{X}$ is a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components. We stack together all the mixture parameters in  $\Theta$%$=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X \}$.
+%	 stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$ with:
+%	\begin{eqnarray}
+%	\boldsymbol{\pi}_X&=&\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}\\
+%	\boldsymbol{\mu_X}&=&
+%	% \\	
+%\end{eqnarray}
+%	 and then $K= |\boldsymbol{\pi}|$ is the total number of components in the Gaussian mixture followed by $\boldsymbol{X}$.
+%	 
+	%\paragraph{Complete likelihood:} 
+
+%\begin{eqnarray}
+%	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{J_r}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%	&=&\prod_{i=1}^n\left[\prod_{j \in J_r}f(x_{i,j}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%	&=&\prod_{i=1}^n\left[\prod_{j =1}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
+%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
+%\end{eqnarray}
+%To compute the $\textsc{bic}_*$ we use then the log-likelihood:
+%\begin{eqnarray}
+%	\mathcal{L}(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j =1}^{d_r}\log \left(f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right)+\sum_{j \notin J_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right) \right]. \label{loglikmiss}
+%\end{eqnarray}
+
+\paragraph{Observed likelihood:} 
+%We start with the complete likelihood of $\boldsymbol{X}$:
+%
+%\begin{eqnarray}
+%	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{J_r}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right]
+%% \\
+%%	&=&\prod_{i=1}^n\left[\prod_{j \in J_r}f(x_{i,j}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%%	&=&\prod_{i=1}^n\left[\prod_{j =1}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
+%%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
+%\end{eqnarray}
 	 When missing values occurs, we restrict the likelihood to the known values by integration on $\boldsymbol{X}_M$.
 %		We have 
 %	\begin{equation}
@@ -3512,7 +3535,7 @@ To compute the $\textsc{bic}_*$ we use then the log-likelihood:
 %		
 %	 Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. \\
 
-We know that $\boldsymbol{X}$ is a Gaussian mixture ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ the number of its components.
+
 \begin{eqnarray}
 	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M 
 	=\int_{\mathbb{R}^{d_M}}\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_M \\
@@ -3577,11 +3600,8 @@ L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\su
 \end{eqnarray}		
 
 %définintion des objets génériques
-where	
-\begin{eqnarray}
-	\boldsymbol{\pi}=(\pi_1,\dots,\pi_K)&=&\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}\\
-	K&=& |\boldsymbol{\pi}|% \\	
-\end{eqnarray}
+%where	
+
 		with $ \boldsymbol{\pi}_j, \mu_{j,k},\Sigma_{j,k}$ are estimated once before the MCMC starts (by Mixmod for example).
 		We note 
 		\begin{eqnarray}
