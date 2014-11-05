@@ -3573,7 +3573,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 \end{eqnarray}
 	
 \end{minipage}}
-\paragraph{remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the followings. If it was, the number of parameters would be overestimated but likelihood would not be affected.
+\paragraph{Remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the followings. If it was, the number of parameters would be overestimated but likelihood would not be affected.
 \subsection{Marginal likelihood}
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that rely on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihood are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
 
