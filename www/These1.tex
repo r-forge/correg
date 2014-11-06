@@ -109,7 +109,7 @@
 	
 	I also want to thank Christophe BIERNACKI, my academic director who accepted to lead this work even if the subject was not coming from the university. He also has spent a lot of time on this thesis with patience and has trust in the new method enough to share it with others, and it really means a lot to me. \\
 	
-	The last year I have worked mostly in the INRIA center with M$\Theta$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also helped me in this last and tough year just by their presence, giving me the courage to go further. \\
+	The last year I have worked mostly in the INRIA center with M$\boldsymbol{\Theta}$dal team, especially those from the "bureau 106 " who helped me to put {\tt CorReg} on CRAN (in particular Quentin GRIMONPREZ) and those who had already submitted something on CRAN know that it is not always fun to achieve this goal. They also helped me in this last and tough year just by their presence, giving me the courage to go further. \\
 	
 	I finally want to thank my family. My wife who had to support most of the charge of the family on top of her work and to let me work during the holidays, and my three sons, Nathan, Louis and Thibault who have been kind with her even if they rarely saw their father during the week. I love them and am thankful for their comprehension.
 
@@ -3526,26 +3526,27 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 
 \section{Estimation of $\boldsymbol{S}$ with missing values}
 \subsection{Distribution of $\boldsymbol{X}$}
-	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components (defined in the followings). We stack together all the mixture parameters in  $\Theta$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
+	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components (defined in the followings). We stack together all the mixture parameters in  $\boldsymbol{\Theta}$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
 	
-We define $\prod$ as the Cartesian product with lexicographic order when used with vectors. To illustrate this notation we define $A_1=(a_{11},a_{12})'$ and $A_2=(a_{21},a_{22},a_{23})'$:
+We define the operator $\prod$ as the Cartesian product with lexicographic order when used with vectors. To illustrate this notation we define $A_1=(a_{11},a_{12})'$ and $A_2=(a_{21},a_{22},a_{23})'$:
 \begin{eqnarray}
 	\prod_{i=1}^{2}A_i&=&\left(\begin{array}{cc}
-	a_{11} & a_21} \\ 
+	a_{11} & a_{21} \\ 
 	a_{11} & a_{22} \\ 
 	a_{11} & a_{23} \\ 
 	a_{12} & a_{21} \\ 
 	a_{12}& a_{22} \\ 
 	a_{12} & a_{23}
-	\end{array}  \right)
+	\end{array}  \right) \textrm{ ($6-$uple of ($2\times 1$) vectors)}
 \end{eqnarray}	
 	
+	Then we write the parameters of the Gaussian mixture followed by $\boldsymbol{X}$ (the same for all individuals since they are {\it i.i.d.}):
 \begin{itemize}
-	\item Vector of the proportions:
+	\item The vector of the proportions is:
 	\begin{equation}
 		\boldsymbol{\pi}_X=\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}.
 	\end{equation}
-	\item Number of components:
+	\item We deduce that the number of components (some of them could be equal as in the running example below) is:
 	\begin{equation}
 		K=|\boldsymbol{\pi}_X| \textrm{ so we have } \boldsymbol{\pi}_X=(\pi_1,\dots,\pi_K).
 	\end{equation}
@@ -3556,7 +3557,7 @@ We define $\prod$ as the Cartesian product with lexicographic order when used wi
 %	We can then define 
 \item $\forall j \in J_r,$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$ is:
 	\begin{equation}
-		\boldsymbol{\mu}_{X^{j}}=(\prod_{l \in J_f}\alpha_{l,j}\boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{d_f} \textrm{ ($\prod$ is the Cartesian product, in lexicographic order)}.
+		\boldsymbol{\mu}_{X^{j}}=(\prod_{l \in J_f}\alpha_{l,j}\boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{d_f} .
 	\end{equation}
 \end{itemize}
 We define $\boldsymbol{J}_f=(J_f^1,\dots,J_f^{d_f}) $ the vector of the indices of the free covariates (predictors) in lexicographic order. Remark: $\forall j \in \{1,\dots,d_f\}, J_f^j \in J_f$. We also define $e_j$ is the $d_f \times 1$ vector with a $1$ in $j^{th}$ position and $0$ everywhere else : 
@@ -3564,12 +3565,36 @@ We define $\boldsymbol{J}_f=(J_f^1,\dots,J_f^{d_f}) $ the vector of the indices 
 \begin{itemize}
 	\item $\forall j \in \{1,\dots,d_f\}$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^{J_f^j}$ in $\boldsymbol{X}$ is:
 	\begin{equation}
-		\boldsymbol{\mu}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\mu}_l)e_j \textrm{ ($\prod$ is the Cartesian product, in lexicographic order)}.
+		\boldsymbol{\mu}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\mu}_l)e_j .
 	\end{equation} 
 	\item The $d-$uple of $K\times 1$ vectors of the means for $\boldsymbol{X}$ is then:
 		\begin{equation}
 			\boldsymbol{\mu}_X=(\mu_{X^1},\dots,\mu_{X^d}).
 		\end{equation}
+	\item The vector of the $K$ variances of the free covariate $\boldsymbol{X}^{J_f^j}$ with $j \in \{1,\dots,d_f \}$ is:
+		\begin{equation}
+			\boldsymbol{\Sigma}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\Sigma}_l)e_j.
+		\end{equation}
+	\item The vector of the $K$ variances of the response covariate $\boldsymbol{X}^j$ is:
+	\begin{equation}
+		\boldsymbol{\Sigma}_{X^{j}}=(\prod_{l \in J_f}\alpha_{l,j}^2\boldsymbol{\Sigma}_l)\underbrace{(1,\dots,1)'}_{d_f}
+	\end{equation}
+	\item The $d-$uple of $K\times 1$ vectors of the variances for $\boldsymbol{X}$ is then:
+		\begin{equation}
+			\boldsymbol{\Sigma}_X=(\Sigma_{X^1},\dots,\Sigma_{X^d}).
+		\end{equation}	
+\end{itemize}
+\paragraph{Covariances:} We look then to the covariances between the covariate to complete the list of the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
+We note $\Sigma_{X,X}$ the $K-$uple of the vectors of the covariances in lexicographic order. Then we have $\boldsymbol{\Theta}=(\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X})$
+\begin{itemize}
+	\item The covariance between two regressors is always zero:
+	\begin{equation}
+		\forall j_1 \in J_f, \forall j_2 \in J_f, \forall 1\leq k \leq K, \forall 1\leq i \leq n,  \operatorname{Cov}_k(x_{i,j_1},x_{i,j_2})=0.
+	\end{equation}
+	\item The covariance between response covariate and a free covariate that does not regressed it is always zero by Hypothesis \ref{H1}:
+	\begin{equation}
+		\forall j_1 \in \{1,\dots,d_r \}, j_2 \notin J_p^{j_1}\cup J_r , \forall 1\leq k \leq K, \forall 1\leq i \leq n, \operatorname{Cov}_k(x_{i,J_r^{j_1},x_{i,j_2}})=0.
+	\end{equation}
 \end{itemize}
 
 	
@@ -3648,13 +3673,13 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 
 
 \begin{eqnarray}
-	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M 
-	=\int_{\mathbb{R}^{d_M}}\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_M \\
-	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_M \\
-	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\prod_{i=1}^n\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_M \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\mathbb{R}^{d_{i,M}}}\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\Theta,\boldsymbol{S})d\boldsymbol{X}_{i,M} \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
-	&=&\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})
+	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M 
+	=\int_{\mathbb{R}^{d_M}}\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M \\
+	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M \\
+	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\prod_{i=1}^n\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M \\
+	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\mathbb{R}^{d_{i,M}}}\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_{i,M} \\
+	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\\
+	&=&\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})
 \end{eqnarray}
 
 
@@ -3668,14 +3693,14 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 %	 \end{equation}	
 To compute this likelihood, we will use the decomposition
 \begin{eqnarray}
-	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})=\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\ \  \\
-	&=&\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}).
+	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})f(\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\ \  \\
+	&=&\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}).
 \end{eqnarray}
 
 \paragraph{- On observed predictors:} $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \notin J_r $:
 
 	 \begin{equation}
-	 f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})=\sum_{k=1}^{K_j}\pi_{j,k}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{likmissdroite}
+	 f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=\sum_{k=1}^{K_j}\pi_{j,k}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{likmissdroite}
 	 \end{equation} with $K_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated once (for example by {\tt Rmixmod} \cite{packageRmixmod}) before the MCMC starts. 
 %	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 %	 \begin{equation}
@@ -3684,19 +3709,19 @@ To compute this likelihood, we will use the decomposition
 
 	\paragraph{- On observed regressed covariates:} $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \in \{1,\dots,d_r \} $:
 		\begin{eqnarray}
- f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})&=& \sum_{k=1}^{K_{iJ_r^j}}\pi_{iJ_r^j,k}\Phi(x_{i,J_r^j};\mu_{iJ_r^j,k},\Sigma_{iJ_r^j,k}) \textrm{ where }  \label{Missingdensity}\\
+ f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=& \sum_{k=1}^{K_{iJ_r^j}}\pi_{iJ_r^j,k}\Phi(x_{i,J_r^j};\mu_{iJ_r^j,k},\Sigma_{iJ_r^j,k}) \textrm{ where }  \label{Missingdensity}\\
 				\boldsymbol{\pi}_{iJ_r^j} &=& \bigotimes_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }K_{iJ_r^j}=|\boldsymbol{\pi}_{iJ_r^j}| ,\\
 				\boldsymbol{\mu}_{iJ_r^j}&=& \sum_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0  }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}x_{i,l} + \bigoplus_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1  }} \bar{\boldsymbol{\alpha}}_{l,J_r^j} \boldsymbol{\mu}_l \\
 				\boldsymbol{\Sigma}_{iJ_r^j} &=& \sigma_{J_r^j}^2 + \bigoplus_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l		
 		\end{eqnarray}	
 		
 	Where $\bigotimes$ is the Kronecker product and and $\bigoplus$ is the Kronecker sum with $$A\bigoplus B= A\bigotimes\boldsymbol{I}_b+\boldsymbol{I}_a\bigotimes B$$ where $A$ and $B$ are two squares matrices of order $a$ and $b$ respectively and $\boldsymbol{I}_a,\boldsymbol{I}_b$ are the two associated identity matrices.
-		This could be easily used for imputation of the missing values in $\boldsymbol{X}_r$ knowing the parameters $\boldsymbol{\alpha}, \Theta$ and $\boldsymbol{S}$. \\
+		This could be easily used for imputation of the missing values in $\boldsymbol{X}_r$ knowing the parameters $\boldsymbol{\alpha}, \boldsymbol{\Theta}$ and $\boldsymbol{S}$. \\
 		
 		We note that we obtain a Gaussian when there is no missing value in $J_p^j$.
-		But we see that	$f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions. Thus if each sub-regression is a distinct connex component then we can use (\ref{Missingdensity}) and we have
+		But we see that	$f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions. Thus if each sub-regression is a distinct connex component then we can use (\ref{Missingdensity}) and we have
 		\begin{equation}
-		L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in I_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \label{simplemisslik}
+		L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in I_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \label{simplemisslik}
 \end{equation}		
 	In such a case, computation is fast and easy. It is the case supposed in {\tt SelvarclustMV}.\\
 
@@ -3706,9 +3731,9 @@ To compute this likelihood, we will use the decomposition
 		%We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
 		
 \begin{eqnarray}
-L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\Phi_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{liklihoodmissglobal}
+L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\\
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\Phi_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\\
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{liklihoodmissglobal}
 \end{eqnarray}		
 
 %définintion des objets génériques
@@ -3723,9 +3748,9 @@ L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\su
 		Then we can describe the parameters as following:
 		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we have the conditional distribution of the sub-regressions
 \begin{eqnarray}
-		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\Theta,\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k})
+		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k})
 		\end{eqnarray}
-				%P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\Theta,S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
+				%P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
 				where the mean vector is
 				\begin{equation}
 		\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k}= 
@@ -3789,7 +3814,7 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 
 %		In first approximation we can suppose independence between the sub-regression:
 %		\begin{equation}
-%		\forall (j,j') \in I_r \times I_r, g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\Theta) \perp g(x_{i,j'}| \boldsymbol{X}_{i}^{I_f},\Theta)
+%		\forall (j,j') \in I_r \times I_r, g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\boldsymbol{\Theta}) \perp g(x_{i,j'}| \boldsymbol{X}_{i}^{I_f},\boldsymbol{\Theta})
 %\end{equation}		 
 %then we have the complete expression of the likelihood with \ref{decomplikelimiss} and \ref{Missingdensity}.
 % Such approximation can be costless according to the position of the missing values ({\it e.g.} if they are all in $\boldsymbol{X}^{I_r}$). It is closer to the real model than the orthogonal hypothesis made by classical imputation by the mean. Moreover, sub-regressions are used only locally and errors don't cumulate whereas the true general decomposition combine many sub-regressions with cumulated noise of approximation. Thus, a general model would be better asymptotically but may not be efficient with finite dataset if the structure is complex. This first approximation is a good candidate to compare to the naive model (not taking into account the structure of sub-regression but making imputations by the mean for each covariate individually). 
@@ -3797,19 +3822,19 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 %		However, we write the real generalized expression for the log-likelihood.
 %		Let $\mathcal{I}_r$ be a permutation of $I_r$ (arbitrary chosen, so the package will use identity). We define the general decomposition:
 %		\begin{eqnarray}
-%			g(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},\Theta)&=& \prod_{i=1}^n \left[g(x_{i,\mathcal{I}_r(p_r)}|\boldsymbol{X}_i^{I_f},\Theta)\prod_{j=1}^{p_r-1}g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_{i}^{\mathcal{I}_r(j+1)},\dots ,\boldsymbol{X}_{i}^{\mathcal{I}_r(p_r)}, \boldsymbol{X}_i^{I_f},\Theta)\right]
+%			g(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},\boldsymbol{\Theta})&=& \prod_{i=1}^n \left[g(x_{i,\mathcal{I}_r(p_r)}|\boldsymbol{X}_i^{I_f},\boldsymbol{\Theta})\prod_{j=1}^{p_r-1}g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_{i}^{\mathcal{I}_r(j+1)},\dots ,\boldsymbol{X}_{i}^{\mathcal{I}_r(p_r)}, \boldsymbol{X}_i^{I_f},\boldsymbol{\Theta})\right]
 %		\end{eqnarray}
-%		where we don't know the expression of $ g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_{i}^{\mathcal{I}_r(j+1)},\dots ,\boldsymbol{X}_{i}^{\mathcal{I}_r(p_r)}, \boldsymbol{X}_i^{I_f},\Theta)$ so the previous approximation stands still. 
+%		where we don't know the expression of $ g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_{i}^{\mathcal{I}_r(j+1)},\dots ,\boldsymbol{X}_{i}^{\mathcal{I}_r(p_r)}, \boldsymbol{X}_i^{I_f},\boldsymbol{\Theta})$ so the previous approximation stands still. 
 %			
 %	
 %To estimate $\boldsymbol{\alpha}$ we use an EM algorithm. We start with an arbitrary value $\boldsymbol{\alpha}^{(0)}$, then:
 %For the iteration $h$ of the algorithm at the E step we want 
 %\begin{equation}
-%	E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]
+%	E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\boldsymbol{\Theta},S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\boldsymbol{\Theta})\right]
 %\end{equation}
 %So we get $\boldsymbol{X}_M^{(h)}$ the  imputation for $\boldsymbol{X}_M$ and then the M step simply is
 %\begin{equation}
-%	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha},S,\Theta) \right]
+%	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha},S,\boldsymbol{\Theta}) \right]
 %\end{equation}
 %and we can use the same method as the one for classical case without missing values (OLS, SUR, {\it etc.}).
 %		And we continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance.\\
@@ -3848,7 +3873,7 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 %	\Sigma_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}&=&\operatorname{var}(x_{i,j,k})-\operatorname{cov}(x_{i,j},\boldsymbol{X}_{i,O,k}^{I_r^j})\operatorname{var}(\boldsymbol{X}_{i,O,k}^{I_r^j})^{-1}\operatorname{cov}(\boldsymbol{X}_{i,O,k}^{I_r^j},x_{i,j,k})
 %\end{eqnarray}
 % 
-%But we do not need to compute the variance because we only want $E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\Theta,S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\Theta)\right]$ so the mean is sufficient, we impute  
+%But we do not need to compute the variance because we only want $E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\boldsymbol{\Theta},S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\boldsymbol{\Theta})\right]$ so the mean is sufficient, we impute  
 %\begin{equation}
 %	\hat{x}_{i,j}=\frac{1}{K_{ij}}\sum_{k=1}^{K_{ij}}\pi_{ij,k}\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}
 %\end{equation}
