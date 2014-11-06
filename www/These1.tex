@@ -3526,7 +3526,20 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 
 \section{Estimation of $\boldsymbol{S}$ with missing values}
 \subsection{Distribution of $\boldsymbol{X}$}
-	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components (defined in the followings). We stack together all the mixture parameters in  $\Theta=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
+	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it iid} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components (defined in the followings). We stack together all the mixture parameters in  $\Theta$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
+	
+We define $\prod$ as the Cartesian product with lexicographic order when used with vectors. To illustrate this notation we define $A_1=(a_{11},a_{12})'$ and $A_2=(a_{21},a_{22},a_{23})'$:
+\begin{eqnarray}
+	\prod_{i=1}^{2}A_i&=&\left(\begin{array}{cc}
+	a_{11} & a_21} \\ 
+	a_{11} & a_{22} \\ 
+	a_{11} & a_{23} \\ 
+	a_{12} & a_{21} \\ 
+	a_{12}& a_{22} \\ 
+	a_{12} & a_{23}
+	\end{array}  \right)
+\end{eqnarray}	
+	
 \begin{itemize}
 	\item Vector of the proportions:
 	\begin{equation}
@@ -3534,12 +3547,29 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	\end{equation}
 	\item Number of components:
 	\begin{equation}
-		K=|\boldsymbol{\pi}_X| \textrm{ so we have } \boldsymbol{\pi}_X=(\pi_1,\dots,\pi_K)
+		K=|\boldsymbol{\pi}_X| \textrm{ so we have } \boldsymbol{\pi}_X=(\pi_1,\dots,\pi_K).
 	\end{equation}
-	\item $K$-uple of the vectors of the means:
+%	\item $K$-uple of the $1\times (d-d_r)$ vectors of the means of $\boldsymbol{X}_f$:
+%	\begin{equation}
+%		\boldsymbol{\mu}_{X^{J_f}}=\prod_{j \in J_f}\boldsymbol{\mu}_j \textrm{ ( $\prod$ is the Cartesian product, in lexicographic order)}
+%	\end{equation}
+%	We can then define 
+\item $\forall j \in J_r,$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$ is:
 	\begin{equation}
-		\boldsymbol{\mu}_{X^{J_f}}=\prod_{j \in J_f}
+		\boldsymbol{\mu}_{X^{j}}=(\prod_{l \in J_f}\alpha_{l,j}\boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{d_f} \textrm{ ($\prod$ is the Cartesian product, in lexicographic order)}.
 	\end{equation}
+\end{itemize}
+We define $\boldsymbol{J}_f=(J_f^1,\dots,J_f^{d_f}) $ the vector of the indices of the free covariates (predictors) in lexicographic order. Remark: $\forall j \in \{1,\dots,d_f\}, J_f^j \in J_f$. We also define $e_j$ is the $d_f \times 1$ vector with a $1$ in $j^{th}$ position and $0$ everywhere else : 
+\mbox{$e_j=(0,\dots,0,1,0,\dots,0)'$}.
+\begin{itemize}
+	\item $\forall j \in \{1,\dots,d_f\}$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^{J_f^j}$ in $\boldsymbol{X}$ is:
+	\begin{equation}
+		\boldsymbol{\mu}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\mu}_l)e_j \textrm{ ($\prod$ is the Cartesian product, in lexicographic order)}.
+	\end{equation} 
+	\item The $d-$uple of $K\times 1$ vectors of the means for $\boldsymbol{X}$ is then:
+		\begin{equation}
+			\boldsymbol{\mu}_X=(\mu_{X^1},\dots,\mu_{X^d}).
+		\end{equation}
 \end{itemize}
 
 	
@@ -4305,7 +4335,7 @@ Bold characters are used to distinguish multidimensional objects. Many objects a
 	\item $\boldsymbol{\alpha}_j$
 	\item $\boldsymbol{\alpha}$
 	\item $\boldsymbol{\alpha}^*$
-	\item $\bar{\boldsymbol{\alpha}}$
+	\item $\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.
 	\item $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ is the $(d-d_r)\times 1$ vector of the regression coefficients associated  to the free covariates in the main regression on $\boldsymbol{Y}$.
 	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated respectively to the responses and to the free covariates
 	\item $d$ is the number of covariates in the dataset $\boldsymbol{X}$.
