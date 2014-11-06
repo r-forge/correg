@@ -3536,7 +3536,10 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	\begin{equation}
 		K=|\boldsymbol{\pi}_X| \textrm{ so we have } \boldsymbol{\pi}_X=(\pi_1,\dots,\pi_K)
 	\end{equation}
-	\item 
+	\item $K$-uple of the vectors of the means:
+	\begin{equation}
+		\boldsymbol{\mu}_{X^{J_f}}=\prod_{j \in J_f}
+	\end{equation}
 \end{itemize}
 
 	
@@ -4299,18 +4302,22 @@ the only non-identifiable sub-regressions could be those with only one regressor
 You can use this page to find the meaning of the notations used without having to search within the chapters.
 Bold characters are used to distinguish multidimensional objects. Many objects are tuples.
 \begin{itemize}
-\item $\boldsymbol{\alpha}_j$
-\item $\boldsymbol{\alpha}$
-\item $\boldsymbol{\alpha}^*$
-\item $\bar{\boldsymbol{\alpha}}$
-\item $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ is the $(d-d_r)\times 1$ vector of the regression coefficients associated  to the free covariates in the main regression on $\boldsymbol{Y}$.
-\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated respectively to the responses and to the free covariates
-\item $d$ is the number of covariates in the dataset $\boldsymbol{X}$.
-\item $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.
-\item $\boldsymbol{\pi}_X$ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}$
-\item $\boldsymbol{\pi}_j$ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}^j$
-\item $\pi_j$ proportion of the $j^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}$
-\item $\pi_{j,k}$ proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}^j$
+	\item $\boldsymbol{\alpha}_j$
+	\item $\boldsymbol{\alpha}$
+	\item $\boldsymbol{\alpha}^*$
+	\item $\bar{\boldsymbol{\alpha}}$
+	\item $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ is the $(d-d_r)\times 1$ vector of the regression coefficients associated  to the free covariates in the main regression on $\boldsymbol{Y}$.
+	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated respectively to the responses and to the free covariates
+	\item $d$ is the number of covariates in the dataset $\boldsymbol{X}$.
+	\item $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.
+	\item $K$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}$.
+	\item $K_j$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}^j$.
+	\item $\boldsymbol{\mu}_j$ is the $K_j \times 1$ vector of the means of the Gaussian mixture followed by $\boldsymbol{X}^j$ with $j\in J_f$.
+	\item $\mu_{j,k}$ is the $k^{th}$ element of $\boldsymbol{\mu}_j$.
+	\item $\boldsymbol{\pi}_X$ is the $K \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}$
+	\item $\boldsymbol{\pi}_j$ is the $K_j \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}^j$
+	\item $\pi_k$ proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}$
+	\item $\pi_{j,k}$ proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}^j$
 	\item $\boldsymbol{X}$ is the $n\times d$ matrix whose columns are the covariates in the datasets and rows are the individuals.
 	\item $\boldsymbol{Y}$ is the $n\times 1$ response variable in the main regression.
 \end{itemize}
