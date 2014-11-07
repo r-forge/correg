@@ -3775,62 +3775,64 @@ L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\pr
 
 		with $ \pi_k, \mu_{X^j,k},\Sigma_{X^j,k}$ as defined in Section \ref{sectionXdensity}.
 		\paragraph{Conditional distribution of a multivariate Gaussian :}
-		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we have the explicit formula:
+		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we note $ \boldsymbol{\mu}_{X^{J_r}_{i,O},k}$ (respectively $\boldsymbol{\mu}_{X^{J_f}_{i,O},k}$) the vector of the means of $\boldsymbol{X}^{J_r}_{i,O} $ (respectively  $\boldsymbol{X}^{J_f}_{i,O}$)  associated to the $k^{th}$ component of $\boldsymbol{X}$ for individual $i$ that are described in equation (\ref{meangauche}) (respectively equation (\ref{meandroite})).\\
+		
+		We have the explicit formula for multivariate Gaussian distribution:
 \begin{eqnarray}
-		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k})
+		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k})
 		\end{eqnarray}
 				%P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
-				where the $|\boldsymbol{X}^{J_r}_{i,O}| \times 1$ vector of the means is:
+				where the $|\boldsymbol{X}^{J_r}_{i,O}| \times 1$ vector of the conditional means is:
 				\begin{equation}
-		\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k}= 
+		\boldsymbol{\mu}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}= 
 				\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O},k}+
 				\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1}
 				( (\boldsymbol{X}_{i,O}^{J_f})'-\boldsymbol{\mu}_{X^{J_f}_{i,O},k}) 
 				\end{equation}
 				and the variance-covariance matrix is:
 						\begin{equation}
-\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k}=\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}
+\boldsymbol{\Sigma}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}=\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}
 		(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_r},k}.
 		\end{equation}
-		We can then describe each part of these formulas for each $1\leq i \leq n$ and $1\leq k \leq K$:\\
-		The mean vector of observed regressed covariates: $\forall j \in \{1,\dots,d_r\}\textrm{ with }\boldsymbol{M}_{i,J_r^j}=0:$
- \begin{eqnarray}
-		  \boldsymbol{\mu}_{X_{i}^{J_r^j},k}&=&\sum_{l \in J_p^j}\bar{\boldsymbol{\alpha}}_{l,J_r^j}\mu_{l,k} 
-\end{eqnarray}		
-The variance of observed regressed covariates: $\forall j \in \{1,\dots,d_r\} \textrm{ with } \boldsymbol{M}_{i,J_r^j}=0$ 
-	\begin{equation}
-		\operatorname{Var}_{k}(x_{i,J_r^j})=\sigma_{j}^2+ \sum_{l \in J_p^j} \bar{\boldsymbol{\alpha}}_{l,J_r^j}^2\sigma_{\boldsymbol{X}^l,k}^2
-	\end{equation}			
-	The variance of observed regressors: $\forall j \in J_f \textrm{ with } \boldsymbol{M}_{i,j}=0$
-\begin{equation}
-	\operatorname{Var}_{k}(x_{i,j})=\sigma_{X^j,k}^2
-\end{equation}	
-The covariance between two regressed covariates with common regressors: \\	
-	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in \{1,\dots,d_r\},J_p^{j_1}\cap J_p^{j_2}\neq \emptyset \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,J_r^{j_2}}=0$
-	\begin{equation}
-		\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,J_r^{j_2}})%=\sum_{l\in J_p^{j_1}\cap J_p^{j_2}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_1}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_2}}	\operatorname{Var}_{k}(x_{i,l})
-		 =\sum_{l\in J_p^{j_1}\cap J_p^{j_2}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_1}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_2}}\sigma_{\boldsymbol{X}^l,k}^2
-	\end{equation}
-	The covariance between two regressed covariates without any common regressors:\\
-	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in \{1,\dots,d_r\},J_p^{j_1}\cap J_p^{j_2}= \emptyset \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,J_r^{j_2}}=0$
-	\begin{equation}
-	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,J_r^{j_2}})=0
-\end{equation}
-The covariance between two regressors is always zero:\\
-	$\forall j_1 \in J_f, j_2 \in J_f \textrm{ with } \boldsymbol{M}_{i,j_1}=\boldsymbol{M}_{i,j_2}=0$
-	\begin{equation}
-	\operatorname{Cov}_{k}(x_{i,j_1},x_{i,j_2})=0
-\end{equation}
-The covariance between a regressed covariate and one of its regressors: \\
-	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in J_p^{j_1} \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,j_2}=0$
-	\begin{equation}
-	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= \bar{\boldsymbol{\alpha}}_{j_2,J_r^{j_1}}\sigma_{X^{j_2},k}^2
-\end{equation}
-The covariance between a regressed covariate and covariate neither regressing it nor regressed is zero by hypothesis \ref{H1}: 
-$\forall j_1 \in \{1,\dots,d_r\}, j_2 \notin J_p^{j_1}\cup J_r \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,j_2}=0$
-	\begin{equation}
-	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= 0
-\end{equation}
+		We can then describe each part of these formulas for each $1\leq i \leq n$ and $1\leq k \leq K$ because all the variances and covariances are already given in Section \ref{sectionXdensity}.\\
+%		The mean vector of observed regressed covariates: $\forall j \in \{1,\dots,d_r\}\textrm{ with }\boldsymbol{M}_{i,J_r^j}=0:$
+% \begin{eqnarray}
+%		  \boldsymbol{\mu}_{X_{i}^{J_r^j},k}&=&\sum_{l \in J_p^j}\bar{\boldsymbol{\alpha}}_{l,J_r^j}\mu_{l,k} 
+%\end{eqnarray}		
+%The variance of observed regressed covariates: $\forall j \in \{1,\dots,d_r\} \textrm{ with } \boldsymbol{M}_{i,J_r^j}=0$ 
+%	\begin{equation}
+%		\operatorname{Var}_{k}(x_{i,J_r^j})=\sigma_{j}^2+ \sum_{l \in J_p^j} \bar{\boldsymbol{\alpha}}_{l,J_r^j}^2\sigma_{\boldsymbol{X}^l,k}^2
+%	\end{equation}			
+%	The variance of observed regressors: $\forall j \in J_f \textrm{ with } \boldsymbol{M}_{i,j}=0$
+%\begin{equation}
+%	\operatorname{Var}_{k}(x_{i,j})=\sigma_{X^j,k}^2
+%\end{equation}	
+%The covariance between two regressed covariates with common regressors: \\	
+%	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in \{1,\dots,d_r\},J_p^{j_1}\cap J_p^{j_2}\neq \emptyset \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,J_r^{j_2}}=0$
+%	\begin{equation}
+%		\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,J_r^{j_2}})%=\sum_{l\in J_p^{j_1}\cap J_p^{j_2}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_1}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_2}}	\operatorname{Var}_{k}(x_{i,l})
+%		 =\sum_{l\in J_p^{j_1}\cap J_p^{j_2}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_1}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_2}}\sigma_{\boldsymbol{X}^l,k}^2
+%	\end{equation}
+%	The covariance between two regressed covariates without any common regressors:\\
+%	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in \{1,\dots,d_r\},J_p^{j_1}\cap J_p^{j_2}= \emptyset \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,J_r^{j_2}}=0$
+%	\begin{equation}
+%	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,J_r^{j_2}})=0
+%\end{equation}
+%The covariance between two regressors is always zero:\\
+%	$\forall j_1 \in J_f, j_2 \in J_f \textrm{ with } \boldsymbol{M}_{i,j_1}=\boldsymbol{M}_{i,j_2}=0$
+%	\begin{equation}
+%	\operatorname{Cov}_{k}(x_{i,j_1},x_{i,j_2})=0
+%\end{equation}
+%The covariance between a regressed covariate and one of its regressors: \\
+%	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in J_p^{j_1} \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,j_2}=0$
+%	\begin{equation}
+%	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= \bar{\boldsymbol{\alpha}}_{j_2,J_r^{j_1}}\sigma_{X^{j_2},k}^2
+%\end{equation}
+%The covariance between a regressed covariate and covariate neither regressing it nor regressed is zero by hypothesis \ref{H1}: 
+%$\forall j_1 \in \{1,\dots,d_r\}, j_2 \notin J_p^{j_1}\cup J_r \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,j_2}=0$
+%	\begin{equation}
+%	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= 0
+%\end{equation}
 Then we are able to maximize this likelihood to find $\boldsymbol{\alpha}$.
 	\subsection{Likelihood computation optimized}
 	The main problem with the likelihood in its global form (\ref{liklihoodmissglobal}) is that the number of components explodes so we can't use it in practice. But in many cases, it can be simplified.
@@ -3960,13 +3962,14 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 	So it alternates between estimation of $Z$ and $\boldsymbol{\theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
 	It requires to set initial values for $\boldsymbol{\theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and run of the algorithm.\\
 			
-			Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic,celeux1986algorithme} or the Classification EM \cite{celeux1992classification}.
+			Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic},\\
+			 \cite{celeux1986algorithme} or the Classification EM \cite{celeux1992classification}.
 			
 			
 \subsection{Stochastic EM}
 	The integrated likelihood depicted above depends on $\boldsymbol{\alpha}$ which was formerly estimated by \textsc{ols} when there was no missing values. But when missing values occurs in a sub-regression we need another solution.\\
 	
-	We use a  Stochastic Expectation Maximization (\textsc{sem}) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the log-likelihood (\ref{loglikmiss}) is not linear so a simple Expectation-Maximization (EM) would be difficult to compute.\\
+	We use a  Stochastic Expectation Maximization (\textsc{sem}) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the log-likelihood is not linear so a simple Expectation-Maximization (EM) would be difficult to compute.\\
 	
 	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regression have only few parameters and can be estimated even with only a small number of individuals.
 		
@@ -3978,7 +3981,7 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 	\paragraph{M step:}
 		We estimate 
 		\begin{equation}
-	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha},\boldsymbol{S},\Theta) \right]
+	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}_O,\hat{\boldsymbol{X}}_M|\boldsymbol{\alpha},\boldsymbol{S},\Theta) \right]
 \end{equation}
 and we can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}).\\
 
