@@ -16,11 +16,12 @@
 \usepackage{url}
 \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}
 \usepackage{lmodern}
-\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+%\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[left=2.5cm,right=2.5cm,top=1.5cm,bottom=2cm]{geometry}
 %\makegapedcells
 
 \author{Clément TH\'ERY}
-\title{Model-based linear regression for correlated  and missing covariates, Application to steel industry datasets.}
+\title{Model-based linear regression for correlated  and missing covariates,\\ Application to steel industry datasets.}
 
 %%%% debut macro %%%%
 \newenvironment{changemargin}[2]{\begin{list}{}{%
@@ -2900,10 +2901,10 @@ We deduce
 Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are obtained as above and give:
 	\begin{eqnarray}
 		\mathbb{E}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})-\boldsymbol{\beta}_f&\longrightarrow & \boldsymbol{0} \textrm{ (still asymptotically unbiased)}\\
-		\operatorname{Var}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})&=&\operatorname{Var}[\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}] \\
-		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})] \\
-		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y})] \\
-		&=&\operatorname{Var}\left[\left((\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\right)\boldsymbol{Y}\right] \\
+		\operatorname{Var}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})&=&\operatorname{Var}[\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}] \nonumber \\
+		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})]  \nonumber \\
+		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y})]  \nonumber \\
+		&=&\operatorname{Var}\left[\left((\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\right)\boldsymbol{Y}\right]  \nonumber \\
 		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}(\hat{\boldsymbol{\alpha}}^*)'] \label{varpluginf}
 	\end{eqnarray}
 
@@ -3765,9 +3766,9 @@ Remark: if each sub-regression is a distinct connex component then we can always
 		%We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
 		
 \begin{eqnarray}
-L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\Phi_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}\Phi_k(x_{i,j};\mu_{X^j,k},\Sigma_{X^j,k}). \quad \label{liklihoodmissglobal}
+L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\Phi_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})  \nonumber \\
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}\Phi_k(x_{i,j};\mu_{X^j,k},\Sigma_{X^j,k}). \qquad \qquad \label{liklihoodmissglobal}
 \end{eqnarray}		
 
 %définintion des objets génériques
@@ -3945,22 +3946,22 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 %			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$ so our proposed penalty term is an intuitive way to use a weighted penalty.
 %	
 
-	\section{EM Algorithm to estimate $\boldsymbol{\alpha}$ with a given $\boldsymbol{S}$}
-			Sometimes the maximization of a likelihood is too complex to be solved analytically. In such a case, we can use Expectation-Maximization algorithms \cite{mclachlan2007algorithm} that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. This kind of algorithm allows to manage missing values \cite{dempster1977maximum}. \\
+	\section{{\sc em} Algorithm to estimate $\boldsymbol{\alpha}$ with a given $\boldsymbol{S}$}
+			Sometimes the maximization of a likelihood is too complex to be solved analytically. In such a case, we can use Expectation-Maximization ({\sc em}) algorithms \cite{mclachlan2007algorithm} that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. This kind of algorithm allows to manage missing values \cite{dempster1977maximum}. \\
 			
-EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the latent variables $Z$ with two steps at each iteration $(q)$:
+{\sc em} is an alternate optimization of the researched parameters $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$ only for a given $\boldsymbol{S}$ since the marginal distribution parameters are estimated once before the MCMC.) and the latent variables $Z$ with two steps at each iteration $(q)$:
 \begin{itemize}
-	\item The Expectation step in which the expected value of the loglikelihood is computed for the current estimate of the parameters $\boldsymbol{\theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\theta}^{(q)}$.
+	\item The Expectation step in which the expected value of the loglikelihood is computed for the current estimate of the parameters $\boldsymbol{\Theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\Theta}^{(q)}$.
 	\begin{equation}
-		Q(\boldsymbol{\theta}|\boldsymbol{\theta}^{(q)})=E_{Z|\boldsymbol{X},\boldsymbol{\theta}^{(q)}} [\log L(\boldsymbol{\theta};\boldsymbol{X},Z)]
+		Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)})=E_{Z|\boldsymbol{X},\boldsymbol{\Theta}^{(q)}} [\log L(\boldsymbol{\Theta};\boldsymbol{X},Z)]
 	\end{equation}
 	\item The Maximization step that maximizes:
 	\begin{equation}
-		\boldsymbol{\theta}^{(q+1)}=\arg \max_{\boldsymbol{\theta}} Q(\boldsymbol{\theta}|\boldsymbol{\theta}^{(q)})
+		\boldsymbol{\Theta}^{(q+1)}=\arg \max_{\boldsymbol{\Theta}} Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)})
 	\end{equation}
 \end{itemize}
-	So it alternates between estimation of $Z$ and $\boldsymbol{\theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
-	It requires to set initial values for $\boldsymbol{\theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and run of the algorithm.\\
+	So it alternates between estimation of $Z$ and $\boldsymbol{\Theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
+	It requires to set initial values for $\boldsymbol{\Theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and run of the algorithm.\\
 			
 			Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic},\\
 			 \cite{celeux1986algorithme} or the Classification EM \cite{celeux1992classification}.
@@ -3969,7 +3970,7 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 \subsection{Stochastic EM}
 	The integrated likelihood depicted above depends on $\boldsymbol{\alpha}$ which was formerly estimated by \textsc{ols} when there was no missing values. But when missing values occurs in a sub-regression we need another solution.\\
 	
-	We use a  Stochastic Expectation Maximization (\textsc{sem}) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the log-likelihood is not linear so a simple Expectation-Maximization (EM) would be difficult to compute.\\
+	We use a  Stochastic Expectation Maximization (\textsc{sem}) algorithm \cite{celeux1986algorithme} to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the log-likelihood is not linear so a simple Expectation-Maximization ({\sc em}) would be difficult to compute.\\
 	
 	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regression have only few parameters and can be estimated even with only a small number of individuals.
 		
@@ -3977,13 +3978,13 @@ EM is an alternate optimization of the parameters $\boldsymbol{\theta}$ and the 
 	\paragraph{initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by complete-case method	(sparse structure) or using imputed values in $\boldsymbol{X}$ and then \textsc{ols}.
 	At iteration $(h)$,
 	\paragraph{SE step:}
-		We generate the missing values according to $P(\boldsymbol{X}_M|\boldsymbol{X}_O; \boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})$, that is stochastic imputation.
+		We generate the missing values according to $P(\boldsymbol{X}_M|\boldsymbol{X}_O; \boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})$, that is stochastic imputation.
 	\paragraph{M step:}
 		We estimate 
 		\begin{equation}
-	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}_O,\hat{\boldsymbol{X}}_M|\boldsymbol{\alpha},\boldsymbol{S},\Theta) \right]
+	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}_O,\hat{\boldsymbol{X}}_M|\boldsymbol{\alpha},\boldsymbol{S},\boldsymbol{\Theta}^{(h)}) \right]
 \end{equation}
-and we can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}).\\
+and we can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}). Then we compute $\boldsymbol{\Theta}^{(h+1)}$ \\
 
 		We continue during $m_1$ iterations. Then we make $m_2$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m_2$ last iterations.\\
 		
@@ -3996,25 +3997,28 @@ and we can use the same method as the one for classical case without missing val
 		\paragraph{Initialisation:}  %For example to the first component (such an initialisation does not depend on $K$). 
 		$\boldsymbol{X}_M$ are imputed by the marginal means of drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example). all the $Z_{i,j}$ are randomly set based on the $t_{i,j,k}$ as explained below (we just need those of $\boldsymbol{X}_f$). 
 		\paragraph{Iteration:} At each iteration of the Gibbs sampler we first make successive imputation on the missing values: \\
-			Regressed covariates: $\forall 1\leq i \leq n, \forall j \in \{1,\dots,d_r \}, \boldsymbol{M}_{i,J_r^j}=1  $:  $x_{i,J_r^j}$ is generated according to 
+		\begin{itemize}
+			\item Regressed covariates: $\forall 1\leq i \leq n, \forall j \in \{1,\dots,d_r \}, \boldsymbol{M}_{i,J_r^j}=1  $:  $x_{i,J_r^j}$ is generated according to 
 			\begin{eqnarray}
 			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}\setminus x_{i,J_r^j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})&=&
-			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}^{J_p^j};\boldsymbol{\alpha}^{(h)}_j,\Theta,{S})\\
+			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}^{J_p^j};\boldsymbol{\alpha}^{(h)}_j,\Theta,{S}) \nonumber \\
 			%&=&\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}\setminus x_{i,J_r^j},z_{i, J_r^j};\boldsymbol{\alpha}^{(h)},\Theta,{S})
 		%	\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}};\alpha^{(h)},\Theta,S) \\
 			%&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_i^{I_f^j};\boldsymbol{\alpha}^{(h)},\Theta,S)
-			&=&\Phi(\boldsymbol{X}_i^{J_p^j}\boldsymbol{\alpha}^{(h)}_{j};\sigma_j^2 ) \textrm{ Gaussian}
+			&=&\Phi(\boldsymbol{X}_i^{J_p^j}\boldsymbol{\alpha}^{(h)}_{j};\sigma_j^2 ). \textrm{ Gaussian} \nonumber
 			\end{eqnarray}		
-			And for regressors:
+			\item And for regressors:
 			%We have $\mathbb{P}(\boldsymbol{X}|Z)=\mathcal{N}(\boldsymbol{\mu}_{|Z},\boldsymbol{\Sigma}_{|Z})$. \\
 			$\forall (i,j) \in \{1,\dots,n \}\times J_f,\boldsymbol{M}_{i,j}=1$:  $x_{i,j}$ is generated according (using Schur complement and Gaussian conditional distribution) to 
 			\begin{eqnarray}
-			\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i}\setminus x_{i,j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,\bar{j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})			
-			\end{eqnarray}			
+			\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i}\setminus x_{i,j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i\bar{j}},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})			\nonumber
+			\end{eqnarray}	
+					
 			\begin{eqnarray}
-			=\Phi(\mu_{j|Z_{i,j}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}(X_{\bar{ij}}-\boldsymbol{\mu}_{X_{\bar{ij}}|Z_i}) ;  \sigma_{j|Z_{i,j}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}')
-			\end{eqnarray}		
-			Where all the values needed here were described above for the likelihood computation with $\boldsymbol{X}_{\bar{ij}}=\boldsymbol{X}_i\setminus x_{i,j}$ and $Z_i=\{Z_{i,j}:j=1,\dots,d \}$.\\
+			=\Phi(\mu_{j|Z_{i,j}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}(\boldsymbol{X}_{i\bar{j}}-\boldsymbol{\mu}_{X_{i\bar{j}}|Z_i}) ;  \sigma_{j|Z_{i,j}}^2-\boldsymbol{\Sigma}_{j,X_{i\bar{j}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{i\bar{j}},X_{i\bar{j}}|Z_i}\boldsymbol{\Sigma}_{j,X_{i\bar{j}}|Z_i}'), \nonumber
+			\end{eqnarray}
+			\end{itemize}		
+			where all the values needed here were described above for the likelihood computation with $\boldsymbol{X}_{\bar{ij}}=\boldsymbol{X}_i\setminus x_{i,j}$ and $Z_i=\{Z_{i,j}:j=1,\dots,d \}$.\\
 			
 %With $\forall j \in I_r$ 
 %\begin{equation}
@@ -4048,7 +4052,7 @@ and we can use the same method as the one for classical case without missing val
 
 	Then, $\forall 1\leq i \leq n, \forall j \in J_f$ we draw new values for $Z_{i,j}$ according to
 	\begin{eqnarray}
-		\mathbb{P}(Z_{i,j}|\boldsymbol{X},Z\setminus Z_{i,j};\Theta,\boldsymbol{\alpha},\boldsymbol{S})&=&P(Z_{i,j}|\boldsymbol{X}_i,Z\setminus Z_{i,j};\Theta,\boldsymbol{\alpha},\boldsymbol{S})=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j})\ \  \\
+		\mathbb{P}(Z_{i,j}|\boldsymbol{X},Z\setminus Z_{i,j};\Theta,\boldsymbol{\alpha},\boldsymbol{S})&=&P(Z_{i,j}|\boldsymbol{X}_i,Z\setminus Z_{i,j};\Theta,\boldsymbol{\alpha},\boldsymbol{S})=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j})\ \  \nonumber\\
 		\textrm{where } t_{i,j,k}&=&\frac{\pi_{j,k}\Phi(x_{i,j};\mu_{j,k},\sigma_{j,k}^2)}{\sum_{l=1}^{K_j}\pi_{j,l}\Phi(x_{i,j};\mu_{j,l},\sigma_{j,l}^2) }
 	\end{eqnarray}
 		
@@ -4061,19 +4065,26 @@ and we can use the same method as the one for classical case without missing val
 	Computation cost will be the main purpose here because we need an iterative algorithm (Gibbs sampler) at each iteration of another iterative algorithm (Stochastic EM) for each candidate of the MCMC.
 	So alternative method should be preferred for large datasets with many missing values and only a small amount of time.\\
 	
-	Because $K$ can be very large we search a way to estimate the likelihood.
-	We can use a Gibbs algorithm to estimate the likelihood:
-	\begin{eqnarray}
-	\mathbb{P}(\boldsymbol{X}_O;\Theta, \boldsymbol{S}, \boldsymbol{\alpha})&=& 
-		\sum_{Z\in \mathcal{Z}}\int_{\boldsymbol{X}_M}\frac{\mathbb{P}(\boldsymbol{X}_M,Z,\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S})}\mathbb{P}(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S}) dX \\
-		&\approx &\frac{1}{Q} \sum_{q=1}^Q\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},\boldsymbol{S})} \textrm{ by the law of large numbers } \ \ \ \ \ 
-	\end{eqnarray}		
-	where $Q$ is the number of iterations of the Gibbs sampler.
-	But to be faster, we use the previous Gibbs algorithm with:
-	\begin{eqnarray}
-	\mathbb{P}(\boldsymbol{X}_O;\Theta, \boldsymbol{S}, \boldsymbol{\alpha})&\approx & \frac{1}{Q} \sum_{q=1}^Q\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},\boldsymbol{S})}
-	\end{eqnarray}	
-		
+
+% partie foireuse	
+%	
+%	Because $K$ can be very large we search a way to estimate the likelihood.
+%	We can use a Gibbs algorithm to estimate the likelihood:
+%	\begin{eqnarray}
+%	\mathbb{P}(\boldsymbol{X}_O;\Theta, \boldsymbol{S}, \boldsymbol{\alpha})&=& 
+%		\sum_{Z\in \mathcal{Z}}\int_{\boldsymbol{X}_M}\frac{\mathbb{P}(\boldsymbol{X}_M,Z,\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S})}\mathbb{P}(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S}) dX \nonumber \\
+%		&\approx &\frac{1}{Q} \sum_{q=1}^Q\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},\boldsymbol{S})} \textrm{ by the law of large numbers } \ \ \ \nonumber \ 
+%	\end{eqnarray}		
+%	where $Q$ is the number of iterations of the Gibbs sampler.
+%	But to be faster, we use the previous Gibbs algorithm with:
+%	\begin{eqnarray}
+%	\mathbb{P}(\boldsymbol{X}_O;\Theta, \boldsymbol{S}, \boldsymbol{\alpha})&\approx & \frac{1}{Q} \sum_{q=1}^Q\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},\boldsymbol{S})} \nonumber
+%	\end{eqnarray}	
+%	
+
+
+
+	
 %\subsection{Alternative imputation}
 %	For a given value of $\boldsymbol{\alpha}$, an alternative to the SE step described above would be to make imputation directly by the sub-regressions 
 %	
@@ -4159,7 +4170,7 @@ and we can use the same method as the one for classical case without missing val
 %Another (faster but not optimal) way would be to estimating missing values in $\boldsymbol{X}_r$only use the structure for $\boldsymbol{X}_r$ and use the distribution given by {\tt RMixmod} for $\boldsymbol{X}_f$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
 
 		
-		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use {\sc lasso} without imputation. But the choice of the penalty using the LAR algorithm need also to adapt the LAR that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective.
+		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use {\sc lasso} without imputation. But the choice of the penalty using the {\sc lar} algorithm need also to adapt the {\sc lar} that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective.
 	\section{Numerical results on simulated datastets}
 		\subsection{Estimation of the sub-regression coefficients}
 			We take datasets from the experiments in part I and then we compare the \textsc{mse} obtained on $\boldsymbol{\alpha}$ with our Stochastic EM to those obtain by classical \textsc{ols} after imputation of the missing values by the marginal empirical means. Here $d=40$ and $n=30$, missing values position are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values each time. Thus we have 120 missing values and none of the datasets contain a full individual without missing values.
@@ -4297,10 +4308,10 @@ To prove the sufficiency of this condition for identifiability we rely on the fo
 		j \in \{1,\dots,d_r\}, i \in J_p^j \textrm{ then } \operatorname{cov}(\boldsymbol{X}^{i},\boldsymbol{X}^{J_r^j})\neq 0
 	\end{eqnarray}
 	\item Both variables are regressed by a common covariate in their respective sub-regression:
-	\begin{eqnarray}
-		\exists k \in J_f, \exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\} \textrm{ with } i\neq j,&&  k\in J_p^i \textrm{ and } k\in J_p^j \\
-		\textrm{ then } \operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})&\neq &0 \nonumber
-	\end{eqnarray}
+$\exists k \in J_f, \exists (i,j)\in \{1,\dots,d_r\}\times \{1,\dots,d_r\} \textrm{ with } i\neq j, k\in J_p^i \textrm{ and } k\in J_p^j$ then:
+	\begin{equation}
+	\operatorname{cov}(\boldsymbol{X}^{J_r^i},\boldsymbol{X}^{J_r^j})\neq 0. \nonumber 
+	\end{equation}
 \end{enumerate}
 
 \paragraph{proof of the lemma:}
