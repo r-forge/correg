@@ -3561,7 +3561,7 @@ We define the operator $\prod$ as the Cartesian product with lexicographic order
 \begin{itemize} 
 \item $\forall j \in J_r,$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$ is:
 	\begin{equation}
-		\boldsymbol{\mu}_{X^{j}}=(\prod_{l \in J_f}\bar{\alpha}_{l,j}\boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{d_f} .
+		\boldsymbol{\mu}_{X^{j}}=(\prod_{l \in J_f}\bar{\alpha}_{l,j}\boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{d_f} .\label{meangauche}
 	\end{equation}
 \end{itemize}
 We define $\boldsymbol{J}_f=(J_f^1,\dots,J_f^{d_f}) $ the vector of the indices of the free covariates (predictors) in lexicographic order. Remark: $\forall j \in \{1,\dots,d_f\}, J_f^j \in J_f$. We also define $e_j$ is the $d_f \times 1$ vector with a $1$ in $j^{th}$ position and $0$ everywhere else : 
@@ -3569,7 +3569,7 @@ We define $\boldsymbol{J}_f=(J_f^1,\dots,J_f^{d_f}) $ the vector of the indices 
 \begin{itemize}
 	\item $\forall j \in \{1,\dots,d_f\}$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^{J_f^j}$ in $\boldsymbol{X}$ is:
 	\begin{equation}
-		\boldsymbol{\mu}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\mu}_l)e_j .
+		\boldsymbol{\mu}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\mu}_l)e_j .\label{meandroite}
 	\end{equation} 
 	\item The $d-$uple of $K\times 1$ vectors of the means for $\boldsymbol{X}$ is then:
 		\begin{equation}
@@ -3592,7 +3592,7 @@ We define $\boldsymbol{J}_f=(J_f^1,\dots,J_f^{d_f}) $ the vector of the indices 
 		\end{equation}	
 \end{itemize}
 \paragraph{Covariances:} We look then at the covariances between the covariates to complete the list of the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
-We note $\Sigma_{X,X}$ the $K-$uple of the vectors of the covariances in lexicographic order. Then we have $\boldsymbol{\Theta}=(\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X})$. $\forall 1\leq k \leq K, \forall 1\leq i \leq n$:
+We note $\boldsymbol{\sigma}_{X,X}$ the $K-$uple of the vectors of the covariances in lexicographic order. Then we have $\boldsymbol{\Theta}=(\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\sigma}_{X,X})$. $\forall 1\leq k \leq K, \forall 1\leq i \leq n$:
 \begin{itemize}
 	\item The covariance between two regressors is always zero:
 	\begin{equation}
@@ -3611,7 +3611,7 @@ We note $\Sigma_{X,X}$ the $K-$uple of the vectors of the covariances in lexicog
 	\begin{equation}
 	  \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=\sum_{l \in J_p^{j_1}\cap J_p^{j_2}}\bar{\alpha}_{l,J_r^{j_1}}\bar{\alpha}_{l,J_r^{j_2}}\Sigma_{X^l,k} .
 	\end{equation}
-	where $\Sigma_{X^l,k}$ is the variance of $\boldsymbol{X}^l$ in the $k^{th}$ component of $\boldsymbol{X}$.
+	where $\Sigma_{X^l,k}$ is the variance of $\boldsymbol{X}^l$ in the $k^{th}$ component of $\boldsymbol{X}$, hence the $k^{th}$ element of $\boldsymbol{\Sigma}_{X^l}$.
 	\item The covariance between a response covariate and one of its regressors is:
 	\begin{equation}
 		\forall j_1 \in \{1,\dots, d_r\}, j_2 \in J_p^{j_1}, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,j_2})=\bar{\alpha}_{j_2,J_r^{j_1}}\Sigma_{X^{j_2},k} .
@@ -3749,7 +3749,7 @@ Remark: if each sub-regression is a distinct connex component then we can always
 				where $|\boldsymbol{X}_{i,O}^{J_p^j}|$ is the number of observed values in $\boldsymbol{X}^{J_p^j}$ for individual $i$.
 \paragraph{Variances:} The $ K_{i,J_r^j} \times 1$ vector of the variances is:
 				\begin{equation}
-				\boldsymbol{\Sigma}_{i,J_r^j} = \sigma_{J_r^j}^2 + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l	)	\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}.
+				\boldsymbol{\Sigma}_{i,J_r^j} = \sigma_{j}^2 + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l	)	\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}.
 				\end{equation}
 		In such a case, computation is fast and easy. It includes the cases supposed in {\tt SelvarclustMV}.\\
 		We note that we obtain a Gaussian when there is no missing value in $J_p^j$.\\
@@ -3775,12 +3775,12 @@ L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\pr
 
 		with $ \pi_k, \mu_{X^j,k},\Sigma_{X^j,k}$ as defined in Section \ref{sectionXdensity}.
 		\paragraph{Conditional distribution of a multivariate Gaussian :}
-		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we have the conditional distribution of the multivariate Gaussian:
+		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we have the explicit formula:
 \begin{eqnarray}
 		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k})
 		\end{eqnarray}
 				%P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
-				where the mean vector is:
+				where the $|\boldsymbol{X}^{J_r}_{i,O}| \times 1$ vector of the means is:
 				\begin{equation}
 		\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k}= 
 				\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O},k}+
