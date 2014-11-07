@@ -3747,15 +3747,17 @@ Remark: if each sub-regression is a distinct connex component then we can always
 				\boldsymbol{\mu}_{i,J_r^j}= \sum_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0  }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}x_{i,l} + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1  }} \bar{\boldsymbol{\alpha}}_{l,J_r^j} \boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}
 				\end{equation}
 				where $|\boldsymbol{X}_{i,O}^{J_p^j}|$ is the number of observed values in $\boldsymbol{X}^{J_p^j}$ for individual $i$.
-\paragraph{Variances:}
+\paragraph{Variances:} The $ K_{i,J_r^j} \times 1$ vector of the variances is:
 				\begin{equation}
 				\boldsymbol{\Sigma}_{i,J_r^j} = \sigma_{J_r^j}^2 + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l	)	\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}.
 				\end{equation}
 		In such a case, computation is fast and easy. It includes the cases supposed in {\tt SelvarclustMV}.\\
+		We note that we obtain a Gaussian when there is no missing value in $J_p^j$.\\
+		
+		
 		This kind of decomposition could be easily used for imputation of the missing values in $\boldsymbol{X}_r$ knowing the parameters $\boldsymbol{\alpha}, \boldsymbol{\Theta}$ and $\boldsymbol{S}$. \\
 		
-		We note that we obtain a Gaussian when there is no missing value in $J_p^j$.
-		But we see that	$f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions with observed response covariates. 
+		We sadly observe that $f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions with observed response covariates. 
 		
 	\subsection{Marginal likelihood in the general case}
 		For the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$. Then we use the global Gaussian mixture on $\boldsymbol{X}$:
@@ -3771,21 +3773,21 @@ L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\pr
 %définintion des objets génériques
 %where	
 
-		with $ \pi_j, \mu_{X^j,k},\Sigma_{X^j,k}$ as defined in Section \ref{sectionXdensity}.
+		with $ \pi_k, \mu_{X^j,k},\Sigma_{X^j,k}$ as defined in Section \ref{sectionXdensity}.
 		\paragraph{Conditional distribution of a multivariate Gaussian :}
 		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we have the conditional distribution of the multivariate Gaussian:
 \begin{eqnarray}
 		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k})
 		\end{eqnarray}
 				%P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
-				where the mean vector is
+				where the mean vector is:
 				\begin{equation}
 		\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k}= 
 				\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O},k}+
 				\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1}
 				( (\boldsymbol{X}_{i,O}^{J_f})'-\boldsymbol{\mu}_{X^{J_f}_{i,O},k}) 
 				\end{equation}
-				and the variance is
+				and the variance-covariance matrix is:
 						\begin{equation}
 \boldsymbol{\Sigma}_{\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O},k}=\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}
 		(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_r},k}.
