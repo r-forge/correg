@@ -3729,7 +3729,7 @@ And if there is no missing values in covariates that regress several observed re
 	\begin{equation}
 		L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \label{simplemisslik}
 \end{equation}	
-
+Remark: if each sub-regression is a distinct connex component then we can always use equation (\ref{simplemisslik}) but it is not a necessary condition.
 
 %	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 %	 \begin{equation}
@@ -3739,16 +3739,23 @@ And if there is no missing values in covariates that regress several observed re
 	\paragraph{Observed conditional likelihood of the response covariates:} $\forall (i,j) \textrm{ with }  j \in \{1,\dots,d_r \}$ and $\boldsymbol{M}_{i,J_r^{j}}= 0$, the  the distribution of $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ are not identical for each individual. It depends on the number of missing values in $\boldsymbol{X}_i^{J_p^{j}} $:
 	
 		\begin{eqnarray}
- f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=& \sum_{k=1}^{K_{i,J_r^j}}\pi_{i,J_r^j,k}\Phi(x_{i,J_r^j};\mu_{i,J_r^j,k},\Sigma_{i,J_r^j,k}) \textrm{ where }  \label{Missingdensity}\\
-				\boldsymbol{\pi}_{i,J_r^j} &=& \bigotimes_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }K_{i,J_r^j}=|\boldsymbol{\pi}_{i,J_r^j}| ,\\
-				\boldsymbol{\mu}_{iJ_r^j}&=& \sum_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0  }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}x_{i,l} + \bigoplus_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1  }} \bar{\boldsymbol{\alpha}}_{l,J_r^j} \boldsymbol{\mu}_l \\
-				\boldsymbol{\Sigma}_{iJ_r^j} &=& \sigma_{J_r^j}^2 + \bigoplus_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l		
+ f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=& \sum_{k=1}^{K_{i,J_r^j}}\pi_{i,J_r^j,k}\Phi(x_{i,J_r^j};\mu_{i,J_r^j,k},\Sigma_{i,J_r^j,k})  \label{Missingdensity}\\
+			\textrm{ where } 	\boldsymbol{\pi}_{i,J_r^j} &=& \bigotimes_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }K_{i,J_r^j}=|\boldsymbol{\pi}_{i,J_r^j}| 
 		\end{eqnarray}	
-		In such a case, computation is fast and easy. It is the case supposed in {\tt SelvarclustMV}.\\
+\paragraph{Means:}	The $ K_{i,J_r^j} \times 1$ vector of the means is:
+				\begin{equation}
+				\boldsymbol{\mu}_{i,J_r^j}= \sum_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0  }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}x_{i,l} + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1  }} \bar{\boldsymbol{\alpha}}_{l,J_r^j} \boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}
+				\end{equation}
+				where $|\boldsymbol{X}_{i,O}^{J_p^j}|$ is the number of observed values in $\boldsymbol{X}^{J_p^j}$ for individual $i$.
+\paragraph{Variances:}
+				\begin{equation}
+				\boldsymbol{\Sigma}_{i,J_r^j} = \sigma_{J_r^j}^2 + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l	)	\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}.
+				\end{equation}
+		In such a case, computation is fast and easy. It includes the cases supposed in {\tt SelvarclustMV}.\\
 		This kind of decomposition could be easily used for imputation of the missing values in $\boldsymbol{X}_r$ knowing the parameters $\boldsymbol{\alpha}, \boldsymbol{\Theta}$ and $\boldsymbol{S}$. \\
 		
 		We note that we obtain a Gaussian when there is no missing value in $J_p^j$.
-		But we see that	$f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions with observed response covariates. Remark: if each sub-regression is a distinct connex component then we can use equation (\ref{simplemisslik}).
+		But we see that	$f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions with observed response covariates. 
 		
 	\subsection{Marginal likelihood in the general case}
 		For the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$. Then we use the global Gaussian mixture on $\boldsymbol{X}$:
@@ -3758,7 +3765,7 @@ And if there is no missing values in covariates that regress several observed re
 \begin{eqnarray}
 L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\\
 &=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\Phi_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}\Phi_k(x_{i,j};\mu_{X^j,k},\Sigma_{X^j,k}) \label{liklihoodmissglobal}.
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}\Phi_k(x_{i,j};\mu_{X^j,k},\Sigma_{X^j,k}). \quad \label{liklihoodmissglobal}
 \end{eqnarray}		
 
 %définintion des objets génériques
