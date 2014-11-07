@@ -3654,7 +3654,7 @@ Then $\boldsymbol{\Theta}$ is entirely defined.
 \end{minipage}}
 \paragraph{Remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the followings. If it was, the number of parameters would be overestimated but the likelihood would not be affected.
 \subsection{Marginal likelihood in simple cases}
-The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that rely on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihood are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
+The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that rely on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihoods are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
 
 	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the sub-regressions coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We will see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood and then the $\textsc{bic}_*$. \\
 	 
@@ -3700,7 +3700,7 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\prod_{i=1}^n\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M \\
 	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\mathbb{R}^{d_{i,M}}}\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_{i,M} \\
 	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\\
-	&=&\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})
+	&=&\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}).
 \end{eqnarray}
 
 
@@ -3712,7 +3712,7 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 %	 \begin{equation}
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
 %	 \end{equation}	
-To compute this likelihood, we will use the decomposition
+To compute this likelihood, we will use the decomposition :
 \begin{eqnarray}
 	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=& %f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=
 	\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})f(\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\quad  \\
@@ -3727,7 +3727,7 @@ To compute this likelihood, we will use the decomposition
 	 
 And if there is no missing values in covariates that regress several observed response covariates we can continue the decomposition of equation (\ref{likmiss}):
 	\begin{equation}
-		L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \label{simplemisslik}
+		L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \label{simplemisslik}
 \end{equation}	
 
 
@@ -3736,7 +3736,7 @@ And if there is no missing values in covariates that regress several observed re
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
 %	 \end{equation}
 \newpage
-	\paragraph{Observed conditional likelihood of the response covariates:} $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \in \{1,\dots,d_r \} $, the distribution of $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ depends on the number of missing values in $\boldsymbol{X}_i^{J_p^{j}} $:
+	\paragraph{Observed conditional likelihood of the response covariates:} $\forall (i,j) \textrm{ with }  j \in \{1,\dots,d_r \}$ and $\boldsymbol{M}_{i,J_r^{j}}= 0$, the  the distribution of $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ are not identical for each individual. It depends on the number of missing values in $\boldsymbol{X}_i^{J_p^{j}} $:
 	
 		\begin{eqnarray}
  f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=& \sum_{k=1}^{K_{i,J_r^j}}\pi_{i,J_r^j,k}\Phi(x_{i,J_r^j};\mu_{i,J_r^j,k},\Sigma_{i,J_r^j,k}) \textrm{ where }  \label{Missingdensity}\\
@@ -4380,22 +4380,32 @@ Bold characters are used to distinguish multidimensional objects. Many objects a
 	\item $\boldsymbol{\alpha}_j$
 	\item $\boldsymbol{\alpha}$
 	\item $\boldsymbol{\alpha}^*$
-	\item $\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\alpha_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.
+	\item $\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.
 	\item $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ is the $(d-d_r)\times 1$ vector of the regression coefficients associated  to the free covariates in the main regression on $\boldsymbol{Y}$.
-	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated respectively to the responses and to the free covariates
+	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated respectively to the responses and to the free covariates.
 	\item $d$ is the number of covariates in the dataset $\boldsymbol{X}$.
 	\item $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.
 	\item $K$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}$.
 	\item $K_j$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}^j$.
+	\item $K_{i,J_r^j}$ is the number of component of the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\boldsymbol{\mu}_X$ is the $d-$uple of the $K \times 1$ vectors $\boldsymbol{\mu}_{X^j}$ of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$.
+	\item $\boldsymbol{\mu}_{X^j}$ is the $K \times 1$ vector of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$.
 	\item $\boldsymbol{\mu}_j$ is the $K_j \times 1$ vector of the means of the Gaussian mixture followed by $\boldsymbol{X}^j$ with $j\in J_f$.
+	\item $\boldsymbol{\mu}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the means of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.	
 	\item $\mu_{j,k}$ is the $k^{th}$ element of $\boldsymbol{\mu}_j$.
-	\item $\boldsymbol{\pi}_X$ is the $K \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}$
-	\item $\boldsymbol{\pi}_j$ is the $K_j \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}^j$
-	\item $\pi_k$ proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}$
-	\item $\pi_{j,k}$ proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}^j$
-	\item $\sigma_j^2$ variance of the residual of the $j^th$ sub-regression.	
+	\item $\mu_{i,J_r^j,k}$ is the mean of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\boldsymbol{\pi}_X$ is the $K \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}$.
+	\item $\boldsymbol{\pi}_j$ is the $K_j \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}^j$.
+	\item $\pi_k$ is the proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}$.
+	\item $\boldsymbol{\pi}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the proportions of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\pi_{j,k}$ is the proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}^j$.
+	\item $\pi_{i,J_r^j,k}$ is the proportion of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\sigma_j^2$ is the variance of the residual of the $j^th$ sub-regression.	
+	\item $\boldsymbol{\Sigma}_X$ is the $d-$uple of the $K \times 1 $ vectors $\boldsymbol{\Sigma}_{X^l}$ of the variances associated to $\boldsymbol{X}^l$ in the Gaussian mixture followed by $\boldsymbol{X}$.
 	\item $\boldsymbol{\Sigma}_{X^l}$ is the $K \times 1 $ vector of the variances associated to $\boldsymbol{X}^l$ in the Gaussian mixture followed by $\boldsymbol{X}$.
+	\item $\boldsymbol{\Sigma}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the variances of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.	
 	\item $\Sigma_{X^l,k}$ is the variance of $\boldsymbol{X}^l$ in the $k^{th}$ component of $\boldsymbol{X}$.
+	\item $\Sigma_{i,J_r^j,k}$ is the variance of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
 	\item $\boldsymbol{X}$ is the $n\times d$ matrix whose columns are the covariates in the datasets and rows are the individuals.
 	\item $\boldsymbol{Y}$ is the $n\times 1$ response variable in the main regression.
 \end{itemize}
