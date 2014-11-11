@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{amsmath}
+\usepackage{listings}
 \usepackage{amsfonts}
 \usepackage[toc,page]{appendix}
 \usepackage{array}%,multirow,makecell}
@@ -4414,7 +4415,12 @@ the only non-identifiable sub-regressions could be those with only one regressor
 	 One example of graphical tool is the {\tt matplot\_zone } function that allows to compare several curves according to a given function (input parameter) and was widely used to compare the \textsc{mse} and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
 	 
 	More features will be added as statistics will continue to be taught to engineers at ArcelorMittal Dunkerque to provide ergonomic and powerful statistical tools to non-statisticians. 	
-	
+
+\begin{lstlisting}[language=R]
+rm(list=ls()) #clear the workspace
+require(CorReg) #load CorReg if not already done
+\end{lstlisting}
+
 \chapter{Glossary of notations}
 You can use this page to find the meaning of the notations used without having to search within the chapters.
 Bold characters are used to distinguish multidimensional objects. Many objects are tuples.
