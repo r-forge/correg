@@ -4269,21 +4269,19 @@ There is still a lot of work to do in the field of missing values and we have on
 	\section{Perspectives}
 	This work was focused on linear regression and the ways to avoid correlations issues. But statistics cover an extremely wider range of methods that sometimes also suffer from correlations. Then the perspectives of this work are wide.
 		\subsection{Logistic regression}
-			Logistic regression \cite{hosmer2000applied} is in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain the same kind of phenomenon. It would an easy generalization of \textsc{CorReg} to binary response variables. Introduction of qualitative covariates would be another big improvement for our method.
-			\subsubsection{Regression mixture models}
+			Logistic regression \cite{hosmer2000applied} is in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain the same kind of phenomenon. It would be an easy generalization of \textsc{CorReg} to binary response variables. Introduction of qualitative covariates would be another big improvement for our method.
+			\subsection{Regression mixture models}
 			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values. In such a model, the contribution of the structure itself would be even greater for the final user. An additional algorithm to search for distinct or equal coefficients within the classes would be to develop.
-			\subsubsection{Using $\boldsymbol{Y}$ to estimate $S$}
-			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results when applied on $\boldsymbol{Y}$. But it would probably give distinct structures according to the chosen model (marginal or plug-in). It would also require a criterion that could be the $BIC$ associated to the combination of both $\boldsymbol{S}$ and the chosen regression on $\boldsymbol{Y}$ or a {\sc mse}  but with added computational cost if the {\sc lasso} (for example) has to be computed for each candidate structure in the MCMC. This perspective would require to rethink entirely the criterion used to choose the structure and the algorithm to find it. This would be a whole new research direction and a real competitor against the method presented here.
+			\subsection{Using $\boldsymbol{Y}$ to estimate $S$}
+			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results when applied on $\boldsymbol{Y}$. But it would probably give distinct structures according to the chosen model (marginal or plug-in). It would also require a criterion that could be the $BIC$ associated to the combination of both $\boldsymbol{S}$ and the chosen regression on $\boldsymbol{Y}$ or a {\sc mse}  but with added computational cost if the {\sc lasso} (for example) has to be computed for each candidate structure in the MCMC. This perspective would require to rethink entirely the criterion used to choose the structure and the algorithm to find it. This would be a whole new research direction and a real competitor against the method presented here. A possible consequence of such a model would be a reduce marginalization with some response covariates kept when the correlations implied are not too strong, as a tradeoff beween the marginal and the plug-in model.
 		\subsection{Pre-treatment for non-linear regression}
-			Polynomial regression, Classification and Regression Tree, and any other method could also benefit from the variable selection pre-treatment implied by our marginal model. Definition of a plug-in model for these methods would be of great interest so it is a challenging perspective.
+			Polynomial regression, Classification and Regression Trees, and any other method could also benefit from the variable selection pre-treatment implied by our marginal model. Definition of a plug-in model for these methods would be of great interest so it is a challenging perspective.
 			\subsection{Missing values in classical methods}
 			The full generative approach could be used to manage missing values without imputation for many classical methods.
 			It can notably be used for clustering and not only in response variable prediction context.
 			Missing values were just introduced here and represent a consequent perspective.
-		\subsection{Improved programming}
-			Even if it is written in C++, the algorithm could be optimized by a better usage of sparse matrices, memory usage optimization, and other small things that could reduce computational cost to be faster and allow to work with larger datasets (already works with thousands of covariates).
-		
-		\subsection{Interpretation improvements}
+		\subsection{Improved programming and interpretation}
+			Even if it is written in C++, the algorithm could be optimized by a better usage of sparse matrices, memory usage optimization, and other small things that could reduce computational cost to be faster and allow to work with larger datasets (already works with thousands of covariates).\\
 			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after this thesis to get closer to this goal as {\sc CorReg} will continue to be used and taught at ArcelorMittal steelplant of Dunkerque.
 			
 		
