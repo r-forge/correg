@@ -163,15 +163,13 @@ Nous supposons également que les variables réponses et les variables prédicti
  pour toute sous-régression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ où $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ est l'ensemble de toutes les variables réponses avec $J_f=\{1,\ldots,d\} \backslash J_{r}$ l'ensemble des variables non expliquées de cardinal $d_f=d-d_r=|J_f|$. Cette seconde hypothèse garantit l'obtention d'un système de sous-régression très simple et sans imbrications ni surtout aucun cycle. Cette hypothèse n'est pas trop restrictive dans la mesure où tout système sans cycle peut (par substitutions) être reformulé sous cette forme simplifiée (avec une variance accrue).
 \end{hypfr}
 
-\paragraph{Notations} Par la suite nous noterons $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ le $d_r$-uplet des variables réponses (à ne pas confondre avec $J_r$ défini plus haut), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ le $d_r$-uplet des prédicteurs de toutes les sous-régressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ les nombres correspondants de predicteurs et $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ le {\it model} global (structure de sous-régressions). Pour alléger les notations, on définit alors $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ la matrice des variables réponses et $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ la matrice de {\it toutes} les autres variables, ainsi considérées comme libres ({\it free} en anglais). Les valeurs des paramètres sont également concaténées : $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ est la matrice des coefficients de sous-régression et $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ le vecteur des variances associées :
+\paragraph{Notations} Par la suite nous noterons $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ le $d_r$-uplet des variables réponses (à ne pas confondre avec $J_r$ défini plus haut), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ le $d_r$-uplet des prédicteurs de toutes les sous-régressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ les nombres correspondants de predicteurs et $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ le {\it model} global (structure de sous-régressions). Pour alléger les notations, on définit alors $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ la matrice des variables réponses et $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ la matrice de {\it toutes} les autres variables, ainsi considérées comme libres ({\it free} en anglais). Les valeurs des paramètres sont également concaténées : $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ est le $d_r-$uple des vecteurs des coefficients de sous-régression et $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ le vecteur des variances associées :
 
 	\begin{equation}
 		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
 	\end{equation}
 	La matrice $\boldsymbol{\varepsilon}\in \mathbb{R}^{n\times d_r}$ est la matrice des bruits des sous-régressions composée des colonnes \mbox{$\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$} que nous supposons indépendantes entre elles. Toutes ces notations sont illustrées dans l'exemple ci-après. \\
 	
-	
-
 \fcolorbox{vertfonce}{vertclair}{\begin{minipage}{0.95\textwidth}
 \paragraph{Données d'exemple :} 
 $d=5$ variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{X}_f=(\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5)$ et une variable redondante $\boldsymbol{X}_r=\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ avec $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ sont testées avec $\boldsymbol{\beta}=(1,1,1,1,1)'$ et $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_1$ diminue. Ici $J_f=\{1,2,4,5\},J_r=\{3\},\boldsymbol{J}_r=(3),\boldsymbol{d}_p=2,\boldsymbol{J}_p=(\{1,2\}),\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1)=((1,1)'),\boldsymbol{X} ^{J_p^1}=(\boldsymbol{X}^1,\boldsymbol{X}^2),\boldsymbol{S}=((3),(\{1,2\}))$. On note $R^2$ est le coefficient de détermination :\\
@@ -179,6 +177,8 @@ $d=5$ variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbo
 	R^2=1-\frac{\operatorname{Var}(\boldsymbol{\varepsilon}_1)}{\operatorname{Var}(\boldsymbol{X}^3)}
 	\end{equation}
 \end{minipage}}	
+\\
+\\
 \\
 La figure \ref{MQEOLScompl} illustre la détérioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur nos données d'exemple. 
 	\paragraph{Remarques}
@@ -191,7 +191,7 @@ La figure \ref{MQEOLScompl} illustre la détérioration de l'estimation quand le
 	Le fait de modéliser explicitement les corrélations entre les covariables nous permet de réécrire le modèle de régression principal. On peut en effet substituer les variables redondantes par leur sous-régression, ce qui revient à intégrer la régression sur $\boldsymbol{X}_{r}$ sachant la structure de sous-régressions $\boldsymbol{S}$. On fait alors une hypothèse supplémentaire :
 
 \begin{hypfr}\label{H3fr}
-On suppose l'indépendance 2 à 2 entre les erreurs de régression $\boldsymbol{\varepsilon}_Y$ et $\boldsymbol{\varepsilon}_j (j=1,\dots,d_r)$. En particulier on a l'indépendance conditionnelle entre les variables réponses \\$\{\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{J_p^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma_j^2\}$ définies en (\ref{eq:SR_fr}).
+On suppose l'indépendance 2 à 2 entre les erreurs de régression $\boldsymbol{\varepsilon}_Y$ et les $\boldsymbol{\varepsilon}_j$, avec  $j\in \{1,\dots,d_r\}$. En particulier on a l'indépendance conditionnelle entre les variables réponses : $\{\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{J_p^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma_j^2\}$ définies par l'équation (\ref{eq:SR_fr}).
 \end{hypfr}
 On a donc 
 \begin{eqnarray}
@@ -4419,25 +4419,40 @@ the only non-identifiable sub-regressions could be those with only one regressor
 	
 		The {\tt CorReg} package is already downloadable on CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (\textsc{ols},stepwise,\textsc{lasso},elasticnet,clere,spike and slab, adaptive \textsc{lasso} and every models in the {\tt lars} package). So every simulation presented above can be done with {\tt CorReg}.
 	{\tt CorReg} also provides tools to interpret found structures and visualize the dataset (missing values and correlations). \\%More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}. 
-	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made available in Microsoft Excel by the end of the year 2014, probably using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). \\
+	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made available in Microsoft Excel by the end of the year 2014, using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). \\
 	
 	It also provides some small scripts put in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel).\\
 	 One example of graphical tool is the {\tt matplot\_zone } function that allows to compare several curves according to a given function (input parameter) and was widely used to compare the \textsc{mse} and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
 	 
-	More features will be added as statistics will continue to be taught to engineers at ArcelorMittal Dunkerque to provide ergonomic and powerful statistical tools to non-statisticians. 	
-
+	More features will be added as statistics will continue to be taught to engineers at ArcelorMittal Dunkerque to provide ergonomic and powerful statistical tools to non-statisticians. \\
+		
+\paragraph{Quick overview of the package:} The following script gives an overview of {\tt CorReg 0.15.8}
 \begin{lstlisting}[language=R]
 rm(list=ls()) #clear the workspace
 require(CorReg) #load CorReg if not already done
 #we first generate a dataset
 base=mixture_generator(
-		n=15, #number of individuals
-		p=10, #number of covariates
-		ratio=0.4, # ratio of covariates that are response variables
-		tp1=1,tp2=1,tp3=1,positive=0.5,
-                          R2Y=0.8,R2=0.9,scale=TRUE,max_compl=3,lambda=1)
-   X_appr=base$X_appr
-   Y_appr=base$Y_appr
+	n=15, #number of individuals
+	p=10, #number of covariates
+	ratio=0.4, # ratio of covariates that are response variables
+	tp1=1,# the ratio of predictor covariates allowed to have a non-zero coefficient in the regression of Y
+	tp2=1,
+	# the ratio of response covariates allowed to have a non-zero coefficient in the regression of Y
+	tp3=1,
+	# the ratio of strictly independent covariates allowed to have a non-zero coefficient in the regression of Y
+	positive=0.5, 
+	#ratio of positive coefficients in the regressions
+    R2Y=0.8, #R-squared of the main regression
+    R2=0.9, #R-squared of the sub-regressions
+    scale=TRUE,#to scale the covariates (response do not have a greater variance or mean)
+    max_compl=3,#maximum number of predictores in each sub-regression
+    lambda=1# paramater of the Poisson's law that define the number of components in gaussian mixture models
+  )
+  #learning set (n individuals)
+   X_appr=base$X_appr 
+   Y_appr=base$Y_appr 
+   
+  #validation sample (1 000 individuals by default)
    Y_test=base$Y_test
    X_test=base$X_test
 
@@ -4484,12 +4499,12 @@ base=mixture_generator(
 \end{lstlisting}
 
 \chapter{Glossary of notations}
-You can use this page to find the meaning of the notations used without having to search within the chapters.
+This glossary can be used to find the meaning of the notations without having to search within the chapters.
 Bold characters are used to distinguish multidimensional objects. Many objects are tuples.
 \begin{itemize}
-	\item $\boldsymbol{\alpha}_j$
-	\item $\boldsymbol{\alpha}$
-	\item $\boldsymbol{\alpha}^*$
+	\item $\boldsymbol{\alpha}_j$ is the vector of the coefficients of the $j^{th}$ sub-regression.
+	\item $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_{d_r})$ is the $d_r-$uple of the $\boldsymbol{\alpha}_j$.
+	\item $\boldsymbol{\alpha}^*$ is the $d_f \times d_r $ matrix of the sub-regressions coefficients.
 	\item $\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.
 	\item $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ is the $(d-d_r)\times 1$ vector of the regression coefficients associated  to the free covariates in the main regression on $\boldsymbol{Y}$.
 	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated respectively to the responses and to the free covariates.
