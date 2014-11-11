@@ -23,7 +23,7 @@
 
 \lstset{% general command to set parameter(s)
 %basicstyle=\small, % print whole listing small
-%keywordstyle=\color{black}\bfseries\underbar,
+keywordstyle=,%keywordstyle=\color{black}\bfseries\underbar,
 % underlined bold black keywords
 %identifierstyle=, % nothing happens
 commentstyle=\color{OliveGreen}, % white comments
@@ -4217,7 +4217,7 @@ Both methods were tested with the true structure $\boldsymbol{S}$. Initial value
 	\centering
 	\includegraphics[width=350px]{figures/MSEXsubreg.png} 
 	\caption{\textsc{mse} on $\hat{\boldsymbol{X}}$ is significantly lower when using our Stochastic EM than with imputation by the mean.}\label{MSEXsubreg}
-\end{figure}
+\end{figure}  
 \FloatBarrier
 		\subsection{Results on the main regression}
 		We use the previously imputed $\hat{\boldsymbol{X}}$ to estimate $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,\dots,1)$ and $\sigma_Y=10$.
@@ -4258,32 +4258,35 @@ There is still a lot of work to do in the field of missing values and we have on
 
 \chapter{Conclusion and perspectives}
 	\section{Conclusion}
-		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates. Moreover, it is only a pre-treatment so it could easily be used with future statistical tools. \\
+		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates. Moreover, the marginal model can be seen as a pre-treatment so it could easily be used with future statistical tools. \\
 		
-		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regression found comfort users in that if a structure does exist, {\tt CorReg} will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method seems to have a positive impact on the way users looks at the statistics (according to them). \\
+		Our model is easy to understand and to use. Usage of linear regression to model the correlations definitely separates us from "black boxes" so users are confident in what they do. The well-known and trivial sub-regressions found comfort users in that if a structure does exist, {\tt CorReg} will find it so when a new sub-regression, or a new main regression is given they are more likely to look further and try it. The automated aspect shows the power of statistics without a priori so users begin to understand that statistics are not only descriptive or predictive but based on {\it a priori} models. This method seems to have a positive impact on the way users looks at the statistics (according to them). \\
 		
-			It is good to see that sequential methods (plug-in model) and automation can produce good results. Probabilistic models are efficient even without human expertise and let the experts improve the results by adding their expertise in the model (coercing some sub-regression for example). So we hope that statistics will continue to be a central tool for engineers.\\
-			
-		
+		It is good to see that sequential methods (plug-in model) and automation can produce good results. Probabilistic models are efficient even without human expertise and let the experts improve the results by adding their expertise in the model (coercing some sub-regression for example). Last but not least, missing values management is a positive side-effect of our explicit modeling of the correlations with promising perspectives.
+		 So we hope that statistics will continue to be a central tool for engineers.\\
+					
 		
 	\section{Perspectives}
-	
-		\subsection{Non-linear regression}
-			Polynomial regression, {\it etc.} might be improved by a method like this. Logistic regression \cite{hosmer2000applied} is in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain same phenomenon. It is an easy generalization of \textsc{CorReg}.
-		\subsection{Pre-treatment not only for regression}
-			Classification and Regression Tree, and any other method could also benefit from the variable selection pre-treatment implied by our marginal model.
-		\subsection{Improved programming}
-			Even if it is written in C++, the algorithm could be optimized by a better usage of sparse matrices, memory usage optimization, and other small things that could reduce computational cost to be faster and allow to work with larger datasets (already works with thousands of covariates).
-		\subsection{Missing values in classical methods}
+	This work was focused on linear regression and the ways to avoid correlations issues. But statistics cover an extremely wider range of methods that sometimes also suffer from correlations. Then the perspectives of this work are wide.
+		\subsection{Logistic regression}
+			Logistic regression \cite{hosmer2000applied} is in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain the same kind of phenomenon. It would an easy generalization of \textsc{CorReg} to binary response variables. Introduction of qualitative covariates would be another big improvement for our method.
+			\subsubsection{Regression mixture models}
+			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values. In such a model, the contribution of the structure itself would be even greater for the final user. An additional algorithm to search for distinct or equal coefficients within the classes would be to develop.
+			\subsubsection{Using $\boldsymbol{Y}$ to estimate $S$}
+			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results when applied on $\boldsymbol{Y}$. But it would probably give distinct structures according to the chosen model (marginal or plug-in). It would also require a criterion that could be the $BIC$ associated to the combination of both $\boldsymbol{S}$ and the chosen regression on $\boldsymbol{Y}$ or a {\sc mse}  but with added computational cost if the {\sc lasso} (for example) has to be computed for each candidate structure in the MCMC. This perspective would require to rethink entirely the criterion used to choose the structure and the algorithm to find it. This would be a whole new research direction and a real competitor against the method presented here.
+		\subsection{Pre-treatment for non-linear regression}
+			Polynomial regression, Classification and Regression Tree, and any other method could also benefit from the variable selection pre-treatment implied by our marginal model. Definition of a plug-in model for these methods would be of great interest so it is a challenging perspective.
+			\subsection{Missing values in classical methods}
 			The full generative approach could be used to manage missing values without imputation for many classical methods.
 			It can notably be used for clustering and not only in response variable prediction context.
 			Missing values were just introduced here and represent a consequent perspective.
+		\subsection{Improved programming}
+			Even if it is written in C++, the algorithm could be optimized by a better usage of sparse matrices, memory usage optimization, and other small things that could reduce computational cost to be faster and allow to work with larger datasets (already works with thousands of covariates).
+		
 		\subsection{Interpretation improvements}
-			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after the redaction of this thesis to get closer to this goal.
-		\subsubsection{Regression mixture models}
-			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values.
-		\subsubsection{Using $\boldsymbol{Y}$ to estimate $S$}
-			Like PLS regression, we could imagine to estimate $S$ using also $\boldsymbol{Y}$ to find a structure that will give the best results when applied on $\boldsymbol{Y}$. But it would probably give distinct structures according to the chosen model (marginal or plug-in). It would also require a criterion that could be the $BIC$ of the combination of both $S$ and the chosen regression on $\boldsymbol{Y}$ or a {\sc MSE}  but with added computational cost if the LASSO (for example) has to be computed for each candidate structure in the MCMC.
+			Ergonomy of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after this thesis to get closer to this goal as {\sc CorReg} will continue to be used and taught at ArcelorMittal steelplant of Dunkerque.
+			
+		
 \cleardoublepage
 
 \addcontentsline{toc}{chapter}{References}
@@ -4435,8 +4438,8 @@ require(CorReg) #load CorReg if not already done
 base=mixture_generator(
 	n=15, #number of individuals
 	p=10, #number of covariates
-	ratio=0.4, # ratio of covariates that are response variables
-	tp1=1,# the ratio of predictor covariates allowed to have a non-zero coefficient in the regression of Y
+	ratio=0.4, #ratio of covariates that are response variables
+	tp1=1,#ratio of predictor covariates allowed to appear in the regression of Y
 	tp2=1,
 	# the ratio of response covariates allowed to have a non-zero coefficient in the regression of Y
 	tp3=1,
