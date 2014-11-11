@@ -4251,8 +4251,9 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 	\end{figure}
 	We see in figure \ref{MSEXmissBV} that our Stochastic EM gives a smaller \textsc{mse} with a smaller variance than imputation by the mean. 
 	
-	
-\paragraph{Conclusion:}	There is still a lot of work to do in the field of missing values and we have only walked the firsts steps of this huge perspective, but these first results are encouraging and make us feel like this orientation is worthy to be followed.
+\FloatBarrier	
+\paragraph{Conclusion:}	We can see that our generative model on the dataset and the explicit modeling of the correlations are powerful enough to manage missing values either to estimate $\boldsymbol{\alpha}$, $\boldsymbol{S}$, the main regression coefficients or even to impute missing values with an indicator of the fiability of these imputations. But we have to face the sad reality: we cannot create information and if too much values are missing we won't get good results. Moreover, the algorithms used here have good asymptotic properties but time is not infinite during a statistical study. However, if there are not too much missing values or if they are not too badly placed in the dataset we can hope to obtain good results in a reasonable amount of time.\\
+There is still a lot of work to do in the field of missing values and we have only walked the firsts steps of this huge perspective, but these first results are encouraging and make us feel like this orientation is worthy to be followed.
 
 
 \chapter{Conclusion and perspectives}
