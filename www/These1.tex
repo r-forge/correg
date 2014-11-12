@@ -506,9 +506,9 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a possibly bi
 			%\cite{efron2004least} %LAR
 			%\cite{Zhao2006MSC}%problèmes du lasso/lars en correlations
 			%\cite{SAM10088}%lars necessite OLS en surcouche
-The Least Absolute Shrinkage and Selection Operator ({\sc lasso} \cite{tibshirani1996regression,tibshiranilasso}) consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty to obtain zeros in $\hat{\boldsymbol{\beta}}$ instead of the $L_2$ penalty of the ridge regression:
+The Least Absolute Shrinkage and Selection Operator ({\sc lasso}, \cite{tibshirani1996regression} and \cite{tibshiranilasso}) consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty to obtain zeros in $\hat{\boldsymbol{\beta}}$ instead of the $L_2$ penalty of the ridge regression:
 		\begin{equation}
-		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\boldsymbol{\beta} \parallel_1\leq \lambda \textrm{ with } \lambda>0 .
+		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\boldsymbol{\beta} \parallel_1\leq \lambda \textrm{ with } \lambda>0 . \nonumber 
 		\end{equation}	
 		
 		\begin{figure}[h!]
@@ -526,7 +526,7 @@ The Least Absolute Shrinkage and Selection Operator ({\sc lasso} \cite{tibshiran
 
 			%\cite{zou2006adaptive}% adaptive lasso
 			%\cite{wang2011random}%random lasso
-			 Some recent variants of the \textsc{lasso} do exist for the choice of the penalization coefficient like the adaptive \textsc{lasso} \cite{zou2006adaptive} with the {\tt parcor} package on CRAN (\cite{packageparcor}) or the random \textsc{lasso} \cite{wang2011random}.  But the consistency issue remains because it is still the same model. Only the choices of $\lambda$ differ.\\
+			 Some recent variants of the \textsc{lasso} do exist for the choice of the penalization coefficient like the adaptive \textsc{lasso} \cite{zou2006adaptive} with the {\tt parcor} package that can be found on CRAN (\cite{packageparcor}) or the random \textsc{lasso} \cite{wang2011random}.  But the consistency issue remains because it is still the same model. Only the choices of $\lambda$ differ.\\
 			 
 			 It is notable that the main goal of the \textsc{lasso} is to select some covariates, thus the penalization is just a mean to achieve selection. But estimation of $\hat{\boldsymbol{\beta}}$ can be improved by a second estimation with \textsc{ols} based only on selected covariates \cite{SAM10088}.
 		\subsection{Least Angle Regression}
@@ -564,7 +564,7 @@ The Least Absolute Shrinkage and Selection Operator ({\sc lasso} \cite{tibshiran
 	%Elastic net can be writt"en:
 	\begin{eqnarray}
 		\boldsymbol{\hat{\beta}}&=&(1+\lambda_2) \operatorname{argmin}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta} \parallel_2^2 \right\rbrace \textrm{ subject to} \nonumber \\
-			 & &(1-\alpha)\parallel\boldsymbol{\beta}\parallel_1+\alpha\parallel\boldsymbol{\beta}\parallel_2^2\leq t \textrm{ for some } t
+			 & &(1-\alpha)\parallel\boldsymbol{\beta}\parallel_1+\alpha\parallel\boldsymbol{\beta}\parallel_2^2\leq t \textrm{ for some } t  \nonumber 
 	\end{eqnarray}
 	where $\alpha=\frac{\lambda_2}{(\lambda_1+\lambda_2)}$. 
 	
@@ -592,7 +592,7 @@ The Least Absolute Shrinkage and Selection Operator ({\sc lasso} \cite{tibshiran
 			%\cite{bondell2008simultaneous}%Oscar
 			Like elasticnet, \textsc{oscar} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect (by a pairwise $L_\infty$ norm) and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (implied by the $L_1$ norm). Thus correlations are avoided if correlated covariates are in the same cluster (not extremely flexible). A possible bias is added by the dimension reduction inherent to the coefficients clustering.
 			\begin{equation}
-				\hat{\boldsymbol{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \parallel\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \parallel^2_2 \textrm{ subject to } \sum_{j=1}^d|\beta_j|+c\sum_{j<k}\operatorname{max}(|\beta_j|,|\beta_k|) \leq \lambda		
+				\hat{\boldsymbol{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \parallel\boldsymbol{Y}-\boldsymbol{X}\boldsymbol{\beta} \parallel^2_2 \textrm{ subject to } \sum_{j=1}^d|\beta_j|+c\sum_{j<k}\operatorname{max}(|\beta_j|,|\beta_k|) \leq \lambda		 \nonumber 
 			\end{equation}						
 			Moreover \textsc{oscar} depends on two tuning parameters: $c$ and $\lambda$. For a fixed $c$ the $\lambda$ can be found by the \textsc{lar} algorithm but $c$ still has to be found "by hand" comparing final models for many values of $c$.
 			
@@ -635,10 +635,10 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 	
 		\begin{figure}[h!]
 	\subfigure[Without blur]{
-			\includegraphics[height=180px,width=245px]{figures/Regle2Dbis.png} 
-	} \quad
+			\includegraphics[height=180px,width=205px]{figures/Regle2Dbis.png} 
+	} 
    	\subfigure[With some blur proportional to the density of points]{
-			\includegraphics[height=180px,width=240px]{figures/Regle2D.png} 
+			\includegraphics[height=180px,width=230px]{figures/Regle2D.png} 
 	}
 	\caption{Result on a toy example provided by \textsc{FlashProcess}, similar to decision trees but less efficient and extremely slower. Colors are part of the learning set.}\label{Regle2D}
 \end{figure}	
@@ -718,9 +718,9 @@ The concept of representing dependencies with directed acyclic graph is good an 
 \begin{figure}[h!]
 	\subfigure[Tree found for the trivial case]{
 			\includegraphics[height=180px,width=245px]{figures/arbretrivial.png} 
-	} \quad
+	} 
    	\subfigure[True linear regression and splits obtained by the tree.]{
-			\includegraphics[height=180px,width=240px]{figures/arbretrivialcoupure.png} 
+			\includegraphics[height=180px,width=200px]{figures/arbretrivialcoupure.png} 
 	}
 	\caption{Predictive model associated to the tree (red) and true model (black)}\label{arbretrivial}
 \end{figure}
@@ -734,13 +734,13 @@ The concept of representing dependencies with directed acyclic graph is good an 
 		\subsection{Principal Component Regression ({\sc pcr})}
 	Principal Component Regression ({\sc pcr})\cite{jackson2005user} consists in using the axis from the Principal Component Analysis ({\sc pca}) of $\boldsymbol{X}$ instead of $\boldsymbol{X}$ itself. Then we have orthogonal covariates. The dataset $\boldsymbol{X}$ is standardized to have 0 mean and variance 1 for each of the covariates. Dimension reduction is done by keeping only the $M \leq d$ first components of the {\sc pca}. Because the axis are linear combination of the original covariates we can then express the model in terms of coefficients of the $\boldsymbol{X}^j$.\\
 	\begin{eqnarray}
-		\hat{\boldsymbol{\beta}}_M&=&\boldsymbol{V}_M\hat{\boldsymbol{\gamma}}_M \in \mathbb{R}^d \textrm{ where}\\
-		\hat{\boldsymbol{\gamma}}_M&=&(\boldsymbol{W}_M'\boldsymbol{W}_M)^{-1}\boldsymbol{W}_M'\boldsymbol{Y} \textrm{ with} \\
-		\boldsymbol{W}_M&=&\boldsymbol{X}\boldsymbol{V}_M
+		\hat{\boldsymbol{\beta}}_M&=&\boldsymbol{V}_M\hat{\boldsymbol{\gamma}}_M \in \mathbb{R}^d \textrm{ where}  \nonumber \\
+		\hat{\boldsymbol{\gamma}}_M&=&(\boldsymbol{W}_M'\boldsymbol{W}_M)^{-1}\boldsymbol{W}_M'\boldsymbol{Y} \textrm{ with} \nonumber  \\
+		\boldsymbol{W}_M&=&\boldsymbol{X}\boldsymbol{V}_M \nonumber 
 	\end{eqnarray}
 	with $\boldsymbol{V}_M$ the submatrix of the $M$ first columns of $\boldsymbol{V}$ $d$-square matrix of the orthonormal set of right singular vectors of $\boldsymbol{X}$ defined by:
 	\begin{eqnarray}
-		\boldsymbol{X}&=&\boldsymbol{U}\boldsymbol{\Delta}\boldsymbol{V}'
+		\boldsymbol{X}&=&\boldsymbol{U}\boldsymbol{\Delta}\boldsymbol{V}' \nonumber 
 	\end{eqnarray}
 	with $\boldsymbol{\Delta}$ the $d\times d$ diagonal matrix which has on its diagonal the positive eigen values of $\boldsymbol{X}$ in descending order and $\boldsymbol{U}$ is the $n\times d$ matrix of the orthonormal set of left singular vectors of $\boldsymbol{X}$.\\
 	
@@ -799,7 +799,7 @@ Like the {\sc pcr}, {\sc pls} regression can give an efficient dimension reducti
 \end{itemize}			 
 So we have a system of linear regression:
 \begin{equation}
-	\boldsymbol{X}^{U}|\boldsymbol{X}^{R};\boldsymbol{\alpha},\boldsymbol{\Omega}=a+\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}
+	\boldsymbol{X}^{U}|\boldsymbol{X}^{R};\boldsymbol{\alpha},\boldsymbol{\Omega}=a+\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}  \nonumber 
 \end{equation}
 where $\boldsymbol{X}$ is the $n\times d$ dataset as above, $\boldsymbol{X}^R$ and $\boldsymbol{X}^U$ are the sub-matrix of  $\boldsymbol{X}$ formed by the covariates in $R$ and $U$ respectively, $\boldsymbol{\alpha}$ is the $\operatorname{Card}(R)\times \operatorname{Card}(U)$ matrix of the regression coefficients, $a$ is the $1\times \operatorname{Card}(U)$ intercept vector and $\boldsymbol{\varepsilon}$ the $n\times \operatorname{Card}(U) $ matrix of the Gaussian error terms with zero mean and variance $\boldsymbol{\Omega}\in \mathbb{R}^{\operatorname{Card}(U)\times \operatorname{Card}(U)}$.\\
 
@@ -807,17 +807,17 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 \begin{itemize}
 	\item The relevant variables for clustering of $\boldsymbol{X}$ are assumed to follow a Gaussian mixture with $K$ components and a form $m$ (see \cite{biernacki2006model} for more details about the possible forms):
 	\begin{equation}
-		f_{clust}(\boldsymbol{X}^S|K,m,\boldsymbol{\theta})=\sum_{k=1}^K p_k \Phi (\boldsymbol{X}^S|\mu_k,\Sigma_k)
+		f_{clust}(\boldsymbol{X}^S|K,m,\boldsymbol{\theta})=\sum_{k=1}^K p_k \Phi (\boldsymbol{X}^S|\mu_k,\Sigma_k) \nonumber 
 	\end{equation}
 	where the parameter vector is $\boldsymbol{\theta}=(p_1,\dots,p_k,\mu_1,\dots,\mu_k,\Sigma_1,\dots,\Sigma_k)$, with $\sum_{k=1}^K p_k=1$, the proportion vector and the variance matrices satisfying the form $m$.
 	\item The likelihood associated to the linear regression of $\boldsymbol{X}^U$ on $\boldsymbol{X}^R$ is then
 	\begin{equation}
-		f_{reg}(\boldsymbol{X}^U|r,a+\boldsymbol{X}^R\boldsymbol{\alpha},\boldsymbol{\Omega})=\prod_{i=1}^n \Phi(\boldsymbol{X}_i^U|a+\boldsymbol{X}_i^R \boldsymbol{\alpha},\boldsymbol{\Omega})
+		f_{reg}(\boldsymbol{X}^U|r,a+\boldsymbol{X}^R\boldsymbol{\alpha},\boldsymbol{\Omega})=\prod_{i=1}^n \Phi(\boldsymbol{X}_i^U|a+\boldsymbol{X}_i^R \boldsymbol{\alpha},\boldsymbol{\Omega}) \nonumber 
 	\end{equation}
 	where $r$ is the form of $\boldsymbol{\Omega}$, the variance matrix of the residual $\boldsymbol{\varepsilon}$.
 	\item Variables independent of the variables that are relevant for clustering are assumed to follow a Gaussian distribution (If they were independent and following a Gaussian mixture they would then be relevant for clustering) with mean vector $\gamma$ and variance matrix $\tau$ with form $l$:
 	\begin{equation}
-		f_{indep}(\boldsymbol{X}^{W}|l,\gamma,\tau)=\prod_{i=1}^n \Phi (\boldsymbol{X}_i^W|\gamma,\tau)
+		f_{indep}(\boldsymbol{X}^{W}|l,\gamma,\tau)=\prod_{i=1}^n \Phi (\boldsymbol{X}_i^W|\gamma,\tau) \nonumber 
 	\end{equation}
 \end{itemize}
 
@@ -825,7 +825,7 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 {\tt Selvarclust} is one step beyond Simultaneous Equation Modeling with an algorithm to find the structure but:
 			\begin{itemize}
 				\item It is about clustering and not regression (not the same application field) so we don't have here any response variable neither method to use this structure for estimation of another regression.  And the goal is not to find the structure but to find a Gaussian clustering.
-				\item It uses stepwise-like algorithm without protection against correlations \cite{raftery2006variable} even if it is known to be often unstable \cite{miller2002subset} in such a context.
+				\item It uses stepwise-like algorithm \cite{raftery2006variable} without protection against correlations even if it is known to be often unstable \cite{miller2002subset} in such a context.
 			\end{itemize}
 			
 			In this work we propose to adapt this model for linear regression and to use it as a pre-treatment on correlated covariates. We will see that, as a pre-treatment, it can be used then for a wide range of statistical tools and not only linear regression.\\
@@ -834,7 +834,7 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 			Aiming to realize Gaussian clustering, {\tt Selvarclust} does estimate a multivariate Gaussian mixture on $\boldsymbol{X}$ with dependencies within the covariates. Our algorithm will only aim to find a linear sub-regression structure within $\boldsymbol{X}$, relying on some additional hypotheses of independence so the two methods cannot be directly compared. The only common point is the existence of a linear sub-regression model and an algorithm that estimates it. Thus results in section \ref{compMaugis} are just informative.
 	%Our first intention was to make something different from SelvarClust but our model has evolved during this thesis and finally became more comparable to SelvarClust than expected.		
 	
-\paragraph{Conclusion:} In linear regression ther is a lack of method that both select relevant covariates and manage correlations with strong interpretability. However, some methods already do a part of the job so we will try to improve and combine them to obtain a new method that would be more efficient. 	
+\paragraph{Conclusion:} In linear regression there is a lack of method that both select relevant covariates and manage correlations with strong interpretability. However, some methods already do a part of the job so we will try to improve and combine them to obtain a new method that would be more efficient. 	
 			
 \part{Pre-treatment for correlations}
 \chapter{Decorrelating covariates by a generative model}\label{chapexpl}
@@ -882,13 +882,11 @@ In addition, we make the complementary hypothesis that the response covariates a
 \item Sub-regressions defined in (\ref{eq:SR}) are very easy to understand by any practitioner and, thus, will give a clear view of all the correlations present in the dataset at hand.
 %\item As a consequence of Hypotheses~\ref{H1} and~\ref{H2} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated.
 \item We have considered correlations between the covariates of the main regression on $\boldsymbol{Y}$, not between the residuals. Thus $\boldsymbol{S}$ does not depend on $\boldsymbol{Y}$ and it can be estimated independently as we will see in Chapter~\ref{chapterMCMC}, even with a larger dataset (if missing values in $\boldsymbol{Y}$).
-\item The model of sub-regressions $\boldsymbol{S}$ gives a system of linear regressions that can be viewed as a recursive Simultaneous Equation Model (\textsc{sem})\cite{davidson1993estimation,TIMM} or also as a Seemingly Unrelated Regression (\textsc{sur}) \cite{SURzellner} with $\boldsymbol{X}_r$ the set of endogenous covariates.
+\item The model of sub-regressions $\boldsymbol{S}$ gives a system of linear regressions that can be viewed (\cite{davidson1993estimation,TIMM}) as a recursive Simultaneous Equation Model (\textsc{sem}) or also as a Seemingly Unrelated Regression (\textsc{sur}) \cite{SURzellner} with $\boldsymbol{X}_r$ the set of endogenous covariates.
 \item Each sub-regression may imply a distinct subset of explicative covariates from $\boldsymbol{X}_f$.
 \item Here we suppose the $\boldsymbol{\varepsilon}_j$ independent so we estimate them by separate \textsc{ols}. But in other cases \textsc{sur} takes into account correlations between residuals and could be used to estimate the $\boldsymbol{\alpha}^j$. 
 \end{itemize} 
-
-	\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{0.95\textwidth}
- 
+	\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
 \paragraph{In the running example:}$J_f=\{1,2,4,5\}$, $d_f=4$ and $\boldsymbol{X}_f=(\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5)$. We have $d_r=1$ response covariate $\boldsymbol{X}^3|\boldsymbol{X}^1,\boldsymbol{X}^2=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ where $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}_n(\boldsymbol{0},\sigma_1^2\boldsymbol{I})}$. Thus, $\boldsymbol{\alpha}_1=(1,1)'$, $\boldsymbol{J}_r=(3)$, $J_r=\{3\}$, $\boldsymbol{X}_r=(\boldsymbol{X}^3)$, $\boldsymbol{d}_p=(2)$, $\boldsymbol{J}_p=(\{1,2\})$, $\boldsymbol{X}^{J_p^1}=(\boldsymbol{X}^1,\boldsymbol{X}^2)$ and $\boldsymbol{S}=((3),(\{1,2\}))$.  
 \end{minipage}}
 
