@@ -918,7 +918,7 @@ Combining now (\ref{eq:MainR}) with (\ref{eq:SR}), (\ref{eq:marginal}) and (\ref
 \end{eqnarray}
 where $\boldsymbol{\alpha}^*_j \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ and $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0 $. We can then define the matrix $\boldsymbol{\alpha}^* \in \mathbb{R}^{(d_f \times d_r)}$ of the coefficient of sub-regression to use more compact notations:
 \begin{eqnarray}
-	\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \\
+	\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \nonumber \\
 	\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \boldsymbol{\alpha}^*\boldsymbol{\beta_{r}})+ \boldsymbol{\varepsilon}\boldsymbol{\beta_{r}}+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl2}
 \end{eqnarray} 
 Where $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.\\
@@ -948,9 +948,7 @@ In the following, we will denote by {\sc CorReg} (for {\it Correlations} and {\i
 In the followings, true $\boldsymbol{S}$ is supposed to be identifiable.
 \item As a consequence of Hypotheses~\ref{H1} to~\ref{H3} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated (see the Lemma in appendix \ref{sectionident}).
 \end{itemize}
-	
-
-\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{0.95\textwidth}
+\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
 \paragraph{Running example:} $\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2= 2\boldsymbol{X}^1+2\boldsymbol{X}^2+\boldsymbol{X}^4+\boldsymbol{X}^5+\boldsymbol{\varepsilon}_1 +\boldsymbol{\varepsilon}_Y$.
 \end{minipage}}
 
@@ -982,12 +980,12 @@ For the marginal regression model defined in (\ref{eq:modexpl})
 %		So 
 we have the \textsc{ols} unbiased estimator of $\boldsymbol{\beta}^*$: 
 		\begin{equation}
-			\hat{\boldsymbol{\beta}}_{f}^* = (\boldsymbol{X}_{f}'\boldsymbol{X}_{f})^{-1}\boldsymbol{X}_{f}'\boldsymbol{Y}  \textrm{ and }\boldsymbol{\hat\beta}_{r}^* = \boldsymbol{0}
+			\hat{\boldsymbol{\beta}}_{f}^* = (\boldsymbol{X}_{f}'\boldsymbol{X}_{f})^{-1}\boldsymbol{X}_{f}'\boldsymbol{Y}  \textrm{ and }\boldsymbol{\hat\beta}_{r}^* = \boldsymbol{0} \nonumber 
 		\end{equation}
 		We see in (\ref{eq:Trueexpl}) that it gives an unbiased estimation of $\boldsymbol{Y}$ and $\boldsymbol{\beta^*}$
 		but in terms of $\boldsymbol{\beta}$ this estimator could be biased:
 		\begin{equation}
-			\mathbb{E}(\hat{\boldsymbol{\beta}}_{f}^*)=\boldsymbol{\beta}_{f}+\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \textrm{ and }\mathbb{E}(\hat{\boldsymbol{\beta}}_{r}^*)=\boldsymbol{0}
+			\mathbb{E}(\hat{\boldsymbol{\beta}}_{f}^*)=\boldsymbol{\beta}_{f}+\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \textrm{ and }\mathbb{E}(\hat{\boldsymbol{\beta}}_{r}^*)=\boldsymbol{0}  \nonumber 
 		\end{equation}
 		In return, its variance could be reduced compared to this one of $\hat{\boldsymbol{\beta}}$ given in (\ref{eq:varOLS}) as soon as values of $\sigma_j$ are small enough (it means strong correlations in sub-regressions) as we can see in the following expression
 		\begin{equation}
@@ -995,10 +993,10 @@ we have the \textsc{ols} unbiased estimator of $\boldsymbol{\beta}^*$:
 		\end{equation}
 Indeed, no correlations between covariates $\boldsymbol{X}_f$ imply that the matrix $\boldsymbol{X}_f' \boldsymbol{X}_f$ could be sufficiently better conditioned than the matrix $\boldsymbol{X}' \boldsymbol{X}$ involved in (\ref{eq:varOLS}) to balance the added variance $\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2$ in (\ref{eq:varOLS*}). This bias-variance trade off can be resumed by the Mean Squared Error (\textsc{mse}) associated to both estimates:
 	\begin{eqnarray}
-	\textsc{mse}(\hat{\boldsymbol{\beta}})&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}})) \\
+	\textsc{mse}(\hat{\boldsymbol{\beta}})&=&\parallel \operatorname{Bias}\parallel_2^2+\operatorname{Tr}(\operatorname{Var}(\hat{\boldsymbol{\beta}}))  \nonumber \\
 			&=& \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}),
-			 \\
-			\textsc{mse}(\hat{\boldsymbol{\beta}}^*)&=& \parallel\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}).
+			 \nonumber  \\
+			\textsc{mse}(\hat{\boldsymbol{\beta}}^*)&=& \parallel\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}). \nonumber 
 	\end{eqnarray}	 
  			We also get an estimation of the residual  $\boldsymbol{\varepsilon}_Y^*$ relying on $\hat{\boldsymbol{\beta}}^*_f$:
 	\begin{equation}
@@ -1007,7 +1005,7 @@ Indeed, no correlations between covariates $\boldsymbol{X}_f$ imply that the mat
 	that will be used in Chapter \ref{chapplugin}. And then:
 		
 	\begin{equation}
-	\hat{\boldsymbol{Y}}_{marginal}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*.%+\hat{\boldsymbol{\varepsilon}}_Y^*.
+	\hat{\boldsymbol{Y}}_{marginal}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*. \nonumber %+\hat{\boldsymbol{\varepsilon}}_Y^*. 
 	\end{equation}
 	  
 	The bias-variance tradeoff conveyed by the pre-treatment is then illustrated with the running example.
@@ -1029,13 +1027,13 @@ When sub-regression get weaker ($R^2$ tends to 0) \textsc{CorReg} remains stable
 	We notice that the curve is not totally smooth for small samples ($n=15$) because of numerical approximation of the theoretical \textsc{mse}. It confirms that matricial inversion is not easy with correlated covariates even with a small number of covariates. But it is only the theoretical \textsc{mse} and we want to know what happens in the real life. \\
 	
  \begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQEreel/OLSexpl.png}
-	\caption{Observed \textsc{mse} on $\hat{\boldsymbol{\beta}}$ of \textsc{ols} (plain red) and {\tt CorReg}'s marginal model (dotted blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSEOLSexpl}
+	\includegraphics[width=480px]{figures/MQEreel/OLSexpl.png}
+	\caption{Observed \textsc{mse} on $\hat{\boldsymbol{\beta}}$ of \textsc{ols} (plain red) and {\tt CorReg}'s marginal model (dashed blue) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSEOLSexpl}
 \end{figure} 
 	
 	 \begin{figure}
 	 \centering
-	  \includegraphics[width=500px]{figures/MQEreel/OLSYexpl.png}
+	  \includegraphics[width=480px]{figures/MQEreel/OLSYexpl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEOLSYexpl}
 	\end{figure}
 
@@ -1043,58 +1041,58 @@ When sub-regression get weaker ($R^2$ tends to 0) \textsc{CorReg} remains stable
 	We also look at the observed \textsc{mse} on both $\boldsymbol{\beta}$ and $\boldsymbol{Y}$ for some of the methods depicted above.
 	
  \begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQEreel/larexpl.png}
+	\includegraphics[width=480px]{figures/MQEreel/larexpl.png}
 	\caption{Observed \textsc{mse} on $\hat{\boldsymbol{\beta}}$ of \textsc{lasso} with LAR on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}^{I_f}$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSElarexpl}
 \end{figure} 
 	
 	 \begin{figure}
 	 \centering
-	  \includegraphics[width=500px]{figures/MQEreel/larYexpl.png}
+	  \includegraphics[width=480px]{figures/MQEreel/larYexpl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{LASSO}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQElarYexpl}
 	\end{figure}
 	
 		\paragraph{Observed {\sc mse} for variable selection methods:}
 	Figure \ref{MSElarexpl} shows that variable selection done by the \textsc{lasso} gives a biased $\hat{\boldsymbol{\beta}}$ by setting some coefficients to 0 but strong correlations makes this bias neutral for prediction (figure \ref{MQElarYexpl}). Here the \textsc{lasso} tends to propose the same model as we do  with our marginal model, but without explanation. We will see  later in section \ref{compY} that it is not sufficient in higher dimension. Elasticnet and stepwise give results quite similar to the \textsc{lasso} (figures \ref{MSEelasticnetexpl} to \ref{MQEstepwiseYexpl}). \\
-%ridge
-	\begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQEreel/ridgeexpl.png}
-	\caption{Observed \textsc{mse} on $\hat{\boldsymbol{\beta}}_{ridge}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}_f$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSEridgexpl}
-\end{figure} 
-	
-	 \begin{figure}
-	 \centering
-	  \includegraphics[width=500px]{figures/MQEreel/ridgeYexpl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEridgeYexpl}
-	\end{figure}	
-	
-		\paragraph{Observed {\sc mse} for ridge regression:}	
-Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression provides good results for this running example. But we will see later in section \ref{compY} that high dimension reduces the efficiency of the ridge regression when some covariates begin to be irrelevant or not enough relevant because ridge regression is not able to achieve variable selection. \\
-
 
  %elasticnet
 	\begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQEreel/elasticnetexpl.png}
+	\includegraphics[width=480px]{figures/MQEreel/elasticnetexpl.png}
 	\caption{Observed \textsc{mse} on $\hat{\boldsymbol{\beta}}_{elasticnet}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}_f$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSEelasticnetexpl}
 \end{figure} 
 	
 	 \begin{figure}
 	 \centering
-	  \includegraphics[width=500px]{figures/MQEreel/elasticnetYexpl.png}
+	  \includegraphics[width=480px]{figures/MQEreel/elasticnetYexpl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{elasticnet}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEelasticnetYexpl}
 	\end{figure}
   %stepwise
 	\begin{figure}[h!]
-	\includegraphics[width=500px]{figures/MQEreel/stepwiseexpl.png}\label{MSEstepwiseexpl}
+	\includegraphics[width=480px]{figures/MQEreel/stepwiseexpl.png}\label{MSEstepwiseexpl}
 	\caption{Observed \textsc{mse} on $\hat{\boldsymbol{\beta}}_{stepwise}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}_f$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}
 \end{figure} 
 	
 	 \begin{figure}
 	 \centering
-	  \includegraphics[width=500px]{figures/MQEreel/stepwiseYexpl.png}
+	  \includegraphics[width=480px]{figures/MQEreel/stepwiseYexpl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEstepwiseYexpl}
 	\end{figure}
+	%ridge
+	\begin{figure}[h!]
+	\includegraphics[width=480px]{figures/MQEreel/ridgeexpl.png}
+	\caption{Observed \textsc{mse} on $\hat{\boldsymbol{\beta}}_{ridge}$ on both $\boldsymbol{X}$ (red) and {\tt CorReg}'s marginal $\boldsymbol{X}_f$ (blue) for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. $d=5$ covariates.}\label{MSEridgexpl}
+\end{figure} 
 	
- 	\FloatBarrier		
+	 \begin{figure}
+	 \centering
+	  \includegraphics[width=480px]{figures/MQEreel/ridgeYexpl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{Y}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEridgeYexpl}
+	\end{figure}	
+
+
+ 		\FloatBarrier	
+		\paragraph{Observed {\sc mse} for ridge regression:}	
+Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression provides good results for this running example. But we will see later in section \ref{compY} that high dimension reduces the efficiency of the ridge regression when some covariates begin to be irrelevant or not enough relevant because ridge regression is not able to achieve variable selection. \\
+	
 			
 		
 \section{Connexion with graphs}\label{sectiongraph}
@@ -1128,12 +1126,12 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
 		%\operatorname{Card}(\boldsymbol{J}_p|\boldsymbol{J}_r,d_r)&=& (2^{d-d_r}-1)^{d_r}\\
 		|\mathcal{S}_d|&=&%\sum_{d_r=0}^{d-1}|\mathcal{S}_{d|d_r}|=
 		 %\sum_{d_r=0}^{d-1}\frac{1}{\mathbb{P}(\boldsymbol{S}|d_r)} =
-		 \sum_{d_r=0}^{d-1}{d \choose d_r}(2^{d-d_r}-1)^{d_r}
+		 \sum_{d_r=0}^{d-1}{d \choose d_r}(2^{d-d_r}-1)^{d_r} \nonumber
 	\end{eqnarray}
 	 \\
 	We have then $|\mathcal{S}_2| =3 $, $|\mathcal{S}_3| =13 $ and $|\mathcal{S}_{10}| >13.26\times10^9 $ so the number of feasible structures really explodes when $d$ is growing. Next chapter shows results with $d=40$ and it corresponds to $|\mathcal{S}_{40}| >7.32\times10^{131} $ feasible structures. The function {\tt ProbaZ } of the package { \tt CorReg} gives the number of feasible structures for a given value of $d$, but {\tt R} returns $+\infty$ for $d>62$.\\
-
-\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{0.95\textwidth}
+	\\
+\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
 
 \paragraph{In the running example:} $|\mathcal{S}_5| =841 $ and the adjacency matrix is:
 \begin{displaymath}G=\left(	\begin{array}{ccccc}
@@ -1206,7 +1204,7 @@ These first results really are encouraging. Improvement in prediction is signifi
 		\label{MSEexplOLSbeta_zone}
 		\end{tabular}
 	\end{subfigure}
-	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dotted blue=marginal model}\label{MSEexplOLS}
+	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dashed blue=marginal model}\label{MSEexplOLS}
 \end{figure}
 	\FloatBarrier
 \newpage
@@ -1256,7 +1254,7 @@ These first results really are encouraging. Improvement in prediction is signifi
 		\label{MSEexpllarbeta_zone}
 		\end{tabular}
 	\end{subfigure}
-	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dotted blue=marginal model}\label{MSEexpllar}
+	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dashed blue=marginal model}\label{MSEexpllar}
 \end{figure}
 	\FloatBarrier
 \newpage
@@ -1286,7 +1284,7 @@ These first results really are encouraging. Improvement in prediction is signifi
 		\label{MSEexplelasticnetbeta_zone}
 		\end{tabular}
 	\end{subfigure}
-	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dotted blue=marginal model}\label{MSEexplelasticnet}
+	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dashed blue=marginal model}\label{MSEexplelasticnet}
 \end{figure}
 	\FloatBarrier
 \newpage
@@ -1316,7 +1314,7 @@ These first results really are encouraging. Improvement in prediction is signifi
 		\label{MSEexplstepwisebeta_zone}
 		\end{tabular}
 	\end{subfigure}
-	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dotted blue=marginal model}\label{MSEexplstepwise}
+	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dashed blue=marginal model}\label{MSEexplstepwise}
 \end{figure}
 	\FloatBarrier
 \newpage
@@ -1345,7 +1343,7 @@ These first results really are encouraging. Improvement in prediction is signifi
 		\label{MSEexplridgebeta_zone}
 		\end{tabular}
 	\end{subfigure}
-	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dotted blue=marginal model}\label{MSEexplridge}
+	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{Y}}$ (a), complexities (b) and \textsc{mse} on $\hat{\boldsymbol{\beta}}$ (c), plain red=classical (complete) model, dashed blue=marginal model}\label{MSEexplridge}
 \end{figure}
 	\FloatBarrier
 	\setcellgapes{1pt}
@@ -1370,7 +1368,7 @@ These first results really are encouraging. Improvement in prediction is signifi
 				Cross-validation is computed on each model we want to compare and just allows to avoid over-fitting when computing the comparison criterion.
 				It is often used with the Mean Squared Error (\textsc{mse}), for example on the prediction:
 				\begin{equation}
-					\textsc{mse}_{\hat{Y}}=\parallel \boldsymbol{Y}-\hat{\boldsymbol{Y}} \parallel^2_2 .
+					\textsc{mse}_{\hat{Y}}=\parallel \boldsymbol{Y}-\hat{\boldsymbol{Y}} \parallel^2_2 . \nonumber
 				\end{equation}
 			\subsection{ Bayesian Information Criterion}
 			Cross-validation depends on a criterion to be used as a method to choose a model. The Mean Squared Error is not the only criterion. Probabilistic criteria can also be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation.
@@ -1384,7 +1382,7 @@ These first results really are encouraging. Improvement in prediction is signifi
 
 
 \section{Bayesian approach}
-Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical \textsc{lasso} \cite{friedman2008sparse} offers a method to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
+Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical \textsc{lasso} offers a method \cite{friedman2008sparse} to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
 
 Cross-validation is very time-consuming and thus not friendly with combinatory problems. Moreover, we need a criterion compatible with structures of different sizes ($d_r$ also has to be estimated) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
 Because it is about model selection, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
@@ -1402,9 +1400,9 @@ In order to implement this paradigm, we need first to define the three probabili
 	\subsection{Modeling the uncorrelated covariates: a full generative approach on $P(\boldsymbol{X})$} \label{sectionfullgen}
 	
 
-\paragraph{Defining $\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})$} corresponds to the integrated likelihood based on $\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma^2})$. It can be approximated by a {\sc bic}-like approach \cite{Sch1978}
+\paragraph{Defining} $\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})$ that is the integrated likelihood based on $\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma^2})$. It can be approximated by a {\sc bic}-like approach \cite{Sch1978}
 \begin{equation}
--2\ln \mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}}^2) + (|\hat{\boldsymbol{\alpha}}| + |\hat{\boldsymbol{\sigma}}^2|) \ln(n) = \mbox{{\sc bic}}_r(\boldsymbol{S}),
+-2\ln \mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}}^2) + (|\hat{\boldsymbol{\alpha}}| + |\hat{\boldsymbol{\sigma}}^2|) \ln(n) = \mbox{{\sc bic}}_r(\boldsymbol{S}), \nonumber
 \end{equation}
 where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate respectively the Maximum Likelihood Estimates ({\sc mle}) of ${\boldsymbol{\alpha}}$ and ${\boldsymbol{\sigma}}^2$, and $|\boldsymbol{\psi}|$ designates the number of free continuous parameters associated to the space of any parameter $\boldsymbol{\psi}$.
 
@@ -1413,7 +1411,7 @@ where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate re
 \begin{hyp}\label{H4}
 All covariates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and arise from the following Gaussian mixture of $K_j$ components
 \begin{equation}
-\mathbb{P}(\boldsymbol{X}_f^j|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j) = \sum_{h=1}^{K_j} \pi_{j,h} \mathcal{N}_n(\mu_{j,h} . (1,\ldots,1)',\Sigma_{j,h}\boldsymbol{I}_n),
+\mathbb{P}(\boldsymbol{X}_f^j|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j) = \sum_{h=1}^{K_j} \pi_{j,h} \mathcal{N}_n(\mu_{j,h} . (1,\ldots,1)',\Sigma_{j,h}\boldsymbol{I}_n), \nonumber
 \end{equation}
 where $\boldsymbol{\pi}_{j}=(\pi_{j,1},\ldots,\pi_{j,K_j})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{j,h}>0$ and $\sum_{h=1}^{K_j}\pi_{j,h}=1$, $\boldsymbol{\mu}_j=(\mu_{j,1},\ldots,\mu_{j,K_j})$  is the vector of centers and $\boldsymbol{\Sigma}_j=(\Sigma_{j,1},\ldots,\Sigma_{j,K_j})$ is the vector of variances. We stack together all these mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
 
@@ -1424,7 +1422,7 @@ where $\boldsymbol{\pi}_{j}=(\pi_{j,1},\ldots,\pi_{j,K_j})$ is the vector of mix
 
 Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {\sc bic} approximation can then be used again:
 \begin{equation}
--2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\hat{\boldsymbol{\theta}}) + |{\boldsymbol{\theta}}| \ln(n) = \mbox{{\sc bic}}_f(\boldsymbol{S}).
+-2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\hat{\boldsymbol{\theta}}) + |{\boldsymbol{\theta}}| \ln(n) = \mbox{{\sc bic}}_f(\boldsymbol{S}). \nonumber
 \end{equation}
 
 \paragraph{Defining $\mathbb{P}(\boldsymbol{S})$} The most standard choice consists of putting a uniform distribution on the model space $\mathcal{S}_d$, this choice being noted $\mathbb{P}_U(\boldsymbol{S}) = |\mathcal{S}_d|^{-1}$, with $|\mathcal{S}_d|$ the space dimension of $\mathcal{S}_d$ as defined in section \ref{sectiongraph}.
