@@ -169,8 +169,8 @@ Nous supposons également que les variables réponses et les variables prédicti
 		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
 	\end{equation}
 	La matrice $\boldsymbol{\varepsilon}\in \mathbb{R}^{n\times d_r}$ est la matrice des bruits des sous-régressions composée des colonnes \mbox{$\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$} que nous supposons indépendantes entre elles. Toutes ces notations sont illustrées dans l'exemple ci-après. \\
-	
-\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{0.95\textwidth}
+	\\
+\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
 \paragraph{Données d'exemple :} 
 $d=5$ variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbol{X}_f=(\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5)$ et une variable redondante $\boldsymbol{X}_r=\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ avec $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. Deux régressions principales en $\boldsymbol{Y}$ sont testées avec $\boldsymbol{\beta}=(1,1,1,1,1)'$ et $\sigma_Y \in \{10,20\}$. Le conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ se déteriore donc quand $\sigma_1$ diminue. Ici $J_f=\{1,2,4,5\},J_r=\{3\},\boldsymbol{J}_r=(3),\boldsymbol{d}_p=2,\boldsymbol{J}_p=(\{1,2\}),\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1)=((1,1)'),\boldsymbol{X} ^{J_p^1}=(\boldsymbol{X}^1,\boldsymbol{X}^2),\boldsymbol{S}=((3),(\{1,2\}))$. On note $R^2$ est le coefficient de détermination :\\
 	\begin{equation}\label{defR2fr}
