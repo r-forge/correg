@@ -2810,22 +2810,22 @@ The response variable was binary but $n$ was too small compared to $d$ to use lo
 	
 	We have the true complete model
 	\begin{equation}
-		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y.
+		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y. \nonumber 
 \end{equation}		
 	We have estimated the structure $\hat{\boldsymbol{S}} $ of sub-regressions on $\boldsymbol{X}$ (Chapter \ref{chapterMCMC}) that gives:
 	\begin{equation}
 		\boldsymbol{X}_r 
 		%|\boldsymbol{X}_f,\hat{\boldsymbol{S}};\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\varepsilon}}
-		=\boldsymbol{X}_f\hat{\boldsymbol{\alpha}^*}+\hat{\boldsymbol{\varepsilon}},
+		=\boldsymbol{X}_f\hat{\boldsymbol{\alpha}^*}+\hat{\boldsymbol{\varepsilon}}, \nonumber 
 	\end{equation}
 	and obtained estimations of $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\varepsilon}}$. 
 	The regression is then rewritten:
 		\begin{equation}
-		\boldsymbol{Y}|\boldsymbol{X},\hat{\boldsymbol{S}};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y
+		\boldsymbol{Y}|\boldsymbol{X},\hat{\boldsymbol{S}};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \nonumber 
 \end{equation}	
 	and by marginalization on $\boldsymbol{X}_r$ we obtained (Chapter \ref{chapexpl}):
 	\begin{equation}
-	\hat{\boldsymbol{Y}}_{marginal}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*.%+\hat{\boldsymbol{\varepsilon}}_Y^*.
+	\hat{\boldsymbol{Y}}_{marginal}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*.%+\hat{\boldsymbol{\varepsilon}}_Y^*. \nonumber 
 	\end{equation}
 		Reminding equation (\ref{eq:Trueexpl2}), the marginal model (that is just a rewriting of the true model) can be written:
 		\begin{equation}
@@ -2845,20 +2845,20 @@ In this chapter we note $\longrightarrow$ the convergence in distribution when $
 \paragraph{Estimation of $\boldsymbol{\beta}_r$:}
 At this step of the process, we know both $\hat{\boldsymbol{\varepsilon}} $ and $\hat{\boldsymbol{\varepsilon}}_Y^* $ so we make as an additional sequential step an asymptotic regression based on:
 \begin{eqnarray}
-	\hat{\boldsymbol{\varepsilon}} \boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y &\longrightarrow & \boldsymbol{\varepsilon}_Y^*\\
-	\hat{\boldsymbol{\varepsilon}}_Y^*|\hat{\boldsymbol{\varepsilon}} &\longrightarrow & \boldsymbol{\varepsilon}_Y^* \\
-		\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X},\hat{\boldsymbol{S}} &\longrightarrow &\boldsymbol{\varepsilon}_Y^*.
+	\hat{\boldsymbol{\varepsilon}} \boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y &\longrightarrow & \boldsymbol{\varepsilon}_Y^* \nonumber \\
+	\hat{\boldsymbol{\varepsilon}}_Y^*|\hat{\boldsymbol{\varepsilon}} &\longrightarrow & \boldsymbol{\varepsilon}_Y^*  \nonumber \\
+		\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X},\hat{\boldsymbol{S}} &\longrightarrow &\boldsymbol{\varepsilon}_Y^*. \nonumber 
 \end{eqnarray}
 So we get (by {\sc ols}) a new estimator of $\boldsymbol{\beta}_r$:
 	\begin{equation}
-		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})
+		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}) \nonumber 
 	\end{equation}
 that depends on all covariates in $\boldsymbol{X}$ (see equation (\ref{epsilonchapeau})). We have now sequentially used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$.
 %We suppose that $\hat{\boldsymbol{\beta}^*_f}$ and $\hat{\boldsymbol{\alpha}}^*$ are consistent (for example using \textsc{ols}). The new estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent (\textsc{ols} and Slutsky's theorem) and we have
 
 The estimators used sequentially here by plug-in are all {\sc ols} estimators and then the resulting estimator is asymptotically unbiased (Slutsky's theorem) and we have
 \begin{equation}
-	\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})-\boldsymbol{\beta}_r \longrightarrow 0 
+	\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})-\boldsymbol{\beta}_r \longrightarrow 0  \nonumber 
 \end{equation}
 and
 %and the variance can be decomposed for each sub-regression. $\forall j \in \{1,\dots,d_r\}$:
@@ -2866,9 +2866,9 @@ and
 %	 \hat{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{J_r^j}-\boldsymbol{X}^{J_p^j}\hat{\boldsymbol{\alpha}}_j
 %\end{eqnarray}
 \begin{eqnarray}
-	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})&=& \operatorname{Var}[(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})]\\
-	&=&\operatorname{Var}[(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y})] \\
-	&=&\operatorname{Var}[(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n- \underbrace{\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f')}_{\boldsymbol{H}_f}\boldsymbol{Y})] \\
+	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})&=& \operatorname{Var}[(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})] \nonumber \\
+	&=&\operatorname{Var}[(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y})]  \nonumber \\
+	&=&\operatorname{Var}[(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n- \underbrace{\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f')}_{\boldsymbol{H}_f}\boldsymbol{Y})] \nonumber  \\
 	&=&\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}. \label{varpluginr}
 	%&=&(\sigma_Y^2(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1})(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}
 \end{eqnarray}
@@ -2903,7 +2903,7 @@ and
 \begin{eqnarray}
 \boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2 &=& \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*} \textrm{\ \ (true model)} \nonumber\\
 	\hat{\boldsymbol{Y}}_{marginal}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f \nonumber\\
-	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}.
+	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 \end{eqnarray}
 %This an asymptotically unbiased estimator of $\boldsymbol{Y}$ because the marginal model is unbiased and all the estimators are consistent. 
 We deduce
@@ -2913,11 +2913,11 @@ We deduce
 \paragraph{Estimation of $\boldsymbol{\beta}_f$:}
 		We can even improve estimation of $\boldsymbol{\beta}_f$ by doing an additional identification step.	We have $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ so we define the following estimator.
 			\begin{equation}
-			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}.
+			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 			\end{equation}
 	Then we can rewrite 
 	\begin{equation}
-		\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^{\varepsilon}+ \boldsymbol{X}_r \hat{\boldsymbol{\beta}}_{r}^{\varepsilon}.
+		\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^{\varepsilon}+ \boldsymbol{X}_r \hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 	\end{equation}
 Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are obtained as above and give:
 	\begin{eqnarray}
@@ -2954,15 +2954,15 @@ Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ (in (\ref{varpluginr}) and 
 		Here $d=3$ and $n=1\;000$.\\
 		We define $\boldsymbol{X}^1,\boldsymbol{X}^2, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{1} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
 		\begin{eqnarray}
-		\boldsymbol{X}^3|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_1^2&=&\frac{2}{3}\boldsymbol{X}^1+\frac{2}{3}\boldsymbol{X}^2+\frac{1}{3}\boldsymbol{\varepsilon}_1 \textrm{ and} \\
-		\boldsymbol{Y}|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_Y^2&=&2\boldsymbol{X}^1+3\boldsymbol{X}^2+\boldsymbol{\varepsilon}_Y.
+		\boldsymbol{X}^3|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_1^2&=&\frac{2}{3}\boldsymbol{X}^1+\frac{2}{3}\boldsymbol{X}^2+\frac{1}{3}\boldsymbol{\varepsilon}_1 \textrm{ and}  \nonumber \\
+		\boldsymbol{Y}|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_Y^2&=&2\boldsymbol{X}^1+3\boldsymbol{X}^2+\boldsymbol{\varepsilon}_Y. \nonumber 
 		\end{eqnarray}
 		
 		
 		We compare consistencies of complete, marginal and full plug-in model with {\sc lasso} (and LAR) for selection.
 		It happens on some tries that our MCMC algorithm don't find the true structure but a permuted one so we both look at the results obtained with the true $\boldsymbol{S}=((3),(\{1,2\}))$ (but $\hat{\boldsymbol{\alpha}}$ is used) and with the structure found by the Markov chain after a few seconds.
 		
-		True $\boldsymbol{S}$ was found $987$ times on $1\;000$ tries.\\% (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
+		True $\boldsymbol{S}$ was found $987$ times on $1\;000$ tries.% (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
 		
 		\begin{table}[h!]
 		\centering
@@ -3035,7 +3035,7 @@ Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ (in (\ref{varpluginr}) and 
 		
 	%	$299$ times on $1000$ tries, the predictive model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
 		
-\FloatBarrier
+%\FloatBarrier
 	\section{Numerical results} \label{resnumpred}
 		We test the plug-in model with datasets generated the same way as for section \ref{compY}.\\
 		
