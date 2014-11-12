@@ -133,17 +133,17 @@ commentstyle=\color{OliveGreen}, % white comments
 	\section{Position du problème}
 	La régression linéaire est l'outil de modélisation le plus classique et se résume à une équation bien connue%\footnote{En général la constante est ajoutée comme un des régresseurs avec par exemple $\boldsymbol{X}^1=(1,\ldots,1)'$. Le coefficient correspondant dans $\boldsymbol{\beta}$ est alors la constante de régression $\beta_1$.} :
 	\begin{equation}
-		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma^2_Y=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y
+		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma^2_Y=\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y \nonumber 
 	\end{equation}
 	où $\boldsymbol{Y}$ est la variable réponse de taille $n\times 1$ que l'on souhaite décrire à l'aide de $d$ variables explicatives\footnote{En général on ajoute une constante parmi les régresseurs. Par exemple $\boldsymbol{X}^1=(1,\ldots,1)'$. Le coefficient associé dans $\boldsymbol{\beta}$ est alors la constante de régression $\beta_1$.} observées sur $n$ individus et dont les valeurs sont stockées dans la matrice $\boldsymbol{X}$ de taille $n\times d$. Le vecteur $\boldsymbol{\beta}$ est le vecteur des coefficients de régression qui permet de décrire le lien linéaire entre $\boldsymbol{Y}$ et $\boldsymbol{X}$. Le vecteur $\boldsymbol{\varepsilon}_Y$  est un bruit blanc gaussien $\mathcal{N}(0,\sigma_Y^2\boldsymbol{I}_n)$ qui représente l'inexactitude du modèle de régression.\\
 	
 	On connaît l'estimateur sans biais de variance minimale (ESBVM) de $\boldsymbol{\beta}$ qui est obtenu par Moindres Carrés Ordinaires (MCO) selon la formule  :
 	\begin{equation}
-		\hat{\boldsymbol{\beta}}=(\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y}.
+		\hat{\boldsymbol{\beta}}=(\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y}.  \nonumber 
 	\end{equation}
 	Cet estimateur nécessite l'inversion de la matrice $(\boldsymbol{X}'\boldsymbol{X})$ qui est mal conditionnée si les variables explicatives sont corrélées entre elles. Ce mauvais conditionnement nuit à la qualité de l'estimation et vient impacter la variance de l'estimateur comme le montre la formule :
 	\begin{equation}
-		\operatorname{Var}_{\boldsymbol{X}}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}
+		\operatorname{Var}_{\boldsymbol{X}}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}  \nonumber 
 	\end{equation}
 	C'est cette situation problèmatique que nous nous proposons d'améliorer.
 	\section{Modélisation explicite des corrélations}
@@ -166,7 +166,7 @@ Nous supposons également que les variables réponses et les variables prédicti
 \paragraph{Notations} Par la suite nous noterons $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ le $d_r$-uplet des variables réponses (à ne pas confondre avec $J_r$ défini plus haut), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ le $d_r$-uplet des prédicteurs de toutes les sous-régressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ les nombres correspondants de predicteurs et $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ le {\it model} global (structure de sous-régressions). Pour alléger les notations, on définit alors $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ la matrice des variables réponses et $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ la matrice de {\it toutes} les autres variables, ainsi considérées comme libres ({\it free} en anglais). Les valeurs des paramètres sont également concaténées : $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ est le $d_r-$uple des vecteurs des coefficients de sous-régression et $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ le vecteur des variances associées :
 
 	\begin{equation}
-		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}
+		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}  \nonumber 
 	\end{equation}
 	La matrice $\boldsymbol{\varepsilon}\in \mathbb{R}^{n\times d_r}$ est la matrice des bruits des sous-régressions composée des colonnes \mbox{$\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$} que nous supposons indépendantes entre elles. Toutes ces notations sont illustrées dans l'exemple ci-après. \\
 	\\
@@ -195,14 +195,14 @@ On suppose l'indépendance 2 à 2 entre les erreurs de régression $\boldsymbol{
 \end{hypfr}
 On a donc 
 \begin{eqnarray}
-		\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2)&=&\prod_{j=1}^{d_r}\mathbb{P}(\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{J_p^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j)	\\
-		\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y ,\boldsymbol{\sigma}^2)&=& \int_{\mathbb{R}^{d_r}}\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{r},\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2)\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) d \boldsymbol{X}_{r}, \textrm{ \ \ \ \ }\\
+		\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2)&=&\prod_{j=1}^{d_r}\mathbb{P}(\boldsymbol{X}^{J_r^j}|\boldsymbol{X}^{J_p^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j)	 \nonumber \\
+		\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y ,\boldsymbol{\sigma}^2)&=& \int_{\mathbb{R}^{d_r}}\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X}_{r},\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2)\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) d \boldsymbol{X}_{r}, \textrm{ \ \ \ \ } \nonumber 
 		\end{eqnarray}
 		ce qui donne
 		\begin{eqnarray}
-		\boldsymbol{Y}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2 &=& \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y\\
+		\boldsymbol{Y}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2 &=& \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \nonumber \\
 	\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_{f} (\boldsymbol{\beta}_{f}+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}^*_j)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \label{marginalfr} \\
-	&=&\boldsymbol{X}_{f}\boldsymbol{\beta}_{f}^*+\boldsymbol{\varepsilon}_Y^*
+	&=&\boldsymbol{X}_{f}\boldsymbol{\beta}_{f}^*+\boldsymbol{\varepsilon}_Y^*  \nonumber 
 \end{eqnarray}
 où $\boldsymbol{\alpha}^* \in \mathbb{R}^{d_f\times d_r}$ est la matrice des coefficients des sous-régressions avec $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ et $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0  $, $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}, \boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}, \boldsymbol{\beta}_f^*=\boldsymbol{\beta}^*_{J_f} $, $\boldsymbol{\beta}^*$ étant l'estimateur de $\boldsymbol{\beta}$ par le modèle marginal avec donc $\boldsymbol{\beta}_r^*=\boldsymbol{\beta}^*_{J_r}$.
 \\
@@ -211,13 +211,13 @@ On se retrouve donc avec un modèle marginal plus parsimonieux, sans biais sur $
 Tout le principe du modèle marginal repose sur le compromis entre l'amélioration du conditionnement de $(\boldsymbol{X}'\boldsymbol{X})$ par suppression des variables redondantes et aussi la réduction de la dimension (le modèle marginal ne nécessite que l'inversion de $(\boldsymbol{X}_{f}'\boldsymbol{X}_{f})$) face au léger accroissement de la variance issu de la marginalisation.
 On va donc comparer 
 	\begin{eqnarray}
-		\hat{\boldsymbol{\beta}}&=& (\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y} \textrm{ au modèle marginal} \\
-		\hat{\boldsymbol{\beta}}^*_f&=& (\boldsymbol{X}_{f}'\boldsymbol{X}_{f})^{-1}\boldsymbol{X}_{f}'\boldsymbol{Y}
+		\hat{\boldsymbol{\beta}}&=& (\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y} \textrm{ au modèle marginal}  \nonumber \\
+		\hat{\boldsymbol{\beta}}^*_f&=& (\boldsymbol{X}_{f}'\boldsymbol{X}_{f})^{-1}\boldsymbol{X}_{f}'\boldsymbol{Y}  \nonumber 
 	\end{eqnarray}
 	Les deux modèles sont de dimension différente, on compare donc leurs erreurs moyennes quadratiques respectives (\textsc{mse} en anglais pour {\it Mean Squared Error}):
 	\begin{eqnarray}
-		\textsc{mse}(\hat{\boldsymbol{\beta}}|\boldsymbol{X})&=& \sigma^2_Y \operatorname{Tr}(\boldsymbol{X}'\boldsymbol{X})^{-1}  \\
-		\textsc{mse}(\hat{\boldsymbol{\beta}}^*|\boldsymbol{X})&=&\parallel \sum_{j=1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \parallel_2^2+\parallel\boldsymbol{\beta}_r  \parallel_2^2 +(\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2)\operatorname{Tr}(\boldsymbol{X}_f'\boldsymbol{X}_{f})^{-1}
+		\textsc{mse}(\hat{\boldsymbol{\beta}}|\boldsymbol{X})&=& \sigma^2_Y \operatorname{Tr}(\boldsymbol{X}'\boldsymbol{X})^{-1}   \nonumber \\
+		\textsc{mse}(\hat{\boldsymbol{\beta}}^*|\boldsymbol{X})&=&\parallel \sum_{j=1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \parallel_2^2+\parallel\boldsymbol{\beta}_r  \parallel_2^2 +(\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2)\operatorname{Tr}(\boldsymbol{X}_f'\boldsymbol{X}_{f})^{-1} \nonumber 
 	\end{eqnarray}
 		Ces deux équations illustrent bien le compromis biais-variance du modèle marginal.
 		La figure \ref{MSEOLSexpl} compare les erreurs d'estimation obtenues pour différentes valeurs des paramètres, montrant la nette amélioration rendue possible par la marginalisation.
@@ -244,15 +244,15 @@ On va donc comparer
 \begin{enumerate}
 	\item Modification (suppression/création) de l'arc $(i,j)$ :
 	\begin{equation}
-		\boldsymbol{G}_{i,j}^{(q+1)}=1-\boldsymbol{G}_{i,j}^{(q)}
+		\boldsymbol{G}_{i,j}^{(q+1)}=1-\boldsymbol{G}_{i,j}^{(q)}  \nonumber 
 	\end{equation}
 	\item Si la variable $\boldsymbol{X}^i$ devient un prédicteur elle ne peut plus être une variable réponse :
 	\begin{equation}
-		\boldsymbol{G}_{.,i}^{(q+1)}= \boldsymbol{G}_{i,j}^{(q)}\boldsymbol{G}_{.,i}^{(q)}
+		\boldsymbol{G}_{.,i}^{(q+1)}= \boldsymbol{G}_{i,j}^{(q)}\boldsymbol{G}_{.,i}^{(q)}  \nonumber 
 	\end{equation}
 	\item Si la variable $\boldsymbol{X}^j$ devient une variable réponse elle ne peut plus être un prédicteur :
 	\begin{equation}
-		\boldsymbol{G}_{j,.}^{(q+1)}=\boldsymbol{G}_{i,j}^{(q)}\boldsymbol{G}_{j,.}^{(q)}
+		\boldsymbol{G}_{j,.}^{(q+1)}=\boldsymbol{G}_{i,j}^{(q)}\boldsymbol{G}_{j,.}^{(q)}  \nonumber 
 	\end{equation}
 \end{enumerate}
 %		\begin{eqnarray}
@@ -279,7 +279,7 @@ Après estimation du modèle marginal on s'applique à essayer d'améliorer l'es
 \begin{itemize}
 	\item Estimation de  $\boldsymbol{\varepsilon}_Y^*$ à partir de $\hat{\boldsymbol{\beta}}^*_f$:
 	\begin{equation}
-		\hat{\boldsymbol{\varepsilon}}_Y^*=\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f.
+		\hat{\boldsymbol{\varepsilon}}_Y^*=\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f. \nonumber 
 	\end{equation}
 	\item Estimation de $\boldsymbol{\varepsilon}$ à partir de $\hat{\boldsymbol{\alpha}}^*$:
 	\begin{equation}
@@ -290,20 +290,20 @@ Ces deux estimateurs permettent alors d'obtenir un estimateur de $\boldsymbol{\b
 \begin{itemize}
 	\item Nouvelle estimation de $\boldsymbol{\beta}_r$ basée sur la définition de $\boldsymbol{\varepsilon}_Y^* $ (équation (\ref{marginalfr})):
 	\begin{equation}
-		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}).
+		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}). \nonumber 
 	\end{equation}
 \end{itemize}
 Cet estimateur nous permet de réduire le bruit du modèle marginal, afin d'essayer d'estimer  $\boldsymbol{Y} $ plus précisément
 
 \begin{equation}
-	\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}.
+	\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 \end{equation}
 
 		On peut ensuite dans une phase d'identification obtenir un nouvel estimateur de $\boldsymbol{\beta}_f$.\\On a $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $.
 		\begin{itemize}
 			\item Nouvelle estimateur de $\boldsymbol{\beta}_f $ par identification :
 			\begin{equation}
-			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}.
+			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 			\end{equation}
 		\end{itemize}
 	
@@ -371,7 +371,7 @@ Most of the tools described here are explained with more details in the book fro
 	\caption{An example of simple linear regression}
 \end{figure}		 
 		 
-		 As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivatives (as we will see in the followings) and can be generalized 		 \cite{kiebel2003general,wickens2004general,nelder1972generalized,mccullagh1989generalized}. 
+		 As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivatives (as we will see in the followings) and can be generalized 		 \cite{kiebel2003general,wickens2004general,nelder1972generalized} and also \cite{mccullagh1989generalized}. 
 	It's simplicity facilitates a wide spread usage in industry and other fields of application. It is also a good tool for interpretation with the sign of the coefficients indicating whether the associated covariate has a positive or negative impact on the response variable. \\
 	
 	More complex situations can be described by evolved forms of linear regression like the hierarchical linear model \cite{raudenbush2002hierarchical,woltman2012introduction}  or  multilevel regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel} that allows to consider effects of the covariates on nested sub-populations in the dataset. It is like using interactions but with a proper modeling that improves interpretation. It is not really a linear model because it is not linear in $\boldsymbol{X}$ but can be seen as a basis expansion using new covariates (the interactions) composed by the product of some of the original covariates.
@@ -403,14 +403,14 @@ We note the linear regression model:
 	and without any bias \cite{saporta2006probabilites,dodge2004analyse}. In fact it is the Best Linear Unbiased Estimator (BLUE).
 	The theoretical \textsc{mse} is given by
 	\begin{equation}
-	\textsc{mse}(\hat{\boldsymbol{\beta}}_{OLS})= 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}).
+	\textsc{mse}(\hat{\boldsymbol{\beta}}_{OLS})= 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}). \nonumber 
 	\end{equation}
 	\\
 	Equation (\ref{regressionsimple}) has no intercept but usually a constant is included as one of the regressors. For example we can take $\boldsymbol{X}^1=(1,\ldots,1)'$. The corresponding element of $\boldsymbol{\beta}$ is then the intercept $\beta_1$. In the followings we do not consider the intercept to simplify notations. In practice, an intercept is added by default.\\
 	
 	Ordinary Least Squares find a $d-$dimensional hyperplane that minimises the distance with each individual $(\boldsymbol{X}_i,Y_i)$. It can be written
 	\begin{equation}
-		\boldsymbol{\hat{\beta}}_{OLS}=\operatorname{argmin}_{\boldsymbol{\beta}}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace
+		\boldsymbol{\hat{\beta}}_{OLS}=\operatorname{argmin}_{\boldsymbol{\beta}}\left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace  \nonumber 
 	\end{equation}
 	So estimation of $\boldsymbol{Y}$ by \textsc{ols} can be viewed as a projection onto the linear space spanned by the regressors $\boldsymbol{X}$ as shown in figure \ref{geomOLS}.% that is in public domain\footnote{"OLS geometric interpretation" by Stpasha - Own work. Licensed under Public domain via Wikimedia Commons - http://commons.wikimedia.org/wiki/File:OLS\_ geometric\_ interpretation.svg\#mediaviewer/File:OLS\_geometric\_interpretation.svg}.
 	\begin{figure}[h!]
@@ -431,16 +431,15 @@ For a given number $n$ of individuals, conditioning of $\boldsymbol{X}'\boldsymb
 	When matrices are not invertible, classical packages like the function lm of R base package \cite{packagebase} use the Moore-Penrose pseudoinverse \cite{PSP:2043984} to generalize \textsc{ols}.	\\	
 		
 	Last but not least, Ordinary Least Squares is unbiased but if some $\beta_i$ are null (irrelevant covariates) the corresponding $\hat{\beta}_i$ will only asymptotically tend to 0 so the number of covariates in the estimated model remains $d$. This is a major issue because we are searching for a statistical tool able to work without a priori on a big dataset containing many irrelevant covariates. Pointing out some relevant covariate and how they really impact the response is the main goal here. We will need a variable selection method one moment or another. It could be as a pre-treatment (to run a first tool to select relevant covariates and then estimate the values of the non-zero coefficients) , during coefficient estimation (some estimators can lead to exact zeros in $\hat{\boldsymbol{\beta}}$) or by post-treatment (by thresholding with tests of hypothesis, {\it etc.}). \\
-	
-		
-\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{0.95\textwidth}
+\\	
+\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
 \paragraph{Running example:} We look at a simple case with $d=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5$ and $\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ where $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)'$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
 It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_1$ gets smaller. In the followings, the $R^2$ stands for the coefficient of determination which is here:
 	\begin{equation}\label{defR2}
 	R^2=1-\frac{\operatorname{Var}(\boldsymbol{\varepsilon}_1)}{\operatorname{Var}(\boldsymbol{X}^3)}
 	\end{equation}
 \end{minipage}}
-	
+	\\
 %	 \begin{figure}
 %	 \centering
 %	  \includegraphics[width=500px]{figures/MQEOLS0.png}
