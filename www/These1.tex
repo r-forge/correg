@@ -1413,7 +1413,7 @@ All covariates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and 
 \begin{equation}
 \mathbb{P}(\boldsymbol{X}_f^j|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j) = \sum_{h=1}^{K_j} \pi_{j,h} \mathcal{N}_n(\mu_{j,h} . (1,\ldots,1)',\Sigma_{j,h}\boldsymbol{I}_n), \nonumber
 \end{equation}
-where $\boldsymbol{\pi}_{j}=(\pi_{j,1},\ldots,\pi_{j,K_j})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{j,h}>0$ and $\sum_{h=1}^{K_j}\pi_{j,h}=1$, $\boldsymbol{\mu}_j=(\mu_{j,1},\ldots,\mu_{j,K_j})$  is the vector of centers and $\boldsymbol{\Sigma}_j=(\Sigma_{j,1},\ldots,\Sigma_{j,K_j})$ is the vector of variances. We stack together all these mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
+where $\boldsymbol{\pi}_{j}=(\pi_{j,1},\ldots,\pi_{j,K_j})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{j,h}>0$ and $\sum_{h=1}^{K_j}\pi_{j,h}=1$, $\boldsymbol{\mu}_j=(\mu_{j,1},\ldots,\mu_{j,K_j})$  is the vector of centers and $\boldsymbol{\Sigma}_j=(\Sigma_{j,1},\ldots,\Sigma_{j,K_j})$ is the vector of variances. \\We stack together all these mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
 
 \end{hyp}
 		 
@@ -1473,10 +1473,10 @@ And then we get the estimation of $\boldsymbol{\varepsilon}$ relying on $\hat{\b
 		
 	$\mathcal{S}_d$ being combinatorial, $|\mathcal{S}_d|$ is huge. It has two cumulated consequences: First, the {\it exact} probability $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})$ may be of the same order of magnitude for a large number of candidates  $\boldsymbol{S}$, including the best one; Second, the {\sc bic} {\it approximations} of this quantity may introduce additional confusion to wisely distinguish between model probabilities because the number of compared models is not taken into account \cite{massart2007concentration}. In order to limit this problem, we propose to introduce some information in $\mathbb{P}(\boldsymbol{S})$ promoting simple models through the following {\it hierarchical} uniform distribution denoted by $\mathbb{P}_H(\boldsymbol{S})$:
 \begin{eqnarray}
-\mathbb{P}_H(\boldsymbol{S}) & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p) \\
- & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p,d_r,\boldsymbol{d}_p) \\
- & = & \mathbb{P}_U(\boldsymbol{J}_p|\boldsymbol{d}_p,\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{d}_p|\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{J}_r|d_r)\times \mathbb{P}_U(d_r) \\
- & = & \left[\prod_{j=1}^{d_r} \left(\begin{array}{c} d-d_r \\ d_p^j \end{array}\right) \right]^{-1} \times \left[d-d_r\right]^{-d_r} \times \left[\left(\begin{array}{c} d \\ d_r \end{array} \right)\right]^{-1} \times [d+1]^{-1},
+\mathbb{P}_H(\boldsymbol{S}) & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p) \nonumber \\
+ & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p,d_r,\boldsymbol{d}_p)  \nonumber \\
+ & = & \mathbb{P}_U(\boldsymbol{J}_p|\boldsymbol{d}_p,\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{d}_p|\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{J}_r|d_r)\times \mathbb{P}_U(d_r)  \nonumber \\
+ & = & \left[\prod_{j=1}^{d_r} \left(\begin{array}{c} d-d_r \\ d_p^j \end{array}\right) \right]^{-1} \times \left[d-d_r\right]^{-d_r} \times \left[\left(\begin{array}{c} d \\ d_r \end{array} \right)\right]^{-1} \times [d+1]^{-1}, \nonumber 
 \end{eqnarray}
 where $\left(\begin{array}{c} a \\ b \end{array}\right)$ means the number of b-element subsets of an a-element set and where all probabilities $\mathbb{P}_U(\cdot)$ denote uniform distribution on the related space at hand. $\mathbb{P}_H(\boldsymbol{S})$ gives decreasing probabilities to more complex models, provided that the following new hypothesis is verified:
 
@@ -1489,14 +1489,14 @@ These two thresholds are sufficiently large to be wholly realistic.
 \paragraph{Final approximation of $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})$}
 Merging the previous three expressions, it leads to the following two {\it global} {\sc bic} criteria, to be minimized, denoted by {\sc bic}$_U$ or {\sc bic}$_H$, depending on the choice of $\mathbb{P}_U(\boldsymbol{S})$ or $\mathbb{P}_H(\boldsymbol{S})$ respectively:
 \begin{eqnarray}
-\mbox{{\sc bic}}_U(\boldsymbol{S}) & = & \mbox{{\sc bic}}_r(\boldsymbol{S}) + \mbox{{\sc bic}}_f(\boldsymbol{S}) - 2\ln \mathbb{P}_U(\boldsymbol{S}) \\
-\mbox{{\sc bic}}_H(\boldsymbol{S}) & = & \mbox{{\sc bic}}_r(\boldsymbol{S}) + \mbox{{\sc bic}}_f(\boldsymbol{S}) - 2\ln \mathbb{P}_H(\boldsymbol{S}).
+\mbox{{\sc bic}}_U(\boldsymbol{S}) & = & \mbox{{\sc bic}}_r(\boldsymbol{S}) + \mbox{{\sc bic}}_f(\boldsymbol{S}) - 2\ln \mathbb{P}_U(\boldsymbol{S})  \nonumber \\
+\mbox{{\sc bic}}_H(\boldsymbol{S}) & = & \mbox{{\sc bic}}_r(\boldsymbol{S}) + \mbox{{\sc bic}}_f(\boldsymbol{S}) - 2\ln \mathbb{P}_H(\boldsymbol{S}). \nonumber 
 \end{eqnarray}
 In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc bic}}_U$ and $\mbox{{\sc bic}}_H$. Numerical results in Section~\ref{compZ} will allow to compare behaviour of both criteria.
 
 \paragraph{Remarks}
 \begin{itemize}
-\item As any {\sc bic} criterion, the {\sc bic}$_U$ and {\sc bic}$_H$ criteria are consistent \cite{BIChuard}.
+\item As any {\sc bic} criterion \cite{BIChuard}, the {\sc bic}$_U$ and {\sc bic}$_H$ criteria are consistent .
 \item Even if it favors more parsimonious models, $\mathbb{P}_H(\boldsymbol{S})$ can be also viewed as a poor informative prior on $\boldsymbol{S}$ since it is a combination of non informative priors.
 \end{itemize}
 
@@ -1522,22 +1522,24 @@ In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc
 	
 We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\boldsymbol{S}$ composed by the following four {\it specific} neighbourhood spaces $\mathcal{V}(\boldsymbol{S})=\mathcal{V}_{r+}(\boldsymbol{S})\cup\mathcal{V}_{r-}(\boldsymbol{S})\cup\mathcal{V}_{p+}(\boldsymbol{S})\cup\mathcal{V}_{p-}(\boldsymbol{S})$ described below:
 	%\begin{itemize}
-	\paragraph{Adding a sub-regression}: a new sub-regression with only one predictor covariate is added to $\boldsymbol{S}$
+	\paragraph{Adding a sub-regression:} a new sub-regression with only one predictor covariate is added to $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{r+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})^{1,\ldots,d_r}=(\boldsymbol{J}_r,\boldsymbol{J}_p), \tilde{J}_r^{d_r+1}\in J_f, \tilde{J}_p^{d_r+1}=\{j\}, j\in J_f \right\}.
+\mathcal{V}_{r+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})^{1,\ldots,d_r}=(\boldsymbol{J}_r,\boldsymbol{J}_p), \tilde{J}_r^{d_r+1}\in J_f, \tilde{J}_p^{d_r+1}=\{j\}, j\in J_f \right\}. \nonumber
 \end{equation}	
-		\paragraph{Removing a sub-regression}: a sub-regression  is removed from $\boldsymbol{S}$
+		\paragraph{Removing a sub-regression:} a sub-regression  is removed from $\boldsymbol{S}$
 \begin{equation}
-\mathcal{V}_{r-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})=(\boldsymbol{J}_r,\boldsymbol{J}_p)^{\{1,\ldots,d_r\}\backslash j}, j\in\{1,\ldots,d_r\} \right\}.
+\mathcal{V}_{r-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, (\tilde{\boldsymbol{J}_r},\tilde{\boldsymbol{J}_p})=(\boldsymbol{J}_r,\boldsymbol{J}_p)^{\{1,\ldots,d_r\}\backslash j}, j\in\{1,\ldots,d_r\} \right\}. \nonumber
 \end{equation}	
-	\paragraph{Adding a predictor covariate}: a predictor covariate is added to one sub-regression of $\boldsymbol{S}$
-\begin{equation}
-\mathcal{V}_{p+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J_p}^{\{1,\dots,d_r \}\setminus \{j\}}=J_p^{\{1,\dots,d_r \}\setminus \{j\}} ,\tilde{J}_p^{j}=J_p^{j} \cup \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \setminus J_p^j\right\}.
-\end{equation}
-	\paragraph{Removing a predictor covariate}: a predictor covariate is removed from one sub-regression of $\boldsymbol{S}$
-\begin{equation}
-\mathcal{V}_{p-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d, \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r,\tilde{J_p}^{\{1,\dots,d_r \}\setminus \{j\}}=J_p^{\{1,\dots,d_r \}\setminus \{j\}} , \tilde{J}_p^{j}=J_p^{j} \backslash \{h\}, j\in \{1,\ldots,d_r\}, h\in  J_p^j \right\}.
-\end{equation}	
+	\paragraph{Adding a predictor covariate:} a predictor covariate is added to one sub-regression of $\boldsymbol{S}$
+\begin{eqnarray}
+\mathcal{V}_{p+}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}:  \tilde{\boldsymbol{S}}\in\mathcal{S}_d,\right. && \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r, \tilde{J_p}^{\{1,\dots,d_r \}\setminus \{j\}}=J_p^{\{1,\dots,d_r \}\setminus \{j\}} , \nonumber \\
+& & \left. \tilde{J}_p^{j}=J_p^{j} \cup \{h\}, j\in \{1,\ldots,d_r\}, h\in J_f \setminus J_p^j\right\}. \nonumber
+\end{eqnarray}
+	\paragraph{Removing a predictor covariate:} a predictor covariate is removed from one sub-regression of $\boldsymbol{S}$
+\begin{eqnarray}
+\mathcal{V}_{p-}(\boldsymbol{S}) = \left\{\tilde{\boldsymbol{S}}: \tilde{\boldsymbol{S}}\in\mathcal{S}_d,\right. && \tilde{\boldsymbol{J}_r}=\boldsymbol{J}_r,\tilde{J_p}^{\{1,\dots,d_r \}\setminus \{j\}}=J_p^{\{1,\dots,d_r \}\setminus \{j\}} , \nonumber \\
+& & \left.  \tilde{J}_p^{j}=J_p^{j} \backslash \{h\}, j\in \{1,\ldots,d_r\}, h\in  J_p^j \right\}. \nonumber
+\end{eqnarray}	
 	%\end{itemize}	
 	We just want to find the best model and this neighbourhood is determinist so it does not need to contain the current structure $\boldsymbol{S}$.
 	
@@ -1548,7 +1550,7 @@ We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\
 The walk follows a time-homogeneous Markov Chain whose transition matrix $\mathcal{P}$ has $|\mathcal{S}_d|$ rows and columns (extremely wide  and sparse matrix for $d>10$ so we just compute the probabilities when we need them).
 	At each step the Markov chain moves with probability:
 	\begin{eqnarray}
-			\forall \boldsymbol{S} \in \mathcal{S}_d, \forall \boldsymbol{S}^+\in \mathcal{V}(\boldsymbol{S}) : \mathcal{P}_{\boldsymbol{S},\boldsymbol{S}^+}=\mathbb{P}(\boldsymbol{S}^+|\mathcal{V}(\boldsymbol{S}))&=&\frac{\exp{(-\mbox{{\sc bic}}_*(\boldsymbol{S}^+))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}} 
+			\forall \boldsymbol{S} \in \mathcal{S}_d, \forall \boldsymbol{S}^+\in \mathcal{V}(\boldsymbol{S}) : \mathcal{P}_{\boldsymbol{S},\boldsymbol{S}^+}=\mathbb{P}(\boldsymbol{S}^+|\mathcal{V}(\boldsymbol{S}))&=&\frac{\exp{(-\mbox{{\sc bic}}_*(\boldsymbol{S}^+))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}} \nonumber
 	\end{eqnarray}
 	and $\mathcal{S}_d$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
 	 
@@ -1572,13 +1574,13 @@ The main criterion to stop the walk is a maximum number of iterations but {\tt C
 	
 	For each step $(q)$, starting from $\boldsymbol{S} \in \mathcal{S}_d$ we define a neighbourhood:
 		\begin{eqnarray}
-		\mathcal{V}(\boldsymbol{S})&=& \{\boldsymbol{S} \}\cup \{ \boldsymbol{S}^{(i,j)} \in \mathcal{S}_d|(i,j) \in \mathcal{A}_{(q)}\} 
+		\mathcal{V}(\boldsymbol{S})&=& \{\boldsymbol{S} \}\cup \{ \boldsymbol{S}^{(i,j)} \in \mathcal{S}_d|(i,j) \in \mathcal{A}_{(q)}\} \nonumber 
 	\end{eqnarray}	
 	where $\mathcal{A}_{(q)}$ is a set of couples $(i,j) \in \{1,\dots,d \}^2$ with $i\neq j$ drawn at the step $(q)$ according to a strategy defined below and corresponding to the directed edge of the graph to modify (add or remove).
 	And we have for  $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$:
 	\begin{eqnarray}
-		\forall (k,l)\neq (i,j), \quad	\tilde{\boldsymbol{G}}_{k,l}&=&\boldsymbol{G}_{k,l} \\
-		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j} 
+		\forall (k,l)\neq (i,j), \quad	\tilde{\boldsymbol{G}}_{k,l}&=&\boldsymbol{G}_{k,l} \nonumber  \\
+		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j}  \nonumber 
 	\end{eqnarray}
 	where $\tilde{\boldsymbol{G}}$ is the adjacency matrix associated to $\tilde{\boldsymbol{S}}$. Any strategy can be chosen for $\mathcal{A}_{(q)}$, from uniform distribution to specific heuristics.\\
 	
@@ -1590,7 +1592,7 @@ Here the MCMC is not used for sampling or density estimation. We just want to fi
 		The only constraint on $\mathcal{A}_{(q)}$ is that $\forall (i,j) \in \mathcal{A}_{(q)}, i\neq j$.				
 		We propose, for step $(q)$ to draw $j$ from $\mathcal{U}(\{1,\dots,d\})$ and then 
 		\begin{equation}
-			\mathcal{A}_{(q)}|j=\{ (i,j) \in  \{1,\dots,d\}^2 :i \neq j \}.
+			\mathcal{A}_{(q)}|j=\{ (i,j) \in  \{1,\dots,d\}^2 :i \neq j \}. \nonumber 
 		\end{equation}
 			Such a strategy can be interpreted as the uniform choice of a sub-regression to modify followed by the proposal of each possible unary change.
 			Our package {\tt CorReg} let the user choose many other strategies for $\mathcal{A}_{(q)}$ like a fixed number of random couples $(i,j)$ , or the union of the $j^{th}$ line and column of $\boldsymbol{G}$. For large values of $d$, the number of candidate at each step can become critical. Each candidate requires to re-estimate the $\boldsymbol{\alpha}^j$'s for each modified sub-regression and it requires matricial inversion (estimation by \textsc{ols}) so computational cost can be high if $n$ is also large.
@@ -1599,17 +1601,17 @@ Here the MCMC is not used for sampling or density estimation. We just want to fi
 		Thus we propose a constraints relaxation method by a new definition of $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$ relying on a new definition of $\tilde{\boldsymbol{G}}$:
 		\paragraph{Modification of the selected directed edge $(i,j)$ on the graph:} (Figure \ref{ident2})
 	\begin{eqnarray}
-		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j} \textrm{ as usual and}\\
-		\forall k \neq i, l\neq j, \quad	\tilde{\boldsymbol{G}}_{k,l}&=&\boldsymbol{G}_{k,l}
+		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j} \textrm{ as usual and} \nonumber \\
+		\forall k \neq i, l\neq j, \quad	\tilde{\boldsymbol{G}}_{k,l}&=&\boldsymbol{G}_{k,l} \nonumber 
 \end{eqnarray}	
 \paragraph{Column-wise relaxation :}		
 newly predictive covariate cannot be regressed anymore (Figure \ref{ident3}):
 		\begin{eqnarray}
-		\forall k \in \{1,\dots,d\}\setminus \{i\}, \tilde{\boldsymbol{G}}_{k,j}&=&\boldsymbol{G}_{i,j}\boldsymbol{G}_{k,j}  \\
+		\forall k \in \{1,\dots,d\}\setminus \{i\}, \tilde{\boldsymbol{G}}_{k,j}&=&\boldsymbol{G}_{i,j}\boldsymbol{G}_{k,j}  \nonumber  \\
 				\end{eqnarray}
 \paragraph{Row-wise relaxation:} newly regressed covariate cannot be predictive anymore (Figure \ref{ident4}):
 		\begin{eqnarray}
-		\forall l \in \{1,\dots,d\}\setminus \{j\}, \tilde{\boldsymbol{G}}_{i,l}&=&\boldsymbol{G}_{i,j}\boldsymbol{G}_{i,l} \textrm{ (row-wise relaxation)}
+		\forall l \in \{1,\dots,d\}\setminus \{j\}, \tilde{\boldsymbol{G}}_{i,l}&=&\boldsymbol{G}_{i,j}\boldsymbol{G}_{i,l} \textrm{ (row-wise relaxation)} \nonumber 
 	\end{eqnarray} \\
 	
 	It can be seen as forcing the modification by removing what would have made the structure not feasible. So in one step we can test a model that remove completely a sub-regression, remove the explicative role of a covariate in all sub-regressions (that was not possible with the determinist neighbourhood) and create a new pairwise sub-regression. It drastically increases the scope of the neighbourhood (Figure \ref{ident6}) and guarantee to always have the same number of candidates during the MCMC. It can be compared to simulated annealing that sometimes proposes exotic candidates to avoid local extrema, but here without any temperature to set. Here again, the neighbourhood remains natural, without arbitrary parameters to tune. \\
@@ -1751,13 +1753,13 @@ The initial structure can be based on a first warming algorithm taking the corre
 		\subsubsection{Additional cleaning steps}
 			Because the walk is not exhaustive in practice (does not run enough steps), it does make sense to let the walk continue a few steps with neighbourhood containing only suppressions in the structure. Every sub-graph of a bipartite graph is bipartite thus every sub-graph can be reached. It is just an heuristic change in the strategy with:
 			\begin{equation}
-				\mathcal{A}_{(q)}=\{(i,J_r^j), i \in J_f, j \in \{1,\dots,d_r \}: i \in J_p^j \}.
+				\mathcal{A}_{(q)}=\{(i,J_r^j), i \in J_f, j \in \{1,\dots,d_r \}: i \in J_p^j \}. \nonumber 
 			\end{equation}
 			It is not based on any arbitrary parameter and change the result only if it finds a better structure in terms of the criterion $\mbox{{\sc bic}}_*$ used in the walk.
 			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE }.
 			
 	\section{Graphical { \sc lasso}}\label{sectionGlasso}
-		Graphical \textsc{lasso} \cite{friedman2008sparse} \cite{witten2011new} \cite{tibshiranilasso} \cite{friedman2010applications} is set to give undirectionnal (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It does make sense for exponential family because in these cases, zeros in the precision matrix $\boldsymbol{\Sigma}^{-1}$ can be interpreted in terms of conditional independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ and we search an oriented graph.\\
+		Graphical \textsc{lasso} (\cite{friedman2008sparse}, \cite{witten2011new}, \cite{tibshiranilasso} and \cite{friedman2010applications}) is set to give undirected (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It does make sense for exponential family because in these cases, zeros in the precision matrix $\boldsymbol{\Sigma}^{-1}$ can be interpreted in terms of conditional independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ and we search an oriented graph.\\
 		
 	However, we can still use it for initialization, for example by a Hadamard product with $\boldsymbol{G}^{(0)}$ the adjacency matrix of the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum} because trees have no cycles. But it is time consuming (especially for an initialisation method) and has no theoretical properties relied to our problematic of minimizing $\mbox{{\sc bic}}_*$, so the idea was left behind after some tries.		
 	
@@ -1766,7 +1768,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 	
 We define the complexity of a structure $\boldsymbol{S}$ as the number of elements in the adjacency matrix, that is the number of links between covariates and is obtained by:
 \begin{equation}
-	\textrm{Complexity}(\boldsymbol{S})=\sum_{j=1}^{d_r}d_p^j.
+	\textrm{Complexity}(\boldsymbol{S})=\sum_{j=1}^{d_r}d_p^j. \nonumber
 \end{equation}	
 	
 		We compare some walks with each time the same dataset and the same seed for the random generator. We have $d=100$ and $n=50$.
@@ -1819,12 +1821,12 @@ When comparing $\mbox{{\sc bic}}_U$ to $\mbox{{\sc bic}}_H$ it becomes evident t
 
 \begin{figure}[h!]
 	\subfigure[With classical $\mbox{{\sc bic}}_U$ criterion]{
-			\includegraphics[height=180px,width=245px]{figures/explvraiS/BIC.png} 
-	} \quad
+			\includegraphics[height=180px,width=230px]{figures/explvraiS/BIC.png} 
+	} 
    	\subfigure[With our $\mbox{{\sc bic}}_H$ criterion]{
-			\includegraphics[height=180px,width=240px]{figures/explvraiS/BICplus.png} 
+			\includegraphics[height=180px,width=230px]{figures/explvraiS/BICplus.png} 
 	}
-	\caption{Quality of the subregressions found by the MCMC. True left (plain blue) and Wrong left (dotted red) for n varying in $(30,50,100,400)$, the thicker the greater n.}\label{compZBIC}
+	\caption{Quality of the subregressions found by the MCMC. True left (plain blue) and Wrong left (dotted red) for n varying in $(30,50,100,400)$, the thicker the greater $n$.}\label{compZBIC}
 \end{figure}
 
 
@@ -1846,12 +1848,13 @@ Both {\tt SelvarClust} and {\tt CorReg} add an intercept (default parameter) tha
 
 {\tt SelvarClust} finds $\hat{\boldsymbol{\alpha}}^*_{Selvarclust}=$
 \begin{displaymath}
+{\fontsize{10}{10}\selectfont
 	\left (\begin{array}{cccccccc}
 	\textcolor{gray}{0.006052} &\textcolor{gray}{-0.025386} &\textcolor{gray}{-0.006845}&\textcolor{gray}{ -0.015952} &\textcolor{gray}{0.003420}& \textcolor{gray}{0.007839} &\textcolor{gray}{-0.047422}& \textcolor{gray}{-0.005811} \\
 	\hline
 \textbf{0.504791} &-0.002147& \textbf{2.007127} &-0.001010 &-0.000105 &0.022403 &0.013361 &0.000083 \\
 -0.006709 &\textbf{1.000927} &0.007463&\textbf{2.997941}& -0.005955 &-0.021958 &-0.010387 &0.010765
-	\end{array} \right )
+	\end{array} \right )}
 \end{displaymath}		
 	
 	{\tt CorReg} finds:
@@ -1876,7 +1879,7 @@ We suppose independence between the regressors and between the conditional distr
 	 Then, at each step {\tt Selvarclust} has to estimate the whole distribution. Our algorithm does not allow to find complex distributions with dependencies as {\tt Selvarclust} does. Both models use a sub-regression structure and propose an algorithm that find it, but the comparison stops here. So {\tt CorReg} does not really beats {\tt Selvarclust} because hypotheses and objectives are not the same,  so the result cannot really be compared. {\tt Selvarclust} is not a competitor (it could have been but it is not the case) to {\tt CorReg } but a source of inspiration for the concept of sub-regressions within the covariates and the concept of redundant and irrelevant covariates. To obtain better results was just a necessary confirmation of that.
 
 \subsection{Computational time}
-	In terms of computation time, the most expansive thing in the MCMC is the computation of \textsc{ols} to estimate $\boldsymbol{\alpha}$ for each candidate, that is mainly successive inversion of the $(\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_p^j}$. \\
+	In terms of computation time, the most expansive thing in the MCMC is the computation of \textsc{ols} to estimate $\boldsymbol{\alpha}$ for each candidate, that is mainly successive inversion of the $(\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_p^j}$ matrices. \\
 	Figure \ref{tempsn} illustrate the evolution of the time needed to achieve 10 times (distinct initializations) 1 000 steps on the datasets described above with the $R^2$ of the sub-regressions set to $0.7$. We see that time increases with $n$ from less than 2 seconds for $n=30$ to more than 12 seconds for $n=400$.\\	
 \begin{figure}[h]
 \centering
@@ -2618,11 +2621,11 @@ To illustrate that some industrial variables are naturally highly correlated, we
 		
 \begin{figure}[h!]
 \begin{center}
-			\includegraphics[height=150px, width=150px]{figures/correlexfoshist.png}
-			\includegraphics[height=150px,width=150px]{figures/histR2exfos.png}
+			\includegraphics[height=150px, width=210px]{figures/correlexfoshist.png}
+			\includegraphics[height=150px,width=210px]{figures/histR2exfos.png}
 \end{center}
 \vspace{-5mm}
-			\centerline{(a) \hspace{130px} (b)}
+			\centerline{(a) \hspace{180px} (b)}
 			\caption{Quality case study: (a) Histogram of correlations $\rho$ in $\boldsymbol{X}$, (b) histogram of the adjusted $R^2_{adj}$ for the $d_r=76$ sub-regressions.}\label{fig:graphCorr.quality}
 \end{figure}  			
 		
@@ -2632,11 +2635,11 @@ Note that the uncorrelated variables can be very well-modeled by parsimonious Ga
 		
 		\begin{figure}[h!]
 \begin{center}
-			\includegraphics[height=150px, width=150px]{figures/res_article/gaussianmixture_exfo.png}
-			\includegraphics[height=150px,width=150px]{figures/res_article/nb_comp_X_exfo.png}
+			\includegraphics[height=150px, width=210px]{figures/res_article/gaussianmixture_exfo.png}
+			\includegraphics[height=150px,width=210px]{figures/res_article/nb_comp_X_exfo.png}
 \end{center}
 \vspace{-5mm}
-			\centerline{(a) \hspace{130px} (b)}
+			\centerline{(a) \hspace{180px} (b)}
 			\caption{Quality case study: (a) Example of a non-Gaussian real variable easily modeled by a Gaussian mixture, (b) distribution of the number of components found for each covariate.}\label{fig:graphMixmod.quality}
 \end{figure}  	
 
@@ -2712,11 +2715,11 @@ Figure~\ref{fig:graphCorr.production}(a) shows that many variables are highly co
 
 \begin{figure}[h!]
 \begin{center}
-			\includegraphics[height=150px, width=150px]{figures/histcorrelBVBI.png}
-			\includegraphics[height=150px,width=150px]{figures/R2corregBVBI.png}
+			\includegraphics[height=150px, width=210px]{figures/histcorrelBVBI.png}
+			\includegraphics[height=150px,width=210px]{figures/R2corregBVBI.png}
 \end{center}
 \vspace{-5mm}
-			\centerline{(a) \hspace{130px} (b)}
+			\centerline{(a) \hspace{180px} (b)}
 			\caption{Production case study: (a) Histogram of correlations $\rho$ in $\boldsymbol{X}$, (b) histogram of the adjusted $R^2_{adj}$ for the $d_r=55$ sub-regressions.}\label{fig:graphCorr.production}
 \end{figure}  	
 
@@ -2728,11 +2731,11 @@ As in the previous quality case study, we note that the uncorrelated variables c
 
 		\begin{figure}[h!]
 \begin{center}
-			\includegraphics[height=150px, width=150px]{figures/GMcriseBV.png}
-			\includegraphics[height=150px,width=150px]{figures/nbcompBV.png}
+			\includegraphics[height=150px, width=210px]{figures/GMcriseBV.png}
+			\includegraphics[height=150px,width=210px]{figures/nbcompBV.png}
 \end{center}
 \vspace{-5mm}
-			\centerline{(a) \hspace{130px} (b)}
+			\centerline{(a) \hspace{180px} (b)}
 			\caption{Production case study: (a) Example of a non-Gaussian real variable easily modeled by a Gaussian mixture, (b) distribution of the number of components found for each covariate.}\label{fig:graphMixmod.production}
 \end{figure}  	
 
