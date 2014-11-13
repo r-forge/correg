@@ -4437,18 +4437,18 @@ base=mixture_generator(
 	n=15, #number of individuals
 	p=10, #number of covariates
 	ratio=0.4, #ratio of covariates that are response variables
-	tp1=1,#ratio of predictor covariates allowed to appear in the regression of Y
-	tp2=1,
-	# the ratio of response covariates allowed to have a non-zero coefficient in the regression of Y
-	tp3=1,
-	# the ratio of strictly independent covariates allowed to have a non-zero coefficient in the regression of Y
-	positive=0.5, 
-	#ratio of positive coefficients in the regressions
+	tp1=1,#ratio of predictor covariates allowed to 
+	#appear in the regression of Y
+	tp2=1,#ratio of response covariates allowed to 
+	#have a non-zero coefficient in the regression of Y
+	tp3=1,#ratio of strictly independent covariates allowed to 
+	#have a non-zero coefficient in the regression of Y
+	positive=0.5,#ratio of positive coefficients in the regressions
     R2Y=0.8, #R-squared of the main regression
     R2=0.9, #R-squared of the sub-regressions
-    scale=TRUE,#to scale the covariates (response do not have a greater variance or mean)
-    max_compl=3,#maximum number of predictores in each sub-regression
-    lambda=1# paramater of the Poisson's law that define the number of components in gaussian mixture models
+    scale=TRUE,#to scale the covariates 
+    #(then responses do not have a greater variance or mean)
+    max_compl=3,#maximum number of predictors in each sub-regression
   )
   #learning set (n individuals)
    X_appr=base$X_appr 
@@ -4458,17 +4458,27 @@ base=mixture_generator(
    Y_test=base$Y_test
    X_test=base$X_test
 
-   TrueZ=base$Z#True generative structure (binary matrix)
+   TrueZ=base$Z#True generative structure (binary adjacency matrix)
 
-   #density estimation for the MCMC
+   #density estimation of each covariate with a max of 10 components
    density=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE)
-   Bic_null_vect=density$BIC_vect
+   Bic_null_vect=density$BIC_vect# vector of the d BIC
 
    #MCMC to find the structure
-   res=structureFinder(X=X_appr,verbose=0,reject=0,Maxiter=900,
-               nbini=30,candidates=-1,Bic_null_vect=Bic_null_vect,star=TRUE,p1max=15,clean=TRUE)
-   hatZ=res$Z_opt
-   hatBic=res$bic_opt
+   res=structureFinder(
+		X=X_appr,#the dataset
+		verbose=0,#several levels of details during the walk
+  		reject=0,#constraint relaxation
+  		Maxiter=900,#max number of steps for each initialization
+        nbini=30,#number of initializations
+        candidates=-1,#strategy for the neighbourhood
+        Bic_null_vect=Bic_null_vect,
+        star=TRUE,
+        p1max=15,#maximum complexity of sub-regressions
+        clean=TRUE#additional cleaning steps at the end       
+      )
+   hatZ=res$Z_opt#best adjacency matrix found
+   hatBic=res$bic_opt#associated BIC
 
    #BIC comparison between true and found structure
    bicopt_vect=BicZ(X=X_appr,Z=hatZ,Bic_null_vect=Bic_null_vect)
