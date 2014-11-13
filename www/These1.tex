@@ -1,5 +1,6 @@
 \documentclass[12pt,a4paper]{report}
 \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{amsmath}
 \usepackage{listings}
@@ -277,18 +278,18 @@ On note $\mbox{{\sc bic}}_H$ ce nouveau critère. Il ne modifie pas {\sc bic} (o
 		
 Après estimation du modèle marginal on s'applique à essayer d'améliorer l'estimation de $\boldsymbol{\beta}$: 
 \begin{itemize}
-	\item Estimation de  $\boldsymbol{\varepsilon}_Y^*$ à partir de $\hat{\boldsymbol{\beta}}^*_f$:
+	\item Estimation de  $\boldsymbol{\varepsilon}_Y^*$ à partir de $\hat{\boldsymbol{\beta}}^*_f$ :
 	\begin{equation}
 		\hat{\boldsymbol{\varepsilon}}_Y^*=\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f. \nonumber 
 	\end{equation}
-	\item Estimation de $\boldsymbol{\varepsilon}$ à partir de $\hat{\boldsymbol{\alpha}}^*$:
+	\item Estimation de $\boldsymbol{\varepsilon}$ à partir de $\hat{\boldsymbol{\alpha}}^*$ :
 	\begin{equation}
 		\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* .\label{epsilonchapeaufr}
 	\end{equation}
 \end{itemize}
 Ces deux estimateurs permettent alors d'obtenir un estimateur de $\boldsymbol{\beta}_r$ autre que le marginal $\hat{\boldsymbol{\beta}}^*_r=\boldsymbol{0}$.
 \begin{itemize}
-	\item Nouvelle estimation de $\boldsymbol{\beta}_r$ basée sur la définition de $\boldsymbol{\varepsilon}_Y^* $ (équation (\ref{marginalfr})):
+	\item Nouvelle estimation de $\boldsymbol{\beta}_r$ basée sur la définition de $\boldsymbol{\varepsilon}_Y^* $ (équation (\ref{marginalfr})) :
 	\begin{equation}
 		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}). \nonumber 
 	\end{equation}
