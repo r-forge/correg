@@ -23,7 +23,7 @@
 %\makegapedcells
 %\hyphenation{prédic-tives}
 \lstset{% general command to set parameter(s)
-%basicstyle=\small, % print whole listing small
+basicstyle=\small\color{MidnightBlue}, % print whole listing small
 keywordstyle=,%keywordstyle=\color{black}\bfseries\underbar, 
 % underlined bold black keywords
 %identifierstyle=, % nothing happens
@@ -4473,13 +4473,13 @@ base=mixture_generator(
    TrueZ=base$Z#True generative structure (binary adjacency matrix)
 \end{lstlisting}
 Then we can start the study by estimation of the marginal densities:
-\begin{lstlisting}
+\begin{lstlisting}[language=R]
    #density estimation of each covariate with a max of 10 components
    density=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE)
    Bic_null_vect=density$BIC_vect# vector of the d BIC
 \end{lstlisting}
 The {\sc bic} obtained come as input for the MCMC:
-\begin{lstlisting}
+\begin{lstlisting}[language=R]
    #MCMC to find the structure
    res=structureFinder(
 		X=X_appr,#the dataset
@@ -4497,7 +4497,7 @@ The {\sc bic} obtained come as input for the MCMC:
    hatBic=res$bic_opt#associated BIC
 \end{lstlisting}
 Once a structure is found, we can look for further details:
-\begin{lstlisting}
+\begin{lstlisting}[language=R]
 #interpretation of found and true structure ordered by increasing R2
    readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)
    readZ(Z=TrueZ,crit="R2",X=X_appr,output="all",order=1)
@@ -4505,7 +4505,7 @@ Once a structure is found, we can look for further details:
 
 \end{lstlisting}
 Here we can also look how near it is from the true model:
-\begin{lstlisting}
+\begin{lstlisting}[language=R]
    #BIC comparison between true and found structure
    bicopt_vect=BicZ(X=X_appr,Z=hatZ,Bic_null_vect=Bic_null_vect)
    bicopt_vrai=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=Bic_null_vect)
@@ -4518,21 +4518,21 @@ Here we can also look how near it is from the true model:
 	compZ$true_left;compZ$false_left
 \end{lstlisting}
 Then we use the structure for the main regression on the response variable:
-\begin{lstlisting}	
+\begin{lstlisting}	[language=R]
    #Regression coefficients estimation
-    select="lar"
-   resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,
-               select=select,K=10,returning=TRUE)
+   resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,
+   		compl=TRUE,expl=TRUE,pred=TRUE,
+                select="lar",K=10,returning=TRUE)
 \end{lstlisting}
 And we can use the validation sample to compare the models:
-\begin{lstlisting}
+\begin{lstlisting}[language=R]
    MSE_complete=MSE_loc(Y=Y_test,X=X_test,A=resY$compl$A)
    MSE_explicative=MSE_loc(Y=Y_test,X=X_test,A=resY$expl$A)
    MSE_predictive=MSE_loc(Y=Y_test,X=X_test,A=resY$pred$A)
    MSE_vrai=MSE_loc(Y=Y_test,X=X_test,A=base$A)
 
    MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive,MSE_vrai)
-   MSE#estimated structure
+   MSE
 \end{lstlisting}
 This script describes the whole process of {\tt CorReg}.
 
