@@ -20,7 +20,7 @@
 %\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage[left=2.5cm,right=2.5cm,top=1.5cm,bottom=2cm]{geometry}
 %\makegapedcells
-
+%\hyphenation{prédic-tives}
 \lstset{% general command to set parameter(s)
 %basicstyle=\small, % print whole listing small
 keywordstyle=,%keywordstyle=\color{black}\bfseries\underbar, 
@@ -151,7 +151,7 @@ commentstyle=\color{OliveGreen}, % white comments
 	
 
 \begin{hypfr}\label{H1fr}
-Les corrélations entre covariables viennent uniquement de ce que certaines d'entre elles dépendent linéairement d'autres covariables. Plus précisément, il y a $d_{r}\geq 0$  ``sous-regressions'', chaque sous-regression $j=1,\ldots,d_{r}$ ayant la variable $\boldsymbol{X}^{J_{r}^j}$ comme variable {\it réponse} ($J_{r}^j\in\{1,\ldots,p\}$ et $J_{r}^j\neq J_{r}^{j'}$ pour $j\neq j'$) et ayant les $d_p^j>0$ variables $\boldsymbol{X}^{J_{p}^j}$  comme variables {\it predictives}  ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ et $d_p^j=|J_{p}^j|$ le cardinal de $J_{p}^j$):
+Les corrélations entre covariables viennent uniquement de ce que certaines d'entre elles dépendent linéairement d'autres covariables. Plus précisément, il y a $d_{r}\geq 0$  ``sous-regressions'', chaque sous-regression $j=1,\ldots,d_{r}$ ayant la variable $\boldsymbol{X}^{J_{r}^j}$ comme variable {\it réponse} ($J_{r}^j\in\{1,\ldots,p\}$ et $J_{r}^j\neq J_{r}^{j'}$ pour $j\neq j'$) et ayant les $d_p^j>0$ variables $\boldsymbol{X}^{J_{p}^j}$  comme variables {\it predictives}  ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ et $d_p^j=|J_{p}^j|$ le cardinal de $J_{p}^j$) :
 \begin{equation}
 \boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR_fr}
 \end{equation}
@@ -345,7 +345,7 @@ Steelmaking is continuously improving and we are now able to produce steel that 
 	
 \chapter{State of the art in linear regression}
 \paragraph{Abstract:} Brief state of the art to have a glimpse of existing method we could try to solve our problematic.
-Most of the tools described here are explained with more details in the book from  Hastie, Tibshirani et Friedman : {\it "The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible on web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}} for free.
+Most of the tools described here are explained with more details in the book from  Hastie, Tibshirani et Friedman: {\it ``The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible on web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}} for free.
 	
 
 	
@@ -1737,7 +1737,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 	\begin{figure}[h!]
 	\centering
 		\includegraphics[width=400px]{figures/courbes_BICmoyen_marelax_nbinibis.png} 
-		\caption{Comparison of distinct number of correlation-based initialisations for the MCMC.}\label{nbini}
+		\caption{Comparison of distinct number of correlation-based initialisations for the MCMC. Dark blue=1 intialization, red=10 initializations.}\label{nbini}
 	\end{figure}
 	\end{center}
 		In the followings, the chain was launched with twenty initialisations each time, based on the correlation matrix.
@@ -1834,7 +1834,8 @@ When comparing $\mbox{{\sc bic}}_U$ to $\mbox{{\sc bic}}_H$ it becomes evident t
 		Maugis provides results\footnote{\url{http://www.math.univ-toulouse.fr/~maugis/SelvarClustHomepage.html}} of {\tt SelvarClust} on a dataset {\it Data2.txt} containing 2 000 data points from a mixture of four Gaussian distributions $\mathcal{N}(\mu_k,\boldsymbol{I}_2)$ with $\mu_1=(-2,-2),\mu_2=(-3,-3),\mu_4=(2,2)$ and with a proportion vector $\boldsymbol{\pi}=(0.3,0.2,0.3,0.2)$. Variables $\boldsymbol{X}^1,\boldsymbol{X}^2$ corresponds to the coordinates. Eight irrelevant variables (for clustering) are appended, simulated according to $\forall 1\leq i \leq 2\; 000$:
 		\begin{displaymath}
 		 \boldsymbol{X}_i^{\{3,\dots , 6 \}}|\boldsymbol{X}_i^{\{1,2\}};\boldsymbol{\alpha}^*,\boldsymbol{\Omega} \sim \mathcal{N}(\boldsymbol{X}_i^{\{1,2\}}\boldsymbol{\alpha^*},\boldsymbol{\Omega})
-		 \textrm{ with } \boldsymbol{\alpha}^*= \left( \begin{array}{cccc}
+		\end{displaymath}
+		\begin{displaymath} \textrm{ with } \boldsymbol{\alpha}^*= \left( \begin{array}{cccc}
 		0.5 & 0 & 2 & 0 \\ 
 		0 & 1 & 0 & 3
 		\end{array} \right) \textrm{ and } \boldsymbol{\Omega}=\operatorname{diag}(1,1,0.5,0.5)
@@ -2583,14 +2584,14 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 We have generated a non-linear structure to test the robustess of the model. $\boldsymbol{X}_f$ is a set of 6 independent Gaussian mixtures defined as previously but with random signs for the components means. $\boldsymbol{X}_r|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}^7|\boldsymbol{X}^{\{1,2,3\}};a,\sigma_1^2=a(\boldsymbol{X}^1)^2+\boldsymbol{X}^2+\boldsymbol{X}^3+ \boldsymbol{\varepsilon}_1$. The matrix $\boldsymbol{X}$ is then scaled before doing $$\boldsymbol{Y}|\boldsymbol{X};\sigma_Y^2=\sum_{i=1}^7\boldsymbol{X}^i+\boldsymbol{\varepsilon}_Y.$$ We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression. Once again, simulations has been made 100 times and the \textsc{mse} were computed with 1 000 individuals validation samples.
 
  \begin{figure}[h!] 
-	\begin{minipage}[l]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/robust_S.png} 
-			\caption{Evolution of the quality of $\hat{\boldsymbol{S}}$ when the paramater $a$ increases}\label{resnonlin}
-	\end{minipage} \
-   \begin{minipage}[r]{.48\linewidth}
-			\includegraphics[height=180px,width=240px]{figures/robustY.png} 
-			\caption{\textsc{mse} on the main regression for \textsc{ols}(thick) and \textsc{lasso} (thin) used both with (plain) or without {\tt CorReg} (dotted).}\label{MSEnonlin}
-   \end{minipage}
+	\subfigure[Evolution of the quality of $\hat{\boldsymbol{S}}$ when the paramater $a$ increases]{
+			\includegraphics[height=180px,width=230px]{figures/robust_S.png} 
+			\label{resnonlin}
+	} 
+   \subfigure[\textsc{mse} on the main regression for \textsc{ols}(thick) and \textsc{lasso} (thin) used both with (plain) or without {\tt CorReg} (dotted).]{
+			\includegraphics[height=180px,width=230px]{figures/robustY.png} \label{MSEnonlin}
+   }
+   \caption{Non-linear case analysis.}
 \end{figure}
 Figure \ref{MSEnonlin} illustrates the advantage of using {\tt CorReg} even with non-linear structures. Figure \ref{resnonlin} shows that the MCMC have more difficulties to find a linear structure as the non-linear part of the sub-regression increases but the model is quite robust (efficient for small values of $a$).
 
@@ -4419,15 +4420,22 @@ the only non-identifiable sub-regressions could be those with only one regressor
 	\newpage
 \chapter{CorReg: the concept}	
 	
-		The {\tt CorReg} package is already downloadable on CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (\textsc{ols},stepwise,\textsc{lasso},elasticnet,clere,spike and slab, adaptive \textsc{lasso} and every models in the {\tt lars} package). So every simulation presented above can be done with {\tt CorReg}.
+		The {\tt CorReg} package is already downloadable on CRAN under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (\textsc{ols}, stepwise, \textsc{lasso}, elasticnet, clere, spike and slab, adaptive \textsc{lasso} and every models in the {\tt lars} package). So every simulation presented above can be done with {\tt CorReg}.
 	{\tt CorReg} also provides tools to interpret found structures and visualize the dataset (missing values and correlations). \\%More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}. 
-	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made available in Microsoft Excel by the end of the year 2014, using Basic Excel R Toolkit(BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). \\
+	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made available in Microsoft Excel by the end of the year 2014, using Basic Excel R Toolkit (BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). Figure \ref{captureexcel} gives a glimpse of what it will look like.\\
+	
+	
+\begin{figure}
+\centering
+\includegraphics[width=480px]{figures/captureexcel.PNG} 
+	\caption{Screenshot of the Graphical User Interface of {\tt CorReg} in Excel.}\label{captureexcel}
+\end{figure}	
 	
 	It also provides some small scripts put in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel).\\
-	 One example of graphical tool is the {\tt matplot\_zone } function that allows to compare several curves according to a given function (input parameter) and was widely used to compare the \textsc{mse} and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
+	 One example of graphical tool is the {\tt matplot\_zone} function that allows to compare several curves according to a given function (input parameter) and was widely used to compare the \textsc{mse} and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
 	 
 	More features will be added as statistics will continue to be taught to engineers at ArcelorMittal Dunkerque to provide ergonomic and powerful statistical tools to non-statisticians. \\
-		
+	\FloatBarrier	
 \paragraph{Quick overview of the package:} The following script gives an overview of {\tt CorReg 0.15.8}
 \begin{lstlisting}[language=R]
 rm(list=ls()) #clear the workspace
@@ -4509,6 +4517,7 @@ base=mixture_generator(
  
 \end{lstlisting}
 This script describes the whole process of {\tt CorReg}.
+
 
 
 \chapter{Glossary of notations}
