@@ -4437,7 +4437,10 @@ the only non-identifiable sub-regressions could be those with only one regressor
 	 
 	More features will be added as statistics will continue to be taught to engineers at ArcelorMittal Dunkerque to provide ergonomic and powerful statistical tools to non-statisticians. \\
 	\FloatBarrier	
-\paragraph{Quick overview of the package:} The following script gives an overview of {\tt CorReg 0.15.8}
+\paragraph{Quick overview of the package:} The following script gives an overview of {\tt CorReg 0.15.8}. 
+\\
+\\
+We first generate a dataset:
 \begin{lstlisting}[language=R]
 rm(list=ls()) #clear the workspace
 require(CorReg) #load CorReg if not already done
@@ -4468,11 +4471,15 @@ base=mixture_generator(
    X_test=base$X_test
 
    TrueZ=base$Z#True generative structure (binary adjacency matrix)
-
+\end{lstlisting}
+Then we can start the study by estimation of the marginal densities:
+\begin{lstlisting}
    #density estimation of each covariate with a max of 10 components
    density=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE)
    Bic_null_vect=density$BIC_vect# vector of the d BIC
-
+\end{lstlisting}
+The {\sc bic} obtained come as input for the MCMC:
+\begin{lstlisting}
    #MCMC to find the structure
    res=structureFinder(
 		X=X_appr,#the dataset
@@ -4488,26 +4495,37 @@ base=mixture_generator(
       )
    hatZ=res$Z_opt#best adjacency matrix found
    hatBic=res$bic_opt#associated BIC
+\end{lstlisting}
+Once a structure is found, we can look for further details:
+\begin{lstlisting}
+#interpretation of found and true structure ordered by increasing R2
+   readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)
+   readZ(Z=TrueZ,crit="R2",X=X_appr,output="all",order=1)
+   # (<NA>line : name of subregressed covariate)
 
+\end{lstlisting}
+Here we can also look how near it is from the true model:
+\begin{lstlisting}
    #BIC comparison between true and found structure
    bicopt_vect=BicZ(X=X_appr,Z=hatZ,Bic_null_vect=Bic_null_vect)
    bicopt_vrai=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=Bic_null_vect)
    sum(bicopt_vect);sum(bicopt_vrai)
 
-   #interpretation of found and true structure ordered by increasing R2
-   readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)
-   readZ(Z=TrueZ,crit="R2",X=X_appr,output="all",order=1)
-   # (<NA>line : name of subregressed covariate)
+   
 
    #Structure comparison
    compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
 	compZ$true_left;compZ$false_left
-	
+\end{lstlisting}
+Then we use the structure for the main regression on the response variable:
+\begin{lstlisting}	
    #Regression coefficients estimation
-    select="NULL"
+    select="lar"
    resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,
                select=select,K=10,returning=TRUE)
-
+\end{lstlisting}
+And we can use the validation sample to compare the models:
+\begin{lstlisting}
    MSE_complete=MSE_loc(Y=Y_test,X=X_test,A=resY$compl$A)
    MSE_explicative=MSE_loc(Y=Y_test,X=X_test,A=resY$expl$A)
    MSE_predictive=MSE_loc(Y=Y_test,X=X_test,A=resY$pred$A)
@@ -4515,7 +4533,6 @@ base=mixture_generator(
 
    MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive,MSE_vrai)
    MSE#estimated structure
- 
 \end{lstlisting}
 This script describes the whole process of {\tt CorReg}.
 
