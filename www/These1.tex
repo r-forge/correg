@@ -23,7 +23,7 @@
 
 \lstset{% general command to set parameter(s)
 %basicstyle=\small, % print whole listing small
-keywordstyle=,%keywordstyle=\color{black}\bfseries\underbar,
+keywordstyle=,%keywordstyle=\color{black}\bfseries\underbar, 
 % underlined bold black keywords
 %identifierstyle=, % nothing happens
 commentstyle=\color{OliveGreen}, % white comments
@@ -4444,12 +4444,12 @@ base=mixture_generator(
 	tp3=1,#ratio of strictly independent covariates allowed to 
 	#have a non-zero coefficient in the regression of Y
 	positive=0.5,#ratio of positive coefficients in the regressions
-    R2Y=0.8, #R-squared of the main regression
-    R2=0.9, #R-squared of the sub-regressions
-    scale=TRUE,#to scale the covariates 
-    #(then responses do not have a greater variance or mean)
-    max_compl=3,#maximum number of predictors in each sub-regression
-  )
+	R2Y=0.8, #R-squared of the main regression
+	R2=0.9, #R-squared of the sub-regressions
+	scale=TRUE,#to scale the covariates 
+	#(then responses do not have a greater variance or mean)
+	max_compl=3,#maximum number of predictors in each sub-regression
+    )
   #learning set (n individuals)
    X_appr=base$X_appr 
    Y_appr=base$Y_appr 
@@ -4486,29 +4486,30 @@ base=mixture_generator(
    sum(bicopt_vect);sum(bicopt_vrai)
 
    #interpretation of found and true structure ordered by increasing R2
-   readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
-   readZ(Z=TrueZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
+   readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)
+   readZ(Z=TrueZ,crit="R2",X=X_appr,output="all",order=1)
+   # (<NA>line : name of subregressed covariate)
 
    #Structure comparison
    compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
-
+	compZ$true_left;compZ$false_left
+	
    #Regression coefficients estimation
     select="NULL"
    resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,compl=TRUE,expl=TRUE,pred=TRUE,
                select=select,K=10,returning=TRUE)
 
-   MSE_complete=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$compl$A)
-   MSE_explicative=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$expl$A)
-   MSE_predictive=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=resY$pred$A)
-   MSE_vrai=MSE_loc(Y=Y_test,X=X_test,intercept=TRUE,A=base$A)
+   MSE_complete=MSE_loc(Y=Y_test,X=X_test,A=resY$compl$A)
+   MSE_explicative=MSE_loc(Y=Y_test,X=X_test,A=resY$expl$A)
+   MSE_predictive=MSE_loc(Y=Y_test,X=X_test,A=resY$pred$A)
+   MSE_vrai=MSE_loc(Y=Y_test,X=X_test,A=base$A)
 
    MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive,MSE_vrai)
    MSE#estimated structure
-   compZ$true_left;compZ$false_left
-   ## Not run: 
-  barplot(as.matrix(MSE),main="MSE on validation dataset", sub=paste("select=",select))
-  abline(h=MSE_complete,col="red")
+ 
 \end{lstlisting}
+This script describes the whole process of {\tt CorReg}.
+
 
 \chapter{Glossary of notations}
 This glossary can be used to find the meaning of the notations without having to search within the chapters.
