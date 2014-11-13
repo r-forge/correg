@@ -311,7 +311,7 @@ Cet estimateur nous permet de réduire le bruit du modèle marginal, afin d'essa
 	La figure \ref{MQE2} montre l'efficacité du modèle plug-in et son champ d'application recommandé : les cas avec assez de correlations pour que les méthodes classiques appliquées à $\boldsymbol{X}$ soient handicapées mais pas assez de corrélations pour que le retrait des variables redondantes (modèle marginal)  se fasse sans perte siginificative d'information.
 		
 	\section{Valeurs manquantes}
-		Un coproduit du modèle de sous-régression concerne les valeurs manquantes. Le fait de disposer d'un modèle génératif complet sur $\boldsymbol{X}$ avec modélisation explicite des dépendances permet en effet de composer avec les valeurs manquantes. Tout d'abord, l'estimation de $\boldsymbol{\alpha}$ peut se faire sur les données observées en intégrant sur les données manquantes. On peut alors utiliser un algorithme de type EM (expectation Maximization) pour estimer $\hat{\boldsymbol{\alpha}}$.\\
+		Un coproduit du modèle de sous-régression concerne les valeurs manquantes. Le fait de disposer d'un modèle génératif complet sur $\boldsymbol{X}$ avec modélisation explicite des dépendances permet en effet de composer avec les valeurs manquantes. Tout d'abord, l'estimation de $\boldsymbol{\alpha}$ peut se faire sur les données observées en intégrant sur les données manquantes. On peut alors utiliser un algorithme de type EM (Expectation Maximization) pour estimer $\hat{\boldsymbol{\alpha}}$.\\
 		 
 		 En pratique, l'étape $E$ n'est pas systématiquement explicite et peut nécessiter de faire appel à une variante de EM : l'algorithme Stochastic EM qui remplace l'étape $E$ par une étape stochastique d'imputation des valeurs manquantes, par exemple en utilisant un échantillonneur de Gibbs. Cet algorithme de Gibbs peut alors être utilisé pour faire de l'imputation multiple sur les valeurs manquantes en s'appuyant sur le $\hat{\boldsymbol{\alpha}}$ issu du Stochastic EM. Comme cette imputation tient compte des corrélations entre les variables, elle est plus précise qu'une simple imputation par la moyenne. Un avantage de l'imputation multiple est que l'on peut avoir une idée de la robustesse des imputations en regardant simplement la variance des valeurs imputées. Encore une fois, on y gagne en qualité d'interprétation.  
 \chapter{The industrial context}
@@ -4539,7 +4539,7 @@ This script describes the whole process of {\tt CorReg}.
 
 
 \chapter{Glossary of notations}
-This glossary can be used to find the meaning of the notations without having to search within the chapters.
+This glossary can be used to find the meaning of some notations without having to search within the chapters.
 Bold characters are used to distinguish multidimensional objects. Many objects are tuples.
 \begin{itemize}
 	\item $\boldsymbol{\alpha}_j$ is the vector of the coefficients of the $j^{th}$ sub-regression.
@@ -4547,8 +4547,10 @@ Bold characters are used to distinguish multidimensional objects. Many objects a
 	\item $\boldsymbol{\alpha}^*$ is the $d_f \times d_r $ matrix of the sub-regressions coefficients.
 	\item $\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.
 	\item $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ is the $(d-d_r)\times 1$ vector of the regression coefficients associated  to the free covariates in the main regression on $\boldsymbol{Y}$.
-	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated respectively to the responses and to the free covariates.
+	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated  to the responses covariates.
 	\item $d$ is the number of covariates in the dataset $\boldsymbol{X}$.
+	\item $d_f$ is the number of free covariates in the dataset.
+	\item $d_r$ is the number of response covariates in the dataset (and consequently the number of sub-regressions).
 	\item $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.
 	\item $K$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}$.
 	\item $K_j$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}^j$.
@@ -4571,7 +4573,15 @@ Bold characters are used to distinguish multidimensional objects. Many objects a
 	\item $\boldsymbol{\Sigma}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the variances of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.	
 	\item $\Sigma_{X^l,k}$ is the variance of $\boldsymbol{X}^l$ in the $k^{th}$ component of $\boldsymbol{X}$.
 	\item $\Sigma_{i,J_r^j,k}$ is the variance of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\boldsymbol{\Theta}$ is the set of the parameters associated to the Gaussian mixture on $\boldsymbol{X}$.	
 	\item $\boldsymbol{X}$ is the $n\times d$ matrix whose columns are the covariates in the datasets and rows are the individuals.
+	\item $\boldsymbol{X}^j$ is the $j^{th}$ column of $\boldsymbol{X}$.
+	\item $\boldsymbol{X}_r$ is the matrix of the response covariates.
+	\item $\boldsymbol{X}_f$ is the matrix of the predictor covariates.
+	\item $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ is the $n-$uple of the $\boldsymbol{X}_{i,O}$.
+	\item $\boldsymbol{X}_{i,O}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}$.
+	\item $\boldsymbol{X}_{i,O}^{J_f}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}_f$.
+	\item $\boldsymbol{X}_{i,O}^{J_r}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}_r$.
 	\item $\boldsymbol{Y}$ is the $n\times 1$ response variable in the main regression.
 \end{itemize}
 
