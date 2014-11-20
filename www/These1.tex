@@ -50,6 +50,8 @@ commentstyle=\color{OliveGreen}, % white comments
 
 \xdefinecolor{vertclair}{named}{PaleGreen}
 \xdefinecolor{vertfonce}{named}{ForestGreen}
+\xdefinecolor{bleuclair}{named}{PaleTurquoise}
+\xdefinecolor{bleufonce}{named}{Navy}
 
 \newtheorem{hyp}{Hypothesis}
 \newtheorem{hypfr}{Hypothèse}
@@ -648,7 +650,7 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 
 		\subsection{CLusterwise Effect REgression ({\sc clere})}		% ne pas oublier de mentionner les packages existants
 
-			The CLusterwise Effect REgression (\textsc{clere} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independent random variables with $\beta_j$ following a Gaussian Mixture distribution, allowing to group them into by their component membership. \\
+			The CLusterwise Effect REgression (\textsc{clere} \cite{yengo2012variable}) describes the $\beta_j$ no longer as fixed effect parameters but as unobserved independent random variables with $\beta_j$ following a Gaussian mixture distribution, allowing to group them into by their component membership. \\
 			
 			 The idea is that if the model has a small number of groups of covariates then the mixture will have few enough components to have a number of parameters to estimate significantly lower than $d$. In such a case, it improves interpretation and ability to yeld reliable prediction with a smaller variance on $\boldsymbol{\hat{\beta}}$. A package {\tt clere} for R does exist on {\sc cran} (\cite{packageclere}).%and is included in {\tt CorReg}. \\
 			 \\
@@ -777,22 +779,64 @@ Like the {\sc pcr}, {\sc pls} regression can give an efficient dimension reducti
 	
 	The R package {\tt pls} on {\sc cran} computes both Principal Component Regression and Partial Least Squares Regression (\cite{packagepls}).
 		\subsection{Simultaneous Equation Model (\textsc{sem}) and Path Analysis}		% ne pas oublier de mentionner les packages existants
-		Applied statistics  for non statisticians are well developed in sociology where interpretation  stakes are fare beyond prediction. Sociologists use simple models like linear regression (often with $R^2<0.2$) and describe complex situations with systems of linear regressions. Such systems are called Structural Equation Model or Simultaneaous Equation Model, better known as \textsc{sem} \cite{davidson1993estimation}. Several softwares, from the open-source GRETL \cite{CottrellLucchetti2007gretlmanual} to proprietary STATA, does implement the \textsc{sem}. The systems allow to describe which covariates have an influence on others with an orientation that users can interpret as causality \cite{pearl2000causality,pearl1998graphs}. \\
+		Applied statistics  for non statisticians are well developed in sociology where interpretation  stakes are fare beyond prediction. Sociologists use simple models like linear regression (often with $R^2<0.2$) and describe complex situations with systems of linear regressions. Such systems are called Structural Equation Model or Simultaneaous Equation Model, better known as \textsc{sem} \cite{davidson1993estimation}. Several softwares, from the open-source Gretl \cite{CottrellLucchetti2007gretlmanual} to proprietary STATA, does implement the \textsc{sem}. The systems allow to describe which covariates have an influence on others with an orientation that users can interpret as causality \cite{pearl2000causality,pearl1998graphs}. \\
 		
 		\textsc{sem} are easy to understand for non-statisticians and can be resumed by Directed Acyclic Graphs (DAG) as the Bayesian networks do. But the problem is that the structure of regression between the covariates is defined {\it a priori}. \textsc{sem} are used to confirm sociological theories, not to create new theories. \\
 		
-		Moreover, estimation of recursive \textsc{sem}, without instrumental variables is exactly a succession of independent \textsc{ols} (confirmed with both GRETL and STATA) so the structure is only used for interpretation, not for estimation \cite{brito2006graphical}. Last but not least, there is no specific status for a response variable, each regression has the same status. We want to be able to model complex dependencies within the covariates and use this knowledge to estimate and understand a specific distinct response variable.
+		Moreover, estimation of recursive \textsc{sem}, without instrumental variables is exactly a succession of independent \textsc{ols} (confirmed with both Gretl and STATA) so the structure is only used for interpretation, not for estimation \cite{brito2006graphical}. Last but not least, there is no specific status for a response variable, each regression has the same status. We want to be able to model complex dependencies within the covariates and use this knowledge to estimate and understand a specific distinct response variable.
 			%mcdonald2002principles
 		\subsection{{\sc sur}: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
-		Seemingly Unrelated Regression \cite{SURzellner} is an estimation method for multiples equations with correlated error terms. It does not take into account correlations between the covariates but starts to estimate the system jointly instead of independent estimations. This estimation relies on Feasible Generalized Least Squares (\textsc{fgls}) that depends on the variance-covariance matrix of the error terms. But when the error terms are independent or the subset of covariates are the same it is equivalent to successive independent \textsc{ols}. The R package {\tt systemfit} on {\sc cran} computes {\sc sur} (\cite{packagesystemfit}). 
+		Seemingly Unrelated Regression ({\sc sur} \cite{SURzellner}) is an estimation method for multiples equations with correlated error terms. It does not take into account correlations between the covariates but starts to estimate a system of $M$ regressions jointly instead of independent estimations. 
+The $M$ regressions are:		
+		\begin{equation}
+		 \boldsymbol{Y}_i|\boldsymbol{X}_i;\boldsymbol{\beta}_i,\sigma_i^2=\boldsymbol{X}_i\boldsymbol{\beta}_i+\boldsymbol{\varepsilon}_i\ ,\quad j=1,\dots,M,\nonumber
+		\end{equation}
+		where $\boldsymbol{Y}_i$ is the $n\times 1$ vector of the response variable of the $i^{th}$ equation, $\boldsymbol{X}_i$ is the $n \times d_i$ matrix of the observations of the $d_i$ explanatory variables for the $i^{th}$ equation, $\boldsymbol{\beta}_i$ is the $d_i \times 1$ vector of the coefficients associated with them and $\boldsymbol{\varepsilon}_i$ is the $n\times 1$ vector of the disturbances with variance $\sigma_i^2$.
+Defining:
+\begin{displaymath}
+	\boldsymbol{Y}=\left[\begin{array}{c}
+	 \boldsymbol{Y}_1\\ 
+	\boldsymbol{Y}_2 \\ 
+	\vdots \\ 
+	\boldsymbol{Y}_M
+	\end{array}  \right],
+	\boldsymbol{X}=\left[\begin{array}{cccc}
+	 \boldsymbol{X}_1&0 &\cdots &0 \\ 
+	0&\boldsymbol{X}_2 &\cdots &0 \\ 
+	\vdots & 0 & \ddots &\vdots \\ 
+	0 & 0 &\cdots &\boldsymbol{X}_M 
+	\end{array}  \right],
+	\boldsymbol{\beta}=\left[\begin{array}{c}
+	\boldsymbol{\beta}_1 \\ 
+	\boldsymbol{\beta}_2 \\ 
+	\vdots \\ 
+	\boldsymbol{\beta}_M
+	\end{array}  \right],
+	\boldsymbol{\varepsilon}=\left[\begin{array}{c}
+	 \boldsymbol{\varepsilon}_1\\ 
+	\boldsymbol{\varepsilon}_2 \\ 
+	\vdots \\ 
+	\boldsymbol{\varepsilon}_M
+	\end{array}  \right],
+\end{displaymath}		
+		the model is then expressed:
+		\begin{eqnarray}
+			\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\boldsymbol{\Sigma}&=&\boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}. \nonumber
+		\end{eqnarray}
+		 This estimation relies on Feasible Generalized Least Squares (\textsc{fgls}) that depends on $\boldsymbol{\Sigma}$, the $M \times M$ variance-covariance matrix of the error terms:
+		 \begin{equation}
+		 	\hat{\boldsymbol{\beta}}_{FGLS}= [\boldsymbol{X}'(\hat{\boldsymbol{\Sigma}} \otimes \boldsymbol{I}_n)\boldsymbol{X} ]^{-1}\boldsymbol{X}'(\hat{\boldsymbol{\Sigma}} \otimes \boldsymbol{I}_n) \boldsymbol{Y},  \nonumber
+\end{equation}		  
+		 where $\hat{\boldsymbol{\Sigma}}$ is a consistent estimator of $\boldsymbol{\Sigma}$, $\boldsymbol{I}_n$ is the $n\times n$ identity matrix and $\otimes$ is the Kronecker product.
+		 But when the error terms are independent or the subset of covariates are the same it is equivalent to successive independent \textsc{ols}. The R package {\tt systemfit} on {\sc cran} computes {\sc sur} (\cite{packagesystemfit}). 
 %			
 %		\subsection{SPRING: Structured selection of Primordial Relationships IN the General linear model}		% ne pas oublier de mentionner les packages existants
 %
 %\textsc{SPRING} (Structured selection of Primordial Relationships IN the General linear model ) takes into account correlations between endogenous covariates but without explicit expression of the correlations and thus a reduced interpretability \cite{chiquetconf}. It is similar to SUR in that dependencies are modeled with the variance-covariance matrix of the error terms, but with sparsity constraints in this matrix.  It does not distinguish a response variable from internal structure in a dataset. Every equation in the system has a distinct response variable and the explicative covariates are the same for all equations.		
 		\subsection{Selvarclust: Linear regression within covariates for clustering}		% ne pas oublier de mentionner les packages existants
 
-			{\tt Selvarclust} is a software written in C++ modeling dependencies within a dataset			 \cite{maugis2009variable} in a Gaussian clustering context\footnote{\url{http://www.math.univ-toulouse.fr/~maugis/SelvarClustHomepage.html}}.
-			The idea is to allow covariates to have different roles $(S,R,U,W)$ for the clustering:
+			{\tt Selvarclust} is a software written in C++ modeling dependencies within a dataset			 \cite{maugis2009variable} in a Gaussian clustering context\footnote{\url{http://www.math.univ-toulouse.fr/~maugis/SelvarClustHomepage.html}}. In other words, the population is supposed to come from several sub-populations (called the clusters), each following a Gaussian multivariate distribution with $d$ dimensions.
+			The idea is then to allow covariates to have different roles $(S,R,U,W)$ for the clustering:
 			\begin{itemize}
 				\item $S$ stands for the subset of the relevant covariates for clustering
 				\item $U$ and $W$ form a partition of the complementary subset of $S$, with $U$ the subset of irrelevant covariates depending linearly from relevant covariates and $W$ the subset of covariates totally irrelevant and independent from relevant covariates
@@ -1092,10 +1136,8 @@ When sub-regression get weaker ($R^2$ tends to 0) \textsc{CorReg} remains stable
 
  		\FloatBarrier	
 		\paragraph{Observed {\sc mse} for ridge regression:}	
-Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression provides good results for this running example. But we will see later in section \ref{compY} that high dimension reduces the efficiency of the ridge regression when some covariates begin to be irrelevant or not enough relevant because ridge regression is not able to achieve variable selection. \\
-	
-			
-		
+Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression provides good results for this running example. But we will see later in section \ref{compY} that high dimension reduces the efficiency of the ridge regression when some covariates begin to be irrelevant or not enough relevant because ridge regression is not able to achieve variable selection. 
+
 \section{Connexion with graphs}\label{sectiongraph}
 	We can also model $\boldsymbol{S}$ by a Directed Acyclic Graph (DAG) whose vertices are the $d$ covariates and directed edges are the links  between them described by the adjacency matrix $\boldsymbol{G}$ \cite{bondy1976graph}. This adjacency matrix is a binary $d\times d$ matrix with $\boldsymbol{G}_{i,j}=1$ if $j\in J_r$ and $i \in J_p^j$ (that is $\boldsymbol{X}^j$ is explained by $\boldsymbol{X}^i$ and can also be seen as $\boldsymbol{\alpha}^*_{i,j}\neq 0$) and $\boldsymbol{G}_{i,j}=0$ elsewhere.\\
 	
@@ -1103,16 +1145,17 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
 	
 	The partition of $\boldsymbol{X}$ means that the associated graph is bipartite: vertices follow a partition $(\boldsymbol{X}_r,\boldsymbol{X}_f)$ with directed edges only going from $\boldsymbol{X}_f$ to $\boldsymbol{X}_r$.
 	We know (\cite{biggs1993algebraic}) as a classical result of graph theory that the power of adjacency matrices give the paths in the graph: $\boldsymbol{G}^k_{i,j}\neq 0$ means that there is at least a path of length $k$ going from $\boldsymbol{X}^i$ to $\boldsymbol{X}^j$. We note $\mathcal{S}_d$ the set of feasible structures (verifying hypothesis \ref{H2}) with $d$ covariates. Because the graph is bipartite we can deduce that $\boldsymbol{G}$ is nilpotent: $\boldsymbol{G}^2=0$. And we have the following result:\\
-	
+	\\
+\fcolorbox{bleufonce}{bleuclair}{\begin{minipage}{1\textwidth}	
 	\paragraph{Theorem:} Every binary nilpotent matrix of order 2 can be seen as an adjacency matrix of a structure that respects the uncrossing rule, and {\it vice versa}. Then the number of feasible structures with $d$ covariates is the number of $d$-sized binary nilpotent matrices of order 2:
 	\begin{itemize}
 	\item $
 		\forall \tilde{\boldsymbol{G}} \in \mathcal{M}_{b,d}, \tilde{\boldsymbol{G}}^2=0 \Rightarrow \tilde{\boldsymbol{S}}\in \mathcal{S}_d$,
 \item $\forall \tilde{\boldsymbol{S}}\in \mathcal{S}_d, \tilde{\boldsymbol{G}}^2=0$,
 	\end{itemize}
-where $\tilde{\boldsymbol{G}}$ is the adjacency matrix associated to $\tilde{\boldsymbol{S}}\in \mathcal{S}_d$ and $\mathcal{M}_{b,d}$ is the set of $d\times d$ binary matrices (filled only with 1 and 0).
-	 
-	\paragraph{proof:} Every binary matrix can be associated to a structure as an adjacency matrix and every structure can be described by its adjacency matrix. Thus we just have to demonstrate equivalence between uncrossing and nilpotent $\boldsymbol{G}$. If there exists a path of length 2 between some vertices $i$ and $j$ (uncrossing rule violated) then $\boldsymbol{G}^2_{i,j}\neq 0$ so the matrix is not nilpotent of order 2. So the set of nilpotent matrices includes the set of adjacency matrices associated to $\mathcal{S}_d$. If $\boldsymbol{G}$ is nilpotent then there is no path of length 2 in the graph (uncrossing rule verified). So we have the reverse inclusion and then equivalence between the set of adjacency matrices associated to $\mathcal{S}_d$ and the set of nilpotent matrices. $\square$\\
+where $\tilde{\boldsymbol{G}}$ is the $d\times d$ adjacency matrix associated to the structure $\tilde{\boldsymbol{S}}$ and $\mathcal{M}_{b,d}$ is the set of $d\times d$ binary matrices (filled only with 1 and 0).
+\end{minipage}}	 
+	\paragraph{Proof:} Every binary matrix can be associated to a structure as an adjacency matrix and every structure can be described by its adjacency matrix. Thus we just have to demonstrate equivalence between uncrossing and nilpotent $\boldsymbol{G}$. If there exists a path of length 2 between some vertices $i$ and $j$ (uncrossing rule violated) then $\boldsymbol{G}^2_{i,j}\neq 0$ so the matrix is not nilpotent of order 2. So the set of nilpotent matrices includes the set of adjacency matrices associated to $\mathcal{S}_d$. If $\boldsymbol{G}$ is nilpotent then there is no path of length 2 in the graph (uncrossing rule verified). So we have the reverse inclusion and then equivalence between the set of adjacency matrices associated to $\mathcal{S}_d$ and the set of nilpotent matrices. $\square$\\
 	
 	We see that $\boldsymbol{G}$ completely describes $\boldsymbol{S}$ that is in fact a sparse storage of $\boldsymbol{G}$.
 	We decompose the structure to enumerate all the feasible structures (and thus all the binary nilpotent matrices of order 2).\\
@@ -1127,14 +1170,12 @@ where $\tilde{\boldsymbol{G}}$ is the adjacency matrix associated to $\tilde{\bo
 
 			The number of possible $\boldsymbol{J}_r$ for given values of $d$ and $d_r$ is ${d \choose d_r}=\frac{d!}{d_r!(d-d_r)!}$ (binomial coefficient).\\
 	
-			The number of possible $\boldsymbol{J}_p$ for given values of $d, d_r$ and $\boldsymbol{J}_r$ is $(2^{d-d_r}-1)^{d_r}$.\\
-			
-			Thus we have
+			The number of possible $\boldsymbol{J}_p$ for given values of $d, d_r$ and $\boldsymbol{J}_r$ is $(2^{d-d_r}-1)^{d_r}$, thus we have
 			\begin{eqnarray}
 		%\operatorname{Card}(\boldsymbol{J}_p|\boldsymbol{J}_r,d_r)&=& (2^{d-d_r}-1)^{d_r}\\
 		|\mathcal{S}_d|&=&%\sum_{d_r=0}^{d-1}|\mathcal{S}_{d|d_r}|=
 		 %\sum_{d_r=0}^{d-1}\frac{1}{\mathbb{P}(\boldsymbol{S}|d_r)} =
-		 \sum_{d_r=0}^{d-1}{d \choose d_r}(2^{d-d_r}-1)^{d_r} \nonumber
+		 \sum_{d_r=0}^{d-1}{d \choose d_r}(2^{d-d_r}-1)^{d_r}. \nonumber
 	\end{eqnarray}
 	 \\
 	We have then $|\mathcal{S}_2| =3 $, $|\mathcal{S}_3| =13 $ and $|\mathcal{S}_{10}| >13.26\times10^9 $ so the number of feasible structures really explodes when $d$ is growing. Next chapter shows results with $d=40$ and it corresponds to $|\mathcal{S}_{40}| >7.32\times10^{131} $ feasible structures. The function {\tt ProbaZ } of the package { \tt CorReg} gives the number of feasible structures for a given value of $d$, but {\tt R} returns $+\infty$ for $d>62$.\\
@@ -1426,7 +1467,7 @@ All covariates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and 
 \begin{equation}
 \mathbb{P}(\boldsymbol{X}_f^j|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j) = \sum_{h=1}^{K_j} \pi_{j,h} \mathcal{N}_n(\mu_{j,h} . (1,\ldots,1)',\Sigma_{j,h}\boldsymbol{I}_n), \nonumber
 \end{equation}
-where $\boldsymbol{\pi}_{j}=(\pi_{j,1},\ldots,\pi_{j,K_j})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{j,h}>0$ and $\sum_{h=1}^{K_j}\pi_{j,h}=1$, $\boldsymbol{\mu}_j=(\mu_{j,1},\ldots,\mu_{j,K_j})$  is the vector of centers and $\boldsymbol{\Sigma}_j=(\Sigma_{j,1},\ldots,\Sigma_{j,K_j})$ is the vector of variances. \\We stack together all these mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
+where $\boldsymbol{\pi}_{j}=(\pi_{j,1},\ldots,\pi_{j,K_j})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{j,h}>0$ and $\sum_{h=1}^{K_j}\pi_{j,h}=1$, $\boldsymbol{\mu}_j=(\mu_{j,1},\ldots,\mu_{j,K_j})$  is the vector of centres and $\boldsymbol{\Sigma}_j=(\Sigma_{j,1},\ldots,\Sigma_{j,K_j})$ is the vector of variances. \\We stack together all these mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
 
 \end{hyp}
 		 
@@ -1448,17 +1489,7 @@ Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {
 \end{itemize}	
 	
 	
-	
-	\subsection{Usage of the structure $\boldsymbol{S}$ for interpretation}
-		
-	
-	Correlations can lead to serious problems in industrial context. Let's imagine a dataset with two highly correlated covariates. Estimators may give them the same coefficient (grouping effect when using elasticnet) or only keep one of them (like the \textsc{lasso} does). \\
-	
-	If only one is kept without explicitly pointing the correlations we will think that the deleted covariate is irrelevant even if it is not and even if it could be more relevant than the kept covariate in terms of possible actions or physical meanings.\\
-	
-	 On the other hand, keeping both without pointing correlations will lead to modify one of the covariates to impact the value of the response as we want and the other covariate will automatically move so we won't obtain the expected result.\\
-	 
-	  Choosing whereas we have to use or not the marginal model as a pre-treatment is independent of the utility of the structure. Knowing explicitly the complex correlations that hold the dataset is a real stake when times come to interpret the model and to  decide actions. This is a strength of our method. We do not have to make a choice between grouping effect or variable selection because our explicit structure describes in details the complexity of the situation so we can then act knowing what we do, without having to blindly follow one of the two heuristics.
+
 \subsection{Estimation of the numerical parameters}
 	$\boldsymbol{S}$ is a discrete parameter but it is associated to numerical parameters $\boldsymbol{\alpha}$ and $\boldsymbol{\varepsilon}$ through Hypothesis \ref{H1}.
 	We can estimate the coefficients of sub-regression by {\sc ols} for example because sub-regression are small, imply independent covariates and do not need variable selection:
@@ -1565,7 +1596,7 @@ has $|\mathcal{S}_d|$ rows and columns (extremely wide  and sparse matrix for $d
 	At each step the Markov chain moves with probability:
 	\begin{eqnarray}
 			\forall \boldsymbol{S} \in \mathcal{S}_d, \forall \boldsymbol{S}^+\in \mathcal{V}(\boldsymbol{S}): %\mathcal{P}_{\boldsymbol{S},\boldsymbol{S}^+}=
-			\mathbb{P}(\boldsymbol{S}^+|\mathcal{V}(\boldsymbol{S}))&=&\frac{\exp{(-\mbox{{\sc bic}}_*(\boldsymbol{S}^+))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}} \nonumber
+			\mathbb{P}(\boldsymbol{S}^+|\mathcal{V}(\boldsymbol{S}))&=&\frac{\exp{(-\mbox{{\sc bic}}_*(\boldsymbol{S}^+))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}} \label{transitionproba}
 	\end{eqnarray}
 	and $\mathcal{S}_d$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
 	 
@@ -1581,13 +1612,16 @@ Because the walk follows a regular and thus ergodic Markov chain with a finite s
 %	
 But the walk can also be seen as a Gibbs sampler \cite{casella1992explaining} that alternate draws of $\boldsymbol{S}$ and  $\mathcal{V}(\boldsymbol{S})$ with stationary distribution $\pi \propto \operatorname{exp}(-\mbox{{\sc bic}}_*(\cdot))$ on the space $\mathcal{S}_d$.
 	
-The output of the algorithm will be the best structure in terms of $P(\boldsymbol{S}|\boldsymbol{X})$ which weights each candidate. Practically speaking, {\tt CorReg} returns the best structure seen during the walk (even if the corresponding candidate has never been chosen). The package also gives the local structure when the walk stops so the user can relaunch the algorithm from the same point if he wants to go further.
-The main criterion to stop the walk is a maximum number of iterations but {\tt CorReg} can also stop the walk after a given number of steps on the best found model.	
+The output of the algorithm will be the best structure in terms of $P(\boldsymbol{S}|\boldsymbol{X})$ which weights each candidate. 
 	
 	\subsection{Stochastic neighbourhood}
-	We see that $|\mathcal{V}(\boldsymbol{S})|$ can be large so the best transition probability may not be far enough from the other to be chosen with a sufficient probability. A classical way to avoid such a problem is to reduce the neighbourhood to a random subset and to allow stationarity (to keep the walk's properties). But then we face a problem: how to choose candidates in a deterministic neighbourhood made of several sub-neighbourhood? We would have to index them (time consuming) and then to choose random indexes or to choose a number of candidates to choose from each neighbourhood. One idea would be to choose only one candidate to compare to the current structure, allowing to choose first a sub-neighbourhood and then a candidate. But we observe that each candidate can be described by the way it differs from $\boldsymbol{S}$. Then we redefine a neighbourhood based on the modification of the adjacency matrix $\boldsymbol{G}$ associated to $\boldsymbol{S}$.\\
-	
-	For each step $(q)$, starting from $\boldsymbol{S} \in \mathcal{S}_d$ we define a neighbourhood:
+	We see that $|\mathcal{V}(\boldsymbol{S})|$ can be very large. Large neighbourhoods are bad in terms of computational cost but also in terms of efficiency: the denominator in equation (\ref{transitionproba}) increases with the number of candidates. A classical way to avoid such a problem is to reduce the neighbourhood to a random subset and then to allow stationarity (to keep the walk's properties). %But then we face a problem: how to choose candidates in a deterministic neighbourhood made of several sub-neighbourhoods?\\
+	% We would have to index them (time consuming) and then to choose random indexes or to choose a number of candidates to choose from each neighbourhood. One idea would be to choose only one candidate to compare to the current structure, allowing to choose first a sub-neighbourhood and then a candidate.
+	  We 
+	 % observe that each candidate can be described by the way it differs from $\boldsymbol{S}$. Then we can 
+	  redefine a neighbourhood based on the modification of the adjacency matrix $\boldsymbol{G}$ associated to $\boldsymbol{S}$ instead of using the four previous neighbourhoods.\\
+	  	
+For each step $(q)$, starting from $\boldsymbol{S} \in \mathcal{S}_d$ we define a neighbourhood:
 		\begin{eqnarray}
 		\mathcal{V}(\boldsymbol{S})&=& \{\boldsymbol{S} \}\cup \{ \boldsymbol{S}^{(i,j)} \in \mathcal{S}_d|(i,j) \in \mathcal{A}_{(q)}\} \nonumber 
 	\end{eqnarray}	
@@ -1600,8 +1634,7 @@ The main criterion to stop the walk is a maximum number of iterations but {\tt C
 	where $\tilde{\boldsymbol{G}}$ is the adjacency matrix associated to $\tilde{\boldsymbol{S}}$. Any strategy can be chosen for $\mathcal{A}_{(q)}$, from uniform distribution to specific heuristics.\\
 	
 The main advantage of such a neighbourhood is that increasing and decreasing complexities are tested at each step without arbitrary ratio. If we just look at the sub-regression system, we have to choose for each sub-regression if we add, remove or keep covariates and we also have to choose if we had or delete some sub-regressions. Adjacency matrix makes the neighbourhood extremely natural with just the modification of a value in a binary matrix. \\
-Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $\mbox{{\sc bic}}_*$ so it is not an evidence to allow or not stationarity. Our package {\tt CorReg} gives to the user the choice with stationarity,  included in the neighbourhood by default.
-
+Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $\mbox{{\sc bic}}_*$ so it is not an evidence to allow or not stationarity. 
 		\subsubsection{Strategy to draw $\mathcal{A}_{(q)}$}
 			Many strategies can be imagined. 
 		The only constraint on $\mathcal{A}_{(q)}$ is that $\forall (i,j) \in \mathcal{A}_{(q)}, i\neq j$.				
@@ -1610,7 +1643,7 @@ Here the MCMC is not used for sampling or density estimation. We just want to fi
 			\mathcal{A}_{(q)}|j=\{ (i,j) \in  \{1,\dots,d\}^2 :i \neq j \}. \nonumber 
 		\end{equation}
 			Such a strategy can be interpreted as the uniform choice of a sub-regression to modify followed by the proposal of each possible unary change.
-			Our package {\tt CorReg} let the user choose many other strategies for $\mathcal{A}_{(q)}$ like a fixed number of random couples $(i,j)$ , or the union of the $j^{th}$ line and column of $\boldsymbol{G}$. For large values of $d$, the number of candidate at each step can become critical. Each candidate requires to re-estimate the $\boldsymbol{\alpha}^j$'s for each modified sub-regression and it requires matricial inversion (estimation by \textsc{ols}) so computational cost can be high if $n$ is also large.
+			For large values of $d$, the number of candidate at each step can become critical. Each candidate requires to re-estimate the $\boldsymbol{\alpha}^j$'s for each modified sub-regression and it requires matricial inversion (estimation by \textsc{ols}) so computational cost can be high if $n$ is also large. In such cases one solution (almost as a warm-up phase) would be to only consider a random part of the neighbourhood to reduce the computational cost of each step.
 		\subsection{Active relaxation of constraints}
 		In practice, for some of the $(i,j) \in \mathcal{A}_{(q)}$, we have $\boldsymbol{S}^{(i,j)}\notin \mathcal{S}_d$ because of the uncrossing rule. Such candidates are basically rejected so the number of candidates is not constant at each step. Moreover, complex structures reduce the size of the potential neighbourhood because of this uncrossing rule. Last but not least, even if the walk can reach any feasible structure from any other feasible structure, local extrema may significantly slow down the research of the optimal structure.
 		Thus we propose a constraints relaxation method by a new definition of $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$ relying on a new definition of $\tilde{\boldsymbol{G}}$:
@@ -1790,9 +1823,6 @@ We define the complexity of a structure $\boldsymbol{S}$ as the number of elemen
 		
 		For Figures \ref{comparecomplrelax} and \ref{compareBICrelax} we start from an arbitrary structure with a complexity of $62$. We see that relaxation helps to delete these false sub-regressions and avoid to be stuck in it, improving the $\mbox{{\sc bic}}$ much faster. We also observe that final complexities are comparable. Here the MCMC was launched only once (with the totally arbitrary initial structure based on nothing), the true structure had a complexity of $120$.
 		
-		
-\section{Conclusion}	We now have an algorithm and a criterion to find the best structure of correlations. This algorithm is extremely flexible: no heavy hypotheses on the dataset, no crucial parameter to tune by hand. We want then to know how efficient it is on simulated datasets first (Chapter \ref{sectionsimul}), and then on real industrial datasets from ArcelorMittal to confirm the utility of both the new model and the algorithm in the real life (Chapter \ref{sectionrealcase}).
-		
 \begin{center}
 	\begin{figure}[h!]
 	\centering
@@ -1809,7 +1839,8 @@ We define the complexity of a structure $\boldsymbol{S}$ as the number of elemen
 	\end{figure}
 	\end{center}
 			
-		
+\section{Conclusion}	We now have an algorithm and a criterion to find the best structure of correlations. This algorithm is extremely flexible: no heavy hypotheses on the dataset, no crucial parameter to tune by hand. We want then to know how efficient it is on simulated datasets first (Chapter \ref{sectionsimul}), and then on real industrial datasets from ArcelorMittal to confirm the utility of both the new model and the algorithm in the real life (Chapter \ref{sectionrealcase}).	
+		\paragraph{Remark:} Choosing whether we have to use or not the marginal model as a pre-treatment is independent of the utility of the structure. Knowing explicitly the complex correlations that hold the dataset is a real stake when times come to interpret the model and to  decide actions. Our explicit structure describes in details the complexity of the situation so we can then act knowing what we do. 		
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 \paragraph{Abstract:} Here are the numerical results obtained for an unknown structure $\boldsymbol{S}$ on simulated datasets. It illustrates efficiency of the MCMC algorithm used to find a relevant structure between the covariates. The fact that the structure is unknown makes the simulations more similar to a real case study where we do not even know if there is a linear structure of correlations between the covariates.
 		 
@@ -4269,7 +4300,7 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 	We see in figure \ref{MSEXmissBV} that our Stochastic EM gives a smaller \textsc{mse} with a smaller variance than imputation by the mean. 
 	
 \FloatBarrier	
-\paragraph{Conclusion:}	We can see that our generative model on the dataset and the explicit modeling of the correlations are powerful enough to manage missing values either to estimate $\boldsymbol{\alpha}$, $\boldsymbol{S}$, the main regression coefficients or even to impute missing values with an indicator of the reliability of these imputations. But we have to face the sad reality: we cannot create information and if too much values are missing we won't get good results. Moreover, the algorithms used here have good asymptotic properties but time is not infinite during a statistical study. However, if there are not too much missing values or if they are not too badly placed in the dataset we can hope to obtain good results in a reasonable amount of time.\\
+\section{Conclusion}	We can see that our generative model on the dataset and the explicit modeling of the correlations are powerful enough to manage missing values either to estimate $\boldsymbol{\alpha}$, $\boldsymbol{S}$, the main regression coefficients or even to impute missing values with an indicator of the reliability of these imputations. But we have to face the sad reality: we cannot create information and if too much values are missing we won't get good results. Moreover, the algorithms used here have good asymptotic properties but time is not infinite during a statistical study. However, if there are not too much missing values or if they are not too badly placed in the dataset we can hope to obtain good results in a reasonable amount of time.\\
 There is still a lot of work to do in the field of missing values and we have only walked the firsts steps of this huge perspective, but these first results are encouraging and make us feel like this orientation is worthy to be followed.
 
 
@@ -4289,8 +4320,8 @@ There is still a lot of work to do in the field of missing values and we have on
 			Logistic regression \cite{hosmer2000applied} is in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain the same kind of phenomenon. It would be an easy generalization of \textsc{CorReg} to binary response variables. Introduction of qualitative covariates would be another big improvement for our method.
 			\subsection{Regression mixture models}
 			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values. In such a model, the contribution of the structure itself would be even greater for the final user. An additional algorithm to search for distinct or equal coefficients within the classes would be to develop.
-			\subsection{Using $\boldsymbol{Y}$ to estimate $S$}
-			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results when applied on $\boldsymbol{Y}$. But it would probably give distinct structures according to the chosen model (marginal or plug-in). It would also require a criterion that could be the $BIC$ associated to the combination of both $\boldsymbol{S}$ and the chosen regression on $\boldsymbol{Y}$ or a {\sc mse}  but with added computational cost if the {\sc lasso} (for example) has to be computed for each candidate structure in the MCMC. This perspective would require to rethink entirely the criterion used to choose the structure and the algorithm to find it. This would be a whole new research direction and a real competitor against the method presented here. A possible consequence of such a model would be a reduce marginalization with some response covariates kept when the correlations implied are not too strong, as a trade-off between the marginal and the plug-in model.
+			\subsection{Using $\boldsymbol{Y}$ to estimate $\boldsymbol{S}$}
+			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results when applied on $\boldsymbol{Y}$. But it would probably give distinct structures according to the chosen model (marginal or plug-in). It would also require a criterion that could be the {\sc bic} associated to the combination of both $\boldsymbol{S}$ and the chosen regression on $\boldsymbol{Y}$ or a {\sc mse}  but with added computational cost if the {\sc lasso} (for example) has to be computed for each candidate structure in the MCMC. This perspective would require to rethink entirely the criterion used to choose the structure and the algorithm to find it. This would be a whole new research direction and a real competitor against the method presented here. A possible consequence of such a model would be a reduce marginalization with some response covariates kept when the correlations implied are not too strong, as a trade-off between the marginal and the plug-in model.
 		\subsection{Pre-treatment for non-linear regression}
 			Polynomial regression, Classification and Regression Trees, and any other method could also benefit from the variable selection pre-treatment implied by our marginal model. Definition of a plug-in model for these methods would be of great interest so it is a challenging perspective.
 			\subsection{Missing values in classical methods}
@@ -4434,20 +4465,19 @@ the only non-identifiable sub-regressions could be those with only one regressor
 
 
 	\newpage
-\chapter{CorReg: the computer tools}	
+\chapter{CorReg: Existing and coming computer tools}	
 	
-		The {\tt CorReg} package is already downloadable on {\sc cran} under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both explicative and predictive model with many regression tools (\textsc{ols}, stepwise, \textsc{lasso}, elasticnet, clere, spike and slab, adaptive \textsc{lasso} and every models in the {\tt lars} package). So every simulation presented above can be done with {\tt CorReg}.
+		The {\tt CorReg} package is already downloadable on {\sc cran} under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both complete, marginal and plug-in models with many regression tools (\textsc{ols}, stepwise, \textsc{lasso}, elasticnet, clere, spike and slab, adaptive \textsc{lasso} and every models in the {\tt lars} package). So every simulation presented above can be done with {\tt CorReg}.
 	{\tt CorReg} also provides tools to interpret found structures and visualize the dataset (missing values and correlations). \\%More informations can be found on the website www.correg.org which is dedicated to \textsc{CorReg}. 
-	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made available in Microsoft Excel by the end of the year 2014, using Basic Excel R Toolkit (BERT\footnote{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}). Figure \ref{captureexcel} gives a glimpse of what it will look like.\\
+	The objective of {\tt CorReg} is also to bring recent statistical tools to engineers. Thus it will be made available in Microsoft Excel by 2015, using Basic Excel R Toolkit (BERT\footnote{\url{https://github.com/StructuredDataLLC/Basic-Excel-R-Toolkit}}). Figure \ref{captureexcel} gives a glimpse of what it will look like. Another project is to propose {\tt CorReg} in Gretl\footnote{\url{http://gretl.sourceforge.net/}} (Gnu Regression, Econometrics and Time Series Library) that already have tools for Simultaneous Equation Modeling.\\
 	
 	
 \begin{figure}
 \centering
 \includegraphics[width=480px]{figures/captureexcel.PNG} 
 	\caption{Screenshot of the Graphical User Interface of {\tt CorReg} in Excel.}\label{captureexcel}
-\end{figure}	
-	
-	It also provides some small scripts put in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel).\\
+\end{figure}		
+	The package provides some small scripts put in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel).\\
 	 One example of graphical tool is the {\tt matplot\_zone} function that allows to compare several curves according to a given function (input parameter) and was widely used to compare the \textsc{mse} and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
 	 
 	More features will be added as statistics will continue to be taught to engineers at ArcelorMittal Dunkerque to provide ergonomic and powerful statistical tools to non-statisticians. \\
@@ -4493,7 +4523,7 @@ Then we can start the study by estimation of the marginal densities:
    density=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE)
    Bic_null_vect=density$BIC_vect# vector of the d BIC
 \end{lstlisting}
-The {\sc bic} obtained come as input for the MCMC:
+The {\sc bic} obtained comes as an input for the MCMC:
 \begin{lstlisting}[language=R]
    #MCMC to find the structure
    res=structureFinder(
@@ -4511,6 +4541,11 @@ The {\sc bic} obtained come as input for the MCMC:
    hatZ=res$Z_opt#best adjacency matrix found
    hatBic=res$bic_opt#associated BIC
 \end{lstlisting}
+
+Practically speaking, {\tt CorReg} returns the best structure seen during the walk (even if the corresponding candidate has never been chosen) as an adjacency matrix. The package also gives the local structure when the walk stops so the user can relaunch the algorithm from the same point if he wants to go further.\\
+The main criterion to stop the walk is a maximum number of iterations but {\tt CorReg} can also stop the walk after a given number of steps on the best found model. Exact sub-regressions are directly given to the user during the walk to allow to stop the walk and relaunch it without one of the implied covariates (without any loss of information).	\\
+{\tt CorReg} gives to the user the choice with stationarity,  included in the neighbourhood by default. Moreover, the package let the user choose many strategies for $\mathcal{A}_{(q)}$ like a fixed number of random couples $(i,j)$ , or the union of the $j^{th}$ line and column of $\boldsymbol{G}$.\\
+
 Once a structure is found, we can look for further details:
 \begin{lstlisting}[language=R]
 #interpretation of found and true structure ordered by increasing R2
