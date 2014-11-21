@@ -4478,7 +4478,7 @@ the only non-identifiable sub-regressions could be those with only one regressor
 	\caption{Screenshot of the Graphical User Interface of {\tt CorReg} in Excel.}\label{captureexcel}
 \end{figure}		
 	The package provides some small scripts put in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel).\\
-	 One example of graphical tool is the {\tt matplot\_zone} function that allows to compare several curves according to a given function (as an input parameter) and was widely used to compare the \textsc{mse} and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
+	 One example of graphical tool is the {\tt matplot\_zone} function that allows to compare several curves according to a given function (as an input parameter) and was widely used to compare the \textsc{mse} and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend (see Figure \ref{arbretoy}) but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
 	 
 	More features will be added as statistics will continue to be taught to engineers at ArcelorMittal Dunkerque to provide ergonomic and powerful statistical tools to non-statisticians. \\
 	\FloatBarrier	
@@ -4549,14 +4549,14 @@ The main criterion to stop the walk is a maximum number of iterations but {\tt C
 Once a structure is found, we can compare it to the true structure (see section \ref{sectioncompZ}):
 \begin{lstlisting}[language=R]
   #Structure comparison
-	> compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
-	> compZ$true_left #number of "True Responses"
+> compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
+> compZ$true_left #number of "True Responses"
 [1] 4
-	> compZ$false_left #number of "Wrong responses "
+> compZ$false_left #number of "Wrong responses "
 [1] 0
-	> compZ$ratio_true1 #no correlations are missing
+> compZ$ratio_true1 #no correlations are missing
 [1] 1	
-	> compZ$false1 #3 correlations were added (over-fitting).
+> compZ$false1 #3 correlations were added (over-fitting).
 [1] 3
 \end{lstlisting}
 So here we have found all the $4$ sub-regressions. 
@@ -4564,7 +4564,7 @@ No correlations are missing but $3$ were added (some over-fitting).\\
 We can also look for further details:
 \begin{lstlisting}[language=R]
 #interpretation of the structure found, ordered by increasing R2:
-   > readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)
+> readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)
    # (<NA>line: name (or index) of the response covariate)
 [[1]]
               coefs       var
@@ -4610,7 +4610,7 @@ We can also look for further details:
 Then we use the structure for the main regression on the response variable:
 \begin{lstlisting}	[language=R]
    #Regression coefficients estimation
-	> resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,#we give the dataset and the structure
+> resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,#we give the dataset and the structure
    		compl=TRUE,expl=TRUE,pred=TRUE,#we want the 3 models
                 select="NULL",#we will use OLS
                 K=10# number of groups for the K-fold cross-validation
@@ -4618,31 +4618,34 @@ Then we use the structure for the main regression on the response variable:
                 \end{lstlisting}
                And we can compare the coefficients of the three models (intercept in first position):
                 \begin{lstlisting}	[language=R]
-	> resY$compl$A #coefficients of the complete model 
+> resY$compl$A #coefficients of the complete model 
 [1] -25.511666 -27.237825  24.890817  -7.268666 -27.829301
  [6]  37.510213  34.882207 -23.717979  48.738350 -41.933443
 [11]  62.007268
-	> resY$expl$A
+> resY$expl$A #marginal model
 [1]  -6.769296 -10.152404 -32.502943   8.031446  -2.939350
  [6]   5.535478   0.000000 -19.134011   0.000000   0.000000
 [11]   0.000000
-	> resY$pred$A
+> resY$pred$A #plug-in model
  [[1] -29.008358 -13.188767  -6.823660   5.941027  -9.369883
  [6]  21.484112   6.201073 -22.904017  14.219635  -6.743260
 [11]  40.350803
+> base$A #true model
+ [1]  -8 -10 -10  -5  -6   8  14 -13   9  -7  14
 \end{lstlisting}
-And we can use the validation sample to compare the models:
+And we can use the validation sample to compare the models in terms of predictive efficiency:
 \begin{lstlisting}[language=R]
-   > MSE_complete=MSE_loc(Y=Y_test,X=X_test,A=resY$compl$A)#complete
-   > MSE_explicative=MSE_loc(Y=Y_test,X=X_test,A=resY$expl$A)#marginal
-   > MSE_predictive=MSE_loc(Y=Y_test,X=X_test,A=resY$pred$A)#plug-in
-   > MSE_true=MSE_loc(Y=Y_test,X=X_test,A=base$A)#true model
+> MSE_complete=MSE_loc(Y=Y_test,X=X_test,A=resY$compl$A)#complete
+> MSE_marginal=MSE_loc(Y=Y_test,X=X_test,A=resY$expl$A)#marginal
+> MSE_plugin=MSE_loc(Y=Y_test,X=X_test,A=resY$pred$A)#plug-in
+> MSE_true=MSE_loc(Y=Y_test,X=X_test,A=base$A)#true model
 
-   > MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive,MSE_true)
-   > MSE
-  MSE_complete MSE_explicative MSE_predictive MSE_true
-     628.0226         467.119      454.7964 	203.2154
+> data.frame(MSE_complete,MSE_explicative,MSE_predictive,MSE_true)
+  MSE_complete 	MSE_marginal 	MSE_plugin 	MSE_true
+   628.0226  	467.119      	454.7964 	203.2154
 \end{lstlisting}
+We observe that the marginal model is better than the complete model but the plug-in model is able to improve the results from the marginal model by using all the covariates. \\
+
 This script describes the whole process of {\tt CorReg}. We can see that it is really adapted to an automated process as we have done for Excel.
 
 
