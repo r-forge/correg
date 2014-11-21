@@ -80,9 +80,9 @@ commentstyle=\color{OliveGreen}, % white comments
 	
 	Il en découle une pré-sélection de variables nettement moins corrélées sans perte significative d'information et avec un fort potentiel explicatif (la pré-selection elle-même est expliquée par la structure de sous-régression qui est simple à comprendre car uniquement constituée de modèles linéaires). \\
 	
-	Un algorithme de recherche de structure de sous-régressions est proposé, basé sur un modèle génératif complet sur les données et utilisant une chaîne MCMC (Monte-Carlo Markov Chain). Ce prétraitement est utilisé pour la régression linéaire à des fins illustratives mais ne dépend pas de la variable réponse et peut donc être utilisé de manière générale pour toute problématique de corrélations.\\
+	Un algorithme de recherche de structure de sous-régressions est proposé, basé sur un modèle génératif complet sur les données et utilisant une chaîne MCMC (Monte-Carlo Markov Chain). Ce prétraitement est utilisé pour la régression linéaire à des fins illustratives mais ne dépend pas de la variable réponse. Il peut donc être utilisé de manière générale pour toute problématique de corrélations.\\
 	
-	Par la suite, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter les variables redondantes de manière séquentielle et donc utiliser toute l'information sans souffrir des corrélations entre covariables.
+	Par la suite, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter les variables redondantes de manière séquentielle. On utilise ainsi toute l'information sans souffrir des corrélations entre covariables.
 	\\
 	
 	Enfin, le modèle génératif complet offre la perspective de pouvoir être utilisé pour gérer d'éventuelles valeurs manquantes dans les données, tant pour la recherche de structure que pour de l'imputation multiple préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. Cela permet également d'estimer les valeurs manquantes et à terme  de fournir un estimateur de la variance de leur estimation.
@@ -1548,13 +1548,13 @@ In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc
 
 %	 
 %	
-		\subsection{Some indicators for proximity}
+		\subsection{Some indicators for proximity} \label{sectioncompZ}
 		The first criterion is $\mbox{{\sc bic}}_*$ which is maximized in the MCMC. But its value does not have any intrinsic meaning. To show how far the found structure is from the true one in terms of $\boldsymbol{S}$ we define some indicators to compare the true model $\boldsymbol{S}$ and the found one $\hat{\boldsymbol{S}}$.
 			Global indicators:
 			\begin{itemize}
-				\item $T_r=|J_r \cap \hat{J}_r|$ (``True Response''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are {\it truly} response covariates in the true model $\boldsymbol{S}$.
-				\item $W_r=|\hat{J}_r|-T_r$ (``Wrong Response''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are are {\it wrongfully} response covariates in the true model $\boldsymbol{S}$.
-				\item $M_r=d_r-T_r$ (``Missing Response''): the number of true response variables not found.
+				\item $T_r=|J_r \cap \hat{J}_r|$ (``True Responses''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are {\it truly} response covariates in the true model $\boldsymbol{S}$.
+				\item $W_r=|\hat{J}_r|-T_r$ (``Wrong Responses''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are are {\it wrongfully} response covariates in the true model $\boldsymbol{S}$.
+				\item $M_r=d_r-T_r$ (``Missing Responses''): the number of true response variables not found.
 				\item $\Delta d_r=d_r-\hat{d_r}$: the gap between the number of sub-regression in both model. The sign defines if $\hat{\boldsymbol{S}}$ is too complex or too simple compared to the true model.
 				\item $\Delta compl=\sum_{j=1}^{d_r}d_p^j$: the difference in complexity between both models.
 			\end{itemize}
@@ -4478,7 +4478,7 @@ the only non-identifiable sub-regressions could be those with only one regressor
 	\caption{Screenshot of the Graphical User Interface of {\tt CorReg} in Excel.}\label{captureexcel}
 \end{figure}		
 	The package provides some small scripts put in functions to obtain graphical representations and basic statistics with legends for non-statistician with only one command line (or macro button in Excel).\\
-	 One example of graphical tool is the {\tt matplot\_zone} function that allows to compare several curves according to a given function (input parameter) and was widely used to compare the \textsc{mse} and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
+	 One example of graphical tool is the {\tt matplot\_zone} function that allows to compare several curves according to a given function (as an input parameter) and was widely used to compare the \textsc{mse} and complexities in this document. Another example is the {\tt recursive\_tree} function to plot classification and regression trees with basic statistics and legend but also to successively compute trees removing some correlated covariates or covariates that cannot be changed in the process to see if they are replaced by others more useful (this recursive aspect has given its name to the function).\\
 	 
 	More features will be added as statistics will continue to be taught to engineers at ArcelorMittal Dunkerque to provide ergonomic and powerful statistical tools to non-statisticians. \\
 	\FloatBarrier	
@@ -4487,10 +4487,10 @@ the only non-identifiable sub-regressions could be those with only one regressor
 \\
 We first generate a dataset:
 \begin{lstlisting}[language=R]
-rm(list=ls()) #clear the workspace
-require(CorReg) #load CorReg if not already done
+> rm(list=ls()) #clear the workspace
+> require(CorReg) #load CorReg if not already done
 #we first generate a dataset
-base=mixture_generator(
+> base=mixture_generator(
 	n=15, #number of individuals
 	p=10, #number of covariates
 	ratio=0.4, #ratio of covariates that are response variables
@@ -4508,25 +4508,25 @@ base=mixture_generator(
 	max_compl=3,#maximum number of predictors in each sub-regression
     )
   #learning set (n individuals)
-   X_appr=base$X_appr 
-   Y_appr=base$Y_appr 
+   > X_appr=base$X_appr 
+   > Y_appr=base$Y_appr 
    
   #validation sample (1 000 individuals by default)
-   Y_test=base$Y_test
-   X_test=base$X_test
+   > Y_test=base$Y_test
+   > X_test=base$X_test
 
    TrueZ=base$Z#True generative structure (binary adjacency matrix)
 \end{lstlisting}
 Then we can start the study by estimation of the marginal densities:
 \begin{lstlisting}[language=R]
    #density estimation of each covariate with a max of 10 components
-   density=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE)
-   Bic_null_vect=density$BIC_vect# vector of the d BIC
+   > density=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE)
+   > Bic_null_vect=density$BIC_vect# vector of the d BIC
 \end{lstlisting}
 The {\sc bic} obtained comes as an input for the MCMC:
 \begin{lstlisting}[language=R]
    #MCMC to find the structure
-   res=structureFinder(
+   > res=structureFinder(
 		X=X_appr,#the dataset
 		verbose=0,#several levels of details during the walk
   		reject=0,#constraint relaxation
@@ -4538,51 +4538,110 @@ The {\sc bic} obtained comes as an input for the MCMC:
         p1max=15,#maximum complexity of sub-regressions
         clean=TRUE#additional cleaning steps at the end       
       )
-   hatZ=res$Z_opt#best adjacency matrix found
-   hatBic=res$bic_opt#associated BIC
+   > hatZ=res$Z_opt#best adjacency matrix found
+   > hatBic=res$bic_opt#associated BIC
 \end{lstlisting}
 
 Practically speaking, {\tt CorReg} returns the best structure seen during the walk (even if the corresponding candidate has never been chosen) as an adjacency matrix. The package also gives the local structure when the walk stops so the user can relaunch the algorithm from the same point if he wants to go further.\\
 The main criterion to stop the walk is a maximum number of iterations but {\tt CorReg} can also stop the walk after a given number of steps on the best found model. Exact sub-regressions are directly given to the user during the walk to allow to stop the walk and relaunch it without one of the implied covariates (without any loss of information).	\\
 {\tt CorReg} gives to the user the choice with stationarity,  included in the neighbourhood by default. Moreover, the package let the user choose many strategies for $\mathcal{A}_{(q)}$ like a fixed number of random couples $(i,j)$ , or the union of the $j^{th}$ line and column of $\boldsymbol{G}$.\\
 
-Once a structure is found, we can look for further details:
+Once a structure is found, we can compare it to the true structure (see section \ref{sectioncompZ}):
 \begin{lstlisting}[language=R]
-#interpretation of found and true structure ordered by increasing R2
-   readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)
-   readZ(Z=TrueZ,crit="R2",X=X_appr,output="all",order=1)
-   # (<NA>line: name of subregressed covariate)
-
+  #Structure comparison
+	> compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
+	> compZ$true_left #number of "True Responses"
+[1] 4
+	> compZ$false_left #number of "Wrong responses "
+[1] 0
+	> compZ$ratio_true1 #no correlations are missing
+[1] 1	
+	> compZ$false1 #3 correlations were added (over-fitting).
+[1] 3
 \end{lstlisting}
-Here we can also look how near it is from the true model:
+So here we have found all the $4$ sub-regressions. 
+No correlations are missing but $3$ were added (some over-fitting).\\
+We can also look for further details:
 \begin{lstlisting}[language=R]
-   #BIC comparison between true and found structure
-   bicopt_vect=BicZ(X=X_appr,Z=hatZ,Bic_null_vect=Bic_null_vect)
-   bicopt_vrai=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=Bic_null_vect)
-   sum(bicopt_vect);sum(bicopt_vrai)
+#interpretation of the structure found, ordered by increasing R2:
+   > readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)
+   # (<NA>line: name (or index) of the response covariate)
+[[1]]
+              coefs       var
+1   0.9110810299677        R2
+2              <NA>         6
+3 -0.60389362304509 intercept
+4  -0.5080670369077         2
+5 0.262896800316838         3
+6 -0.41335932330995         5
 
-   
+[[2]]
+               coefs       var
+1  0.942274685071874        R2
+2               <NA>        10
+3  0.802402741595218 intercept
+4 -0.532932485555117         2
+5 0.0972300933365791         4
+6 -0.409558991808605         5
 
-   #Structure comparison
-   compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
-	compZ$true_left;compZ$false_left
+[[3]]
+               coefs       var
+1  0.947429765365844        R2
+2               <NA>         9
+3 -0.881772084905585 intercept
+4 0.0743241715086655         2
+5 -0.153741473798903         3
+6 -0.371811407183514         4
+7  0.192198139511508         5
+
+[[4]]
+                coefs       var
+1   0.954402650897285        R2
+2                <NA>         8
+3  -0.867797429793816 intercept
+4   0.213533111330489         1
+5 -0.0367999079013308         2
+6 -0.0405454729730624         3
+7   0.312013168373898         5
+8   0.265126747497754         7
 \end{lstlisting}
+
+
 Then we use the structure for the main regression on the response variable:
 \begin{lstlisting}	[language=R]
    #Regression coefficients estimation
-   resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,
-   		compl=TRUE,expl=TRUE,pred=TRUE,
-                select="lar",K=10,returning=TRUE)
+	> resY=correg(X=X_appr,Y=Y_appr,Z=hatZ,#we give the dataset and the structure
+   		compl=TRUE,expl=TRUE,pred=TRUE,#we want the 3 models
+                select="NULL",#we will use OLS
+                K=10# number of groups for the K-fold cross-validation
+                )
+                \end{lstlisting}
+               And we can compare the coefficients of the three models (intercept in first position):
+                \begin{lstlisting}	[language=R]
+	> resY$compl$A #coefficients of the complete model 
+[1] -25.511666 -27.237825  24.890817  -7.268666 -27.829301
+ [6]  37.510213  34.882207 -23.717979  48.738350 -41.933443
+[11]  62.007268
+	> resY$expl$A
+[1]  -6.769296 -10.152404 -32.502943   8.031446  -2.939350
+ [6]   5.535478   0.000000 -19.134011   0.000000   0.000000
+[11]   0.000000
+	> resY$pred$A
+ [[1] -29.008358 -13.188767  -6.823660   5.941027  -9.369883
+ [6]  21.484112   6.201073 -22.904017  14.219635  -6.743260
+[11]  40.350803
 \end{lstlisting}
 And we can use the validation sample to compare the models:
 \begin{lstlisting}[language=R]
-   MSE_complete=MSE_loc(Y=Y_test,X=X_test,A=resY$compl$A)
-   MSE_explicative=MSE_loc(Y=Y_test,X=X_test,A=resY$expl$A)
-   MSE_predictive=MSE_loc(Y=Y_test,X=X_test,A=resY$pred$A)
-   MSE_vrai=MSE_loc(Y=Y_test,X=X_test,A=base$A)
+   > MSE_complete=MSE_loc(Y=Y_test,X=X_test,A=resY$compl$A)#complete
+   > MSE_explicative=MSE_loc(Y=Y_test,X=X_test,A=resY$expl$A)#marginal
+   > MSE_predictive=MSE_loc(Y=Y_test,X=X_test,A=resY$pred$A)#plug-in
+   > MSE_true=MSE_loc(Y=Y_test,X=X_test,A=base$A)# with the true coefficients
 
-   MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive,MSE_vrai)
-   MSE
+   > MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive,MSE_true)
+   > MSE
+  MSE_complete MSE_explicative MSE_predictive MSE_true
+     628.0226         467.119      454.7964 	203.2154
 \end{lstlisting}
 This script describes the whole process of {\tt CorReg}. We can see that it is really adapted to an automated process as we have done for Excel.
 
