@@ -4636,7 +4636,7 @@ And we can use the validation sample to compare the models:
    > MSE_complete=MSE_loc(Y=Y_test,X=X_test,A=resY$compl$A)#complete
    > MSE_explicative=MSE_loc(Y=Y_test,X=X_test,A=resY$expl$A)#marginal
    > MSE_predictive=MSE_loc(Y=Y_test,X=X_test,A=resY$pred$A)#plug-in
-   > MSE_true=MSE_loc(Y=Y_test,X=X_test,A=base$A)# with the true coefficients
+   > MSE_true=MSE_loc(Y=Y_test,X=X_test,A=base$A)#true model
 
    > MSE=data.frame(MSE_complete,MSE_explicative,MSE_predictive,MSE_true)
    > MSE
