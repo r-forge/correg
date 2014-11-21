@@ -85,7 +85,7 @@ commentstyle=\color{OliveGreen}, % white comments
 	Par la suite, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter les variables redondantes de manière séquentielle. On utilise ainsi toute l'information sans souffrir des corrélations entre covariables.
 	\\
 	
-	Enfin, le modèle génératif complet offre la perspective de pouvoir être utilisé pour gérer d'éventuelles valeurs manquantes dans les données, tant pour la recherche de structure que pour de l'imputation multiple préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. Cela permet également d'estimer les valeurs manquantes et à terme  de fournir un estimateur de la variance de leur estimation.
+	Enfin, le modèle génératif complet offre la perspective de pouvoir être utilisé pour gérer d'éventuelles valeurs manquantes dans les données. Cela permet la recherche de structure malgré l'absence de certaines données. Mais un autre débouché est l'imputation multiple des données manquantes, préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. De plus, l'estimation multiple des valeurs manquantes permet à terme de fournir un estimateur de la variance de leur estimation.
 	Encore une fois, la régression linéaire vient illustrer l'apport de la méthode qui reste cependant générique et pourrait être appliquée à d'autres contextes tels que le clustering.
 	\\	
 	
@@ -105,7 +105,7 @@ commentstyle=\color{OliveGreen}, % white comments
 	In a second part, a plug-in estimator is defined to get back the redundant covariates sequentially. Then all the covariates are used but the sequential approach acts as a protection against correlations.
 \\
 
-	Finally, the generative model defined here allows, as a perspective, to manage missing values both during the MCMC and then for imputation (for example multiple imputation) to be able to use classical methods that are not compatible with missing datasets. Missing values can be imputed with a confidence interval to show estimation accuracy. Once again, linear regression is used to illustrate the benefits of this method but it remains a pre-treatment that can be used in other contexts, like clustering and so on.
+	Finally, the generative model defined here allows, as a perspective, to manage missing values both during the MCMC and then for imputation (for example multiple imputation). Then we are able to use classical methods that are not compatible with missing datasets. Missing values can be imputed with a confidence interval to show estimation accuracy. Once again, linear regression is used to illustrate the benefits of this method but it remains a pre-treatment that can be used in other contexts, like clustering and so on.
 	\\ 
 	
 	The industrial motivation of this work defines interpretation as a stronghold at each step. 	
