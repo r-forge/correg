@@ -4000,17 +4000,17 @@ We see that the $0$ in the variance-covariance matrix does not depend on the com
 %
 	\subsection{Weighted penalty for $\mbox{{\sc bic}}$}
 			Now we have defined the way to compute the likelihood, other questions remain: how to define the number of parameters in the structure? How to take into account missingness (structures relying on highly missing covariates should be penalized)?
-			We have seen that for a same covariate $\boldsymbol{X}^j$ with $ j \in J_r$, the number of parameters is not the same for each individual depending whether or not $\boldsymbol{M}_{i,j}=0$. We can compute the likelihood of each individual separately but the penalty (for $\mbox{{\sc bic}}_*$) cannot be added at the individual level (because $\log(1)=0$ so it would be annihilated). \\
+			We have seen that for a same covariate $\boldsymbol{X}^j$ with $ j \in J_r$, the number of parameters is not the same for each individual depending whether or not $\boldsymbol{M}_{i,j}=0$. We can compute the likelihood of each individual separately but the penalty (for $\mbox{{\sc bic}}_*$) is global to the dataset. \\
 			
-			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate.
+			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. We define
 			\begin{equation}
-			c_j=\frac{1}{n}\sum_{i=1}^nc_{i,j}  \nonumber 
-\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$.
+			c_j=\frac{1}{n}\sum_{i=1}^nc_{i,j},  \nonumber 
+\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$. Then we have
 			\begin{eqnarray}
 		-2\log \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})&\approx & \mbox{{\sc bic}}=-2\mathcal{L}(\boldsymbol{X},\boldsymbol{S},\boldsymbol{\Theta})+|\boldsymbol{\Theta}|\log(n) \nonumber  \\
-		&=& -2\mathcal{L}(\boldsymbol{X},\boldsymbol{S},\boldsymbol{\Theta})+(\sum_{j=1}^dc_j)\log(n) \nonumber 
+		&=& -2\mathcal{L}(\boldsymbol{X},\boldsymbol{S},\boldsymbol{\Theta})+(\sum_{j=1}^dc_j)\log(n). \nonumber 
 	\end{eqnarray}
-			 Thus if a structure is only touched by one missing value the penalty will be smaller than if the same structure has more missing values implied.
+			 Thus if a structure is only touched by one missing value the penalty will be smaller than if the same structure had more missing values implied.
 			Another way would be to use {\sc ric} (see \cite{foster1994risk}) so the penalty does not depend on $n$ but is associated with $\log(d)$. %Or to make a compromise and penalize by $\frac{k_i\log(d)}{\log(n)}$.
 		
 %	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
@@ -4029,15 +4029,15 @@ Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x
 \begin{itemize}
 	\item The Expectation step in which the expected value of the loglikelihood is computed for the current estimate of the parameters $\boldsymbol{\Theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\Theta}^{(q)}$.
 	\begin{equation}
-		Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)})=E_{Z|\boldsymbol{X},\boldsymbol{\Theta}^{(q)}} [\log L(\boldsymbol{\Theta};\boldsymbol{X},Z)]  \nonumber 
+		Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)})=E_{Z|\boldsymbol{X},\boldsymbol{\Theta}^{(q)}} [\log L(\boldsymbol{\Theta};\boldsymbol{X},Z)].  \nonumber 
 	\end{equation}
 	\item The Maximization step that maximizes:
 	\begin{equation}
-		\boldsymbol{\Theta}^{(q+1)}=\arg \max_{\boldsymbol{\Theta}} Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)})  \nonumber 
+		\boldsymbol{\Theta}^{(q+1)}=\arg \max_{\boldsymbol{\Theta}} Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)}).  \nonumber 
 	\end{equation}
 \end{itemize}
 	So it alternates between estimation of $Z$ and $\boldsymbol{\Theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
-	It requires to set initial values for $\boldsymbol{\Theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and run of the algorithm.\\
+	It requires to set initial values for $\boldsymbol{\Theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and runs of the algorithm.\\
 			
 			Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic},\\
 			 \cite{celeux1986algorithme} or the Classification EM \cite{celeux1992classification}.
@@ -4051,7 +4051,7 @@ Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x
 	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regression have only few parameters and can be estimated even with only a small number of individuals.
 		
 	
-	\paragraph{initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by complete-case method	(sparse structure) or using imputed values in $\boldsymbol{X}$ and then \textsc{ols}.
+	\paragraph{Initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by complete-case method	(sparse structure) or using imputed values in $\boldsymbol{X}$ and then \textsc{ols}.
 	At iteration $(h)$,
 	\paragraph{SE step:}
 		We generate the missing values according to $\mathbb{P}(\boldsymbol{X}_M|\boldsymbol{X}_O; \boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})$, that is stochastic imputation.
