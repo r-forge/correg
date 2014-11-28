@@ -40,8 +40,10 @@ meilleur_lars<-function(lars=lars,X=X,Y=Y,mode=c("MSE","BIC"),intercept=TRUE,K=N
       qui=which.min(vrais_vect)
       MSE=vrais_vect[qui]
       qui=which(coef[qui,]!=0)
-      A[c(intercept,qui+intercept)]=OLS(X=as.matrix(X[,qui]),Y=Y,intercept=intercept)$beta
-    }
+      if(length(qui)>0){
+         A[c(intercept,qui+intercept)]=OLS(X=as.matrix(X[,qui]),Y=Y,intercept=intercept)$beta
+      }#sinon ne garde rien donc on laisse A sur sa valeur initiale nulle
+   }
     return(list(A=A,CVMSE=MSE))    
   }
 }

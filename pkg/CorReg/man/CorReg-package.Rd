@@ -35,12 +35,12 @@ CorReg: see www.correg.org for article and Phd Thesis about CorReg.
    bicopt_vrai=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=Bic_null_vect)
    sum(bicopt_vect);sum(bicopt_vrai)
 
+   #Structure comparison
+   compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
+
    #interpretation of found and true structure ordered by increasing R2
    readZ(Z=hatZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
    readZ(Z=TrueZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
-
-   #Structure comparison
-   compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
 
    #Regression coefficients estimation
     select="NULL"
