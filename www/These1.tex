@@ -2851,33 +2851,38 @@ We have used the package {\tt CorReg} with real datasets and the results obtaine
 	\section{Introduction}
 		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates from the model. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}). But even if the sub-regressions are strong, we face a loss information that can be damageable as we have seen in Section \ref{tableMSEsimgauche}. \\
 		
-		We know that using all the covariates simultaneously (classical \textsc{ols}) gives bad results due to correlations. But we can use them sequentially by using the explicit decomposition of the marginal model (equation \ref{eq:Trueexpl2}) that makes appear the coefficient $\boldsymbol{\beta}_r$ in both the noise and $\boldsymbol{\beta}_f^*$. Thus we are able to obtain by plug-in better estimates of $\boldsymbol{\beta}_r$ and $\boldsymbol{\beta}_f$ in terms of bias. Once again final result will depend on the bias-variance trade-off and numerical results will show what to expect.
+		We know that using all the covariates simultaneously (classical \textsc{ols}) gives bad results due to correlations. But we can use them sequentially by using the explicit decomposition of the marginal model (equation \ref{eq:Trueexpl2}) that makes appear the coefficient $\boldsymbol{\beta}_r$ in both the noise and $\boldsymbol{\beta}_f^*$. Thus we are able to obtain by plug-in better estimates of $\boldsymbol{\beta}_r$ and $\boldsymbol{\beta}_f$ in terms of bias. Once again final result will depend on the bias-variance trade-off and numerical results will show what to expect.\\
+		In this chapter we note $\longrightarrow$ the convergence in distribution when $n$ grows to $+\infty$.
 	\section{Plug-in model}
+	All previous estimators allow us to define a plug-in estimator for $\boldsymbol{\beta}$.
 	\paragraph{Summary of previous steps:}
-	
-	
-	We have the true complete model
-	\begin{equation}
-		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y. \nonumber 
+	We had the true complete model:
+%	\begin{equation}
+%		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y. \nonumber 
+%\end{equation}	
+\begin{equation}
+		\boldsymbol{Y}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y, \nonumber 
 \end{equation}		
-	We have estimated the structure $\hat{\boldsymbol{S}} $ of sub-regressions on $\boldsymbol{X}$ (Chapter \ref{chapterMCMC}) that gives:
+	%We have estimated the structure $\hat{\boldsymbol{S}} $ of sub-regressions on $\boldsymbol{X}$ (Chapter \ref{chapterMCMC}) that gives:
+	with a structure $\boldsymbol{S}$ of sub-regressions on $\boldsymbol{X}$:
 	\begin{equation}
 		\boldsymbol{X}_r 
-		%|\boldsymbol{X}_f,\hat{\boldsymbol{S}};\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\varepsilon}}
-		=\boldsymbol{X}_f\hat{\boldsymbol{\alpha}^*}+\hat{\boldsymbol{\varepsilon}}, \nonumber 
+		|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2
+		=\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon}. \nonumber 
 	\end{equation}
-	and obtained estimations of $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\varepsilon}}$. 
-	The regression is then rewritten:
+	%and obtained estimations of $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\varepsilon}}$. 
+%	The regression was then rewritten:
+%		\begin{equation}
+%		\boldsymbol{Y}|\boldsymbol{X},\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \nonumber 
+%\end{equation}	
+%	and by marginalization on $\boldsymbol{X}_r$ we obtained (Chapter \ref{chapexpl}):
+%	\begin{equation}
+%	\hat{\boldsymbol{Y}}_{marginal}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*.%+\hat{\boldsymbol{\varepsilon}}_Y^*. \nonumber 
+%	\end{equation}
+%		Reminding equation (\ref{eq:Trueexpl2}), the marginal model (that is just a rewriting of the true model) can be written:
+Then by marginalization on $\boldsymbol{X}_r$ we obtained (equation (\ref{eq:Trueexpl2})):
 		\begin{equation}
-		\boldsymbol{Y}|\boldsymbol{X},\hat{\boldsymbol{S}};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y \nonumber 
-\end{equation}	
-	and by marginalization on $\boldsymbol{X}_r$ we obtained (Chapter \ref{chapexpl}):
-	\begin{equation}
-	\hat{\boldsymbol{Y}}_{marginal}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*.%+\hat{\boldsymbol{\varepsilon}}_Y^*. \nonumber 
-	\end{equation}
-		Reminding equation (\ref{eq:Trueexpl2}), the marginal model (that is just a rewriting of the true model) can be written:
-		\begin{equation}
-		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*}, \label{pluginorig}
+		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*}. \nonumber \label{pluginorig}
 		\end{equation}
 %		the residual of the marginal model is decomposed as follows:
 %\begin{eqnarray}
@@ -2888,23 +2893,39 @@ We have used the package {\tt CorReg} with real datasets and the results obtaine
 %	\item 
 %\end{itemize}
 %These two new estimators allow us to reduce the noise of the marginal model by linear regression based on equation (\ref{regressnoise}) and to obtain an estimator of $\boldsymbol{\beta}_r$ possibly better than $\hat{\boldsymbol{\beta}}^*_r=\boldsymbol{0}$.
-In this chapter we note $\longrightarrow$ the convergence in distribution when $n$ grows to $+\infty$.
+The plug-in estimator relies on this last equation and on the fact that we have already estimated $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ (Chapter \ref{chapterMCMC}), but also $\boldsymbol{\varepsilon}$, and $\boldsymbol{\varepsilon}_Y^*$:
+	\begin{eqnarray}
+		\hat{\boldsymbol{\varepsilon}}&=& \boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \nonumber, \\
+		\hat{\boldsymbol{\varepsilon}}_Y^*&=&\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*, \nonumber
+	\end{eqnarray}
+where 
+$
+\hat{\boldsymbol{\beta}}_f^*=(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}.
+$\\
+
 
 \paragraph{Estimation of $\boldsymbol{\beta}_r$:}
-At this step of the process, we know both $\hat{\boldsymbol{\varepsilon}} $ and $\hat{\boldsymbol{\varepsilon}}_Y^* $ so we make as an additional sequential step an asymptotic regression based on:
+At this step of the process, we know both $\hat{\boldsymbol{\varepsilon}} $ and $\hat{\boldsymbol{\varepsilon}}_Y^* $ so we make as an additional sequential step an asymptotic regression:% based on:
 \begin{eqnarray}
-	\hat{\boldsymbol{\varepsilon}} \boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y &\longrightarrow & \boldsymbol{\varepsilon}_Y^* \nonumber \\
-	\hat{\boldsymbol{\varepsilon}}_Y^*|\hat{\boldsymbol{\varepsilon}} &\longrightarrow & \boldsymbol{\varepsilon}_Y^*  \nonumber \\
-		\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X},\hat{\boldsymbol{S}} &\longrightarrow &\boldsymbol{\varepsilon}_Y^*. \nonumber 
-\end{eqnarray}
+	\hat{\boldsymbol{\varepsilon}} \boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y &\longrightarrow & \boldsymbol{\varepsilon}_Y^*. \nonumber 
+	\end{eqnarray}
+%	\begin{eqnarray}
+%	\hat{\boldsymbol{\varepsilon}}_Y^*|\hat{\boldsymbol{\varepsilon}} &\longrightarrow & \boldsymbol{\varepsilon}_Y^*  \nonumber \\
+%		\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X},\hat{\boldsymbol{S}} &\longrightarrow &\boldsymbol{\varepsilon}_Y^*. \nonumber 
+%\end{eqnarray}
 So we get (by {\sc ols}) a new estimator of $\boldsymbol{\beta}_r$:
 	\begin{equation}
 		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}) \nonumber 
 	\end{equation}
-that depends on all covariates in $\boldsymbol{X}$ (see equation (\ref{epsilonchapeau})). We have now sequentially used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$.
-%We suppose that $\hat{\boldsymbol{\beta}^*_f}$ and $\hat{\boldsymbol{\alpha}}^*$ are consistent (for example using \textsc{ols}). The new estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent (\textsc{ols} and Slutsky's theorem) and we have
+that depends on all covariates in $\boldsymbol{X}$ and is based on:
+	\begin{eqnarray}
+	\hat{\boldsymbol{\varepsilon}}_Y^*|\hat{\boldsymbol{\varepsilon}} &\longrightarrow & \boldsymbol{\varepsilon}_Y^*  \nonumber \textrm{ and}\\
+		\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X},\hat{\boldsymbol{S}} &\longrightarrow &\boldsymbol{\varepsilon}_Y^*. \nonumber 
+\end{eqnarray}
 
-The estimators used sequentially here by plug-in are all {\sc ols} estimators and then the resulting estimator is asymptotically unbiased (Slutsky's theorem) and we have
+ We have now used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$.
+%We suppose that $\hat{\boldsymbol{\beta}^*_f}$ and $\hat{\boldsymbol{\alpha}}^*$ are consistent (for example using \textsc{ols}). The new estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent (\textsc{ols} and Slutsky's theorem) and we have
+The estimators sequentially used here by plug-in are all {\sc ols} estimators and then the resulting estimator is asymptotically unbiased (Slutsky's theorem) and we have
 \begin{equation}
 	\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})-\boldsymbol{\beta}_r \longrightarrow 0  \nonumber 
 \end{equation}
@@ -2949,15 +2970,15 @@ and
 %			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
 %		\end{equation}
 \begin{eqnarray}
-\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2 &=& \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*} \textrm{\ \ (true model)} \nonumber\\
-	\hat{\boldsymbol{Y}}_{marginal}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f \nonumber\\
+%\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2 &=& \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*} \textrm{\ \ (true model)} \nonumber\\
+	%\hat{\boldsymbol{Y}}_{marginal}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f \nonumber\\
 	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 \end{eqnarray}
 %This an asymptotically unbiased estimator of $\boldsymbol{Y}$ because the marginal model is unbiased and all the estimators are consistent. 
-We deduce
-\begin{equation}
-	\hat{\boldsymbol{\varepsilon}}_Y=\boldsymbol{Y}-\hat{\boldsymbol{Y}}_{plug-in}.
-\end{equation}
+%We deduce
+%\begin{equation*}
+%	\hat{\boldsymbol{\varepsilon}}_Y=\boldsymbol{Y}-\hat{\boldsymbol{Y}}_{plug-in}.
+%\end{equation*}
 \paragraph{Estimation of $\boldsymbol{\beta}_f$:}
 		We can even improve estimation of $\boldsymbol{\beta}_f$ by doing an additional identification step.	We have $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ so we define the following estimator.
 			\begin{equation}
@@ -2977,7 +2998,7 @@ Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are obtained as above a
 		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}(\hat{\boldsymbol{\alpha}}^*)'] \label{varpluginf}
 	\end{eqnarray}
 
-Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ (in (\ref{varpluginr}) and (\ref{varpluginf})) has supplementary terms but relies on smaller and better conditioned matrices than classical \textsc{ols} applied on $\boldsymbol{X}$ so we hope that correlations are strong enough to make the difference.	Compared to \ref{eq:varOLS*} we have a new bias-variance trade-off to study with numerical results.\\
+Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ (in (\ref{varpluginr}) and (\ref{varpluginf})) has supplementary terms but relies on smaller and better conditioned matrices than classical \textsc{ols} applied on $\boldsymbol{X}$ so we hope that correlations are strong enough to make the difference.	Compared to (\ref{eq:varOLS*}) we have a new bias-variance trade-off to study with numerical results.\\
 	
 		
 	
@@ -2987,16 +3008,26 @@ Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ (in (\ref{varpluginr}) and 
 	\caption{\textsc{mse} on $\hat{\boldsymbol{\beta}}$ of \textsc{ols} (plain red) and {\tt CorReg} marginal (blue dashed) and {\tt CorReg} plug-in (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. Results obtained on the running example with $d=5$ covariates.}\label{MQE2}
 \end{figure}	
 			
-		
-	\section{Interpretation and latent variables}
-			$\hat{\boldsymbol{\beta}}_{r}$ can be interpreted as the proper effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}_r$ that is independent from other covariates. Then if $\boldsymbol{X}_r$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}_f$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_r=0$) but the real stake is greater. We can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. This latent variable is known to be independent of $\boldsymbol{X}_f$ and dependent on $\boldsymbol{X}_r$ so we can appreciate its meaning and we also know its value by equation (\ref{epsilonchapeau}). Thus, the plug-in model can reveal some kinds of latent variables.\\
+		Both marginal and plug-in model are easy to compute then we can use for example the marginal model for interpretation (more parsimonious) and the plug-in model for prediction. But we will see in the numerical results (Section \ref{resnumpred}) that it is not always the better choice because even if the plug-in estimator can always be consistent (each covariate can be used) contrary to the marginal model, cumulated variances are a real problem and the marginal model is often better in prediction.
 			
-			Both marginal and plug-in model are easy to compute then we can use for example the marginal model for interpretation (more parsimonious) and the plug-in model for prediction. But we will see in the numerical results (Section \ref{resnumpred}) that it is not always the better choice because even if plug-in estimator can always be consistent (each covariate can be used) contrary to the marginal model, cumulated variances are a real problem and the marginal model is often better in prediction.
-			
-			
+	\paragraph{Remarks:} 
+	\begin{itemize}
+		\item $\boldsymbol{\beta}_{r}$ can be interpreted as the proper effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}_r$ that is independent of other covariates. Then if $\boldsymbol{X}_r$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}_f$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_r=\boldsymbol{0}$).
+		\item If $\boldsymbol{Y}$ depends only on $\boldsymbol{\varepsilon}$ (latent variables) then the plug-in model written as in equation (\ref{eq:Trueexpl2}) will show it. Moreover, we have an estimator of $\boldsymbol{\varepsilon}$ and we know that it is the proper of effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ and that it is independent of $\boldsymbol{X}_f$. Thus we have an idea of the values and meaning of $\boldsymbol{\varepsilon}$. It can help to name the latent variable and to add it in the dataset if possible.
+	\end{itemize}
 	
-
-	\section{Consistency of the {\sc lasso}}\label{consistency}
+%			$\hat{\boldsymbol{\beta}}_{r}$ can be interpreted as the proper effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}_r$ that is independent of other covariates. Then if $\boldsymbol{X}_r$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}_f$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_r=0$) but the real stake is greater. If the true model is:
+%			\begin{eqnarray}
+%			\boldsymbol{X}_r|\boldsymbol{X}_f;\boldsymbol{\sigma}^2 &=& \boldsymbol{X}_f + \boldsymbol{\varepsilon}\textrm{ and}\nonumber\\
+%				\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{S},\boldsymbol{\sigma}^2,\boldsymbol{\sigma}_Y&=&\boldsymbol{\varepsilon}+\boldsymbol{\varepsilon}_Y = \boldsymbol{X}_r-\boldsymbol{X}_f+\boldsymbol{\varepsilon}_Y, \nonumber		
+%			\end{eqnarray}
+%			then we have $\boldsymbol{\beta}^*_f=\boldsymbol{0}$ (and we can obtain exact zeros in $\hat{\boldsymbol{\beta}}_f^*$ by using {\sc lasso} for example).
+%			 Here we can see $\boldsymbol{\varepsilon}$ as a latent variable instead of the noise of a sub-regression. 
+%			 This latent variable is known to be independent of $\boldsymbol{X}_f$ and dependent on $\boldsymbol{X}_r$ so we can appreciate its meaning and we also know its value by equation (\ref{epsilonchapeau}). Thus, the plug-in model can reveal some kinds of latent variables.\\
+%			
+			
+	\section{Model selection consistency of {\sc lasso} improved}\label{consistency}
+	%starFALSEconsistlasson1000p3nbini20Maxiter20_28nov.2014_16_03_06.csv
 		Consistency issues of the {\sc lasso} are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
 		We have taken the same example to show how our method is better to find the true relevant covariates.
 		Here $d=3$ and $n=1\;000$.\\
@@ -3010,7 +3041,7 @@ Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ (in (\ref{varpluginr}) and 
 		We compare consistencies of complete, marginal and full plug-in model with {\sc lasso} (and LAR) for selection.
 		It happens on some tries that our MCMC algorithm do not find the true structure but a permuted one so we both look at the results obtained with the true $\boldsymbol{S}=((3),(\{1,2\}))$ (but $\hat{\boldsymbol{\alpha}}$ is used) and with the structure found by the Markov chain after a few seconds.
 		
-		True $\boldsymbol{S}$ was found $987$ times on $1\;000$ tries.% (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
+		True $\boldsymbol{S}$ was found $991$ times on $1\;000$ tries.% (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
 		
 		\begin{table}[h!]
 		\centering
@@ -3018,30 +3049,32 @@ Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ (in (\ref{varpluginr}) and 
 		\hline 
 		 & Classical {\sc lasso} & {\tt CorReg} + marginal {\sc lasso}& {\tt CorReg} + full plug-in {\sc lasso}\\ 
 		\hline 
-		True $\boldsymbol{S}$ &  1.006784 & \textbf{1.005468} & \textbf{1.006093} \\ 
+		True $\boldsymbol{S}$ &  1.003303 (0.046) & \textbf{1.002273} (0.046)& \textbf{1.002812} (0.046)\\ 
 		\hline 
-		$\hat{\boldsymbol{S}}$ & 1.006784 & 1.028154 & \textbf{1.006350} \\ 
+		$\hat{\boldsymbol{S}}$ & 1.003303 (0.046)& 1.017622 (0.17)& \textbf{1.002812} (0.046)\\ 
 		\hline 
 		\end{tabular} 
-		\caption{\textsc{mse} observed on a validation sample (1 000 individuals)}
+		\caption{\textsc{mse} observed on a validation sample (1 000 individuals) and their standard deviation (between brackets).}\label{MSEconsistlasso}
 		\end{table}
 
 		We observe as we hoped that our marginal model is better when using true $\boldsymbol{S}$ (coercing real zeros) and that marginal with $\hat{\boldsymbol{S}}$ is penalised (coercing wrong coefficients to be zeros when true $\boldsymbol{S}$ is not found).
-		But the main point is that the plug-in model stays better than the classical one with the true $\boldsymbol{S}$ and corrects enough the marginal model to be better than the classical {\sc lasso} when using $\hat{\boldsymbol{S}}$. Improvements here are very small but regular even on 1 000 tries.\\
+		We also see that the plug-in model stays better than the classical one with the true $\boldsymbol{S}$ and corrects enough the marginal model to be better than the classical {\sc lasso} when using $\hat{\boldsymbol{S}}$. \\
 		
-		When we look at the consistency (Table \ref{testidentifiableG}):
+		But sadly, improvements in {\sc mse} are very small and the {\sc mse} in Table \ref{MSEconsistlasso} are not significantly distinct (Student's t-Tests).\\
+		
+		When we look at the consistency (Table \ref{testidentifiableG}), that is the real stake of these numerical results:
 		\begin{table}[h!]	
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
 		 & Classical {\sc lasso} & {\tt CorReg}  marginal + {\sc lasso}& {\tt CorReg}  full plug-in  + {\sc lasso} \\ 
 		\hline 
-		True $\boldsymbol{S}$ &  0 & \textbf{1000} & \textbf{820} \\ 
+		True $\boldsymbol{S}$ &  0 & \textbf{1000} & \textbf{835} \\ 
 		\hline 
-		$\hat{\boldsymbol{S}}$ & 0 & \textbf{987} & \textbf{809} \\ 
+		$\hat{\boldsymbol{S}}$ & 0 & \textbf{991} & \textbf{829} \\ 
 		\hline 
 		\end{tabular} 
-		\caption{Number of consistent models found ($\boldsymbol{Y}$ depending on $\boldsymbol{X}^1,\boldsymbol{X}^2$ and only them) on $1\;000$ tries}\label{testidentifiableG}
+		\caption{Number of consistent models found ($\boldsymbol{Y}$ depending on $\boldsymbol{X}^1,\boldsymbol{X}^2$ and only them) on $1\;000$ tries.}\label{testidentifiableG}
 		\end{table}				
 		it is clear that the plug-in model significantly improves the consistency of the model estimated on $\boldsymbol{S}$ when compared to the classical {\sc lasso}. Both models have the choice to keep or not each covariate but only the plug-in model find sometimes (and in most of the cases) the true set of relevant covariates. Model using the true structure cannot be improved because the marginal is already consistent so the plug-in is worse or equal to the marginal one in terms of consistency. Classical {\sc lasso} is never consistent on this example but we do not only improve this situation, we give consistent models in most of the cases.\\
 	%	$299$ times on $1000$ tries, the plug-in model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
@@ -3561,8 +3594,8 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	\FloatBarrier
 \newpage
 	\setcellgapes{1pt}
-	\section{Conclusion} The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on a first estimation (the marginal model) thus it does reach the true model but asymptotically, and with a slow convergence speed. \\
-	Moreover, if $\hat{\boldsymbol{S}}$ is not exactly the true $\boldsymbol{S}$ but the partition is good, the marginal model is not impacted whereas the plug-in model uses both $\hat{\boldsymbol{\beta}}^*_{f}$ and $\hat{\boldsymbol{\alpha}}$ so it is does not rely only on one estimator. $\hat{\boldsymbol{\alpha}}$ is another source of bias for finite values of $n$ and it depends itself on $\hat{\boldsymbol{S}}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves \textsc{ols} anyway but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. However, like the marginal model, the plug-in model has a small computational cost compared to the estimation of $\boldsymbol{S}$. So we recommend to compute both complete, marginal and plug-in model and to compare the results in a second time.
+	\section{Conclusion} The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on other estimators so it has a slow convergence speed. \\
+	Moreover, if $\hat{\boldsymbol{S}}\neq \boldsymbol{S}$ but $\hat{J}_r=J_r$, then the marginal model is not impacted whereas the plug-in model depends on both $\hat{\boldsymbol{\beta}}^*_{f}$ and $\hat{\boldsymbol{\alpha}}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves \textsc{ols} anyway but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. However, like the marginal model, the plug-in model has a small computational cost compared to the estimation of $\boldsymbol{S}$. So we recommend to compute both complete, marginal and plug-in model and to compare the results in a second time.
 \chapter{Missing values} \label{chapmiss}
 	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to make multiple imputations based on the sub-regression structure. The full generative model also helps to manage missing values in the MCMC with the ability to compute $\mbox{{\sc bic}}_*$ only on the observed values. 
 	
@@ -3580,19 +3613,23 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 %	 
 %Detailler Les 6 types de méthodes	 
 %	 
-	We have a full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates. So when a value is missing, we know its distribution but in addition, we know its conditional distribution based on observed values for the same individual. Thus we are able to make imputation and to describe the missing values with their conditional distribution. This is a positive side-effect of the explicit generative model we have defined on $\boldsymbol{X}$.\\
+	We have a full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates:
+	\begin{equation*}
+	\mathbb{P}(\boldsymbol{X}|\boldsymbol{S})=\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S}).
+\end{equation*}	 
+So when a value is missing, we know its distribution but in addition, we know its conditional distribution based on observed values for the same individual. Thus we are able to make imputation and to describe the missing values with their conditional distribution. This is a positive side-effect of the explicit generative model we have defined on $\boldsymbol{X}$.\\
 		
 	%This chapter is a perspective of this thesis that we have already started to work on, but missing values is a wide subject and we only propose some results.
+	\paragraph{SelvarclustMV:} We have compared our method to {\tt Selvarclust} in Section \ref{compMaugis}. But Maugis  has developed another software \cite{maugis2012selvarclustmv} that manage missing values: {\tt SelvarclustMV}. It relies on the assumption of Missing At Random (MAR) values and on the more constraining hypothesis that regressor covariates are completely observed (with our notations: $\forall j \in \{1,\dots,d_r \}, \forall k \in J_p^j, \forall 1\leq i \leq n, \boldsymbol{M}_{i,k}=0$). The model (Partition, sub-regression parameters and Gaussian mixtures parameters) is then estimated with an Expectation-Maximization algorithm using all the observed values (even incomplete individuals) without any imputation. Numerical results shows that {\tt SelvarclustMV} is highly competitive compared to imputation methods.\\
+ Here again the algorithm used in {\tt SelvarclustMV} stands in a Gaussian clustering context and is not exactly adapted to our situation. Estimation of $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ was inconclusive (see section \ref{compMaugis}) without missing values so the situation would not be improved with missing values.
+ Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
 	
-	
-	In the followings we note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate in $\boldsymbol{X}$ and $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $x_{i,j}$ is missing, 0 else. 
+	\paragraph{Notations:} In the followings we note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate in $\boldsymbol{X}$ and $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $x_{i,j}$ is missing, 0 else. 
 	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the followings.\\
 	
 	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\  
 	
-	Maugis  has developed another software \cite{maugis2012selvarclustmv} that manage missing values: {\tt SelvarclustMV}. It relies on the assumption of Missing At Random (MAR) values and on the more constraining hypothesis that regressor covariates are completely observed (with our notations: $\forall j \in \{1,\dots,d_r \}, \forall k \in J_p^j, \forall 1\leq i \leq n, \boldsymbol{M}_{i,k}=0$). The model (Partition, sub-regression parameters and Gaussian mixtures parameters) is then estimated with an Expectation-Maximization algorithm using all the observed values (even incomplete individuals) without any imputation. Numerical results shows that {\tt SelvarclustMV} is highly competitive compared to imputation methods.\\
- Here again the algorithm used in {\tt SelvarclustMV} stands in a Gaussian clustering context and is not exactly adapted to our situation. Estimation of $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ was inconclusive (see section \ref{compMaugis}) without missing values so the situation would not be improved with missing values.
- Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
+	
 
 \section{Estimation of $\boldsymbol{S}$ with missing values}
 \subsection{Distribution of $\boldsymbol{X}$} \label{sectionXdensity}
@@ -3801,7 +3838,7 @@ And if there is no missing values in covariates that regress several observed re
 	\begin{equation}
 		L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \label{simplemisslik}
 \end{equation}	
-\paragraph{Remark:} if each sub-regression is a distinct connex component then we can always use equation (\ref{simplemisslik}) but it is not a necessary condition.
+\paragraph{Remark:} if each sub-regression is a distinct connected component then we can always use equation (\ref{simplemisslik}) but it is not a necessary condition.
 
 %	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 %	 \begin{equation}
@@ -3914,7 +3951,7 @@ Then we are able to maximize this likelihood to find $\boldsymbol{\alpha}$.
 We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $\boldsymbol{S}$ to reduce computing time.  Another strictly technical tip would be to use sparse matrix storage to avoid null value storage and useless zero multiplications.\\
 
 		Moreover, we can look if there are missing values shared by several sub-regression. 
-		Connex component detection could be done to reduce the dimension down to strictly dependent covariates and use equation (\ref{Missingdensity}) elsewhere.
+		Connected component detection could be done to reduce the dimension down to strictly dependent covariates and use equation (\ref{Missingdensity}) elsewhere.
 		We just need to compute the  row-sums of the adjacency matrix $\boldsymbol{G}$ or to search for redundancy in $J_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^n\boldsymbol{M}_{i,j}=0$ then we can use the simplified form of the likelihood given in equation (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
 		So the true value of the likelihood can be computed efficiently in most of cases but in the MCMC, it remains the possibility to evaluate a structure with explosive likelihood expression when combined with the missing values and we need to compute the likelihood for a great number of candidates. Then it is possible to use directly the simplified form of the likelihood, that can be seen as an approximation of the likelihood, not taking into account some of the dependencies but it would offer no guarantee in terms of efficiency for the MCMC. %Numerical results on simulated datasets will show if this approximation is effective.
 
@@ -4027,7 +4064,7 @@ Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x
 			
 {\sc em} is an alternate optimization of the researched parameters $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$ only for a given $\boldsymbol{S}$ since the marginal distribution parameters are estimated once before the MCMC.) and the latent variables $Z$ with two steps at each iteration $(q)$:
 \begin{itemize}
-	\item The Expectation step in which the expected value of the loglikelihood is computed for the current estimate of the parameters $\boldsymbol{\Theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\Theta}^{(q)}$.
+	\item The Expectation step in which the expected value of the log-likelihood is computed for the current estimate of the parameters $\boldsymbol{\Theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\Theta}^{(q)}$.
 	\begin{equation}
 		Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)})=E_{Z|\boldsymbol{X},\boldsymbol{\Theta}^{(q)}} [\log L(\boldsymbol{\Theta};\boldsymbol{X},Z)].  \nonumber 
 	\end{equation}
