@@ -2902,14 +2902,24 @@ where
 $
 \hat{\boldsymbol{\beta}}_f^*=(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}
 $ and $\hat{\boldsymbol{\alpha}}^*=(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r$ if estimated by {\sc ols} (we suppose that it is the case in the followings).\\
-
-
+We have then:
+\begin{displaymath}
+	\hat{\boldsymbol{\varepsilon}}= \boldsymbol{X}_r-\underbrace{\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'}_{\boldsymbol{H}_f}\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r.
+\end{displaymath}
+  
+\paragraph{Remark:} $\boldsymbol{H}_f$ and $(\boldsymbol{I}_n-\boldsymbol{H}_f)$ are both symmetric and idempotent and we have:
+\begin{eqnarray}
+%\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r-\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \nonumber,\\
+\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)' (\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r, \nonumber\\
+\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}},\nonumber \\
+\hat{\boldsymbol{\varepsilon}}_Y^*&=&(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{Y}.
+\end{eqnarray} 
 \paragraph{Estimation of $\boldsymbol{\beta}_r$:}
-At this step of the process, we know both $\hat{\boldsymbol{\varepsilon}} $ and $\hat{\boldsymbol{\beta}}_f^* $ so we make as an additional sequential step an asymptotic regression:% based on:
+At this step of the process, we know both $\hat{\boldsymbol{\varepsilon}} $ and $\hat{\boldsymbol{\beta}}_f^* $ so we make as an additional sequential step an asymptotic regression based on equation (\ref{eq:Trueexpl2}):
 \begin{displaymath}
 \left\{ \begin{array}{r c l}
-\underbrace{\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*}_{\hat{\boldsymbol{\varepsilon}}_Y^*}|\boldsymbol{X}_f; \boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2  &  \longrightarrow \quad   &  \boldsymbol{\varepsilon}_Y^*\\
-	(\underbrace{\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*}_{\hat{\boldsymbol{\varepsilon}}}) \boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y|\boldsymbol{X}_r,\boldsymbol{X}_f;\boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2 &  \longrightarrow \quad &  \boldsymbol{\varepsilon}_Y^* 
+\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*|\boldsymbol{X}_f,\boldsymbol{S}; \boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2  &  \longrightarrow \quad   &  \boldsymbol{\varepsilon}_Y^*\\
+	(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y|\boldsymbol{X}_f, \boldsymbol{S};\boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2 &  \longrightarrow \quad &  \boldsymbol{\varepsilon}_Y^* 
 	\end{array}
 	\right. .
 	\end{displaymath}
@@ -2919,7 +2929,7 @@ At this step of the process, we know both $\hat{\boldsymbol{\varepsilon}} $ and 
 %\end{eqnarray}
 Then we get (by {\sc ols}) a new estimator of $\boldsymbol{\beta}_r$:
 	\begin{equation}
-		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}) \nonumber 
+		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f) \nonumber 
 	\end{equation}
 that depends on all covariates in $\boldsymbol{X}$.
 \\
@@ -2966,13 +2976,7 @@ and
 %\end{eqnarray}		
 %		
 %		
-\paragraph{Remark:} If $\boldsymbol{\alpha}^*$ is estimated by {\sc ols} (as we supposed previously) then 
-\begin{eqnarray}
-\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r-\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \nonumber,\\
-\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)' (\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r, \nonumber\\
-\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}.\nonumber 
-\end{eqnarray} 
-So we have
+If $\boldsymbol{\alpha}^*$ is estimated by {\sc ols} (as we supposed previously) then 
 \begin{displaymath}
 	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}=\sigma^2_Y(\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r)^{-1}.
 \end{displaymath}
