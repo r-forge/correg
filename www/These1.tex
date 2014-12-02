@@ -2849,13 +2849,12 @@ We have used the package {\tt CorReg} with real datasets and the results obtaine
 \chapter{Using coefficients of regression and sub-regression to improve prediction}\label{chapplugin}
 	\paragraph{Abstract:} We have seen that eviction of redundant covariates can often improve the results by an efficient trade-off between dimension reduction and better conditioning versus keeping all the covariates. But the fact is that we lost some information and we would like to find a way to use this information. So we propose a plug-in model to use the redundant covariates in a second estimation step. It is a sequential estimation of $\boldsymbol{\beta}$.
 	\section{Introduction}
-		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates from the model. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}). But even if the sub-regressions are strong, we face a loss information that can be damageable as we have seen in Section \ref{tableMSEsimgauche}. \\
+		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates from the model. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}). But even if the sub-regressions are strong, we face a loss of information that can be damageable as we have seen in Section \ref{tableMSEsimgauche}. \\
 		
 		We know that using all the covariates simultaneously (classical \textsc{ols}) gives bad results due to correlations. But we can use them sequentially by using the explicit decomposition of the marginal model (equation \ref{eq:Trueexpl2}) that makes appear the coefficient $\boldsymbol{\beta}_r$ in both the noise and $\boldsymbol{\beta}_f^*$. Thus we are able to obtain by plug-in better estimates of $\boldsymbol{\beta}_r$ and $\boldsymbol{\beta}_f$ in terms of bias. Once again final result will depend on the bias-variance trade-off and numerical results will show what to expect.\\
 		In this chapter we note $\longrightarrow$ the convergence in distribution when $n$ grows to $+\infty$.
-	\section{Plug-in model}
+	\section{Summary of previous steps}
 	All previous estimators allow us to define a plug-in estimator for $\boldsymbol{\beta}$.
-	\paragraph{Summary of previous steps:}
 	We had the true complete model:
 %	\begin{equation}
 %		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y. \nonumber 
@@ -2904,22 +2903,24 @@ $
 $ and $\hat{\boldsymbol{\alpha}}^*=(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r$ if estimated by {\sc ols} (we suppose that it is the case in the followings).\\
 We have then:
 \begin{displaymath}
-	\hat{\boldsymbol{\varepsilon}}= \boldsymbol{X}_r-\underbrace{\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'}_{\boldsymbol{H}_f}\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r.
-\end{displaymath}
+	\hat{\boldsymbol{\varepsilon}}= \boldsymbol{X}_r-\underbrace{\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'}_{\boldsymbol{H}_f}\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \textrm{ and } 
+	\hat{\boldsymbol{\varepsilon}}_Y^*=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{Y}.
+\end{displaymath}  
   
 \paragraph{Remark:} $\boldsymbol{H}_f$ and $(\boldsymbol{I}_n-\boldsymbol{H}_f)$ are both symmetric and idempotent and we have:
 \begin{eqnarray}
 %\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r-\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \nonumber,\\
 \hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)' (\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r, \nonumber\\
-\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}},\nonumber \\
-\hat{\boldsymbol{\varepsilon}}_Y^*&=&(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{Y}.
+\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}.\nonumber 
 \end{eqnarray} 
+\section{Plug-in estimation}
+
 \paragraph{Estimation of $\boldsymbol{\beta}_r$:}
-At this step of the process, we know both $\hat{\boldsymbol{\varepsilon}} $ and $\hat{\boldsymbol{\beta}}_f^* $ so we make as an additional sequential step an asymptotic regression based on equation (\ref{eq:Trueexpl2}):
+We can define $\boldsymbol{\varepsilon}_Y^*$ as the residual of the marginal model (for which we have an estimator) but also by its explicit form: $\boldsymbol{\varepsilon}_Y^*=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y$ (that depends on the noise of the sub-regressions for which we also have an estimator). So we make as an additional sequential step an asymptotic regression:% based on equation (\ref{eq:Trueexpl2}):
 \begin{displaymath}
 \left\{ \begin{array}{r c l}
-\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*|\boldsymbol{X}_f,\boldsymbol{S}; \boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2  &  \longrightarrow \quad   &  \boldsymbol{\varepsilon}_Y^*\\
-	(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y|\boldsymbol{X}_f, \boldsymbol{S};\boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2 &  \longrightarrow \quad &  \boldsymbol{\varepsilon}_Y^* 
+\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X}_f,\boldsymbol{S}; \boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2  &  \longrightarrow \quad   &  \boldsymbol{\varepsilon}_Y^*\\
+	\hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y|\boldsymbol{X}_f, \boldsymbol{S};\boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2 &  \longrightarrow \quad &  \boldsymbol{\varepsilon}_Y^* 
 	\end{array}
 	\right. .
 	\end{displaymath}
@@ -2931,12 +2932,20 @@ Then we get (by {\sc ols}) a new estimator of $\boldsymbol{\beta}_r$:
 	\begin{equation}
 		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f) \nonumber 
 	\end{equation}
-that depends on all covariates in $\boldsymbol{X}$.
-\\
-
- We have now used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$.
+that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\boldsymbol{Y} $:
+%		\begin{equation}
+%			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
+%		\end{equation}
+\begin{eqnarray}
+%\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2 &=& \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*} \textrm{\ \ (true model)} \nonumber\\
+	%\hat{\boldsymbol{Y}}_{marginal}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f \nonumber\\
+	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
+\end{eqnarray}
+%This an asymptotically unbiased estimator of $\boldsymbol{Y}$ because the marginal model is unbiased and all the estimators are consistent. 
+ We have now used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$.\\
 %We suppose that $\hat{\boldsymbol{\beta}^*_f}$ and $\hat{\boldsymbol{\alpha}}^*$ are consistent (for example using \textsc{ols}). The new estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent (\textsc{ols} and Slutsky's theorem) and we have
-The estimators sequentially used here by plug-in are all {\sc ols} estimators and then the resulting estimator is asymptotically unbiased (Slutsky's theorem) and we have
+
+\paragraph{Properties:}The estimators sequentially used here by plug-in are all {\sc ols} estimators and then the resulting estimator is asymptotically unbiased (Slutsky's theorem) and we have
 \begin{equation}
 	\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})-\boldsymbol{\beta}_r \longrightarrow 0  \nonumber 
 \end{equation}
@@ -2980,16 +2989,7 @@ If $\boldsymbol{\alpha}^*$ is estimated by {\sc ols} (as we supposed previously)
 \begin{displaymath}
 	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}=\sigma^2_Y(\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r)^{-1}.
 \end{displaymath}
-		Then we can estimate $\boldsymbol{Y} $:
-%		\begin{equation}
-%			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
-%		\end{equation}
-\begin{eqnarray}
-%\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2 &=& \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*} \textrm{\ \ (true model)} \nonumber\\
-	%\hat{\boldsymbol{Y}}_{marginal}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f \nonumber\\
-	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
-\end{eqnarray}
-%This an asymptotically unbiased estimator of $\boldsymbol{Y}$ because the marginal model is unbiased and all the estimators are consistent. 
+		
 %We deduce
 %\begin{equation*}
 %	\hat{\boldsymbol{\varepsilon}}_Y=\boldsymbol{Y}-\hat{\boldsymbol{Y}}_{plug-in}.
