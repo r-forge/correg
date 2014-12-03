@@ -2892,29 +2892,29 @@ Then by marginalization on $\boldsymbol{X}_r$ we obtained (equation (\ref{eq:Tru
 %	\item 
 %\end{itemize}
 %These two new estimators allow us to reduce the noise of the marginal model by linear regression based on equation (\ref{regressnoise}) and to obtain an estimator of $\boldsymbol{\beta}_r$ possibly better than $\hat{\boldsymbol{\beta}}^*_r=\boldsymbol{0}$.
-The plug-in estimator relies on this last equation and on the fact that we have already estimated $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ (Chapter \ref{chapterMCMC}), but also $\boldsymbol{\varepsilon}$ (equation (\ref{epsilonchapeau})), and $\boldsymbol{\varepsilon}_Y^*$ (equation (\ref{estimepsYstar})):
+
+%where 
+%$
+%\hat{\boldsymbol{\beta}}_f^*=(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}
+%$  if estimated by {\sc ols} (we suppose that it is the case in the followings) and $\hat{\boldsymbol{\alpha}}^*$ is defined by the $ \hat{\boldsymbol{\alpha}}$.\\
+%We have then:
+%\begin{displaymath}
+%	\hat{\boldsymbol{\varepsilon}}= \boldsymbol{X}_r-\underbrace{\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'}_{\boldsymbol{H}_f}\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \textrm{ and } 
+%	\hat{\boldsymbol{\varepsilon}}_Y^*=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{Y}.
+%\end{displaymath}  
+  
+%\paragraph{Remark:} $\boldsymbol{H}_f$ and $(\boldsymbol{I}_n-\boldsymbol{H}_f)$ are both symmetric and idempotent and we have:
+%\begin{eqnarray}
+%%\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r-\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \nonumber,\\
+%\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)' (\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r, \nonumber\\
+%\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}.\nonumber 
+%\end{eqnarray} 
+\section{Plug-in estimation}
+The plug-in estimator relies on the fact that we have already estimated $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ (Chapter \ref{chapterMCMC}), but also $\boldsymbol{\varepsilon}$ (equation (\ref{epsilonchapeau})), and $\boldsymbol{\varepsilon}_Y^*$ (equation (\ref{estimepsYstar})):
 	\begin{eqnarray}
 		\hat{\boldsymbol{\varepsilon}}&=& \boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \nonumber, \\
-		\hat{\boldsymbol{\varepsilon}}_Y^*&=&\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*, \nonumber
+		\hat{\boldsymbol{\varepsilon}}_Y^*&=&\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*. \nonumber
 	\end{eqnarray}
-where 
-$
-\hat{\boldsymbol{\beta}}_f^*=(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}
-$ and $\hat{\boldsymbol{\alpha}}^*=(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r$ if estimated by {\sc ols} (we suppose that it is the case in the followings).\\
-We have then:
-\begin{displaymath}
-	\hat{\boldsymbol{\varepsilon}}= \boldsymbol{X}_r-\underbrace{\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'}_{\boldsymbol{H}_f}\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \textrm{ and } 
-	\hat{\boldsymbol{\varepsilon}}_Y^*=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{Y}.
-\end{displaymath}  
-  
-\paragraph{Remark:} $\boldsymbol{H}_f$ and $(\boldsymbol{I}_n-\boldsymbol{H}_f)$ are both symmetric and idempotent and we have:
-\begin{eqnarray}
-%\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r-\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r=(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r \nonumber,\\
-\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)' (\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r, \nonumber\\
-\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}.\nonumber 
-\end{eqnarray} 
-\section{Plug-in estimation}
-
 \paragraph{Estimation of $\boldsymbol{\beta}_r$:}
 We can define $\boldsymbol{\varepsilon}_Y^*$ as the residual of the marginal model (for which we have an estimator) but also by its explicit form: $\boldsymbol{\varepsilon}_Y^*=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y$ (that depends on the noise of the sub-regressions for which we also have an estimator). So we make as an additional sequential step an asymptotic regression:% based on equation (\ref{eq:Trueexpl2}):
 \begin{displaymath}
@@ -2922,7 +2922,7 @@ We can define $\boldsymbol{\varepsilon}_Y^*$ as the residual of the marginal mod
 \hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X}_f,\boldsymbol{S}; \boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2  &  \longrightarrow \quad   &  \boldsymbol{\varepsilon}_Y^*\\
 	\hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y|\boldsymbol{X}_f, \boldsymbol{S};\boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2 &  \longrightarrow \quad &  \boldsymbol{\varepsilon}_Y^* 
 	\end{array}
-	\right. \textrm{ (Slutsky's theorem)} .
+	\right. .%\textrm{ (Slutsky's theorem)} .
 	\end{displaymath}
 %	\begin{eqnarray}
 %	\hat{\boldsymbol{\varepsilon}}_Y^*|\hat{\boldsymbol{\varepsilon}} &\longrightarrow & \boldsymbol{\varepsilon}_Y^*  \nonumber \\
@@ -2985,11 +2985,11 @@ and
 %\end{eqnarray}		
 %		
 %		
-If $\boldsymbol{\alpha}^*$ is estimated by {\sc ols} (as we supposed previously) then 
-\begin{displaymath}
-	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}=\sigma^2_Y(\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r)^{-1}.
-\end{displaymath}
-		
+%If $\boldsymbol{\alpha}^*$ is estimated by {\sc ols} (as we supposed previously) then 
+%\begin{displaymath}
+%	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}=\sigma^2_Y(\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r)^{-1}.
+%\end{displaymath}
+%		
 %We deduce
 %\begin{equation*}
 %	\hat{\boldsymbol{\varepsilon}}_Y=\boldsymbol{Y}-\hat{\boldsymbol{Y}}_{plug-in}.
@@ -3010,14 +3010,14 @@ Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are obtained as above a
 		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})]  \nonumber \\
 		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y})]  \nonumber \\
 		&=&\operatorname{Var}\left[\left((\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\right)\boldsymbol{Y}\right]  \nonumber \\
-		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}(\hat{\boldsymbol{\alpha}}^*)'] \label{varpluginf}
+		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}(\hat{\boldsymbol{\alpha}}^*)']. \label{varpluginf}
 	\end{eqnarray}
 
 Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ (in (\ref{varpluginr}) and (\ref{varpluginf})) has supplementary terms but relies on smaller and better conditioned matrices than classical \textsc{ols} applied on $\boldsymbol{X}$ so we hope that correlations are strong enough to make the difference.	Compared to (\ref{eq:varOLS*}) we have a new bias-variance trade-off to study with numerical results.\\
 	
 		
 	
-	Figure \ref{MQE2} illustrates the bias-variance trade-off followed by this plug-in model. We logically observe that the plug-in model gives better results in the cases with enough correlations to have problem when using whole $\boldsymbol{X}$ (ill-conditioned) but not enough correlations to have truly redundant covariates and to be able to remove some of them (marginal model) without significant information loss. We see that our new model is efficient and enlarge the range of cases where we can beat classical {\sc ols}.
+	Figure \ref{MQE2} illustrates the bias-variance trade-off followed by this plug-in model. We logically observe that the plug-in model gives better results in the cases with enough correlations to have problem when using whole $\boldsymbol{X}$ (ill-conditioned) but not enough correlations to have truly redundant covariates and to be able to remove some of them (marginal model) without significant information loss. We see that our new model is efficient and enlarges the range of cases where we can beat classical {\sc ols}.
 \begin{figure}[h!]
 	\includegraphics[width=500px]{figures/MQE_toutOLSp5col.png}
 	\caption{\textsc{mse} on $\hat{\boldsymbol{\beta}}$ of \textsc{ols} (plain red) and {\tt CorReg} marginal (blue dashed) and {\tt CorReg} plug-in (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. Results obtained on the running example with $d=5$ covariates.}\label{MQE2}
