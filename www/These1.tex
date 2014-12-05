@@ -1876,7 +1876,7 @@ When comparing $\mbox{{\sc bic}}_U$ to $\mbox{{\sc bic}}_H$ it becomes evident t
 
 
 \subsection{Comparison with {\tt Selvarclust}}\label{compMaugis}
-		Maugis provides results\footnote{\url{http://www.math.univ-toulouse.fr/~maugis/SelvarClustHomepage.html}} of {\tt SelvarClust} on a dataset {\it Data2.txt} containing 2 000 data points from a mixture of four Gaussian distributions $\mathcal{N}(\mu_k,\boldsymbol{I}_2)$ with $\mu_1=(-2,-2),\mu_2=(-3,-3),\mu_4=(2,2)$ and with a proportion vector $\boldsymbol{\pi}=(0.3,0.2,0.3,0.2)$. Variables $\boldsymbol{X}^1,\boldsymbol{X}^2$ corresponds to the coordinates. Eight irrelevant variables (for clustering) are appended, simulated according to $\forall 1\leq i \leq 2\; 000$:
+		Maugis provides results\footnote{\url{http://www.math.univ-toulouse.fr/~maugis/SelvarClustHomepage.html}} of {\tt SelvarClust} on a dataset {\it Data2.txt} containing 2 000 data points from a mixture of four Gaussian distributions $\mathcal{N}(\mu_k,\boldsymbol{I}_2)$ with $\mu_1=(-2,-2), \mu_2=(-2,2), \mu_3=(2,-2), \mu_4=(2,2)$ and with a proportion vector $\boldsymbol{\pi}=(0.3,0.2,0.3,0.2)$. Variables $\boldsymbol{X}^1,\boldsymbol{X}^2$ corresponds to the coordinates. Eight irrelevant variables (for clustering) are appended, simulated according to $\forall 1\leq i \leq 2\; 000$:
 		\begin{displaymath}
 		 \boldsymbol{X}_i^{\{3,\dots , 6 \}}|\boldsymbol{X}_i^{\{1,2\}};\boldsymbol{\alpha}^*,\boldsymbol{\Omega} \sim \mathcal{N}(\boldsymbol{X}_i^{\{1,2\}}\boldsymbol{\alpha^*},\boldsymbol{\Omega})
 		\end{displaymath}
@@ -3043,7 +3043,7 @@ Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are the followings:
 		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}(\hat{\boldsymbol{\alpha}}^*)']. \label{varpluginf}
 	\end{eqnarray}
 
-Variance of $\hat{\boldsymbol{\beta}^{\varepsilon}}$ (in (\ref{varpluginr}) and (\ref{varpluginf})) has supplementary terms but relies on smaller and better conditioned matrices than classical \textsc{ols} applied on $\boldsymbol{X}$ so we hope that correlations are strong enough to make the difference. Here is where the bias-variance trade-off relies.	Compared to (\ref{eq:varOLS*}) we have a new bias-variance trade-off to study with numerical results.\\
+Variance in equations (\ref{varpluginr}) and (\ref{varpluginf}) have supplementary terms but rely on smaller and better conditioned matrices than classical \textsc{ols} applied on $\boldsymbol{X}$ so we hope that correlations are strong enough to make the difference. Here is where the bias-variance trade-off relies.	Compared to (\ref{eq:varOLS*}) we have a new bias-variance trade-off to study with numerical results.\\
 	
 		
 	
