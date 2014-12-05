@@ -62,3 +62,4 @@
 #'   abline(h=MSE_complete,col="red")
 #'    }
 NULL
+#la puissance CorReg!!!!!!!!!

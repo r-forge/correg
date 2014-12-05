@@ -1,19 +1,19 @@
 #' Estimates the response variable using a structure
-#'  @import Rcpp
-# '   @import Rmixmod
+#' @import Rcpp
+#' @import Rmixmod
 #' @import lars
 #' @import elasticnet
 #' @import Matrix
-# ' @import mclust 
+#' @import mclust 
 #' @import ridge
 #' @import MASS
 # ' @import parcor
-# ' @import  clere
+# '  @import  clere
 # ' @import spikeslab
 #' @import  rpart
-# ' @import  stats
 #' @import corrplot
 #' @import mvtnorm
+# ' @import rtkpp
 #' @useDynLib CorReg
 #' @export
 #' @param B the (p+1)xp matrix associated to Z and that contains the parameters of the sub-regressions
@@ -41,6 +41,7 @@
 #' @param g number of group of variables for clere
 #' @param explnew select the number of sub-regression to take into account (by AIC on the corresponding final model)
 #' 
+#Attention cette fonction dégage une puissance phénoménale (it's over 9000!)
 correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, explnew=FALSE,
                 pred = FALSE,prednew=FALSE,
                 select = "lar",
