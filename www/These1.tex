@@ -2910,29 +2910,37 @@ Then by marginalization on $\boldsymbol{X}_r$ we obtained (equation (\ref{eq:Tru
 %\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}.\nonumber 
 %\end{eqnarray} 
 \section{Plug-in estimation}
-The plug-in estimator relies on the fact that we have already estimated $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ (Chapter \ref{chapterMCMC}), but also $\boldsymbol{\varepsilon}$ (equation (\ref{epsilonchapeau})), and $\boldsymbol{\varepsilon}_Y^*$ (equation (\ref{estimepsYstar})):
+We have the following equation:
+\begin{equation}
+	\boldsymbol{\varepsilon}_Y^*|\boldsymbol{\varepsilon};\boldsymbol{\beta}_r,\sigma_Y^2=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:regplugin} \nonumber
+\end{equation}
+Then the Best Linear Unbiased Estimator ({\sc BLUE}) for $\boldsymbol{\beta}_r$ is given by  $(\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}_Y^* $ ({\sc ols} estimator). It depends on $\boldsymbol{\varepsilon}$ and $\boldsymbol{\varepsilon}_Y^*$ that are unknown.\\
+
+The plug-in estimator relies on the fact that (after estimation of the structure and the marginal model) we already have the following estimators:
 	\begin{eqnarray}
-		\hat{\boldsymbol{\varepsilon}}&=& \boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \nonumber, \\
-		\hat{\boldsymbol{\varepsilon}}_Y^*&=&\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*. \nonumber
+		\hat{\boldsymbol{\varepsilon}}&=& \boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \nonumber \textrm{ and} \\
+		\hat{\boldsymbol{\varepsilon}}_Y^*&=&\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^*, \nonumber
 	\end{eqnarray}
-\paragraph{Estimation of $\boldsymbol{\beta}_r$:}
-We can define $\boldsymbol{\varepsilon}_Y^*$ as the residual of the marginal model (for which we have an estimator) but also by its explicit form: $\boldsymbol{\varepsilon}_Y^*=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y$ (that depends on the noise of the sub-regressions for which we also have an estimator). So we make as an additional sequential step an asymptotic regression:% based on equation (\ref{eq:Trueexpl2}):
-\begin{displaymath}
-\left\{ \begin{array}{r c l}
-\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X}_f,\boldsymbol{S}; \boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2  &  \longrightarrow \quad   &  \boldsymbol{\varepsilon}_Y^*\\
-	\hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y|\boldsymbol{X}_f, \boldsymbol{S};\boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2 &  \longrightarrow \quad &  \boldsymbol{\varepsilon}_Y^* 
-	\end{array}
-	\right. .%\textrm{ (Slutsky's theorem)} .
-	\end{displaymath}
-%	\begin{eqnarray}
-%	\hat{\boldsymbol{\varepsilon}}_Y^*|\hat{\boldsymbol{\varepsilon}} &\longrightarrow & \boldsymbol{\varepsilon}_Y^*  \nonumber \\
-%		\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X},\hat{\boldsymbol{S}} &\longrightarrow &\boldsymbol{\varepsilon}_Y^*. \nonumber 
-%\end{eqnarray}
-Then we get (by {\sc ols}) a new estimator of $\boldsymbol{\beta}_r$:
-	\begin{equation}
-		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f) \nonumber 
-	\end{equation}
-that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\boldsymbol{Y} $:
+	which are unbiased if $\hat{\boldsymbol{\alpha}}^* $ and $\hat{\boldsymbol{\beta}}_f^*$ are unbiased (for example {\sc ols} estimators). 
+	\paragraph{Estimation of $\boldsymbol{\beta}_r$:} We define a new plug-in estimator for $\boldsymbol{\beta}_r$:
+	%We can define $\boldsymbol{\varepsilon}_Y^*$ as the residual of the marginal model (for which we have an estimator) but also by its explicit form: $\boldsymbol{\varepsilon}_Y^*=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y$ (that depends on the noise of the sub-regressions for which we also have an estimator). So we make as an additional sequential step an asymptotic regression:% based on equation (\ref{eq:Trueexpl2}):
+%\begin{displaymath}
+%\left\{ \begin{array}{r c l}
+%\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X}_f,\boldsymbol{S}; \boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2  &  \longrightarrow \quad   &  \boldsymbol{\varepsilon}_Y^*\\
+%	\hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y|\boldsymbol{X}_f, \boldsymbol{S};\boldsymbol{\beta}_r,\boldsymbol{\sigma}^2,\sigma_{Y}^2 &  \longrightarrow \quad &  \boldsymbol{\varepsilon}_Y^* 
+%	\end{array}
+%	\right. .%\textrm{ (Slutsky's theorem)} .
+%	\end{displaymath}
+%%	\begin{eqnarray}
+%%	\hat{\boldsymbol{\varepsilon}}_Y^*|\hat{\boldsymbol{\varepsilon}} &\longrightarrow & \boldsymbol{\varepsilon}_Y^*  \nonumber \\
+%%		\hat{\boldsymbol{\varepsilon}}_Y^*|\boldsymbol{X},\hat{\boldsymbol{S}} &\longrightarrow &\boldsymbol{\varepsilon}_Y^*. \nonumber 
+%%\end{eqnarray}
+%Then we get (by {\sc ols}) a new estimator of $\boldsymbol{\beta}_r$:
+	\begin{eqnarray}
+		\hat{\boldsymbol{\beta}}_r^{\varepsilon}&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^* =(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f) \nonumber \\
+	&=&\left((\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*\right)^{-1}(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'\hat{\boldsymbol{\varepsilon}}_Y^*	\nonumber
+	\end{eqnarray}
+that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\boldsymbol{Y}$ (sequentially) by:
 %		\begin{equation}
 %			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
 %		\end{equation}
@@ -2945,11 +2953,25 @@ that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\bolds
  We have now used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$.\\
 %We suppose that $\hat{\boldsymbol{\beta}^*_f}$ and $\hat{\boldsymbol{\alpha}}^*$ are consistent (for example using \textsc{ols}). The new estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent (\textsc{ols} and Slutsky's theorem) and we have
 
-\paragraph{Properties:}The estimators sequentially used here by plug-in are all {\sc ols} estimators and then the resulting estimator is asymptotically unbiased (Slutsky's theorem) and we have
+\paragraph{Properties:}We suppose that the estimators $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\varepsilon}}_Y^*$ sequentially used here by plug-in are all unbiased (for example {\sc ols}) estimators and then we found that the resulting estimator is asymptotically unbiased.
+\begin{eqnarray}
+	\hat{\boldsymbol{\alpha}}^*&\longrightarrow &\boldsymbol{\alpha}^*\nonumber  \textrm{ and}\\
+	\hat{\boldsymbol{\varepsilon}}_Y^*&\longrightarrow & \boldsymbol{\varepsilon}_Y^*\nonumber ,
+	\end{eqnarray}
+	 then, by Slutsky's theorem we have:
+	\begin{eqnarray} 
+	\left((\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*\right)^{-1}(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'\hat{\boldsymbol{\varepsilon}}_Y^* &\longrightarrow &(\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}^*_Y \nonumber . 
+\end{eqnarray}
+Classical {\sc ols} properties give: 
+\begin{eqnarray}
+\mathbb{E}((\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}^*_Y)&=& \boldsymbol{\beta}_r  \nonumber
+\end{eqnarray}
+ and then we have
 \begin{equation}
-	\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})-\boldsymbol{\beta}_r \longrightarrow 0  \nonumber 
+	\operatorname{lim}_{n \rightarrow +\infty}\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\boldsymbol{\beta}_r,  \nonumber 
 \end{equation}
-and
+so the estimator is asymptotically unbiased.
+The variance of the estimator is given by:
 %and the variance can be decomposed for each sub-regression. $\forall j \in \{1,\dots,d_r\}$:
 %\begin{eqnarray}
 %	 \hat{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{J_r^j}-\boldsymbol{X}^{J_p^j}\hat{\boldsymbol{\alpha}}_j
@@ -2995,17 +3017,17 @@ and
 %	\hat{\boldsymbol{\varepsilon}}_Y=\boldsymbol{Y}-\hat{\boldsymbol{Y}}_{plug-in}.
 %\end{equation*}
 \paragraph{Estimation of $\boldsymbol{\beta}_f$:}
-		We can even improve estimation of $\boldsymbol{\beta}_f$ by doing an additional identification step.	We have $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ so we define the following estimator.
+		We can even improve estimation of $\boldsymbol{\beta}_f$ by doing an additional identification step.	We have $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ so we define the following estimator:
 			\begin{equation}
 			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 			\end{equation}
-	Then we can rewrite 
-	\begin{equation}
-		\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^{\varepsilon}+ \boldsymbol{X}_r \hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
-	\end{equation}
-Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are obtained as above and give:
+%	Then we can rewrite 
+%	\begin{equation}
+%		\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^{\varepsilon}+ \boldsymbol{X}_r \hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
+%	\end{equation}
+Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are the followings:
 	\begin{eqnarray}
-		\mathbb{E}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})-\boldsymbol{\beta}_f&\longrightarrow & \boldsymbol{0} \textrm{ (still asymptotically unbiased)}\\
+		\operatorname{lim}_{n \rightarrow +\infty}\mathbb{E}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})&=&\boldsymbol{\beta}_f^*-\boldsymbol{\alpha}^*\boldsymbol{\beta}_r = \boldsymbol{\beta}_f \textrm{ (asymptotically unbiased), and}\\
 		\operatorname{Var}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})&=&\operatorname{Var}[\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}] \nonumber \\
 		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})]  \nonumber \\
 		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y})]  \nonumber \\
