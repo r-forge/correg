@@ -2919,7 +2919,7 @@ Then the Best Linear Unbiased Estimator ({\sc BLUE}) for $\boldsymbol{\beta}_r$ 
   \hat{\boldsymbol{\beta}_r}=(\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}_Y^* . \label{olsplugin}
 \end{equation}
     But it depends on $\boldsymbol{\varepsilon}$ and $\boldsymbol{\varepsilon}_Y^*$ that are unknown.
-The plug-in estimator we propose in this chapter does relies on the fact that we already have the following estimators (from equations (\ref{ssregplugin}) and (\ref{pluginorig})):
+The plug-in estimator of $\boldsymbol{\beta}_r$ we propose in this chapter does rely on the fact that we already have the following estimators (from equations (\ref{ssregplugin}) and (\ref{pluginorig})):
 	\begin{eqnarray}
 		\hat{\boldsymbol{\varepsilon}}&=& \boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \nonumber \textrm{ and} \\
 		\hat{\boldsymbol{\varepsilon}}_Y^*&=&\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^* \nonumber
@@ -2943,7 +2943,7 @@ The plug-in estimator we propose in this chapter does relies on the fact that we
 		\hat{\boldsymbol{\beta}}_r^{\varepsilon}&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*  \nonumber \\
 	&=&\left((\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)\right)^{-1}(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f)	\label{estimpluginlong}
 	\end{eqnarray}
-that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\boldsymbol{Y}$ (sequentially) by:
+that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\boldsymbol{Y}$ by:
 %		\begin{equation}
 %			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
 %		\end{equation}
@@ -2953,11 +2953,11 @@ that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\bolds
 	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 \end{eqnarray}
 %This an asymptotically unbiased estimator of $\boldsymbol{Y}$ because the marginal model is unbiased and all the estimators are consistent. 
- We have now used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$. 	In the followings we suppose that $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\beta}}_f^*$ are {\sc ols} estimators. 
+ We have now (sequentially) used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$. 	In the followings we suppose that $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\beta}}_f^*$ are {\sc ols} estimators. 
 \\
 %We suppose that $\hat{\boldsymbol{\beta}^*_f}$ and $\hat{\boldsymbol{\alpha}}^*$ are consistent (for example using \textsc{ols}). The new estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent (\textsc{ols} and Slutsky's theorem) and we have
 
-\paragraph{Properties:}The estimators $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\varepsilon}}_Y^*$ sequentially used here by plug-in are consistent ({\sc ols} estimators):
+\paragraph{Properties:}The estimators $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\beta}}_f^*$ sequentially used here by plug-in are consistent ({\sc ols} estimators):
 \begin{equation}
 	\hat{\boldsymbol{\alpha}}^*\longrightarrow \boldsymbol{\alpha}^*  \textrm{ and }
 	\hat{\boldsymbol{\beta}}_f^*\longrightarrow  \boldsymbol{\beta}_f^*\nonumber .
@@ -2966,9 +2966,7 @@ that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\bolds
 	\begin{eqnarray} 
 	\left((\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)\right)^{-1}(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f)- (\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}_Y^*&\longrightarrow & \boldsymbol{0} \nonumber . 
 \end{eqnarray}
-
-
-Classical {\sc ols} properties give: 
+We know that {\sc ols} estimators are consistent: 
 \begin{eqnarray}
 (\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}_Y^*&\longrightarrow & \boldsymbol{\beta}_r  \nonumber
 \end{eqnarray}
@@ -2976,7 +2974,7 @@ Classical {\sc ols} properties give:
 \begin{equation}
 	\hat{\boldsymbol{\beta}}_r^{\varepsilon} \longrightarrow \boldsymbol{\beta}_r,  \nonumber 
 \end{equation}
-so the estimator is consistent. We deduce then
+so the plug-in estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent. We deduce then
 \begin{equation}
 	\lim_{n\rightarrow + \infty}\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\boldsymbol{\beta}_r \textrm{ (asymptotically unbiased estimator)}.\nonumber
 \end{equation}
