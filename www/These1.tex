@@ -52,6 +52,8 @@ commentstyle=\color{OliveGreen}, % white comments
 \xdefinecolor{vertfonce}{named}{ForestGreen}
 \xdefinecolor{bleuclair}{named}{PaleTurquoise}
 \xdefinecolor{bleufonce}{named}{Navy}
+\xdefinecolor{jauneclair}{named}{Yellow}
+\xdefinecolor{jaunefonce}{named}{BurntOrange}
 
 \newtheorem{hyp}{Hypothesis}
 \newtheorem{hypfr}{Hypothèse}
@@ -2854,9 +2856,14 @@ We have used the package {\tt CorReg} with real datasets and the results obtaine
 	\section{Motivations}
 		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates from the model. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}). But even if the sub-regressions are strong, we face a loss of information that can be damageable as we have seen in Section \ref{tableMSEsimgauche}. \\
 		
+		The redundant covariates $\boldsymbol{X}_r$ were only used to estimate $\boldsymbol{S}$ and only the partition (given by $J_r$) was used to estimate $\boldsymbol{Y}$. With the marginalization we have not used the part of $\boldsymbol{X}_r$ that is independent of $\boldsymbol{X}_f$ (the noise of the subregressions). We will try to use it with a sequential approach relying on the coefficients of sub-regression $\boldsymbol{\alpha}^*$ by a kind of profile likelihood.\\
+		
 		We know that using all the covariates simultaneously (classical \textsc{ols}) gives bad results due to correlations. But we can use them sequentially by using the explicit decomposition of the marginal model (equation \ref{eq:Trueexpl2}) that makes appear the coefficient $\boldsymbol{\beta}_r$ in both the noise and $\boldsymbol{\beta}_f^*$. Thus we are able to obtain by plug-in better estimates of $\boldsymbol{\beta}_r$ and $\boldsymbol{\beta}_f$ in terms of bias. Once again final result will depend on the bias-variance trade-off and numerical results will show what to expect.\\
+		
 		In this chapter we note $\longrightarrow$ the convergence in probability when $n$ grows to $+\infty$.
-	\section{Summary of previous steps}
+		\newpage
+\section{A plug-in model  to reduce the noise}	
+	We propose a plug-in model to reduce the noise of the marginal model.
 	%All previous estimators allow us to define a plug-in estimator for $\boldsymbol{\beta}$.
 	We had the true complete model:
 %	\begin{equation}
@@ -2912,11 +2919,13 @@ Then by marginalization on $\boldsymbol{X}_r$ we obtained:
 %\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)' (\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r, \nonumber\\
 %\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}&=&\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r=\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}.\nonumber 
 %\end{eqnarray} 
-\section{Plug-in estimation}
-We get from equation (\ref{pluginorig}):
+\paragraph{Plug-in approach:}
+We get from equation (\ref{pluginorig}):%\\
+%\fcolorbox{jaunefonce}{jauneclair}{\begin{minipage}{1\textwidth}
 \begin{equation}
 	\boldsymbol{\varepsilon}_Y^*|\boldsymbol{\varepsilon};\boldsymbol{\beta}_r,\sigma_Y^2=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:regplugin} \nonumber
 \end{equation}
+%\end{minipage}}
 Then the Best Linear Unbiased Estimator ({\sc BLUE}) for $\boldsymbol{\beta}_r$ is given ({\sc ols} estimator) by:
 \begin{equation}
   \hat{\boldsymbol{\beta}_r}=(\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}_Y^* . \label{olsplugin}
@@ -2927,7 +2936,8 @@ The plug-in estimator of $\boldsymbol{\beta}_r$ we propose in this chapter does 
 		\hat{\boldsymbol{\varepsilon}}&=& \boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \nonumber \textrm{ and} \\
 		\hat{\boldsymbol{\varepsilon}}_Y^*&=&\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^* \nonumber
 	\end{eqnarray}
-	that we can use by plug-in.
+	that we can use by plug-in.%\\
+%	\fcolorbox{jaunefonce}{jauneclair}{\begin{minipage}{1\textwidth}
 	\paragraph{Estimation of $\boldsymbol{\beta}_r$:} We define a plug-in estimator for $\boldsymbol{\beta}_r$:
 	%We can define $\boldsymbol{\varepsilon}_Y^*$ as the residual of the marginal model (for which we have an estimator) but also by its explicit form: $\boldsymbol{\varepsilon}_Y^*=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y$ (that depends on the noise of the sub-regressions for which we also have an estimator). So we make as an additional sequential step an asymptotic regression:% based on equation (\ref{eq:Trueexpl2}):
 %\begin{displaymath}
@@ -2946,14 +2956,16 @@ The plug-in estimator of $\boldsymbol{\beta}_r$ we propose in this chapter does 
 		\hat{\boldsymbol{\beta}}_r^{\varepsilon}&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*  \nonumber \\
 	&=&\left((\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)\right)^{-1}(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f)	\label{estimpluginlong}
 	\end{eqnarray}
-that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\boldsymbol{Y}$ by:
+that depends on all covariates in $\boldsymbol{X}$ and relies on the estimated coefficients of sub-regressions $\hat{\boldsymbol{\alpha}}^*$ and on the estimate $\hat{\boldsymbol{\beta}}_r^*$ of the coefficients in the marginal model.
+%\end{minipage}}
+Then we can estimate $\boldsymbol{Y}$ by:
 %		\begin{equation}
 %			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
 %		\end{equation}
 \begin{eqnarray}
 %\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2 &=& \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*} \textrm{\ \ (true model)} \nonumber\\
 	%\hat{\boldsymbol{Y}}_{marginal}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f \nonumber\\
-	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
+	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \label{hatYplugin} 
 \end{eqnarray}
 %This an asymptotically unbiased estimator of $\boldsymbol{Y}$ because the marginal model is unbiased and all the estimators are consistent. 
  We have now (sequentially) used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$. 	In the followings we suppose that $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\beta}}_f^*$ are {\sc ols} estimators. 
@@ -2965,7 +2977,7 @@ that depends on all covariates in $\boldsymbol{X}$. Then we can estimate $\bolds
 	\hat{\boldsymbol{\alpha}}^*\longrightarrow \boldsymbol{\alpha}^*  \textrm{ and }
 	\hat{\boldsymbol{\beta}}_f^*\longrightarrow  \boldsymbol{\beta}_f^*\nonumber .
 	\end{equation}
-	 Then, by the continuous mapping theorem, our new estimator from equation (\ref{estimpluginlong}) converges in probability to the {\sc ols} estimator (equation (\ref{olsplugin})):
+	 Then, by the continuous mapping theorem, our new estimator from equation (\ref{estimpluginlong}) converges in probability to the {\sc ols} estimator (defined in equation (\ref{olsplugin})):
 	\begin{eqnarray} 
 	\left((\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)\right)^{-1}(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f)- (\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}_Y^*&\longrightarrow & \boldsymbol{0} \nonumber . 
 \end{eqnarray}
@@ -3061,7 +3073,7 @@ Variance in equations (\ref{varpluginr}) and (\ref{varpluginf}) have supplementa
 	\paragraph{Remarks:} 
 	\begin{itemize}
 		\item $\boldsymbol{\beta}_{r}$ can be interpreted as the proper effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}_r$ that is independent of other covariates. Then if $\boldsymbol{X}_r$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}_f$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_r=\boldsymbol{0}$).
-		\item If $\boldsymbol{Y}$ depends only on $\boldsymbol{\varepsilon}$ (latent variables) then the plug-in model written as in equation (\ref{eq:Trueexpl2}) will show it. Moreover, we have an estimator of $\boldsymbol{\varepsilon}$ and we know that it is the proper of effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ and that it is independent of $\boldsymbol{X}_f$. Thus we have an idea of the values and meaning of $\boldsymbol{\varepsilon}$. It can help to name the latent variable and to add it in the dataset if possible.
+		\item If $\boldsymbol{Y}$ depends only on $\boldsymbol{\varepsilon}$ (latent variables) then the plug-in model written as in equation (\ref{hatYplugin}) will show it. Moreover, we have an estimator of $\boldsymbol{\varepsilon}$ and we know that it is the proper of effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ and that it is independent of $\boldsymbol{X}_f$. Thus we have an idea of the values and meaning of $\boldsymbol{\varepsilon}$. It can help to name the latent variable and to add it in the dataset if possible.
 	\end{itemize}
 	
 %			$\hat{\boldsymbol{\beta}}_{r}$ can be interpreted as the proper effect of $\boldsymbol{X}_r$ on $\boldsymbol{Y}$ in that it is the effect of the part of $\boldsymbol{X}_r$ that is independent of other covariates. Then if $\boldsymbol{X}_r$ is correlated to $\boldsymbol{Y}$ only through its correlation with $\boldsymbol{X}_f$ this sequential estimation will point it out and give a parsimonious model ($\hat{\boldsymbol{\beta}}_r=0$) but the real stake is greater. If the true model is:
