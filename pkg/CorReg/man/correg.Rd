@@ -7,7 +7,7 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE,
   explnew = FALSE, pred = FALSE, select = "lar", criterion = c("MSE",
   "BIC"), X_test = NULL, Y_test = NULL, intercept = TRUE, K = 10,
   groupe = NULL, Amax = NULL, lambda = 1, returning = FALSE,
-  final = FALSE, alpha = NULL, g = 5)
+  alpha = NULL, g = 5)
 }
 \arguments{
 \item{X}{the data matrix (covariates) without the intercept}
@@ -43,8 +43,6 @@ correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE,
 \item{lambda}{parameter for elasticnet (quadratic penalty)}
 
 \item{returning}{boolean : second predictive step (selection on I1 knowing I2 coefficients)}
-
-\item{final}{boolean : recompute estimators without selection on the remaining parameters of the predictive model}
 
 \item{alpha}{Coefficients of the explicative model to coerce the predictive step. if not NULL explicative step is not computed.}
 
