@@ -30,7 +30,6 @@
 #' @param groupe a vector to define the groups used for cross-validation (to obtain a reproductible result)
 #' @param Amax the maximum number of covariates in the final model
 #' @param returning boolean : second predictive step (selection on I1 knowing I2 coefficients)
-#' @param final boolean : recompute estimators without selection on the remaining parameters of the predictive model
 #' @param X_test validation sample
 #' @param Y_test response for the validation sample
 #' @param intercept boolean. If FALSE intercept will be set to 0 in each model.
@@ -43,7 +42,7 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, 
                 select = "lar",
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
-                K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=FALSE,final=FALSE,
+                K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=FALSE,
                 alpha=NULL,g=5) 
 {
   res = list()
@@ -60,8 +59,6 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, 
     returning=FALSE
   }
   if(select=="adalasso"){require(parcor)}
-  if(final){pred=TRUE}
-if(explnew){compl=TRUE;expl=TRUE}
   criterion = criterion[1]
   if (is.null(Amax)) {
     Amax = ncol(X) + 1
@@ -305,24 +302,5 @@ if(explnew){compl=TRUE;expl=TRUE}
        res$expl2$A = res$compl$A
     }
   }
-   if(pred & final){
-      res$final$A=res$pred$A
-      A_pred=res$pred$A
-      if(intercept){
-         quifinal=which(A_pred[-1]!=0)
-      }else{
-         quifinal=which(A_pred!=0)
-      }
-      if(length(quifinal)==0){
-         res$final=res$pred
-      }else{
-         resA_final=correg(X=X[,quifinal],Y=Y,returning=F,final=F,groupe=groupe,K=K,intercept=intercept,criterion=criterion,select=select,compl=TRUE,expl=FALSE,pred=FALSE,explnew=FALSE)
-         quifinal=which(A_pred!=0)
-         res$final$A[quifinal]=resA_final$compl$A
-         res$final$BIC = resA_final$compl$BIC
-      }
-      res$final$AIC=mon_AIC(theta=res$final$A,Y=Y,X=X,intercept=intercept) 
-      
-   }
   return(res)
 }
