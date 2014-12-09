@@ -8,7 +8,7 @@ WhoIs(Z = Z, I3 = F, I2 = T, I1 = T)
 \arguments{
 \item{Z}{the structure (square matrix)}
 
-\item{I1,I2,I3}{wanted outputs}
+\item{I1,I2,I3}{wanted outputs (I1= explicative covariates, I2=redundant covariates, I3=independent covariates)}
 }
 \description{
 Give the partition implied by a structure
