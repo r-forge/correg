@@ -876,9 +876,9 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 			\end{itemize}
 			
 			In this work we propose to adapt this model for linear regression and to use it as a pre-treatment on correlated covariates. We will see that, as a pre-treatment, it can be used then for a wide range of statistical tools and not only linear regression.\\
-			We provide a specific MCMC algorithm to find the structure between the covariates and propose two distinct models to use the structure for prediction: a marginal model and a plug-in model. Both algorithm are compared on a dataset from Maugis in section \ref{compMaugis}.	\\
+			We provide a specific MCMC algorithm to find the structure between the covariates and propose two distinct models to use the structure for prediction: a marginal model and a plug-in model. Both algorithm are compared on a dataset from Maugis in Appendix \ref{compMaugis}.	\\
 			
-			Aiming to realize Gaussian clustering, {\tt Selvarclust} does estimate a multivariate Gaussian mixture on $\boldsymbol{X}$ with dependencies within the covariates. Our algorithm will only aim to find a linear sub-regression structure within $\boldsymbol{X}$, relying on some additional hypotheses of independence so the two methods cannot be directly compared. The only common point is the existence of a linear sub-regression model and an algorithm that estimates it. Thus results in section \ref{compMaugis} are just informative.
+			Aiming to realize Gaussian clustering, {\tt Selvarclust} does estimate a multivariate Gaussian mixture on $\boldsymbol{X}$ with dependencies within the covariates. Our algorithm will only aim to find a linear sub-regression structure within $\boldsymbol{X}$, relying on some additional hypotheses of independence so the two methods cannot be directly compared. The only common point is the existence of a linear sub-regression model and an algorithm that estimates it. Thus results in Appendix \ref{compMaugis} are just informative.
 	%Our first intention was to make something different from SelvarClust but our model has evolved during this thesis and finally became more comparable to SelvarClust than expected.		
 	
 \section{Conclusion} In linear regression there is a lack of methods that both select relevant covariates and manage correlations with strong interpretability. However, some methods already give some partial solutions, sometimes in the field of interpretation by variable selection and/or by creation of groups of covariates, sometimes in the field of prediction by conditioning improvements. We will try to act on both fields (with priority given to interpretation) and then to allow usage of other methods on top of the model that we will propose in the followings.	
@@ -1877,62 +1877,7 @@ When comparing $\mbox{{\sc bic}}_U$ to $\mbox{{\sc bic}}_H$ it becomes evident t
 \end{figure}
 
 
-\subsection{Comparison with {\tt Selvarclust}}\label{compMaugis}
-		Maugis provides results\footnote{\url{http://www.math.univ-toulouse.fr/~maugis/SelvarClustHomepage.html}} of {\tt SelvarClust} on a dataset {\it Data2.txt} containing 2 000 data points from a mixture of four Gaussian distributions $\mathcal{N}(\mu_k,\boldsymbol{I}_2)$ with $\mu_1=(-2,-2), \mu_2=(-2,2), \mu_3=(2,-2), \mu_4=(2,2)$ and with a proportion vector $\boldsymbol{\pi}=(0.3,0.2,0.3,0.2)$. Variables $\boldsymbol{X}^1,\boldsymbol{X}^2$ corresponds to the coordinates. Eight irrelevant variables (for clustering) are appended, simulated according to $\forall 1\leq i \leq 2\; 000$:
-		\begin{displaymath}
-		 \boldsymbol{X}_i^{\{3,\dots , 6 \}}|\boldsymbol{X}_i^{\{1,2\}};\boldsymbol{\alpha}^*,\boldsymbol{\Omega} \sim \mathcal{N}(\boldsymbol{X}_i^{\{1,2\}}\boldsymbol{\alpha^*},\boldsymbol{\Omega})
-		\end{displaymath}
-		\begin{displaymath} \textrm{ with } \boldsymbol{\alpha}^*= \left( \begin{array}{cccc}
-		0.5 & 0 & 2 & 0 \\ 
-		0 & 1 & 0 & 3
-		\end{array} \right) \textrm{ and } \boldsymbol{\Omega}=\operatorname{diag}(1,1,0.5,0.5)
-		\end{displaymath}
-		\begin{displaymath}
-		 \boldsymbol{X}_i^{\{7,\dots , 10 \}}\sim \mathcal{N}(0,\boldsymbol{I}_4).
-		\end{displaymath}
 
-We compare results obtained on	$\hat{\boldsymbol{\alpha}}^*$ by both {\tt CorReg} and {\tt Selvarclust}.		
-Both {\tt SelvarClust} and {\tt CorReg} add an intercept (default parameter) that is like using a constant covariate $\boldsymbol{X}^0=\boldsymbol{1}$ and then adding a first row to $\boldsymbol{\alpha}^*$ containing the intercept of the sub-regressions. This intercept is not part of the selection procedure so it will never have zero value in practice. Hence we compare the second and third lines of the matrices (an horizontal line is drawn to distinguish the intercept from the rest of the matrix).\\
-
-{\tt SelvarClust} finds $\hat{\boldsymbol{\alpha}}^*_{Selvarclust}=$
-\begin{displaymath}
-{\fontsize{10}{10}\selectfont
-	\left (\begin{array}{cccccccc}
-	\textcolor{gray}{0.006052} &\textcolor{gray}{-0.025386} &\textcolor{gray}{-0.006845}&\textcolor{gray}{ -0.015952} &\textcolor{gray}{0.003420}& \textcolor{gray}{0.007839} &\textcolor{gray}{-0.047422}& \textcolor{gray}{-0.005811} \\
-	\hline
-\textbf{0.504791} &-0.002147& \textbf{2.007127} &-0.001010 &-0.000105 &0.022403 &0.013361 &0.000083 \\
--0.006709 &\textbf{1.000927} &0.007463&\textbf{2.997941}& -0.005955 &-0.021958 &-0.010387 &0.010765
-	\end{array} \right )}
-\end{displaymath}		
-	
-	{\tt CorReg} finds:
-\begin{displaymath}
-	\hat{\boldsymbol{\alpha}}^*_{CorReg}=\left(
-	\begin{array}{cccc}
-	\textcolor{gray}{0.008698209} &\textcolor{gray}{-0.02540033} &\textcolor{gray}{-0.00978779} &\textcolor{gray}{-0.01595849} \\
-	\hline
- \textbf{0.504672402}  &0&           \textbf{2.00725861} &0          \\
- 0&            \textbf{1.00088836}  &0&           \textbf{2.99792339} 
-	\end{array} 
-	\right)
-\end{displaymath}		
-Both software found that $\boldsymbol{X}^1,\boldsymbol{X}^2$ are not in $\boldsymbol{J}_r=(3,\dots,6)$ but only {\tt CorReg} found the true model with $\hat{\boldsymbol{J}_r}=\boldsymbol{J}_r$ and $\hat{\boldsymbol{J}_p}=\boldsymbol{J}_p=(\{ 1\},\{ 2\},\{1 \},\{ 2\})$. 
-{\tt Selvarclust} finds $\hat{\boldsymbol{S}}=((3,\dots,10),(\{1,2\},\dots,\{1,2\}))$ that does not even give the true partition $(J_r,J_f)$ (so marginal model would be distinct).
-Our algorithm gives better results on $\hat{\boldsymbol{\alpha}}^*$ with more parsimonious $\hat{\boldsymbol{S}}$ (that is the true $\boldsymbol{S}$), proving that a new algorithm was needed to estimate the sub-regression structure and that the proposed MCMC is efficient.
-
-\paragraph{Remarks:}
-\begin{itemize}
-	\item \textbf{Distinct goals:} {\tt CorReg} gives better results because it does not suffer from correlations like stepwise does in the algorithm from Maugis but also because the goal is not the same. {\tt Selvarclust} aims to find the relevant covariates for clustering ($\boldsymbol{X}^1,\boldsymbol{X}^2$) and achieves this goal. We focus on the explicit structure of regression between the covariate instead of Gaussian clustering. Distinct goals, distinct results even if the sub-regression model is quite the same. To obtain better results was just a necessary confirmation of that.
-	\item \textbf{Distinct hypotheses:}  
-	\begin{itemize}
-		\item {\tt Selvarclust} allows dependencies between the regressors and also between the noises of the sub-regressions. We suppose independence between the regressors and between the conditional distributions (noises of the sub-regressions are supposed to be independent). % so we estimate the univariate marginal distributions and we make it only once (independent from the structure). {\tt Selvarclust} has to estimate the whole distribution
-		 Our algorithm does not allow to find complex distributions with dependencies as {\tt Selvarclust} does. 
-		\item We estimate each marginal distribution separately (with {\tt Rmixmod} for example). It can lead to a joint distribution with a huge number of components (see Chapter \ref{chapmiss}) whereas {\tt Selvarclust} has to choose directly the number of components of the joint distribution and then this number is limited.
-	\end{itemize} 
-\end{itemize}	 	 
-	  Both models use a sub-regression structure and propose an algorithm to find it, but the comparison stops here. {\tt CorReg} does not really beat {\tt Selvarclust} because hypotheses and objectives are not the same,  so the result cannot really be compared. Our algorithm will allow more components than {\tt Selvarclust} and {\tt Selvarclust} will allow more dependencies between the covariates.
-	  
-	   {\tt Selvarclust} is not a competitor to {\tt CorReg} but a confirmation that the concept of sub-regressions within the covariates and the concept of redundant and irrelevant covariates are pertinent. 
 
 \subsection{Computational time}
 	In terms of computation time, the most expansive thing in the MCMC is the computation of \textsc{ols} to estimate $\boldsymbol{\alpha}$ for each candidate, that is mainly successive inversion of the $(\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_p^j}$ matrices. \\
@@ -3706,10 +3651,6 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 So when a value is missing, we know its distribution but in addition, we know its conditional distribution based on observed values for the same individual. Thus we are able to make imputation and to describe the missing values with their conditional distribution. This is a positive side-effect of the explicit generative model we have defined on $\boldsymbol{X}$.\\
 		
 	%This chapter is a perspective of this thesis that we have already started to work on, but missing values is a wide subject and we only propose some results.
-	\paragraph{SelvarclustMV:} We have compared our method to {\tt Selvarclust} in Section \ref{compMaugis}. But Maugis  has developed another software \cite{maugis2012selvarclustmv} that manage missing values: {\tt SelvarclustMV}. It relies on the assumption of Missing At Random (MAR) values and on the more constraining hypothesis that regressor covariates are completely observed (with our notations: $\forall j \in \{1,\dots,d_r \}, \forall k \in J_p^j, \forall 1\leq i \leq n, \boldsymbol{M}_{i,k}=0$). The model (Partition, sub-regression parameters and Gaussian mixtures parameters) is then estimated with an Expectation-Maximization algorithm using all the observed values (even incomplete individuals) without any imputation. Numerical results shows that {\tt SelvarclustMV} is highly competitive compared to imputation methods.\\
- Here again the algorithm used in {\tt SelvarclustMV} stands in a Gaussian clustering context and is not exactly adapted to our situation. Estimation of $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ was inconclusive (see section \ref{compMaugis}) without missing values so the situation would not be improved with missing values.
- Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
-	
 	\paragraph{Notations:} In the followings we note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate in $\boldsymbol{X}$ and $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $x_{i,j}$ is missing, 0 else. 
 	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the followings.\\
 	
@@ -4588,6 +4529,69 @@ the only non-identifiable sub-regressions could be those with only one regressor
 
 
 	\newpage
+	
+\chapter{Comparison with {\tt Selvarclust}}\label{compMaugis}
+		Maugis provides results\footnote{\url{http://www.math.univ-toulouse.fr/~maugis/SelvarClustHomepage.html}} of {\tt SelvarClust} on a dataset {\it Data2.txt} containing 2 000 data points from a mixture of four Gaussian distributions $\mathcal{N}(\mu_k,\boldsymbol{I}_2)$ with $\mu_1=(-2,-2), \mu_2=(-2,2), \mu_3=(2,-2), \mu_4=(2,2)$ and with a proportion vector $\boldsymbol{\pi}=(0.3,0.2,0.3,0.2)$. Variables $\boldsymbol{X}^1,\boldsymbol{X}^2$ corresponds to the coordinates. Eight irrelevant variables (for clustering) are appended, simulated according to $\forall 1\leq i \leq 2\; 000$:
+		\begin{displaymath}
+		 \boldsymbol{X}_i^{\{3,\dots , 6 \}}|\boldsymbol{X}_i^{\{1,2\}};\boldsymbol{\alpha}^*,\boldsymbol{\Omega} \sim \mathcal{N}(\boldsymbol{X}_i^{\{1,2\}}\boldsymbol{\alpha^*},\boldsymbol{\Omega})
+		\end{displaymath}
+		\begin{displaymath} \textrm{ with } \boldsymbol{\alpha}^*= \left( \begin{array}{cccc}
+		0.5 & 0 & 2 & 0 \\ 
+		0 & 1 & 0 & 3
+		\end{array} \right) \textrm{ and } \boldsymbol{\Omega}=\operatorname{diag}(1,1,0.5,0.5)
+		\end{displaymath}
+		\begin{displaymath}
+		 \boldsymbol{X}_i^{\{7,\dots , 10 \}}\sim \mathcal{N}(0,\boldsymbol{I}_4).
+		\end{displaymath}
+
+We compare results obtained on	$\hat{\boldsymbol{\alpha}}^*$ by both {\tt CorReg} and {\tt Selvarclust}.		
+Both {\tt SelvarClust} and {\tt CorReg} add an intercept (default parameter) that is like using a constant covariate $\boldsymbol{X}^0=\boldsymbol{1}$ and then adding a first row to $\boldsymbol{\alpha}^*$ containing the intercept of the sub-regressions. This intercept is not part of the selection procedure so it will never have zero value in practice. Hence we compare the second and third lines of the matrices (an horizontal line is drawn to distinguish the intercept from the rest of the matrix).\\
+
+{\tt SelvarClust} finds $\hat{\boldsymbol{\alpha}}^*_{Selvarclust}=$
+\begin{displaymath}
+{\fontsize{10}{10}\selectfont
+	\left (\begin{array}{cccccccc}
+	\textcolor{gray}{0.006052} &\textcolor{gray}{-0.025386} &\textcolor{gray}{-0.006845}&\textcolor{gray}{ -0.015952} &\textcolor{gray}{0.003420}& \textcolor{gray}{0.007839} &\textcolor{gray}{-0.047422}& \textcolor{gray}{-0.005811} \\
+	\hline
+\textbf{0.504791} &-0.002147& \textbf{2.007127} &-0.001010 &-0.000105 &0.022403 &0.013361 &0.000083 \\
+-0.006709 &\textbf{1.000927} &0.007463&\textbf{2.997941}& -0.005955 &-0.021958 &-0.010387 &0.010765
+	\end{array} \right )}
+\end{displaymath}		
+	
+	{\tt CorReg} finds:
+\begin{displaymath}
+	\hat{\boldsymbol{\alpha}}^*_{CorReg}=\left(
+	\begin{array}{cccc}
+	\textcolor{gray}{0.008698209} &\textcolor{gray}{-0.02540033} &\textcolor{gray}{-0.00978779} &\textcolor{gray}{-0.01595849} \\
+	\hline
+ \textbf{0.504672402}  &0&           \textbf{2.00725861} &0          \\
+ 0&            \textbf{1.00088836}  &0&           \textbf{2.99792339} 
+	\end{array} 
+	\right)
+\end{displaymath}		
+Both software found that $\boldsymbol{X}^1,\boldsymbol{X}^2$ are not in $\boldsymbol{J}_r=(3,\dots,6)$ but only {\tt CorReg} found the true model with $\hat{\boldsymbol{J}_r}=\boldsymbol{J}_r$ and $\hat{\boldsymbol{J}_p}=\boldsymbol{J}_p=(\{ 1\},\{ 2\},\{1 \},\{ 2\})$. 
+{\tt Selvarclust} finds $\hat{\boldsymbol{S}}=((3,\dots,10),(\{1,2\},\dots,\{1,2\}))$ that does not even give the true partition $(J_r,J_f)$ (so marginal model would be distinct).
+Our algorithm gives better results on $\hat{\boldsymbol{\alpha}}^*$ with more parsimonious $\hat{\boldsymbol{S}}$ (that is the true $\boldsymbol{S}$), proving that a new algorithm was needed to estimate the sub-regression structure and that the proposed MCMC is efficient.
+
+\paragraph{Remarks:}
+\begin{itemize}
+	\item \textbf{Distinct goals:} {\tt CorReg} gives better results because it does not suffer from correlations like stepwise does in the algorithm from Maugis but also because the goal is not the same. {\tt Selvarclust} aims to find the relevant covariates for clustering ($\boldsymbol{X}^1,\boldsymbol{X}^2$) and achieves this goal. We focus on the explicit structure of regression between the covariate instead of Gaussian clustering. Distinct goals, distinct results even if the sub-regression model is quite the same. To obtain better results was just a necessary confirmation of that.
+	\item \textbf{Distinct hypotheses:}  
+	\begin{itemize}
+		\item {\tt Selvarclust} allows dependencies between the regressors and also between the noises of the sub-regressions. We suppose independence between the regressors and between the conditional distributions (noises of the sub-regressions are supposed to be independent). % so we estimate the univariate marginal distributions and we make it only once (independent from the structure). {\tt Selvarclust} has to estimate the whole distribution
+		 Our algorithm does not allow to find complex distributions with dependencies as {\tt Selvarclust} does. 
+		\item We estimate each marginal distribution separately (with {\tt Rmixmod} for example). It can lead to a joint distribution with a huge number of components (see Chapter \ref{chapmiss}) whereas {\tt Selvarclust} has to choose directly the number of components of the joint distribution and then this number is limited.
+	\end{itemize} 
+\end{itemize}	 	 
+	  Both models use a sub-regression structure and propose an algorithm to find it, but the comparison stops here. {\tt CorReg} does not really beat {\tt Selvarclust} because hypotheses and objectives are not the same,  so the result cannot really be compared. Our algorithm will allow more components than {\tt Selvarclust} and {\tt Selvarclust} will allow more dependencies between the covariates.
+	  
+	   {\tt Selvarclust} is not a competitor to {\tt CorReg} but a confirmation that the concept of sub-regressions within the covariates and the concept of redundant and irrelevant covariates are pertinent.
+	   
+	   	\paragraph{SelvarclustMV:} We have compared our method to {\tt Selvarclust}. But Maugis  has developed another software \cite{maugis2012selvarclustmv} that manage missing values: {\tt SelvarclustMV}. It relies on the assumption of Missing At Random (MAR) values and on the more constraining hypothesis that regressor covariates are completely observed (with our notations: $\forall j \in \{1,\dots,d_r \}, \forall k \in J_p^j, \forall 1\leq i \leq n, \boldsymbol{M}_{i,k}=0$). The model (Partition, sub-regression parameters and Gaussian mixtures parameters) is then estimated with an Expectation-Maximization algorithm using all the observed values (even incomplete individuals) without any imputation. Numerical results shows that {\tt SelvarclustMV} is highly competitive compared to imputation methods.\\
+ Here again the algorithm used in {\tt SelvarclustMV} stands in a Gaussian clustering context and is not exactly adapted to our situation. Estimation of $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ was inconclusive (see above) without missing values so the situation would not be improved with missing values.
+ Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate (Chapter \ref{chapmiss}) the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
+	 	
+	
 \chapter{CorReg: Existing and coming computer tools}	
 	
 		The {\tt CorReg} package is already downloadable on {\sc cran} under CeCILL Licensing. This package permits to generate datasets according to our generative model, to estimate the structure (C++ code) of regression within a given dataset and to estimate both complete, marginal and plug-in models with many regression tools (\textsc{ols}, stepwise, \textsc{lasso}, elasticnet, clere, spike and slab, adaptive \textsc{lasso} and every models in the {\tt lars} package). So every simulation presented above can be done with {\tt CorReg}.
