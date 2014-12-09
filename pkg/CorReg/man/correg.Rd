@@ -3,11 +3,11 @@
 \alias{correg}
 \title{Estimates the response variable using a structure}
 \usage{
-correg(X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE,
-  explnew = FALSE, pred = FALSE, select = "lar", criterion = c("MSE",
-  "BIC"), X_test = NULL, Y_test = NULL, intercept = TRUE, K = 10,
-  groupe = NULL, Amax = NULL, lambda = 1, returning = FALSE,
-  alpha = NULL, g = 5)
+correg(X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE,
+  expl = FALSE, explnew = FALSE, pred = FALSE, select = "lar",
+  criterion = c("MSE", "BIC"), X_test = NULL, Y_test = NULL,
+  intercept = TRUE, K = 10, groupe = NULL, Amax = NULL, lambda = 1,
+  returning = FALSE, alpha = NULL, g = 5)
 }
 \arguments{
 \item{X}{the data matrix (covariates) without the intercept}
