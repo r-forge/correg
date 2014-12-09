@@ -45,7 +45,17 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, 
                 K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=FALSE,
                 alpha=NULL,g=5) 
 {
-  res = list()
+  if(is.null(X)){
+     dat<- data.frame(t=seq(0, 2*pi, by=0.1) )
+     xhrt <- function(t) 16*sin(t)^3
+     yhrt <- function(t) 13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t)
+     dat$y=yhrt(dat$t)
+     dat$x=xhrt(dat$t) 
+     with(dat, polygon(x,y, col="red"))   
+     points(c(10,-10, -15, 15), c(-10, -10, 10, 10), pch=169, font=5)
+     title(main="I Love CorReg !")
+  }
+   res = list()
   X = 1*as.matrix(X)
   K = abs(K)
   K = min(K, nrow(X))
