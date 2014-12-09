@@ -37,7 +37,7 @@
 #' @param g number of group of variables for clere
 #' 
 #Attention cette fonction dégage une puissance phénoménale (it's over 9000!)
-correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, explnew=FALSE,
+correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, explnew=FALSE,
                 pred = FALSE,
                 select = "lar",
                 criterion = c("MSE", "BIC"),
@@ -50,10 +50,12 @@ correg<-function (X = X, Y = Y, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, 
      xhrt <- function(t) 16*sin(t)^3
      yhrt <- function(t) 13*cos(t)-5*cos(2*t)-2*cos(3*t)-cos(4*t)
      dat$y=yhrt(dat$t)
-     dat$x=xhrt(dat$t) 
+     dat$x=xhrt(dat$t)
+     with(dat, plot(x,y, type="l"))  
      with(dat, polygon(x,y, col="red"))   
      points(c(10,-10, -15, 15), c(-10, -10, 10, 10), pch=169, font=5)
      title(main="I Love CorReg !")
+     return("I Love CorReg !")
   }
    res = list()
   X = 1*as.matrix(X)
