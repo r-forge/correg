@@ -1875,7 +1875,7 @@ When comparing $\mbox{{\sc bic}}_U$ to $\mbox{{\sc bic}}_H$ it becomes evident t
 	}
 	\caption{Quality of the subregressions found by the MCMC. True left (plain blue) and Wrong left (dotted red) for n varying in $(30,50,100,400)$, the thicker the greater $n$.}\label{compZBIC}
 \end{figure}
-
+	Appendix \ref{compMaugis} shows the comparison of the results obtained with {\tt CorReg} to those obtained with {\tt Selvarclust} on a dataset provided by Maugis. {\tt CorReg} finds the true Structure.
 
 
 
@@ -3106,8 +3106,10 @@ Exact sub-regressions ($\boldsymbol{\varepsilon}=\boldsymbol{0}$) make the margi
 		\hline 
 		\end{tabular} 
 		\caption{Number of consistent models found ($\boldsymbol{Y}$ depending on $\boldsymbol{X}^1,\boldsymbol{X}^2$ and only them) on $1\;000$ tries.}\label{testidentifiableG}
-		\end{table}				
-		it is clear that the plug-in model significantly improves the consistency of the model estimated on $\boldsymbol{S}$ when compared to the classical {\sc lasso}. Both models have the choice to keep or not each covariate but only the plug-in model find sometimes (and in most of the cases) the true set of relevant covariates. Model using the true structure cannot be improved because the marginal is already consistent so the plug-in is worse or equal to the marginal one in terms of consistency. Classical {\sc lasso} is never consistent on this example but we do not only improve this situation, we give consistent models in most of the cases.\\
+		\end{table}	
+			\\
+					
+		It is clear that the plug-in model significantly improves the consistency of the model estimated on $\boldsymbol{S}$ when compared to the classical {\sc lasso}. Both models have the choice to keep or not each covariate but only the plug-in model find sometimes (and in most of the cases) the true set of relevant covariates. Model using the true structure cannot be improved because the marginal is already consistent so the plug-in is worse or equal to the marginal one in terms of consistency. Classical {\sc lasso} is never consistent on this example but we do not only improve this situation, we give consistent models in most of the cases.\\
 	%	$299$ times on $1000$ tries, the plug-in model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
 		
 %		We also made the same experiment but with $\boldsymbol{X}^1,\boldsymbol{X}^2$ (and consequently $\boldsymbol{X}^3$) following Gaussian mixtures %(to improve identifiability) 
