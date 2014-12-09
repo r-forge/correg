@@ -3085,7 +3085,7 @@ The variance is given by:
 
 Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on several smaller and better conditioned matrices to invert than \textsc{ols} applied on $\boldsymbol{X}$ for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$. Compared to \textsc{ols}  we have a new bias-variance trade-off to study with numerical results. $(\boldsymbol{X}'\boldsymbol{X})$ is ill-conditioned whereas $(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})$ is smaller and correlations-free (but we have several matrices to invert).\\
 
-Compared to the marginal model, the plug-in model uses all the covariates. But when sub-regressions tends to be exact, then the variance of the marginal estimator shrinks and $ \hat{\boldsymbol{\varepsilon}}$ tends to the zero matrix (bad conditioning). So the marginal model would be better for extreme correlations. 
+Compared to the marginal model, the plug-in model uses all the covariates. But when sub-regressions tends to be exact, the variance of the marginal estimator shrinks and $ \hat{\boldsymbol{\varepsilon}}$ tends to the zero matrix (that is bad for conditioning). So the marginal model would be better for extreme correlations. 
 Exact sub-regressions ($\boldsymbol{\varepsilon}=\boldsymbol{0}$) make the marginal model the exact true model without additional noise (equation (\ref{pluginorig})) so the plug-in model is not needed in such cases.\\
 %The plug-in estimator relies on both $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\beta}}^*_f$
 %Here is where the bias-variance trade-off relies. On the one hand, classical {\sc ols} leads to exploding variance when correlations are strong because the matrix to invert is ill-conditioned.  On the other hand, when sub-regressions tend to be exact then $\hat{\boldsymbol{\varepsilon}}$ will tend to the zero matrix so the matrices to invert so $(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}$ will also explode. But explosion of the variance won't have the same speed for each estimator.  The good news is that when sub-regressions tend to be exact, then the noise of the marginal model tends to $\boldsymbol{\varepsilon}_Y$. \\
@@ -3151,8 +3151,8 @@ Exact sub-regressions ($\boldsymbol{\varepsilon}=\boldsymbol{0}$) make the margi
 		We also see that the plug-in model stays better than the classical one with the true $\boldsymbol{S}$ and corrects enough the marginal model to be better than the classical {\sc lasso} when using $\hat{\boldsymbol{S}}$. \\
 		
 		But sadly, improvements in {\sc mse} are very small and the {\sc mse} in Table \ref{MSEconsistlasso} are not significantly distinct (Student's t-Tests).\\
-		
-		When we look at the consistency (Table \ref{testidentifiableG}), that is the real stake of these numerical results:
+		\newpage
+		We look at the consistency (Table \ref{testidentifiableG}), that is the real stake of these numerical results:
 		\begin{table}[h!]	
 		\centering
 		\begin{tabular}{|c|c|c|c|}
@@ -3165,8 +3165,9 @@ Exact sub-regressions ($\boldsymbol{\varepsilon}=\boldsymbol{0}$) make the margi
 		\hline 
 		\end{tabular} 
 		\caption{Number of consistent models found ($\boldsymbol{Y}$ depending on $\boldsymbol{X}^1,\boldsymbol{X}^2$ and only them) on $1\;000$ tries.}\label{testidentifiableG}
-		\end{table}				
-		it is clear that the plug-in model significantly improves the consistency of the model estimated on $\boldsymbol{S}$ when compared to the classical {\sc lasso}. Both models have the choice to keep or not each covariate but only the plug-in model find sometimes (and in most of the cases) the true set of relevant covariates. Model using the true structure cannot be improved because the marginal is already consistent so the plug-in is worse or equal to the marginal one in terms of consistency. Classical {\sc lasso} is never consistent on this example but we do not only improve this situation, we give consistent models in most of the cases.\\
+		\end{table}	
+		\FloatBarrier			
+		It is clear that the plug-in model significantly improves the consistency of the model estimated on $\boldsymbol{S}$ when compared to the classical {\sc lasso}. Both models have the choice to keep or not each covariate but only the plug-in model find sometimes (and in most of the cases) the true set of relevant covariates. Model using the true structure cannot be improved because the marginal is already consistent so the plug-in is worse or equal to the marginal one in terms of consistency. Classical {\sc lasso} is never consistent on this example but we do not only improve this situation, we give consistent models in most of the cases.\\
 	%	$299$ times on $1000$ tries, the plug-in model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
 		
 %		We also made the same experiment but with $\boldsymbol{X}^1,\boldsymbol{X}^2$ (and consequently $\boldsymbol{X}^3$) following Gaussian mixtures %(to improve identifiability) 
