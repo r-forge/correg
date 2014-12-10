@@ -3870,7 +3870,7 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 %%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
 %%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
 %\end{eqnarray}
-	 When missing values occurs, we restrict the likelihood to the known values by integration on $\boldsymbol{X}_M$.
+	 When missing values occurs, we restrict the likelihood to the known values by integration on $\boldsymbol{X}_M$. Individuals are {\it i.i.d.}
 %		We have 
 %	\begin{equation}
 %		g(\boldsymbol{X}|\Theta)=\int_{\boldsymbol{X}_M}f(\boldsymbol{X}|\Theta)d \boldsymbol{X} \label{integralmiss}
@@ -3892,13 +3892,13 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 %		
 %	 Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. \\
 \begin{eqnarray}
-	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\boldsymbol{X}_M}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M 
-	=\int_{\mathbb{R}^{d_M}}\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
-	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
-	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\prod_{i=1}^n\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\mathbb{R}^{d_{i,M}}}\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_{i,M} \nonumber  \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
-	&=&\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \nonumber 
+	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\mathbb{R}^{d_M}}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M 
+	=\int_{\mathbb{R}^{d_M}}\sum_{k=1}^K \pi_k \mathcal{N}_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
+	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\mathcal{N}_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
+	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\prod_{i=1}^n\mathcal{N}_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
+	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\mathbb{R}^{d_{i,M}}}\mathcal{N}_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_{i,M} \nonumber  \\
+	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\mathcal{N}_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
+	&=&\sum_{k=1}^K \pi_k \mathcal{N}_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \nonumber 
 \end{eqnarray}
 
 
