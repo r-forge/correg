@@ -855,17 +855,17 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 \begin{itemize}
 	\item The relevant variables for clustering of $\boldsymbol{X}$ are assumed to follow a Gaussian mixture with $K$ components and a form $m$ (see \cite{biernacki2006model} for more details about the possible forms):
 	\begin{equation}
-		f_{clust}(\boldsymbol{X}^S|K,m,\boldsymbol{\theta})=\sum_{k=1}^K p_k \Phi (\boldsymbol{X}^S|\mu_k,\Sigma_k) \nonumber 
+		f_{clust}(\boldsymbol{X}^S;K,m,\boldsymbol{\theta})=\sum_{k=1}^K p_k \Phi (\boldsymbol{X}^S;\mu_k,\Sigma_k) \nonumber 
 	\end{equation}
-	where the parameter vector is $\boldsymbol{\theta}=(p_1,\dots,p_k,\mu_1,\dots,\mu_k,\Sigma_1,\dots,\Sigma_k)$, with $\sum_{k=1}^K p_k=1$, the proportion vector and the variance matrices satisfying the form $m$.
+	where the parameter vector is $\boldsymbol{\theta}=(p_1,\dots,p_k,\mu_1,\dots,\mu_k,\Sigma_1,\dots,\Sigma_k)$, with $\sum_{k=1}^K p_k=1$, the proportion vector and the variance matrices satisfying the form $m$. $\Phi$ is the Gaussian density function (and will always be in the followings).
 	\item The likelihood associated to the linear regression of $\boldsymbol{X}^U$ on $\boldsymbol{X}^R$ is then
 	\begin{equation}
-		f_{reg}(\boldsymbol{X}^U|r,a+\boldsymbol{X}^R\boldsymbol{\alpha},\boldsymbol{\Omega})=\prod_{i=1}^n \Phi(\boldsymbol{X}_i^U|a+\boldsymbol{X}_i^R \boldsymbol{\alpha},\boldsymbol{\Omega}) \nonumber 
+		f_{reg}(\boldsymbol{X}^U;r,a+\boldsymbol{X}^R\boldsymbol{\alpha},\boldsymbol{\Omega})=\prod_{i=1}^n \Phi(\boldsymbol{X}_i^U;a+\boldsymbol{X}_i^R \boldsymbol{\alpha},\boldsymbol{\Omega}) \nonumber 
 	\end{equation}
 	where $r$ is the form of $\boldsymbol{\Omega}$, the variance matrix of the residual $\boldsymbol{\varepsilon}$.
 	\item Variables independent of the variables that are relevant for clustering are assumed to follow a Gaussian distribution (If they were independent and following a Gaussian mixture they would then be relevant for clustering) with mean vector $\gamma$ and variance matrix $\tau$ with form $l$:
 	\begin{equation}
-		f_{indep}(\boldsymbol{X}^{W}|l,\gamma,\tau)=\prod_{i=1}^n \Phi (\boldsymbol{X}_i^W|\gamma,\tau) \nonumber 
+		f_{indep}(\boldsymbol{X}^{W};l,\gamma,\tau)=\prod_{i=1}^n \Phi (\boldsymbol{X}_i^W;\gamma,\tau) \nonumber 
 	\end{equation}
 \end{itemize}
 
@@ -3716,7 +3716,7 @@ So when a value is missing, we know its distribution but in addition, we know it
 	\paragraph{Notations:} In the followings we note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate in $\boldsymbol{X}$ and $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $x_{i,j}$ is missing, 0 else. 
 	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the followings.\\
 	
-	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.\\  
+	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$. As in previous part, we note $\Phi$ the Gaussian density function.\\  
 	
 	
 
@@ -3856,7 +3856,7 @@ Then $\boldsymbol{\Theta}$ is entirely defined. \\
 \subsection{Marginal likelihood in simple cases}
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that rely on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihoods are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
 
-	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the sub-regressions coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We will see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood and then the $\textsc{bic}_*$. \\
+	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the sub-regressions coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We will see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood and then the $\textsc{bic}_*$.  \\
 	 
 
 \paragraph{Observed likelihood:} 
@@ -3870,7 +3870,7 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 %%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
 %%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
 %\end{eqnarray}
-	 When missing values occurs, we restrict the likelihood to the known values by integration on $\boldsymbol{X}_M$. Individuals are {\it i.i.d.}
+	 When missing values occurs, we restrict the likelihood to the known values by integration on $\boldsymbol{X}_M$. All individuals are supposed {\it i.i.d.} in the followings.
 %		We have 
 %	\begin{equation}
 %		g(\boldsymbol{X}|\Theta)=\int_{\boldsymbol{X}_M}f(\boldsymbol{X}|\Theta)d \boldsymbol{X} \label{integralmiss}
@@ -3891,29 +3891,35 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 %		reminding that covariates in $\boldsymbol{X}_f$ are orthogonal. \\
 %		
 %	 Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. \\
-\begin{eqnarray}
-	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\mathbb{R}^{d_M}}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M 
-	=\int_{\mathbb{R}^{d_M}}\sum_{k=1}^K \pi_k \mathcal{N}_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
-	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\mathcal{N}_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
-	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\prod_{i=1}^n\mathcal{N}_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\mathbb{R}^{d_{i,M}}}\mathcal{N}_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_{i,M} \nonumber  \\
-	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\mathcal{N}_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
-	&=&\sum_{k=1}^K \pi_k \mathcal{N}_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \nonumber 
-\end{eqnarray}
 
 
 
 
+
+
+%\begin{eqnarray}
+%	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\mathbb{R}^{d_M}}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M 
+%	=\int_{\mathbb{R}^{d_M}}\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
+%	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
+%	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\prod_{i=1}^n\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
+%	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\mathbb{R}^{d_{i,M}}}\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_{i,M} \nonumber  \\
+%	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
+%	&=&\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \nonumber 
+%\end{eqnarray}
+%
 
 
 % $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \notin I_r $:
 %	 \begin{equation}
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
 %	 \end{equation}	
-To compute this likelihood, we will use the decomposition :
+
+%To compute this likelihood, we will use the decomposition:
 \begin{eqnarray}
-	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=& %f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=
-	\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})f(\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\quad   \nonumber \\
+	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=& 
+	\int_{\mathbb{R}^{d_M}}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M =f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
+	%f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=
+&=&	\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})f(\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\quad   \nonumber \\
 	&=&\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}).\label{likmiss}
 \end{eqnarray}
 \paragraph{Observed likelihood on observed predictors:} $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \in J_f $:
@@ -3923,7 +3929,7 @@ To compute this likelihood, we will use the decomposition :
 	 \end{equation} with $K_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated once (for example by using the package {\tt Rmixmod} \cite{packageRmixmod}) before the MCMC starts. 
 	 \\
 	 
-And if there is no missing values in covariates that regress several observed response covariates we can continue the decomposition of equation (\ref{likmiss}):
+And if there is no missing values in covariates that regress several observed response covariates (see Figure \ref{mankbrun}) we can continue the decomposition of equation (\ref{likmiss}):
 	\begin{equation}
 		L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \label{simplemisslik}
 \end{equation}	
@@ -3933,7 +3939,7 @@ And if there is no missing values in covariates that regress several observed re
 %	 \begin{equation}
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
 %	 \end{equation}
-	\paragraph{Observed conditional likelihood of the response covariates:} $\forall (i,j) \textrm{ with }  j \in \{1,\dots,d_r \}$ and $\boldsymbol{M}_{i,J_r^{j}}= 0$, the  the distribution of $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ are not identical for each individual. It depends on the number of missing values in $\boldsymbol{X}_i^{J_p^{j}} $:
+	\paragraph{Observed conditional likelihood of the response covariates:} $\forall (i,j) \textrm{ with }  j \in \{1,\dots,d_r \}$ and $\boldsymbol{M}_{i,J_r^{j}}= 0$,  the distribution of $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ are not identical for each individual. It depends on the number of missing values in $\boldsymbol{X}_i^{J_p^{j}} $:
 	
 		\begin{eqnarray}
  f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=& \sum_{k=1}^{K_{i,J_r^j}}\pi_{i,J_r^j,k}\Phi(x_{i,J_r^j};\mu_{i,J_r^j,k},\Sigma_{i,J_r^j,k})  \label{Missingdensity}\\
