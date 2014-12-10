@@ -3015,10 +3015,11 @@ The variance of the estimator is given by:
 %	 \hat{\boldsymbol{\varepsilon}}_j&=&\boldsymbol{X}^{J_r^j}-\boldsymbol{X}^{J_p^j}\hat{\boldsymbol{\alpha}}_j
 %\end{eqnarray}
 \begin{eqnarray}
-	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})&=& \operatorname{Var}[(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n- \boldsymbol{H}_f)\boldsymbol{Y})] \nonumber  \\
-	&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\operatorname{Var}(\boldsymbol{Y}) \nonumber\\
-	&=&\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}  . \label{varpluginr}
+	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})&=& \operatorname{Var}[\underbrace{(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n- \boldsymbol{H}_f)}_{(\boldsymbol{X}_r^{\varepsilon})'}\boldsymbol{Y})] \nonumber  \\
+	&=&(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\operatorname{Var}(\boldsymbol{Y})=\sigma^2_Y(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon} \nonumber\\
+	&=&\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}. 
 	%&=&(\sigma_Y^2(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1})(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}
+\label{varpluginr}
 \end{eqnarray}
 %		\begin{equation}
 %		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}
