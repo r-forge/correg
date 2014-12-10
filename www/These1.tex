@@ -969,7 +969,7 @@ where $\boldsymbol{\alpha}^*_j \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_
 	\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \nonumber \\
 	\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \boldsymbol{\alpha}^*\boldsymbol{\beta_{r}})+ \boldsymbol{\varepsilon}\boldsymbol{\beta_{r}}+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl2}
 \end{eqnarray} 
-Where $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.\\
+Where $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix whose columns are the $\boldsymbol{\varepsilon}_j$, the noises of the sub-regressions.\\
 
 Consequently, we have obtained a new regression expression of $\boldsymbol{Y}$ but relying now {\it only} on uncorrelated covariates $\boldsymbol{X}_f$. This decorrelation process has also acted like a specific variable selection process because $\boldsymbol{X}_f \subseteq \boldsymbol{X}$. These two statements are expected to decrease the variance of further estimates of $\boldsymbol{\beta}$.\\
 
@@ -1016,8 +1016,6 @@ Moreover, the uncrossing constraint (partition of $\boldsymbol{X}$) guarantee to
 			There is no theoretical guarantee that our model is better. It is just a compromise between numerical issues caused by correlations for estimation and selection versus increased variability due to structural hypotheses. We just play on the traditional bias-variance trade-off. 
 			
 
-
-	
 	\section{Illustration of the trade-off conveyed by the pre-treatment}	
 	We compare the \textsc{ols} estimator on $\boldsymbol{X}$ defined in section \ref{sectionOLS} with the estimator obtained by the pre-treatment that is $\boldsymbol{X}_f$ selection.
   
