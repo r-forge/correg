@@ -279,7 +279,7 @@ On note $\mbox{{\sc bic}}_H$ ce nouveau critère. Il ne modifie pas {\sc bic} (o
 	\section{Résultats}
 		La méthode a été testée sur données simulées puis réelles, montrant l'efficacité du modèle marginal s'appuyant sur la vraie structure de sous-régressions (section \ref{MSEvraiS}), l'efficacité de l'algorithme de recherche de structure (section \ref{compZ}), et l'efficacité du modèle marginal s'appuyant sur la structure estimée (section \ref{compY} et chapitre \ref{sectionrealcase}). Le bilan est très positif comme le montrent les graphiques de ces différentes sections.
 	\section{Modèle plug-in sur les résidus du modèle marginal}
-		Une méthode séquentielle par plug-in a été développée pour tneter d'améliorer le modèle marginal. Il s'agit de mettre à profit la formulation exacte du modèle marginal pour estimer $\boldsymbol{\beta}_r$ et ainsi réduire le bruit de la régression marginale puis d'utiliser ce nouvel estimateur pour identifier $\boldsymbol{\beta}_f$ et ainsi obtenir un nouveau modèle complet s'appuyant sur $\boldsymbol{X}$ entier mais protégé des corrélations par l'estimation séquentielle.\\
+		Une méthode séquentielle par plug-in a été développée pour tenter d'améliorer le modèle marginal. Il s'agit de mettre à profit la formulation exacte du modèle marginal pour estimer $\boldsymbol{\beta}_r$ et ainsi réduire le bruit de la régression marginale puis d'utiliser ce nouvel estimateur pour identifier $\boldsymbol{\beta}_f$ et ainsi obtenir un nouveau modèle complet s'appuyant sur $\boldsymbol{X}$ entier mais protégé des corrélations par l'estimation séquentielle.\\
 		
 Après estimation du modèle marginal on s'applique à essayer d'améliorer l'estimation de $\boldsymbol{\beta}$: 
 \begin{itemize}
@@ -1466,10 +1466,9 @@ where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate re
 \begin{hyp}\label{H4}
 All covariates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and arise from the following Gaussian mixture of $K_j$ components
 \begin{equation}
-\mathbb{P}(\boldsymbol{X}_f^j|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j) = \sum_{h=1}^{K_j} \pi_{j,h} \mathcal{N}_n(\mu_{j,h} . (1,\ldots,1)',\Sigma_{j,h}\boldsymbol{I}_n), \nonumber
+\forall 1\leq i \leq n, \mathbb{P}(x_{i,j}|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j) = \sum_{h=1}^{K_j} \pi_{j,h} \Phi(x_{i,j};\mu_{j,h} ,\Sigma_{j,h}), \nonumber
 \end{equation}
 where $\boldsymbol{\pi}_{j}=(\pi_{j,1},\ldots,\pi_{j,K_j})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{j,h}>0$ and $\sum_{h=1}^{K_j}\pi_{j,h}=1$, $\boldsymbol{\mu}_j=(\mu_{j,1},\ldots,\mu_{j,K_j})$  is the vector of centres and $\boldsymbol{\Sigma}_j=(\Sigma_{j,1},\ldots,\Sigma_{j,K_j})$ is the vector of variances. \\We stack together all these mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
-
 \end{hyp}
 		 
 
