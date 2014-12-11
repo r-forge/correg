@@ -1430,7 +1430,7 @@ These first results really are encouraging. Improvement in prediction is signifi
 			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $\mbox{{\sc bic}}$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. $\mbox{{\sc bic}}$ is consistent so it asymptotically points out the true model when $n$ grows. The Akaike Information Criterion \cite{akaike1974new} known as $\mbox{{\sc aic}}$ or the Risk Inflation Criterion \cite{foster1994risk} ($\mbox{{\sc ric}}$) can also be used, or any other criterion \cite{george1993variable} thought to be better in a given context.
 			In this work we decided to start with the $\mbox{{\sc bic}}$ that is approximated by:
 			\begin{equation}
-				\mbox{{\sc bic}}=-2\ln(\hat{L(\boldsymbol{\theta}|\boldsymbol{X})})+|\boldsymbol{\theta}|\ln(n)
+				\mbox{{\sc bic}}=-2\ln(L(\boldsymbol{\theta}|\boldsymbol{X}))+|\boldsymbol{\theta}|\ln(n)
 			\end{equation}
 			where $L(\boldsymbol{\theta}|\boldsymbol{X})=\mathbb{P}(\boldsymbol{X}|\boldsymbol{\theta})$ is the estimated likelihood of the parameters $\boldsymbol{\theta}$ given the dataset $\boldsymbol{X}$, $|\boldsymbol{\theta}|$ is the number of free parameters to estimate and $n$ the number of individuals in the dataset. This choice comes from the popularity of $\mbox{{\sc bic}}$ and from the fact that it makes a strong penalization on the complexity and we want to obtain a model that is easy to understand so parsimony is a real stake.
 			
