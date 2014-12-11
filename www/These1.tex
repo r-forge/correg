@@ -377,7 +377,7 @@ Most of the tools described here are explained with more details in the book fro
 	\caption{An example of simple linear regression}
 \end{figure}		 
 		 
-		 As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivatives (as we will see in the followings) and can be generalized 		 \cite{kiebel2003general,wickens2004general,nelder1972generalized} and also \cite{mccullagh1989generalized}. 
+		 As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. It is an old strategy well known and with many derivatives (as we will see in the following) and can be generalized 		 \cite{kiebel2003general,wickens2004general,nelder1972generalized} and also \cite{mccullagh1989generalized}. 
 	Its simplicity facilitates a wide spread usage in industry and other fields of application. It is also a good tool for interpretation with the sign of the coefficients indicating whether the associated covariate has a positive or negative impact on the response variable. \\
 	
 	More complex situations can be described by evolved forms of linear regression like the hierarchical linear model \cite{raudenbush2002hierarchical,woltman2012introduction}  or  multilevel regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel} that allows to consider effects of the covariates on nested sub-populations in the dataset. It is like using interactions but with a proper modeling that improves interpretation. It is not really a linear model because it is not linear in $\boldsymbol{X}$ but can be seen as a basis expansion using new covariates (the interactions) composed by the product of some of the original covariates.
@@ -412,7 +412,7 @@ We note the linear regression model:
 	\textsc{mse}(\hat{\boldsymbol{\beta}}_{OLS})= 0 + \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}). \nonumber 
 	\end{equation}
 	\\
-	Equation (\ref{regressionsimple}) has no intercept but usually a constant is included as one of the regressors. For example we can take $\boldsymbol{X}^1=(1,\ldots,1)'$. The corresponding element of $\boldsymbol{\beta}$ is then the intercept $\beta_1$. In the followings we do not consider the intercept to simplify notations. In practice, an intercept is added by default.\\
+	Equation (\ref{regressionsimple}) has no intercept but usually a constant is included as one of the regressors. For example we can take $\boldsymbol{X}^1=(1,\ldots,1)'$. The corresponding element of $\boldsymbol{\beta}$ is then the intercept $\beta_1$. In the following we do not consider the intercept to simplify notations. In practice, an intercept is added by default.\\
 	
 	Ordinary Least Squares find a $d-$dimensional hyperplane that minimises the distance with each individual $(\boldsymbol{X}_i,Y_i)$. It can be written
 	\begin{equation}
@@ -440,7 +440,7 @@ For a given number $n$ of individuals, conditioning of $\boldsymbol{X}'\boldsymb
 \\	
 \fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
 \paragraph{Running example:} We look at a simple case with $d=5$ variables defined by four independent scaled Gaussian $\mathcal{N}(0,1)$ named $\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5$ and $\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ where $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. We also define two {\it scenarii} for $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,1,1,1,1)'$ and $\sigma_Y \in \{10,20\}$. So there is no intercept (can be seen as a null intercept).
-It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_1$ gets smaller. In the followings, the $R^2$ stands for the coefficient of determination which is here:
+It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_1$ gets smaller. In the following, the $R^2$ stands for the coefficient of determination which is here:
 	\begin{equation}\label{defR2}
 	R^2=1-\frac{\operatorname{Var}(\boldsymbol{\varepsilon}_1)}{\operatorname{Var}(\boldsymbol{X}^3)}
 	\end{equation}
@@ -857,7 +857,7 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 	\begin{equation}
 		f_{clust}(\boldsymbol{X}^S;K,m,\boldsymbol{\theta})=\sum_{k=1}^K p_k \Phi (\boldsymbol{X}^S;\mu_k,\Sigma_k) \nonumber 
 	\end{equation}
-	where the parameter vector is $\boldsymbol{\theta}=(p_1,\dots,p_k,\mu_1,\dots,\mu_k,\Sigma_1,\dots,\Sigma_k)$, with $\sum_{k=1}^K p_k=1$, the proportion vector and the variance matrices satisfying the form $m$. $\Phi$ is the Gaussian density function (and will always be in the followings).
+	where the parameter vector is $\boldsymbol{\theta}=(p_1,\dots,p_k,\mu_1,\dots,\mu_k,\Sigma_1,\dots,\Sigma_k)$, with $\sum_{k=1}^K p_k=1$, the proportion vector and the variance matrices satisfying the form $m$. $\Phi$ is the Gaussian density function (and will always be in the following).
 	\item The likelihood associated to the linear regression of $\boldsymbol{X}^U$ on $\boldsymbol{X}^R$ is then
 	\begin{equation}
 		f_{reg}(\boldsymbol{X}^U;r,a+\boldsymbol{X}^R\boldsymbol{\alpha},\boldsymbol{\Omega})=\prod_{i=1}^n \Phi(\boldsymbol{X}_i^U;a+\boldsymbol{X}_i^R \boldsymbol{\alpha},\boldsymbol{\Omega}) \nonumber 
@@ -882,7 +882,7 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 			Aiming to realize Gaussian clustering, {\tt Selvarclust} does estimate a multivariate Gaussian mixture on $\boldsymbol{X}$ with dependencies within the covariates. Our algorithm will only aim to find a linear sub-regression structure within $\boldsymbol{X}$, relying on some additional hypotheses of independence so the two methods cannot be directly compared. The only common point is the existence of a linear sub-regression model and an algorithm that estimates it. Thus results in section \ref{compMaugis} are just informative.
 	%Our first intention was to make something different from SelvarClust but our model has evolved during this thesis and finally became more comparable to SelvarClust than expected.		
 	
-\section{Conclusion} In linear regression there is a lack of methods that both select relevant covariates and manage correlations with strong interpretability. However, some methods already give some partial solutions, sometimes in the field of interpretation by variable selection and/or by creation of groups of covariates, sometimes in the field of prediction by conditioning improvements. We will try to act on both fields (with priority given to interpretation) and then to allow usage of other methods on top of the model that we will propose in the followings.	
+\section{Conclusion} In linear regression there is a lack of methods that both select relevant covariates and manage correlations with strong interpretability. However, some methods already give some partial solutions, sometimes in the field of interpretation by variable selection and/or by creation of groups of covariates, sometimes in the field of prediction by conditioning improvements. We will try to act on both fields (with priority given to interpretation) and then to allow usage of other methods on top of the model that we will propose in the following.	
 			
 \part{Pre-treatment for correlations}
 \chapter{Decorrelating covariates by a generative model}\label{chapexpl}
@@ -993,7 +993,7 @@ In the following, we will denote by {\sc CorReg} (for {\it Correlations} and {\i
 \paragraph{Remarks:} 
 \begin{itemize}
 \item Identifiability of $(\boldsymbol{X},\boldsymbol{S})$ is not necessary to use a given structure but helps to find it. Moreover, uncrossing rule restricts the size of $\mathcal{S}_d$ and improves identifiability. A sufficient condition for identifiability is to have at least two regressors in each sub-regression (definition of identifiability and proof of this criterion in appendix \ref{sectionident}). 
-In the followings, true $\boldsymbol{S}$ is supposed to be identifiable.
+In the following, true $\boldsymbol{S}$ is supposed to be identifiable.
 \item As a consequence of Hypotheses~\ref{H1} to~\ref{H3} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated (see the Lemma in appendix \ref{sectionident}).
 \end{itemize}
 \fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
@@ -1405,7 +1405,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 %		Faire avec vrai modèle= modèle complet puis X1 uniquement puis X2 uniquement puis aussi Amax=15 si p largement supérieur à 100
 
 \section{Conclusion}
-These first results really are encouraging. Improvement in prediction is significant and we hope that it will be sufficient to obtain good results even when we will use $\hat{\boldsymbol{S}}$ instead of $\boldsymbol{S}$. Further results are provided  with estimated $\hat{\boldsymbol{S}}$ (Chapter \ref{sectionsimul}) and then with real industrial datasets (Chapter \ref{sectionrealcase}) in the followings but we need first to obtain $\hat{\boldsymbol{S}}$ (Chapter  \ref{chapterMCMC}).
+These first results really are encouraging. Improvement in prediction is significant and we hope that it will be sufficient to obtain good results even when we will use $\hat{\boldsymbol{S}}$ instead of $\boldsymbol{S}$. Further results are provided  with estimated $\hat{\boldsymbol{S}}$ (Chapter \ref{sectionsimul}) and then with real industrial datasets (Chapter \ref{sectionrealcase}) in the following but we need first to obtain $\hat{\boldsymbol{S}}$ (Chapter  \ref{chapterMCMC}).
 
 \chapter{Estimation of the Structure of subregression by MCMC}\label{chapterMCMC}
 \paragraph{Abstract:} In the previous chapters, $\boldsymbol{S}$ was supposed to be known. But in fact we have to find it so we developed an algorithm to choose the best $\boldsymbol{S}$. An MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
@@ -1788,7 +1788,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 		\caption{Comparison of distinct number of correlation-based initialisations for the MCMC. Dark blue=1 intialization, red=10 initializations, the cyan curves represent all intermediate values for the number of initializations (from 2 to 9).}\label{nbini}
 	\end{figure}
 	\end{center}
-		In the followings, the chain was launched with twenty initialisations each time, based on the correlation matrix.
+		In the following, the chain was launched with twenty initialisations each time, based on the correlation matrix.
 
 	\section{Pruning}
 		If the complexity of $\boldsymbol{S}$ is too high, pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same (for example if the MCMC had a limited time to find a good model).
@@ -2974,7 +2974,7 @@ Then we can estimate $\boldsymbol{Y}$ by:
 	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \label{hatYplugin} 
 \end{eqnarray}
 %This an asymptotically unbiased estimator of $\boldsymbol{Y}$ because the marginal model is unbiased and all the estimators are consistent. 
- We have now (sequentially) used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$. 	In the followings we suppose that $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\beta}}_f^*$ are {\sc ols} estimators. 
+ We have now (sequentially) used all the covariates to estimate the parameters of the regression on $\boldsymbol{Y}$. 	In the following we suppose that $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\beta}}_f^*$ are {\sc ols} estimators. 
 \\
 %We suppose that $\hat{\boldsymbol{\beta}^*_f}$ and $\hat{\boldsymbol{\alpha}}^*$ are consistent (for example using \textsc{ols}). The new estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent (\textsc{ols} and Slutsky's theorem) and we have
 
@@ -3062,7 +3062,7 @@ The variance of the estimator is given by:
 %	\begin{equation}
 %		\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^{\varepsilon}+ \boldsymbol{X}_r \hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 %	\end{equation}
-Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are the followings:
+Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are the following:
 	\begin{eqnarray}
 	\hat{\boldsymbol{\beta}}_f^{\varepsilon}& \longrightarrow & \boldsymbol{\beta}^*_f-\boldsymbol{\alpha}^*\boldsymbol{\beta}_{r}^{\varepsilon} \textrm{ (consistent estimator),}\nonumber\\
 		\lim_{n \rightarrow +\infty}\mathbb{E}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})&=&\boldsymbol{\beta}_f^*-\boldsymbol{\alpha}^*\boldsymbol{\beta}_r = \boldsymbol{\beta}_f \textrm{ (asymptotically unbiased), and} \nonumber \\
@@ -3713,8 +3713,8 @@ So when a value is missing, we know its distribution but in addition, we know it
  Here again the algorithm used in {\tt SelvarclustMV} stands in a Gaussian clustering context and is not exactly adapted to our situation. Estimation of $\boldsymbol{S}$ and $\boldsymbol{\alpha}^*$ was inconclusive (see section \ref{compMaugis}) without missing values so the situation would not be improved with missing values.
  Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
 	
-	\paragraph{Notations:} In the followings we note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate in $\boldsymbol{X}$ and $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $x_{i,j}$ is missing, 0 else. 
-	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the followings.\\
+	\paragraph{Notations:} In the following we note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate in $\boldsymbol{X}$ and $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $x_{i,j}$ is missing, 0 else. 
+	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the following.\\
 	
 	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$. As in previous part, we note $\Phi$ the Gaussian density function.\\  
 	
@@ -3722,7 +3722,7 @@ So when a value is missing, we know its distribution but in addition, we know it
 
 \section{Estimation of $\boldsymbol{S}$ with missing values}
 \subsection{Distribution of $\boldsymbol{X}$} \label{sectionXdensity}
-	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components (defined in the followings). We stack together all the mixture parameters in  $\boldsymbol{\Theta}$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
+	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components (defined in the following). We stack together all the mixture parameters in  $\boldsymbol{\Theta}$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
 	
 We define the operator $\prod$ as the Cartesian product with lexicographic order when used with vectors. \\
 \\
@@ -3852,7 +3852,7 @@ Then $\boldsymbol{\Theta}$ is entirely defined. \\
 \end{eqnarray}
 	
 \end{minipage}}
-\paragraph{Remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the followings. By any means, if it was, the number of parameters would be overestimated but the likelihood would not be affected. Then it would be easy to compare each component to obtain the true number of parameters.
+\paragraph{Remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the following. By any means, if it was, the number of parameters would be overestimated but the likelihood would not be affected. Then it would be easy to compare each component to obtain the true number of parameters.
 \subsection{Marginal likelihood in simple cases}
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that rely on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihoods are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
 
@@ -3870,7 +3870,7 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 %%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
 %%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
 %\end{eqnarray}
-	 When missing values occurs, we restrict the likelihood to the known values by integration on $\boldsymbol{X}_M$. All individuals are supposed {\it i.i.d.} in the followings.
+	 When missing values occur, we restrict the likelihood to the observed likelihood, that is the likelihood of the known values. All individuals are supposed {\it i.i.d.} in the following.
 %		We have 
 %	\begin{equation}
 %		g(\boldsymbol{X}|\Theta)=\int_{\boldsymbol{X}_M}f(\boldsymbol{X}|\Theta)d \boldsymbol{X} \label{integralmiss}
@@ -3917,7 +3917,8 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 %To compute this likelihood, we will use the decomposition:
 \begin{eqnarray}
 	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=& 
-	\int_{\mathbb{R}^{d_M}}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M =f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
+	%\int_{\mathbb{R}^{d_M}}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M =
+	f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
 	%f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=
 &=&	\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})f(\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\quad   \nonumber \\
 	&=&\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}).\label{likmiss}
