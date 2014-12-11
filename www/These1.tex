@@ -2214,7 +2214,7 @@ Results for \textsc{ols} (Figure \ref{MSEexplOLStout} ) are similar to those fro
 
 \clearpage
 \newpage
-\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_{f}}$ (best case for us)}	 \label{tableMSEsimdroite}
+\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_{f}}$}	 \label{tableMSEsimdroite}
 \FloatBarrier
  We want to see what happens in real life, when some covariates are irrelevant to describe $\boldsymbol{Y}$ according to the given dataset. We could generate $\boldsymbol{Y}$ with a random subset of $\boldsymbol{X}$ but in such a case, it would be impossible to say whether results come from sparsity or from the ratio of covariates in the subset that are in $\boldsymbol{X}_{r}$. Moreover, we will study real datasets in the next chapter so the only pattern to test here are those with some irrelevant covariates and relevant covariates only in one part of the partition on $\boldsymbol{X}$. \\
  
@@ -2430,7 +2430,7 @@ Results for \textsc{ols} (Figure \ref{MSEexplOLStout} ) are similar to those fro
 
 \clearpage
 	
-	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$ (worst case for us)}	 \label{tableMSEsimgauche}
+	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}	 \label{tableMSEsimgauche}
 We now try the method with a response depending only on variables in $\boldsymbol{X}_{r}$. The datasets used here were still the same.
 Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtain the true model when using the true structure.  We get unbiased models but with an increase in the variance as described in equation \ref{eq:Trueexpl}. \\
 	In such a case, usage of $\mbox{{\sc bic}}_H$ instead of $\mbox{{\sc bic}}_U$ is more beneficial because each additional sub-regression deletes a covariate in our marginal model and reduces the probability to find the true model. \\
