@@ -1,4 +1,3 @@
-
 \documentclass[12pt,a4paper]{report}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -83,12 +82,12 @@ commentstyle=\color{OliveGreen}, % white comments
 	
 	Il en découle une pré-sélection de variables nettement moins corrélées sans perte significative d'information et avec un fort potentiel explicatif (la pré-selection elle-même est expliquée par la structure de sous-régression qui est simple à comprendre car uniquement constituée de modèles linéaires). \\
 	
-	Un algorithme de recherche de structure de sous-régressions est proposé, basé sur un modèle génératif complet sur les données et utilisant une chaîne MCMC (Monte-Carlo Markov Chain). Ce prétraitement est utilisé pour la régression linéaire à des fins illustratives mais ne dépend pas de la variable réponse. Il peut donc être utilisé de manière générale pour toute problématique de corrélations.\\
+	Un algorithme de recherche de structure de sous-régressions est proposé, basé sur un modèle génératif complet sur les données et utilisant une chaîne MCMC (Monte-Carlo Markov Chain). Ce prétraitement est utilisé pour la régression linéaire comme une présélection des variables explicatives à des fins illustratives mais ne dépend pas de la variable réponse. Il peut donc être utilisé de manière générale pour toute problématique de corrélations.\\
 	
-	Par la suite, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter les variables redondantes de manière séquentielle. On utilise ainsi toute l'information sans souffrir des corrélations entre covariables.
+	Par la suite, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter l'information résiduelle contenue dans les variables redondantes de manière séquentielle. On utilise ainsi toute l'information sans souffrir des corrélations entre covariables.
 	\\
 	
-	Enfin, le modèle génératif complet offre la perspective de pouvoir être utilisé pour gérer d'éventuelles valeurs manquantes dans les données. Cela permet la recherche de structure malgré l'absence de certaines données. Mais un autre débouché est l'imputation multiple des données manquantes, préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. De plus, l'estimation multiple des valeurs manquantes permet à terme de fournir un estimateur de la variance de leur estimation.
+	Enfin, le modèle génératif complet offre la perspective de pouvoir être utilisé pour gérer d'éventuelles valeurs manquantes dans les données. Cela permet la recherche de structure malgré l'absence de certaines données. Mais un autre débouché est l'imputation multiple des données manquantes, préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. De plus, l'imputation multiple des valeurs manquantes permet d'obtenir un estimateur de la variance des valeurs imputées  .
 	Encore une fois, la régression linéaire vient illustrer l'apport de la méthode qui reste cependant générique et pourrait être appliquée à d'autres contextes tels que le clustering.
 	\\	
 	
@@ -147,7 +146,7 @@ commentstyle=\color{OliveGreen}, % white comments
 	\begin{equation}
 		\hat{\boldsymbol{\beta}}=(\boldsymbol{X}'\boldsymbol{X})^{-1}\boldsymbol{X}'\boldsymbol{Y}.  \nonumber 
 	\end{equation}
-	Cet estimateur nécessite l'inversion de la matrice $(\boldsymbol{X}'\boldsymbol{X})$ qui est mal conditionnée si les variables explicatives sont corrélées entre elles. Ce mauvais conditionnement nuit à la qualité de l'estimation et vient impacter la variance de l'estimateur comme le montre la formule :
+	Le calcul de cet estimateur nécessite l'inversion de la matrice $(\boldsymbol{X}'\boldsymbol{X})$ qui est mal conditionnée si les variables explicatives sont corrélées entre elles. Ce mauvais conditionnement nuit à la qualité de l'estimation et vient impacter la variance de l'estimateur comme le montre la formule :
 	\begin{equation}
 		\operatorname{Var}_{\boldsymbol{X}}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}  \nonumber 
 	\end{equation}
@@ -157,7 +156,7 @@ commentstyle=\color{OliveGreen}, % white comments
 	
 
 \begin{hypfr}\label{H1fr}
-Les corrélations entre covariables viennent uniquement de ce que certaines d'entre elles dépendent linéairement d'autres covariables. Plus précisément, il y a $d_{r}\geq 0$  ``sous-regressions'', chaque sous-regression $j=1,\ldots,d_{r}$ ayant la variable $\boldsymbol{X}^{J_{r}^j}$ comme variable {\it réponse} ($J_{r}^j\in\{1,\ldots,p\}$ et $J_{r}^j\neq J_{r}^{j'}$ pour $j\neq j'$) et ayant les $d_p^j>0$ variables $\boldsymbol{X}^{J_{p}^j}$  comme variables {\it predictives}  ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ et $d_p^j=|J_{p}^j|$ le cardinal de $J_{p}^j$) :
+Les corrélations entre covariables viennent uniquement de ce que certaines d'entre elles dépendent linéairement d'autres covariables. Plus précisément, il y a $d_{r}\geq 0$  ``sous-regressions'', chaque sous-regression $j=1,\ldots,d_{r}$ ayant la variable $\boldsymbol{X}^{J_{r}^j}$ comme variable {\it réponse} ($J_{r}^j\in\{1,\ldots,d\}$ et $J_{r}^j\neq J_{r}^{j'}$ pour $j\neq j'$) et ayant les $d_p^j>0$ variables $\boldsymbol{X}^{J_{p}^j}$  comme variables {\it predictives}  ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ et $d_p^j=|J_{p}^j|$ le cardinal de $J_{p}^j$) :
 \begin{equation}
 \boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR_fr}
 \end{equation}
@@ -169,12 +168,11 @@ Nous supposons également que les variables réponses et les variables prédicti
  pour toute sous-régression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ où $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ est l'ensemble de toutes les variables réponses avec $J_f=\{1,\ldots,d\} \backslash J_{r}$ l'ensemble des variables non expliquées de cardinal $d_f=d-d_r=|J_f|$. Cette seconde hypothèse garantit l'obtention d'un système de sous-régression très simple et sans imbrications ni surtout aucun cycle. Cette hypothèse n'est pas trop restrictive dans la mesure où tout système sans cycle peut (par substitutions) être reformulé sous cette forme simplifiée (avec une variance accrue).
 \end{hypfr}
 
-\paragraph{Notations} Par la suite nous noterons $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ le $d_r$-uplet des variables réponses (à ne pas confondre avec $J_r$ défini plus haut), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ le $d_r$-uplet des prédicteurs de toutes les sous-régressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ les nombres correspondants de predicteurs et $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ le {\it model} global (structure de sous-régressions). Pour alléger les notations, on définit alors $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ la matrice des variables réponses et $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ la matrice de {\it toutes} les autres variables, ainsi considérées comme libres ({\it free} en anglais). Les valeurs des paramètres sont également concaténées : $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ est le $d_r-$uple des vecteurs des coefficients de sous-régression et $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ le vecteur des variances associées :
-
+\paragraph{Notations} Par la suite nous noterons $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ le $d_r$-uplet des variables réponses (à ne pas confondre avec $J_r$ défini plus haut), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ le $d_r$-uplet des prédicteurs de toutes les sous-régressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ les nombres correspondants de predicteurs et $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ le {\it model} global (structure de sous-régressions). Pour alléger les notations, on définit alors $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ la matrice des variables réponses et $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ la matrice de {\it toutes} les autres variables, ainsi considérées comme libres ({\it free} en anglais). Les valeurs des paramètres sont également concaténées : $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ est le $d_r-$uplet des vecteurs des coefficients de sous-régression et $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ le vecteur des variances associées :
 	\begin{equation}
-		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}  \nonumber 
+		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha}^*,\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}  \nonumber 
 	\end{equation}
-	La matrice $\boldsymbol{\varepsilon}\in \mathbb{R}^{n\times d_r}$ est la matrice des bruits des sous-régressions composée des colonnes \mbox{$\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$} que nous supposons indépendantes entre elles. Toutes ces notations sont illustrées dans l'exemple ci-après. \\
+	où la matrice $\boldsymbol{\varepsilon}\in \mathbb{R}^{n\times d_r}$ est la matrice des bruits des sous-régressions composée des colonnes \mbox{$\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$} que nous supposons indépendantes entre elles et $\boldsymbol{\alpha}^* \in \mathbb{R}^{d_f\times d_r}$ est la matrice des coefficients des sous-régressions avec $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ et $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0$. Ces notations sont illustrées dans l'exemple ci-après. \\
 	\\
 \fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
 \paragraph{Données d'exemple :} 
@@ -186,7 +184,7 @@ $d=5$ variables dont 4 gaussiennes centrées réduites {\it i.i.d. } $\boldsymbo
 \\
 \\
 \\
-La figure \ref{MQEOLScompl} illustre la détérioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur nos données d'exemple. 
+La figure \ref{MQEOLScompl} page \pageref{MQEOLScompl} illustre la détérioration de l'estimation quand les sous-régressions deviennent trop fortes ($R^2$ proche de 1) pour différentes valeurs de $n$ sur nos données d'exemple. 
 	\paragraph{Remarques}
 \begin{itemize}
 \item Les sous-régressions définies en (\ref{eq:SR_fr}) sont très simples à comprendre pour l'utilisateur et permettent donc d'avoir un aperçu net des corrélations présentes dans les données étudiées.
@@ -210,7 +208,7 @@ On a donc
 	\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_{f} (\boldsymbol{\beta}_{f}+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}^*_j)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \label{marginalfr} \\
 	&=&\boldsymbol{X}_{f}\boldsymbol{\beta}_{f}^*+\boldsymbol{\varepsilon}_Y^*  \nonumber 
 \end{eqnarray}
-où $\boldsymbol{\alpha}^* \in \mathbb{R}^{d_f\times d_r}$ est la matrice des coefficients des sous-régressions avec $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ et $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0  $, $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}, \boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}, \boldsymbol{\beta}_f^*=\boldsymbol{\beta}^*_{J_f} $, $\boldsymbol{\beta}^*$ étant l'estimateur de $\boldsymbol{\beta}$ par le modèle marginal avec donc $\boldsymbol{\beta}_r^*=\boldsymbol{\beta}^*_{J_r}$.
+où $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}, \boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}, \boldsymbol{\beta}_f^*=\boldsymbol{\beta}^*_{J_f} $, $\boldsymbol{\beta}^*$ étant l'estimateur de $\boldsymbol{\beta}$ par le modèle marginal avec donc $\boldsymbol{\beta}_r^*=\boldsymbol{\beta}^*_{J_r}$.
 \\
 
 On se retrouve donc avec un modèle marginal plus parsimonieux, sans biais sur $\boldsymbol{Y}$ (vrai modèle) mais avec une variance potentiellement accrue. Cet accroissement de la variance est proportionnel à $\boldsymbol{\varepsilon}$ qui est la matrice des résidus des sous-régressions. Plus les sous-régressions sont fortes et plus cette variance est faible.
@@ -226,23 +224,24 @@ On va donc comparer
 		\textsc{mse}(\hat{\boldsymbol{\beta}}^*|\boldsymbol{X})&=&\parallel \sum_{j=1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \parallel_2^2+\parallel\boldsymbol{\beta}_r  \parallel_2^2 +(\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2)\operatorname{Tr}(\boldsymbol{X}_f'\boldsymbol{X}_{f})^{-1} \nonumber 
 	\end{eqnarray}
 		Ces deux équations illustrent bien le compromis biais-variance du modèle marginal.
-		La figure \ref{MSEOLSexpl} compare les erreurs d'estimation obtenues pour différentes valeurs des paramètres, montrant la nette amélioration rendue possible par la marginalisation.
+		La figure \ref{MSEOLSexpl} page \pageref{MSEOLSexpl} compare les erreurs d'estimation obtenues pour différentes valeurs des paramètres, montrant la nette amélioration rendue possible par la marginalisation.
 		\paragraph{Remarque}
 \begin{itemize}
 %\item Les sous-régressions définies en (\ref{eq:SR_fr}) sont très simples à comprendre pour l'utilisateur et permettent donc d'avoir un aperçu net des corrélations présentes dans les données étudiées.
-\item Les hypothèses~\ref{H1fr}  à ~\ref{H3fr}, rendent les variables dans $\boldsymbol{X}_f$ {\it non corrélées} ( covariance nulle : voir Lemme en section \ref{suffcondident}).
+\item Les hypothèses~\ref{H1fr}  à ~\ref{H3fr}, impliquent que les variables dans $\boldsymbol{X}_f$ {\it ne sont pas corrélées} (covariance nulle : voir Lemme en section \ref{suffcondident}).
 %\item $\boldsymbol{S}$ ne dépend pas de $\boldsymbol{Y}$ et peut donc être estimé séparément.
 \end{itemize} 
 	\section{Notion de prétraitement}
-	Le modèle marginal peut être interprété comme étant un prétraitement par sélection de variables puisqu'on se ramène à un modèle de régression linéaire classique pour lequel n'importe quel estimateur peut être utilisé. Cela fait de ce modèle un outil générique. La préselection permet de cibler des variables qui n'interviendront pas dans le modèle final sans pour autant être indépendantes de $\boldsymbol{Y}$ donc le modèle final est parsimonieux mais ne fausse pas l'interprétation. L'estimation de $\boldsymbol{\beta}^*$ peut ensuite se faire en utilisant une quelconque méthode de sélection de variables pour éliminer les variables qui, elles, sont indépendantes de $\boldsymbol{Y}$.\\
+	Le modèle marginal peut être vu comme un pari: on décide (pour s'affranchir des problèmes liés aux corrélations) de ne retenir que $\boldsymbol{X}_f$ pour la prédiction.
+	Il s'agit d'un prétraitement par sélection de variables puisqu'on se ramène à un modèle de régression linéaire classique pour lequel n'importe quel estimateur peut être utilisé. Cela fait de ce modèle un outil générique. La préselection permet de cibler des variables qui n'interviendront pas dans le modèle final sans pour autant être indépendantes de $\boldsymbol{Y}$. Le modèle final est donc parsimonieux mais ne fausse pas l'interprétation. L'estimation de $\boldsymbol{\beta}^*$ peut ensuite se faire en utilisant une quelconque méthode de sélection de variables pour éliminer les variables qui, elles, ne sont pas pertinentes pour expliquer $\boldsymbol{Y}$.\\
 	
 	 On obtient donc deux types de 0 : ceux de la marginalisation qui pointent les variables redondantes et ceux de sélection qui viennent dans un second temps et pointent les variables indépendantes. L'interprétation est donc enrichie par rapport à une méthode de sélection classique qui fournirait le même modèle final. Or, le contexte industriel de ces travaux rend indispensable d'avoir une bonne qualité d'interprétation. L'objectif est donc atteint pour ce point précis. Notre modèle marginal est un outil de décorrélation de variables par préselection.
 	 
 	 \section{Estimation de la structure}
-		La raison d'être de notre modèle marginal est la fragilité des méthodes de régression face à des covariables fortement corrélées. Il serait donc vain d'essayer les sous-régression en estimant les modèles de régression de chaque variable en fonction de toutes les autres car les corrélations nuisent à l'efficacité de ces modèles. Pour cette raison, nous avons établi un algorithme MCMC pour trouver le meilleur modèle de sous-régressions. L'idée consiste à voir la structure de sous-régression comme un paramètre binaire, une matrice binaire creuse pour être plus précis. Cette matrice $\boldsymbol{G}$ de taille $p\times p$ correspond à une matrice d'adjacence qui indique les liaisons entre covariables de la manière suivante : $\boldsymbol{G}_{i,j}=1$ si, et seulement si $\boldsymbol{X}^j$ est expliqué par $\boldsymbol{X}^i$. \\
+		La raison d'être de notre modèle marginal est la fragilité des méthodes de régression face à des covariables fortement corrélées. Il serait donc vain d'essayer les sous-régression en estimant les modèles de régression de chaque variable en fonction de toutes les autres car les corrélations nuisent à l'efficacité de ces modèles. Pour cette raison, nous avons établi un algorithme MCMC pour trouver le meilleur modèle de sous-régressions. L'idée consiste à voir la structure de sous-régression comme un paramètre binaire, une matrice binaire creuse pour être plus précis. Cette matrice $\boldsymbol{G}$ de taille $d\times d$ correspond à une matrice d'adjacence qui indique les liaisons entre covariables de la manière suivante : $\boldsymbol{G}_{i,j}=1$ si, et seulement si $\boldsymbol{X}^j$ est expliqué par $\boldsymbol{X}^i$. \\
 		
 		Chaque étape $(q+1)$ de l'algorithme propose de garder la structure $\boldsymbol{G}^{(q)}$ en cours ou bien de bouger vers une structure candidate qui diffère de $\boldsymbol{G}^{(q)}$ en un unique point. Ainsi, selon les cas, les candidats vont allonger ou réduire des sous-régressions, les supprimer ou les créer. \\
-		Pour pouvoir trancher entre plusieurs candidats, nous avons besoin d'une fonction coût qui soit capable de comparer des modèles avec des nombres distincts de sous-régressions. Nous définissons alors un modèle génératif complet sur $\boldsymbol{X}$ qui complète le modèle de sous-régressions en établissant des modèles de mélanges gaussiens indépendants pour les variables de $\boldsymbol{X}_{f}$. Une fois ce modèle génératif établi, nous pouvons utiliser le critère {\sc bic} pour comparer les différents modèles et conduire chaque étape de la chaîne MCMC par un tirage aléatoire pondéré par les écarts entre les {\sc bic} des différents modèles proposés (dont le modèle en cours). L'algorithme continue ainsi sa marche et fournit à l'utilisateur le modèle rencontré (qu'il ait été choisi ou non) qui a le {\sc bic} le plus faible. \\
+		Pour pouvoir trancher entre plusieurs candidats, nous avons besoin d'une fonction coût qui soit capable de comparer des modèles avec des nombres distincts de sous-régressions. Nous définissons alors un modèle génératif complet sur $\boldsymbol{X}$ qui complète le modèle de sous-régressions en établissant des modèles de mélanges gaussiens indépendants pour les variables de $\boldsymbol{X}_{f}$. Une fois ce modèle génératif établi, nous pouvons utiliser le critère {\sc bic} pour comparer les différents modèles et conduire chaque étape de la chaîne MCMC par un tirage aléatoire pondéré par les écarts entre les {\sc bic} des différents modèles proposés (dont le modèle en cours). L'algorithme continue ainsi sa marche et fournit à l'utilisateur le modèle rencontré (qu'il ait été choisi ou non) qui a le meilleur {\sc bic}. \\
 		
 		La chaîne MCMC est conditionnée par le critère de partitionnement : les variables expliquées ne doivent en expliquer aucune autre (hypothèse \ref{H2fr}). Chaque modèle réalisable peut être entièrement construit ou déconstruit pendant la marche aléatoire donc l'algorithme suit une chaîne de Markov régulière \cite{grinstead1997introduction}. Ainsi il est certain que, asymptotiquement (en nombre d'étapes), l'algorithme trouve le modèle ayant le meilleur {\sc bic}.
 	\section{Relaxation des contraintes et nouveau critère}
@@ -268,11 +267,11 @@ On va donc comparer
 %			\boldsymbol{G}_{j,.}^{(q+1)}&=&\boldsymbol{G}_{i,j}^{(q)}\boldsymbol{G}_{j,.}^{(q)} \textrm{ (de même, $\boldsymbol{X}^j$ ne peut plus être un prédicteur.)}
 %		\end{eqnarray}
 		où $\boldsymbol{G}_{i,j}^{(q+1)}$ est la valeur de la matrice $\boldsymbol{G}^{(q+1)}$ ligne $i$ et colonne $j$, $\boldsymbol{G}_{.,i}^{(q+1)}$ est la $i^{\textrm{ième}}$ colonne de $\boldsymbol{G}^{(q+1)}$ et $\boldsymbol{G}_{j,.}^{(q+1)}$ la $j^{\textrm{ième}}$ ligne de $\boldsymbol{G}^{(q+1)}$.
-		Cette méthode de relaxation permet de sortir rapidement des extrema locaux et améliore donc significativement l'efficacité de l'algorithme (Figure \ref{comparecomplrelax}). La méthode est illustrée sur un exemple par les figures \ref{ident1} à \ref{ident6}.\\
+		Cette méthode de relaxation permet de sortir rapidement des extrema locaux et améliore donc significativement l'efficacité de l'algorithme (Figure \ref{comparecomplrelax} page \pageref{comparecomplrelax}). La méthode est illustrée sur un exemple par les figures \ref{ident1} à \ref{ident6} (pages \pageref{ident1} à \pageref{ident6}).\\
 		 
 		Mais il reste un problème. Le nombre de modèles envisageables est considérable et le critère {\sc bic} ne tient pas compte de cette quantité, menant à des modèles trop complexes. On lui ajoute donc une pénalité qui tient compte du nombre de modèles réalisables pour pénaliser plus lourdement les modèles complexes.
-	De manière générale quand on estime la vraisemblance d'une structure $\boldsymbol{S}$ dans une base de données $\boldsymbol{X}$, {\sc bic} est utilisé comme approximation pour $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})\propto  \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})\mathbb{P}(\boldsymbol{S})$  	car $\mathbb{P}(\boldsymbol{S})$ est considéré comme suivant une loi uniforme. On s'appuie donc sur une loi uniforme hiérarchique $\mathbb{P}_{H}(\boldsymbol{S})=\mathbb{P}_{U}(\boldsymbol{J}_p | \boldsymbol{d}_p,\boldsymbol{J}_r,d_r)\mathbb{P}_{U}(\boldsymbol{d}_p|\boldsymbol{J}_r,d_r)\mathbb{P}_{U}(\boldsymbol{J}_r|d_r)\mathbb{P}_{U}(d_r)$ pour ajouter une pénalité supplémentaire aux structures complexes (même probabilité globale pour un plus grand nombre de structures donc chaque structure devient moins probable). 
-On note $\mbox{{\sc bic}}_H$ ce nouveau critère. Il ne modifie pas {\sc bic} (on conserve ainsi ses propriétés) mais ajoute simplement une pénalisation.\\
+	De manière générale quand on estime la vraisemblance d'une structure $\boldsymbol{S}$ dans une base de données $\boldsymbol{X}$, {\sc bic} est utilisé comme approximation pour $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})\propto  \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})\mathbb{P}(\boldsymbol{S})$  	car $\mathbb{P}(\boldsymbol{S})$ est considéré comme suivant une loi uniforme. Ici on s'appuie sur une loi uniforme hiérarchique $\mathbb{P}_{H}(\boldsymbol{S})=\mathbb{P}_{U}(\boldsymbol{J}_p | \boldsymbol{d}_p,\boldsymbol{J}_r,d_r)\mathbb{P}_{U}(\boldsymbol{d}_p|\boldsymbol{J}_r,d_r)\mathbb{P}_{U}(\boldsymbol{J}_r|d_r)\mathbb{P}_{U}(d_r)$ pour ajouter une pénalité supplémentaire aux structures complexes (même probabilité globale pour un plus grand nombre de structures donc chaque structure devient moins probable). 
+On note $\mbox{{\sc bic}}_H$ ce nouveau critère. Ce critère pénalise plus lourdement les modèles ayant de nombreux paramètres mais conserve les propriétés asymptotiques de {\sc bic}.\\
 
 	Ces deux outils viennent améliorer l'efficacité de l'algorithme sans paramètre utilisateur à optimiser par ailleurs. Tout reste naturel et intuitif pour une meilleure automatisation.
 
@@ -294,7 +293,7 @@ Après estimation du modèle marginal on s'applique à essayer d'améliorer l'es
 \end{itemize}
 Ces deux estimateurs permettent alors d'obtenir un estimateur de $\boldsymbol{\beta}_r$ autre que le marginal $\hat{\boldsymbol{\beta}}^*_r=\boldsymbol{0}$.
 \begin{itemize}
-	\item Nouvelle estimation de $\boldsymbol{\beta}_r$ basée sur la définition de $\boldsymbol{\varepsilon}_Y^* $ (équation (\ref{marginalfr})) :
+	\item Estimation de $\boldsymbol{\beta}_r$ basée sur la définition de $\boldsymbol{\varepsilon}_Y^*=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y$ (équation (\ref{marginalfr})) :
 	\begin{equation}
 		\hat{\boldsymbol{\beta}}_r^{\varepsilon}=(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f}). \nonumber 
 	\end{equation}
@@ -305,15 +304,15 @@ Cet estimateur nous permet de réduire le bruit du modèle marginal, afin d'essa
 	\hat{\boldsymbol{Y}}_{plug-in}=\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 \end{equation}
 
-		On peut ensuite dans une phase d'identification obtenir un nouvel estimateur de $\boldsymbol{\beta}_f$.\\On a $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $.
+		On peut ensuite dans une phase d'identification obtenir un estimateur de $\boldsymbol{\beta}_f$.\\On a $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $.
 		\begin{itemize}
-			\item Nouvelle estimateur de $\boldsymbol{\beta}_f $ par identification :
+			\item Estimateur de $\boldsymbol{\beta}_f $ par identification :
 			\begin{equation}
 			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 			\end{equation}
 		\end{itemize}
 	
-	La figure \ref{MQE2} montre l'efficacité du modèle plug-in et son champ d'application recommandé : les cas avec assez de correlations pour que les méthodes classiques appliquées à $\boldsymbol{X}$ soient handicapées mais pas assez de corrélations pour que le retrait des variables redondantes (modèle marginal)  se fasse sans perte siginificative d'information.
+	La figure \ref{MQE2} (page \pageref{MQE2}) montre l'efficacité du modèle plug-in et son champ d'application recommandé : les cas avec assez de correlations pour que les méthodes classiques appliquées à $\boldsymbol{X}$ soient handicapées mais pas assez de corrélations pour que le retrait des variables redondantes (modèle marginal)  se fasse sans perte siginificative d'information.
 		
 	\section{Valeurs manquantes}
 		Un coproduit du modèle de sous-régression concerne les valeurs manquantes. Le fait de disposer d'un modèle génératif complet sur $\boldsymbol{X}$ avec modélisation explicite des dépendances permet en effet de composer avec les valeurs manquantes. Tout d'abord, l'estimation de $\boldsymbol{\alpha}$ peut se faire sur les données observées en intégrant sur les données manquantes. On peut alors utiliser un algorithme de type EM (Expectation Maximization) pour estimer $\hat{\boldsymbol{\alpha}}$.\\
@@ -1216,7 +1215,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 	When $n<d$, a frequently used method is the Moore-Penrose \cite{katsikis2008fast} generalized inverse , thus \textsc{ols} can obtain some results even with $n<d$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
 	We compare different methods with and without {\tt CorReg} as a pre-treatment. All the results are provided by the {\tt CorReg} package. Here $\boldsymbol{Y}$ depends on all the covariate and the \textsc{mse} provided were computed on a validation sample of 1 000 individuals each time. Figures will display both mean and inter-quartile intervals, coloration of the background indicates which curve is lower ({\it i.e.} better in our case). \\
-	\section{Results}	
+	\section{Results when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}	
 	As previously explained, we have added colored backgrounds for faster comparison of the curves. The background takes the same color as the curve that is the lowest. So we want to obtain as much blue areas as possible,meaning our marginal model is better (in terms of {\sc mse} or in terms of parsimony).
 \paragraph{With {\sc ols}:} Figure \ref{MSEexplOLS} %Y_zone} to \ref{MSEexplOLSbeta_zone} 
 	compares \textsc{ols} alone to \textsc{CorReg} + \textsc{ols}. 
@@ -1230,7 +1229,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 	\FloatBarrier
 
 \newpage
-\subsection{{\sc ols} when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+\subsection{Using {\sc ols} estimation}
 \begin{figure}[h!]
 \centering
 \begin{subfigure}
@@ -1282,7 +1281,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 %\newpage
 %LASSO
 
-\subsection{{\sc lasso} when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+\subsection{Using {\sc lasso} estimation}
 \begin{figure}[h!]
 \centering
 \begin{subfigure}
@@ -1311,7 +1310,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 \newpage
 	\setcellgapes{1pt}
 %elasticnet
-\subsection{Elasticnet when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+\subsection{Using Elasticnet estimation}
 
 	\begin{figure}[h!]
 \centering
@@ -1341,7 +1340,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 \newpage
 	\setcellgapes{1pt}
 %stepwise
-\subsection{Stepwise when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+\subsection{Using Stepwise estimation}
 
 	\begin{figure}[h!]
 \centering
@@ -1371,7 +1370,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 \newpage
 	\setcellgapes{1pt}
 %ridge	
-\subsection{Ridge when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}
+\subsection{Using Ridge estimation}
 	\begin{figure}[h!]
 \centering
 \begin{subfigure}
@@ -3015,11 +3014,14 @@ The variance of the estimator is given by:
 %\end{eqnarray}
 \begin{eqnarray}
 	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})&=& \operatorname{Var}[\underbrace{(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n- \boldsymbol{H}_f)}_{(\boldsymbol{X}_r^{\varepsilon})'}\boldsymbol{Y})] \nonumber  \\
-	&=&(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\operatorname{Var}(\boldsymbol{Y})=\sigma^2_Y(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon} \nonumber\\
-	&=&\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}. 
+	&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\operatorname{Var}(\boldsymbol{Y})\nonumber\\
+	&=&\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1} \nonumber\\
+	&=& \sigma^2_Y\big[\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}\big]^{-1} \nonumber \\
+	&=&\sigma^2_Y\big[(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\big]^{-1}
 	%&=&(\sigma_Y^2(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1})(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}
 \label{varpluginr}
 \end{eqnarray}
+where $\boldsymbol{X}_r^{\varepsilon}=\big[[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-\frac{1}{2}}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}\big]$ is a $d_r\times d_r$ matrix.
 %		\begin{equation}
 %		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}
 %		\end{equation}
@@ -3078,7 +3080,8 @@ The variance is given by:
 %		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})]  \nonumber \\
 %		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y})]  \nonumber \\
 		&=&\operatorname{Var}\left[\left((\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\right)\boldsymbol{Y}\right]  \nonumber \\
-		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}(\hat{\boldsymbol{\alpha}}^*)']. \label{varpluginf}
+		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}(\hat{\boldsymbol{\alpha}}^*)'] \nonumber \\
+		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*\big[(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\big]^{-1}(\hat{\boldsymbol{\alpha}}^*)']. \label{varpluginf}
 	\end{eqnarray}
 
 Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on several smaller and better conditioned matrices to invert than \textsc{ols} applied on $\boldsymbol{X}$ for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$. Compared to \textsc{ols}  we have a new bias-variance trade-off to study with numerical results. $(\boldsymbol{X}'\boldsymbol{X})$ is ill-conditioned whereas $(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})$ is smaller and correlations-free (but we have several matrices to invert).\\
@@ -3207,8 +3210,7 @@ Exact sub-regressions ($\boldsymbol{\varepsilon}=\boldsymbol{0}$) make the margi
 		
 %\FloatBarrier
 	\section{Numerical results} \label{resnumpred}
-		We test the plug-in model with datasets generated the same way as for section \ref{compY}.\\
-		
+		We test the plug-in model with datasets generated the same way as for section \ref{compY}.		
 \subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	
 We first try the method with a response depending on all covariates. (The marginal model reduces the dimension and cannot give the true model if there is a structure).
 
