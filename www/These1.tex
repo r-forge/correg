@@ -3021,7 +3021,7 @@ The variance of the estimator is given by:
 	%&=&(\sigma_Y^2(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1})(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}
 \label{varpluginr}
 \end{eqnarray}
-where $\boldsymbol{X}_r^{\varepsilon}=\big[[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-\frac{1}{2}}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}\big]$ is a $d_r\times d_r$ matrix.
+where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-\frac{1}{2}}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}$ is a $d_r\times d_r$ matrix.
 %		\begin{equation}
 %		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}
 %		\end{equation}
@@ -3081,7 +3081,7 @@ The variance is given by:
 %		&=&\operatorname{Var}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y})]  \nonumber \\
 		&=&\operatorname{Var}\left[\left((\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\right)\boldsymbol{Y}\right]  \nonumber \\
 		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}(\hat{\boldsymbol{\alpha}}^*)'] \nonumber \\
-		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*\big[(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\big]^{-1}(\hat{\boldsymbol{\alpha}}^*)']. \label{varpluginf}
+		&=&\sigma_Y^2\big[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*\big[(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\big]^{-1}(\hat{\boldsymbol{\alpha}}^*)'\big]. \label{varpluginf}
 	\end{eqnarray}
 
 \paragraph{Comparison with {\sc ols}:}
@@ -3100,16 +3100,24 @@ We have $\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymb
 	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f})=\sigma_Y^2\big[ 
 (\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r
 [\boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r]^{-1}
-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\big] },
+\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\big] }, 
 %	\nonumber ,\\
 %	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})= 
 %	\nonumber .
 \end{displaymath}
+\begin{displaymath}
+\qquad = \sigma_Y^2\big[ 
+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r
+[ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r]^{-1}
+\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\big] ,
+\end{displaymath}
 and
 \begin{displaymath}
 	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})=
-	\sigma_Y^2\big[ \boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r\big]^{-1}.
-	\nonumber
+	\sigma_Y^2\big[ \boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r\big]^{-1}
+	\nonumber \\
+	=\sigma_Y^2\big[ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r\big]^{-1}.
+	\nonumber 
 \end{displaymath}
 Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on several smaller and better conditioned matrices to invert than \textsc{ols} applied on $\boldsymbol{X}$%for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$
 . 
