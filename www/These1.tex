@@ -3084,7 +3084,36 @@ The variance is given by:
 		&=&\sigma_Y^2[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*\big[(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\big]^{-1}(\hat{\boldsymbol{\alpha}}^*)']. \label{varpluginf}
 	\end{eqnarray}
 
-Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on several smaller and better conditioned matrices to invert than \textsc{ols} applied on $\boldsymbol{X}$ for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$. Compared to \textsc{ols}  we have a new bias-variance trade-off to study with numerical results. $(\boldsymbol{X}'\boldsymbol{X})$ is ill-conditioned whereas $(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})$ is smaller and correlations-free (but we have several matrices to invert).\\
+\paragraph{Comparison with {\sc ols}:}
+Up to a permutation of the columns of $\boldsymbol{X}$ we have $\boldsymbol{X}=(\boldsymbol{X}_f,\boldsymbol{X}_r)$ and then:
+\begin{eqnarray*}
+	\boldsymbol{X}'\boldsymbol{X}&=&(\boldsymbol{X}_f,\boldsymbol{X}_r)'(\boldsymbol{X}_f,\boldsymbol{X}_r)=\left( 
+	\begin{array}{cc}
+	 \boldsymbol{X}_f'\boldsymbol{X}_f & \boldsymbol{X}_f'\boldsymbol{X}_r \\ 
+	\boldsymbol{X}_r'\boldsymbol{X}_f & \boldsymbol{X}_r'\boldsymbol{X}_r
+	\end{array} 
+	\right).
+\end{eqnarray*}
+We have $\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}=(\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f}),\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r}))'$ so we obtain, using bloc inversion with Schur complement:
+
+\begin{displaymath}\fontsize{10}{10}\selectfont{
+	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f})=\sigma_Y^2\big[ 
+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r
+[\boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r]^{-1}
+\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\big] },
+%	\nonumber ,\\
+%	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})= 
+%	\nonumber .
+\end{displaymath}
+and
+\begin{displaymath}
+	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})=
+	\sigma_Y^2\big[ \boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r\big]^{-1}.
+	\nonumber
+\end{displaymath}
+Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on several smaller and better conditioned matrices to invert than \textsc{ols} applied on $\boldsymbol{X}$%for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$
+. 
+Compared to \textsc{ols}  we have a new bias-variance trade-off to study with numerical results. $(\boldsymbol{X}'\boldsymbol{X})$ is ill-conditioned whereas $(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})$ is smaller and correlations-free (but we have several matrices to invert).\\
 
 Compared to the marginal model, the plug-in model uses all the covariates. But when sub-regressions tends to be exact, the variance of the marginal estimator shrinks and $ \hat{\boldsymbol{\varepsilon}}$ tends to the zero matrix (that is bad for conditioning). So the marginal model would be better for extreme correlations. 
 Exact sub-regressions ($\boldsymbol{\varepsilon}=\boldsymbol{0}$) make the marginal model the exact true model without additional noise (equation (\ref{pluginorig})) so the plug-in model is not needed in such cases.\\
