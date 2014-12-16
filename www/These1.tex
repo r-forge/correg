@@ -3105,21 +3105,21 @@ We have $\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymb
 %	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})= 
 %	\nonumber .
 \end{displaymath}
-\begin{displaymath}
+\begin{equation}
 \qquad = \sigma_Y^2\big[ 
 (\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r
 [ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r]^{-1}
-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\big] ,
-\end{displaymath}
+\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\big] ,\label{olsf}
+\end{equation}
 and
-\begin{displaymath}
+\begin{equation}
 	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})=
 	\sigma_Y^2\big[ \boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r\big]^{-1}
 	\nonumber \\
 	=\sigma_Y^2\big[ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r\big]^{-1}.
-	\nonumber 
-\end{displaymath}
-Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on several smaller and better conditioned matrices to invert than \textsc{ols} applied on $\boldsymbol{X}$%for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$
+	\label{olsr}
+\end{equation}
+Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on several smaller and better conditioned matrices to invert than \textsc{ols} applied on $\boldsymbol{X}$ (equations (\ref{olsr}) and (\ref{olsf})) %for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$
 . 
 Compared to \textsc{ols}  we have a new bias-variance trade-off to study with numerical results. $(\boldsymbol{X}'\boldsymbol{X})$ is ill-conditioned whereas $(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})$ is smaller and correlations-free (but we have several matrices to invert).\\
 
@@ -3724,7 +3724,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	\setcellgapes{1pt}
 	\section{Conclusion} The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on other estimators so it has a slow convergence speed. \\
 	Moreover, if $\hat{\boldsymbol{S}}\neq \boldsymbol{S}$ but $\hat{J}_r=J_r$, then the marginal model is not impacted whereas the plug-in model depends on both $\hat{\boldsymbol{\beta}}^*_{f}$ and $\hat{\boldsymbol{\alpha}}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves \textsc{ols} anyway but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. However, like the marginal model, the plug-in model has a small computational cost compared to the estimation of $\boldsymbol{S}$. So we recommend to compute both complete, marginal and plug-in model and to compare the results in a second time.
-\chapter{Missing values} \label{chapmiss}
+\chapter{Using the full generative model to manage missing values} \label{chapmiss}
 	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to make multiple imputations based on the sub-regression structure. The full generative model also helps to manage missing values in the MCMC with the ability to compute $\mbox{{\sc bic}}_*$ only on the observed values. 
 	
 	 \section{State of the art}
@@ -3755,144 +3755,145 @@ So when a value is missing, we know its distribution but in addition, we know it
 	\paragraph{Notations:} In the following we note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate in $\boldsymbol{X}$ and $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $x_{i,j}$ is missing, 0 else. 
 	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the following.\\
 	
-	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$ and zeros where there is no sub-regression (not to be confused with the $\boldsymbol{\alpha}^*$ previously defined. See the Glossary in Appendix \ref{glossaire} if in doubt.$\bar{\boldsymbol{\alpha}}$ is  $\boldsymbol{\alpha}^*$ completed with rows and columns of zeros). As in previous part, we note $\Phi$ the Gaussian density function.\\  
+	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$ and zeros where there is no sub-regression (not to be confused with the $\boldsymbol{\alpha}^*$ previously defined. See the Glossary in Appendix \ref{glossaire} if in doubt. $\bar{\boldsymbol{\alpha}}$ is  $\boldsymbol{\alpha}^*$ completed with rows and columns of zeros). As in previous part, we note $\Phi$ the Gaussian density function.\\  
 	
 	
 
 \section{Estimation of $\boldsymbol{S}$ with missing values}
-\subsection{Distribution of $\boldsymbol{X}$} \label{sectionXdensity}
-	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components (defined in the following). We stack together all the mixture parameters in  $\boldsymbol{\Theta}$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
-	
-We define the operator $\prod$ as the Cartesian product with lexicographic order when used with vectors. \\
-\\
-	\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
-	\paragraph{Illustration of the notations:} 
-To illustrate this notation we define $A_1=(a_{11},a_{12})'$ and $A_2=(a_{21},a_{22},a_{23})'$:
-\begin{equation}
-	\prod_{i=1}^{2}A_i=\left(\begin{array}{cc}
-	a_{11} & a_{21} \\ 
-	a_{11} & a_{22} \\ 
-	a_{11} & a_{23} \\ 
-	a_{12} & a_{21} \\ 
-	a_{12}& a_{22} \\ 
-	a_{12} & a_{23}
-	\end{array}  \right) \nonumber
-\end{equation}	
-that is a $6-$uple of ($2\times 1$) vectors.
-\end{minipage}}
-	\\
-	
-	Then we write the parameters of the Gaussian mixture followed by $\boldsymbol{X}$ (the same for all individuals since they are {\it i.i.d.}):
-\begin{itemize}
-	\item The vector of the proportions is:
-	\begin{equation}
-		\boldsymbol{\pi}_X=\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}.  \nonumber 
-	\end{equation}
-	\item We deduce that the number of components (some of them could be equal as in the running example below) is:
-	\begin{equation}
-		K=|\boldsymbol{\pi}_X| \textrm{ so we have } \boldsymbol{\pi}_X=(\pi_1,\dots,\pi_K). \nonumber 
-	\end{equation}
-	\end{itemize}
-%	\item $K$-uple of the $1\times (d-d_r)$ vectors of the means of $\boldsymbol{X}_f$:
+%\subsection{Distribution of $\boldsymbol{X}$} \label{sectionXdensity}
+	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components. 
+	We stack together all the mixture parameters in  $\boldsymbol{\Theta}$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
+%	
+%We define the operator $\prod$ as the Cartesian product with lexicographic order when used with vectors. \\
+%\\
+%	\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
+%	\paragraph{Illustration of the notations:} 
+%To illustrate this notation we define $A_1=(a_{11},a_{12})'$ and $A_2=(a_{21},a_{22},a_{23})'$:
+%\begin{equation}
+%	\prod_{i=1}^{2}A_i=\left(\begin{array}{cc}
+%	a_{11} & a_{21} \\ 
+%	a_{11} & a_{22} \\ 
+%	a_{11} & a_{23} \\ 
+%	a_{12} & a_{21} \\ 
+%	a_{12}& a_{22} \\ 
+%	a_{12} & a_{23}
+%	\end{array}  \right) \nonumber
+%\end{equation}	
+%that is a $6-$uple of ($2\times 1$) vectors.
+%\end{minipage}}
+%	\\
+%	
+%	Then we write the parameters of the Gaussian mixture followed by $\boldsymbol{X}$ (the same for all individuals since they are {\it i.i.d.}):
+%\begin{itemize}
+%	\item The vector of the proportions is:
 %	\begin{equation}
-%		\boldsymbol{\mu}_{X^{J_f}}=\prod_{j \in J_f}\boldsymbol{\mu}_j \textrm{ ( $\prod$ is the Cartesian product, in lexicographic order)}
+%		\boldsymbol{\pi}_X=\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}.  \nonumber 
 %	\end{equation}
-%	We can then define
-\paragraph{Means:}
-\begin{itemize} 
-\item $\forall j \in J_r,$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$ is:
-	\begin{equation}
-		\boldsymbol{\mu}_{X^{j}}=(\prod_{l \in J_f}\bar{\alpha}_{l,j}\boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{d_f} .\label{meangauche}
-	\end{equation}
-\end{itemize}
-We define $\boldsymbol{J}_f=(J_f^1,\dots,J_f^{d_f}) $ the vector of the indices of the free covariates (predictors) in lexicographic order. We also define $e_j$ is the $d_f \times 1$ vector with a $1$ in $j^{th}$ position and $0$ everywhere else: 
-\mbox{$e_j=(0,\dots,0,1,0,\dots,0)'$}.
-\begin{itemize}
-	\item $\forall j \in \{1,\dots,d_f\}$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^{J_f^j}$ in $\boldsymbol{X}$ is:
-	\begin{equation}
-		\boldsymbol{\mu}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\mu}_l)e_j .\label{meandroite}
-	\end{equation} 
-	\item The $d-$uple of $K\times 1$ vectors of the means for $\boldsymbol{X}$ is then:
-		\begin{equation}
-			\boldsymbol{\mu}_X=(\boldsymbol{\mu}_{X^1},\dots,\boldsymbol{\mu}_{X^d}).  \nonumber 
-		\end{equation}
-\end{itemize}
-\paragraph{Variances:}
-\begin{itemize}
-	\item The vector of the $K$ variances of the free covariate $\boldsymbol{X}^{J_f^j}$ with $j \in \{1,\dots,d_f \}$ is:
-		\begin{equation}
-			\boldsymbol{\Sigma}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\Sigma}_l)e_j. \nonumber 
-		\end{equation}
-	\item The vector of the $K$ variances of the response covariate $\boldsymbol{X}^{J_r^j}$ with $j \in \{1,\dots,d_r \} $is:
-	\begin{equation}
-		\boldsymbol{\Sigma}_{X^{J_r^j}}=\sigma_j^2+(\prod_{l \in J_f}\bar{\alpha}_{l,J_r^j}^2\boldsymbol{\Sigma}_l)\underbrace{(1,\dots,1)'}_{d_f}  \nonumber 
-	\end{equation}
-	\item The $d-$uple of $K\times 1$ vectors of the variances for $\boldsymbol{X}$ is then:
-		\begin{equation}
-			\boldsymbol{\Sigma}_X=(\boldsymbol{\Sigma}_{X^1},\dots,\boldsymbol{\Sigma}_{X^d}). \nonumber 
-		\end{equation}	
-\end{itemize}
-\paragraph{Covariances:} We look then at the covariances between the covariates to complete the list of the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
-We note $\boldsymbol{\sigma}_{X,X}$ the $K-$uple of the vectors of the covariances in lexicographic order. Then we have $\boldsymbol{\Theta}=(\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\sigma}_{X,X})$. $\forall 1\leq k \leq K, \forall 1\leq i \leq n$:
-\begin{itemize}
-	\item The covariance between two regressors is always zero:
-	\begin{equation}
-		\forall j_1 \in J_f, \forall j_2 \in J_f, \quad   \operatorname{Cov}_k(x_{i,j_1},x_{i,j_2})=0. \nonumber 
-	\end{equation}
-	\item The covariance between a response covariate and a free covariate that does not regressed it is always zero by Hypothesis \ref{H1}:
-	\begin{equation}
-		\forall j_1 \in \{1,\dots,d_r \}, j_2 \notin J_p^{j_1}\cup J_r, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,j_2})=0. \nonumber 
-	\end{equation}
-	\item The covariance between two response covariates without any common regressors is always zero  by Hypotheses \ref{H1} and \ref{H3}:
-	\begin{equation}
-		\forall j_1 \in \{1,\dots,d_r \}, j_2 \in \{1,\dots, d_r \}\setminus\{ j_1 \}, \textrm{ with } J_p^{j_1}\cap J_p^{j_2}= \emptyset, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=0. \nonumber 
-	\end{equation}
-	\item The covariance between two response covariates with common regressors is:\\
-	$\forall j_1 \in \{1,\dots,d_r \}, j_2 \in \{1,\dots, d_r \}\setminus\{ j_1 \}, \textrm{ with } J_p^{j_1}\cap J_p^{j_2}\neq \emptyset$:
-	\begin{equation}
-	  \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=\sum_{l \in J_p^{j_1}\cap J_p^{j_2}}\bar{\alpha}_{l,J_r^{j_1}}\bar{\alpha}_{l,J_r^{j_2}}\Sigma_{X^l,k} . \nonumber 
-	\end{equation}
-	where $\Sigma_{X^l,k}$ is the variance of $\boldsymbol{X}^l$ in the $k^{th}$ component of $\boldsymbol{X}$, hence the $k^{th}$ element of $\boldsymbol{\Sigma}_{X^l}$.
-	\item The covariance between a response covariate and one of its regressors is:
-	\begin{equation}
-		\forall j_1 \in \{1,\dots, d_r\}, j_2 \in J_p^{j_1}, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,j_2})=\bar{\alpha}_{j_2,J_r^{j_1}}\Sigma_{X^{j_2},k} . \nonumber 
-	\end{equation}
-\end{itemize}
-Then $\boldsymbol{\Theta}$ is entirely defined. \\
-\\
-%	 stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$ with:
-%	\begin{eqnarray}
-%	\boldsymbol{\pi}_X&=&\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}\\
-%	\boldsymbol{\mu_X}&=&
-%	% \\	
-%\end{eqnarray}
-%	 and then $K= |\boldsymbol{\pi}|$ is the total number of components in the Gaussian mixture followed by $\boldsymbol{X}$.
-%	 
-	%\paragraph{Complete likelihood:} 
+%	\item We deduce that the number of components (some of them could be equal as in the running example below) is:
+%	\begin{equation}
+%		K=|\boldsymbol{\pi}_X| \textrm{ so we have } \boldsymbol{\pi}_X=(\pi_1,\dots,\pi_K). \nonumber 
+%	\end{equation}
+%	\end{itemize}
+%%	\item $K$-uple of the $1\times (d-d_r)$ vectors of the means of $\boldsymbol{X}_f$:
+%%	\begin{equation}
+%%		\boldsymbol{\mu}_{X^{J_f}}=\prod_{j \in J_f}\boldsymbol{\mu}_j \textrm{ ( $\prod$ is the Cartesian product, in lexicographic order)}
+%%	\end{equation}
+%%	We can then define
+%\paragraph{Means:}
+%\begin{itemize} 
+%\item $\forall j \in J_r,$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$ is:
+%	\begin{equation}
+%		\boldsymbol{\mu}_{X^{j}}=(\prod_{l \in J_f}\bar{\alpha}_{l,j}\boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{d_f} .\label{meangauche}
+%	\end{equation}
+%\end{itemize}
+%We define $\boldsymbol{J}_f=(J_f^1,\dots,J_f^{d_f}) $ the vector of the indices of the free covariates (predictors) in lexicographic order. We also define $e_j$ is the $d_f \times 1$ vector with a $1$ in $j^{th}$ position and $0$ everywhere else: 
+%\mbox{$e_j=(0,\dots,0,1,0,\dots,0)'$}.
+%\begin{itemize}
+%	\item $\forall j \in \{1,\dots,d_f\}$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^{J_f^j}$ in $\boldsymbol{X}$ is:
+%	\begin{equation}
+%		\boldsymbol{\mu}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\mu}_l)e_j .\label{meandroite}
+%	\end{equation} 
+%	\item The $d-$uple of $K\times 1$ vectors of the means for $\boldsymbol{X}$ is then:
+%		\begin{equation}
+%			\boldsymbol{\mu}_X=(\boldsymbol{\mu}_{X^1},\dots,\boldsymbol{\mu}_{X^d}).  \nonumber 
+%		\end{equation}
+%\end{itemize}
+%\paragraph{Variances:}
+%\begin{itemize}
+%	\item The vector of the $K$ variances of the free covariate $\boldsymbol{X}^{J_f^j}$ with $j \in \{1,\dots,d_f \}$ is:
+%		\begin{equation}
+%			\boldsymbol{\Sigma}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\Sigma}_l)e_j. \nonumber 
+%		\end{equation}
+%	\item The vector of the $K$ variances of the response covariate $\boldsymbol{X}^{J_r^j}$ with $j \in \{1,\dots,d_r \} $is:
+%	\begin{equation}
+%		\boldsymbol{\Sigma}_{X^{J_r^j}}=\sigma_j^2+(\prod_{l \in J_f}\bar{\alpha}_{l,J_r^j}^2\boldsymbol{\Sigma}_l)\underbrace{(1,\dots,1)'}_{d_f}  \nonumber 
+%	\end{equation}
+%	\item The $d-$uple of $K\times 1$ vectors of the variances for $\boldsymbol{X}$ is then:
+%		\begin{equation}
+%			\boldsymbol{\Sigma}_X=(\boldsymbol{\Sigma}_{X^1},\dots,\boldsymbol{\Sigma}_{X^d}). \nonumber 
+%		\end{equation}	
+%\end{itemize}
+%\paragraph{Covariances:} We look then at the covariances between the covariates to complete the list of the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
+%We note $\boldsymbol{\sigma}_{X,X}$ the $K-$uple of the vectors of the covariances in lexicographic order. Then we have $\boldsymbol{\Theta}=(\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\sigma}_{X,X})$. $\forall 1\leq k \leq K, \forall 1\leq i \leq n$:
+%\begin{itemize}
+%	\item The covariance between two regressors is always zero:
+%	\begin{equation}
+%		\forall j_1 \in J_f, \forall j_2 \in J_f, \quad   \operatorname{Cov}_k(x_{i,j_1},x_{i,j_2})=0. \nonumber 
+%	\end{equation}
+%	\item The covariance between a response covariate and a free covariate that does not regressed it is always zero by Hypothesis \ref{H1}:
+%	\begin{equation}
+%		\forall j_1 \in \{1,\dots,d_r \}, j_2 \notin J_p^{j_1}\cup J_r, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,j_2})=0. \nonumber 
+%	\end{equation}
+%	\item The covariance between two response covariates without any common regressors is always zero  by Hypotheses \ref{H1} and \ref{H3}:
+%	\begin{equation}
+%		\forall j_1 \in \{1,\dots,d_r \}, j_2 \in \{1,\dots, d_r \}\setminus\{ j_1 \}, \textrm{ with } J_p^{j_1}\cap J_p^{j_2}= \emptyset, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=0. \nonumber 
+%	\end{equation}
+%	\item The covariance between two response covariates with common regressors is:\\
+%	$\forall j_1 \in \{1,\dots,d_r \}, j_2 \in \{1,\dots, d_r \}\setminus\{ j_1 \}, \textrm{ with } J_p^{j_1}\cap J_p^{j_2}\neq \emptyset$:
+%	\begin{equation}
+%	  \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=\sum_{l \in J_p^{j_1}\cap J_p^{j_2}}\bar{\alpha}_{l,J_r^{j_1}}\bar{\alpha}_{l,J_r^{j_2}}\Sigma_{X^l,k} . \nonumber 
+%	\end{equation}
+%	where $\Sigma_{X^l,k}$ is the variance of $\boldsymbol{X}^l$ in the $k^{th}$ component of $\boldsymbol{X}$, hence the $k^{th}$ element of $\boldsymbol{\Sigma}_{X^l}$.
+%	\item The covariance between a response covariate and one of its regressors is:
+%	\begin{equation}
+%		\forall j_1 \in \{1,\dots, d_r\}, j_2 \in J_p^{j_1}, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,j_2})=\bar{\alpha}_{j_2,J_r^{j_1}}\Sigma_{X^{j_2},k} . \nonumber 
+%	\end{equation}
+%\end{itemize}
+%Then $\boldsymbol{\Theta}$ is entirely defined. \\
+%\\
+%%	 stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$ with:
+%%	\begin{eqnarray}
+%%	\boldsymbol{\pi}_X&=&\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}\\
+%%	\boldsymbol{\mu_X}&=&
+%%	% \\	
+%%\end{eqnarray}
+%%	 and then $K= |\boldsymbol{\pi}|$ is the total number of components in the Gaussian mixture followed by $\boldsymbol{X}$.
+%%	 
+%	%\paragraph{Complete likelihood:} 
+%%\begin{eqnarray}
+%%	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{J_r}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%%	&=&\prod_{i=1}^n\left[\prod_{j \in J_r}f(x_{i,j}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%%	&=&\prod_{i=1}^n\left[\prod_{j =1}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
+%%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
+%%\end{eqnarray}
+%%To compute the $\textsc{bic}_*$ we use then the log-likelihood:
+%%\begin{eqnarray}
+%%	\mathcal{L}(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j =1}^{d_r}\log \left(f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right)+\sum_{j \notin J_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right) \right]. \label{loglikmiss}
+%%\end{eqnarray}
+%\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
+%\paragraph{In the running example:} We now suppose that $\boldsymbol{X}_1$ and $\boldsymbol{X}_2$ are two Gaussian mixtures with two components each, with equal proportions. $\forall 1\leq i \leq n:$
 %\begin{eqnarray}
-%	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{J_r}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
-%	&=&\prod_{i=1}^n\left[\prod_{j \in J_r}f(x_{i,j}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
-%	&=&\prod_{i=1}^n\left[\prod_{j =1}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
-%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
-%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
+%	 f(x_{i,1}) &=& \frac{1}{2}\Phi(x_{i,1};1,1)+\frac{1}{2}\Phi(x_{i,1};2,1) \nonumber \\
+%	f(x_{i,2}) &=& \frac{1}{2}\Phi(x_{i,2};3,1)+\frac{1}{2}\Phi(x_{i,2};4,1) \textrm{ then}  \nonumber \\
+%	 f(x_{i,3}) %&=& \frac{1}{4}\Phi(x_{i,3};1+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};1+4,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};2+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3}; 2+ 4,2+\sigma_1^2) \\
+%	&=&\frac{1}{4} \left[\Phi(x_{i,3};4,2+\sigma_1^2)+\Phi(x_{i,3};5,2+\sigma_1^2)+\Phi(x_{i,3};5,2+\sigma_1^2)+\Phi(x_{i,3};6,2+\sigma_1^2)\right] \nonumber\\
+%	&=&\frac{1}{4}\Phi(x_{i,3};4,2+\sigma_1^2)+\frac{1}{2}\Phi(x_{i,3};5,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};6,2+\sigma_1^2)  \nonumber 
 %\end{eqnarray}
-%To compute the $\textsc{bic}_*$ we use then the log-likelihood:
-%\begin{eqnarray}
-%	\mathcal{L}(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j =1}^{d_r}\log \left(f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right)+\sum_{j \notin J_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right) \right]. \label{loglikmiss}
-%\end{eqnarray}
-\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
-\paragraph{In the running example:} We now suppose that $\boldsymbol{X}_1$ and $\boldsymbol{X}_2$ are two Gaussian mixtures with two components each, with equal proportions. $\forall 1\leq i \leq n:$
-\begin{eqnarray}
-	 f(x_{i,1}) &=& \frac{1}{2}\Phi(x_{i,1};1,1)+\frac{1}{2}\Phi(x_{i,1};2,1) \nonumber \\
-	f(x_{i,2}) &=& \frac{1}{2}\Phi(x_{i,2};3,1)+\frac{1}{2}\Phi(x_{i,2};4,1) \textrm{ then}  \nonumber \\
-	 f(x_{i,3}) %&=& \frac{1}{4}\Phi(x_{i,3};1+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};1+4,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};2+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3}; 2+ 4,2+\sigma_1^2) \\
-	&=&\frac{1}{4} \left[\Phi(x_{i,3};4,2+\sigma_1^2)+\Phi(x_{i,3};5,2+\sigma_1^2)+\Phi(x_{i,3};5,2+\sigma_1^2)+\Phi(x_{i,3};6,2+\sigma_1^2)\right] \nonumber\\
-	&=&\frac{1}{4}\Phi(x_{i,3};4,2+\sigma_1^2)+\frac{1}{2}\Phi(x_{i,3};5,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};6,2+\sigma_1^2)  \nonumber 
-\end{eqnarray}
-	
-\end{minipage}}
-\paragraph{Remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the following. By any means, if it was, the number of parameters would be overestimated but the likelihood would not be affected. Then it would be easy to compare each component to obtain the true number of parameters.
-\subsection{Marginal likelihood in simple cases}
+%	
+%\end{minipage}}
+%\paragraph{Remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the following. By any means, if it was, the number of parameters would be overestimated but the likelihood would not be affected. Then it would be easy to compare each component to obtain the true number of parameters.
+\subsection{Marginal (observed) likelihood}
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that rely on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihoods are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
 
 	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the sub-regressions coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We will see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood and then the $\textsc{bic}_*$.  \\
@@ -3962,86 +3963,96 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 &=&	\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})f(\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\quad   \nonumber \\
 	&=&\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}).\label{likmiss}
 \end{eqnarray}
-\paragraph{Observed likelihood on observed predictors:} $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \in J_f $:
-
-	 \begin{equation}
-	 f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=\sum_{k=1}^{K_j}\pi_{j,k}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{likmissdroite}
-	 \end{equation} with $K_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated once (for example by using the package {\tt Rmixmod} \cite{packageRmixmod}) before the MCMC starts. 
-	 \\
-	 
 And if there is no missing values in covariates that regress several observed response covariates (see Figure \ref{mankbrun}) we can continue the decomposition of equation (\ref{likmiss}):
 	\begin{equation}
 		L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \label{simplemisslik}
 \end{equation}	
-\paragraph{Remark:} if each sub-regression is a distinct connected component then we can always use equation (\ref{simplemisslik}) but it is not a necessary condition.
+%\paragraph{Remark:} 
+If each sub-regression is a distinct connected component then we can always use equation (\ref{simplemisslik}) but it is not a necessary condition. 
+
+%\paragraph{Observed likelihood on observed predictors:} $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \in J_f $:
+%
+%	 \begin{equation}
+%	 f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=\sum_{k=1}^{K_j}\pi_{j,k}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{likmissdroite}
+%	 \end{equation} with $K_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated once (for example by using the package {\tt Rmixmod} \cite{packageRmixmod}) before the MCMC starts. 
+%	 \\
+%	 
+
 
 %	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
 %	 \begin{equation}
 %	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
 %	 \end{equation}
-	\paragraph{Observed conditional likelihood of the response covariates:} $\forall (i,j) \textrm{ with }  j \in \{1,\dots,d_r \}$ and $\boldsymbol{M}_{i,J_r^{j}}= 0$,  the distribution of $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ are not identical for each individual. It depends on the number of missing values in $\boldsymbol{X}_i^{J_p^{j}} $:
-	
-		\begin{eqnarray}
- f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=& \sum_{k=1}^{K_{i,J_r^j}}\pi_{i,J_r^j,k}\Phi(x_{i,J_r^j};\mu_{i,J_r^j,k},\Sigma_{i,J_r^j,k})  \label{Missingdensity}\\
-			\textrm{ where } 	\boldsymbol{\pi}_{i,J_r^j} &=& \bigotimes_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }K_{i,J_r^j}=|\boldsymbol{\pi}_{i,J_r^j}|  \nonumber 
-		\end{eqnarray}	
-\paragraph{Means:}	The $ K_{i,J_r^j} \times 1$ vector of the means is:
-				\begin{equation}
-				\boldsymbol{\mu}_{i,J_r^j}= \sum_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0  }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}x_{i,l} + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1  }} \bar{\boldsymbol{\alpha}}_{l,J_r^j} \boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}  \nonumber 
-				\end{equation}
-				where $|\boldsymbol{X}_{i,O}^{J_p^j}|$ is the number of observed values in $\boldsymbol{X}^{J_p^j}$ for individual $i$.
-\paragraph{Variances:} The $ K_{i,J_r^j} \times 1$ vector of the variances is:
-				\begin{equation}
-				\boldsymbol{\Sigma}_{i,J_r^j} = \sigma_{j}^2 + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l	)	\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}. \nonumber 
-				\end{equation}
-		In such a case, computation is fast and easy. It includes the cases supposed in {\tt SelvarclustMV}.\\
-		We note that we obtain a Gaussian when there is no missing value in $J_p^j$.\\
+%	\paragraph{Observed conditional likelihood of the response covariates:} $\forall (i,j) \textrm{ with }  j \in \{1,\dots,d_r \}$ and $\boldsymbol{M}_{i,J_r^{j}}= 0$,  the distribution of $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ are not identical for each individual. It depends on the number of missing values in $\boldsymbol{X}_i^{J_p^{j}} $:
+%	
+%		\begin{eqnarray}
+% f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=& \sum_{k=1}^{K_{i,J_r^j}}\pi_{i,J_r^j,k}\Phi(x_{i,J_r^j};\mu_{i,J_r^j,k},\Sigma_{i,J_r^j,k})  \label{Missingdensity}\\
+%			\textrm{ where } 	\boldsymbol{\pi}_{i,J_r^j} &=& \bigotimes_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }K_{i,J_r^j}=|\boldsymbol{\pi}_{i,J_r^j}|  \nonumber 
+%		\end{eqnarray}	
+%\paragraph{Means:}	The $ K_{i,J_r^j} \times 1$ vector of the means is:
+%				\begin{equation}
+%				\boldsymbol{\mu}_{i,J_r^j}= \sum_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0  }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}x_{i,l} + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1  }} \bar{\boldsymbol{\alpha}}_{l,J_r^j} \boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}  \nonumber 
+%				\end{equation}
+%				where $|\boldsymbol{X}_{i,O}^{J_p^j}|$ is the number of observed values in $\boldsymbol{X}^{J_p^j}$ for individual $i$.
+%\paragraph{Variances:} The $ K_{i,J_r^j} \times 1$ vector of the variances is:
+%				\begin{equation}
+%				\boldsymbol{\Sigma}_{i,J_r^j} = \sigma_{j}^2 + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l	)	\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}. \nonumber 
+%				\end{equation}
+	%	In such a case, computation is fast and easy. It includes the cases supposed in {\tt SelvarclustMV}.\\
+	%	We note that we obtain a Gaussian when there is no missing value in $J_p^j$.\\
 		
 		
-		This kind of decomposition could be easily used for imputation of the missing values in $\boldsymbol{X}_r$ knowing the parameters $\boldsymbol{\alpha}, \boldsymbol{\Theta}$ and $\boldsymbol{S}$. \\
-		
-		We sadly observe that $f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions with observed response covariates (Figure \ref{mankbrun}).
+%		This kind of decomposition could be easily used for imputation of the missing values in $\boldsymbol{X}_r$ knowing the parameters $\boldsymbol{\alpha}, \boldsymbol{\Theta}$ and $\boldsymbol{S}$. \\
+%		
+%		We sadly observe that $f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) $	if a same missing value is common to distinct sub-regressions with observed response covariates (Figure \ref{mankbrun}).
 		\begin{figure} 
 		\centering
 		\includegraphics[width=100px]{figures/mankbrun.png} 
 		\caption{Pattern of missing values that does not allow to use equation (\ref{simplemisslik}): one missing value for a covariate that is common to $2$ observed response covariates.} \label{mankbrun}
 		\end{figure}
-	\subsection{Marginal likelihood in the general case}
-		For the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$. Then we use the global Gaussian mixture on $\boldsymbol{X}$:
+%	\subsection{Marginal likelihood in the general case}
+
+		For the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$. Then we use the global Gaussian mixture on $\boldsymbol{X}$. Each component is Gaussian so conditional distributions are explicit.
 %		Because $\forall 1\leq i \leq n, \boldsymbol{X}_i$ is a Gaussian Mixture, $\boldsymbol{X}_{i,O}$ and then $(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}_{i,O}^{I_f})$ are Gaussian mixtures too. \\
 		%We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
-		
-\begin{eqnarray}
-L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\Phi_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})  \nonumber \\
-&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}\Phi_k(x_{i,j};\mu_{X^j,k},\Sigma_{X^j,k}). \qquad \qquad \label{liklihoodmissglobal}
-\end{eqnarray}		
+%		
+%\begin{eqnarray}
+%L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} f_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
+%&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} f_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})f_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})  \nonumber \\
+%&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} f_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f_k(x_{i,j};\mu_{X^j,k},\Sigma_{X^j,k}). \qquad \qquad \label{liklihoodmissglobal}
+%\end{eqnarray}		
 
 %définintion des objets génériques
 %where	
 
-		with $ \pi_k, \mu_{X^j,k},\Sigma_{X^j,k}$ as defined in Section \ref{sectionXdensity}.
-		\paragraph{Conditional distribution of a multivariate Gaussian :}
-		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we note $ \boldsymbol{\mu}_{X^{J_r}_{i,O},k}$ (respectively $\boldsymbol{\mu}_{X^{J_f}_{i,O},k}$) the vector of the means of $\boldsymbol{X}^{J_r}_{i,O} $ (respectively  $\boldsymbol{X}^{J_f}_{i,O}$)  associated to the $k^{th}$ component of $\boldsymbol{X}$ for individual $i$ that are described in equation (\ref{meangauche}) (respectively equation (\ref{meandroite})).\\
+	%	with $ \pi_k, \mu_{X^j,k},\Sigma_{X^j,k}$ as defined in Appendix \ref{sectionXdensity}.
 		
-		We have the explicit formula for multivariate Gaussian distribution:
-\begin{eqnarray}
-		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}) \nonumber 
-		\end{eqnarray}
-				%P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
-				where the $|\boldsymbol{X}^{J_r}_{i,O}| \times 1$ vector of the conditional means is:
-				\begin{equation}
-		\boldsymbol{\mu}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}= 
-				\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O},k}+
-				\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1}
-				( (\boldsymbol{X}_{i,O}^{J_f})'-\boldsymbol{\mu}_{X^{J_f}_{i,O},k})  \nonumber 
-				\end{equation}
-				and the variance-covariance matrix is:
-						\begin{equation}
-\boldsymbol{\Sigma}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}=\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}
-		(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_r},k}. \nonumber 
-		\end{equation}
-		We can then describe each part of these formulas for each $1\leq i \leq n$ and $1\leq k \leq K$ because all the variances and covariances are already given in Section \ref{sectionXdensity}.\\
+		
+%		\paragraph{Conditional distribution of a multivariate Gaussian :}
+%		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we note $ \boldsymbol{\mu}_{X^{J_r}_{i,O},k}$ (respectively $\boldsymbol{\mu}_{X^{J_f}_{i,O},k}$) the vector of the means of $\boldsymbol{X}^{J_r}_{i,O} $ (respectively  $\boldsymbol{X}^{J_f}_{i,O}$)  associated to the $k^{th}$ component of $\boldsymbol{X}$ for individual $i$ that are described in equation (\ref{meangauche}) (respectively equation (\ref{meandroite})).\\
+%		
+%		We have the explicit formula for multivariate Gaussian distribution:
+%\begin{eqnarray}
+%		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}) \nonumber 
+%		\end{eqnarray}
+%				%P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
+%				where the $|\boldsymbol{X}^{J_r}_{i,O}| \times 1$ vector of the conditional means is:
+%				\begin{equation}
+%		\boldsymbol{\mu}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}= 
+%				\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O},k}+
+%				\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1}
+%				( (\boldsymbol{X}_{i,O}^{J_f})'-\boldsymbol{\mu}_{X^{J_f}_{i,O},k})  \nonumber 
+%				\end{equation}
+%				and the variance-covariance matrix is:
+%						\begin{equation}
+%\boldsymbol{\Sigma}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}=\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}
+%		(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_r},k}. \nonumber 
+%		\end{equation}
+%		We can then describe each part of these formulas for each $1\leq i \leq n$ and $1\leq k \leq K$ because all the variances and covariances are already given in Section \ref{sectionXdensity}.\\
+%		
+%		
+		
+		
 %		The mean vector of observed regressed covariates: $\forall j \in \{1,\dots,d_r\}\textrm{ with }\boldsymbol{M}_{i,J_r^j}=0:$
 % \begin{eqnarray}
 %		  \boldsymbol{\mu}_{X_{i}^{J_r^j},k}&=&\sum_{l \in J_p^j}\bar{\boldsymbol{\alpha}}_{l,J_r^j}\mu_{l,k} 
@@ -4081,14 +4092,20 @@ L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\pr
 %	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= 0
 %\end{equation}
 Then we are able to maximize this likelihood to find $\boldsymbol{\alpha}$.
-	\subsection{Likelihood computation optimized}
-	The main problem with the likelihood in its global form (\ref{liklihoodmissglobal}) is that the number of components explodes so we cannot use it in practice. But in many cases, it can be simplified.
-We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $\boldsymbol{S}$ to reduce computing time.  Another strictly technical tip would be to use sparse matrix storage to avoid null value storage and useless zero multiplications.\\
 
-		Moreover, we can look if there are missing values shared by several sub-regression. 
-		Connected component detection could be done to reduce the dimension down to strictly dependent covariates and use equation (\ref{Missingdensity}) elsewhere.
-		We just need to compute the  row-sums of the adjacency matrix $\boldsymbol{G}$ or to search for redundancy in $J_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^n\boldsymbol{M}_{i,j}=0$ then we can use the simplified form of the likelihood given in equation (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
-		So the true value of the likelihood can be computed efficiently in most of cases but in the MCMC, it remains the possibility to evaluate a structure with explosive likelihood expression when combined with the missing values and we need to compute the likelihood for a great number of candidates. Then it is possible to use directly the simplified form of the likelihood, that can be seen as an approximation of the likelihood, not taking into account some of the dependencies but it would offer no guarantee in terms of efficiency for the MCMC. %Numerical results on simulated datasets will show if this approximation is effective.
+%
+%	\subsection{Likelihood computation optimized}
+%	The main problem with the likelihood in its global form (\ref{liklihoodmissglobal}) is that the number of components explodes so we cannot use it in practice. But in many cases, it can be simplified.
+%We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $\boldsymbol{S}$ to reduce computing time.  Another strictly technical tip would be to use sparse matrix storage to avoid null value storage and useless zero multiplications.\\
+%
+%		Moreover, we can look if there are missing values shared by several sub-regression. 
+%		Connected component detection could be done to reduce the dimension down to strictly dependent covariates and use equation (\ref{missingdensity}) elsewhere.
+%		We just need to compute the  row-sums of the adjacency matrix $\boldsymbol{G}$ or to search for redundancy in $J_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^n\boldsymbol{M}_{i,j}=0$ then we can use the simplified form of the likelihood given in equation (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
+%		So the true value of the likelihood can be computed efficiently in most of cases but in the MCMC, it remains the possibility to evaluate a structure with explosive likelihood expression when combined with the missing values and we need to compute the likelihood for a great number of candidates. Then it is possible to use directly the simplified form of the likelihood, that can be seen as an approximation of the likelihood, not taking into account some of the dependencies but it would offer no guarantee in terms of efficiency for the MCMC. %Numerical results on simulated datasets will show if this approximation is effective.%
+
+
+
+
 
 %		In first approximation we can suppose independence between the sub-regression:
 %		\begin{equation}
@@ -4216,7 +4233,7 @@ Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x
 			
 			
 \subsection{Stochastic EM}
-	The integrated likelihood depicted above depends on $\boldsymbol{\alpha}$ which was formerly estimated by \textsc{ols} when there was no missing values. But when missing values occurs in a sub-regression we need another solution.\\
+	The integrated likelihood depicted above depends on the $\boldsymbol{\alpha}_j$'s which were formerly estimated by \textsc{ols} when there were no missing values. But when missing values occur in a sub-regression we need another solution.\\
 	
 	We use a  Stochastic Expectation Maximization (\textsc{sem} \cite{celeux1986algorithme}) algorithm  to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the log-likelihood is not linear so a simple Expectation-Maximization ({\sc em}) would be difficult to compute.\\
 	
@@ -4230,9 +4247,9 @@ Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x
 	\paragraph{M step:}
 		We estimate 
 		\begin{equation}
-	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\ln L(\boldsymbol{\alpha},\boldsymbol{S},\boldsymbol{\Theta}^{(h)};\boldsymbol{X}_O,\boldsymbol{X}_M^{(h)}) \right]  \nonumber 
+	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\ln L(\boldsymbol{\alpha},\boldsymbol{S},\boldsymbol{\Theta};\boldsymbol{X}_O,\boldsymbol{X}_M^{(h)}) \right]  \nonumber 
 \end{equation}
-and we can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}). Then we compute $\boldsymbol{\Theta}^{(h+1)}$ \\
+where $\Theta$ depends on $\boldsymbol{\alpha}$ and on the mixtures parameters (estimated once by {\tt Rmixmod}). We can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}). Then we deduce $\boldsymbol{\Theta}^{(h+1)}$ \\
 
 		We continue during $m_1$ iterations. Then we make $m_2$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m_2$ last iterations.\\
 		
@@ -4822,7 +4839,524 @@ We observe that the marginal model is better than the complete model but the plu
 
 This script describes the whole process of {\tt CorReg}. We can see that it is really adapted to an automated process as we have done for Excel.
 
+\chapter{Calculation details for missing values}
 
+\section{Distribution of $\boldsymbol{X}$} \label{sectionXdensity}
+	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components (defined in the following). We stack together all the mixture parameters in  $\boldsymbol{\Theta}$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
+	
+We define the operator $\prod$ as the Cartesian product with lexicographic order when used with vectors. \\
+\\
+	\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
+	\paragraph{Illustration of the notations:} 
+To illustrate this notation we define $A_1=(a_{11},a_{12})'$ and $A_2=(a_{21},a_{22},a_{23})'$:
+\begin{equation}
+	\prod_{i=1}^{2}A_i=\left(\begin{array}{cc}
+	a_{11} & a_{21} \\ 
+	a_{11} & a_{22} \\ 
+	a_{11} & a_{23} \\ 
+	a_{12} & a_{21} \\ 
+	a_{12}& a_{22} \\ 
+	a_{12} & a_{23}
+	\end{array}  \right) \nonumber
+\end{equation}	
+that is a $6-$uple of ($2\times 1$) vectors.
+\end{minipage}}
+	\\
+	
+	Then we write the parameters of the Gaussian mixture followed by $\boldsymbol{X}$ (the same for all individuals since they are {\it i.i.d.}):
+\begin{itemize}
+	\item The vector of the proportions is:
+	\begin{equation}
+		\boldsymbol{\pi}_X=\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}.  \nonumber 
+	\end{equation}
+	\item We deduce that the number of components (some of them could be equal as in the running example below) is:
+	\begin{equation}
+		K=|\boldsymbol{\pi}_X| \textrm{ so we have } \boldsymbol{\pi}_X=(\pi_1,\dots,\pi_K). \nonumber 
+	\end{equation}
+	\end{itemize}
+%	\item $K$-uple of the $1\times (d-d_r)$ vectors of the means of $\boldsymbol{X}_f$:
+%	\begin{equation}
+%		\boldsymbol{\mu}_{X^{J_f}}=\prod_{j \in J_f}\boldsymbol{\mu}_j \textrm{ ( $\prod$ is the Cartesian product, in lexicographic order)}
+%	\end{equation}
+%	We can then define
+\paragraph{Means:}
+\begin{itemize} 
+\item $\forall j \in J_r,$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$ is:
+	\begin{equation}
+		\boldsymbol{\mu}_{X^{j}}=(\prod_{l \in J_f}\bar{\alpha}_{l,j}\boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{d_f} .\label{meangaucheapp}
+	\end{equation}
+\end{itemize}
+We define $\boldsymbol{J}_f=(J_f^1,\dots,J_f^{d_f}) $ the vector of the indices of the free covariates (predictors) in lexicographic order. We also define $e_j$ is the $d_f \times 1$ vector with a $1$ in $j^{th}$ position and $0$ everywhere else: 
+\mbox{$e_j=(0,\dots,0,1,0,\dots,0)'$}.
+\begin{itemize}
+	\item $\forall j \in \{1,\dots,d_f\}$ the $K \times 1$ vector of the means associated to $\boldsymbol{X}^{J_f^j}$ in $\boldsymbol{X}$ is:
+	\begin{equation}
+		\boldsymbol{\mu}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\mu}_l)e_j .\label{meandroiteapp}
+	\end{equation} 
+	\item The $d-$uple of $K\times 1$ vectors of the means for $\boldsymbol{X}$ is then:
+		\begin{equation}
+			\boldsymbol{\mu}_X=(\boldsymbol{\mu}_{X^1},\dots,\boldsymbol{\mu}_{X^d}).  \nonumber 
+		\end{equation}
+\end{itemize}
+\paragraph{Variances:}
+\begin{itemize}
+	\item The vector of the $K$ variances of the free covariate $\boldsymbol{X}^{J_f^j}$ with $j \in \{1,\dots,d_f \}$ is:
+		\begin{equation}
+			\boldsymbol{\Sigma}_{X^{J_f^j}}=(\prod_{l \in J_f}\boldsymbol{\Sigma}_l)e_j. \nonumber 
+		\end{equation}
+	\item The vector of the $K$ variances of the response covariate $\boldsymbol{X}^{J_r^j}$ with $j \in \{1,\dots,d_r \} $is:
+	\begin{equation}
+		\boldsymbol{\Sigma}_{X^{J_r^j}}=\sigma_j^2+(\prod_{l \in J_f}\bar{\alpha}_{l,J_r^j}^2\boldsymbol{\Sigma}_l)\underbrace{(1,\dots,1)'}_{d_f}  \nonumber 
+	\end{equation}
+	\item The $d-$uple of $K\times 1$ vectors of the variances for $\boldsymbol{X}$ is then:
+		\begin{equation}
+			\boldsymbol{\Sigma}_X=(\boldsymbol{\Sigma}_{X^1},\dots,\boldsymbol{\Sigma}_{X^d}). \nonumber 
+		\end{equation}	
+\end{itemize}
+\paragraph{Covariances:} We look then at the covariances between the covariates to complete the list of the parameters of the Gaussian mixture followed by $\boldsymbol{X}$.
+We note $\boldsymbol{\sigma}_{X,X}$ the $K-$uple of the vectors of the covariances in lexicographic order. Then we have $\boldsymbol{\Theta}=(\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\sigma}_{X,X})$. $\forall 1\leq k \leq K, \forall 1\leq i \leq n$:
+\begin{itemize}
+	\item The covariance between two regressors is always zero:
+	\begin{equation}
+		\forall j_1 \in J_f, \forall j_2 \in J_f, \quad   \operatorname{Cov}_k(x_{i,j_1},x_{i,j_2})=0. \nonumber 
+	\end{equation}
+	\item The covariance between a response covariate and a free covariate that does not regressed it is always zero by Hypothesis \ref{H1}:
+	\begin{equation}
+		\forall j_1 \in \{1,\dots,d_r \}, j_2 \notin J_p^{j_1}\cup J_r, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,j_2})=0. \nonumber 
+	\end{equation}
+	\item The covariance between two response covariates without any common regressors is always zero  by Hypotheses \ref{H1} and \ref{H3}:
+	\begin{equation}
+		\forall j_1 \in \{1,\dots,d_r \}, j_2 \in \{1,\dots, d_r \}\setminus\{ j_1 \}, \textrm{ with } J_p^{j_1}\cap J_p^{j_2}= \emptyset, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=0. \nonumber 
+	\end{equation}
+	\item The covariance between two response covariates with common regressors is:\\
+	$\forall j_1 \in \{1,\dots,d_r \}, j_2 \in \{1,\dots, d_r \}\setminus\{ j_1 \}, \textrm{ with } J_p^{j_1}\cap J_p^{j_2}\neq \emptyset$:
+	\begin{equation}
+	  \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=\sum_{l \in J_p^{j_1}\cap J_p^{j_2}}\bar{\alpha}_{l,J_r^{j_1}}\bar{\alpha}_{l,J_r^{j_2}}\Sigma_{X^l,k} . \nonumber 
+	\end{equation}
+	where $\Sigma_{X^l,k}$ is the variance of $\boldsymbol{X}^l$ in the $k^{th}$ component of $\boldsymbol{X}$, hence the $k^{th}$ element of $\boldsymbol{\Sigma}_{X^l}$.
+	\item The covariance between a response covariate and one of its regressors is:
+	\begin{equation}
+		\forall j_1 \in \{1,\dots, d_r\}, j_2 \in J_p^{j_1}, \quad \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,j_2})=\bar{\alpha}_{j_2,J_r^{j_1}}\Sigma_{X^{j_2},k} . \nonumber 
+	\end{equation}
+\end{itemize}
+Then $\boldsymbol{\Theta}$ is entirely defined. \\
+\\
+%	 stands for the parameters of the Gaussian mixture followed by $\boldsymbol{X}$ with:
+%	\begin{eqnarray}
+%	\boldsymbol{\pi}_X&=&\bigotimes_{\substack{j \in J_f }} \boldsymbol{\pi}_j \textrm{ (Kronecker product)}\\
+%	\boldsymbol{\mu_X}&=&
+%	% \\	
+%\end{eqnarray}
+%	 and then $K= |\boldsymbol{\pi}|$ is the total number of components in the Gaussian mixture followed by $\boldsymbol{X}$.
+%	 
+	%\paragraph{Complete likelihood:} 
+%\begin{eqnarray}
+%	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{J_r}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%	&=&\prod_{i=1}^n\left[\prod_{j \in J_r}f(x_{i,j}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%	&=&\prod_{i=1}^n\left[\prod_{j =1}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
+%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
+%\end{eqnarray}
+%To compute the $\textsc{bic}_*$ we use then the log-likelihood:
+%\begin{eqnarray}
+%	\mathcal{L}(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j =1}^{d_r}\log \left(f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right)+\sum_{j \notin J_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right) \right]. \label{loglikmiss}
+%\end{eqnarray}
+\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
+\paragraph{In the running example:} We now suppose that $\boldsymbol{X}_1$ and $\boldsymbol{X}_2$ are two Gaussian mixtures with two components each, with equal proportions. $\forall 1\leq i \leq n:$
+\begin{eqnarray}
+	 f(x_{i,1}) &=& \frac{1}{2}\Phi(x_{i,1};1,1)+\frac{1}{2}\Phi(x_{i,1};2,1) \nonumber \\
+	f(x_{i,2}) &=& \frac{1}{2}\Phi(x_{i,2};3,1)+\frac{1}{2}\Phi(x_{i,2};4,1) \textrm{ then}  \nonumber \\
+	 f(x_{i,3}) %&=& \frac{1}{4}\Phi(x_{i,3};1+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};1+4,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};2+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3}; 2+ 4,2+\sigma_1^2) \\
+	&=&\frac{1}{4} \left[\Phi(x_{i,3};4,2+\sigma_1^2)+\Phi(x_{i,3};5,2+\sigma_1^2)+\Phi(x_{i,3};5,2+\sigma_1^2)+\Phi(x_{i,3};6,2+\sigma_1^2)\right] \nonumber\\
+	&=&\frac{1}{4}\Phi(x_{i,3};4,2+\sigma_1^2)+\frac{1}{2}\Phi(x_{i,3};5,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};6,2+\sigma_1^2)  \nonumber 
+\end{eqnarray}
+	
+\end{minipage}}
+\paragraph{Remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the following. By any means, if it was, the number of parameters would be overestimated but the likelihood would not be affected. Then it would be easy to compare each component to obtain the true number of parameters.
+\section{Marginal likelihood in simple cases}
+%The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that rely on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihoods are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
+%
+%	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the sub-regressions coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We will see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood and then the $\textsc{bic}_*$.  \\
+%	 
+
+%\paragraph{Observed likelihood:} 
+%We start with the complete likelihood of $\boldsymbol{X}$:
+%
+%\begin{eqnarray}
+%	L(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=& \prod_{i=1}^n f(\boldsymbol{X}_i)= \prod_{i=1}^n\left[f(\boldsymbol{X}_i^{J_r}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})f(\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right]
+%% \\
+%%	&=&\prod_{i=1}^n\left[\prod_{j \in J_r}f(x_{i,j}|\boldsymbol{X}_i^{J_f};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%%	&=&\prod_{i=1}^n\left[\prod_{j =1}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\prod_{j \notin J_r} f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S}) \right] \\
+%%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
+%%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
+%\end{eqnarray}
+	 When missing values occur, we restrict the likelihood to the observed likelihood, that is the likelihood of the known values. All individuals are supposed {\it i.i.d.} in the following.
+%		We have 
+%	\begin{equation}
+%		g(\boldsymbol{X}|\Theta)=\int_{\boldsymbol{X}_M}f(\boldsymbol{X}|\Theta)d \boldsymbol{X} \label{integralmiss}
+%	\end{equation}
+%For the covariates in $\boldsymbol{X}_f$, we use the density estimated  ($e.g.$ a Gaussian Mixture model estimated by \textsc{Mixmod}) or given as hypothesis. All individuals are supposed $iid$ so $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \notin I_r $: 
+%				 \begin{equation}
+%				 	g(x_{i,j}|\Theta)=f(x_{i,j}|\Theta)=\sum_{k=1}^{k_j}\pi_{j,k}\Phi(x_{i,j}|\mu_{j,k},\Sigma_{j,k}) 
+%				 \end{equation} with $k_j,\pi_{j,k}, \mu_{j,k}$ and $\Sigma_{j,k}$ estimated by Mixmod (for example). 
+%\\				 		
+				 		
+%		Then we have
+%		\begin{eqnarray}
+%			g(\boldsymbol{X}|\Theta)&=& g(\boldsymbol{X}_r|\boldsymbol{X}_f,\Theta)g(\boldsymbol{X}_f|\Theta) \\
+%			&=&\prod_{i=1}^n\left[ g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} g(x_{i,j}|\Theta) \right]\\
+%			&=&\prod_{i=1}^n\left[ g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)
+%							\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}}\sum_{k=1}^{k_j}\pi_{j,k}\Phi(x_{i,j}|\mu_{j,k},\Sigma_{j,k}) \right] \label{decomplikelimiss}
+%		\end{eqnarray}
+%		reminding that covariates in $\boldsymbol{X}_f$ are orthogonal. \\
+%		
+%	 Residuals of the sub-regressions are orthogonal but missing values can make the residuals dependent. We have to decompose more precisely $g(\boldsymbol{X}_i^{I_r} |\boldsymbol{X}_i^{I_f},\Theta)$. To have a better view on the dependencies implied, we first write the marginal distributions. \\
+
+
+
+
+
+
+%\begin{eqnarray}
+%	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\int_{\mathbb{R}^{d_M}}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M 
+%	=\int_{\mathbb{R}^{d_M}}\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
+%	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\Phi_k(\boldsymbol{X};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
+%	&=&\sum_{k=1}^K \pi_k \int_{\mathbb{R}^{d_M}}\prod_{i=1}^n\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_M  \nonumber \\
+%	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\int_{\mathbb{R}^{d_{i,M}}}\Phi_k(\boldsymbol{X}_i;\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})d\boldsymbol{X}_{i,M} \nonumber  \\
+%	&=&\sum_{k=1}^K \pi_k \prod_{i=1}^n\Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
+%	&=&\sum_{k=1}^K \pi_k \Phi_k(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \nonumber 
+%\end{eqnarray}
+%
+
+
+% $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \notin I_r $:
+%	 \begin{equation}
+%	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
+%	 \end{equation}	
+
+%To compute this likelihood, we will use the decomposition:
+%\begin{eqnarray}
+%	L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=& 
+%	%\int_{\mathbb{R}^{d_M}}L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})d\boldsymbol{X}_M =
+%	f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
+%	%f(\boldsymbol{X}_{O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=
+%&=&	\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})f(\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\quad   \nonumber \\
+%	&=&\prod_{i=1}^nf(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}).\label{likmissapp}
+%\end{eqnarray}
+\paragraph{Observed likelihood on observed predictors:} $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \in J_f $:
+
+	 \begin{equation}
+	 f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})=\sum_{k=1}^{K_j}\pi_{j,k}\Phi_k(x_{i,j};\mu_{j,k},\Sigma_{j,k}) \label{likmissdroiteapp}
+	 \end{equation} with $K_j,\pi_{j,k}, \mu_{j,k}$, $\Sigma_{j,k}$ and the likelihood estimated once (for example by using the package {\tt Rmixmod} \cite{packageRmixmod}) before the MCMC starts. 
+	 \\
+%	 
+And if there is no missing values in covariates that regress several observed response covariates (see Figure \ref{mankbrun}) we can continue the decomposition of equation (\ref{likmiss}):
+	\begin{equation}%		L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \label{simplemisslikapp}
+\end{equation}	
+%\paragraph{Remark:} if each sub-regression is a distinct connected component then we can always use equation (\ref{simplemisslik}) but it is not a necessary condition.
+
+%	 $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}\neq 0 \textrm{ and } j \in I_r $:
+%	 \begin{equation}
+%	 \int_{\boldsymbol{X}_M}f(x_{i,j}|\boldsymbol{X}_i^{I_f^j},\boldsymbol{\alpha},\Theta,S) d\boldsymbol{X}=1
+%	 \end{equation}
+	\paragraph{Observed conditional likelihood of the response covariates:} $\forall (i,j) \textrm{ with }  j \in \{1,\dots,d_r \}$ and $\boldsymbol{M}_{i,J_r^{j}}= 0$,  the distribution of $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ are not identical for each individual. It depends on the number of missing values in $\boldsymbol{X}_i^{J_p^{j}} $:
+	
+		\begin{eqnarray}
+ f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=& \sum_{k=1}^{K_{i,J_r^j}}\pi_{i,J_r^j,k}\Phi(x_{i,J_r^j};\mu_{i,J_r^j,k},\Sigma_{i,J_r^j,k})  \label{Missingdensityapp}\\
+			\textrm{ where } 	\boldsymbol{\pi}_{i,J_r^j} &=& \bigotimes_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 } } \boldsymbol{\pi}_l \textrm{ and  }K_{i,J_r^j}=|\boldsymbol{\pi}_{i,J_r^j}|  \nonumber 
+		\end{eqnarray}	
+\paragraph{Means:}	The $ K_{i,J_r^j} \times 1$ vector of the means is:
+				\begin{equation}
+				\boldsymbol{\mu}_{i,J_r^j}= \sum_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0  }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}x_{i,l} + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1  }} \bar{\boldsymbol{\alpha}}_{l,J_r^j} \boldsymbol{\mu}_l)\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}  \nonumber 
+				\end{equation}
+				where $|\boldsymbol{X}_{i,O}^{J_p^j}|$ is the number of observed values in $\boldsymbol{X}^{J_p^j}$ for individual $i$.
+\paragraph{Variances:} The $ K_{i,J_r^j} \times 1$ vector of the variances is:
+				\begin{equation}
+				\boldsymbol{\Sigma}_{i,J_r^j} = \sigma_{j}^2 + (\prod_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=1 }}\bar{\boldsymbol{\alpha}}_{l,J_r^j}^2 \boldsymbol{\Sigma}_l	)	\underbrace{(1,\dots,1)'}_{|\boldsymbol{X}_{i,O}^{J_p^j}|}. \nonumber 
+				\end{equation}
+		In such a case, computation is fast and easy. It includes the cases supposed in {\tt SelvarclustMV}.\\
+		We note that we obtain a Gaussian when there is no missing value in $J_p^j$.\\
+		
+		
+		This kind of decomposition could be easily used for imputation of the missing values in $\boldsymbol{X}_r$ knowing the parameters $\boldsymbol{\alpha}, \boldsymbol{\Theta}$ and $\boldsymbol{S}$. \\
+		
+%		We sadly observe that $f(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})$ is not the product of the $f(x_{i,J_r^j}|\boldsymbol{X}_{i,O}^{J_p^j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) $	if a same missing value occurs in distinct sub-regressions with observed response covariates (Figure \ref{mankbrun}).
+%		\begin{figure} 
+%		\centering
+%		\includegraphics[width=100px]{figures/mankbrun.png} 
+%		\caption{Pattern of missing values that does not allow to use equation (\ref{simplemisslik}): one missing value for a covariate that is common to $2$ observed response covariates.} \label{mankbrunapp}
+%		\end{figure}
+	\section{Marginal likelihood in the general case}
+		For the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$. Then we use the global Gaussian mixture on $\boldsymbol{X}$:
+%		Because $\forall 1\leq i \leq n, \boldsymbol{X}_i$ is a Gaussian Mixture, $\boldsymbol{X}_{i,O}$ and then $(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}_{i,O}^{I_f})$ are Gaussian mixtures too. \\
+		%We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
+		
+\begin{eqnarray}
+L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}) \nonumber \\
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\Phi_k(\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})  \nonumber \\
+&=&\prod_{i=1}^n\sum_{k=1}^{K} \pi_{k} \Phi_k(\boldsymbol{X}_{i,O}^{J_r}|\boldsymbol{X}_{i,O}^{J_f};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}\Phi_k(x_{i,j};\mu_{X^j,k},\Sigma_{X^j,k}). \qquad \qquad \label{liklihoodmissglobalapp}
+\end{eqnarray}		
+
+%définintion des objets génériques
+%where	
+
+		with $ \pi_k, \mu_{X^j,k},\Sigma_{X^j,k}$ as defined in Section \ref{sectionXdensity}.
+		\paragraph{Conditional distribution of a multivariate Gaussian :}
+		$\forall 1\leq i \leq n, \forall 1\leq k \leq K$ we note $ \boldsymbol{\mu}_{X^{J_r}_{i,O},k}$ (respectively $\boldsymbol{\mu}_{X^{J_f}_{i,O},k}$) the vector of the means of $\boldsymbol{X}^{J_r}_{i,O} $ (respectively  $\boldsymbol{X}^{J_f}_{i,O}$)  associated to the $k^{th}$ component of $\boldsymbol{X}$ for individual $i$ that are described in equation (\ref{meangaucheapp}) (respectively equation (\ref{meandroiteapp})).\\
+		
+		We have the explicit formula for multivariate Gaussian distribution:
+\begin{eqnarray}
+		\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})&=&\Phi_k(\boldsymbol{X}^{J_r}_{i,O}|\boldsymbol{X}^{J_f}_{i,O};\boldsymbol{\mu}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k},\boldsymbol{\Sigma}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}) \nonumber 
+		\end{eqnarray}
+				%P(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},S)&=&\Phi_k(\boldsymbol{X}^{I_r}_{i,O};\boldsymbol{\mu}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k},\boldsymbol{\Sigma}_{\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}^{I_f}_{i,O},k})\\
+				where the $|\boldsymbol{X}^{J_r}_{i,O}| \times 1$ vector of the conditional means is:
+				\begin{equation}
+		\boldsymbol{\mu}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}= 
+				\boldsymbol{\mu}_{\boldsymbol{X}^{J_r}_{i,O},k}+
+				\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1}
+				( (\boldsymbol{X}_{i,O}^{J_f})'-\boldsymbol{\mu}_{X^{J_f}_{i,O},k})  \nonumber 
+				\end{equation}
+				and the variance-covariance matrix is:
+						\begin{equation}
+\boldsymbol{\Sigma}_{X^{J_r}_{i,O}|X^{J_f}_{i,O},k}=\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_r},k}-\boldsymbol{\Sigma}_{X_{i,O}^{J_r},X_{i,O}^{J_f},k}
+		(\boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_f},k})^{-1} \boldsymbol{\Sigma}_{X_{i,O}^{J_f},X_{i,O}^{J_r},k}. \nonumber 
+		\end{equation}
+		We can then describe each part of these formulas for each $1\leq i \leq n$ and $1\leq k \leq K$ because all the variances and covariances are already given in Section \ref{sectionXdensity}.\\
+%		The mean vector of observed regressed covariates: $\forall j \in \{1,\dots,d_r\}\textrm{ with }\boldsymbol{M}_{i,J_r^j}=0:$
+% \begin{eqnarray}
+%		  \boldsymbol{\mu}_{X_{i}^{J_r^j},k}&=&\sum_{l \in J_p^j}\bar{\boldsymbol{\alpha}}_{l,J_r^j}\mu_{l,k} 
+%\end{eqnarray}		
+%The variance of observed regressed covariates: $\forall j \in \{1,\dots,d_r\} \textrm{ with } \boldsymbol{M}_{i,J_r^j}=0$ 
+%	\begin{equation}
+%		\operatorname{Var}_{k}(x_{i,J_r^j})=\sigma_{j}^2+ \sum_{l \in J_p^j} \bar{\boldsymbol{\alpha}}_{l,J_r^j}^2\sigma_{\boldsymbol{X}^l,k}^2
+%	\end{equation}			
+%	The variance of observed regressors: $\forall j \in J_f \textrm{ with } \boldsymbol{M}_{i,j}=0$
+%\begin{equation}
+%	\operatorname{Var}_{k}(x_{i,j})=\sigma_{X^j,k}^2
+%\end{equation}	
+%The covariance between two regressed covariates with common regressors: \\	
+%	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in \{1,\dots,d_r\},J_p^{j_1}\cap J_p^{j_2}\neq \emptyset \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,J_r^{j_2}}=0$
+%	\begin{equation}
+%		\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,J_r^{j_2}})%=\sum_{l\in J_p^{j_1}\cap J_p^{j_2}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_1}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_2}}	\operatorname{Var}_{k}(x_{i,l})
+%		 =\sum_{l\in J_p^{j_1}\cap J_p^{j_2}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_1}}\bar{\boldsymbol{\alpha}}_{l,J_r^{j_2}}\sigma_{\boldsymbol{X}^l,k}^2
+%	\end{equation}
+%	The covariance between two regressed covariates without any common regressors:\\
+%	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in \{1,\dots,d_r\},J_p^{j_1}\cap J_p^{j_2}= \emptyset \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,J_r^{j_2}}=0$
+%	\begin{equation}
+%	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,J_r^{j_2}})=0
+%\end{equation}
+%The covariance between two regressors is always zero:\\
+%	$\forall j_1 \in J_f, j_2 \in J_f \textrm{ with } \boldsymbol{M}_{i,j_1}=\boldsymbol{M}_{i,j_2}=0$
+%	\begin{equation}
+%	\operatorname{Cov}_{k}(x_{i,j_1},x_{i,j_2})=0
+%\end{equation}
+%The covariance between a regressed covariate and one of its regressors: \\
+%	$\forall j_1 \in \{1,\dots,d_r\}, j_2 \in J_p^{j_1} \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,j_2}=0$
+%	\begin{equation}
+%	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= \bar{\boldsymbol{\alpha}}_{j_2,J_r^{j_1}}\sigma_{X^{j_2},k}^2
+%\end{equation}
+%The covariance between a regressed covariate and covariate neither regressing it nor regressed is zero by hypothesis \ref{H1}: 
+%$\forall j_1 \in \{1,\dots,d_r\}, j_2 \notin J_p^{j_1}\cup J_r \textrm{ with } \boldsymbol{M}_{i,J_r^{j_1}}=\boldsymbol{M}_{i,j_2}=0$
+%	\begin{equation}
+%	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= 0
+%\end{equation}
+Then we are able to maximize this likelihood to find $\boldsymbol{\alpha}$.
+	\section{Likelihood computation optimized}
+	The main problem with the likelihood in its global form (\ref{liklihoodmissglobalapp}) is that the number of components explodes so we cannot use it in practice. But in many cases, it can be simplified.
+We see that the $0$ in the variance-covariance matrix does not depend on the component $k$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $\boldsymbol{S}$ to reduce computing time.  Another strictly technical tip would be to use sparse matrix storage to avoid null value storage and useless zero multiplications.\\
+
+		Moreover, we can look if there are missing values shared by several sub-regression. 
+		Connected component detection could be done to reduce the dimension down to strictly dependent covariates and use equation (\ref{Missingdensityapp}) elsewhere.
+		We just need to compute the  row-sums of the adjacency matrix $\boldsymbol{G}$ or to search for redundancy in $J_f$ and then if there is no redundancy or if $\forall j$ redundant we have $\sum_{i=1}^n\boldsymbol{M}_{i,j}=0$ then we can use the simplified form of the likelihood given in equation (\ref{simplemisslik}). For faster computation we can stock the vector of covariates that have missing values.
+		So the true value of the likelihood can be computed efficiently in most of cases but in the MCMC, it remains the possibility to evaluate a structure with explosive likelihood expression when combined with the missing values and we need to compute the likelihood for a great number of candidates. Then it is possible to use directly the simplified form of the likelihood, that can be seen as an approximation of the likelihood, not taking into account some of the dependencies but it would offer no guarantee in terms of efficiency for the MCMC. %Numerical results on simulated datasets will show if this approximation is effective.
+
+%		In first approximation we can suppose independence between the sub-regression:
+%		\begin{equation}
+%		\forall (j,j') \in I_r \times I_r, g(x_{i,j}| \boldsymbol{X}_{i}^{I_f},\boldsymbol{\Theta}) \perp g(x_{i,j'}| \boldsymbol{X}_{i}^{I_f},\boldsymbol{\Theta})
+%\end{equation}		 
+%then we have the complete expression of the likelihood with \ref{decomplikelimiss} and \ref{Missingdensity}.
+% Such approximation can be costless according to the position of the missing values ({\it e.g.} if they are all in $\boldsymbol{X}^{I_r}$). It is closer to the real model than the orthogonal hypothesis made by classical imputation by the mean. Moreover, sub-regressions are used only locally and errors don't cumulate whereas the true general decomposition combine many sub-regressions with cumulated noise of approximation. Thus, a general model would be better asymptotically but may not be efficient with finite dataset if the structure is complex. This first approximation is a good candidate to compare to the naive model (not taking into account the structure of sub-regression but making imputations by the mean for each covariate individually). 
+%		
+%		However, we write the real generalized expression for the log-likelihood.
+%		Let $\mathcal{I}_r$ be a permutation of $I_r$ (arbitrary chosen, so the package will use identity). We define the general decomposition:
+%		\begin{eqnarray}
+%			g(\boldsymbol{X}^{I_r}|\boldsymbol{X}^{I_f},\boldsymbol{\Theta})&=& \prod_{i=1}^n \left[g(x_{i,\mathcal{I}_r(p_r)}|\boldsymbol{X}_i^{I_f},\boldsymbol{\Theta})\prod_{j=1}^{p_r-1}g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_{i}^{\mathcal{I}_r(j+1)},\dots ,\boldsymbol{X}_{i}^{\mathcal{I}_r(p_r)}, \boldsymbol{X}_i^{I_f},\boldsymbol{\Theta})\right]
+%		\end{eqnarray}
+%		where we don't know the expression of $ g(x_{i,\mathcal{I}_r(j)}|\boldsymbol{X}_{i}^{\mathcal{I}_r(j+1)},\dots ,\boldsymbol{X}_{i}^{\mathcal{I}_r(p_r)}, \boldsymbol{X}_i^{I_f},\boldsymbol{\Theta})$ so the previous approximation stands still. 
+%			
+%	
+%To estimate $\boldsymbol{\alpha}$ we use an EM algorithm. We start with an arbitrary value $\boldsymbol{\alpha}^{(0)}$, then:
+%For the iteration $h$ of the algorithm at the E step we want 
+%\begin{equation}
+%	E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\boldsymbol{\Theta},S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\boldsymbol{\Theta})\right]
+%\end{equation}
+%So we get $\boldsymbol{X}_M^{(h)}$ the  imputation for $\boldsymbol{X}_M$ and then the M step simply is
+%\begin{equation}
+%	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha},S,\boldsymbol{\Theta}) \right]
+%\end{equation}
+%and we can use the same method as the one for classical case without missing values (OLS, SUR, {\it etc.}).
+%		And we continue until convergence ($\parallel \boldsymbol{\alpha}^{(h+1)} - \boldsymbol{\alpha}^{(h)}\parallel < tol $ where $tol$ is the tolerance.\\
+%		
+%Imputation in $\boldsymbol{X}^{I_r}$ is made according to (\ref{Missingdensity}) and we have orthogonality in $\boldsymbol{X}^{I_f}$:
+%\begin{displaymath}
+%\forall j \notin I_r, P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f}\setminus \boldsymbol{X}^j)=P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r})
+%\end{displaymath}
+%Moreover, $\forall j \notin I_r, \forall l \in I_r $ with $j \notin I_f^l, \boldsymbol{X}^j\perp \boldsymbol{X}^j$ so
+%\begin{displaymath}
+%\forall j \notin I_r, P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r},\boldsymbol{X}^{I_f}\setminus \boldsymbol{X}^j)=P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r})=P(\boldsymbol{X}^j|\boldsymbol{X}^{I_r^j})
+%\end{displaymath}
+%where $I_r^j=\{i \in I_r| j \in I_f^j \}=\{i \in I_r|\alpha_{j,i}\neq 0 \}$ So we will make imputations (for E step only) according to $P(\boldsymbol{X}^j|\boldsymbol{X}_O^{I_r^j})$
+%		\\
+%$\forall 1 \leq i \leq n$	
+%To use formulas on conditional distribution for Gaussian multivariate distribution we first write $P(\boldsymbol{X}_i^j,\boldsymbol{X}_i^{I_r^j})$ which is a Gaussian mixture with $K_{ij}$ components.
+%\\
+%$\forall j \notin I_r, \forall (l_1,l_2) \in I_r^j, P(x_{i,l_1}|x_{i,j},x_{i,l_2})=P(x_{i,l_1}|x_{i,j})$
+%\begin{eqnarray}
+%	P(x_{i,j},\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\alpha})&=& P(x_{i,j})\prod_{\substack{ l \in I_r^j \\M_{i,l=0} } }P(x_{i,l}|x_{i,j}) \\
+%	&=&\sum_{k =1}^{ K_{ij}} \pi_{ij,k} \phi(x_{i,j},\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\mu}_{ij,k},\boldsymbol{\Sigma}_{ij,k}) \textrm{ where } \\
+%	\boldsymbol{\pi}_{ij}&=&\boldsymbol{\pi}_j\otimes \left[ \bigotimes_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 } } \boldsymbol{\pi}_{ijl} \right]=\boldsymbol{\pi}_j\otimes\bigotimes_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 } } \left(\bigotimes_{\substack{h \in I_f^l \\ h \neq j} }\boldsymbol{\pi}_h \right)
+%	 \textrm{ and  }K_{ij}=|\boldsymbol{\pi}_{ij}| ,\\
+%	\boldsymbol{\mu}_{ij}&=&\boldsymbol{\mu}_j \times \left[\prod_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 }}\boldsymbol{\mu}_{ijl} \right]
+%		=\boldsymbol{\mu}_j \times \prod_{\substack{l \in I_r^j \\ \boldsymbol{M}_{i,l}=0 }}\left[\alpha_{j,l}x_{i,j}+\bigoplus_{\substack{h \in I_f^l}}\alpha_{h,l}\boldsymbol{\mu}_{h} \right] \\	
+%		\boldsymbol{\Sigma}_{ij}&& \textrm{is the associated variance-covariance matrix}
+%\end{eqnarray}
+%		Cartesian product and power in the expression of the mean.
+%		
+%
+%Then we have 
+%\begin{eqnarray}
+%	P(x_{i,j}|\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\alpha})&= &\sum_{k=1}^{K_{ij}}\pi_{ij,k}\phi(x_{i,j}|\boldsymbol{X}_{i,O}^{I_r^j},\boldsymbol{\mu}_{ij,k},\boldsymbol{\Sigma}_{ij,k}) \\
+%	&=&\sum_{k=1}^{K_{ij}}\pi_{ij,k}\phi \left(x_{i,j},\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}},\Sigma_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}\right) \textrm{ with} \\
+%	\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}&=& \mu_{j,k} + \operatorname{cov}(x_{i,j,k},\boldsymbol{X}_{i,O,k}^{I_r^j})\operatorname{var}(\boldsymbol{X}_{i,O,k}^{I_r^j})^{-1}(\boldsymbol{X}_{i,O}^{I_r^j}-\boldsymbol{\mu}_{\boldsymbol{X}_{i,O}^{I_r^j},k})\textrm{ and} \\
+%	\Sigma_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}&=&\operatorname{var}(x_{i,j,k})-\operatorname{cov}(x_{i,j},\boldsymbol{X}_{i,O,k}^{I_r^j})\operatorname{var}(\boldsymbol{X}_{i,O,k}^{I_r^j})^{-1}\operatorname{cov}(\boldsymbol{X}_{i,O,k}^{I_r^j},x_{i,j,k})
+%\end{eqnarray}
+% 
+%But we do not need to compute the variance because we only want $E_{\boldsymbol{X}_{\boldsymbol{M}}|\boldsymbol{X}_O,\boldsymbol{\alpha},\boldsymbol{\Theta},S}\left[\mathcal{L}(\boldsymbol{X}|\boldsymbol{\alpha}^{(h)},S,\boldsymbol{\Theta})\right]$ so the mean is sufficient, we impute  
+%\begin{equation}
+%	\hat{x}_{i,j}=\frac{1}{K_{ij}}\sum_{k=1}^{K_{ij}}\pi_{ij,k}\mu_{ij,k|\boldsymbol{X}_{i,O}^{I_r^j}}
+%\end{equation}
+%
+%We have 
+%\begin{eqnarray}
+%	\forall l \in I_r^j,\forall 1\leq k \leq K_{ij}, \operatorname{cov}(x_{i,j,k},\boldsymbol{X}_{i,O,k}^{l})&=&\operatorname{cov}(x_{i,j,k},\sum_{h\in I_f^l}x_{i,h}\alpha_{h,l}+\varepsilon_{i,l})
+%	=\alpha_{j,l}\sigma_{j,k}^2 \\
+%	\forall l \in I_r^j,\forall 1\leq k \leq K_{ij}, \operatorname{var}(x_{i,l,k})&=&\sigma_l^2+\sum_{h \in I_f^l}\alpha_{h,l}^2\sigma_{h,k}^2 
+%	\end{eqnarray}
+%	$\forall l_1\neq l_2 \in I_r^j,\forall 1\leq k \leq K_{ij},$
+%	\begin{eqnarray}
+%	 \operatorname{cov}(x_{i,l_1,k},x_{i,l_2,k})&=&\operatorname{cov}(\sum_{h\in I_f^{l_1}}x_{i,h,k}\alpha_{h,l_1}+\varepsilon_{i,l_1},\sum_{h\in I_f^{l_2}}x_{i,h,k}\alpha_{h,l_2}+\varepsilon_{i,l_2})\\
+%	&=& \operatorname{cov}(\sum_{h\in I_f^{l_1}}x_{i,h,k}\alpha_{h,l_1},\sum_{h\in I_f^{l_2}}x_{i,h,k}\alpha_{h,l_2}) \\
+%	&=& \sum_{h \in I_f^{l_1}\cap I_f^{l_2}}\sigma_{h,k}^2\alpha_{h,l_1}\alpha_{h,l_2}
+%\end{eqnarray}
+%
+%
+%	\subsection{Weighted penalty for $\mbox{{\sc bic}}$}
+%			Now we have defined the way to compute the likelihood, other questions remain: how to define the number of parameters in the structure? How to take into account missingness (structures relying on highly missing covariates should be penalized)?
+%			We have seen that for a same covariate $\boldsymbol{X}^j$ with $ j \in J_r$, the number of parameters is not the same for each individual depending whether or not $\boldsymbol{M}_{i,j}=0$. We can compute the likelihood of each individual separately but the penalty (for $\mbox{{\sc bic}}_*$) is global to the dataset. \\
+%			
+%			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. We define
+%			\begin{equation}
+%			c_j=\frac{1}{n}\sum_{i=1}^nc_{i,j},  \nonumber 
+%\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$. Then we have
+%			\begin{eqnarray}
+%		-2\log \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})&\approx & \mbox{{\sc bic}}=-2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})\right)+|\boldsymbol{\Theta}|\ln(n) \nonumber  \\
+%		&=& -2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})\right)+(\sum_{j=1}^dc_j)\ln(n). \nonumber 
+%	\end{eqnarray}
+%			 Thus if a structure is only touched by one missing value the penalty will be smaller than if the same structure had more missing values implied.
+%			Another way would be to use {\sc ric} (see \cite{foster1994risk}) so the penalty does not depend on $n$ but is associated with $\log(d)$. %Or to make a compromise and penalize by $\frac{k_i\log(d)}{\log(n)}$.
+%		
+%	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
+%	
+			
+%			In fact we have the same number of parameters to estimate with or without missing values but the problem is that some of the parameters are estimated based only on a portion of the individuals so each parameter has a different weight.
+%			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$ so our proposed penalty term is an intuitive way to use a weighted penalty.
+%	
+%
+%	\section{{\sc em} Algorithm to estimate $\boldsymbol{\alpha}$ with a given $\boldsymbol{S}$}
+%			If we do not have an estimate of $\boldsymbol{\alpha}$ we can just take the values that maximize the likelihood. Sometimes the maximization of a likelihood is too complex to be solved analytically. In such a case, we can use Expectation-Maximization ({\sc em} \cite{mclachlan2007algorithm}) algorithms \cite{mclachlan2007algorithm} that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. 
+%Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ (the $i^{th}$ individual of the $j^{th}$ covariate) is generated.			
+%			This kind of algorithm allows to manage missing values \cite{dempster1977maximum}. \\
+%			
+%{\sc em} is an alternate optimization of the researched parameters $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$ only for a given $\boldsymbol{S}$ since the marginal distribution parameters are estimated once before the MCMC.) and the latent variables $Z$ with two steps at each iteration $(q)$:
+%\begin{itemize}
+%	\item The Expectation step in which the expected value of the log-likelihood is computed for the current estimate of the parameters $\boldsymbol{\Theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\Theta}^{(q)}$.
+%	\begin{equation}
+%		Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)})=E_{Z|\boldsymbol{X},\boldsymbol{\Theta}^{(q)}} [\ln L(\boldsymbol{\Theta};\boldsymbol{X},Z)].  \nonumber 
+%	\end{equation}
+%	\item The Maximization step that maximizes:
+%	\begin{equation}
+%		\boldsymbol{\Theta}^{(q+1)}=\arg \max_{\boldsymbol{\Theta}} Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)}).  \nonumber 
+%	\end{equation}
+%\end{itemize}
+%	So it alternates between estimation of $Z$ and $\boldsymbol{\Theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
+%	It requires to set initial values for $\boldsymbol{\Theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and runs of the algorithm.\\
+%			
+%			Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic},\\
+%			 \cite{celeux1986algorithme} or the Classification EM \cite{celeux1992classification}.
+%			
+%			
+%\subsection{Stochastic EM}
+%	The integrated likelihood depicted above depends on the $\boldsymbol{\alpha}_j$'s which were formerly estimated by \textsc{ols} when there were no missing values. But when missing values occurs in a sub-regression we need another solution.\\
+%	
+%	We use a  Stochastic Expectation Maximization (\textsc{sem} \cite{celeux1986algorithme}) algorithm  to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the log-likelihood is not linear so a simple Expectation-Maximization ({\sc em}) would be difficult to compute.\\
+%	
+%	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regression have only few parameters and can be estimated even with only a small number of individuals.
+%		
+%	
+%	\paragraph{Initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by complete-case method	(sparse structure) or using imputed values in $\boldsymbol{X}$ and then \textsc{ols}.
+%	At iteration $(h)$,
+%	\paragraph{SE step:}
+%		We generate the missing values $\hat{\boldsymbol{X}}_M^{(h)}$ according to $\mathbb{P}(\boldsymbol{X}_M|\boldsymbol{X}_O; \boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})$, that is stochastic imputation.
+%	\paragraph{M step:}
+%		We estimate 
+%		\begin{equation}
+%	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\ln L(\boldsymbol{\alpha},\boldsymbol{S},\boldsymbol{\Theta}^{(h)};\boldsymbol{X}_O,\boldsymbol{X}_M^{(h)}) \right]  \nonumber 
+%\end{equation}
+%and we can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}). Then we compute $\boldsymbol{\Theta}^{(h+1)}$ \\
+%
+%		We continue during $m_1$ iterations. Then we make $m_2$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m_2$ last iterations.\\
+%		
+%	The stochastic imputation made at the SE step is computed by Gibbs sampling.
+
+%	\subsection{Stochastic imputation by Gibbs sampling}
+%		Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $d-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $\mathbb{P}(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_d^{(q)})$ using the most recent drawn values each time. \\
+%		
+%		Gibbs sampling method can be used to generate the missing values at the $h^{th}$ SE step. 
+%		\paragraph{Initialisation:}  %For example to the first component (such an initialisation does not depend on $K$). 
+%		$\boldsymbol{X}_M^{(0,h)}$ are imputed by the marginal means or drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example). All the $Z_{i,j}^{(0,h)}$ are then randomly set based on the $t_{i,j,k}^{(0,h)}$ as explained below, replacing $(q+1)$ by $0$ (we just need those of $\boldsymbol{X}_f^{(0,h)}$). 
+%		\paragraph{Iteration (q+1):} At each iteration of the Gibbs sampler we first make successive imputations on the missing values. We note $\boldsymbol{X}^{(q+1,h)}_{\bar{ij}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,j-1},x_{i,j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$. Then: 
+%		\begin{itemize}
+%			\item Regressed covariates: $\forall 1\leq i \leq n, \forall j \in \{1,\dots,d_r \}, \boldsymbol{M}_{i,J_r^j}=1  $:  $x_{i,J_r^j}^{(q+1,h)}$ is generated using the corresponding sub-regression, that gives the Gaussian
+%			\begin{eqnarray}
+%			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}^{(q+1,h)}_{\bar{iJ_r^j}},Z^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})%
+%			%&=&\mathbb{P}(x_{i,J_r^j}|(\boldsymbol{X}_{i}^{J_p^j})^{(q+1,h)};\boldsymbol{\alpha}^{(h)}_j,\boldsymbol{\Theta}^{(h)},{S}) \nonumber \\
+%			%&=&\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}\setminus x_{i,J_r^j},z_{i, J_r^j};\boldsymbol{\alpha}^{(h)},\Theta,{S})
+%		%	\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}};\alpha^{(h)},\Theta,S) \\
+%			%&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_i^{I_f^j};\boldsymbol{\alpha}^{(h)},\Theta,S)
+%			&=&\Phi(x_{i,J_r^j};(\boldsymbol{X}_i^{J_p^j})^{(q+1,h)}\boldsymbol{\alpha}^{(h)}_{j},(\sigma_j^2)^{(h)} ). \nonumber
+%			\end{eqnarray}		
+%			\item And for regressors:
+%			%We have $\mathbb{P}(\boldsymbol{X}|Z)=\mathcal{N}(\boldsymbol{\mu}_{|Z},\boldsymbol{\Sigma}_{|Z})$. \\
+%			$\forall (i,j) \in \{1,\dots,n \}\times J_f,\boldsymbol{M}_{i,j}=1$:  $x_{i,j}^{(q+1,h)}$ is generated according to the Gaussian $\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i\bar{j}}^{(q+1,h)},Z^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})$ (using Gaussian conditional distribution with Schur complement).
+%						\end{itemize}		
+%
+%	Then, $\forall 1\leq i \leq n, \forall j \in J_f$ we draw the $Z_{i,j}^{(q+1,h)}$ according to the $K_j$-multinomial distribution whose parameters are the $(t_{i,j,1}^{(q+1,h)},\dots ,t_{i,j,K_j}^{(q+1,h)})$ defined by:
+%	\begin{eqnarray}
+%		%\mathbb{P}(Z_{i,j}|\boldsymbol{X};\Theta,\boldsymbol{\alpha},\boldsymbol{S})&=&\mathbb{P}(Z_{i,j}|\boldsymbol{X}_i;\Theta,\boldsymbol{\alpha},\boldsymbol{S})=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j})\ \  \nonumber\\
+%		%\textrm{where } 
+%		t_{i,j,k}^{(q+1,h)}&=&\frac{\pi_{j,k}\Phi(x_{i,j}^{(q+1,h)};\mu_{j,k},\sigma_{j,k}^2)}{\sum_{l=1}^{K_j}\pi_{j,l}\Phi(x_{i,j};\mu_{j,l},\sigma_{j,l}^2) }. \nonumber 
+%	\end{eqnarray}
+%		
+%	
+%	
+%	We see that $Z_{i,j}$ are not used if there is no missing values in $\boldsymbol{X}_i$ and others are not all needed so we can also optimize computation time by  computing only the $Z_{i,j}$ that are needed in the Gibbs.
+%	For the last iteration of the Gibbs, in the last iteration of the Stochastic EM, we do not need to draw $Z$.	\\
+%	
+%	Instead of using long chain for each Gibbs, we can use small chains because Stochastic EM iteration will simulate longer chains so it remains efficient with a smaller computation cost.
+%	Computation cost will be the main purpose here because we need an iterative algorithm (Gibbs sampler) at each iteration of another iterative algorithm (Stochastic EM) for each candidate of the MCMC.
+%	So alternative method should be preferred for large datasets with many missing values and only a small amount of time.\\
+%	
+%		
 
 \chapter{Glossary of notations}\label{glossaire}
 This glossary can be used to find the meaning of some notations without having to search within the chapters.
