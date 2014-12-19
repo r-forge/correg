@@ -170,7 +170,7 @@ Nous supposons également que les variables réponses et les variables prédicti
 
 \paragraph{Notations} Par la suite nous noterons $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ le $d_r$-uplet des variables réponses (à ne pas confondre avec $J_r$ défini plus haut), $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ le $d_r$-uplet des prédicteurs de toutes les sous-régressions, $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ les nombres correspondants de predicteurs et $\boldsymbol{S}=(\boldsymbol{J}_r,\boldsymbol{J}_p)$ le {\it model} global (structure de sous-régressions). Pour alléger les notations, on définit alors $\boldsymbol{X}_r=\boldsymbol{X}^{J_{r}}$ la matrice des variables réponses et $\boldsymbol{X}_f=\boldsymbol{X}^{J_{f}}$ la matrice de {\it toutes} les autres variables, ainsi considérées comme libres ({\it free} en anglais). Les valeurs des paramètres sont également concaténées : $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\ldots,\boldsymbol{\alpha}_{d_r})$ est le $d_r-$uplet des vecteurs des coefficients de sous-régression et $\boldsymbol{\sigma}^2=(\sigma^2_1,\ldots,\sigma^2_{d_r})$ le vecteur des variances associées :
 	\begin{equation}
-		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha}^*,\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}  \nonumber 
+		\boldsymbol{X}_{r}|\boldsymbol{X}_f;\boldsymbol{\alpha}^*,\boldsymbol{\sigma}^2=\boldsymbol{X}_{f}\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \textrm{ \ \ \ (regression multiple multivariée)}  \nonumber 
 	\end{equation}
 	où la matrice $\boldsymbol{\varepsilon}\in \mathbb{R}^{n\times d_r}$ est la matrice des bruits des sous-régressions composée des colonnes \mbox{$\boldsymbol{\varepsilon}_j\sim \mathcal{N}(0,\sigma^2_j\boldsymbol{I}_n)$} que nous supposons indépendantes entre elles et $\boldsymbol{\alpha}^* \in \mathbb{R}^{d_f\times d_r}$ est la matrice des coefficients des sous-régressions avec $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ et $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0$. Ces notations sont illustrées dans l'exemple ci-après. \\
 	\\
@@ -208,7 +208,7 @@ On a donc
 	\boldsymbol{Y}|\boldsymbol{X}_{f},\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma^2_Y,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_{f} (\boldsymbol{\beta}_{f}+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}^*_j)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y  \label{marginalfr} \\
 	&=&\boldsymbol{X}_{f}\boldsymbol{\beta}_{f}^*+\boldsymbol{\varepsilon}_Y^*  \nonumber 
 \end{eqnarray}
-où $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}, \boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}, \boldsymbol{\beta}_f^*=\boldsymbol{\beta}^*_{J_f} $, $\boldsymbol{\beta}^*$ étant l'estimateur de $\boldsymbol{\beta}$ par le modèle marginal avec donc $\boldsymbol{\beta}_r^*=\boldsymbol{\beta}^*_{J_r}$.
+où $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}, \boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}, \boldsymbol{\beta}_f^*=\boldsymbol{\beta}^*_{J_f} $, $\boldsymbol{\beta}^*$ étant le paramètre de la régression de $\boldsymbol{Y}$ sachant $\boldsymbol{X}$.% par le modèle marginal avec donc $\boldsymbol{\beta}_r^*=\boldsymbol{\beta}^*_{J_r}$.
 \\
 
 On se retrouve donc avec un modèle marginal plus parsimonieux, sans biais sur $\boldsymbol{Y}$ (vrai modèle) mais avec une variance potentiellement accrue. Cet accroissement de la variance est proportionnel à $\boldsymbol{\varepsilon}$ qui est la matrice des résidus des sous-régressions. Plus les sous-régressions sont fortes et plus cette variance est faible.
@@ -224,7 +224,7 @@ On va donc comparer
 		\textsc{mse}(\hat{\boldsymbol{\beta}}^*|\boldsymbol{X})&=&\parallel \sum_{j=1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \parallel_2^2+\parallel\boldsymbol{\beta}_r  \parallel_2^2 +(\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2)\operatorname{Tr}(\boldsymbol{X}_f'\boldsymbol{X}_{f})^{-1} \nonumber 
 	\end{eqnarray}
 		Ces deux équations illustrent bien le compromis biais-variance du modèle marginal.
-		La figure \ref{MSEOLSexpl} page \pageref{MSEOLSexpl} compare les erreurs d'estimation obtenues pour différentes valeurs des paramètres, montrant la nette amélioration rendue possible par la marginalisation.
+		La figure \ref{MSEOLSexpl} page \pageref{MSEOLSexpl} compare les erreurs d'estimation obtenues pour différentes valeurs des paramètres, montrant la nette amélioration rendue possible par la marginalisation. Quand $n$ tend vers l'infini les traces tendent vers 0 et donc le modèle complet devient meilleur (car sans biais). Mais pour $n$ fixé, quand les $\sigma_j^2$ tendent vers 0 la trace dans le MSE du modèle complet explose (les sous-régressions tendent à devenir exactes) et la variance du modèle marginal diminue donc l'explosion du {\sc mse} du modèle complet finit par dépasser le biais du modèle marginal et le {\sc mse} du modèle marginal devient le plus faible. On remarque enfin que quand $\boldsymbol{\beta}_r$ est nul, le modèle marginal est le vrai modèle et devient donc meilleur que le modèle complet (qui estime en vain $\boldsymbol{\beta}_r$, même s'il est sans biais).
 		\paragraph{Remarque}
 \begin{itemize}
 %\item Les sous-régressions définies en (\ref{eq:SR_fr}) sont très simples à comprendre pour l'utilisateur et permettent donc d'avoir un aperçu net des corrélations présentes dans les données étudiées.
@@ -679,21 +679,31 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 		
 		\section{Non-linear models for regression}	
 			
-	\subsection{Sliced Inverse Regression}
-		Sliced Inverse Regression is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression \cite{eubank1999nonparametric,hardle1990applied} that are too complex to interpret for our industrial context. \\
-		
-		The main idea is to compute the inverse regression $\mathbb{P}(\boldsymbol{X}|\boldsymbol{Y})$ instead of $\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X})$ to perform a weighted principal component analysis, with which we can identify the effective dimension reducing directions \cite{li1991sliced}. But it requires strong hypotheses on the distribution of $\boldsymbol{X}$ (elliptic hypothesis), even if it is possible to neglect these hypotheses \cite{saracco1999regression} and see what happens. This method has been rejected because it was not sufficient in terms of ease of use (during and after estimation) for non-statisticians due to the semi-parametric aspect and the elliptic hypothesis is compromised on datasets with hundreds of covariates. It is part of the dimension reduction package {\tt dr} on {\sc cran} (\cite{packagedr}).
-		
-	
-	\subsection{Neural networks}	
-		Neural networks \cite{fausett1994fundamentals} are a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained cannot be interpreted easily (and cannot be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes only in second place.
-		
+%	\subsection{Sliced Inverse Regression}
+%		Sliced Inverse Regression is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression \cite{eubank1999nonparametric,hardle1990applied} that are too complex to interpret for our industrial context. \\
+%		
+%		The main idea is to compute the inverse regression $\mathbb{P}(\boldsymbol{X}|\boldsymbol{Y})$ instead of $\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X})$ to perform a weighted principal component analysis, with which we can identify the effective dimension reducing directions \cite{li1991sliced}. But it requires strong hypotheses on the distribution of $\boldsymbol{X}$ (elliptic hypothesis), even if it is possible to neglect these hypotheses \cite{saracco1999regression} and see what happens. This method has been rejected because it was not sufficient in terms of ease of use (during and after estimation) for non-statisticians due to the semi-parametric aspect and the elliptic hypothesis is compromised on datasets with hundreds of covariates. It is part of the dimension reduction package {\tt dr} on {\sc cran} (\cite{packagedr}).
+%		
+%	
+%	\subsection{Neural networks}	
+%		Neural networks \cite{fausett1994fundamentals} are a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained cannot be interpreted easily (and cannot be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes only in second place.
+%		
 	\subsection{Bayesian networks}
 		
-		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} model the covariates and their conditional dependencies via a Directed Acyclic Graph (DAG). Such an orientation is very user-friendly because it is similar to the way we imagine causality. But it is only about conditional dependencies. Conditional dependencies allow to use information from independent covariates. The usual example is the case of wet grass in a garden. You do not remember if the sprinkler was on or off, you do not know if it has rain and these two facts are independent. Then you look at the grass in your neighbour's garden and it is not wet \dots \\
-		You will deduce that your sprinkler was on. Such conditionals dependencies are used in chapter \ref{chapmiss} when confronted to missing values. \\
+		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} model the covariates and their conditional dependencies via a Directed Acyclic Graph (DAG). 
+		Such an orientation is very user-friendly because it is similar to the way we imagine causality. 
+		But it is only about conditional dependencies. Conditional dependencies allow to use information from independent covariates. The usual example is the case of wet grass in a garden.
+		 You do not remember if the sprinkler was on or off, you do not know if it has rain and these two facts are independent. 
+		 Then you look at the grass in your neighbour's garden and it is not wet \dots \\
+		You will deduce that your sprinkler was on. 
+		Such conditionals dependencies are used in chapter \ref{chapmiss} when confronted to missing values. \\
 		
-		Bayesian networks are quite good in terms of interpretation because of that graphical and oriented representation of conditional probabilities. But they suffer from great dimension (combinatory issue) and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). The choice of the way to discretise the dataset has a great impact on the results and nothing can help if you have no a priori on the result you want to obtain. Computation relies on a table that describes all possible combinations for each covariate. Hence it is extremely combinatory if the graph has too much edges or is not sparse enough. Moreover, you need to define the graph before computing the bayesian network and without a priori it can be challenging and time consuming.\\
+		Bayesian networks are quite good in terms of interpretation because of that graphical and oriented representation of conditional probabilities. 
+		But they suffer from great dimension (combinatory issue) and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). 
+		The choice of the way to discretise the dataset has a great impact on the results and nothing can help if you have no a priori on the result you want to obtain. 
+		Computation relies on a table that describes all possible combinations for each covariate. 
+		Hence it is extremely combinatory if the graph has too much edges or is not sparse enough. 
+		Moreover, you need to define the graph before computing the bayesian network and without a priori it can be challenging and time consuming.\\
 		
 The concept of representing dependencies with directed acyclic graph is good an we keep it in our model.		
 			
@@ -3107,11 +3117,12 @@ We have $\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymb
 \end{displaymath}
 \begin{equation}
 \qquad = \sigma_Y^2\big[ 
-(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r
+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\underbrace{(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r}_{\hat{\boldsymbol{\alpha}}^*_{ols}}
 [ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r]^{-1}
-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\big] ,\label{olsf}
+\underbrace{\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}}_{(\hat{\boldsymbol{\alpha}}^*_{ols})'}\big] ,\label{olsf}
 \end{equation}
-and
+where $\hat{\boldsymbol{\alpha}}^*_{ols}$ is the sub-regression coefficients matrix estiamted by {\sc ols} without parsimony (all the covariates in $\boldsymbol{X}_r$ supposed to depend on all the covariates in $\boldsymbol{X}_f$.
+We also have
 \begin{equation}
 	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})=
 	\sigma_Y^2\big[ \boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r\big]^{-1}
@@ -3725,9 +3736,10 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	\section{Conclusion} The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on other estimators so it has a slow convergence speed. \\
 	Moreover, if $\hat{\boldsymbol{S}}\neq \boldsymbol{S}$ but $\hat{J}_r=J_r$, then the marginal model is not impacted whereas the plug-in model depends on both $\hat{\boldsymbol{\beta}}^*_{f}$ and $\hat{\boldsymbol{\alpha}}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves \textsc{ols} anyway but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. However, like the marginal model, the plug-in model has a small computational cost compared to the estimation of $\boldsymbol{S}$. So we recommend to compute both complete, marginal and plug-in model and to compare the results in a second time.
 \chapter{Using the full generative model to manage missing values} \label{chapmiss}
-	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to make multiple imputations based on the sub-regression structure. The full generative model also helps to manage missing values in the MCMC with the ability to compute $\mbox{{\sc bic}}_*$ only on the observed values. 
+	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to manage missing values. Because the joint distribution of $\boldsymbol{X}$ can be very complex (Gaussian mixture with a huge number of components), we propose to use a {\sc sem} algorithm with multiple imputations by Gibbs sampling. Computation of the {\sc bic} in the MCMC will also rely on Gibbs sampling. To resume: we propose to manage missing values by multiple imputations based on the structure $\boldsymbol{S}$ and on the marginal Gaussian mixtures estimated independently on each covariate in $\boldsymbol{X}_f$.
 	
-	 \section{State of the art}
+	
+		 \section{State of the art}
 	Real datasets often have missing values and it is a very recurrent issue in industry. 
 			Here we suppose that missing values are Missing Completely At Random (MCAR) but other missing-data mechanisms do exist for missing values. For example, Missing values can depend on the observed values and then we say that they are Missing At Random (MAR), Missing value can also simply be not missing at random.
 	 Many methods do exist to manage such problems in a regression context \cite{little1992regression}:
@@ -3753,7 +3765,8 @@ So when a value is missing, we know its distribution but in addition, we know it
  Moreover, we do not want to make any assumption on the position of the missing values. Thus we investigate the possibility to estimate $\bar{\boldsymbol{\alpha}}$ by Maximum Likelihood as {\tt SelvarclustMV} does but without supposing that any covariate is fully observed.\\
 	
 	\paragraph{Notations:} In the following we note $x_{i,j}$ the $i^{th}$ individual of the $j^{th}$ covariate in $\boldsymbol{X}$ and $\boldsymbol{M}$ the $n\times d$ binary matrix indicating whether a value is missing or not: $\boldsymbol{M}_{i,j}=1$ if $x_{i,j}$ is missing, 0 else. 
-	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the following.\\
+	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$. %, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. 
+	We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the following.\\
 	
 	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$ and zeros where there is no sub-regression (not to be confused with the $\boldsymbol{\alpha}^*$ previously defined. See the Glossary in Appendix \ref{glossaire} if in doubt. $\bar{\boldsymbol{\alpha}}$ is  $\boldsymbol{\alpha}^*$ completed with rows and columns of zeros). As in previous part, we note $\Phi$ the Gaussian density function.\\  
 	
@@ -3761,8 +3774,9 @@ So when a value is missing, we know its distribution but in addition, we know it
 
 \section{Estimation of $\boldsymbol{S}$ with missing values}
 %\subsection{Distribution of $\boldsymbol{X}$} \label{sectionXdensity}
-	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components. 
-	We stack together all the mixture parameters in  $\boldsymbol{\Theta}$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
+	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} page \pageref{H4} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components. 
+	We stack together all the mixture parameters %of $\boldsymbol{X}_f$ 
+	in $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$, see Appendix \ref{missingdensityapp}). %=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
 %	
 %We define the operator $\prod$ as the Cartesian product with lexicographic order when used with vectors. \\
 %\\
@@ -3910,7 +3924,7 @@ The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to
 %%%	&=&\prod_{i=1}^n\left[\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=1}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})\prod_{\substack{j \in I_r \\ \boldsymbol{M}_{i,j}=0}}P(x_{i,j}|\boldsymbol{X}_i^{I_f^j})
 %%%			\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=1}} P(x_{i,j})\prod_{\substack{j \notin I_r \\ \boldsymbol{M}_{i,j}=0}} P(x_{i,j}) \right] \\
 %\end{eqnarray}
-	 When missing values occur, we restrict the likelihood to the observed likelihood, that is the likelihood of the known values. All individuals are supposed {\it i.i.d.} in the following.
+	 When missing values occur, we restrict the likelihood to the observed likelihood, that is the likelihood of the known values. All individuals are supposed {\it i.i.d.} in the following. We let $\boldsymbol{\alpha}$ appear to recall that $\boldsymbol{\Theta}$ depends on it. 
 %		We have 
 %	\begin{equation}
 %		g(\boldsymbol{X}|\Theta)=\int_{\boldsymbol{X}_M}f(\boldsymbol{X}|\Theta)d \boldsymbol{X} \label{integralmiss}
@@ -3968,7 +3982,7 @@ And if there is no missing values in covariates that regress several observed re
 		L(\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)=\prod_{i=1}^n\prod_{\substack{j =1 \\ \boldsymbol{M}_{i,J_r^j}=0}}^{d_r}f(x_{i,J_r^j}|\boldsymbol{X}^{J_p^j}_{i,O};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S})\prod_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}}f(x_{i,j};\boldsymbol{\alpha},\boldsymbol{\Theta},\boldsymbol{S}). \label{simplemisslik}
 \end{equation}	
 %\paragraph{Remark:} 
-If each sub-regression is a distinct connected component then we can always use equation (\ref{simplemisslik}) but it is not a necessary condition. 
+If each sub-regression is a distinct connected component then we can always use equation (\ref{simplemisslik}) but it is not a necessary condition. \\
 
 %\paragraph{Observed likelihood on observed predictors:} $\forall (i,j) \textrm{ with } \boldsymbol{M}_{i,j}= 0 \textrm{ and } j \in J_f $:
 %
@@ -4012,7 +4026,7 @@ If each sub-regression is a distinct connected component then we can always use 
 		\end{figure}
 %	\subsection{Marginal likelihood in the general case}
 
-		For the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$. Then we use the global Gaussian mixture on $\boldsymbol{X}$. Each component is Gaussian so conditional distributions are explicit.
+		For the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$. Then we use the global Gaussian mixture on $\boldsymbol{X}_O$ whose parameters depends on those of $\boldsymbol{X}$. Each component is Gaussian so conditional distributions are explicit. But the number of components can be huge (more details in Appendix \ref{missingdensityapp}) so in practice we won't compute the likelihood directly. We will work instead with multiple imputations (Section \ref{gibbsmiss}) to estimate $\boldsymbol{\alpha}$ and the likelihood for {\sc bic} (Section \ref{gibbsmiss}).  
 %		Because $\forall 1\leq i \leq n, \boldsymbol{X}_i$ is a Gaussian Mixture, $\boldsymbol{X}_{i,O}$ and then $(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}_{i,O}^{I_f})$ are Gaussian mixtures too. \\
 		%We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
 %		
@@ -4091,7 +4105,7 @@ If each sub-regression is a distinct connected component then we can always use 
 %	\begin{equation}
 %	\operatorname{Cov}_{k}(x_{i,J_r^{j_1}},x_{i,j_2})= 0
 %\end{equation}
-Then we are able to maximize this likelihood to find $\boldsymbol{\alpha}$.
+%Then we are able to maximize this likelihood to find $\boldsymbol{\alpha}$.
 
 %
 %	\subsection{Likelihood computation optimized}
@@ -4188,7 +4202,7 @@ Then we are able to maximize this likelihood to find $\boldsymbol{\alpha}$.
 %
 %
 	\subsection{Weighted penalty for $\mbox{{\sc bic}}$}
-			Now we have defined the way to compute the likelihood, other questions remain: how to define the number of parameters in the structure? How to take into account missingness (structures relying on highly missing covariates should be penalized)?
+			Once defined a way to compute the likelihood (Section \ref{gibbsmiss}), other questions will remain: how to define the number of parameters in the structure? How to take into account missingness (structures relying on highly missing covariates should be penalized)?
 			We have seen that for a same covariate $\boldsymbol{X}^j$ with $ j \in J_r$, the number of parameters is not the same for each individual depending whether or not $\boldsymbol{M}_{i,j}=0$. We can compute the likelihood of each individual separately but the penalty (for $\mbox{{\sc bic}}_*$) is global to the dataset. \\
 			
 			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. We define
@@ -4209,39 +4223,38 @@ Then we are able to maximize this likelihood to find $\boldsymbol{\alpha}$.
 %			The penalty in $k\log(n)$ stands for $k$ parameters each $n-estimated$ so our proposed penalty term is an intuitive way to use a weighted penalty.
 %	
 
-	\section{{\sc em} Algorithm to estimate $\boldsymbol{\alpha}$ with a given $\boldsymbol{S}$}
-			If we do not have an estimate of $\boldsymbol{\alpha}$ we can just take the values that maximize the likelihood. Sometimes the maximization of a likelihood is too complex to be solved analytically. In such a case, we can use Expectation-Maximization ({\sc em} \cite{mclachlan2007algorithm}) algorithms \cite{mclachlan2007algorithm} that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. 
-Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ (the $i^{th}$ individual of the $j^{th}$ covariate) is generated.			
-			This kind of algorithm allows to manage missing values \cite{dempster1977maximum}. \\
-			
-{\sc em} is an alternate optimization of the researched parameters $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$ only for a given $\boldsymbol{S}$ since the marginal distribution parameters are estimated once before the MCMC.) and the latent variables $Z$ with two steps at each iteration $(q)$:
-\begin{itemize}
-	\item The Expectation step in which the expected value of the log-likelihood is computed for the current estimate of the parameters $\boldsymbol{\Theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\Theta}^{(q)}$.
-	\begin{equation}
-		Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)})=E_{Z|\boldsymbol{X},\boldsymbol{\Theta}^{(q)}} [\ln L(\boldsymbol{\Theta};\boldsymbol{X},Z)].  \nonumber 
-	\end{equation}
-	\item The Maximization step that maximizes:
-	\begin{equation}
-		\boldsymbol{\Theta}^{(q+1)}=\arg \max_{\boldsymbol{\Theta}} Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)}).  \nonumber 
-	\end{equation}
-\end{itemize}
-	So it alternates between estimation of $Z$ and $\boldsymbol{\Theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
-	It requires to set initial values for $\boldsymbol{\Theta}^{(0)}$ and faces local extrema problems so it is recommended to make multiple initializations and runs of the algorithm.\\
-			
-			Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic},\\
-			 \cite{celeux1986algorithme} or the Classification EM \cite{celeux1992classification}.
-			
-			
+	%\section{{\sc em} Algorithm to estimate $\boldsymbol{\alpha}$ with a given $\boldsymbol{S}$}
+	\section{Estimation of $\boldsymbol{\alpha}$ and the observed likelihood}
+			If we do not have an estimate of $\boldsymbol{\alpha}$ we can just take the values that maximize the likelihood. Sometimes the maximization of a likelihood is too complex to be solved analytically. In such a case, we can use algorithms of Expectation-Maximization ({\sc em} \cite{mclachlan2007algorithm}) family \cite{mclachlan2007algorithm}. This kind of algorithm allows to manage missing values \cite{dempster1977maximum}  %that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. 	
+%			
+%{\sc em} is an alternate optimization of the researched parameters $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$ only for a given $\boldsymbol{S}$ since the marginal distribution parameters are estimated once before the MCMC.) and the latent variables $Z$ with two steps at each iteration $(q)$:
+%\begin{itemize}
+%	\item The Expectation step in which the expected value of the log-likelihood is computed for the current estimate of the parameters $\boldsymbol{\Theta}^{(q)}$ . It finds the best value of $Z$ given $\boldsymbol{\Theta}^{(q)}$.
+%	\begin{equation}
+%		Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)})=E_{Z|\boldsymbol{X},\boldsymbol{\Theta}^{(q)}} [\ln L(\boldsymbol{\Theta};\boldsymbol{X},Z)].  \nonumber 
+%	\end{equation}
+%	\item The Maximization step that maximizes:
+%	\begin{equation}
+%		\boldsymbol{\Theta}^{(q+1)}=\arg \max_{\boldsymbol{\Theta}} Q(\boldsymbol{\Theta}|\boldsymbol{\Theta}^{(q)}).  \nonumber 
+%	\end{equation}
+%\end{itemize}
+%	So it alternates between estimation of $Z$ and $\boldsymbol{\Theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
+	but faces local extrema problems so it is recommended to make multiple initializations and runs of the algorithm. Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic},\\
+			 \cite{celeux1986algorithme} or the Classification EM \cite{celeux1992classification}. In the following we use the Stochastic EM.
+						
 \subsection{Stochastic EM}\label{sectionSEMalgo}
-	The integrated likelihood depicted above depends on the $\boldsymbol{\alpha}_j$'s which were formerly estimated by \textsc{ols} when there were no missing values. But when missing values occur in a sub-regression we need another solution.\\
+	The observed likelihood depicted above (equation (\ref{likmiss})) depends on the $\boldsymbol{\alpha}_j$'s which were formerly estimated by \textsc{ols} when there were no missing values. But when missing values occur in a sub-regression we need another solution.\\
 	
-	We use a  Stochastic Expectation Maximization (\textsc{sem} \cite{celeux1986algorithme}) algorithm  to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the Expectation-Maximization ({\sc em}) algorithm necessitate to first write the observed likelihood whose number of component can explode (see Appendix \ref{missingdensityapp} for more details) so it would be difficult to compute.\\
+	We use a  Stochastic Expectation Maximization (\textsc{sem} \cite{celeux1986algorithme}) algorithm  to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the Expectation-Maximization ({\sc em}) algorithm necessitates to first write the observed likelihood whose number of component can explode (see Appendix \ref{missingdensityapp} for more details) so it would be difficult to compute.\\
 	
-	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regression have only few parameters and can be estimated even with only a small number of individuals.
+	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regression have only few parameters and can be estimated even with only a small number of individuals.\\
+	
+		Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ (the $i^{th}$ individual of the $j^{th}$ covariateof $\boldsymbol{X}$) is generated (component of the marginal Gaussian mixture followed by $x_{i,j}$) with $1\leq i\leq n$ and $1\leq j\leq d$. \\
 		
+	The Stochastic EM algorithm is an iterative procedure that starts with an initialization and then alternates SE steps (imputation of the missing values and $Z$) and the M step that maximizes the likelihood of the completed dataset on the parameter $\boldsymbol{\alpha}$.
 	
-	\paragraph{Initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC). $\boldsymbol{\alpha}^{(0)}$ can be initialized by complete-case method	(sparse structure) or using imputed values in $\boldsymbol{X}$ and then \textsc{ols}.
-	At iteration $(h)$,
+	\paragraph{Initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC) to get $\boldsymbol{X}_M^{(0)}$. $\boldsymbol{\alpha}^{(0)}$ can be initialized by complete-case method	(sparse structure) or using imputed values in $\boldsymbol{X}$ and then \textsc{ols}.
+	And the at iteration $(h)$:
 	\paragraph{SE step:}
 		We generate the missing values $\hat{\boldsymbol{X}}_M^{(h)}$ according to $\mathbb{P}(\boldsymbol{X}_M|\boldsymbol{X}_O; \boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})$, that is stochastic imputation. It can be done for example by Gibbs sampling, as we propose in Section \ref{gibbsmiss}.
 	\paragraph{M step:}
@@ -4249,7 +4262,7 @@ Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x
 		\begin{equation}
 	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\ln L(\boldsymbol{\alpha},\boldsymbol{S},\boldsymbol{\Theta};\boldsymbol{X}_O,\boldsymbol{X}_M^{(h)}) \right]  \nonumber 
 \end{equation}
-where $\Theta$ depends on $\boldsymbol{\alpha}$ and on the mixtures parameters (estimated once by {\tt Rmixmod}). We can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}). Then we deduce $\boldsymbol{\Theta}^{(h+1)}$ \\
+where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture parameters of the marginal distributions of $\boldsymbol{X}_f$ (estimated once by {\tt Rmixmod}). We can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}). Then we deduce $\boldsymbol{\Theta}^{(h+1)}$ \\
 
 		We continue during $m_1$ iterations. Then we make $m_2$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m_2$ last iterations.\\
 		
@@ -4258,14 +4271,14 @@ where $\Theta$ depends on $\boldsymbol{\alpha}$ and on the mixtures parameters (
 	\subsection{Stochastic imputation by Gibbs sampling}\label{gibbsmiss}
 		Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $d-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $\mathbb{P}(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_d^{(q)})$ using the most recent drawn values each time. \\
 		
-		Gibbs sampling method can be used to generate the missing values at the $h^{th}$ SE step. 
+		Gibbs sampling method can be used to generate the missing values at each $h^{th}$ SE step of the previous Stochastic EM algorithm. 
 		\paragraph{Initialisation:}  %For example to the first component (such an initialisation does not depend on $K$). 
-		$\boldsymbol{X}_M^{(0,h)}$ are imputed by the marginal means or drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example). All the $Z_{i,j}^{(0,h)}$ are then randomly set based on the $t_{i,j,k}^{(0,h)}$ as explained below, replacing $(q+1)$ by $0$ (we just need those of $\boldsymbol{X}_f^{(0,h)}$). 
-		\paragraph{Iteration (q+1):} At each iteration of the Gibbs sampler we first make successive imputations on the missing values. We note $\boldsymbol{X}^{(q+1,h)}_{\bar{ij}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,j-1},x_{i,j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$. Then: 
+		$\boldsymbol{X}_M^{(0,h)}$ are imputed by the marginal means or drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example, following hypothesis \ref{H4} page \pageref{H4}). All the $Z_{i,j}^{(0,h)}$ are then randomly set based on the $t_{i,j,k}^{(0,h)}$ as explained below, replacing $(q+1)$ by $0$ (we just need those of $\boldsymbol{X}_f^{(0,h)}$). 
+		\paragraph{Iteration (q+1):} At each iteration of the Gibbs sampler we first make successive imputations on the missing values. We note $\boldsymbol{X}^{(q+1,h)}_{\bar{ij}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,j-1},x_{i,j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$ and $Z_{i}^{(q,h)}=\{Z_{i,j}^{(q,h)}|1\leq j \leq d \}$. Then: 
 		\begin{itemize}
 			\item Regressed covariates: $\forall 1\leq i \leq n, \forall j \in \{1,\dots,d_r \}, \boldsymbol{M}_{i,J_r^j}=1  $:  $x_{i,J_r^j}^{(q+1,h)}$ is generated using the corresponding sub-regression, that gives the Gaussian
 			\begin{eqnarray}
-			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}^{(q+1,h)}_{\bar{iJ_r^j}},Z^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})%
+			\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}^{(q+1,h)}_{\bar{iJ_r^j}},Z_i^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})%
 			%&=&\mathbb{P}(x_{i,J_r^j}|(\boldsymbol{X}_{i}^{J_p^j})^{(q+1,h)};\boldsymbol{\alpha}^{(h)}_j,\boldsymbol{\Theta}^{(h)},{S}) \nonumber \\
 			%&=&\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}\setminus x_{i,J_r^j},z_{i, J_r^j};\boldsymbol{\alpha}^{(h)},\Theta,{S})
 		%	\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}};\alpha^{(h)},\Theta,S) \\
@@ -4276,12 +4289,13 @@ where $\Theta$ depends on $\boldsymbol{\alpha}$ and on the mixtures parameters (
 			%We have $\mathbb{P}(\boldsymbol{X}|Z)=\mathcal{N}(\boldsymbol{\mu}_{|Z},\boldsymbol{\Sigma}_{|Z})$. \\
 			$\forall (i,j) \in \{1,\dots,n \}\times J_f,\boldsymbol{M}_{i,j}=1$:  $x_{i,j}^{(q+1,h)}$ is generated according to the Gaussian $\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i\bar{j}}^{(q+1,h)},Z^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})$ (using Gaussian conditional distribution with Schur complement).
 		\end{itemize}		
-			\begin{displaymath}
+			\begin{eqnarray}
 %			%&&\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i}\setminus x_{i,j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})=
-			\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i\bar{j}},Z_{i,j};\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})	\\	%\nonumber \\
-			=\Phi(x_{i,j};\mu_{j|Z_{i,j}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}},X_{\bar{ij}}|Z_i}(\boldsymbol{X}_{i\bar{j}}-\boldsymbol{\mu}_{X_{i\bar{j}}|Z_i}) ,  \sigma_{j|Z_{i,j}}^2-\boldsymbol{\Sigma}_{j,X_{i\bar{j}}|Z_i}\boldsymbol{\Sigma}^{-1}_{X_{i\bar{j}},X_{i\bar{j}}|Z_i}\boldsymbol{\Sigma}_{j,X_{i\bar{j}}|Z_i}')  
-			\end{displaymath}
-			where all the values needed here were described above for the likelihood computation with $Z_i=\{Z_{i,j}:j=1,\dots,d \}$.\\
+			\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i\bar{j}}^{(q+1,h)},Z_i^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})&=&	 	%\nonumber \\
+			 \Phi \big(x_{i,j}; \mu_{i,j}^{(q,h)}, (\sigma_{i,j}^{(q,h)})^2\big) \nonumber 
+			\end{eqnarray}
+			where all $\mu_{i,j}^{(q,h)}$ and $(\sigma_{i,j}^{(q,h)})^2$  are the mean and variance associated to $x_{i,j}$ knowing the components $Z_i^{(q,h)}$ defined below (Section \ref{gibbsparam}).\\
+
 			
 %With $\forall j \in I_r$ 
 %\begin{equation}
@@ -4317,7 +4331,7 @@ where $\Theta$ depends on $\boldsymbol{\alpha}$ and on the mixtures parameters (
 	\begin{eqnarray}
 		%\mathbb{P}(Z_{i,j}|\boldsymbol{X};\Theta,\boldsymbol{\alpha},\boldsymbol{S})&=&\mathbb{P}(Z_{i,j}|\boldsymbol{X}_i;\Theta,\boldsymbol{\alpha},\boldsymbol{S})=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j})\ \  \nonumber\\
 		%\textrm{where } 
-		t_{i,j,k}^{(q+1,h)}&=&\frac{\pi_{j,k}\Phi(x_{i,j}^{(q+1,h)};\mu_{j,k},\sigma_{j,k}^2)}{\sum_{l=1}^{K_j}\pi_{j,l}\Phi(x_{i,j};\mu_{j,l},\sigma_{j,l}^2) }. \nonumber 
+		t_{i,j,k}^{(q+1,h)}&=&\frac{\pi_{j,k}\Phi(x_{i,j}^{(q+1,h)};\mu_{j,k},\sigma_{j,k}^2)}{\sum_{l=1}^{K_j}\pi_{j,l}\Phi(x_{i,j}^{(q+1,h)};\mu_{j,l},\sigma_{j,l}^2) }. \nonumber 
 	\end{eqnarray}
 		
 	
@@ -4332,19 +4346,22 @@ where $\Theta$ depends on $\boldsymbol{\alpha}$ and on the mixtures parameters (
 
 % partie foireuse	
 %	
-%	Because $K$ can be very large we search a way to estimate the likelihood.
+	Because the number of component to compute in the likelihood can be very large we search a fast way to estimate the likelihood.
 %	We can use a Gibbs algorithm to estimate the likelihood:
 %	\begin{eqnarray}
 %	\mathbb{P}(\boldsymbol{X}_O;\Theta, \boldsymbol{S}, \boldsymbol{\alpha})&=& 
 %		\sum_{Z\in \mathcal{Z}}\int_{\boldsymbol{X}_M}\frac{\mathbb{P}(\boldsymbol{X}_M,Z,\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S})}\mathbb{P}(\boldsymbol{X}_M,Z|\boldsymbol{X}_O;\Theta,\boldsymbol{\alpha},\boldsymbol{S}) dX \nonumber \\
 %		&\approx &\frac{1}{Q} \sum_{q=1}^Q\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha},\boldsymbol{S})} \textrm{ by the law of large numbers } \ \ \ \nonumber \ 
 %	\end{eqnarray}		
-%	where $Q$ is the number of iterations of the Gibbs sampler.
-%	But to be faster, we use the previous Gibbs algorithm with:
-%	\begin{eqnarray}
-%	\mathbb{P}(\boldsymbol{X}_O;\Theta, \boldsymbol{S}, \boldsymbol{\alpha})&\approx & \frac{1}{Q} \sum_{q=1}^Q\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},\boldsymbol{S})}{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\Theta,\boldsymbol{\alpha}^{(q)},\boldsymbol{S})} \nonumber
-%	\end{eqnarray}	
 %	
+%	 to be faster. 
+	 We use the previous Gibbs algorithm with:
+	\begin{eqnarray}
+	\mathbb{P}(\boldsymbol{X}_O;\hat{\boldsymbol{\Theta}}, \boldsymbol{S}, \hat{\boldsymbol{\alpha}})&\approx & \frac{1}{Q} \sum_{q=1}^Q
+	\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\hat{\boldsymbol{\Theta}},\hat{\boldsymbol{\alpha}},\boldsymbol{S})}
+	{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\hat{\boldsymbol{\Theta}},\hat{\boldsymbol{\alpha}},\boldsymbol{S})} \textrm{ by the law of large numbers. } \ \ \ \nonumber
+	\end{eqnarray}	
+	Here $Q$ is the number of iterations of the Gibbs sampler and $\hat{\boldsymbol{\Theta}}$ is the global parameter associated to $\hat{\boldsymbol{\alpha}}$ .
 
 
 
@@ -4426,6 +4443,65 @@ where $\Theta$ depends on $\boldsymbol{\alpha}$ and on the mixtures parameters (
 %			No imputation for missing left. Imputations for missing right are just used to obtain $\hat{\boldsymbol{\alpha}}$ but not when computing the $BIC$ or $BIC_+$.
 %			
 			
+\subsection{Parameters computation for the Gibbs sampler}	\label{gibbsparam}
+					For the step $q$ of the Gibbs sampler at the step $h$ of the Stochastic EM, $\forall (i,j) \in \{1,\dots,n \}\times J_f,\boldsymbol{M}_{i,j}=1$
+			we have for the mean:
+			\begin{eqnarray}
+			\mu_{i,j}^{(q,h)}&=&  \mu_{j,Z_{i,j}^{(q,h)}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}(\boldsymbol{X}_{i\bar{j}}^{(q+1,h)}-\boldsymbol{\mu}_{X_{i\bar{j}}^{(q+1,h)},Z_i^{(q,h)}}) , \nonumber 			\end{eqnarray}
+			and for the variance:
+\begin{eqnarray}
+			(\sigma_{i,j}^{(q,h)})^2&=&\sigma_{j,Z_{i,j}^{(q,h)}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}(\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}})'. \nonumber 
+			\end{eqnarray}
+			we have  $\mu_{j,Z_{i,j}^{(q,h)}}$ the mean of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}) and
+			$\sigma_{j,Z_{i,j}^{(q,h)}}^2$ the variance of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}).\\
+			$\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}$ is the vector of the covariances between $x_{i,j}^{(q+1,h)}$ and the other covariates ($X_{\bar{ij}}^{(q+1,h)}$) knowing the components $Z_i^{(q,h)}$.\\
+			$\boldsymbol{\Sigma}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}$ is the variance-covariance matrix of the $X_{\bar{ij}}^{(q+1,h)}$ knowing the components $Z_i^{(q,h)}$.
+			
+						
+				$\boldsymbol{\mu}_{X_{i\bar{j}}^{(q+1,h)},Z_i^{(q,h)}}$ is the vector of the means associated to $\boldsymbol{X}_{i\bar{j}}^{(q+1,h)}$ knowing the components $Z_i^{(q,h)}$. 
+				\paragraph{Means:}
+\begin{itemize}
+\item Means associated to $\boldsymbol{X}_f$ are estimated once (by {\tt Rmixmod}) following hypothesis \ref{H4} page \pageref{H4}. 
+\item $\forall j \in \{1,\dots,d_r\},$ the mean associated to $x_{i,J_r^j}^{(q+1,h)}$ knowing $Z_i^{(q,h)}$ is:
+	\begin{equation}
+		\mu_{i,J_r^j,Z_i^{(q,h)}}=\sum_{l \in J_p^j}\bar{\alpha}_{l,J_r^j}   \mu_{l,Z_{i,l}^{(q,h)}}. \nonumber
+	\end{equation}
+\end{itemize}
+
+\paragraph{Variances:}
+\begin{itemize}
+	\item The variances $\sigma^2_{l,Z_{i}^{(q,h)}}$ of the free covariates $\boldsymbol{X_f}$ are estimated once (by {\tt Rmixmod}) following hypothesis \ref{H4} page \pageref{H4}. 
+	\item $\forall j \in \{1,\dots,d_r\},$ the variance associated to $x_{i,J_r^j}^{(q+1,h)}$ knowing $Z_i^{(q,h)}$ is:
+	\begin{equation}
+		\sigma^2_{i,J_r^j,Z_{i}^{(q,h)}}=\sigma_j^2+\sum_{l \in J_p^j}\bar{\alpha}_{l,J_r^j}^2\sigma^2_{l,Z_{i,l}^{(q,h)}}. \nonumber 
+	\end{equation}
+\end{itemize}
+\paragraph{Covariances:} We look then at the covariances between the covariates:
+\begin{itemize}
+	\item The covariance between two regressors is always zero:
+	\begin{equation}
+		\forall j_1 \in J_f, \forall j_2 \in J_f, \quad   \operatorname{Cov}(x_{i,j_1},x_{i,j_2})=0. \nonumber 
+	\end{equation}
+	\item The covariance between a response covariate and a free covariate that does not regressed it is always zero by Hypothesis \ref{H1} page \pageref{H1}:
+	\begin{equation}
+		\forall j_1 \in \{1,\dots,d_r \}, j_2 \notin J_p^{j_1}\cup J_r, \quad \operatorname{Cov}(x_{i,J_r^{j_1}},x_{i,j_2})=0. \nonumber 
+	\end{equation}
+	\item The covariance between two response covariates without any common regressors is always zero  by Hypotheses \ref{H1} and \ref{H3} page \pageref{H3}:
+	\begin{equation}
+		\forall j_1 \in \{1,\dots,d_r \}, j_2 \in \{1,\dots, d_r \}\setminus\{ j_1 \}, \textrm{ with } J_p^{j_1}\cap J_p^{j_2}= \emptyset, \quad \operatorname{Cov}(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=0. \nonumber 
+	\end{equation}
+	\item The covariance between two response covariates with common regressors is:\\
+	$\forall j_1 \in \{1,\dots,d_r \}, j_2 \in \{1,\dots, d_r \}\setminus\{ j_1 \}, \textrm{ with } J_p^{j_1}\cap J_p^{j_2}\neq \emptyset$:
+	\begin{equation}
+	  \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=\sum_{l \in J_p^{j_1}\cap J_p^{j_2}}\bar{\alpha}_{l,J_r^{j_1}}\bar{\alpha}_{l,J_r^{j_2}}\sigma^2_{l,Z_{i,l}^{(q,h)}} . \nonumber 
+	\end{equation}
+	where $\sigma^2_{l,Z_{i,l}^{(q,h)}}$ is the variance of $\boldsymbol{X}^l$ knowing $Z_{i,l}^{(q,h)}$, estimated once (by {\tt Rmixmod}) following hypothesis \ref{H4} page \pageref{H4}.
+	\item The covariance between a response covariate and one of its regressors is:
+	\begin{equation}
+		\forall j \in \{1,\dots, d_r\}, l \in J_p^{j}, \quad \operatorname{Cov}_k(x_{i,J_r^{j}},x_{i,l})=\bar{\alpha}_{l,J_r^{j}}\sigma^2_{l,Z_{i,l}^{(q,h)}} . \nonumber 
+	\end{equation}
+\end{itemize}
+Then we are able to compute the Gibbs sampler.
 	\section{Missing values in the main regression}
 		The easier way to manage missing values in the main regression would be to draw missing values and then use classical methods. Imputation could be done with the Stochastic EM described above, with the possibility to repeat the estimation of the coefficients of regression a few times (with distinct imputations) and then take the mean. We should for example try multiple draw and {\sc lasso} for variable selection like variable selection by random forest. One great advantage of multiple imputation procedures is that it gives an idea of the precision of the imputations with the variance of these imputed values among the multiple draws. So we know whether it is reliable or not. \\
 		
@@ -4839,7 +4915,7 @@ We observe that the marginal model is better than the complete model but the plu
 
 This script describes the whole process of {\tt CorReg}. We can see that it is really adapted to an automated process as we have done for Excel.
 
-\chapter{Calculation details for missing values}\label{missingdensityapp}
+\chapter{Global Gaussian mixtures}\label{missingdensityapp}
 
 \section{Distribution of $\boldsymbol{X}$} \label{sectionXdensity}
 	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components (defined in the following). We stack together all the mixture parameters in  $\boldsymbol{\Theta}$.%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
