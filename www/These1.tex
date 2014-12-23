@@ -389,7 +389,7 @@ Most of the tools described here are explained with more details in the book fro
 		 As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. Linear regression is an old strategy well known and with many derivatives (as we will see in the following) and can be generalized (see \cite{kiebel2003general,wickens2004general,nelder1972generalized} and also \cite{mccullagh1989generalized}. 
 	Its simplicity facilitates a wide spread usage in industry and other fields of application. It is also a good tool for interpretation with the sign of the coefficients indicating whether the associated covariate has a positive or negative impact on the response variable. \\
 	
-	More complex situations can be described by evolved forms of linear regression like the hierarchical linear model \cite{raudenbush2002hierarchical,woltman2012introduction}  or  multilevel regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel} that allows to consider effects of the covariates on nested sub-populations in the dataset. It is like using interactions but with a proper modeling that improves interpretation. It is not really a linear model because it is not linear in $\boldsymbol{X}$ but can be seen as a basis expansion using new covariates (the interactions) composed with the product of some of the original covariates.
+	More complex situations can be described by evolved forms of linear regression like the hierarchical linear model \cite{raudenbush2002hierarchical,woltman2012introduction}  or  multilevel regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel} that allows to consider effects of the covariates on nested sub-populations in the dataset. It is like using interactions but with a proper modeling that improves interpretation. It is not really a linear model because it is not linear in $\boldsymbol{X}$ but can be seen as a basis expansion using new covariates (the interactions) composed of the product of some of the original covariates.
 %			
 %		\subsection{Flexibility and future of regression}
 %			Richesse des types de régression et des méthodes d'estimation
@@ -878,7 +878,8 @@ Defining:
 \end{itemize}			 
 So we have a system of linear regression:
 \begin{equation}
-	\boldsymbol{X}^{U}|\boldsymbol{X}^{R};\boldsymbol{\alpha},\boldsymbol{\Omega}=a+\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}  \nonumber 
+	\boldsymbol{X}^{U}%|\boldsymbol{X}^{R};\boldsymbol{\alpha},\boldsymbol{\Omega}
+	=a+\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}  \nonumber 
 \end{equation}
 where $\boldsymbol{X}$ is the $n\times d$ dataset as above, $\boldsymbol{X}^R$ and $\boldsymbol{X}^U$ are the sub-matrix of  $\boldsymbol{X}$ formed by the covariates in $R$ and $U$ respectively, $\boldsymbol{\alpha}$ is the $\operatorname{Card}(R)\times \operatorname{Card}(U)$ matrix of the regression coefficients, $a$ is the $1\times \operatorname{Card}(U)$ intercept vector and $\boldsymbol{\varepsilon}$ the $n\times \operatorname{Card}(U) $ matrix of the Gaussian error terms with zero mean and variance $\boldsymbol{\Omega}\in \mathbb{R}^{\operatorname{Card}(U)\times \operatorname{Card}(U)}$.\\
 
@@ -930,7 +931,7 @@ More precisely, correlations are modeled through a system of linear sub-regressi
  Marginalizing over the dependent co-variables leads then to a linear regression (in relation to the initial response variable) with only orthogonal covariates. This marginalization step can be viewed also as a variable selection step but guided only by the correlations between covariates. Advantages of this approach is twofold. First, it improves interpretation through a good readability of dependency between covariates. Second, this marginal model is still a ``true'' model provided that both the initial regression model and all the sub-regressions are ``true''. As a consequence, the associated {\sc ols} will preserve an unbiased estimate but with a possibly reduced variance comparing to the {\sc ols} with the full regression model. The fact is that the variance decreases depends on the residual variances involved in the sub-regressions: The more the sub-regressions are marked, the less will be the variance of associated {\sc ols}. In fact, any other estimation method than {\sc ols} can be plugged after the marginalization step. Indeed, it can be viewed as a pre-treatment against correlation which can be chained after with dimension reduction methods, without no more suffering from correlations this time.
 
 \section{Explicit modeling of the correlations}
-	Let $\boldsymbol{X}=(\boldsymbol{X}^1,\dots,\boldsymbol{X}^d)$ be a $n \times d$ matrix of observed covariates and $\boldsymbol{Y}$ be the $n \times 1$ matrix of the observed response variable. In the following, we note $\boldsymbol{X}^j$ the $j^{th}$ column of $\boldsymbol{X}$ and $\boldsymbol{X}^{J}$ where $J=\{j_1,\dots,j_k\}$ the $n\times k$ sub-matrix of $\boldsymbol{X}$ composed by the columns of $\boldsymbol{X}$ whose indices are in the set $J$. 
+	Let $\boldsymbol{X}=(\boldsymbol{X}^1,\dots,\boldsymbol{X}^d)$ be a $n \times d$ matrix of observed covariates and $\boldsymbol{Y}$ be the $n \times 1$ matrix of the observed response variable. In the following, we note $\boldsymbol{X}^j$ the $j^{th}$ column of $\boldsymbol{X}$ and $\boldsymbol{X}^{J}$ where $J=\{j_1,\dots,j_k\}$ the $n\times k$ sub-matrix of $\boldsymbol{X}$ composed of the columns of $\boldsymbol{X}$ whose indices are in the set $J$. 
 \\
 
 
@@ -941,7 +942,8 @@ We focus now on an original manner to solve the covariates correlation problem. 
 \begin{hyp}\label{H1}
 In order to take into account the covariates correlation problem, we make the hypothesis correlation between covariates is {\it only} the consequence that some covariates {\it linearly} depend on some other covariates. More precisely, there are $d_{r}\geq 0$ such ``sub-regressions'', each sub-regression $j=1,\ldots,d_{r}$ having the covariate $\boldsymbol{X}^{J_{r}^j}$ as {\it response} variable ($J_{r}^j\in\{1,\ldots,p\}$ and $J_{r}^j\neq J_{r}^{j'}$ if $j\neq j'$) and having the $d_p^j>0$ covariates $\boldsymbol{X}^{J_{p}^j}$  as {\it predictor} variables ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ and $d_p^j=|J_{p}^j|$ the cardinal of $J_{p}^j$):
 \begin{equation}
-\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR}
+\boldsymbol{X}^{J_{r}^j}%|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j
+=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR}
 \end{equation}
 where $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ for all $j=1,\ldots,d_r$ and $h=1,\ldots,d_p^j$) and $\boldsymbol{\varepsilon}_j \sim\mathcal{N}_n(\boldsymbol{0},\sigma^2_j\boldsymbol{I})$.
 \end{hyp}
@@ -966,7 +968,8 @@ In addition, we make the complementary hypothesis that the response covariates a
 \item Here we suppose the $\boldsymbol{\varepsilon}_j$ independent so we estimate them by separate \textsc{ols}. But in other cases \textsc{sur} takes into account correlations between residuals and could be used to estimate the $\boldsymbol{\alpha}^j$. 
 \end{itemize} 
 	\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
-\paragraph{In the running example:}$J_f=\{1,2,4,5\}$, $d_f=4$ and $\boldsymbol{X}_f=(\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5)$. We have $d_r=1$ response covariate $\boldsymbol{X}^3|\boldsymbol{X}^1,\boldsymbol{X}^2=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ where $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}_n(\boldsymbol{0},\sigma_1^2\boldsymbol{I})}$. Thus, $\boldsymbol{\alpha}_1=(1,1)'$, $\boldsymbol{J}_r=(3)$, $J_r=\{3\}$, $\boldsymbol{X}_r=(\boldsymbol{X}^3)$, $\boldsymbol{d}_p=(2)$, $\boldsymbol{J}_p=(\{1,2\})$, $\boldsymbol{X}^{J_p^1}=(\boldsymbol{X}^1,\boldsymbol{X}^2)$ and $\boldsymbol{S}=((3),(\{1,2\}))$.  
+\paragraph{In the running example:}$J_f=\{1,2,4,5\}$, $d_f=4$ and $\boldsymbol{X}_f=(\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5)$. We have $d_r=1$ response covariate $\boldsymbol{X}^3%|\boldsymbol{X}^1,\boldsymbol{X}^2
+=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ where $\boldsymbol{\varepsilon}_1\sim{\mathcal{N}_n(\boldsymbol{0},\sigma_1^2\boldsymbol{I})}$. Thus, $\boldsymbol{\alpha}_1=(1,1)'$, $\boldsymbol{J}_r=(3)$, $J_r=\{3\}$, $\boldsymbol{X}_r=(\boldsymbol{X}^3)$, $\boldsymbol{d}_p=(2)$, $\boldsymbol{J}_p=(\{1,2\})$, $\boldsymbol{X}^{J_p^1}=(\boldsymbol{X}^1,\boldsymbol{X}^2)$ and $\boldsymbol{S}=((3),(\{1,2\}))$.  
 \end{minipage}}
 
 
@@ -1074,7 +1077,9 @@ Indeed, no correlations between covariates $\boldsymbol{X}_f$ imply that the mat
 			&=& \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}),
 			 \nonumber  \\
 			\textsc{mse}(\hat{\boldsymbol{\beta}}^*)&=& \parallel\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \parallel_2^2 +\parallel \boldsymbol{\beta}_r\parallel^2_2 + (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2 ) \operatorname{Tr}((\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1}). \nonumber 
-	\end{eqnarray}	 
+	\end{eqnarray}	 	
+When $n$ rises to $+\infty$, variances of both estimator tends to 0 but the bias of the reduced model remains so the complete model would be better asymptotically in $n$. But for a fixed value of $n$, when the $\sigma_j$'s tend to 0 then the variance of the complete model tends to explode whereas the variance of the reduced model and its bias remain stable (the factor before the inverse even shrinks to $\sigma_Y^2 $). So the reduced model would be better for strong linear relationship between the covariates. We finally observe for the reduced model that when $\boldsymbol{\beta}_r=0$ there is no bias, the number of parameters to estimate is smaller than for the complete model and the matrix to invert is well-conditioned. It is the true model estimated with uncorrelated covariates and ``knowing'' $\boldsymbol{\beta}_r=0$ so it will give better results.  \\	
+	
  			We also get an estimation of the residual  $\boldsymbol{\varepsilon}_Y^*$ relying on $\hat{\boldsymbol{\beta}}^*_f$:
 	\begin{equation}
 		\hat{\boldsymbol{\varepsilon}}_Y^*=\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f \label{estimepsYstar}
@@ -1494,9 +1499,14 @@ In order to implement this paradigm, we need first to define the three probabili
 \begin{equation}
 -2\ln \mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}}^2) + (|\hat{\boldsymbol{\alpha}}| + |\hat{\boldsymbol{\sigma}}^2|) \ln(n) = \mbox{{\sc bic}}_r(\boldsymbol{S}), \nonumber
 \end{equation}
-where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate respectively the Maximum Likelihood Estimates ({\sc mle}) of ${\boldsymbol{\alpha}}$ and ${\boldsymbol{\sigma}}^2$, and $|\boldsymbol{\psi}|$ designates the number of free continuous parameters associated to the space of any parameter $\boldsymbol{\psi}$.
-
-\paragraph{Defining $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})$} It corresponds to the integrated likelihood based on a not yet defined distribution $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\boldsymbol{\theta})$ on the uncorrelated covariates $\boldsymbol{X}_f$ and parameterized by $\boldsymbol{\theta}$. In this purpose, we need the following new hypothesis.
+where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate respectively the Maximum Likelihood Estimates ({\sc mle}) of ${\boldsymbol{\alpha}}$ and ${\boldsymbol{\sigma}}^2$, and $|\boldsymbol{\psi}|$ designates the number of free continuous parameters associated to the space of any parameter $\boldsymbol{\psi}$. 
+\begin{displaymath}
+\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}}^2)=
+\prod_{j=1}^{d_r}\mathbb{P}(\boldsymbol{X}^{J_r^j} | \boldsymbol{X}^{J_p^j},\boldsymbol{S};\hat{\boldsymbol{\alpha}}_j,\hat{\sigma}^2_j),
+\nonumber
+\end{displaymath}
+product of independent Gaussians.
+\paragraph{Defining $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})=\prod_{j\in J_f}\mathbb{P}(\boldsymbol{X}^j;\boldsymbol{S})$} It corresponds to the integrated likelihood based on a not yet defined distribution $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\boldsymbol{\theta})$ on the uncorrelated covariates $\boldsymbol{X}_f$ and parameterized by $\boldsymbol{\theta}$. In this purpose, we need the following new hypothesis.
 
 \begin{hyp}\label{H4}
 All covariates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and arise from the following Gaussian mixture of $K_j$ components
@@ -1527,7 +1537,7 @@ Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {
 
 \subsection{Estimation of the numerical parameters}
 	$\boldsymbol{S}$ is a discrete parameter but it is associated to numerical parameters $\boldsymbol{\alpha}$ and $\boldsymbol{\varepsilon}$ through Hypothesis \ref{H1}.
-	We can estimate the coefficients of sub-regression by {\sc ols} for example because sub-regression are small, imply independent covariates and do not need variable selection:
+	We can estimate the coefficients of sub-regression by {\sc ols} for example because sub-regression are small, imply independent covariates and do not need variable selection (parsimony comes directly from $\boldsymbol{S}$):
 	\begin{equation}
 	 \forall j \in \{1,\dots,d_r \}, \hat{\boldsymbol{\alpha}}_j=((\boldsymbol{X}^{J_p^j})' \boldsymbol{X}^{J_p^j})^{-1} (\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_r^j} .\label{estimalpha}
 \end{equation}	 
@@ -1575,7 +1585,7 @@ In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc
 
 \paragraph{Remarks}
 \begin{itemize}
-\item As any {\sc bic} criterion \cite{BIChuard}, the {\sc bic}$_U$ and {\sc bic}$_H$ criteria are consistent .
+\item As a {\sc bic} criterion \cite{BIChuard}, the {\sc bic}$_U$ and {\sc bic}$_H$ criteria are consistent .
 \item Even if it favors more parsimonious models, $\mathbb{P}_H(\boldsymbol{S})$ can be also viewed as a poor informative prior on $\boldsymbol{S}$ since it is a combination of non informative priors.
 \end{itemize}
 
@@ -1599,7 +1609,7 @@ In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc
 	\section{The walk}
 		\subsection{Deterministic neighbourhood}
 	
-We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\boldsymbol{S}$ composed by the following four {\it specific} neighbourhood spaces $\mathcal{V}(\boldsymbol{S})=\mathcal{V}_{r+}(\boldsymbol{S})\cup\mathcal{V}_{r-}(\boldsymbol{S})\cup\mathcal{V}_{p+}(\boldsymbol{S})\cup\mathcal{V}_{p-}(\boldsymbol{S})$ described below:
+We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\boldsymbol{S}$ composed of the following four {\it specific} neighbourhood spaces $\mathcal{V}(\boldsymbol{S})=\mathcal{V}_{r+}(\boldsymbol{S})\cup\mathcal{V}_{r-}(\boldsymbol{S})\cup\mathcal{V}_{p+}(\boldsymbol{S})\cup\mathcal{V}_{p-}(\boldsymbol{S})$ described below:
 	%\begin{itemize}
 	\paragraph{Adding a sub-regression:} a new sub-regression with only one predictor covariate is added to $\boldsymbol{S}$
 \begin{equation}
@@ -1827,23 +1837,27 @@ The initial structure can be based on a first warming algorithm taking the corre
 	\subsection{Graphical { \sc lasso}}\label{sectionGlasso}
 		Graphical \textsc{lasso} (\cite{friedman2008sparse}, \cite{witten2011new}, \cite{tibshiranilasso} and \cite{friedman2010applications}) is set to give undirected (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It does make sense for exponential family because in these cases, zeros in the precision matrix $\boldsymbol{\Sigma}^{-1}$ can be interpreted in terms of conditional independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ and we search an oriented graph.\\
 		
-	However, we can still use it for initialization, for example by a Hadamard product with $\boldsymbol{G}^{(0)}$ the adjacency matrix of the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum} because trees have no cycles. But it is time consuming (especially for an initialisation method) and has no theoretical properties relied to our problematic of minimizing $\mbox{{\sc bic}}_*$, so the idea was left behind after some tries.		
+	However, we can still use it for initialization, for example by a Hadamard product with $\boldsymbol{G}^{(0)}$ the adjacency matrix of the initial structure. Another idea would be to make the Hadamard product with the correlations matrix before computing the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum} because trees have no cycles. But it is time consuming (especially for an initialisation method) and has no theoretical properties relied to our problematic of minimizing $\mbox{{\sc bic}}_*$, so the idea was left behind after some tries.		
 	
 	\section{Pruning}
-		If the complexity of $\boldsymbol{S}$ is too high, pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same (for example if the MCMC had a limited time to find a good model).
+		If the complexity of $\boldsymbol{S}$ is too high (for example if the MCMC had a limited time to find a good model), pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same .
+\subsubsection{Additional cleaning steps}
+			Because the walk is not exhaustive in practice (does not run enough steps), it does make sense to let the walk continue a few steps with neighbourhood containing only suppressions in the structure. Every sub-graph of a bipartite graph is bipartite thus every sub-graph can be reached. It is just an heuristic change in the strategy with:
+			\begin{equation}
+				\mathcal{A}_{(q)}=\{(i,J_r^j), i \in J_f, j \in \{1,\dots,d_r \}: i \in J_p^j \}. \nonumber 
+			\end{equation}
+			It is not based on any arbitrary parameter and change the result only if it finds a better structure in terms of the criterion $\mbox{{\sc bic}}_*$ used in the walk. So the criterion is the same, only the neighbourhood is changed.
+			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE}.\\
+			
+			But if $n$ is small, then {\sc bic} might suffer from overfitting. ``trust, but verify'' says a Russian proverb. So we propose some other pruning methods (once again, they only potentially reduce complexity of the structure).
+		
 		\subsubsection{Variable selection}
 			We can use variable selection methods like the \textsc{lasso} on $\boldsymbol{X}^{J_p^j}$ to estimate the coefficients $\boldsymbol{\alpha}_j$ and obtain some supplementary zeros. Working on $\boldsymbol{X}^{J_p^j}$ protects the \textsc{lasso} against dimension and correlations issues.
 		\subsubsection{$R^2$ thresholding }
 			We can also define a minimal value for the $R^2$ of the sub-regression to maintain them in the final structure. But this minimal value would be totally arbitrary and we know that it is frequent to use linear regression with real datasets that only show a $R^2$ between $0.1$ and $0.2$. It is particularly true in social sciences.
 		\subsubsection{Test of hypotheses}
-			Another pruning method would be to delete sub-regression that offer a F-statistic under a minimal value.
-		\subsubsection{Additional cleaning steps}
-			Because the walk is not exhaustive in practice (does not run enough steps), it does make sense to let the walk continue a few steps with neighbourhood containing only suppressions in the structure. Every sub-graph of a bipartite graph is bipartite thus every sub-graph can be reached. It is just an heuristic change in the strategy with:
-			\begin{equation}
-				\mathcal{A}_{(q)}=\{(i,J_r^j), i \in J_f, j \in \{1,\dots,d_r \}: i \in J_p^j \}. \nonumber 
-			\end{equation}
-			It is not based on any arbitrary parameter and change the result only if it finds a better structure in terms of the criterion $\mbox{{\sc bic}}_*$ used in the walk.
-			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE}.
+			Another pruning method would be to delete sub-regressions that offer a F-statistic under a minimal value.
+		
 			
 
 \section{CorReg}	
@@ -1875,22 +1889,9 @@ We define the complexity of a structure $\boldsymbol{S}$ as the number of elemen
 	\end{center}
 	
 \FloatBarrier
-\section{Comparison with {\tt Selvarclust}}\label{compMaugisth}
-We will compare in section \ref{compMaugis} the results obtained by {\tt CorReg} and {\tt Selvarclust} in terms of ability to find the true structure. But we first need to compare the two methods on theoretical aspects.
-\begin{itemize}
-	\item \textbf{Distinct goals:} {\tt CorReg} gives better results (section \ref{compMaugis}) because it does not suffer from correlations like stepwise does in the algorithm from Maugis but also because the goal is not the same. {\tt Selvarclust} aims to find the relevant covariates for clustering and achieves this goal (section \ref{compMaugis}). We focus on the explicit structure of regression between the covariate instead of Gaussian clustering. Distinct goals, distinct results even if the sub-regression model is quite the same. To obtain better results is just a necessary confirmation of that.
-	\item \textbf{Distinct hypotheses:}  
-	\begin{itemize}
-		\item {\tt Selvarclust} allows dependencies between the regressors and also between the noises of the sub-regressions. We suppose independence between the regressors and between the conditional distributions (noises of the sub-regressions are supposed to be independent). % so we estimate the univariate marginal distributions and we make it only once (independent from the structure). {\tt Selvarclust} has to estimate the whole distribution
-		 Our algorithm does not allow to find complex distributions with dependencies as {\tt Selvarclust} does. 
-		\item We estimate each marginal distribution separately (with {\tt Rmixmod} for example). It can lead to a joint distribution with a huge number of components (see Chapter \ref{chapmiss}) whereas {\tt Selvarclust} has to choose directly the number of components of the joint distribution and then this number is limited.
-	\end{itemize} 
-\end{itemize}	 	 
-	  Both models use a sub-regression structure and propose an algorithm to find it, but the comparison stops here. {\tt CorReg} does not really beat {\tt Selvarclust} because hypotheses and objectives are not the same,  so the result cannot really be compared. Our algorithm will allow more components than {\tt Selvarclust} and {\tt Selvarclust} will allow more dependencies between the covariates.\\
-	  {\tt Selvarclust} is not a competitor to {\tt CorReg} but a confirmation that the concept of sub-regressions within the covariates and the concept of redundant and irrelevant covariates are pertinent.
 			
 \section{Conclusion}	We now have an algorithm and a criterion to find the best structure of correlations. This algorithm is extremely flexible: no heavy hypotheses on the dataset, no crucial parameter to tune by hand. We want then to know how efficient it is on simulated datasets first (Chapter \ref{sectionsimul}), and then on real industrial datasets from ArcelorMittal to confirm the utility of both the new model and the algorithm in the real life (Chapter \ref{sectionrealcase}).	
-		\paragraph{Remark:} Choosing whether we have to use or not the marginalization as a pre-treatment is independent of the utility of the structure. Knowing explicitly the complex correlations that hold the dataset is a real stake when times come to interpret the model and to  decide actions. Our explicit structure describes in details the complexity of the situation so we can then act knowing what we do. 		
+		\paragraph{Remark:} Choosing whether we have to use or not the structure to make a pre-treatment is independent of the utility of the structure. Knowing explicitly the complex correlations that hold the dataset is a real stake when times come to interpret the model and to decide actions. Our explicit structure describes in details the complexity of the situation so we can then act knowing what we do. 		
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 \paragraph{Abstract:} Here are the numerical results obtained for an unknown structure $\boldsymbol{S}$ on simulated datasets. It illustrates efficiency of the MCMC algorithm used to find a relevant structure between the covariates. The fact that the structure is unknown makes the simulations more similar to a real case study where we do not even know if there is a linear structure of correlations between the covariates.
 		 
@@ -1968,7 +1969,20 @@ Both software found that $\boldsymbol{X}^1,\boldsymbol{X}^2$ are not in $\boldsy
 {\tt Selvarclust} finds $\hat{\boldsymbol{S}}=((3,\dots,10),(\{1,2\},\dots,\{1,2\}))$ that does not even give the true partition $(J_r,J_f)$ (so marginal model would be distinct).
 Our algorithm gives better results on $\hat{\boldsymbol{\alpha}}^*$ with more parsimonious $\hat{\boldsymbol{S}}$ (that is the true $\boldsymbol{S}$), proving that a new algorithm was needed to estimate the sub-regression structure and that the proposed MCMC is efficient.
 
-	    
+	 
+We then compare the two methods on theoretical aspects.
+\begin{itemize}
+	\item \textbf{Distinct goals:} {\tt CorReg} gives better results because it does not suffer from correlations like stepwise does in the algorithm from Maugis but also because the goal is not the same. {\tt Selvarclust} aims to find the relevant covariates for clustering and achieves this goal. We focus on the explicit structure of regression between the covariate instead of Gaussian clustering. Distinct goals, distinct results even if the sub-regression model is quite the same. To obtain better results is just a necessary confirmation of that.
+	\item \textbf{Distinct hypotheses:}  
+	\begin{itemize}
+		\item {\tt Selvarclust} allows dependencies between the regressors and also between the noises of the sub-regressions. We suppose independence between the regressors and between the conditional distributions (noises of the sub-regressions are supposed to be independent). % so we estimate the univariate marginal distributions and we make it only once (independent from the structure). {\tt Selvarclust} has to estimate the whole distribution
+		 Our algorithm does not allow to find complex distributions with dependencies as {\tt Selvarclust} does. 
+		\item We estimate each marginal distribution separately (with {\tt Rmixmod} for example). It can lead to a joint distribution with a huge number of components (see Chapter \ref{chapmiss}) whereas {\tt Selvarclust} has to choose directly the number of components of the joint distribution and then this number is limited.
+	\end{itemize} 
+\end{itemize}	 	 
+	  Both models use a sub-regression structure and propose an algorithm to find it, but the comparison stops here. {\tt CorReg} does not really beat {\tt Selvarclust} because hypotheses and objectives are not the same,  so the result cannot really be compared. Our algorithm will allow more components than {\tt Selvarclust} and {\tt Selvarclust} will allow more dependencies between the covariates.\\
+	  {\tt Selvarclust} is not a competitor to {\tt CorReg} but a confirmation that the concept of sub-regressions within the covariates and the concept of redundant and irrelevant covariates are pertinent.
+   
 
 \subsection{Computational time}
 	In terms of computation time, the most expansive thing in the MCMC is the computation of \textsc{ols} to estimate $\boldsymbol{\alpha}$ for each candidate, that is mainly successive inversion of the $(\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_p^j}$ matrices. \\
@@ -2023,9 +2037,10 @@ We try the method with a response variable depending on all covariates to compar
 
  We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsimonious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be chosen). The main result here is that results based on $\hat{\boldsymbol{S}}$ are still good so the MCMC is efficient enough to be useful for the study of the response variable $\boldsymbol{Y}$. Results are mostly the same than when using the true structure.\\
  
-Results for \textsc{ols} (Figure \ref{MSEexplOLStout} ) are similar to those from section \ref{thedatasets} excepted for small correlations because the MCMC using $\mbox{{\sc bic}}_H$ does not find the true structure for small correlations and a void structure gives a marginal model equal to the complete one.  \\
- This phenomenon is not observed with variable selection method (Figures \ref{MSEexpllartout} to \ref{MSEexplstepwisetout} ) where covariates not deleted by the structure are deleted by the variable selection. \\
- Ridge regression results (Figure \ref{MSEexplridgetout} ) is also very similar to the previous (Figure \ref{MSEexplridge} ).\\
+Results for \textsc{ols} (Figure \ref{MSEexplOLStout}) are similar to those from section \ref{thedatasets} excepted for small correlations because the MCMC using $\mbox{{\sc bic}}_H$ does not find the true structure for small correlations and a void structure gives a marginal model equal to the complete one.  \\
+ This phenomenon is not observed with variable selection method (Figures \ref{MSEexpllartout} to \ref{MSEexplstepwisetout})
+  where covariates not deleted by the structure are deleted by the variable selection. \\
+ Ridge regression results (Figure \ref{MSEexplridgetout}) are also very similar to the previous (Figure \ref{MSEexplridge} ).\\
  
  Having simpler structure is important for interpretation so we keep the choice of using $\mbox{{\sc bic}}_H$, but users of {\tt CorReg} can use classical $\mbox{{\sc bic}}_U$ with a single boolean parameter change.
 
@@ -2474,7 +2489,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 	
 	\paragraph{Other methods:} Variable selection methods (Figures \ref{MSEexpllarX2} to \ref{MSEexplstepwiseX2}) still are impacted by correlations but not enough to be improved by our marginal model. Neither is the ridge regression (Figure \ref{MSEexplridgeX2}). The results confirm that this is the worst case for our marginal model.\\
 	
-	 Real datasets will provide $\boldsymbol{Y}$ depending on a mix of covariates from both $\boldsymbol{X}_f$ and $\boldsymbol{X}_r$ so our marginal could help even with variable selection methods or ridge regression. We also recall that the structure $\boldsymbol{S}$ is useful by itself to have a better comprehension of the dataset and help the final client to be confident in statistical tools because he sees small models that are known to be true and were found automatically by the method. Thus {\tt CorReg } also has a psychological impact on a study that should not be overlooked. Once $\hat{\boldsymbol{S}}$ is found, trying the marginal model has no cost and should be tested.
+	 Real datasets will provide $\boldsymbol{Y}$ depending on a mix of covariates from both $\boldsymbol{X}_f$ and $\boldsymbol{X}_r$ so our marginal model could help even with variable selection methods or ridge regression. We also recall that the structure $\boldsymbol{S}$ is useful by itself to have a better comprehension of the dataset and help the final client to be confident in statistical tools because he sees small models that are known to be true and were found automatically by the method. Thus {\tt CorReg } also has a psychological impact on a study that should not be overlooked. Once $\hat{\boldsymbol{S}}$ is found, trying the marginal model has no cost and should be tested.
 
 
 \FloatBarrier
@@ -2672,7 +2687,10 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtai
 \FloatBarrier
 \subsection{Robustness with non-linear case}
 
-We have generated a non-linear structure to test the robustess of the model. $\boldsymbol{X}_f$ is a set of 6 independent Gaussian mixtures defined as previously but with random signs for the components means. $\boldsymbol{X}_r|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=\boldsymbol{X}^7|\boldsymbol{X}^{\{1,2,3\}};a,\sigma_1^2=a(\boldsymbol{X}^1)^2+\boldsymbol{X}^2+\boldsymbol{X}^3+ \boldsymbol{\varepsilon}_1$. The matrix $\boldsymbol{X}$ is then scaled before doing $$\boldsymbol{Y}|\boldsymbol{X};\sigma_Y^2=\sum_{i=1}^7\boldsymbol{X}^i+\boldsymbol{\varepsilon}_Y.$$ We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression. Once again, simulations has been made 100 times and the \textsc{mse} were computed with 1 000 individuals validation samples.
+We have generated a non-linear structure to test the robustess of the model. $\boldsymbol{X}_f$ is a set of 6 independent Gaussian mixtures defined as previously but with random signs for the components means. And the we define $%\boldsymbol{X}_r|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=
+\boldsymbol{X}^7%|\boldsymbol{X}^{\{1,2,3\}};a,\sigma_1^2
+=a(\boldsymbol{X}^1)^2+\boldsymbol{X}^2+\boldsymbol{X}^3+ \boldsymbol{\varepsilon}_1$. The matrix $\boldsymbol{X}$ is then scaled before doing $$\boldsymbol{Y}%|\boldsymbol{X};\sigma_Y^2
+=\sum_{i=1}^7\boldsymbol{X}^i+\boldsymbol{\varepsilon}_Y.$$ We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression. Once again, simulations has been made 100 times and the \textsc{mse} were computed with 1 000 individuals validation samples.
 
  \begin{figure}[h!] 
 	\subfigure[Evolution of the quality of $\hat{\boldsymbol{S}}$ when the paramater $a$ increases]{
@@ -2690,8 +2708,10 @@ Figure \ref{MSEnonlin} illustrates the advantage of using {\tt CorReg} even with
 
 	\section{Conclusion} The marginal model still gives good results even with $\hat{\boldsymbol{S}}$. We also observe that the estimation of the structure is satisfying. But these are only simulated datasets and we have to confirm that our hypotheses can face the reality of industrial datasets. Moreover, we see that the pattern of the true regression on $\boldsymbol{Y}$ leads to fundamental changes in the quality of the prediction.	So we will test {\tt CorReg} on real datasets (Chapter \ref{sectionrealcase}) and then try to improve the marginal model to better fit the patterns that are not favorable (those whith $\boldsymbol{Y}$ depending only on redundant covariates) to the marginal model (Chapter \ref{chapplugin}).
 		
-\chapter{Numerical results on real datasets} \label{sectionrealcase}
-\paragraph{Abstract:} Here are the numerical results obtained from real datasets. As in the previous chapter we have to estimate the structure. But here we do not know if the true model follows our hypotheses or not. We will see if the model does make sense in real life as we supposed previously.
+\chapter{Experiments on real datasets} \label{sectionrealcase}
+\paragraph{Abstract:} Here are the numerical results obtained from real datasets. As in the previous chapter we have to estimate the structure. 
+But here we do not know if the true model follows our hypotheses or not. We will see if the model does make sense in real life as we supposed previously. 
+These experiments were made on real datasets from ArcelorMittal and some informations are confidential so the reader can experiment a kind of frustration but efforts were made to keep these experiments interesting. 
 
 	\section{Quality case study} \label{sectionexfos}
 This work takes place in steel industry context, with quality oriented objective: to understand and prevent quality problems on finished product, knowing the whole process. The correlations are strong here (many parameters of the whole process without any a priori and highly correlated because of physical laws, process rules, {\it etc.}). 
@@ -2709,7 +2729,7 @@ The objective here is not only to predict non-quality but to understand and then
 
 To illustrate that some industrial variables are naturally highly correlated, we can measure the correlation $\rho$ between some couple of variables. For instance, the width and the weight of a steel slab gives $|\rho|=0.905$, the temperature before and after some tool gives $|\rho|=0.983$, the  roughness of both faces of the product gives $|\rho|= 0.919$ and a particular mean and a particular max gives $|\rho|=0.911$. For an overview of correlations, Figure~\ref{fig:graphCorr.quality}(a) gives an histogram of $\rho$ where we can see that, however, many other variables are not so highly correlated.\\
 
-\textsc{CorReg} estimated a structure of $d_r=76$ sub-regressions with a mean of $\bar{\boldsymbol{d}}_p=5.17$ predictors. In the resulting uncorrelated covariate set $\boldsymbol{X}_f$ the number of values $|\rho|>0.7$ is $79.33\%$ smaller than in $\boldsymbol{X}$. Indeed, Figure~\ref{fig:graphCorr.quality}(b) displays the histogram of adjusted $R^2$ value ($R^2_{adj}$) and we can see that essentially large values of $R^2_{adj}$ are present. When we have a look at a more detailed level, we can see also that \textsc{CorReg} has been able non only to retrieve the above correlations (the width and the weight of a steel slab, {\it etc.}) but also to detect more complex structures describing physical models, like the width in function of the mean flow and the mean speed, even if the true physical model is not linear since ``width = flow / (speed * thickness)'' (here thickness is constant). Non-linear regulation models used to optimize the process were also found (but are confidential). These first results are easily understandable and meet metallurgists expertise.  Sub-regressions with small values of $R^2$ are associated with non-linear model (chemical kinetics for example).
+\textsc{CorReg} estimated a structure of $d_r=76$ sub-regressions with a mean of $\bar{\boldsymbol{d}}_p=5.17$ predictors. In the resulting uncorrelated covariate set $\boldsymbol{X}_f$ the number of values $|\rho|>0.7$ is $79.33\%$ smaller than in $\boldsymbol{X}$. Indeed, Figure~\ref{fig:graphCorr.quality}(b) displays the histogram of adjusted $R^2$ value ($R^2_{adj}$) and we can see that essentially large values of $R^2_{adj}$ are present. When we have a look at a more detailed level, we can see also that {\tt CorReg} has been able non only to retrieve the above correlations (the width and the weight of a steel slab, {\it etc.}) but also to detect more complex structures describing physical models, like the width in function of the mean flow and the mean speed, even if the true physical model is not linear since ``width = flow / (speed * thickness)'' (here thickness is constant). Non-linear regulation models used to optimize the process were also found (but are confidential). These first results are easily understandable and meet metallurgists expertise.  Sub-regressions with small values of $R^2$ are associated with non-linear model (chemical kinetics for example).
 		
 \begin{figure}[h!]
 \begin{center}
@@ -2764,14 +2784,14 @@ Note that the uncorrelated variables can be very well-modeled by parsimonious Ga
 \vspace{3mm}
 	
 	
-Table~\ref{Res_exfos} displays predictive results associated to different estimation methods with and without {\sc CorReg}. We can see that {\sc CorReg} improves the results for each method tested in terms of prediction, with generally a more parsimonious regression on $\boldsymbol{Y}$. In terms of interpretation, this regression gives a better understanding of the consequences of corrective actions on the whole process. It typically permits to determine the \textit{tuning parameters} whereas variable selection alone would point variables we can not directly act on.	So it becomes easier to take corrective actions on the process to reach the goal. The stakes are so important that even a little improvement leads to consequent benefits, and we do not even talk about the impact on the market shares that is even more important.
+Table~\ref{Res_exfos} displays predictive results associated to different estimation methods with and without pre-treatment. We can see that the reduced model improves the results for each method tested in terms of prediction, with generally a more parsimonious regression on $\boldsymbol{Y}$. In terms of interpretation, this regression gives a better understanding of the consequences of corrective actions on the whole process. It typically permits to determine the \textit{tuning parameters} whereas variable selection alone would point variables we can not directly act on.	So it becomes easier to take corrective actions on the process to reach the goal. The stakes are so important that even a little improvement leads to consequent benefits, and we do not even talk about the impact on the market shares that is even more important.
 		
 
 		\begin{table}[h!]
 \centering
 \begin{tabular}{llcc}
 	\hline
-	Method& Indicator& With {\sc CorReg} & Without {\sc CorReg} \\ 
+	Method& Indicator& On $\hat{\boldsymbol{X}}_f$ ({\tt CorReg}'s reduced model)& On $\boldsymbol{X}$ (complete model) \\ 
 	\hline \hline
 	{\sc ols} & {\sc mse} & 13.30 & 14.03 \\
 		& complexity& 130 & 206 \\
@@ -2880,7 +2900,7 @@ Table~\ref{Res_prod} displays predictive results associated to different estimat
 		& complexity &91 &146\\
 	\hline 
 \end{tabular} 
-\caption{Production case study: Results obtained with leave-one out cross-validation ($n=100, d=145$). {\sc mse} is calculated though a leave-one-out method because of the small sample size. In bold, the best {\sc mse} value.}	\label{Res_prod}
+\caption{Production case study: Results obtained with leave-one out cross-validation ($n=100, d=145$). Predictive {\sc mse} is calculated though a leave-one-out method because of the small sample size. In bold, the best {\sc mse} value.}	\label{Res_prod}
 \end{table}
 The response variable was binary but $n$ was too small compared to $d$ to use logistic regression so we have considered $\boldsymbol{Y}$ as a continuous variable and then made imputation by $1$ when $\hat{\boldsymbol{Y}}>0.5$ and by $0$ else.\\
 
@@ -2913,13 +2933,14 @@ We have used the package {\tt CorReg} with real datasets and the results obtaine
 %		\boldsymbol{Y}|\boldsymbol{X};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}\boldsymbol{\beta}+\boldsymbol{\varepsilon}_Y. \nonumber 
 %\end{equation}	
 \begin{equation}
-		\boldsymbol{Y}|\boldsymbol{X}_r,\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2= \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y, \nonumber 
+		\boldsymbol{Y}%|\boldsymbol{X}_r,\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\sigma_Y^2
+		= \boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y, \nonumber 
 \end{equation}		
 	%We have estimated the structure $\hat{\boldsymbol{S}} $ of sub-regressions on $\boldsymbol{X}$ (Chapter \ref{chapterMCMC}) that gives:
 	with a structure $\boldsymbol{S}$ of sub-regressions on $\boldsymbol{X}$:
 	\begin{equation}
 		\boldsymbol{X}_r 
-		|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2
+		%|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2
 		=\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon}. \label{ssregplugin}
 	\end{equation}
 	%and obtained estimations of $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\varepsilon}}$. 
@@ -2934,7 +2955,8 @@ We have used the package {\tt CorReg} with real datasets and the results obtaine
 %		Reminding equation (\ref{eq:Trueexpl2}), the marginal model (that is just a rewriting of the true model) can be written:
 Then by marginalization on $\boldsymbol{X}_r$ we obtained:
 		\begin{equation}
-		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*}.  \label{pluginorig}
+		\boldsymbol{Y}%|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2
+		= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}_{\boldsymbol{\varepsilon}_Y^*}.  \label{pluginorig}
 		\end{equation}
 %		the residual of the marginal model is decomposed as follows:
 %\begin{eqnarray}
@@ -2966,7 +2988,8 @@ Then by marginalization on $\boldsymbol{X}_r$ we obtained:
 We get from equation (\ref{pluginorig}):%\\
 %\fcolorbox{jaunefonce}{jauneclair}{\begin{minipage}{1\textwidth}
 \begin{equation}
-	\boldsymbol{\varepsilon}_Y^*|\boldsymbol{\varepsilon};\boldsymbol{\beta}_r,\sigma_Y^2=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:regplugin} \nonumber
+	\boldsymbol{\varepsilon}_Y^*%|\boldsymbol{\varepsilon};\boldsymbol{\beta}_r,\sigma_Y^2
+	=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:regplugin} 
 \end{equation}
 %\end{minipage}}
 Then the Best Linear Unbiased Estimator ({\sc BLUE}) for $\boldsymbol{\beta}_r$ is given ({\sc ols} estimator) by:
@@ -2999,7 +3022,7 @@ The plug-in estimator of $\boldsymbol{\beta}_r$ we propose in this chapter does 
 		\hat{\boldsymbol{\beta}}_r^{\varepsilon}&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*  \nonumber \\
 	&=&\left((\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)\right)^{-1}(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f)	\label{estimpluginlong}
 	\end{eqnarray}
-that depends on all covariates in $\boldsymbol{X}$ and relies on the estimated coefficients of sub-regressions $\hat{\boldsymbol{\alpha}}^*$ and on the estimate $\hat{\boldsymbol{\beta}}_f^*$ of the coefficients in the marginal model.
+that depends on all covariates in $\boldsymbol{X}$ and relies on the estimated coefficients of sub-regressions $\hat{\boldsymbol{\alpha}}^*$ and on the estimate $\hat{\boldsymbol{\beta}}_f^*$ of the coefficients in the marginal model. It is the Ordinary Least squares estimator but we can use any other linear regression estimator, allowing then to make variable selection again, that is to decide which covariates will come back in the model. This second linear regression does not have any intercept (even if it was added in $\boldsymbol{X}$ it won't depend on any other covariate and then won't be part of $\boldsymbol{X}_r$).
 %\end{minipage}}
 Then we can estimate $\boldsymbol{Y}$ by:
 %		\begin{equation}
@@ -3053,13 +3076,13 @@ The variance of the estimator is given by:
 \begin{eqnarray}
 	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})&=& \operatorname{Var}[\underbrace{(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n- \boldsymbol{H}_f)}_{(\boldsymbol{X}_r^{\varepsilon})'}\boldsymbol{Y})] \nonumber  \\
 	&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\operatorname{Var}(\boldsymbol{Y})\nonumber\\
-	&=&\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1} \nonumber\\
+	&=&\sigma^2_Y(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1} \label{varpluginr} \\
 	&=& \sigma^2_Y\big[\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}\big]^{-1} \nonumber \\
 	&=&\sigma^2_Y\big[(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\big]^{-1}
 	%&=&(\sigma_Y^2(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1})(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}
-\label{varpluginr}
+\nonumber
 \end{eqnarray}
-where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-\frac{1}{2}}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}$ is a $d_r\times d_r$ matrix.
+where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-\frac{1}{2}}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}$ is a $d_r\times d_r$ matrix.\\ It is clear that when the $\sigma_j^2$ tends to 0 then the plug-in estimator explodes. But in such cases the marginal model tends to be the true model without bias. So when a sub-regression is almost exact it is preferable to keep the redundant covariate out of the model. The plug-in model was defined only to use the residuals of the sub-regressions when they are not too small.
 %		\begin{equation}
 %		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}
 %		\end{equation}
@@ -3149,21 +3172,20 @@ We have $\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymb
 [ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r]^{-1}
 \underbrace{\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}}_{(\hat{\boldsymbol{\alpha}}^*_{ols})'}\big] ,\label{olsf}
 \end{equation}
-where $\hat{\boldsymbol{\alpha}}^*_{ols}$ is the sub-regression coefficients matrix estiamted by {\sc ols} without parsimony (all the covariates in $\boldsymbol{X}_r$ supposed to depend on all the covariates in $\boldsymbol{X}_f$.
+where $\hat{\boldsymbol{\alpha}}^*_{ols}$ is the sub-regression coefficients matrix estimated by {\sc ols} without parsimony (all the covariates in $\boldsymbol{X}_r$ supposed to depend on all the covariates in $\boldsymbol{X}_f$).
 We also have
 \begin{equation}
 	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})=
 	\sigma_Y^2\big[ \boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r\big]^{-1}
-	\nonumber \\
-	=\sigma_Y^2\big[ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r\big]^{-1}.
-	\label{olsr}
+	=\sigma_Y^2\big[ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r\big]^{-1}. \label{olsr}
 \end{equation}
-Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on several smaller and better conditioned matrices to invert than \textsc{ols} applied on $\boldsymbol{X}$ (equations (\ref{olsr}) and (\ref{olsf})) %for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$
-. 
-Compared to \textsc{ols}  we have a new bias-variance trade-off to study with numerical results. $(\boldsymbol{X}'\boldsymbol{X})$ is ill-conditioned whereas $(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})$ is smaller and correlations-free (but we have several matrices to invert).\\
+Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on the estimated residuals of the sub-regressions that may give better conditioned matrices ($\boldsymbol{\varepsilon}_j$'s are supposed to be independent) to invert than $\boldsymbol{X}_r$ that appears with \textsc{ols} applied on $\boldsymbol{X}$ (equations (\ref{olsr}) and (\ref{olsf})) because redundant covariate can have common predictors. %for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$ 
+When $n$ rises to $+\infty$ both models are consistent so convergence rates will make the difference.
+Compared to \textsc{ols} we have a new bias-variance trade-off to study with numerical results.\\
 
 Compared to the marginal model, the plug-in model uses all the covariates. But when sub-regressions tends to be exact, the variance of the marginal estimator shrinks and $ \hat{\boldsymbol{\varepsilon}}$ tends to the zero matrix (that is bad for conditioning). So the marginal model would be better for extreme correlations. 
 Exact sub-regressions ($\boldsymbol{\varepsilon}=\boldsymbol{0}$) make the marginal model the exact true model without additional noise (equation (\ref{pluginorig})) so the plug-in model is not needed in such cases.\\
+Equations (\ref{pluginorig}) and (\ref{eq:regplugin}) are linear regressions and both of them can use any estimator for linear regression. Then the plug-in model can have two variable selection steps: one for $\boldsymbol{X}_f$ and then another for $\boldsymbol{X}_r$ so there is no restriction for the final model.
 %The plug-in estimator relies on both $\hat{\boldsymbol{\alpha}}^*$ and $\hat{\boldsymbol{\beta}}^*_f$
 %Here is where the bias-variance trade-off relies. On the one hand, classical {\sc ols} leads to exploding variance when correlations are strong because the matrix to invert is ill-conditioned.  On the other hand, when sub-regressions tend to be exact then $\hat{\boldsymbol{\varepsilon}}$ will tend to the zero matrix so the matrices to invert so $(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}$ will also explode. But explosion of the variance won't have the same speed for each estimator.  The good news is that when sub-regressions tend to be exact, then the noise of the marginal model tends to $\boldsymbol{\varepsilon}_Y$. \\
 %		
@@ -3198,10 +3220,12 @@ Exact sub-regressions ($\boldsymbol{\varepsilon}=\boldsymbol{0}$) make the margi
 		Consistency issues of the {\sc lasso} are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
 		We have taken the same example to show how our method is better to find the true relevant covariates.
 		Here $d=3$ and $n=1\;000$.\\
-		We define $\boldsymbol{X}^1,\boldsymbol{X}^2, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{1} i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
+		We define $\boldsymbol{X}^1,\boldsymbol{X}^2, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{1} \quad i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
 		\begin{eqnarray}
-		\boldsymbol{X}^3|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_1^2&=&\frac{2}{3}\boldsymbol{X}^1+\frac{2}{3}\boldsymbol{X}^2+\frac{1}{3}\boldsymbol{\varepsilon}_1 \textrm{ and}  \nonumber \\
-		\boldsymbol{Y}|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_Y^2&=&2\boldsymbol{X}^1+3\boldsymbol{X}^2+\boldsymbol{\varepsilon}_Y. \nonumber 
+		\boldsymbol{X}^3%|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_1^2
+		&=&\frac{2}{3}\boldsymbol{X}^1+\frac{2}{3}\boldsymbol{X}^2+\frac{1}{3}\boldsymbol{\varepsilon}_1 \textrm{ and}  \nonumber \\
+		\boldsymbol{Y}%|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_Y^2
+		&=&2\boldsymbol{X}^1+3\boldsymbol{X}^2+\boldsymbol{\varepsilon}_Y. \nonumber 
 		\end{eqnarray}
 		
 		
@@ -3214,7 +3238,7 @@ Exact sub-regressions ($\boldsymbol{\varepsilon}=\boldsymbol{0}$) make the margi
 		\centering
 		\begin{tabular}{|c|c|c|c|}
 		\hline 
-		 & Classical {\sc lasso} & {\tt CorReg} + marginal {\sc lasso}& {\tt CorReg} + full plug-in {\sc lasso}\\ 
+		 & Classical {\sc lasso} & {\tt CorReg} marginal + {\sc lasso}& {\tt CorReg} full plug-in + {\sc lasso}\\ 
 		\hline 
 		True $\boldsymbol{S}$ &  1.003303 (0.046) & \textbf{1.002273} (0.046)& \textbf{1.002812} (0.046)\\ 
 		\hline 
