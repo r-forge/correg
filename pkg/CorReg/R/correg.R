@@ -35,7 +35,7 @@
 #' @param intercept boolean. If FALSE intercept will be set to 0 in each model.
 #' @param alpha Coefficients of the explicative model to coerce the predictive step. if not NULL explicative step is not computed.
 #' @param g number of group of variables for clere
-#' 
+#' @param compl2 boolean to compute regression (OLS only) upon [X_f,epsilon] instead of [X_f,X_r]
 #Attention cette fonction dégage une puissance phénoménale (it's over 9000!)
 correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, explnew=FALSE,
                 pred = FALSE,
@@ -43,7 +43,7 @@ correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = F
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
                 K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=FALSE,
-                alpha=NULL,g=5) 
+                alpha=NULL,g=5,compl2=FALSE) 
 {
   if(is.null(X)){
      dat<- data.frame(t=seq(0, 2*pi, by=0.1) )
@@ -126,6 +126,7 @@ correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = F
     res$compl$BIC = BicTheta(X = X, Y = Y, intercept = intercept, 
                              beta = res$compl$A)
     res$compl$AIC=mon_AIC(theta=res$compl$A,Y=Y,X=X,intercept=intercept) 
+   res$compl$CVMSE = CVMSE(X = X, Y = Y, intercept = intercept, K = K, groupe = groupe)
   }
 #explicatif
   if (sum(Z) != 0 & (expl | pred)) {
@@ -188,6 +189,7 @@ correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = F
     }
     res$expl$BIC = BicTheta(X = X, Y = Y, intercept = intercept, beta = A_expl)
     res$expl$AIC=mon_AIC(theta=res$expl$A,Y=Y,X=X,intercept=intercept) 
+    res$expl$CVMSE = CVMSE(X = X[,res$expl$A[-intercept]!=0], Y = Y, intercept = intercept, K = K, groupe = groupe)
     
 
 #predictif
@@ -300,10 +302,16 @@ correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = F
         
       }    
       res$pred$A = A_pred
-      res$pred$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
+    #  res$pred$CVMSE = CVMSE(X = X[, which(A_pred[-1] != 0)], Y = Y, intercept = intercept, K = K, groupe = groupe)
       res$pred$BIC = BicTheta(X = X, Y = Y, intercept = intercept, beta = A_pred)
       res$pred$AIC=mon_AIC(theta=res$pred$A,Y=Y,X=X,intercept=intercept) 
-      
+      if(compl2){
+         Xloc=X
+         Xloc[,I2]=Xtilde
+         res$compl2$A=OLS(X =as.matrix(Xloc) ,Y=Y,intercept = intercept)$beta
+         res$compl2$BIC = BicTheta(X = as.matrix(Xloc), Y = Y, intercept = intercept, beta = res$compl2$A)
+         res$compl2$CVMSE = CVMSE(X = Xloc, Y = Y, intercept = intercept, K = K, groupe = groupe)
+      }
     }
   }else if (sum(Z) == 0 & (expl | pred)) {
     res$expl$A = res$compl$A
