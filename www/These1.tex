@@ -3829,7 +3829,7 @@ So when a value is missing, we know its distribution but in addition, we know it
 %\subsection{Distribution of $\boldsymbol{X}$} \label{sectionXdensity}
 	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} page \pageref{H4} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components. 
 	We stack together all the mixture parameters %of $\boldsymbol{X}_f$ 
-	in $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$).%, see Appendix \ref{missingdensityapp}).
+	in $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$). %, see Appendix \ref{missingdensityapp}).
 	The number of component $k$ can be huge (combinations of all the components of the covariates in $\boldsymbol{X}_f$). In fact we have 
 	\begin{equation}
 		K=\prod_{j\in J_f}K_j  \nonumber 
@@ -4654,7 +4654,7 @@ There is still a lot of work to do in the field of missing values and we have on
 			\item Every step of the proposed method is simple to understand even by non-statistician.
 			\item The method can be fully automated.
 		\end{itemize}
-		We have made the bet that explicit modeling of the correlations between the covariates would be valuable. Results confirm that it was a good choice.		
+		We have made the bet that explicit modeling of the correlations between the covariates would be valuable. Obtained results confirm that it was a good choice.		
 		
 	\section{Perspectives}
 	This work was focused on linear regression and the ways to avoid correlations issues. But statistics cover an extremely wider range of methods that sometimes also suffer from correlations. Then the perspectives of this work are wide.
@@ -4663,8 +4663,24 @@ There is still a lot of work to do in the field of missing values and we have on
 			\subsection{Regression mixture models}
 			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values. In such a model, the contribution of the structure itself would be even greater for the final user. An additional algorithm to search for distinct or equal coefficients within the classes would be to develop.
 			\subsection{Using $\boldsymbol{Y}$ to estimate $\boldsymbol{S}$}
-			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results when applied on $\boldsymbol{Y}$. But it would probably give distinct structures according to the chosen model (marginal or plug-in). It would also require a criterion that could be the {\sc bic} associated to the combination of both $\boldsymbol{S}$ and the chosen regression on $\boldsymbol{Y}$.% or a {\sc mse}  but with added computational cost if the {\sc lasso} (for example) has to be computed for each candidate structure in the MCMC. 
-			This perspective would require to rethink the criterion used to choose the structure and (maybe) the algorithm to find it. If a global {\sc bic} criterion is chosen to find the best structure and the best regression, likelihoods would have to be weighted to give priority to the regression on $\boldsymbol{Y}$ upon the sub-regressions. This would be a whole new research direction and a real competitor against the method presented here. A possible consequence of such a model would be a reduce marginalization with some response covariates kept when the correlations implied are not too strong, as a trade-off between the marginal and the plug-in model. A simple way to achieve this would be a kind of stepwise with forward variable selection starting with our marginal model and allowing variable selection each time (by \textsc{lasso} for example). Modeling $\mathbb{P}(\boldsymbol{X},\boldsymbol{Y})$ instead of $\mathbb{P}(\boldsymbol{X})$ would also help to better manage missing values with $\mathbb{P}(\boldsymbol{X}_M|\boldsymbol{X}_O,\boldsymbol{Y}_O)$ instead of $\mathbb{P}(\boldsymbol{X}_M|\boldsymbol{X}_O)$.
+			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results (in terms of a given criterion) when applied on $\boldsymbol{Y}$.\\
+			
+			 But it would probably give distinct structures according to the chosen model (marginal or plug-in) and also for distinct response variables (a same dataset about the same process to study distinct response variables) so it would not be very user-friendly. For this reason it was not implemented, but we can look a bit further.\\
+			 
+			 This perspective would require to rethink the criterion used to choose the structure and (maybe) the algorithm to find it. The global criterion could be the {\sc bic} associated to the combination of both $\boldsymbol{S}$ and the chosen regression on $\boldsymbol{Y}$, that is {\sc bic} associated to $\mathbb{P}(\boldsymbol{S}|\boldsymbol{Y},\boldsymbol{X})$. In fact it would be like considering $\boldsymbol{Y}$ as a covariate in $\boldsymbol{X}$ but with distinct structural constraints (no need for the uncrossing-rule (Hypothesis \ref{H2} page \pageref{H2}) for example).  % or a {\sc mse}  but with added computational cost if the {\sc lasso} (for example) has to be computed for each candidate structure in the MCMC. 
+			% If a global {\sc bic} criterion is chosen to find the best structure and the best regression, likelihoods would have to be weighted to give priority to the regression on $\boldsymbol{Y}$ upon the sub-regressions. 
+			%Otherwise, when the number of sub-regressions rises, the quality of the regression on $\boldsymbol{Y}$ would tend to be neglected.
+			 Because $\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X})$ is independent from $\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})$ (by Hypothesis \ref{H3} page \pageref{H3})
+			then, to be of any interest, global optimization would require to constrain $\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X},\boldsymbol{S})$ according to $\boldsymbol{S}$ (in terms of zeros in $\boldsymbol{\beta}$).\\
+			$\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X},\boldsymbol{S})$ could be chosen to be the marginal model without variable selection, or the marginal model with variable selection (by the {\sc lasso} for example), or the plug-in model with or without variable selection at each step.
+			
+			  One possible consequence of global optimization with such a constraint would be a reduced marginalization with some response covariates kept when the correlations implied are not too strong, as a trade-off between the marginal and the plug-in model. A simpler way to achieve this would be a kind of stepwise algorithm with forward variable selection starting with our marginal model and allowing variable selection for each model tested (by \textsc{lasso} for example). 
+			  But it implies to use correlated covariates and we know that it can be a source of problems (it is the main motivation of this thesis).
+			   Removing more covariates (by global optimization) in the marginal model would not be of real interest because we already propose to use variable selection methods (like the {\sc lasso}) to estimate the coefficients and the implied covariates are supposed to be uncorrelated. Global optimization could be replaced by a suitable variable selection algorithm for the regression of $\boldsymbol{Y}$ by $\boldsymbol{X}$ taking the structure $\boldsymbol{S}$ into account, it would be preferable (for interpretation) to have the same structure for every response variable and to only adapt the way to use the structure to estimate the regression coefficients. \\
+							  
+			  
+			   However, to model $\mathbb{P}(\boldsymbol{X},\boldsymbol{Y})$ instead of $\mathbb{P}(\boldsymbol{X})$ would also help to better manage missing values by using $\mathbb{P}(\boldsymbol{X}_M|\boldsymbol{X}_O,\boldsymbol{Y}_O)$ instead of $\mathbb{P}(\boldsymbol{X}_M|\boldsymbol{X}_O)$. Then we would have more information to make imputations. But it would use in the Gibbs sampler $\mathbb{P}(\boldsymbol{Y}|\boldsymbol{X})$ that is what we search. So it would need some additional work. 
+			   
 		\subsection{Pre-treatment for non-linear regression}
 			Polynomial regression, Classification and Regression Trees, and any other method could also benefit from the variable selection pre-treatment implied by our marginal model. Definition of a plug-in model for these methods would be of great interest so it is a challenging perspective. 
 			\subsection{Missing values in classical methods}
@@ -4673,7 +4689,7 @@ There is still a lot of work to do in the field of missing values and we have on
 			Missing values were just introduced here and represent a consequent perspective.
 		\subsection{Improved programming and interpretation}
 			Even if it is written in C++, the algorithm could be optimized by a better usage of sparse matrices, memory usage optimization, and other small things that could reduce computational cost to be faster and allow to work with larger datasets (already works with thousands of covariates).\\
-			Ergonomics of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after this thesis to get closer to this goal as {\sc CorReg} will continue to be used and taught at ArcelorMittal's steel plant of Dunkerque.
+			Ergonomics of the software should be improved to better fit industrial needs. This work is in progress and further work will be provided just after this thesis to get closer to this goal as {\sc CorReg} will continue to be used and taught at ArcelorMittal's steel plants of Dunkerque and Florange.
 			
 		
 \cleardoublepage
