@@ -5,10 +5,10 @@
 \title{Estimates the response variable using a structure}
 \usage{
 correg(X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE,
-  expl = FALSE, explnew = FALSE, pred = FALSE, select = "lar",
-  criterion = c("MSE", "BIC"), X_test = NULL, Y_test = NULL,
-  intercept = TRUE, K = 10, groupe = NULL, Amax = NULL, lambda = 1,
-  returning = FALSE, alpha = NULL, g = 5, compl2 = FALSE)
+  expl = FALSE, pred = FALSE, select = "lar", criterion = c("MSE",
+  "BIC"), X_test = NULL, Y_test = NULL, intercept = TRUE, K = 10,
+  groupe = NULL, Amax = NULL, lambda = 1, returning = FALSE,
+  alpha = NULL, g = 5, compl2 = FALSE, explnew = FALSE)
 }
 \arguments{
 \item{X}{the data matrix (covariates) without the intercept}
@@ -50,6 +50,8 @@ correg(X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE,
 \item{g}{number of group of variables for clere}
 
 \item{compl2}{boolean to compute regression (OLS only) upon [X_f,epsilon] instead of [X_f,X_r]}
+
+\item{explnew}{alternative estimation}
 }
 \description{
 Estimates the response variable using a structure

@@ -28,7 +28,7 @@
 #'    
 #'    #MCMC to find the structure
 #'    res=structureFinder(X=X_appr,verbose=0,reject=0,Maxiter=900,
-#'                nbini=30,candidates=-1,Bic_null_vect=Bic_null_vect,star=TRUE,p1max=15,clean=TRUE)
+#'                nbini=20,candidates=-1,Bic_null_vect=Bic_null_vect,star=TRUE,p1max=15,clean=TRUE)
 #'    hatZ=res$Z_opt
 #'    hatBic=res$bic_opt
 #'    
