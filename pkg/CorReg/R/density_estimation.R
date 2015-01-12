@@ -28,7 +28,6 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
     detailsmat=list() 
   }
   if(package=="Rmixmod"){#si on veut utiliser mixmod
-     require(Rmixmod)
     for (i in 1:p){
       vect=X[!is.na(X[,i]),i]#donnees observees seulement
       nbclustmaxloc=nbclustmax
@@ -51,7 +50,7 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
       }
     }
   }else if(package=="mclust"){#on utilise mclust
-     require(mclust)
+     #requireNamespace(mclust)
     options(warn=-1)
     for (i in 1:p){
       vect=X[!is.na(X[,i]),i]#donnees observees seulement
@@ -93,7 +92,7 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
     }
     options(warn=1)
   }else{#on utilise rtkpp
-     require(rtkpp)
+     requireNamespace(rtkpp)
      for (i in 1:p){
         vect=X[!is.na(X[,i]),i]#donnees observees seulement
         nbclustmaxloc=nbclustmax

@@ -70,7 +70,7 @@ correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = F
   if(select=="NULL"){
     returning=FALSE
   }
-  if(select=="adalasso"){require(parcor)}
+  if(select=="adalasso"){ requireNamespace(parcor)}
   criterion = criterion[1]
   if (is.null(Amax)) {
     Amax = ncol(X) + 1
@@ -109,7 +109,7 @@ correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = F
        res$compl$A[res$compl$A!=0]=c(OLS(X=Xloc,Y=Y,intercept=intercept)$beta)
        res$compl$A=c(res$compl$A)
     }else if(select=="clere"){
-       require(clere)
+       requireNamespace(clere)
        res$compl$A=A_clere(y=as.numeric(Y),x=X,g=g)
     }else if(select=="spikeslab"){
        respike=spikeslab::spikeslab(x=X,y=Y)
