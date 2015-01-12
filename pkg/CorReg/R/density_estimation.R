@@ -92,7 +92,7 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
     }
     options(warn=1)
   }else{#on utilise rtkpp
-     requireNamespace(rtkpp)
+     requireNamespace("rtkpp")
      for (i in 1:p){
         vect=X[!is.na(X[,i]),i]#donnees observees seulement
         nbclustmaxloc=nbclustmax

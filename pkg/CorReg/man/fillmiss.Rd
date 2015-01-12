@@ -5,8 +5,7 @@
 \title{Fill the missing values in the dataset}
 \usage{
 fillmiss(X = X, Z = NULL, mixmod = FALSE, B = NULL, Bt = NULL,
-  res_mixmod = NULL, nbclustmax = 10, X1 = FALSE, package = c("mclust",
-  "Rmixmod", "rtkpp"))
+  res_mixmod = NULL, nbclustmax = 10, X1 = FALSE)
 }
 \arguments{
 \item{X}{the dataset (matrix) with missing values}
@@ -24,8 +23,6 @@ fillmiss(X = X, Z = NULL, mixmod = FALSE, B = NULL, Bt = NULL,
 \item{nbclustmax}{the max number of cluster for mixmod.}
 
 \item{X1}{boolean to say if dependent variables on the right will be filled based on the structure}
-
-\item{package}{package to use (Rmixmod,mclust,rtkpp) to estimate the Gaussian mixtures if mixmod=TRUE.}
 }
 \description{
 Fill the missing values in the dataset

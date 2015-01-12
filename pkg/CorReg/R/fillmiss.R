@@ -8,10 +8,10 @@
 #' @param X1 boolean to say if dependent variables on the right will be filled based on the structure
 #' @param Bt the matrix used for X1 if X1=TRUE
 #' @param B the matrix of the coefficients for sub-regressions
-#' @param package package to use (Rmixmod,mclust,rtkpp) to estimate the Gaussian mixtures if mixmod=TRUE. 
+# ' @param package package to use (Rmixmod,mclust,rtkpp) to estimate the Gaussian mixtures if mixmod=TRUE. 
 #' @export
 
-fillmiss<-function(X=X,Z=NULL,mixmod=FALSE,B=NULL,Bt=NULL,res_mixmod=NULL,nbclustmax=10,X1=FALSE,package=c("mclust","Rmixmod","rtkpp")){
+fillmiss<-function(X=X,Z=NULL,mixmod=FALSE,B=NULL,Bt=NULL,res_mixmod=NULL,nbclustmax=10,X1=FALSE){
    quimank=which(is.na(X),arr.ind=TRUE)
    p=ncol(X)
    if(is.null(Z)){
@@ -42,18 +42,18 @@ fillmiss<-function(X=X,Z=NULL,mixmod=FALSE,B=NULL,Bt=NULL,res_mixmod=NULL,nbclus
             nbclustmax=round(min(nbclustmax,1+n^(0.3)))
             Xloc=X[,quimank[miss,2]]
             Xloc=Xloc[!is.na(Xloc)]
-            strategy=strategy[1]
-            if(package=="mclust"){
-               require(Rmixmod)
+#            strategy=strategy[1]
+#             if(package=="mclust"){
+#                require(Rmixmod)
                res_mixmod=Rmixmod::mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
-            }else if(package=="Rmixmod"){
-               require(Rmixmod)
-               res_mixmod=Rmixmod::mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
-            }
-            else{#rtkpp
-               require(Rmixmod)
-               res_mixmod=Rmixmod::mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
-            }
+#             }else if(package=="Rmixmod"){
+#                require(Rmixmod)
+#                res_mixmod=Rmixmod::mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
+#             }
+#             else{#rtkpp
+#                require(Rmixmod)
+#                res_mixmod=Rmixmod::mixmodCluster(data=Xloc,criterion="BIC",nbCluster=c(1:nbclustmax))["bestResult"]
+#             }
          } 
          resmix=list()
          resmix$nbclust=res_mixmod[1]

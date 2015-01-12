@@ -36,14 +36,14 @@
 #' @param alpha Coefficients of the explicative model to coerce the predictive step. if not NULL explicative step is not computed.
 #' @param g number of group of variables for clere
 #' @param compl2 boolean to compute regression (OLS only) upon [X_f,epsilon] instead of [X_f,X_r]
+#' @param explnew alternative estimation
 #Attention cette fonction dégage une puissance phénoménale (it's over 9000!)
-correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, explnew=FALSE,
-                pred = FALSE,
+correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = FALSE, pred = FALSE,
                 select = "lar",
                 criterion = c("MSE", "BIC"),
                 X_test = NULL, Y_test = NULL, intercept = TRUE, 
                 K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=FALSE,
-                alpha=NULL,g=5,compl2=FALSE) 
+                alpha=NULL,g=5,compl2=FALSE,explnew=FALSE) 
 {
   if(is.null(X)){
      dat<- data.frame(t=seq(0, 2*pi, by=0.1) )
@@ -70,7 +70,7 @@ correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = F
   if(select=="NULL"){
     returning=FALSE
   }
-  if(select=="adalasso"){ requireNamespace(parcor)}
+  if(select=="adalasso"){ requireNamespace("parcor")}
   criterion = criterion[1]
   if (is.null(Amax)) {
     Amax = ncol(X) + 1
@@ -109,7 +109,7 @@ correg<-function (X = NULL, Y = NULL, Z = NULL, B = NULL, compl = TRUE, expl = F
        res$compl$A[res$compl$A!=0]=c(OLS(X=Xloc,Y=Y,intercept=intercept)$beta)
        res$compl$A=c(res$compl$A)
     }else if(select=="clere"){
-       requireNamespace(clere)
+       requireNamespace("clere")
        res$compl$A=A_clere(y=as.numeric(Y),x=X,g=g)
     }else if(select=="spikeslab"){
        respike=spikeslab::spikeslab(x=X,y=Y)
