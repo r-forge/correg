@@ -1497,7 +1497,7 @@ Because it is about model selection, we decide to follow a Bayesian approach (\c
 			
 
 
-\section{Revisiting the Bayesian approach for an over-penalized {\sc bic}}
+\section{Revisiting the Bayesian approach for an over-penalized {\sc bic}} \label{sectionfullgen}
 
 We want to find the most probable structure $\boldsymbol{S}$ knowing the dataset, so we search for the structure that maximizes $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})$ and we have:	
 	\begin{eqnarray}
@@ -1505,9 +1505,9 @@ We want to find the most probable structure $\boldsymbol{S}$ knowing the dataset
 	=\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})\mathbb{P}(\boldsymbol{S})
 	\end{eqnarray}
 In order to implement this paradigm, we need first to describe the three probabilities which are in the right hand of the previous equation.
-	\subsection{Modeling the uncorrelated covariates: a full generative approach on $\mathbb{P}(\boldsymbol{X})$} \label{sectionfullgen}
+	%\subsection{Modeling the uncorrelated covariates: a full generative approach on $\mathbb{P}(\boldsymbol{X})$} 
 	
-
+\subsection{Probability associated to the redundant covariates (responses)}
 \paragraph{Defining} $\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})$ that is the integrated likelihood based on $\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma^2})$. It can be approximated by a {\sc bic}-like approach \cite{Sch1978}
 \begin{equation}
 -2\ln \mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}}^2) + (|\hat{\boldsymbol{\alpha}}| + |\hat{\boldsymbol{\sigma}}^2|) \ln(n) = \mbox{{\sc bic}}_r(\boldsymbol{S}), \nonumber
@@ -1521,7 +1521,7 @@ where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate re
 product of independent Gaussians.
 	
 
-\paragraph{Estimation of the numerical parameters}
+\paragraph{Estimation of the numerical parameters:}
 	$\boldsymbol{S}$ is a discrete parameter but it is associated to numerical parameters $\boldsymbol{\alpha}$ and $\boldsymbol{\varepsilon}$ through Hypothesis \ref{H1}.
 	We can estimate the coefficients of sub-regression by {\sc ols} for example because sub-regression are small, imply independent covariates and do not need variable selection (parsimony comes directly from $\boldsymbol{S}$):
 	\begin{equation}
@@ -1529,9 +1529,11 @@ product of independent Gaussians.
 \end{equation}	 
 And then we get the estimation of $\boldsymbol{\varepsilon}$ relying on $\hat{\boldsymbol{\alpha}}^*$:
 	\begin{equation}
-		\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* .\label{epsilonchapeau}
+		\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* . \label{epsilonchapeau}
 	\end{equation}
 	These estimators will be used in Chapter \ref{chapplugin}.
+	
+\subsection{Probability associated to the free covariates (predictors)}
 \paragraph{Defining $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})=\prod_{j\in J_f}\mathbb{P}(\boldsymbol{X}^j;\boldsymbol{S})$} It corresponds to the integrated likelihood based on a not yet defined distribution $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\boldsymbol{\theta})$ on the uncorrelated covariates $\boldsymbol{X}_f$ and parameterized by $\boldsymbol{\theta}$. In this purpose, we need the following new hypothesis.
 
 \begin{hyp}\label{H4}
@@ -1549,7 +1551,7 @@ Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {
 \begin{equation}
 -2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\hat{\boldsymbol{\theta}}) + |\hat{\boldsymbol{\theta}}| \ln(n) = \mbox{{\sc bic}}_f(\boldsymbol{S}). \nonumber
 \end{equation}
-
+\subsection{Probability associated to the discrete parameter $\boldsymbol{S}$}
 \paragraph{Defining $\mathbb{P}(\boldsymbol{S})$} The most standard choice consists of putting a uniform distribution on the model space $\mathcal{S}_d$, this choice being noted $\mathbb{P}_U(\boldsymbol{S}) = |\mathcal{S}_d|^{-1}$, with $|\mathcal{S}_d|$ the space dimension of $\mathcal{S}_d$ as defined in section \ref{sectiongraph}.
 		
 	%Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
@@ -1560,7 +1562,7 @@ Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {
 \end{itemize}	
 	
 
-\section{Sub-regression model selection}	
+%\section{Sub-regression model selection}	
 
 %			\subsection{Bayesian criterion for quality}
 %			
