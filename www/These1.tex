@@ -1466,6 +1466,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 \paragraph{Abstract:} In the previous chapters, $\boldsymbol{S}$ was supposed to be known, but in fact we have to find it. We define a generative model on the dataset that allows us to introduce a new criterion to evaluate the quality a structure of sub-regression. This new criterion takes into account the huge number of feasible structures. Then we have developed an MCMC algorithm to choose the best $\boldsymbol{S}$.%: an MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
 \section{Choice of model}
 		% ne pas oublier de mentionner les packages existants
+		Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical \textsc{lasso} offers a method \cite{friedman2008sparse} to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
 			\subsection{Cross validation}
 				
 				We want a model that would remain good for new individuals. To have an idea of the stability of a model, it is recommended to test it on a validation sample. Model parameters are estimated with a learning sample and then the model is evaluated (by its predictive \textsc{mse} for example) on a validation sample to avoid over-fitting. But it is not always possible to have a validation sample and over-fitting is a real problem. A solution is to use Cross-Validation \cite{kohavi1995study,arlot2010survey}. It consists in splitting the dataset in $k$ sub-samples ($k$-fold cross-validation) and then each of the $k$ sub-samples is successively used as validation sample for the model learnt with the $k-1$ remaining sub-samples. Each time a quality criterion  is computed (predictive \textsc{mse} or other) and then the mean of this criterion is taken as the global criterion. The global estimator is also the mean of the estimators. The two main issues are:
@@ -1476,14 +1477,19 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 				If $k=n$ we call this method the ``leave-one-out" cross-validation.
 				Cross-validation allows to learn the model using all individuals exactly once for validation.
 				Cross-validation is computed on each model we want to compare and just allows to avoid over-fitting when computing the comparison criterion.
-				It is often used with the Mean Squared Error (\textsc{mse}), for example on the prediction.
+				It is often used with the Mean Squared Error (\textsc{mse}), for example on the prediction.\\
+				
 %				\begin{equation}
 %					\textsc{mse}_{\hat{Y}}=\parallel \boldsymbol{Y}-\hat{\boldsymbol{Y}} \parallel^2_2. \nonumber
 %				\end{equation}
-			\subsection{ Bayesian Information Criterion}
-			Cross-validation depends on a criterion to choose a model. The Mean Squared Error is not the only criterion. Probabilistic criteria can also be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation.
-			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $\mbox{{\sc bic}}$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. $\mbox{{\sc bic}}$ is consistent so it asymptotically points out the true model when $n$ grows. The Akaike Information Criterion \cite{akaike1974new} known as $\mbox{{\sc aic}}$ or the Risk Inflation Criterion \cite{foster1994risk} ($\mbox{{\sc ric}}$) can also be used, or any other criterion \cite{george1993variable} thought to be better in a given context.
-			In this work we decided to start with the $\mbox{{\sc bic}}$ that is approximated by:
+Cross-validation is very time-consuming and thus not friendly with combinatory problems. Moreover, we need a criterion compatible with structures of different sizes ($d_r$ also has to be estimated) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
+Because it is about model selection, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
+	
+
+			\subsection{Bayesian Information Criterion}
+			Cross-validation depends on a criterion to choose a model. The Mean Squared Error is not the only criterion. Probabilistic criteria can also be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation. The Akaike Information Criterion \cite{akaike1974new,yang2005can} known as $\mbox{{\sc aic}}$ is asymptotically optimal in selecting the model with the least mean squared error.
+			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $\mbox{{\sc bic}}$ over simple usage of the likelihood is the penalty added to take into account the number of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. $\mbox{{\sc bic}}$ is consistent so it asymptotically points out the true model when $n$ grows. The Risk Inflation Criterion \cite{foster1994risk} ($\mbox{{\sc ric}}$) can also be used, or any other criterion \cite{george1993variable} thought to be better in a given context.
+			In this work we decided to start with the $\mbox{{\sc bic}}$ that is given by:
 			\begin{equation}
 				\mbox{{\sc bic}}=-2\ln(L(\boldsymbol{\theta}|\boldsymbol{X}))+|\boldsymbol{\theta}|\ln(n)
 			\end{equation}
@@ -1491,22 +1497,14 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 			
 
 
-\section{Bayesian approach}
-Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical \textsc{lasso} offers a method \cite{friedman2008sparse} to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
+\section{Revisiting the Bayesian approach for an over-penalized {\sc bic}}
 
-Cross-validation is very time-consuming and thus not friendly with combinatory problems. Moreover, we need a criterion compatible with structures of different sizes ($d_r$ also has to be estimated) and not related with $\boldsymbol{Y}$ because the structure is inherent to $\boldsymbol{X}$ only. Thus it must be a global criterion. 	
-Because it is about model selection, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
-	
-
-	
-
-\section{Sub-regression structure in details}
 We want to find the most probable structure $\boldsymbol{S}$ knowing the dataset, so we search for the structure that maximizes $\mathbb{P}(\boldsymbol{S}|\boldsymbol{X})$ and we have:	
 	\begin{eqnarray}
 	 \label{approxBIC} \mathbb{P}(\boldsymbol{S}|\boldsymbol{X})&\propto & \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})\mathbb{P}(\boldsymbol{S})
 	=\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})\mathbb{P}(\boldsymbol{S})
 	\end{eqnarray}
-In order to implement this paradigm, we need first to define the three probabilities which are in the right hand of the previous equation.
+In order to implement this paradigm, we need first to describe the three probabilities which are in the right hand of the previous equation.
 	\subsection{Modeling the uncorrelated covariates: a full generative approach on $\mathbb{P}(\boldsymbol{X})$} \label{sectionfullgen}
 	
 
@@ -1608,20 +1606,43 @@ In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc
 
 %	 
 %	
-		\subsection{Some indicators for proximity} \label{sectioncompZ}
-		The first criterion is $\mbox{{\sc bic}}_*$ which is maximized in the MCMC. But its value does not have any intrinsic meaning. To show how far the found structure is from the true one in terms of $\boldsymbol{S}$ we define some indicators to compare the true model $\boldsymbol{S}$ and the found one $\hat{\boldsymbol{S}}$.
-			Global indicators:
-			\begin{itemize}
-				\item $T_r=|J_r \cap \hat{J}_r|$ (``True Responses''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are {\it truly} response covariates in the true model $\boldsymbol{S}$.
-				\item $W_r=|\hat{J}_r|-T_r$ (``Wrong Responses''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are are {\it wrongfully} response covariates in the true model $\boldsymbol{S}$.
-				\item $M_r=d_r-T_r$ (``Missing Responses''): the number of true response variables not found.
-				\item $\Delta d_r=d_r-\hat{d_r}$: the gap between the number of sub-regression in both model. The sign defines if $\hat{\boldsymbol{S}}$ is too complex or too simple compared to the true model.
-				\item $\Delta compl=\sum_{j=1}^{d_r}d_p^j$: the difference in complexity between both models.
-			\end{itemize}
+			
+			
+	\section{Random walk to optimize the criterion}
+		We have to choose a model from a finite space of models, with a criterion to compare them. We choose to use a random walk with some properties:
+		\begin{itemize}
+			\item The walk has to be able to go from any structure to any other.
+			\item Each step has rely on the chosen quality criterion for the structure. 
+		\end{itemize}
+		Then we have to define neighbourhoods and probability transitions that verify these two properties.
 
-			
-			
-	\section{The walk}
+	
+	
+	\subsection{Transition probabilities}
+		Once we have neighbourhoods $\mathcal{V}(\boldsymbol{S})$ that allow to go from any structure to any other, we have to choose a candidate for the next step.
+The walk follows a time-homogeneous Markov Chain whose transition matrix %$\mathcal{P}$ 
+has $|\mathcal{S}_d|$ rows and columns (extremely wide  and sparse matrix for $d>10$ so we just compute the probabilities when we need them).
+	At each step the Markov chain moves with probability:
+	\begin{eqnarray}
+			\forall \boldsymbol{S} \in \mathcal{S}_d, \forall \boldsymbol{S}^+\in \mathcal{V}(\boldsymbol{S}): %\mathcal{P}_{\boldsymbol{S},\boldsymbol{S}^+}=
+			\mathbb{P}(\boldsymbol{S}^+|\mathcal{V}(\boldsymbol{S}))&=&\frac{\exp{(-\mbox{{\sc bic}}_*(\boldsymbol{S}^+))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}} \label{transitionproba}
+	\end{eqnarray}
+	and $\mathcal{S}_d$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
+	 
+Because the walk follows a regular and thus ergodic Markov chain with a finite state space, it has exactly one stationary distribution \cite{grinstead1997introduction}. %: $\pi$ and every rows of $\operatorname{lim}_{k\rightarrow \infty}\mathcal{P}^k=W$ equals $\pi$.
+%	
+%	
+%	With $\forall S \in  \mathcal{S}$ :
+%	\begin{eqnarray}		
+%		0 \leq &\pi (S)& \leq 1 \nonumber \\
+%		\sum_{S \in \mathcal{S}}\pi(S) &=&1 \nonumber \\
+%		\pi (S) &=&\sum_{\tilde{S}\in \mathcal{S}} \pi(\tilde{S})\mathcal{P}(\tilde{S},S) \\%définition de la lois stationnaire
+%	\end{eqnarray}
+%	
+But the walk can also be seen as a Gibbs sampler \cite{casella1992explaining} that alternate draws of $\boldsymbol{S}$ and  $\mathcal{V}(\boldsymbol{S})$ with stationary distribution $\pi \propto \operatorname{exp}(-\mbox{{\sc bic}}_*(\cdot))$ on the space $\mathcal{S}_d$.
+	
+The output of the algorithm will be the best structure in terms of $P(\boldsymbol{S}|\boldsymbol{X})$ which weights each candidate. 
+	
 		\subsection{Deterministic neighbourhood}
 	
 We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\boldsymbol{S}$ composed of the following four {\it specific} neighbourhood spaces $\mathcal{V}(\boldsymbol{S})=\mathcal{V}_{r+}(\boldsymbol{S})\cup\mathcal{V}_{r-}(\boldsymbol{S})\cup\mathcal{V}_{p+}(\boldsymbol{S})\cup\mathcal{V}_{p-}(\boldsymbol{S})$ described below:
@@ -1646,33 +1667,7 @@ We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\
 \end{eqnarray}	
 	%\end{itemize}	
 	We just want to find the best model and this neighbourhood is deterministic so it does not need to contain the current structure $\boldsymbol{S}$.
-	
-	
-	
-	\subsection{Transition probabilities}
-		Once we have a neighbourhood, we have to choose a candidate for the next step.
-The walk follows a time-homogeneous Markov Chain whose transition matrix %$\mathcal{P}$ 
-has $|\mathcal{S}_d|$ rows and columns (extremely wide  and sparse matrix for $d>10$ so we just compute the probabilities when we need them).
-	At each step the Markov chain moves with probability:
-	\begin{eqnarray}
-			\forall \boldsymbol{S} \in \mathcal{S}_d, \forall \boldsymbol{S}^+\in \mathcal{V}(\boldsymbol{S}): %\mathcal{P}_{\boldsymbol{S},\boldsymbol{S}^+}=
-			\mathbb{P}(\boldsymbol{S}^+|\mathcal{V}(\boldsymbol{S}))&=&\frac{\exp{(-\mbox{{\sc bic}}_*(\boldsymbol{S}^+))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}} \label{transitionproba}
-	\end{eqnarray}
-	and $\mathcal{S}_d$ is a finite state space.%la relaxation rend P non symétrique mais ne remets  pas en cause l'homogénéité	
-	 
-Because the walk follows a regular and thus ergodic Markov chain with a finite state space, it has exactly one stationary distribution \cite{grinstead1997introduction}. %: $\pi$ and every rows of $\operatorname{lim}_{k\rightarrow \infty}\mathcal{P}^k=W$ equals $\pi$.
-%	
-%	
-%	With $\forall S \in  \mathcal{S}$ :
-%	\begin{eqnarray}		
-%		0 \leq &\pi (S)& \leq 1 \nonumber \\
-%		\sum_{S \in \mathcal{S}}\pi(S) &=&1 \nonumber \\
-%		\pi (S) &=&\sum_{\tilde{S}\in \mathcal{S}} \pi(\tilde{S})\mathcal{P}(\tilde{S},S) \\%définition de la lois stationnaire
-%	\end{eqnarray}
-%	
-But the walk can also be seen as a Gibbs sampler \cite{casella1992explaining} that alternate draws of $\boldsymbol{S}$ and  $\mathcal{V}(\boldsymbol{S})$ with stationary distribution $\pi \propto \operatorname{exp}(-\mbox{{\sc bic}}_*(\cdot))$ on the space $\mathcal{S}_d$.
-	
-The output of the algorithm will be the best structure in terms of $P(\boldsymbol{S}|\boldsymbol{X})$ which weights each candidate. 
+		
 	
 	\subsection{Stochastic neighbourhood}
 	We see that $|\mathcal{V}(\boldsymbol{S})|$ can be very large. Large neighbourhoods are bad in terms of computational cost but also in terms of efficiency: the denominator in equation (\ref{transitionproba}) increases with the number of candidates. A classical way to avoid such a problem is to reduce the neighbourhood to a random subset and then to allow stationarity (to keep the walk's properties). %But then we face a problem: how to choose candidates in a deterministic neighbourhood made of several sub-neighbourhoods?\\
@@ -1905,6 +1900,18 @@ We define the complexity of a structure $\boldsymbol{S}$ as the number of elemen
 	\end{center}
 	
 \FloatBarrier
+
+		\subsection{Some indicators for proximity} \label{sectioncompZ}
+		The first criterion is $\mbox{{\sc bic}}_*$ which is maximized in the MCMC. But its value does not have any intrinsic meaning. To show how far the found structure is from the true one in terms of $\boldsymbol{S}$ we define some indicators to compare the true model $\boldsymbol{S}$ and the found one $\hat{\boldsymbol{S}}$.
+			Global indicators:
+			\begin{itemize}
+				\item $T_r=|J_r \cap \hat{J}_r|$ (``True Responses''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are {\it truly} response covariates in the true model $\boldsymbol{S}$.
+				\item $W_r=|\hat{J}_r|-T_r$ (``Wrong Responses''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are are {\it wrongfully} response covariates in the true model $\boldsymbol{S}$.
+				\item $M_r=d_r-T_r$ (``Missing Responses''): the number of true response variables not found.
+				\item $\Delta d_r=d_r-\hat{d_r}$: the gap between the number of sub-regression in both model. The sign defines if $\hat{\boldsymbol{S}}$ is too complex or too simple compared to the true model.
+				\item $\Delta compl=\sum_{j=1}^{d_r}d_p^j$: the difference in complexity between both models.
+			\end{itemize}
+
 			
 \section{Conclusion}	We now have an algorithm and a criterion to find the best structure of correlations. This algorithm is extremely flexible: no heavy hypotheses on the dataset, no crucial parameter to tune by hand. We want then to know how efficient it is on simulated datasets first (Chapter \ref{sectionsimul}), and then on real industrial datasets from ArcelorMittal to confirm the utility of both the new model and the algorithm in the real life (Chapter \ref{sectionrealcase}).	
 		\paragraph{Remark:} Choosing whether we have to use or not the structure to make a pre-treatment is independent of the utility of the structure. Knowing explicitly the complex correlations that hold the dataset is a real stake when times come to interpret the model and to decide actions. Our explicit structure describes in details the complexity of the situation so we can then act knowing what we do. 		
