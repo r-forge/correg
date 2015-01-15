@@ -210,9 +210,13 @@ Steel making is continuously improving and we are now able to produce steel that
 	But linear regression is in trouble when correlations between the covariates are strong, as we will see later (Chapter \ref{stateart}). So we have decided to investigate some ways to overcome correlations issues in linear regression, keeping in mind industrial constraints about variable selection and interpretability.
 	
 	\section{Outline of the manuscript}% plan détaillé
-		After a substantial abstract in french, we start with a brief state of the art
-
-\chapter{Résumé substantiel en français}
+		After a substantial abstract in french (Chapter \ref{frenchsum}), we start with a brief state of the art (Chapter \ref{stateart}) that lists some classical regression methods and explains why they do not respect our industrial needs because of correlation issues or lack of variable selection or interpretability. It leads us to define a new model.\\
+		
+		We first define an explicit structure of sub-regressions (Chapter \ref{chapexpl}) to explain correlations between the covariates. Then we use this structure to obtain a reduced model (by marginalization) with orthogonal covariates. It can be seen as a kind of variable pre-selection that allows usage of any estimator (including variable selection tools). The structure itself is used for interpretation by the distinction between redundant and irrelevant covariates. An MCMC algorithm is provided (Chapter \ref{chapterMCMC}) to find the sub-regressions structure, relying on a Bayesian criterion and a full generative model on the covariates. Numerical results are then provided (Chapter \ref{sectionsimul}) on both simulated datasets and real datasets (Chapter \ref{sectionrealcase}) from steel industry without too much details because of industrial secret. The package {\tt CorReg}, on CRAN, implements all this work and allows to retrieve the results given here. \\
+		
+		In a second part, we use the marginal model and its estimated residuals to obtain a new sequential model by plug-in (Chapter \ref{chapplugin}) that is asymptotically unbiased (the marginal one could be biased). Another application of the generative model on the dataset and the structure of sub-regressions is that we are able to compute conditional distributions and then to manage missing values (Chapter \ref{chapmiss}).  
+		
+\chapter{Résumé substantiel en français}\label{frenchsum}
 	\section{Position du problème}
 	La régression linéaire est l'outil de modélisation le plus classique et se résume à une équation bien connue%\footnote{En général la constante est ajoutée comme un des régresseurs avec par exemple $\boldsymbol{X}^1=(1,\ldots,1)'$. Le coefficient correspondant dans $\boldsymbol{\beta}$ est alors la constante de régression $\beta_1$.} :
 	\begin{equation}
@@ -429,8 +433,17 @@ Most of the tools described here are explained with more details in the book fro
 In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^d(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^d|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_d|)$. Vectors, matrices and tuples are in bold characters.
 \section{Regression}
 	\subsection{General purpose}
+		Regression methods are the statistical methods that aim to estimate relationships between response variables and some predictor covariates. This relationship can have many shapes, from linear relationship to any non-linear relationship. The term "Regression" comes from a study of Francis GALTON in the $19^{th}$ century about the heights of several successive generations of citizens that tends to "regress" towards the mean. 
+	
 	\subsection{Linear models}
+       Linear regression is a statistical method modeling the relationship between a response variable and some covariates by a linear function of these covariates.
+			\begin{equation}
+				\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}
+			\end{equation}
+			where $\boldsymbol{X}$ is the $n\times d$ matrix of the explicative variables, % (that is a sub-matrix of $\tilde{\boldsymbol{X}}$ the $n\times \tilde{p}$ matrix of provided covariates)
+	 $\boldsymbol{Y}$ the  $n\times 1$ response vector and $\boldsymbol{\varepsilon}$ some $n\times 1$ noise vector (because the model is only a model and reality is not linear) and $\boldsymbol{\beta}$ is the $d\times 1$ vector of the coefficients of regression. This is an explicit modeling of the relationship between the response variable and its predictors, easy to understand even for non-statisticians. Several linear model will be detailed in this chapter.
 	\subsection{Non-linear models}\label{cart}
+	Some non-linear models are known to be easy to interpret and have a good reputation in industry.
 		\subsubsection{Bayesian networks}
 		
 		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} model the covariates and their conditional dependencies via a Directed Acyclic Graph (DAG). 
@@ -445,7 +458,6 @@ In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\
 	\includegraphics[width=350px]{figures/SimpleBayesNet.png}\label{basicBayes}
 	\caption{Simple Bayesian network and its probability tables. Public domain image.}
 \end{figure}		
-		
 		Such conditionals dependencies are used in chapter \ref{chapmiss} when confronted to missing values. \\
 		
 		Figure \ref{basicBayes} illustrates a simpler case with dependency between the sprinkler activation and rain. It also shows probability tables associated to the Bayesian network.
