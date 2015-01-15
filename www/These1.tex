@@ -210,7 +210,7 @@ Steel making is continuously improving and we are now able to produce steel that
 	But linear regression is in trouble when correlations between the covariates are strong, as we will see later (Chapter \ref{stateart}). So we have decided to investigate some ways to overcome correlations issues in linear regression, keeping in mind industrial constraints about variable selection and interpretability.
 	
 	\section{Outline of the manuscript}% plan détaillé
-		
+		After a substantial abstract in french, we start with a brief state of the art
 
 \chapter{Résumé substantiel en français}
 	\section{Position du problème}
@@ -430,7 +430,7 @@ In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\
 \section{Regression}
 	\subsection{General purpose}
 	\subsection{Linear models}
-	\subsection{Non-linear models}
+	\subsection{Non-linear models}\label{cart}
 		\subsubsection{Bayesian networks}
 		
 		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} model the covariates and their conditional dependencies via a Directed Acyclic Graph (DAG). 
@@ -461,7 +461,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 	
 		
 	
-\subsubsection{Classification and Regression Trees ({\sc cart})}\label{cart}
+\subsubsection{Classification and Regression Trees ({\sc cart})}
 		%\cite{quinlan1986induction} à vérifier
 
 	
@@ -1463,8 +1463,8 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 
 
 \chapter{Estimation of the structure of sub-regression by MCMC}\label{chapterMCMC}
-\paragraph{Abstract:} In the previous chapters, $\boldsymbol{S}$ was supposed to be known, but in fact we have to find it. We define a generative model on the dataset that allows us to introduce a new criterion to evaluate the quality a structure of sub-regression. This new criterion takes into account the huge number of feasible structures. Then we have developed an MCMC algorithm to choose the best $\boldsymbol{S}$.%: an MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
-\section{Choice of model}
+\paragraph{Abstract:} In the previous chapters, $\boldsymbol{S}$ was supposed to be known, but in fact we have to find it. We define a generative model on the dataset, but also a probabilistic hypothesis on the structure that allows us to introduce a new criterion to evaluate the quality a structure of sub-regression. This new criterion takes into account the huge number of feasible structures. Then we have developed an MCMC algorithm to choose the best $\boldsymbol{S}$.%: an MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
+\section{Choice of model: Brief state of the art}
 		% ne pas oublier de mentionner les packages existants
 		Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical \textsc{lasso} offers a method \cite{friedman2008sparse} to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
 			\subsection{Cross validation}
@@ -1487,8 +1487,8 @@ Because it is about model selection, we decide to follow a Bayesian approach (\c
 	
 
 			\subsection{Bayesian Information Criterion}
-			Cross-validation depends on a criterion to choose a model. The Mean Squared Error is not the only criterion. Probabilistic criteria can also be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation. The Akaike Information Criterion \cite{akaike1974new,yang2005can} known as $\mbox{{\sc aic}}$ is asymptotically optimal in selecting the model with the least mean squared error.
-			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $\mbox{{\sc bic}}$ over simple usage of the likelihood is the penalty added to take into account the number of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. $\mbox{{\sc bic}}$ is consistent so it asymptotically points out the true model when $n$ grows. The Risk Inflation Criterion \cite{foster1994risk} ($\mbox{{\sc ric}}$) can also be used, or any other criterion \cite{george1993variable} thought to be better in a given context.
+			Cross-validation depends on a criterion to choose a model. The Mean Squared Error is not the only criterion. Probabilistic criteria can also be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation. The Akaike Information Criterion \cite{akaike1974new} known as $\mbox{{\sc aic}}$ is asymptotically optimal in selecting the model with the least mean squared error (see \cite{stone1977asymptotic}).
+			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating,yang2005can} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $\mbox{{\sc bic}}$ over simple usage of the likelihood is the penalty added to take into account the number of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. $\mbox{{\sc bic}}$ is consistent so it asymptotically points out the true model when $n$ grows. The Risk Inflation Criterion \cite{foster1994risk} ($\mbox{{\sc ric}}$) can also be used, or any other criterion \cite{george1993variable} thought to be better in a given context.
 			In this work we decided to start with the $\mbox{{\sc bic}}$ that is given by:
 			\begin{equation}
 				\mbox{{\sc bic}}=-2\ln(L(\boldsymbol{\theta}|\boldsymbol{X}))+|\boldsymbol{\theta}|\ln(n)
@@ -1519,6 +1519,19 @@ where $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}^2$ designate re
 \nonumber
 \end{displaymath}
 product of independent Gaussians.
+	
+
+\paragraph{Estimation of the numerical parameters}
+	$\boldsymbol{S}$ is a discrete parameter but it is associated to numerical parameters $\boldsymbol{\alpha}$ and $\boldsymbol{\varepsilon}$ through Hypothesis \ref{H1}.
+	We can estimate the coefficients of sub-regression by {\sc ols} for example because sub-regression are small, imply independent covariates and do not need variable selection (parsimony comes directly from $\boldsymbol{S}$):
+	\begin{equation}
+	 \forall j \in \{1,\dots,d_r \}, \hat{\boldsymbol{\alpha}}_j=((\boldsymbol{X}^{J_p^j})' \boldsymbol{X}^{J_p^j})^{-1} (\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_r^j} .\label{estimalpha}
+\end{equation}	 
+And then we get the estimation of $\boldsymbol{\varepsilon}$ relying on $\hat{\boldsymbol{\alpha}}^*$:
+	\begin{equation}
+		\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* .\label{epsilonchapeau}
+	\end{equation}
+	These estimators will be used in Chapter \ref{chapplugin}.
 \paragraph{Defining $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})=\prod_{j\in J_f}\mathbb{P}(\boldsymbol{X}^j;\boldsymbol{S})$} It corresponds to the integrated likelihood based on a not yet defined distribution $\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\boldsymbol{\theta})$ on the uncorrelated covariates $\boldsymbol{X}_f$ and parameterized by $\boldsymbol{\theta}$. In this purpose, we need the following new hypothesis.
 
 \begin{hyp}\label{H4}
@@ -1546,19 +1559,7 @@ Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {
 \item In practice, Gaussian mixture models are estimated only once for each variable $\boldsymbol{X}^j$ ($j=1,\ldots,d$). Thus, there is no combinatorial difficulty associated with them. An {\sc em} algorithm \cite{dempster1977maximum} will be used for estimating the mixture parameters and a classical {\sc bic} criterion \cite{Sch1978} will be used for selecting the different number of components $k_j$.
 \end{itemize}	
 	
-	
 
-\subsection{Estimation of the numerical parameters}
-	$\boldsymbol{S}$ is a discrete parameter but it is associated to numerical parameters $\boldsymbol{\alpha}$ and $\boldsymbol{\varepsilon}$ through Hypothesis \ref{H1}.
-	We can estimate the coefficients of sub-regression by {\sc ols} for example because sub-regression are small, imply independent covariates and do not need variable selection (parsimony comes directly from $\boldsymbol{S}$):
-	\begin{equation}
-	 \forall j \in \{1,\dots,d_r \}, \hat{\boldsymbol{\alpha}}_j=((\boldsymbol{X}^{J_p^j})' \boldsymbol{X}^{J_p^j})^{-1} (\boldsymbol{X}^{J_p^j})'\boldsymbol{X}^{J_r^j} .\label{estimalpha}
-\end{equation}	 
-And then we get the estimation of $\boldsymbol{\varepsilon}$ relying on $\hat{\boldsymbol{\alpha}}^*$:
-	\begin{equation}
-		\hat{\boldsymbol{\varepsilon}}=\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* .\label{epsilonchapeau}
-	\end{equation}
-	These estimators will be used in Chapter \ref{chapplugin}.
 \section{Sub-regression model selection}	
 
 %			\subsection{Bayesian criterion for quality}
@@ -1609,15 +1610,13 @@ In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc
 			
 			
 	\section{Random walk to optimize the criterion}
-		We have to choose a model from a finite space of models, with a criterion to compare them. We choose to use a random walk with some properties:
+		We have to choose a model from a finite space of models ($\boldsymbol{S}$ is a discrete parameter), with a criterion to compare them. We choose to use a random walk (Markov Chain \cite{robert2005monte})with some properties:
 		\begin{itemize}
 			\item The walk has to be able to go from any structure to any other.
 			\item Each step has rely on the chosen quality criterion for the structure. 
 		\end{itemize}
 		Then we have to define neighbourhoods and probability transitions that verify these two properties.
 
-	
-	
 	\subsection{Transition probabilities}
 		Once we have neighbourhoods $\mathcal{V}(\boldsymbol{S})$ that allow to go from any structure to any other, we have to choose a candidate for the next step.
 The walk follows a time-homogeneous Markov Chain whose transition matrix %$\mathcal{P}$ 
@@ -1911,9 +1910,8 @@ We define the complexity of a structure $\boldsymbol{S}$ as the number of elemen
 				\item $\Delta d_r=d_r-\hat{d_r}$: the gap between the number of sub-regression in both model. The sign defines if $\hat{\boldsymbol{S}}$ is too complex or too simple compared to the true model.
 				\item $\Delta compl=\sum_{j=1}^{d_r}d_p^j$: the difference in complexity between both models.
 			\end{itemize}
-
 			
-\section{Conclusion}	We now have an algorithm and a criterion to find the best structure of correlations. This algorithm is extremely flexible: no heavy hypotheses on the dataset, no crucial parameter to tune by hand. We want then to know how efficient it is on simulated datasets first (Chapter \ref{sectionsimul}), and then on real industrial datasets from ArcelorMittal to confirm the utility of both the new model and the algorithm in the real life (Chapter \ref{sectionrealcase}).	
+\section{Conclusion} We now have an algorithm and a criterion to find the best structure of correlations. This algorithm is extremely flexible: no heavy hypotheses on the dataset, no crucial parameter to tune by hand. We want then to know how efficient it is on simulated datasets first (Chapter \ref{sectionsimul}), and then on real industrial datasets from ArcelorMittal to confirm the utility of both the new model and the algorithm in the real life (Chapter \ref{sectionrealcase}).	
 		\paragraph{Remark:} Choosing whether we have to use or not the structure to make a pre-treatment is independent of the utility of the structure. Knowing explicitly the complex correlations that hold the dataset is a real stake when times come to interpret the model and to decide actions. Our explicit structure describes in details the complexity of the situation so we can then act knowing what we do. 		
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
 \paragraph{Abstract:} Here are the numerical results obtained for an unknown structure $\boldsymbol{S}$ on simulated datasets. It illustrates efficiency of the MCMC algorithm used to find a relevant structure between the covariates. The fact that the structure is unknown makes the simulations more similar to a real case study where we do not even know if there is a linear structure of correlations between the covariates.
