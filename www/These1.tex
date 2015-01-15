@@ -33,7 +33,7 @@ commentstyle=\color{OliveGreen}, % white comments
 } % no special string spaces
 
 \author{Clément TH\'ERY}
-\title{Model-based linear regression \\ for correlated  and missing covariates.\\ Application to steel industry datasets.}
+\title{Model-based covariable decorrelation \\ in linear regression.\\ Application to missing data and to steel industry.}
 
 %%%% debut macro %%%%
 \newenvironment{changemargin}[2]{\begin{list}{}{%
@@ -77,7 +77,7 @@ commentstyle=\color{OliveGreen}, % white comments
 
 
 \chapter*{Résumé}
-	Les travaux effectués durant cette thèse ont pour but de pouvoir pallier le problème des corrélations au sein des bases de données, particulièrement fréquentes dans le cadre industriel. Une modélisation explicite des corrélations par un système de sous-régressions entre covariables permet de pointer les sources des corrélations et d'isoler certaines variables redondantes. 
+	Les travaux effectués durant cette thèse ont pour but de pallier le problème des corrélations au sein des bases de données, particulièrement fréquentes dans le cadre industriel. Une modélisation explicite des corrélations par un système de sous-régressions entre covariables permet de pointer les sources des corrélations et d'isoler certaines variables redondantes. 
 	\\
 	
 	Il en découle une pré-sélection de variables nettement moins corrélées sans perte significative d'information et avec un fort potentiel explicatif (la pré-selection elle-même est expliquée par la structure de sous-régression qui est simple à comprendre car uniquement constituée de modèles linéaires). \\
@@ -87,7 +87,7 @@ commentstyle=\color{OliveGreen}, % white comments
 	Par la suite, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter l'information résiduelle contenue dans les variables redondantes de manière séquentielle. On utilise ainsi toute l'information sans souffrir des corrélations entre covariables.
 	\\
 	
-	Enfin, le modèle génératif complet offre la perspective de pouvoir être utilisé pour gérer d'éventuelles valeurs manquantes dans les données. Cela permet la recherche de structure malgré l'absence de certaines données. Mais un autre débouché est l'imputation multiple des données manquantes, préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. De plus, l'imputation multiple des valeurs manquantes permet d'obtenir un estimateur de la variance des valeurs imputées  .
+	Enfin, le modèle génératif complet offre la perspective de pouvoir être utilisé pour gérer d'éventuelles valeurs manquantes dans les données. Cela permet la recherche de structure malgré l'absence de certaines données. Mais un autre débouché est l'imputation multiple des données manquantes, préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. De plus, l'imputation multiple des valeurs manquantes permet d'obtenir un estimateur de la variance des valeurs imputées.
 	Encore une fois, la régression linéaire vient illustrer l'apport de la méthode qui reste cependant générique et pourrait être appliquée à d'autres contextes tels que le clustering.
 	\\	
 	
