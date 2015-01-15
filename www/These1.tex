@@ -1463,7 +1463,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 
 
 \chapter{Estimation of the structure of sub-regression by MCMC}\label{chapterMCMC}
-\paragraph{Abstract:} In the previous chapters, $\boldsymbol{S}$ was supposed to be known. But in fact we have to find it so we developed an algorithm to choose the best $\boldsymbol{S}$. An MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
+\paragraph{Abstract:} In the previous chapters, $\boldsymbol{S}$ was supposed to be known, but in fact we have to find it. We define a generative model on the dataset that allows us to introduce a new criterion to evaluate the quality a structure of sub-regression. This new criterion takes into account the huge number of feasible structures. Then we have developed an MCMC algorithm to choose the best $\boldsymbol{S}$.%: an MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
 \section{Choice of model}
 		% ne pas oublier de mentionner les packages existants
 			\subsection{Cross validation}
@@ -1474,14 +1474,14 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 					\item It can be time consuming as the model is estimated $k$ times.
 				\end{itemize}
 				If $k=n$ we call this method the ``leave-one-out" cross-validation.
-				Cross-validation allows to learn the model using all individual exactly once for validation.
+				Cross-validation allows to learn the model using all individuals exactly once for validation.
 				Cross-validation is computed on each model we want to compare and just allows to avoid over-fitting when computing the comparison criterion.
-				It is often used with the Mean Squared Error (\textsc{mse}), for example on the prediction:
-				\begin{equation}
-					\textsc{mse}_{\hat{Y}}=\parallel \boldsymbol{Y}-\hat{\boldsymbol{Y}} \parallel^2_2 . \nonumber
-				\end{equation}
+				It is often used with the Mean Squared Error (\textsc{mse}), for example on the prediction.
+%				\begin{equation}
+%					\textsc{mse}_{\hat{Y}}=\parallel \boldsymbol{Y}-\hat{\boldsymbol{Y}} \parallel^2_2. \nonumber
+%				\end{equation}
 			\subsection{ Bayesian Information Criterion}
-			Cross-validation depends on a criterion to be used as a method to choose a model. The Mean Squared Error is not the only criterion. Probabilistic criteria can also be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation.
+			Cross-validation depends on a criterion to choose a model. The Mean Squared Error is not the only criterion. Probabilistic criteria can also be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation.
 			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $\mbox{{\sc bic}}$ over simple usage of the likelihood is the penalty added to take into account the numbers of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. $\mbox{{\sc bic}}$ is consistent so it asymptotically points out the true model when $n$ grows. The Akaike Information Criterion \cite{akaike1974new} known as $\mbox{{\sc aic}}$ or the Risk Inflation Criterion \cite{foster1994risk} ($\mbox{{\sc ric}}$) can also be used, or any other criterion \cite{george1993variable} thought to be better in a given context.
 			In this work we decided to start with the $\mbox{{\sc bic}}$ that is approximated by:
 			\begin{equation}
