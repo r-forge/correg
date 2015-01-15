@@ -154,7 +154,7 @@ commentstyle=\color{OliveGreen}, % white comments
           \end{tabular} \caption{Quick overview of the steel making process, from hot liquid metal to coils.}\label{imagesprocess}
           \end{figure}
         \end{center}
-Steel making is continuously improving and we are now able to produce steel that is both thinner and stronger. Steel is 100$\%$ recyclable unlike petroleum so we will continue to use it widely in the future. This quickly evolving industry is associated to a lot of research in metallurgy but also need adapted statistical tools. That is why this thesis has been made.
+Steel making is continuously improving and we are now able to produce steel that is both thinner and stronger. Steel is 100$\%$ recyclable unlike petroleum so we will continue to use it widely in the future. This quickly evolving industry is associated to a lot of research in metallurgy but also needs adapted statistical tools. That is why this thesis has been made.
 	
 	\subsection{Impact of the industrial context}
 	 The main objective is to be able to solve quality crisis when they occur. In such a case, a new type of unknown quality issue is observed and we may have no idea of its origin. Defects, even generated at the beginning of the process, are often detected in its last part. The steel-making process includes several sub-process. Thus we have many covariates and no a priori on the relevant ones. Moreover, the values of each covariate are linked to the characteristics of the final product, and many physical laws and tuning models are implied in the process. Therefore the covariates are highly correlated.
@@ -407,9 +407,7 @@ Cet estimateur nous permet de réduire le bruit du modèle marginal, afin d'essa
 \paragraph{Abstract:} Brief state of the art to have a glimpse of regression methods we could try to solve our problematic.
 Most of the tools described here are explained with more details in the book from  Hastie, Tibshirani et Friedman: {\it ``The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible on web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}} for free. The main goal of this chapter is to provide a quick overview of linear regression and the reasons why a new method was needed in our industrial context. It is not a book or a course about regression. References are provided for all presented methods.
 	
-
 	
-	\section{Linear regression}
 %		\subsection{Historic interest}
 %			méthode ancienne et reconnue, remonte aux origines des statistiques, méthode pionnière en prédiction.
 %		\subsection{Simplicity}
@@ -429,6 +427,76 @@ Most of the tools described here are explained with more details in the book fro
 
 \paragraph{Notations:}	
 In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^d(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^d|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_d|)$. Vectors, matrices and tuples are in bold characters.
+\section{Regression}
+	\subsection{General purpose}
+	\subsection{Linear models}
+	\subsection{Non-linear models}
+		\subsubsection{Bayesian networks}
+		
+		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} model the covariates and their conditional dependencies via a Directed Acyclic Graph (DAG). 
+		Such an orientation is very user-friendly because it is similar to the way we imagine causality. 
+		But it is only about conditional dependencies. %Conditional dependencies allow to use information from independent covariates. 
+		The usual example is the case of wet grass in a garden.
+		 You do not remember if the sprinkler was on or off and you do not know if it has rain.% and these two facts are independent. 
+		 Then you look at the grass in your neighbour's garden and it is not wet \dots \\
+		You will deduce that your sprinkler was on. 
+\begin{figure}
+	\centering
+	\includegraphics[width=350px]{figures/SimpleBayesNet.png}\label{basicBayes}
+	\caption{Simple Bayesian network and its probability tables. Public domain image.}
+\end{figure}		
+		
+		Such conditionals dependencies are used in chapter \ref{chapmiss} when confronted to missing values. \\
+		
+		Figure \ref{basicBayes} illustrates a simpler case with dependency between the sprinkler activation and rain. It also shows probability tables associated to the Bayesian network.
+		Bayesian networks are quite good in terms of interpretation because of that graphical and oriented representation of conditional probabilities. 
+		But they suffer from great dimension (combinatory issue) and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). 
+		The choice of the way to discretise the dataset has a great impact on the results and nothing can help if you have no a priori on the result you want to obtain. 
+		Computation relies on a table that describes all possible combinations for each covariate. 
+		Hence it is extremely combinatory if the graph has too much edges or is not sparse enough. 
+		Moreover, you need to define the graph before computing the bayesian network and without a priori it can be challenging and time consuming.\\
+		
+The concept of representing dependencies with directed acyclic graph is good an we keep it in our model. Thus we will keep the ease of interpretation.		
+			
+	
+		
+	
+\subsubsection{Classification and Regression Trees ({\sc cart})}\label{cart}
+		%\cite{quinlan1986induction} à vérifier
+
+	
+		Classification And Regression Trees ({\sc cart}) \cite{breiman1984classification} are extremely simple to use and interpret, can work simultaneously with quantitative and qualitative covariates and are very fast to compute. They consist in recursive partitioning of the sample according to binary rules on the covariate (only one at a time) to obtain a hierarchy defined by simple rules and containing pure leaves (same value). It is followed by a pruning method to obtain leaves that are quite homogeneous and described with simple rules.\\
+		
+		\begin{figure}
+			\centering
+				\includegraphics[width=350px]{figures/arbretoy.png} 
+			\caption{Regression tree obtain with the package {\tt CorReg}
+			 (graphical layer on top of  the {\tt rpart} package) on the running example.}\label{arbretoy}
+		\end{figure}
+		{\sc cart} are implemented in the package {\tt rpart} 
+		for R, on {\sc cran} (\cite{packagerpart}). Our {\tt CorReg} 
+		package offers a function to compute and plot the tree in one command with a subtitle to explain how to read the tree and global statistics on the dataset.
+		But it is not convenient for linear regression problems as we see in figure \ref{arbretrivial} because a same variable will be used several times and the tree will fail to give a simple interpretation as ``$\boldsymbol{Y}$ and $\boldsymbol{X}^1$ are proportional''. Trivial case: $\boldsymbol{Y}=\boldsymbol{X}^1 + \boldsymbol{\varepsilon}_Y$ where $\boldsymbol{\varepsilon}_Y \sim \mathcal{N}(0, \sigma^2_Y \boldsymbol{I}_n)$ with $\sigma_Y^2=0.5$. \\
+		
+		So {\sc cart} will be used as a complementary tool for datasets with both quantitative and qualitative covariates or when the dependence between $\boldsymbol{Y}$ and $\boldsymbol{X}$ is not linear. We will focus our research on linear models with only quantitative variables.
+	\\
+	
+\begin{figure}[h!]
+	\subfigure[Tree found for the trivial case]{
+			\includegraphics[height=180px,width=245px]{figures/arbretrivial.png} 
+	} 
+   	\subfigure[True linear regression and splits obtained by the tree.]{
+			\includegraphics[height=180px,width=200px]{figures/arbretrivialcoupure.png} 
+	}
+	\caption{Predictive model associated to the tree (red) and true model (black)}\label{arbretrivial}
+\end{figure}
+
+ Apart from linear models, the main issues are the lack of smoothness (prediction function with jumps) and especially instability because of the hierarchical partitioning. Modifying only one value in the dataset can impact a split and then change the range of possible splits in the resulting sub-samples so if a top split is modified the tree can be widely changed. Random Forests are a way to solve this problem and can be seen as a cross-validation method for regression trees. More details in the book from Hastie \cite{hastie2009elements}.	
+	
+	
+		\FloatBarrier
+	\section{Parameter estimation}
+	
 	\subsection{Maximum likelihood and related methods}\label{sectionOLS}		% ne pas oublier de mentionner les packages existants
 
 We note the linear regression model:
@@ -543,7 +611,7 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a possibly bi
 	Like \textsc{ols}, coefficients tend to 0 but do not reach 0 so it gives difficult interpretations for large values of $d$. Ridge regression is efficient to improve conditioning of the estimator but gives no clue to the origin of ill-conditioning and keep irrelevant covariates. It remains a good candidate for prediction-only studies. Our industrial context makes necessary to have a variable selection method so we look further.
 	
 		 \FloatBarrier
-	\section{Variable selection method}
+	\section{Variable selection methods}
 		\subsection{Least Absolute Shrinkage and Selection Operator ({\sc lasso})}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{tibshiranilasso}  
@@ -574,7 +642,7 @@ The Least Absolute Shrinkage and Selection Operator ({\sc lasso}, \cite{tibshira
 			 Some recent variants of the \textsc{lasso} do exist for the choice of the penalization coefficient like the adaptive \textsc{lasso} \cite{zou2006adaptive} with the {\tt parcor} package that can be found on {\sc cran} (\cite{packageparcor}) or the random \textsc{lasso} \cite{wang2011random}.  But the consistency issue remains because it is still the same model. Only the choices of $\lambda$ differ.\\
 			 
 			 It is notable that the main goal of the \textsc{lasso} is to select some covariates, thus the penalization is just a mean to achieve selection. But estimation of $\hat{\boldsymbol{\beta}}$ can be improved by a second estimation with \textsc{ols} based only on selected covariates \cite{SAM10088}.
-		\subsection{Least Angle Regression}
+		\subsection{Least Angle Regression  ({\sc lar})}
 		The least Angle Regression algorithm solves the \textsc{lasso} problem.
 		It requires only the same order of magnitude of computational effort as \textsc{ols} applied to the full set of covariates.
 		The idea is to start with all coefficients to zero and then to grow them starting with the most correlated with the response variable until another variable is equally correlated with the residual. So it is a progressive growth of the coefficient leading to reduce the residual. It finishes with the Ordinary Least Squares solution (on the right in figure \ref{plotlarstoy}). We then have a list of models with several numbers of non-zero coefficients and can choose between them with cross-validation for example.\\
@@ -632,7 +700,7 @@ The Least Absolute Shrinkage and Selection Operator ({\sc lasso}, \cite{tibshira
 		
 		 \FloatBarrier
 
-		\subsection{{\sc oscar}: Octagonal Shrinkage and Clustering Algorithm for Regression }		% ne pas oublier de mentionner les packages existants
+		\subsection{Octagonal Shrinkage and Clustering Algorithm for Regression ({\sc oscar})}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{bondell2008simultaneous}%Oscar
 			Like elasticnet, \textsc{oscar} \cite{bondell2008simultaneous} uses combination of two norms for its penalty. Here the objective is to group covariates with the same effect (by a pairwise $L_\infty$ norm) and give them exactly the same coefficient (reducing the dimension) with a simultaneous variable selection (implied by the $L_1$ norm). Thus correlations are avoided if correlated covariates are in the same cluster (not extremely flexible). A possible bias is added by the dimension reduction inherent to the coefficients clustering.
@@ -698,7 +766,7 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 %		\section{MCMC}
 		
 		
-		\section{Non-linear models for regression}	
+%		\section{Non-linear models for regression}	
 			
 %	\subsection{Sliced Inverse Regression}
 %		Sliced Inverse Regression is a semi-parametric approach that could be seen as easier to interpret than general non-parametric regression \cite{eubank1999nonparametric,hardle1990applied} that are too complex to interpret for our industrial context. \\
@@ -709,70 +777,7 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 %	\subsection{Neural networks}	
 %		Neural networks \cite{fausett1994fundamentals} are a statistical model designed to mimic the brain and its neuronal organization. It seems to be really powerful but it has a predictive only goal and the model obtained cannot be interpreted easily (and cannot be interpreted at all if too complex). So it does not correspond to our needs. Interpretation remains our first goal and prediction comes only in second place.
 %		
-	\subsection{Bayesian networks}
-		
-		Bayesian networks \cite{heckerman1995learning,jensen2007bayesian,friedman2000using} model the covariates and their conditional dependencies via a Directed Acyclic Graph (DAG). 
-		Such an orientation is very user-friendly because it is similar to the way we imagine causality. 
-		But it is only about conditional dependencies. %Conditional dependencies allow to use information from independent covariates. 
-		The usual example is the case of wet grass in a garden.
-		 You do not remember if the sprinkler was on or off and you do not know if it has rain.% and these two facts are independent. 
-		 Then you look at the grass in your neighbour's garden and it is not wet \dots \\
-		You will deduce that your sprinkler was on. 
-\begin{figure}
-	\centering
-	\includegraphics[width=350px]{figures/SimpleBayesNet.png}\label{basicBayes}
-	\caption{Simple Bayesian network and its probability tables. Public domain image.}
-\end{figure}		
-		
-		Such conditionals dependencies are used in chapter \ref{chapmiss} when confronted to missing values. \\
-		
-		Figure \ref{basicBayes} illustrates a simpler case with dependency between the sprinkler activation and rain. It also shows probability tables associated to the Bayesian network.
-		Bayesian networks are quite good in terms of interpretation because of that graphical and oriented representation of conditional probabilities. 
-		But they suffer from great dimension (combinatory issue) and require to transform the dataset arbitrary (discretisation), that imply a loss of information and usage of a priori (that is explicitly not suitable in our industrial context). 
-		The choice of the way to discretise the dataset has a great impact on the results and nothing can help if you have no a priori on the result you want to obtain. 
-		Computation relies on a table that describes all possible combinations for each covariate. 
-		Hence it is extremely combinatory if the graph has too much edges or is not sparse enough. 
-		Moreover, you need to define the graph before computing the bayesian network and without a priori it can be challenging and time consuming.\\
-		
-The concept of representing dependencies with directed acyclic graph is good an we keep it in our model. Thus we will keep the ease of interpretation.		
-			
 	
-		
-	
-\subsection{Classification and Regression Trees ({\sc cart})}\label{cart}
-		%\cite{quinlan1986induction} à vérifier
-
-	
-		Classification And Regression Trees ({\sc cart}) \cite{breiman1984classification} are extremely simple to use and interpret, can work simultaneously with quantitative and qualitative covariates and are very fast to compute. They consist in recursive partitioning of the sample according to binary rules on the covariate (only one at a time) to obtain a hierarchy defined by simple rules and containing pure leaves (same value). It is followed by a pruning method to obtain leaves that are quite homogeneous and described with simple rules.\\
-		
-		\begin{figure}
-			\centering
-				\includegraphics[width=350px]{figures/arbretoy.png} 
-			\caption{Regression tree obtain with the package {\tt CorReg}
-			 (graphical layer on top of  the {\tt rpart} package) on the running example.}\label{arbretoy}
-		\end{figure}
-		{\sc cart} are implemented in the package {\tt rpart} 
-		for R, on {\sc cran} (\cite{packagerpart}). Our {\tt CorReg} 
-		package offers a function to compute and plot the tree in one command with a subtitle to explain how to read the tree and global statistics on the dataset.
-		But it is not convenient for linear regression problems as we see in figure \ref{arbretrivial} because a same variable will be used several times and the tree will fail to give a simple interpretation as ``$\boldsymbol{Y}$ and $\boldsymbol{X}^1$ are proportional''. Trivial case: $\boldsymbol{Y}=\boldsymbol{X}^1 + \boldsymbol{\varepsilon}_Y$ where $\boldsymbol{\varepsilon}_Y \sim \mathcal{N}(0, \sigma^2_Y \boldsymbol{I}_n)$ with $\sigma_Y^2=0.5$. \\
-		
-		So {\sc cart} will be used as a complementary tool for datasets with both quantitative and qualitative covariates or when the dependence between $\boldsymbol{Y}$ and $\boldsymbol{X}$ is not linear. We will focus our research on linear models with only quantitative variables.
-	\\
-	
-\begin{figure}[h!]
-	\subfigure[Tree found for the trivial case]{
-			\includegraphics[height=180px,width=245px]{figures/arbretrivial.png} 
-	} 
-   	\subfigure[True linear regression and splits obtained by the tree.]{
-			\includegraphics[height=180px,width=200px]{figures/arbretrivialcoupure.png} 
-	}
-	\caption{Predictive model associated to the tree (red) and true model (black)}\label{arbretrivial}
-\end{figure}
-
- Apart from linear models, the main issues are the lack of smoothness (prediction function with jumps) and especially instability because of the hierarchical partitioning. Modifying only one value in the dataset can impact a split and then change the range of possible splits in the resulting sub-samples so if a top split is modified the tree can be widely changed. Random Forests are a way to solve this problem and can be seen as a cross-validation method for regression trees. More details in the book from Hastie \cite{hastie2009elements}.	
-	
-	
-		\FloatBarrier
 			
 	\section{Taking correlations into account}		% ne pas oublier de mentionner les packages existants
 		\subsection{Principal Component Regression ({\sc pcr})}
@@ -827,7 +832,7 @@ Like the {\sc pcr}, {\sc pls} regression can give an efficient dimension reducti
 		
 		Moreover, estimation of recursive \textsc{sem}, without instrumental variables is exactly a succession of independent \textsc{ols} (confirmed with both Gretl and STATA) so the structure is only used for interpretation, not for estimation \cite{brito2006graphical}. Last but not least, there is no specific status for a response variable, each regression has the same status. We want to be able to model complex dependencies within the covariates and use this knowledge to estimate and understand a specific distinct response variable.
 			%mcdonald2002principles
-		\subsection{{\sc sur}: Seemingly Unrelated Regression}		% ne pas oublier de mentionner les packages existants
+		\subsection{Seemingly Unrelated Regression ({\sc sur})}		% ne pas oublier de mentionner les packages existants
 		Seemingly Unrelated Regression ({\sc sur} \cite{SURzellner}) is an estimation method for multiples equations with correlated error terms. It does not take into account correlations between the covariates but starts to estimate a system of $M$ regressions jointly instead of independent estimations. 
 The $M$ regressions are:		
 		\begin{equation}
@@ -926,8 +931,8 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 	
 \section{Conclusion} In linear regression there is a lack of methods that both select relevant covariates and manage correlations with strong interpretability. However, some methods already give some partial solutions, sometimes in the field of interpretation by variable selection and/or by creation of groups of covariates, sometimes in the field of prediction by conditioning improvements. We will try to act on both fields (with priority given to interpretation) and then to allow usage of other methods on top of the model that we will propose in the following.	
 			
-\part{Pre-treatment for correlations}
-\chapter{Decorrelating covariates by a generative model}\label{chapexpl}
+\part{Model for regression with correlation-free covariates}
+\chapter{Structure of inter-covariates regressions}\label{chapexpl}
 \paragraph{Abstract:} 
 We give an explicit model for correlation between covariates by a linear regression system. It helps to better understand the dataset and leads to a pre-treatment by variable selection. This pre-treatment allows to reduce variance of the estimator and then to distinguish irrelevant covariates from redundant covariates.
 \\
@@ -1262,7 +1267,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 	When $n<d$, a frequently used method is the Moore-Penrose \cite{katsikis2008fast} generalized inverse , thus \textsc{ols} can obtain some results even with $n<d$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	When using penalized estimators for selection, a last Ordinary Least Square step is added to improve estimation because penalisation is made to select variables but also shrinks remaining coefficients. This last step allows to keep the benefits of shrinkage (variable selection) without any impact on remaining coefficients (see \cite{SAM10088}) and is applied for both classical and marginal model.
 	We compare different estimation methods on both the complete and the reduced model. All the results are provided by the {\tt CorReg} package. Here $\boldsymbol{Y}$ depends on all the covariate and the \textsc{mse} provided were computed on a validation sample of 1 000 individuals each time. Figures will display both mean and inter-quartile intervals, coloration of the background indicates which curve is lower ({\it i.e.} better in our case). \\
-	\subsection{Results when $\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$, true $\boldsymbol{S}$ known}	
+	\subsection{Results when the response depends on all the covariates, true structure known}	
 	As previously explained, we have added colored backgrounds for faster comparison of the curves. The background takes the same color as the curve that is the lowest. So we want to obtain as much blue areas as possible,meaning our marginal model is better (in terms of {\sc mse} or in terms of parsimony).
 \paragraph{With {\sc ols}:} Figure \ref{MSEexplOLS} %Y_zone} to \ref{MSEexplOLSbeta_zone} 
 	compares \textsc{ols} on $\boldsymbol{X}$ to \textsc{ols} on $\boldsymbol{X}_f$ that is our reduced model. 
@@ -1457,7 +1462,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 \paragraph{Remark:} The marginal model proposed in this chapter is conditional to $\boldsymbol{X}_f$ which is defined with $\boldsymbol{S}$. In this chapter we suppose $\boldsymbol{S}$ to be known but in real case we will have to estimate it and the estimator used $\hat{\boldsymbol{S}}$ will depend on whole $\boldsymbol{X}$ (see Chapter \ref{chapterMCMC}) so the marginal model will be in fact conditional to $\boldsymbol{X}$ but in a specific manner. It will be a sequential estimation: we will first estimate the structure of correlations $\hat{\boldsymbol{S}}$ based on $\boldsymbol{X}$ before estimating $\hat{\boldsymbol{Y}}$ conditionally to $\boldsymbol{X}_f$ and $\hat{\boldsymbol{S}}$.		
 
 
-\chapter{Estimation of the Structure of subregression by MCMC}\label{chapterMCMC}
+\chapter{Estimation of the structure of sub-regression by MCMC}\label{chapterMCMC}
 \paragraph{Abstract:} In the previous chapters, $\boldsymbol{S}$ was supposed to be known. But in fact we have to find it so we developed an algorithm to choose the best $\boldsymbol{S}$. An MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
 \section{Choice of model}
 		% ne pas oublier de mentionner les packages existants
@@ -1502,7 +1507,7 @@ We want to find the most probable structure $\boldsymbol{S}$ knowing the dataset
 	=\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})\mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S})\mathbb{P}(\boldsymbol{S})
 	\end{eqnarray}
 In order to implement this paradigm, we need first to define the three probabilities which are in the right hand of the previous equation.
-	\subsection{Modeling the uncorrelated covariates: a full generative approach on $P(\boldsymbol{X})$} \label{sectionfullgen}
+	\subsection{Modeling the uncorrelated covariates: a full generative approach on $\mathbb{P}(\boldsymbol{X})$} \label{sectionfullgen}
 	
 
 \paragraph{Defining} $\mathbb{P}(\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S})$ that is the integrated likelihood based on $\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma^2})$. It can be approximated by a {\sc bic}-like approach \cite{Sch1978}
@@ -1933,7 +1938,7 @@ When comparing $\mbox{{\sc bic}}_U$ to $\mbox{{\sc bic}}_H$ it becomes evident t
    	\subfigure[With our $\mbox{{\sc bic}}_H$ criterion]{
 			\includegraphics[height=180px,width=230px]{figures/explvraiS/BICplus.png} 
 	}
-	\caption{Quality of the subregressions found by the MCMC. True left (plain blue) and Wrong left (dotted red) for n varying in $(30,50,100,400)$, the thicker the greater $n$.}\label{compZBIC}
+	\caption{Quality of the sub-regressions found by the MCMC. True left (plain blue) and Wrong left (dotted red) for n varying in $(30,50,100,400)$, the thicker the greater $n$.}\label{compZBIC}
 \end{figure}
 
 
@@ -2719,7 +2724,7 @@ Figure \ref{MSEnonlin} illustrates the advantage of using {\tt CorReg} even with
 
 	\section{Conclusion} The marginal model still gives good results even with $\hat{\boldsymbol{S}}$. We also observe that the estimation of the structure is satisfying. But these are only simulated datasets and we have to confirm that our hypotheses can face the reality of industrial datasets. Moreover, we see that the pattern of the true regression on $\boldsymbol{Y}$ leads to fundamental changes in the quality of the prediction.	So we will test {\tt CorReg} on real datasets (Chapter \ref{sectionrealcase}) and then try to improve the marginal model to better fit the patterns that are not favorable (those whith $\boldsymbol{Y}$ depending only on redundant covariates) to the marginal model (Chapter \ref{chapplugin}).
 		
-\chapter{Experiments on real datasets} \label{sectionrealcase}
+\chapter{Experiments on steel industry} \label{sectionrealcase}
 \paragraph{Abstract:} Here are the numerical results obtained from real datasets. As in the previous chapter we have to estimate the structure. 
 But here we do not know if the true model follows our hypotheses or not. We will see if the model does make sense in real life as we supposed previously. 
 These experiments were made on real datasets from ArcelorMittal and some informations are confidential so the reader can experiment a kind of frustration but efforts were made to keep these experiments interesting. 
@@ -2920,17 +2925,17 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 \section{Conclusion}
 We have used the package {\tt CorReg} with real datasets and the results obtained by our model were better than those from classical methods in terms of prediction and parsimony. But more than that we have found structures between the covariates that did make sense for the metallurgists. The interpretation of both the sub-regressions structure and the main regression model have helped to improve the process so it does confirm that explicit modeling of the correlations and marginalization were good choices. However, we want to investigate other manners to take benefits from the sub-regression structures: sequential estimation and missing values management.
 
-\part{Extensions}	
+\part{Usage of the residuals by plug-in \\ and extension to missing data}	
 			
 		
 \chapter{Using coefficients of regression and sub-regression to improve prediction}\label{chapplugin}
 	\paragraph{Abstract:} We have seen that eviction of redundant covariates can often improve the results by an efficient trade-off between dimension reduction and better conditioning versus keeping all the covariates. 
 	But the fact is that we have lost some information and we would like to find a way to use this information. 
-	So we propose a plug-in model to use the redundant covariates in a second estimation step. It is a sequential estimation of $\boldsymbol{\beta}$.
+	So we propose a plug-in model to use the redundant covariates in a second estimation step with an estimate of the residuals. It is a sequential estimation of $\boldsymbol{\beta}$.
 	\section{Motivations}
 		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates from the model. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}). But even if the sub-regressions are strong, we face a loss of information that can be damageable as we have seen in Section \ref{tableMSEsimgauche}. \\
 		
-		The redundant covariates $\boldsymbol{X}_r$ were only used to estimate $\boldsymbol{S}$ and only the partition (given by $J_r$) was used to estimate $\boldsymbol{Y}$. With the marginalization we have not used the part of $\boldsymbol{X}_r$ that is independent of $\boldsymbol{X}_f$ (the noise of the subregressions). We will try to use it with a sequential approach relying on the coefficients of sub-regression $\hat{\boldsymbol{\alpha}}^*$ and on the estimate $\hat{\boldsymbol{\beta}}_f^*$ by profile likelihood.\\
+		The redundant covariates $\boldsymbol{X}_r$ were only used to estimate $\boldsymbol{S}$ and only the partition (given by $J_r$) was used to estimate $\boldsymbol{Y}$. With the marginalization we have not used the part of $\boldsymbol{X}_r$ that is independent of $\boldsymbol{X}_f$ (the noise of the sub-regressions). We will try to use it with a sequential approach relying on the coefficients of sub-regression $\hat{\boldsymbol{\alpha}}^*$ and on the estimate $\hat{\boldsymbol{\beta}}_f^*$ by profile likelihood.\\
 		
 		We know that using all the covariates simultaneously (classical \textsc{ols}) gives bad results due to correlations. But we can use them sequentially by using the explicit decomposition of the marginal model (equation \ref{eq:Trueexpl2}) that makes appear the coefficient $\boldsymbol{\beta}_r$ in both the noise and $\boldsymbol{\beta}_f^*$. Thus we are able to obtain by plug-in better estimates of $\boldsymbol{\beta}_r$ and $\boldsymbol{\beta}_f$ in terms of bias. Once again final result will depend on the bias-variance trade-off and numerical results will show what to expect.\\
 		
