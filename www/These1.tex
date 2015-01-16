@@ -3822,7 +3822,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	\setcellgapes{1pt}
 	\section{Conclusion} The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on other estimators so it has a slow convergence speed. \\
 	Moreover, if $\hat{\boldsymbol{S}}\neq \boldsymbol{S}$ but $\hat{J}_r=J_r$, then the marginal model is not impacted whereas the plug-in model depends on both $\hat{\boldsymbol{\beta}}^*_{f}$ and $\hat{\boldsymbol{\alpha}}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves \textsc{ols} anyway but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. However, like the marginal model, the plug-in model has a small computational cost compared to the estimation of $\boldsymbol{S}$. So we recommend to compute both complete, marginal and plug-in model and to compare the results in a second time.
-\chapter{Using the full generative model to manage missing values} \label{chapmiss}
+\chapter{Using the full generative model to manage missing data} \label{chapmiss}
 	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to manage missing values. Because the joint distribution of $\boldsymbol{X}$ can be very complex (Gaussian mixture with a huge number of components), we propose to use a {\sc sem} algorithm with multiple imputations by Gibbs sampling. Computation of the {\sc bic} in the MCMC will also rely on Gibbs sampling. To resume: we propose to manage missing values by multiple imputations based on the structure $\boldsymbol{S}$ and on the marginal Gaussian mixtures estimated independently on each covariate in $\boldsymbol{X}_f$.
 	
 	
@@ -3859,7 +3859,7 @@ So when a value is missing, we know its distribution but in addition, we know it
 	
 	
 
-\section{Estimation of $\boldsymbol{S}$ with missing values}\label{nbcomp}
+\section{Estimation of the discrete structure of sub-regression despite missing values}\label{nbcomp}
 %\subsection{Distribution of $\boldsymbol{X}$} \label{sectionXdensity}
 	We know that $\boldsymbol{X}$ follows a Gaussian mixture because of hypothesis \ref{H4} in Section \ref{sectionfullgen} page \pageref{H4} ({\it i.i.d.} individuals, vectors of orthogonal Gaussian mixtures $\boldsymbol{X}_f$ and linear combinations of these Gaussian mixtures and some Gaussian for $\boldsymbol{X}_r$) with $K$ components. 
 	We stack together all the mixture parameters %of $\boldsymbol{X}_f$ 
@@ -4319,7 +4319,7 @@ If each sub-regression is a distinct connected component then we can always use 
 %	
 
 	%\section{{\sc em} Algorithm to estimate $\boldsymbol{\alpha}$ with a given $\boldsymbol{S}$}
-	\section{Estimation of $\boldsymbol{\alpha}$ and the observed likelihood}
+	\section{Estimation of the coefficients of sub-regression and the observed likelihood}
 			If we do not have an estimate of $\boldsymbol{\alpha}$ we can just take the values that maximize the likelihood. Sometimes the maximization of a likelihood is too complex to be solved analytically. In such a case, we can use algorithms of Expectation-Maximization ({\sc em} \cite{mclachlan2007algorithm}) family \cite{mclachlan2007algorithm}. This kind of algorithm allows to manage missing values \cite{dempster1977maximum}  %that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. 	
 %			
 %{\sc em} is an alternate optimization of the researched parameters $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$ only for a given $\boldsymbol{S}$ since the marginal distribution parameters are estimated once before the MCMC.) and the latent variables $Z$ with two steps at each iteration $(q)$:
