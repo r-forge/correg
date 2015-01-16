@@ -3346,7 +3346,7 @@ Equations (\ref{pluginorig}) and (\ref{eq:regplugin}) are linear regressions and
 %\FloatBarrier
 	\section{Numerical results} \label{resnumpred}
 		We test the plug-in model with datasets generated the same way as for section \ref{compY}.		
-\subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	
+\subsection{Response variable depends on all the covariates}	
 We first try the method with a response depending on all covariates. (The marginal model reduces the dimension and cannot give the true model if there is a structure).
 
 \paragraph{Ordinary Least Squares} We observe for \textsc{ols} (Figure \ref{MSEpredOLStout}) that the plug-in model gives results similar in efficiency to the marginal model, but remains better than the complete model for smaller  correlations even for $n=400$. We also observe that we can found a model with more than $n$ coefficients when each estimation step computes less than $n$ coefficients. It means that  we estimate more coefficients than the classical \textsc{ols} and keep a smaller variance so the plug-in model can also be an alternative to the complete model. It is interesting to see that \textsc{ols} combined with the plug-in model is a sort of sequential estimation that allows to estimate more than $n$ coefficients.
@@ -3503,14 +3503,14 @@ We first try the method with a response depending on all covariates. (The margin
 	\FloatBarrier
 
 
-\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_{f}}$ }
+\subsection{Response variable depends only on free covariates (predictors) }
 We look then at the case where $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_f}$ \label{tableMSEsimdroitepred}.
 \paragraph{Ordinary Least Squares:} Figure \ref{MSEpredOLSX1} shows that the plug-in model stays better than \textsc{ols} even when $\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_{f}}$. These good results come from the sequential estimation with the first part of the parameters estimated with a well-conditioned matrix. Hence the variance is reduced even without  
 
 \paragraph{Other methods:} Variable selection methods (Figures \ref{MSEpredlarX1} to \ref{MSEpredstepwiseX1})are not improved by the plug-in model and the marginal model remains the best. But ridge regression (Figure \ref{MSEpredridgeX1}) is much similar to \textsc{ols} and then the plug-in model gives good results, even if the marginal model is sufficient.
 
 
-	 \subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_{r}}$ }
+	 \subsection{Response variable depends only on redundant covariates }
  \label{tableMSEsimgauchepred}
 We then try the method with a response depending only on variables in $\boldsymbol{X}_r$. 
 Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the marginal model to obtain the true model when using the true structure, so we hope to see an improvement with the plug-in method. This case is the reason why we have developed the plug-in model. \\
