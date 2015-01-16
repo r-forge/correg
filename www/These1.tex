@@ -4696,7 +4696,7 @@ There is still a lot of work to do in the field of missing values and we have on
 			Logistic regression \cite{hosmer2000applied} is in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain the same kind of phenomenon. It would be an easy generalization of \textsc{CorReg} to binary response variables. Introduction of qualitative covariates would be another big improvement for our method.
 			\subsection{Regression mixture models}
 			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values. In such a model, the contribution of the structure itself would be even greater for the final user. An additional algorithm to search for distinct or equal coefficients within the classes would be to develop.
-			\subsection{Using $\boldsymbol{Y}$ to estimate $\boldsymbol{S}$}
+			\subsection{Using the response variable to estimate the structure of sub-regression}
 			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results (in terms of a given criterion) when applied on $\boldsymbol{Y}$.\\
 			
 			 But it would probably give distinct structures according to the chosen model (marginal or plug-in) and also for distinct response variables (a same dataset about the same process to study distinct response variables) so it would not be very user-friendly. For this reason it was not implemented, but we can look a bit further.\\
