@@ -509,7 +509,7 @@ The concept of representing dependencies with directed acyclic graph is good an 
 		\FloatBarrier
 	\section{Parameter estimation}
 	
-	\subsection{Maximum likelihood and related methods}\label{sectionOLS}		% ne pas oublier de mentionner les packages existants
+	\subsection{Maximum likelihood and Ordinary Least Squares (\sc ols)}\label{sectionOLS}		% ne pas oublier de mentionner les packages existants
 
 We note the linear regression model:
 \begin{equation}
@@ -946,7 +946,7 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 \part{Model for regression with correlation-free covariates}
 \chapter{Structure of inter-covariates regressions}\label{chapexpl}
 \paragraph{Abstract:} 
-We give an explicit model for correlation between covariates by a linear regression system. It helps to better understand the dataset and leads to a pre-treatment by variable selection. This pre-treatment allows to reduce variance of the estimator and then to distinguish irrelevant covariates from redundant covariates.
+We give an explicit model for correlation between covariates by a linear regression system. It helps to better understand the dataset and leads to a pre-treatment by variable selection. Parameter estimation can then be done by any estimator. This pre-treatment allows to reduce variance of the estimator and then to distinguish irrelevant covariates from redundant covariates.
 \\
 \section{Introduction}
 Most of the above methods do not take explicitly the correlations into account, even if the clustering methods may group the correlated covariates together.
@@ -1939,7 +1939,7 @@ Section \ref{compZ} shows the results obtained in terms of $\hat{\boldsymbol{S}}
 	When $n<d$, a frequently used method is the Moore-Penrose generalized inverse \cite{katsikis2008fast}, thus \textsc{ols} can obtain some results even with $n<d$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
 	We compare different methods with and without {\tt CorReg} as a pre-treatment. All the results are provided by the {\tt CorReg} package. Associated figures will display both mean and inter-quartile intervals.
 	
-		\section{Results on $\hat{\boldsymbol{S}}$}	\label{compZ}
+		\section{Results about the estimation of the structure of sub-regression}	\label{compZ}
 
 Figure \ref{compZBIC} illustrates the impact of large samples. For $n>>d$ the MCMC found most of the truly redundant covariates and only few wrong redundant covariates. We also observe that strong correlations ($R^2\geq 0.7$) get more wrong sub-regressions for a same total number of sub-regressions. It comes from induced correlations. If two covariates are explained by the same others, they may have a strong induced pairwise correlation and if the walk tries to combine them in a single sub-regression we can have a local extremum. The walk is ergodic but in a finite number of steps it can keep such a wrong sub-regression, that is why we launch the walk several times with distinct initial structures. Such a wrong sub-regressions is not totally wrong in that it describes real correlations. So interpretation is not compromise and neither is the predictive efficiency as shown in section \ref{compY}. \\
 For smaller values of $n$ we observe that the number of true sub-regressions found increases with their strength (growing $R^2$).\\
@@ -2066,8 +2066,8 @@ For $d=1\ 000$ time raises up to 26 minutes. This time could be reduced by using
 \end{figure} 
   
 \clearpage
-\section{Results on prediction}\label{compY}
-\subsection{$\boldsymbol{Y}$ depends on all variables in $\boldsymbol{X}$}	 \label{explsimtout}	
+\section{Results on the main regression}\label{compY}
+\subsection{Response variable depends on all the covariates}	 \label{explsimtout}	
 We try the method with a response variable depending on all covariates to compare the results with those from section \ref{thedatasets} (same $\boldsymbol{X}$ and $\boldsymbol{Y}$). ({\tt CorReg} reduces the dimension and cannot give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. \\
 
  We see that {\tt CorReg} tends to give more parsimonious models and better predictions, even if the true model is not parsimonious. We logically observe that when $n$ rises, all the models get better and the correlations cease to be a problem so the complete model starts to be better ({\tt CorReg} does not allow the true model to be chosen). The main result here is that results based on $\hat{\boldsymbol{S}}$ are still good so the MCMC is efficient enough to be useful for the study of the response variable $\boldsymbol{Y}$. Results are mostly the same than when using the true structure.\\
@@ -2299,7 +2299,7 @@ Results for \textsc{ols} (Figure \ref{MSEexplOLStout}) are similar to those from
 
 \clearpage
 \newpage
-\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_{f}}$}	 \label{tableMSEsimdroite}
+\subsection{Response variable depends only on free covariates (predictors)}	 \label{tableMSEsimdroite}
 \FloatBarrier
  We want to see what happens in real life, when some covariates are irrelevant to describe $\boldsymbol{Y}$ according to the given dataset. We could generate $\boldsymbol{Y}$ with a random subset of $\boldsymbol{X}$ but in such a case, it would be impossible to say whether results come from sparsity or from the ratio of covariates in the subset that are in $\boldsymbol{X}_{r}$. Moreover, we will study real datasets in the next chapter so the only pattern to test here are those with some irrelevant covariates and relevant covariates only in one part of the partition on $\boldsymbol{X}$. \\
  
@@ -2515,7 +2515,7 @@ Results for \textsc{ols} (Figure \ref{MSEexplOLStout}) are similar to those from
 
 \clearpage
 	
-	\subsection{$\boldsymbol{Y}$ depends only on covariates in $\boldsymbol{X_r}$}	 \label{tableMSEsimgauche}
+	\subsection{Response variable depends only on redundant covariates}	 \label{tableMSEsimgauche}
 We now try the method with a response depending only on variables in $\boldsymbol{X}_{r}$. The datasets used here were still the same.
 Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility to obtain the true model when using the true structure.  We get unbiased models but with an increase in the variance as described in equation \ref{eq:Trueexpl}. \\
 	In such a case, usage of $\mbox{{\sc bic}}_H$ instead of $\mbox{{\sc bic}}_U$ is more beneficial because each additional sub-regression deletes a covariate in our marginal model and reduces the probability to find the true model. \\
