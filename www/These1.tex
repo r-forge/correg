@@ -4547,7 +4547,7 @@ where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture 
 \begin{eqnarray}
 			(\sigma_{i,j}^{(q,h)})^2&=&\sigma_{j,Z_{i,j}^{(q,h)}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}(\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}})'. \nonumber 
 			\end{eqnarray}
-			we have  $\mu_{j,Z_{i,j}^{(q,h)}}$ the mean of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}) and
+			We have  $\mu_{j,Z_{i,j}^{(q,h)}}$ the mean of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}) and
 			$\sigma_{j,Z_{i,j}^{(q,h)}}^2$ the variance of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}).\\
 			$\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}$ is the vector of the covariances between $x_{i,j}^{(q+1,h)}$ and the other covariates ($X_{\bar{ij}}^{(q+1,h)}$) knowing the components $Z_i^{(q,h)}$.\\
 			$\boldsymbol{\Sigma}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}$ is the variance-covariance matrix of the $X_{\bar{ij}}^{(q+1,h)}$ knowing the components $Z_i^{(q,h)}$.
@@ -4588,7 +4588,7 @@ where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture 
 	\item The covariance between two response covariates with common regressors is:\\
 	$\forall j_1 \in \{1,\dots,d_r \}, j_2 \in \{1,\dots, d_r \}\setminus\{ j_1 \}, \textrm{ with } J_p^{j_1}\cap J_p^{j_2}\neq \emptyset$:
 	\begin{equation}
-	  \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=\sum_{l \in J_p^{j_1}\cap J_p^{j_2}}\bar{\alpha}_{l,J_r^{j_1}}\bar{\alpha}_{l,J_r^{j_2}}\sigma^2_{l,Z_{i,l}^{(q,h)}} . \nonumber 
+	  \operatorname{Cov}_k(x_{i,J_r^{j_1}},x_{i,J_r^{j_1}})=\sum_{l \in J_p^{j_1}\cap J_p^{j_2}}\bar{\alpha}_{l,J_r^{j_1}}\bar{\alpha}_{l,J_r^{j_2}}\sigma^2_{l,Z_{i,l}^{(q,h)}} , \nonumber 
 	\end{equation}
 	where $\sigma^2_{l,Z_{i,l}^{(q,h)}}$ is the variance of $\boldsymbol{X}^l$ knowing $Z_{i,l}^{(q,h)}$, estimated once (by {\tt Rmixmod}) following hypothesis \ref{H4} page \pageref{H4}.
 	\item The covariance between a response covariate and one of its regressors is:
