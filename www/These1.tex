@@ -84,7 +84,7 @@ commentstyle=\color{OliveGreen}, % white comments
 	
 	Un algorithme de recherche de structure de sous-régressions est proposé, basé sur un modèle génératif complet sur les données et utilisant une chaîne MCMC (Monte-Carlo Markov Chain). Ce prétraitement est utilisé pour la régression linéaire comme une présélection des variables explicatives à des fins illustratives mais ne dépend pas de la variable réponse. Il peut donc être utilisé de manière générale pour toute problématique de corrélations.\\
 	
-	Par la suite, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter l'information résiduelle contenue dans les variables redondantes de manière séquentielle. On utilise ainsi toute l'information sans souffrir des corrélations entre covariables.
+	Par la suite, un estimateur plug-in pour la régression linéaire est proposé pour ré-injecter l'information résiduelle contenue dans les variables redondantes de manière séquentielle. On utilise ainsi toutes les variables sans souffrir des corrélations entre covariables.
 	\\
 	
 	Enfin, le modèle génératif complet offre la perspective de pouvoir être utilisé pour gérer d'éventuelles valeurs manquantes dans les données. Cela permet la recherche de structure malgré l'absence de certaines données. Mais un autre débouché est l'imputation multiple des données manquantes, préalable à l'utilisation de méthodes classiques incompatibles avec la présence de valeurs manquantes. De plus, l'imputation multiple des valeurs manquantes permet d'obtenir un estimateur de la variance des valeurs imputées.
@@ -134,9 +134,57 @@ commentstyle=\color{OliveGreen}, % white comments
 
 
 \tableofcontents
+
+\chapter*{Glossary of notations}\label{glossaire}
+This glossary can be used to find the meaning of some notations without having to search within the chapters.
+Bold characters are used to distinguish multidimensional objects. Many objects are tuples.
+\begin{itemize}
+	\item $\boldsymbol{\alpha}_j$ is the vector of the coefficients of the $j^{th}$ sub-regression.
+	\item $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_{d_r})$ is the $d_r-$uple of the $\boldsymbol{\alpha}_j$.
+	\item $\boldsymbol{\alpha}^*$ is the $d_f \times d_r $ matrix of the sub-regressions coefficients.
+	\item $\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.
+	\item $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ is the $(d-d_r)\times 1$ vector of the regression coefficients associated  to the free covariates in the main regression on $\boldsymbol{Y}$.
+	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated  to the responses covariates.
+	\item $d$ is the number of covariates in the dataset $\boldsymbol{X}$.
+	\item $d_f$ is the number of free covariates in the dataset.
+	\item $d_r$ is the number of response covariates in the dataset (and consequently the number of sub-regressions).
+	\item $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.
+	\item $K$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}$.
+	\item $K_j$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}^j$.
+%	\item $K_{i,J_r^j}$ is the number of component of the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\boldsymbol{\mu}_X$ is the $d-$uple of the $K \times 1$ vectors $\boldsymbol{\mu}_{X^j}$ of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$.
+	\item $\boldsymbol{\mu}_{X^j}$ is the $K \times 1$ vector of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$.
+	\item $\boldsymbol{\mu}_j$ is the $K_j \times 1$ vector of the means of the Gaussian mixture followed by $\boldsymbol{X}^j$ with $j\in J_f$.
+	\item $\boldsymbol{\mu}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the means of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.	
+	\item $\mu_{j,k}$ is the $k^{th}$ element of $\boldsymbol{\mu}_j$.
+	\item $\mu_{i,J_r^j,k}$ is the mean of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\boldsymbol{\pi}_X$ is the $K \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}$.
+	\item $\boldsymbol{\pi}_j$ is the $K_j \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}^j$.
+	\item $\pi_k$ is the proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}$.
+	\item $\boldsymbol{\pi}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the proportions of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\pi_{j,k}$ is the proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}^j$.
+	\item $\pi_{i,J_r^j,k}$ is the proportion of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\sigma_j^2$ is the variance of the residual of the $j^th$ sub-regression.	
+	\item $\boldsymbol{\Sigma}_X$ is the $d-$uple of the $K \times 1 $ vectors $\boldsymbol{\Sigma}_{X^l}$ of the variances associated to $\boldsymbol{X}^l$ in the Gaussian mixture followed by $\boldsymbol{X}$.
+	\item $\boldsymbol{\Sigma}_{X^l}$ is the $K \times 1 $ vector of the variances associated to $\boldsymbol{X}^l$ in the Gaussian mixture followed by $\boldsymbol{X}$.
+	\item $\boldsymbol{\Sigma}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the variances of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.	
+	\item $\Sigma_{X^l,k}$ is the variance of $\boldsymbol{X}^l$ in the $k^{th}$ component of $\boldsymbol{X}$.
+	\item $\Sigma_{i,J_r^j,k}$ is the variance of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
+	\item $\boldsymbol{\Theta}$ is the set of the parameters associated to the Gaussian mixture on $\boldsymbol{X}$.	
+	\item $\boldsymbol{X}$ is the $n\times d$ matrix whose columns are the covariates in the datasets and rows are the individuals.
+	\item $\boldsymbol{X}^j$ is the $j^{th}$ column of $\boldsymbol{X}$.
+	\item $\boldsymbol{X}_r$ is the matrix of the response covariates.
+	\item $\boldsymbol{X}_f$ is the matrix of the predictor covariates.
+	\item $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ is the $n-$uple of the $\boldsymbol{X}_{i,O}$.
+	%\item $X_{\bar{ij}}=(x_{i,1},\dots, x_{i,j-1},x_{i,j+1},\dots, x_{i,d})$.
+	\item $\boldsymbol{X}_{i,O}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}$.
+	\item $\boldsymbol{X}_{i,O}^{J_f}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}_f$.
+	\item $\boldsymbol{X}_{i,O}^{J_r}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}_r$.
+	\item $\boldsymbol{Y}$ is the $n\times 1$ response variable in the main regression.
+\end{itemize}
 		  
 \chapter{Introduction}
-	\paragraph{Abstract:} This chapter describes the industrial constraints and mathematical context that have led this work. This work takes place in a steel industry context and was funded by ArcelorMittal, the world leading company in steel making. 
+	\paragraph{Abstract:} This chapter describes the industrial constraints and the mathematical context that have led to this work. This work takes place in a steel industry context and was funded by ArcelorMittal, the world leading company in steel making. 
 \section{Industrial motivation}
 \subsection{Steel making process}
 	Steel making starts from raw materials and aims to give highly specific products used in automotive, beverage cans, {\it etc}.
@@ -188,13 +236,11 @@ Steel making is continuously improving and we are now able to produce steel that
 \end{figure}	
 
 
-\paragraph{Conclusion:} Industrial context necessitates easily understandable models and the stakes are frequently very high in terms of financial impact. 
-		These two points give strong constraints because used methods has to be accessible for non-statistician in a minimum amount of time and results obtained have to be clearly interpretable (no black-box). So a powerful tool without interpretation becomes kind of useless in such a context.\\
- Then we need a tool that is both easy to use and to understand, giving priority to interpretation more than prediction. The tool will have to work without a priori and to be able to select relevant covariates. \\
+
 	\section{Mathematical motivation}
 	%problème des corrélations et de la sélection. Gros appels vers l'état de l'art
 	
-		Every engineer, even non-statistician uses frequently linear regression to seek relationship between some covariates. It is easy to understand, fast to do, and is used in nearly all the fields where statistics are used \cite{montgomery2012introduction}: Astronomy \cite{isobe1990linear}, Sociology \cite{longford2012revision}, and so on. It can be done directly in Microsoft Excel which is well known and often used by engineers to open and analyse most of their datasets. Thus we have chosen to work in this way.\\
+		Every engineer, even non-statistician uses frequently linear regression to seek relationship between some covariates. It is easy to understand, fast to do, and is used in nearly all the fields where statistics are involved \cite{montgomery2012introduction}: Astronomy \cite{isobe1990linear}, Sociology \cite{longford2012revision}, and so on. It can be done directly in Microsoft Excel which is well known and often used by engineers to open and analyse most of their datasets. Thus we have chosen to work in this way.\\
 		 
 \begin{figure}
 \centering
@@ -202,19 +248,24 @@ Steel making is continuously improving and we are now able to produce steel that
 	\caption{An example of simple linear regression}
 \end{figure}		 
 		 
-		 As of 2014 Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times. Linear regression is an old strategy well known and with many derivatives (as we will see in the following) and can be generalized (see \cite{kiebel2003general,wickens2004general,nelder1972generalized} and also \cite{mccullagh1989generalized}). 
+		 Popularity of regression can be confirmed by the fact that, as of 2014, Google Scholar proposes more than $3.8$ millions of papers related to regression and many of them were cited several thousands times (in other papers). Linear regression is an old strategy well known and with many derivatives (as we will see in the following) and can be extended to more general and complex problems using a link function between the response variable and the linear model (Generalized Linear Model, see \cite{kiebel2003general,wickens2004general,nelder1972generalized} and also \cite{mccullagh1989generalized}). 
 	Its simplicity facilitates a wide spread usage in industry and other fields of application. It is also a good tool for interpretation with the sign of the coefficients indicating whether the associated covariate has a positive or negative impact on the response variable. \\
 	
 	More complex situations can be described by evolved forms of linear regression like the hierarchical linear model \cite{raudenbush2002hierarchical,woltman2012introduction}  or  multilevel regression \cite{moerbeek2003comparison,maas2004robustness,hox1998multilevel} that allows to consider effects of the covariates on nested sub-populations in the dataset. It is like using interactions but with a proper modeling that improves interpretation. It is not really a linear model because it is not linear in the original covariates but can be seen as a basis expansion using new covariates (the interactions) composed of the product of some of the original covariates.\\
 	
 	But linear regression is in trouble when correlations between the covariates are strong, as we will see later (Chapter \ref{stateart}). So we have decided to investigate some ways to overcome correlations issues in linear regression, keeping in mind industrial constraints about variable selection and interpretability.
 	
+	
 	\section{Outline of the manuscript}% plan détaillé
-		After a substantial abstract in french (Chapter \ref{frenchsum}), we start with a brief state of the art (Chapter \ref{stateart}) that lists some classical regression methods and explains why they do not respect our industrial needs because of correlation issues or lack of variable selection or interpretability. It leads us to define a new model.\\
+		After a substantial abstract in french (Chapter \ref{frenchsum}), we start with a brief state of the art (Chapter \ref{stateart}) that lists some classical regression methods and explains that they do not respect our industrial needs because of correlation issues or lack of variable selection or interpretability. It leads us to define a new model.\\
 		
-		We first define an explicit structure of sub-regressions (Chapter \ref{chapexpl}) to explain correlations between the covariates. Then we use this structure to obtain a reduced model (by marginalization) with orthogonal covariates. It can be seen as a kind of variable pre-selection that allows usage of any estimator (including variable selection tools). The structure itself is used for interpretation by the distinction between redundant and irrelevant covariates. An MCMC algorithm is provided (Chapter \ref{chapterMCMC}) to find the sub-regressions structure, relying on a Bayesian criterion and a full generative model on the covariates. Numerical results are then provided (Chapter \ref{sectionsimul}) on both simulated datasets and real datasets (Chapter \ref{sectionrealcase}) from steel industry without too much details because of industrial secret. The package {\tt CorReg}, on CRAN, implements all this work and allows to retrieve the results given here. \\
+		In the first part, we define an explicit structure of sub-regressions (Chapter \ref{chapexpl}) to explain correlations between the covariates. Then we use this structure to obtain a reduced model (by marginalization) with uncorrelated covariates. It can be seen as a kind of variable pre-selection that allows further usage of any estimator (including variable selection tools). The structure itself is used for interpretation by the distinction between redundant and irrelevant covariates. An MCMC algorithm is provided (Chapter \ref{chapterMCMC}) to find the sub-regressions structure, relying on a Bayesian criterion and a full generative model on the covariates. Numerical results are then provided on both simulated datasets (Chapter \ref{sectionsimul}) and real datasets (Chapter \ref{sectionrealcase}) from steel industry without too much details because of industrial secret. The package {\tt CorReg}, on CRAN, implements all this work and allows to retrieve the results given here. \\
 		
 		In a second part, we use the marginal model and its estimated residuals to obtain a new sequential model by plug-in (Chapter \ref{chapplugin}) that is asymptotically unbiased (the marginal one could be biased). Another application of the generative model on the dataset and the structure of sub-regressions is that we are able to compute conditional distributions and then to manage missing values (Chapter \ref{chapmiss}).  
+
+\paragraph{Conclusion:} Industrial context necessitates easily understandable models and the stakes are frequently very high in terms of financial impact. 
+		These two points give strong constraints because used methods has to be accessible for non-statisticians in a minimum amount of time and results obtained have to be clearly interpretable (no black-box). So a powerful tool without interpretation becomes kind of useless in such a context.\\
+ Then we need a tool that is both easy to use and to understand, giving priority to interpretation more than prediction. The tool will have to work without a priori and to be able to select relevant covariates. \\		
 		
 \chapter{Résumé substantiel en français}\label{frenchsum}
 	\section{Position du problème}
@@ -408,8 +459,9 @@ Cet estimateur nous permet de réduire le bruit du modèle marginal, afin d'essa
 		 Autrement dit, le modèle génératif sur $\boldsymbol{X}$ donne la loi conditionnelle des valeurs manquantes sachant les valeurs observées, ce qui permet d'imputer les valeurs manquantes en connaissant la variance associée à ces imputations.
 
 \chapter{State of the art in linear regression}\label{stateart}
-\paragraph{Abstract:} Brief state of the art to have a glimpse of regression methods we could try to solve our problematic.
-Most of the tools described here are explained with more details in the book from  Hastie, Tibshirani et Friedman: {\it ``The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible on web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}} for free. The main goal of this chapter is to provide a quick overview of linear regression and the reasons why a new method was needed in our industrial context. It is not a book or a course about regression. References are provided for all presented methods.
+\paragraph{Abstract:} Here is a focused state of the art to have an overview of regression methods.% we could try to solve our problematic.
+Most of the tools described here are explained with more details in the book from  Hastie, Tibshirani et Friedman: {\it ``The Elements of Statistical Learning: Data Mining, Inference, and Prediction" } accessible on web\footnote{ \url{http://web.stanford.edu/~hastie/local.ftp/Springer/OLD/ESLII_print4.pdf}} for free. The main goal of this chapter is to %provide a quick overview of linear regression and the reasons 
+to justify why a new method was needed in our industrial context. %It is not a book or a course about regression. References are provided for all presented methods.
 	
 	
 %		\subsection{Historic interest}
@@ -430,7 +482,7 @@ Most of the tools described here are explained with more details in the book fro
 
 
 \paragraph{Notations:}	
-In the following we note classical (respectively $L_2,L_1,L_{\infty}$) norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^d(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^d|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_d|)$. Vectors, matrices and tuples are in bold characters.
+In the following we respectively note classical ( $L_2,L_1,L_{\infty}$) norms: $\parallel\boldsymbol{\beta}\parallel_2^2=\sum_{i=1}^d(\beta_i)^2$, $\parallel\boldsymbol{\beta} \parallel_1=\sum_{i=1}^d|\beta_i| $ and $\parallel\boldsymbol{\beta} \parallel_{\infty}=\operatorname{max}(|\beta_1|,\dots,|\beta_d|)$. Vectors, matrices and tuples are in bold characters.
 \section{Regression}
 	\subsection{General purpose}
 		Regression methods are the statistical methods that aim to estimate relationships between response variables and some predictor covariates. This relationship can have many shapes, from linear relationship to any non-linear relationship. The term "Regression" comes from a study of Francis GALTON in the $19^{th}$ century about the heights of several successive generations of citizens that tends to "regress" towards the mean. 
@@ -624,6 +676,23 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a possibly bi
 	
 		 \FloatBarrier
 	\section{Variable selection methods}
+		\subsection{Stepwise}
+			
+			Stepwise \cite{seber2012linear} is an algorithm to choose a subset of covariates to use in the final regression model. It is a variable selection method using \textsc{ols} for estimation. It is proposed in the R package {\tt stats} with the function {\tt step}. The main idea is to start with a first model (that can be either void or using the whole dataset or using any subset of covariates) and then to add and remove covariates step by step to improve the chosen criterion. The criterion to optimize can be adjusted R-square, Akaike information criterion, Bayesian information criterion,{\it etc.}  \\
+			\begin{itemize}
+				\item 	Starting with a void model and having only adding steps is called Forward Selection. Covariates are added by choosing first the one that improves the most the criterion. The algorithm stops when all the covariates are in or when remaining covariates does not improve the model.
+				\item Backward Elimination is the same as Forward selection but starting with the full model and removing at each step the covariates that improves the most the criterion once deleted.
+				\item Bidirectional elimination is more flexible and allows to start from any model. Each step proposes to add a covariate or to delete another so it is not a hierarchical construction any more because successive models are not necessarily nested into each other.
+			\end{itemize}
+		A critical value can be defined to stop the algorithm when improvement becomes too small, in order to avoid over-fitting. \\
+		
+		Stepwise regression is subject to over-fitting and the algorithm is in trouble when confronted to correlated covariates \cite{miller2002subset} giving unstable results, especially for nested strategies, just like regression trees that are unstable because of their discrete nested nature.
+\begin{figure}
+	 \centering
+	  \includegraphics[width=500px]{figures/MQEreel/stepwisecompl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEstepwisecompl}
+	\end{figure}
+	Figure \ref{MQEstepwisecompl} illustrate the consequences of correlations in the dataset.
 		\subsection{Least Absolute Shrinkage and Selection Operator ({\sc lasso})}		% ne pas oublier de mentionner les packages existants
 
 			%\cite{tibshiranilasso}  
@@ -727,23 +796,7 @@ The Least Absolute Shrinkage and Selection Operator ({\sc lasso}, \cite{tibshira
 			\caption{Geometric view of the Penalty for {\sc oscar}}\label{oscarcircles}
 		\end{figure} 
 Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It follows the same principle as the \textsc{lasso} with supplementary vertices in the four quarters to obtain equal values for the $\beta_j$. So estimator will give both zero coefficients and equal coefficients that can be grouped for interpretation and correspond to a dimension reduction. So two covariates with a similar effect may obtain the same estimated coefficient. But correlations are only implicitly taken into account and only pairwise. It lacks of an efficient algorithm  (to find $c$) and need a supplementary study to interpret the groups found.
-		\subsection{Stepwise}
-			
-			Stepwise \cite{seber2012linear} is an algorithm to choose a subset of covariates to use in the final regression model. It is a variable selection method using \textsc{ols} for estimation. It is proposed in the R package {\tt stats} with the function {\tt step}. The main idea is to start with a first model (that can be either void or using the whole dataset or using any subset of covariates) and then to add and remove covariates step by step to improve the chosen criterion. The criterion to optimize can be adjusted R-square, Akaike information criterion, Bayesian information criterion,{\it etc.}  \\
-			\begin{itemize}
-				\item 	Starting with a void model and having only adding steps is called Forward Selection. Covariates are added by choosing first the one that improves the most the criterion. The algorithm stops when all the covariates are in or when remaining covariates does not improve the model.
-				\item Backward Elimination is the same as Forward selection but starting with the full model and removing at each step the covariates that improves the most the criterion once deleted.
-				\item Bidirectional elimination is more flexible and allows to start from any model. Each step proposes to add a covariate or to delete another so it is not a hierarchical construction any more because successive models are not necessarily nested into each other.
-			\end{itemize}
-		A critical value can be defined to stop the algorithm when improvement becomes too small, in order to avoid over-fitting. \\
-		
-		Stepwise regression is subject to over-fitting and the algorithm is in trouble when confronted to correlated covariates \cite{miller2002subset} giving unstable results, especially for nested strategies, just like regression trees that are unstable because of their discrete nested nature.
-\begin{figure}
-	 \centering
-	  \includegraphics[width=500px]{figures/MQEreel/stepwisecompl.png}
-	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{stepwise}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEstepwisecompl}
-	\end{figure}
-	Figure \ref{MQEstepwisecompl} illustrate the consequences of correlations in the dataset.
+	
 	
 %			\subsection{bootstrap}
 %			\cite{efron1979bootstrap,efron1994introduction}
@@ -946,7 +999,10 @@ It leads to decompose the density of $\boldsymbol{X}$ in three terms $f_{clust},
 \part{Model for regression with correlation-free covariates}
 \chapter{Structure of inter-covariates regressions}\label{chapexpl}
 \paragraph{Abstract:} 
-We give an explicit model for correlation between covariates by a linear regression system. It helps to better understand the dataset and leads to a pre-treatment by variable selection. Parameter estimation can then be done by any estimator. This pre-treatment allows to reduce variance of the estimator and then to distinguish irrelevant covariates from redundant covariates.
+We give an explicit model for correlation between covariates by a linear regression system. 
+%It helps to better understand the dataset and leads to a pre-treatment by variable selection.
+This conditional model on covariates, combined with the conditional model on the response variable allows to remove correlated-redundant covariates by marginalization.
+ After this pretreatment-like method, any parameter estimation can then be done including also variable selection steps. This pre-treatment allows to reduce variance of all the estimators beyond distinguishing irrelevant covariates from redundant covariates.
 \\
 \section{Introduction}
 Most of the above methods do not take explicitly the correlations into account, even if the clustering methods may group the correlated covariates together.
@@ -1474,8 +1530,9 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 \paragraph{Remark:} The marginal model proposed in this chapter is conditional to $\boldsymbol{X}_f$ which is defined with $\boldsymbol{S}$. In this chapter we suppose $\boldsymbol{S}$ to be known but in real case we will have to estimate it and the estimator used $\hat{\boldsymbol{S}}$ will depend on whole $\boldsymbol{X}$ (see Chapter \ref{chapterMCMC}) so the marginal model will be in fact conditional to $\boldsymbol{X}$ but in a specific manner. It will be a sequential estimation: we will first estimate the structure of correlations $\hat{\boldsymbol{S}}$ based on $\boldsymbol{X}$ before estimating $\hat{\boldsymbol{Y}}$ conditionally to $\boldsymbol{X}_f$ and $\hat{\boldsymbol{S}}$.		
 
 
-\chapter{Estimation of the structure of sub-regression by MCMC}\label{chapterMCMC}
-\paragraph{Abstract:} In the previous chapters, $\boldsymbol{S}$ was supposed to be known, but in fact we have to find it. We define a generative model on the dataset, but also a probabilistic hypothesis on the structure that allows us to introduce a new criterion to evaluate the quality a structure of sub-regression. This new criterion takes into account the huge number of feasible structures. Then we have developed an MCMC algorithm to choose the best $\boldsymbol{S}$.%: an MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
+\chapter{Estimation of the structure of sub-regression}\label{chapterMCMC}
+\paragraph{Abstract:} In the previous chapters, structure $\boldsymbol{S}$ was supposed to be known, but it has usually to be estimated. With this aim, we define a generative model on the dataset, paired with a probabilistic hypothesis on the structure that allows to select the structure $\boldsymbol{S}$ by introducing
+a new {\sc bic}-like criterion which evaluates the quality of a structure of sub-regression. This new criterion takes into account the huge number of feasible structures. Then we have developed an MCMC algorithm to optimize the involved criterion.%choose the best $\boldsymbol{S}$.%: an MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
 \section{Choice of model: Brief state of the art}
 		% ne pas oublier de mentionner les packages existants
 		Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical \textsc{lasso} offers a method \cite{friedman2008sparse} to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
@@ -1499,7 +1556,8 @@ Because it is about model selection, we decide to follow a Bayesian approach (\c
 	
 
 			\subsection{Bayesian Information Criterion}
-			Cross-validation depends on a criterion to choose a model. The Mean Squared Error is not the only criterion. Probabilistic criteria can also be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation. The Akaike Information Criterion \cite{akaike1974new} known as $\mbox{{\sc aic}}$ is asymptotically optimal in selecting the model with the least mean squared error (see \cite{stone1977asymptotic}).
+			%Cross-validation depends on a criterion to choose a model.
+			 The cross-validated Mean Squared Error is not the only criterion. Probabilistic criteria can be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation. The Akaike Information Criterion \cite{akaike1974new} known as $\mbox{{\sc aic}}$ is asymptotically optimal in selecting the model with the least Mean Squared Error (see \cite{stone1977asymptotic}).
 			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating,yang2005can} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $\mbox{{\sc bic}}$ over simple usage of the likelihood is the penalty added to take into account the number of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. $\mbox{{\sc bic}}$ is consistent so it asymptotically points out the true model when $n$ grows. The Risk Inflation Criterion \cite{foster1994risk} ($\mbox{{\sc ric}}$) can also be used, or any other criterion \cite{george1993variable} thought to be better in a given context.
 			In this work we decided to start with the $\mbox{{\sc bic}}$ that is given by:
 			\begin{equation}
@@ -1928,7 +1986,8 @@ We define the complexity of a structure $\boldsymbol{S}$ as the number of elemen
 \section{Conclusion} We now have an algorithm and a criterion to find the best structure of correlations. This algorithm is extremely flexible: no heavy hypotheses on the dataset, no crucial parameter to tune by hand. We want then to know how efficient it is on simulated datasets first (Chapter \ref{sectionsimul}), and then on real industrial datasets from ArcelorMittal to confirm the utility of both the new model and the algorithm in the real life (Chapter \ref{sectionrealcase}).	
 		\paragraph{Remark:} Choosing whether we have to use or not the structure to make a pre-treatment is independent of the utility of the structure. Knowing explicitly the complex correlations that hold the dataset is a real stake when times come to interpret the model and to decide actions. Our explicit structure describes in details the complexity of the situation so we can then act knowing what we do. 		
 	\chapter{Numerical results on simulated datasets} \label{sectionsimul}
-\paragraph{Abstract:} Here are the numerical results obtained for an unknown structure $\boldsymbol{S}$ on simulated datasets. It illustrates efficiency of the MCMC algorithm used to find a relevant structure between the covariates. The fact that the structure is unknown makes the simulations more similar to a real case study where we do not even know if there is a linear structure of correlations between the covariates.
+\paragraph{Abstract:} Here are the numerical results obtained for an unknown structure $\boldsymbol{S}$ on simulated datasets. It illustrates efficiency of both the new {\sc bic}-like criterion and the MCMC algorithm used to find a relevant structure between the covariates. We also evaluate its impact on the predictive ability of the model. We finish with a robustness study for non-linear correlation designs.
+%The fact that the structure is unknown makes the simulations more similar to a real case study where we do not even know if there is a linear structure of correlations between the covariates.
 		 
 
 	\section{Simulated datasets}	
@@ -2744,9 +2803,12 @@ Figure \ref{MSEnonlin} illustrates the advantage of using {\tt CorReg} even with
 	\section{Conclusion} The marginal model still gives good results even with $\hat{\boldsymbol{S}}$. We also observe that the estimation of the structure is satisfying. But these are only simulated datasets and we have to confirm that our hypotheses can face the reality of industrial datasets. Moreover, we see that the pattern of the true regression on $\boldsymbol{Y}$ leads to fundamental changes in the quality of the prediction.	So we will test {\tt CorReg} on real datasets (Chapter \ref{sectionrealcase}) and then try to improve the marginal model to better fit the patterns that are not favorable (those whith $\boldsymbol{Y}$ depending only on redundant covariates) to the marginal model (Chapter \ref{chapplugin}).
 		
 \chapter{Experiments on steel industry} \label{sectionrealcase}
-\paragraph{Abstract:} Here are the numerical results obtained from real datasets. As in the previous chapter we have to estimate the structure. 
-But here we do not know if the true model follows our hypotheses or not. We will see if the model does make sense in real life as we supposed previously. 
-These experiments were made on real datasets from ArcelorMittal and some informations are confidential so the reader can experiment a kind of frustration but efforts were made to keep these experiments interesting. 
+\paragraph{Abstract:} Here are numerical results obtained from real datasets from steel industry. As in the previous chapter we have to estimate the structure. 
+
+%But here we do not know if the true model follows our hypotheses or not. 
+We will see if the model does make sense in these real life situations.% as we supposed previously.
+We also assess the corresponding predictive performance. 
+These experiments were made on real datasets from ArcelorMittal and some informations are confidential, explaining why some details cannot be given here.% so the reader can experiment a kind of frustration but efforts were made to keep these experiments interesting. 
 
 	\section{Quality case study} \label{sectionexfos}
 This work takes place in steel industry context, with quality oriented objective: to understand and prevent quality problems on finished product, knowing the whole process. The correlations are strong here (many parameters of the whole process without any a priori and highly correlated because of physical laws, process rules, {\it etc.}). 
@@ -2944,13 +3006,14 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 \section{Conclusion}
 We have used the package {\tt CorReg} with real datasets and the results obtained by our model were better than those from classical methods in terms of prediction and parsimony. But more than that we have found structures between the covariates that did make sense for the metallurgists. The interpretation of both the sub-regressions structure and the main regression model have helped to improve the process so it does confirm that explicit modeling of the correlations and marginalization were good choices. However, we want to investigate other manners to take benefits from the sub-regression structures: sequential estimation and missing values management.
 
-\part{Usage of the residuals by plug-in \\ and extension to missing data}	
+\part{Two extensions: Re-injection of correlated covariates \\ and dealing with missing data}	
 			
 		
-\chapter{Using coefficients of regression and sub-regression to improve prediction}\label{chapplugin}
+\chapter{Re-injection of correlated covariates to improve prediction}\label{chapplugin}
 	\paragraph{Abstract:} We have seen that eviction of redundant covariates can often improve the results by an efficient trade-off between dimension reduction and better conditioning versus keeping all the covariates. 
-	But the fact is that we have lost some information and we would like to find a way to use this information. 
-	So we propose a plug-in model to use the redundant covariates in a second estimation step with an estimate of the residuals. It is a sequential estimation of $\boldsymbol{\beta}$.
+	But the fact is that we have lost some information by excluding some covariates
+	% and we would like to find a way to use this information. 
+	So we propose a plug-in strategy to use the redundant covariates in a second estimation step through an estimate of the residuals. It leads to a sequential estimation of the whole regression parameters.%$\boldsymbol{\beta}$.
 	\section{Motivations}
 		The structure $\boldsymbol{S}$ of sub-regressions between the covariates has given us the opportunity to introduce a marginal model that in fact removes the response covariates from the model. We have seen that it is an efficient method to decorrelate the covariates and thus to reduce the variance of the estimator, not only on simulated but also on real datasets (Chapter \ref{sectionrealcase}). But even if the sub-regressions are strong, we face a loss of information that can be damageable as we have seen in Section \ref{tableMSEsimgauche}. \\
 		
@@ -3823,7 +3886,11 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	\section{Conclusion} The plug-in model sounds good when described theoretically and figure \ref{MQE2} makes us hope to obtain good results with it. But the reality is that the plug-in model (by definition) relies on other estimators so it has a slow convergence speed. \\
 	Moreover, if $\hat{\boldsymbol{S}}\neq \boldsymbol{S}$ but $\hat{J}_r=J_r$, then the marginal model is not impacted whereas the plug-in model depends on both $\hat{\boldsymbol{\beta}}^*_{f}$ and $\hat{\boldsymbol{\alpha}}$. Ordinary Least Squares really are in great trouble when confronted to correlated datasets so the plug-in model improves \textsc{ols} anyway but other methods are a bit less sensitive to correlations so it is difficult to improve them with a plug-in model relying on so many estimators. However, like the marginal model, the plug-in model has a small computational cost compared to the estimation of $\boldsymbol{S}$. So we recommend to compute both complete, marginal and plug-in model and to compare the results in a second time.
 \chapter{Using the full generative model to manage missing data} \label{chapmiss}
-	\paragraph{Abstract:} The full generative model defined on $\boldsymbol{X}$ with $\boldsymbol{S}$ gives the conditional distribution of missing values. Thus we are able to manage missing values. Because the joint distribution of $\boldsymbol{X}$ can be very complex (Gaussian mixture with a huge number of components), we propose to use a {\sc sem} algorithm with multiple imputations by Gibbs sampling. Computation of the {\sc bic} in the MCMC will also rely on Gibbs sampling. To resume: we propose to manage missing values by multiple imputations based on the structure $\boldsymbol{S}$ and on the marginal Gaussian mixtures estimated independently on each covariate in $\boldsymbol{X}_f$.
+	\paragraph{Abstract:} The full generative model defined on the covariates $\boldsymbol{X}$ with the structure $\boldsymbol{S}$ naturally constrains the conditional distribution of missing values. 
+	%Thus we are able to manage missing values. Because the joint distribution of $\boldsymbol{X}$ can be very complex (Gaussian mixture with a huge number of components), 
+	It corresponds then to a standard latent variable problem and
+	we propose to solve it by a {\sc sem} algorithm invoking itself multiple imputations by Gibbs sampling at its SE step. Computation of the {\sc bic} in the MCMC will also rely on Gibbs sampling. 
+	%To resume: we propose to manage missing values by multiple imputations based on the structure $\boldsymbol{S}$ and on the marginal Gaussian mixtures estimated independently on each covariate in $\boldsymbol{X}_f$.
 	
 	
 		 \section{State of the art}
@@ -4120,7 +4187,7 @@ If each sub-regression is a distinct connected component then we can always use 
 		\end{figure}
 %	\subsection{Marginal likelihood in the general case}
 
-		For the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$. Then we use the global Gaussian mixture on $\boldsymbol{X}_O$ whose parameters depends on those of $\boldsymbol{X}$. Each component is Gaussian so conditional distributions are explicit. But we have seen that the number of components can be huge so in practice we won't compute the likelihood directly. We will work instead with multiple imputations (Section \ref{gibbsmiss}) to estimate $\boldsymbol{\alpha}$ and the likelihood for {\sc bic} (Section \ref{gibbsmiss}).  
+		For the general case we need to manage the dependencies implied by missing values in common covariates in the $J_p^j$. Then we use the global Gaussian mixture on $\boldsymbol{X}_O$ whose parameters depend on those of $\boldsymbol{X}$. Each component is Gaussian so conditional distributions are explicit. But we have seen that the number of components can be huge so in practice we won't compute the likelihood directly. We will work instead with multiple imputations (Section \ref{gibbsmiss}) to estimate $\boldsymbol{\alpha}$ and the likelihood for {\sc bic} (Section \ref{gibbsmiss}).  
 %		Because $\forall 1\leq i \leq n, \boldsymbol{X}_i$ is a Gaussian Mixture, $\boldsymbol{X}_{i,O}$ and then $(\boldsymbol{X}^{I_r}_{i,O}|\boldsymbol{X}_{i,O}^{I_f})$ are Gaussian mixtures too. \\
 		%We note $f(\boldsymbol{X})=\sum_{k=1}^K\pi_k \mathcal{N}(\boldsymbol{\mu}_{X,k};\boldsymbol{\Sigma}_{X,k})$.
 %		
@@ -4342,7 +4409,7 @@ If each sub-regression is a distinct connected component then we can always use 
 	
 	We use a  Stochastic Expectation Maximization (\textsc{sem} \cite{celeux1986algorithme}) algorithm  to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the Expectation-Maximization ({\sc em}) algorithm necessitates to first write the observed likelihood whose number of component can explode (as we have seen Section \ref{nbcomp}) so it would be difficult to compute.\\
 	
-	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regression have only few parameters and can be estimated even with only a small number of individuals.\\
+	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regressions have only few parameters and can be estimated even with only a small number of individuals.\\
 	
 		Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ (the $i^{th}$ individual of the $j^{th}$ covariate of $\boldsymbol{X}$) is generated (component of the marginal Gaussian mixture followed by $x_{i,j}$ and defined by Hypothesis \ref{H4} page \pageref{H4}) with $1\leq i\leq n$ and $1\leq j\leq d$. \\
 		
@@ -4539,8 +4606,8 @@ where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture 
 %			
 			
 \subsection{Parameters computation for the Gibbs sampler}	\label{gibbsparam}
-					For the step $q$ of the Gibbs sampler at the step $h$ of the Stochastic EM, $\forall (i,j) \in \{1,\dots,n \}\times J_f,\boldsymbol{M}_{i,j}=1$
-			we have for the mean:
+					For the step $q$ of the Gibbs sampler at the iteration $h$ of the Stochastic EM, $\forall (i,j) \in \{1,\dots,n \}\times J_f,\boldsymbol{M}_{i,j}=1$
+			we have (Multivariate Gaussian conditional distribution \cite{eaton1983multivariate}) for the mean:
 			\begin{eqnarray}
 			\mu_{i,j}^{(q,h)}&=&  \mu_{j,Z_{i,j}^{(q,h)}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}(\boldsymbol{X}_{i\bar{j}}^{(q+1,h)}-\boldsymbol{\mu}_{X_{i\bar{j}}^{(q+1,h)},Z_i^{(q,h)}}) , \nonumber 			\end{eqnarray}
 			and for the variance:
@@ -4662,11 +4729,15 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 	We see in figure \ref{MSEXmissBV} that our Stochastic EM gives a smaller \textsc{mse} with a smaller variance than imputation by the mean. 
 	
 \FloatBarrier	
-\section{Conclusion}	We can see that our generative model on the dataset and the explicit modeling of the correlations are powerful enough to manage missing values either to estimate $\boldsymbol{\alpha}$, $\boldsymbol{S}$, the main regression coefficients or even to impute missing values with an indicator of the reliability of these imputations. But we have to face the sad reality: we cannot create information and if too much values are missing we won't get good results. Moreover, the algorithms used here have good asymptotic properties but time is not infinite during a statistical study. However, if there are not too much missing values or if they are not too badly placed in the dataset we can hope to obtain good results in a reasonable amount of time.\\
-There is still a lot of work to do in the field of missing values and we have only walked the firsts steps of this huge perspective, but these first results are encouraging and make us feel like this orientation is worthy to be followed.
+\section{Conclusion}	We can see that our generative model on the dataset and the explicit modeling of the correlations are powerful enough to manage missing values either to estimate $\boldsymbol{\alpha}$, $\boldsymbol{S}$, the main regression coefficients or even to impute missing values with an indicator of the reliability of these imputations. But, as expected, 
+ %we have to face the sad reality: we cannot create information and 
+ if too many values are missing we won't get good results. Moreover, the algorithms used here have good asymptotic properties but can take time.
+ %time is not infinite during a statistical study. 
+ However, if there are not too many missing values or if they are not too badly placed in the dataset we can hope to obtain good results in a reasonable amount of time.\\
+%There is still a lot of work to do in the field of missing values and we have only walked the firsts steps of this huge perspective, but these first results are encouraging and make us feel like this orientation is worthy to be followed.
 
 
-\chapter{Conclusion and perspectives}
+\chapter{Conclusion and prospects}
 	\section{Conclusion}
 		It is well-known that no model is the better in every situation. Here we propose two additional models (marginal and plug-in) but the best idea is to compare the full, marginal and plug-in and then choose the best for the study concerned. Our goal was not to replace any model but to enlarge the scope of statisticians in the real life. It is important to note that our model can be useful for interpretation even if the full model is chosen for interpretation, because we explicitly describe the correlations between the covariates. Moreover, the marginal model can be seen as a pre-treatment so it could easily be used with future statistical tools. \\
 		
@@ -4677,7 +4748,7 @@ There is still a lot of work to do in the field of missing values and we have on
 					
 		To conclude:
 		\begin{itemize}
-			\item We provide an full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates by a structure of sub-regressions.
+			\item We provide a full generative model on $\boldsymbol{X}$ with explicit dependencies within the covariates by a structure of sub-regressions.
 			\item We provide an efficient algorithm to find the structure of sub-regressions.
 			\item We propose a variable pre-selection that takes into account the correlations and has proved (on both simulated and real datasets) to significantly improve predictive results when correlations are strong.
 			\item We propose a plug-in model that allows to manage correlations by sequential estimation without deleting any covariates and that improves consistency (compared to the {\sc lasso}).
@@ -4690,12 +4761,12 @@ There is still a lot of work to do in the field of missing values and we have on
 		\end{itemize}
 		We have made the bet that explicit modeling of the correlations between the covariates would be valuable. Obtained results confirm that it was a good choice.		
 		
-	\section{Perspectives}
+	\section{Prospects}
 	This work was focused on linear regression and the ways to avoid correlations issues. But statistics cover an extremely wider range of methods that sometimes also suffer from correlations. Then the perspectives of this work are wide.
 		\subsection{Logistic regression}
 			Logistic regression \cite{hosmer2000applied} is in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain the same kind of phenomenon. It would be an easy generalization of \textsc{CorReg} to binary response variables. Introduction of qualitative covariates would be another big improvement for our method.
 			\subsection{Regression mixture models}
-			When the population studied can be decomposed in several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values. In such a model, the contribution of the structure itself would be even greater for the final user. An additional algorithm to search for distinct or equal coefficients within the classes would be to develop.
+			When the studied population can be decomposed into several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values. In such a model, the contribution of the structure itself would be even greater for the final user. An additional algorithm to search for distinct or equal coefficients within the classes would be to develop.
 			\subsection{Using the response variable to estimate the structure of sub-regression}
 			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results (in terms of a given criterion) when applied on $\boldsymbol{Y}$.\\
 			
@@ -4794,7 +4865,7 @@ The two cases lead immediately to non-zero covariance so we just look at other c
 	\item if $(i,j)\in J_f\times J_f$ then  $\operatorname{cov}(\boldsymbol{X}^i,\boldsymbol{X}^j)=0 $ because covariates in $\boldsymbol{X}_f$ are orthogonal (by hypotheses \ref{H1} and \ref{H2}).
 	\item if $j \in \{1,\dots,d_r\}, i \in J_f$ and $\operatorname{cov}(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^i)\neq 0$ then $i\in J_p^j$ by hypotheses \ref{H1} and \ref{H3} and equation \ref{eq:H3}.
 \end{itemize}
-$\square$
+\hfill $\square$
 
 \paragraph{proof of the identifiability criterion:} We suppose that \ref{identcondition} is verified and the model is not identifiable:
 \begin{eqnarray}
@@ -5560,53 +5631,6 @@ This script describes the whole process of {\tt CorReg}. We can see that it is r
 %	
 %		
 %
-%\chapter{Glossary of notations}\label{glossaire}
-%This glossary can be used to find the meaning of some notations without having to search within the chapters.
-%Bold characters are used to distinguish multidimensional objects. Many objects are tuples.
-%\begin{itemize}
-%	\item $\boldsymbol{\alpha}_j$ is the vector of the coefficients of the $j^{th}$ sub-regression.
-%	\item $\boldsymbol{\alpha}=(\boldsymbol{\alpha}_1,\dots,\boldsymbol{\alpha}_{d_r})$ is the $d_r-$uple of the $\boldsymbol{\alpha}_j$.
-%	\item $\boldsymbol{\alpha}^*$ is the $d_f \times d_r $ matrix of the sub-regressions coefficients.
-%	\item $\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$.
-%	\item $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ is the $(d-d_r)\times 1$ vector of the regression coefficients associated  to the free covariates in the main regression on $\boldsymbol{Y}$.
-%	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated  to the responses covariates.
-%	\item $d$ is the number of covariates in the dataset $\boldsymbol{X}$.
-%	\item $d_f$ is the number of free covariates in the dataset.
-%	\item $d_r$ is the number of response covariates in the dataset (and consequently the number of sub-regressions).
-%	\item $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.
-%	\item $K$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}$.
-%	\item $K_j$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}^j$.
-%	\item $K_{i,J_r^j}$ is the number of component of the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
-%	\item $\boldsymbol{\mu}_X$ is the $d-$uple of the $K \times 1$ vectors $\boldsymbol{\mu}_{X^j}$ of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$.
-%	\item $\boldsymbol{\mu}_{X^j}$ is the $K \times 1$ vector of the means associated to $\boldsymbol{X}^j$ in $\boldsymbol{X}$.
-%	\item $\boldsymbol{\mu}_j$ is the $K_j \times 1$ vector of the means of the Gaussian mixture followed by $\boldsymbol{X}^j$ with $j\in J_f$.
-%	\item $\boldsymbol{\mu}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the means of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.	
-%	\item $\mu_{j,k}$ is the $k^{th}$ element of $\boldsymbol{\mu}_j$.
-%	\item $\mu_{i,J_r^j,k}$ is the mean of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
-%	\item $\boldsymbol{\pi}_X$ is the $K \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}$.
-%	\item $\boldsymbol{\pi}_j$ is the $K_j \times 1 $ vector of proportions of the Gaussian mixture followed by $\boldsymbol{X}^j$.
-%	\item $\pi_k$ is the proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}$.
-%	\item $\boldsymbol{\pi}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the proportions of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
-%	\item $\pi_{j,k}$ is the proportion of the $k^{th}$ component of the Gaussian mixture followed by $\boldsymbol{X}^j$.
-%	\item $\pi_{i,J_r^j,k}$ is the proportion of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
-%	\item $\sigma_j^2$ is the variance of the residual of the $j^th$ sub-regression.	
-%	\item $\boldsymbol{\Sigma}_X$ is the $d-$uple of the $K \times 1 $ vectors $\boldsymbol{\Sigma}_{X^l}$ of the variances associated to $\boldsymbol{X}^l$ in the Gaussian mixture followed by $\boldsymbol{X}$.
-%	\item $\boldsymbol{\Sigma}_{X^l}$ is the $K \times 1 $ vector of the variances associated to $\boldsymbol{X}^l$ in the Gaussian mixture followed by $\boldsymbol{X}$.
-%	\item $\boldsymbol{\Sigma}_{i,J_r^j}$ is the $K_{i,J_r^j}-$uple of the variances of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.	
-%	\item $\Sigma_{X^l,k}$ is the variance of $\boldsymbol{X}^l$ in the $k^{th}$ component of $\boldsymbol{X}$.
-%	\item $\Sigma_{i,J_r^j,k}$ is the variance of the $k^{th}$ component of the Gaussian mixture followed by the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
-%	\item $\boldsymbol{\Theta}$ is the set of the parameters associated to the Gaussian mixture on $\boldsymbol{X}$.	
-%	\item $\boldsymbol{X}$ is the $n\times d$ matrix whose columns are the covariates in the datasets and rows are the individuals.
-%	\item $\boldsymbol{X}^j$ is the $j^{th}$ column of $\boldsymbol{X}$.
-%	\item $\boldsymbol{X}_r$ is the matrix of the response covariates.
-%	\item $\boldsymbol{X}_f$ is the matrix of the predictor covariates.
-%	\item $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ is the $n-$uple of the $\boldsymbol{X}_{i,O}$.
-%	%\item $X_{\bar{ij}}=(x_{i,1},\dots, x_{i,j-1},x_{i,j+1},\dots, x_{i,d})$.
-%	\item $\boldsymbol{X}_{i,O}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}$.
-%	\item $\boldsymbol{X}_{i,O}^{J_f}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}_f$.
-%	\item $\boldsymbol{X}_{i,O}^{J_r}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}_r$.
-%	\item $\boldsymbol{Y}$ is the $n\times 1$ response variable in the main regression.
-%\end{itemize}
 
 	\end{appendices}
 \end{document}
