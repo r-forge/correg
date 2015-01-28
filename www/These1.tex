@@ -860,7 +860,7 @@ Figure 	\ref{oscarcircles} show the geometric interpretation of the penalty. It 
 	
 	Principal Component Regression requires to choose $M$ the number of axis to keep. Finally, even if dimension reduction is effective when $M<d$ each axis depends on all original covariates so it does not select any covariates and that is also a problem for interpretation. We have to choose arbitrary how to interpret each axis and how many covariates really explain each of them. So it is not really satisfying in our industrial context. Principal Component method can be seen as a truncation method whereas the ridge regression is a shrinkage method. Another problem is that principal components are constructed to explain $\boldsymbol{X}$ instead of $\boldsymbol{Y}$ even if there is no reason that relevant variables to explain $\boldsymbol{X}$ stay relevant to explain $\boldsymbol{Y}$. So a method that would also use $\boldsymbol{Y}$ may give better results in terms of prediction.\\
 	
-			\subsection{Partial Least Squares Regression ({\sc pls})}
+			\subsection{Partial Least Squares Regression ({\sc pls})}\label{plsreg}
 
 	Partial Least Square Regression ({\sc pls})\cite{abdi2003partial,geladi1986partial} also relies on a combination of the columns of  $\boldsymbol{X}$ but this combination depends on $\boldsymbol{Y}$. The dataset $\boldsymbol{X}$ is also standardized to have 0 mean and variance 1 for each of the covariates. {\sc pls} regression searches for a set
 of components (called latent vectors) that performs a simultaneous decomposition of $\boldsymbol{X}$ and $\boldsymbol{Y}$ with the constraint that linear combination of these components explain as much as possible of the variance of $\boldsymbol{Y}$. It follows an algorithm that leads to construct successively $M$ orthogonal latent variables that are linear combination of the $\boldsymbol{X}^j$:
@@ -4445,12 +4445,15 @@ where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture 
 			%&=&\mathbb{P}(x_{i,J_r^j}|\boldsymbol{X}_{i}\setminus x_{i,J_r^j},z_{i, J_r^j};\boldsymbol{\alpha}^{(h)},\Theta,{S})
 		%	\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i,O},\boldsymbol{X}_{i,\bar{M}_{i,j}};\alpha^{(h)},\Theta,S) \\
 			%&=&\mathbb{P}(x_{i,j}|\boldsymbol{X}_i^{I_f^j};\boldsymbol{\alpha}^{(h)},\Theta,S)
-			&=&\Phi(x_{i,J_r^j};(\boldsymbol{X}_i^{J_p^j})^{(q+1,h)}\boldsymbol{\alpha}^{(h)}_{j},(\sigma_j^2)^{(h)} ). \nonumber
+			&=&\Phi(x_{i,J_r^j};(\boldsymbol{X}_i^{J_p^j})^{(q+1,h)}\boldsymbol{\alpha}^{(h)}_{j},(\sigma_j^{(h)})^2 ). \nonumber
 			\end{eqnarray}		
 			\item And for regressors:
 			%We have $\mathbb{P}(\boldsymbol{X}|Z)=\mathcal{N}(\boldsymbol{\mu}_{|Z},\boldsymbol{\Sigma}_{|Z})$. \\
-			$\forall (i,j) \in \{1,\dots,n \}\times J_f,\boldsymbol{M}_{i,j}=1$:  $x_{i,j}^{(q+1,h)}$ is generated according to the Gaussian $\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i\bar{j}}^{(q+1,h)},Z^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})=\Phi \big(x_{i,j}; \mu_{i,j}^{(q,h)}, (\sigma_{i,j}^{(q,h)})^2\big)$ using Gaussian conditional distribution with Schur complement. $\mu_{i,j}^{(q,h)}$ and $(\sigma_{i,j}^{(q,h)})^2$  are the mean and variance associated to $x_{i,j}$ knowing the components $Z_i^{(q,h)}$ and are defined below (Section \ref{gibbsparam}).
-		\end{itemize}		
+			$\forall (i,j) \in \{1,\dots,n \}\times J_f,\boldsymbol{M}_{i,j}=1$:  $x_{i,j}^{(q+1,h)}$ is generated according to the Gaussian 
+			$$\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i\bar{j}}^{(q+1,h)},Z^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})=\Phi \big(x_{i,j}; \mu_{i,j}^{(q,h)}, (\sigma_{i,j}^{(q,h)})^2\big)$$ 
+			using Gaussian conditional distribution with Schur complement. $\mu_{i,j}^{(q,h)}$ and $(\sigma_{i,j}^{(q,h)})^2$  are the mean and variance associated to $x_{i,j}$ knowing the components $Z_i^{(q,h)}$ and are defined below (Section \ref{gibbsparam}).
+			\end{itemize}
+				
 %			\begin{eqnarray}
 %%			%&&\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i}\setminus x_{i,j},Z;\boldsymbol{\alpha}^{(h)},\Theta,\boldsymbol{S})=
 %			\mathbb{P}(x_{i,j}|\boldsymbol{X}_{i\bar{j}}^{(q+1,h)},Z_i^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})&=&	 	%\nonumber \\
@@ -4616,8 +4619,8 @@ where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture 
 			\end{eqnarray}
 			We have  $\mu_{j,Z_{i,j}^{(q,h)}}$ the mean of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}) and
 			$\sigma_{j,Z_{i,j}^{(q,h)}}^2$ the variance of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}).\\
-			$\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}$ is the vector of the covariances between $x_{i,j}^{(q+1,h)}$ and the other covariates ($X_{\bar{ij}}^{(q+1,h)}$) knowing the components $Z_i^{(q,h)}$.\\
-			$\boldsymbol{\Sigma}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}$ is the variance-covariance matrix of the $X_{\bar{ij}}^{(q+1,h)}$ knowing the components $Z_i^{(q,h)}$.
+			$\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}$ is the vector of the covariances between $x_{i,j}^{(q+1,h)}$ and the other covariates ($\boldsymbol{X}_{\bar{ij}}^{(q+1,h)}$) knowing the components $Z_i^{(q,h)}$.\\
+			$\boldsymbol{\Sigma}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}$ is the variance-covariance matrix of the $\boldsymbol{X}_{\bar{ij}}^{(q+1,h)}$ knowing the components $Z_i^{(q,h)}$.
 			
 						
 				$\boldsymbol{\mu}_{X_{i\bar{j}}^{(q+1,h)},Z_i^{(q,h)}}$ is the vector of the means associated to $\boldsymbol{X}_{i\bar{j}}^{(q+1,h)}$ knowing the components $Z_i^{(q,h)}$. 
@@ -4763,12 +4766,14 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 		
 	\section{Prospects}
 	This work was focused on linear regression and the ways to avoid correlations issues. But statistics cover an extremely wider range of methods that sometimes also suffer from correlations. Then the perspectives of this work are wide.
-		\subsection{Logistic regression}
-			Logistic regression \cite{hosmer2000applied} is in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain the same kind of phenomenon. It would be an easy generalization of \textsc{CorReg} to binary response variables. Introduction of qualitative covariates would be another big improvement for our method.
+		\subsection{Qualitative variables}
+			Sometimes the response variable is not quantitative but binary (defect observed or not, {\it etc.}). In such cases logistic regression is widely used.
+			It is \cite{hosmer2000applied} in fact a linear regression with a post-treatment on $\boldsymbol{Y}$ so it is clear that we would obtain the same kind of phenomenon. It would be an easy generalization of \textsc{CorReg} to binary response variables. Introduction of qualitative covariates would be another big improvement for our method. It would require dummy coding for the categorical covariates, that is to replace each categorical covariate by $k-1$ binary variables (where $k$ is the number of categories) that indicates which modality is observed for a given individual.
+			
 			\subsection{Regression mixture models}
-			When the studied population can be decomposed into several classes of individuals, correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values. In such a model, the contribution of the structure itself would be even greater for the final user. An additional algorithm to search for distinct or equal coefficients within the classes would be to develop.
+			When the studied population can be decomposed into several classes of individuals (latent categorical covariate), correlations between the covariates can depend on these classes. One perspective would be to search mixture sub-regressions \cite{de1989mixtures} with some parameters and sub-regressions common to several classes and some other with distinct values. In such a model, the contribution of the structure itself would be even greater for the final user. An additional algorithm to search for distinct or equal coefficients within the classes would be to develop.
 			\subsection{Using the response variable to estimate the structure of sub-regression}
-			As in {\sc pls} regression, we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results (in terms of a given criterion) when applied on $\boldsymbol{Y}$.\\
+			As in {\sc pls} regression (see Section \ref{plsreg} page \pageref{plsreg} and \cite{abdi2003partial,geladi1986partial}), we could imagine to estimate $\boldsymbol{S}$ using also $\boldsymbol{Y}$ to find a structure that will give the best results (in terms of a given criterion) when applied on $\boldsymbol{Y}$.\\
 			
 			 But it would probably give distinct structures according to the chosen model (marginal or plug-in) and also for distinct response variables (a same dataset about the same process to study distinct response variables) so it would not be very user-friendly. For this reason it was not implemented, but we can look a bit further.\\
 			 
