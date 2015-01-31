@@ -149,6 +149,10 @@ Bold characters are used to distinguish multidimensional objects. Many objects a
 	\item $d_f$ is the number of free covariates in the dataset.
 	\item $d_r$ is the number of response covariates in the dataset (and consequently the number of sub-regressions).
 	\item $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.
+	\item $J_f=\{1,\ldots,d\} \backslash J_{r}$ is the set of all {\it non} response covariates.
+	\item $J_r$ the set of the indices of the $d_r$ response variables.
+	\item $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ the $d_r$-uple of all the response variables.
+	\item $J_{r}^j$ is the index of the $j^{th}$ response variable.
 	\item $K$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}$.
 	\item $K_j$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}^j$.
 %	\item $K_{i,J_r^j}$ is the number of component of the conditional distribution of $x_{i,J_r^j}$ knowing its observed regressors $\boldsymbol{X}_{i,O}^{J_p^j}$.
