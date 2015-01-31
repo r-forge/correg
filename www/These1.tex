@@ -150,6 +150,8 @@ Bold characters are used to distinguish multidimensional objects. Many objects a
 	\item $d_r$ is the number of response covariates in the dataset (and consequently the number of sub-regressions).
 	\item $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.
 	\item $J_f=\{1,\ldots,d\} \backslash J_{r}$ is the set of all {\it non} response covariates.
+	\item $\boldsymbol{J}_p=(J_{p}^1,\ldots,J_p^{d_r})$ the $d_r$-uple of all the predictors for all the sub-regressions.
+	\item $J_p^j$ is the vector of the predictors for the $j^{th}$ sub-regression.
 	\item $J_r$ the set of the indices of the $d_r$ response variables.
 	\item $\boldsymbol{J}_r=(J_{r}^1,\ldots,J_r^{d_r})$ the $d_r$-uple of all the response variables.
 	\item $J_{r}^j$ is the index of the $j^{th}$ response variable.
@@ -1333,7 +1335,7 @@ Here again (figures \ref{MSEridgexpl} and \ref{MQEridgeYexpl}), ridge regression
 	
 	\subsection{The datasets}\label{thedatasets}
 		
-We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R^2$ value equal to $0.4$. Sub-regressions will have $R^2$ successively set to $(0.1,0.3,0.5,0.7,0.99)$. Each Variable in $\boldsymbol{X}_f$ arise from a Gaussian mixture (real covariates won't be Gaussian) model whose the number of components follows a Poisson's law of mean parameter equal to $5$. The coefficients of $\boldsymbol{\beta}$ and of the $\boldsymbol{\alpha}_j$'s are independently generated according to the same Poisson distribution but with a uniform random sign. All sub-regressions are of length two ($\forall j=1,\ldots,d_r, d_p^j=2$ and we have $d_r=16$ sub-regressions. The datasets are then scaled, to avoid large distortions for variances or for means due to the sub-regressions.	Different sample sizes  $n\in (30,50,100,400)$ are chosen, thus considering experiments in both situations $n<d$ and $n>d$. 
+We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R^2$ value equal to $0.4$. Sub-regressions will have $R^2$ successively set to $(0.1,0.3,0.5,0.7,0.99)$. Each Variable in $\boldsymbol{X}_f$ arise from a Gaussian mixture (real covariates won't be Gaussian) model whose the number of components follows a Poisson's law of mean parameter equal to $5$. The coefficients of $\boldsymbol{\beta}$ and of the $\boldsymbol{\alpha}_j$'s are independently generated according to the same Poisson distribution but with a uniform random sign. All sub-regressions are of length two ($\forall j=1,\ldots,d_r, d_p^j=2$) and we have $d_r=16$ sub-regressions. The datasets are then scaled, to avoid large distortions for variances or for means due to the sub-regressions.	Different sample sizes  $n\in (30,50,100,400)$ are chosen, thus considering experiments in both situations $n<d$ and $n>d$. 
 	Results are based on the true $\boldsymbol{S}$ used to generate the dataset (function {\tt mixture\_genererator} in the package {\tt CorReg}).\\
 	
 	When $n<d$, a frequently used method is the Moore-Penrose \cite{katsikis2008fast} generalized inverse , thus \textsc{ols} can obtain some results even with $n<d$. %(see tables \ref{YXlinOLS} and \ref{YX2linOLS} ).
