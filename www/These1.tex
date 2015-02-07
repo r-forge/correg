@@ -3300,6 +3300,7 @@ We also have
 	=\sigma_Y^2\big[ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r\big]^{-1}. \label{olsr}
 \end{equation}
 Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on the estimated residuals of the sub-regressions that may give better conditioned matrices ($\boldsymbol{\varepsilon}_j$'s are supposed to be independent) to invert than $\boldsymbol{X}_r$ that appears with \textsc{ols} applied on $\boldsymbol{X}$ (equations (\ref{olsr}) and (\ref{olsf})) because redundant covariate can have common predictors. %for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$ 
+
 When $n$ rises to $+\infty$ both models are consistent so convergence rates will make the difference.
 Compared to \textsc{ols} we have a new bias-variance trade-off to study with numerical results.\\
 
@@ -3957,7 +3958,19 @@ So when a value is missing, we know its distribution but in addition, we know it
 	\begin{equation}
 		K=\prod_{j\in J_f}K_j  \nonumber 
 	\end{equation}
-	where $K_j$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}_j$ as defined in Hypothesis \ref{H4} page \pageref{H4}. It is clear that $K$ can really explode even if some components may be identical (but it happens with zero probability).
+	where $K_j$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}_j$ as defined in Hypothesis \ref{H4} page \pageref{H4}. It is clear that $K$ can really explode even if some components may be identical (but it happens with zero probability). For instance, if $\boldsymbol{X}$ contains only 10 independent Gaussian mixtures and with only 2 components each, then $\boldsymbol{X}$ will have up to $K=2^{10}=$ 1 024 components. And if these mixtures have 3 components each, then it rises up to $K=$ 59 049 components.
+%
+%	\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
+%\paragraph{In the running example:} We now suppose that $\boldsymbol{X}_1$ and $\boldsymbol{X}_2$ are two Gaussian mixtures with two components each, with equal proportions. $\forall 1\leq i \leq n:$
+%\begin{eqnarray}
+%	 f(x_{i,1}) &=& \frac{1}{2}\Phi(x_{i,1};1,1)+\frac{1}{2}\Phi(x_{i,1};2,1) \nonumber \\
+%	f(x_{i,2}) &=& \frac{1}{2}\Phi(x_{i,2};3,1)+\frac{1}{2}\Phi(x_{i,2};7,1) \textrm{ then}  \nonumber \\
+%	 x_{i,3} &=&x_{i,1}+x_{i,2} + \mathcal{N}(0,\sigma_1^2)\nonumber  \textrm{ gives}\\
+%	f(x_{i,3}) &=&% \frac{1}{4}\Phi(x_{i,3};1+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};1+4,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};2+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3}; 2+ 4,2+\sigma_1^2) \\
+%	\frac{1}{4} \left[\Phi(x_{i,3};4,2+\sigma_1^2)+\Phi(x_{i,3};5,2+\sigma_1^2)+\Phi(x_{i,3};8,2+\sigma_1^2)+\Phi(x_{i,3};9,2+\sigma_1^2)\right] \nonumber%\\
+%	%&=&\frac{1}{4}\Phi(x_{i,3};4,2+\sigma_1^2)+\frac{1}{2}\Phi(x_{i,3};5,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};6,2+\sigma_1^2)  \nonumber 
+%\end{eqnarray}
+%\end{minipage}}
 	
 	%=\{\boldsymbol{\pi}_X,\boldsymbol{\mu}_X,\boldsymbol{\Sigma}_X,\boldsymbol{\Sigma}_{X,X} \}$.
 %	
@@ -4078,17 +4091,7 @@ So when a value is missing, we know its distribution but in addition, we know it
 %%\begin{eqnarray}
 %%	\mathcal{L}(\boldsymbol{\alpha},\Theta,\boldsymbol{S};\boldsymbol{X})&=&\sum_{i=1}^n\left[\sum_{j =1}^{d_r}\log \left(f(x_{i,J_r^j}|\boldsymbol{X}_i^{J_p^j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right)+\sum_{j \notin J_r} \log \left(f(x_{i,j};\boldsymbol{\alpha},\Theta,\boldsymbol{S})\right) \right]. \label{loglikmiss}
 %%\end{eqnarray}
-%\fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
-%\paragraph{In the running example:} We now suppose that $\boldsymbol{X}_1$ and $\boldsymbol{X}_2$ are two Gaussian mixtures with two components each, with equal proportions. $\forall 1\leq i \leq n:$
-%\begin{eqnarray}
-%	 f(x_{i,1}) &=& \frac{1}{2}\Phi(x_{i,1};1,1)+\frac{1}{2}\Phi(x_{i,1};2,1) \nonumber \\
-%	f(x_{i,2}) &=& \frac{1}{2}\Phi(x_{i,2};3,1)+\frac{1}{2}\Phi(x_{i,2};4,1) \textrm{ then}  \nonumber \\
-%	 f(x_{i,3}) %&=& \frac{1}{4}\Phi(x_{i,3};1+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};1+4,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};2+3,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3}; 2+ 4,2+\sigma_1^2) \\
-%	&=&\frac{1}{4} \left[\Phi(x_{i,3};4,2+\sigma_1^2)+\Phi(x_{i,3};5,2+\sigma_1^2)+\Phi(x_{i,3};5,2+\sigma_1^2)+\Phi(x_{i,3};6,2+\sigma_1^2)\right] \nonumber\\
-%	&=&\frac{1}{4}\Phi(x_{i,3};4,2+\sigma_1^2)+\frac{1}{2}\Phi(x_{i,3};5,2+\sigma_1^2)+\frac{1}{4}\Phi(x_{i,3};6,2+\sigma_1^2)  \nonumber 
-%\end{eqnarray}
-%	
-%\end{minipage}}
+
 %\paragraph{Remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the following. By any means, if it was, the number of parameters would be overestimated but the likelihood would not be affected. Then it would be easy to compare each component to obtain the true number of parameters.
 \subsection{Marginal (observed) likelihood}
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that relies on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihoods are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
