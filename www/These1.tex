@@ -4392,7 +4392,7 @@ If each sub-regression is a distinct connected component then we can always use 
 			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. We define
 			\begin{equation}
 			c_j=\frac{1}{n}\sum_{i=1}^nc_{i,j},  \nonumber 
-\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$. If all predictors $\boldsymbol{X}^{J_p^j}_i$ are observed then we have to estimate $d_p^j$ coefficients and an intercept and the variance of the residual so  $c_{i,j}=d_p^j+2$. But for each missing predictor, we have to estimate the parameters of its distribution (Gaussian mixture with proportion, mean and variance to estimate for each component) so we have $$c_{i,j}=d_p^j+2 + \sum_{\substack{l \in J_p^j \\ M_{i,l}=1}} (3 K_l-1)$$  (the proportions sums to 1 so one estimation is useless for each mixture).
+\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$. If all predictors $\boldsymbol{X}^{J_p^j}_i$ are observed then we have to estimate $d_p^j$ coefficients and an intercept and the variance of the residual so  $c_{i,j}=d_p^j+2$. But for each missing predictor, we have to estimate the parameters of its distribution (Gaussian mixture with proportion, mean and variance to estimate for each component) so we have $$c_{i,j}=d_p^j+2 + \sum_{\substack{l \in J_p^j \\ M_{i,l}=1}} (3 K_l-1)$$  (the sum of the proportions is 1 so one estimation is useless for each mixture).
 
  Then we have
 			\begin{eqnarray}
