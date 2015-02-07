@@ -136,6 +136,7 @@ commentstyle=\color{OliveGreen}, % white comments
 \tableofcontents
 
 \chapter*{Glossary of notations}\label{glossaire}
+\addcontentsline{toc}{chapter}{Glossary of notations}
 This glossary can be used to find the meaning of some notations without having to search within the chapters.
 Bold characters are used to distinguish multidimensional objects. Many objects are tuples.
 \begin{itemize}
@@ -1080,17 +1081,21 @@ We assume that all errors $\boldsymbol{\varepsilon}_Y$ and $\boldsymbol{\varepsi
 
 Noting $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ and $\boldsymbol{\beta}_f=\boldsymbol{\beta}_{J_f}$ the regression coefficients associated respectively to the responses and to the free covariates, we can rewrite (\ref{regressionsimple}):
 \begin{equation}
-			\boldsymbol{Y}{|\boldsymbol{X},\boldsymbol{S}};\boldsymbol{\beta},\sigma_Y^2=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:MainR}
+			\boldsymbol{Y} %{|\boldsymbol{X},\boldsymbol{S}};\boldsymbol{\beta},\sigma_Y^2
+			=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:MainR}
 \end{equation}
 Combining now (\ref{eq:MainR}) with (\ref{eq:SR}), (\ref{eq:marginal}) and (\ref{eq:H3}), and also independence between each $\boldsymbol{\varepsilon}_j$ and $\boldsymbol{\varepsilon}_Y$, we obtain the following closed-form for the distribution of $\{\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2\}$:
 \begin{eqnarray}
-	\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^*)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl} \\
+	\boldsymbol{Y}%|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2
+	&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^*)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl} \\
 	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*,\label{eq:modexpl}
 \end{eqnarray}
 where $\boldsymbol{\alpha}^*_j \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ and $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0 $. We can then define the matrix $\boldsymbol{\alpha}^* \in \mathbb{R}^{(d_f \times d_r)}$ of the coefficient of sub-regression to use more compact notations:
 \begin{eqnarray}
-	\boldsymbol{X}_r|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \nonumber \\
-	\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \boldsymbol{\alpha}^*\boldsymbol{\beta_{r}})+ \boldsymbol{\varepsilon}\boldsymbol{\beta_{r}}+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl2}
+	\boldsymbol{X}_r %|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2
+	&=&\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \nonumber \\
+	\boldsymbol{Y}%|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2
+	&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \boldsymbol{\alpha}^*\boldsymbol{\beta_{r}})+ \boldsymbol{\varepsilon}\boldsymbol{\beta_{r}}+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl2}
 \end{eqnarray} 
 Where $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix whose columns are the $\boldsymbol{\varepsilon}_j$, the noises of the sub-regressions.\\
 
@@ -1120,7 +1125,8 @@ In the following, true $\boldsymbol{S}$ is supposed to be identifiable.
 \item As a consequence of Hypotheses~\ref{H1} to~\ref{H3} , ``free'' covariates $\boldsymbol{X}_f$ are {\it all} decorrelated (see the Lemma in appendix \ref{sectionident}).
 \end{itemize}
 \fcolorbox{vertfonce}{vertclair}{\begin{minipage}{1\textwidth}
-\paragraph{Running example:} $\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2= 2\boldsymbol{X}^1+2\boldsymbol{X}^2+\boldsymbol{X}^4+\boldsymbol{X}^5+\boldsymbol{\varepsilon}_1 +\boldsymbol{\varepsilon}_Y$.
+\paragraph{Running example:} $\boldsymbol{Y}%|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2
+= 2\boldsymbol{X}^1+2\boldsymbol{X}^2+\boldsymbol{X}^4+\boldsymbol{X}^5+\boldsymbol{\varepsilon}_1 +\boldsymbol{\varepsilon}_Y$.
 \end{minipage}}
 
 
@@ -1539,7 +1545,7 @@ We consider regressions on $\boldsymbol{Y}$ with $d=40$ covariates and with a $R
 \chapter{Estimation of the structure of sub-regression}\label{chapterMCMC}
 \paragraph{Abstract:} In the previous chapters, structure $\boldsymbol{S}$ was supposed to be known, but it has usually to be estimated. With this aim, we define a generative model on the dataset, paired with a probabilistic hypothesis on the structure that allows to select the structure $\boldsymbol{S}$ by introducing
 a new {\sc bic}-like criterion which evaluates the quality of a structure of sub-regression. This new criterion takes into account the huge number of feasible structures. Then we have developed an MCMC algorithm to optimize the involved criterion.%choose the best $\boldsymbol{S}$.%: an MCMC algorithm is proposed to find $\boldsymbol{S}$, relying on a full generative model on $\boldsymbol{X}$. A new criterion is also introduced to choose the better $\boldsymbol{S}$ taking into account the huge number of feasible structures.
-\section{Choice of model: Brief state of the art}
+\section{Model choice: Brief state of the art}
 		% ne pas oublier de mentionner les packages existants
 		Structural equations models are often used in social sciences and economy where a structure is supposed {\it a priori} but here we want to find it automatically, even if it remains possible to use expert knowledge to complete the structure. Graphical \textsc{lasso} offers a method \cite{friedman2008sparse} to obtain a structure based on the precision matrix (inverse of the variance-covariance matrix), setting some coefficients of the precision matrix to zero (see section \ref{sectionGlasso}). But the resulting matrix is symmetric and we need an oriented structure for $\boldsymbol{S}$ to avoid cycles.
 			\subsection{Cross validation}
@@ -1561,7 +1567,7 @@ Cross-validation is very time-consuming and thus not friendly with combinatory p
 Because it is about model selection, we decide to follow a Bayesian approach (\cite{raftery1995bayesian}, \cite{andrieu1999joint},\cite{chipman2001practical}).  
 	
 
-			\subsection{Bayesian Information Criterion}
+			\subsection{Bayesian Information Criterion ({\sc bic})}
 			%Cross-validation depends on a criterion to choose a model.
 			 The cross-validated Mean Squared Error is not the only criterion. Probabilistic criteria can be used when we have an hypothesis on the distribution of the studied model. Such criteria can also be used without cross-validation. The Akaike Information Criterion \cite{akaike1974new} known as $\mbox{{\sc aic}}$ is asymptotically optimal in selecting the model with the least Mean Squared Error (see \cite{stone1977asymptotic}).
 			The Bayesian Information Criterion \cite{BIChuard,schwarz1978estimating,yang2005can} is a widely used criterion that relies on the likelihood of the dataset knowing the model and the estimated parameters. The advantage of $\mbox{{\sc bic}}$ over simple usage of the likelihood is the penalty added to take into account the number of parameters to estimate (complexity is then penalized) and the number of individuals in the dataset. $\mbox{{\sc bic}}$ is consistent so it asymptotically points out the true model when $n$ grows. The Risk Inflation Criterion \cite{foster1994risk} ($\mbox{{\sc ric}}$) can also be used, or any other criterion \cite{george1993variable} thought to be better in a given context.
@@ -1627,7 +1633,7 @@ Noting $\hat{\boldsymbol{\theta}}$ the {\sc mle} of $\boldsymbol{\theta}$, the {
 \begin{equation}
 -2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S}) \approx -2\ln \mathbb{P}(\boldsymbol{X}_f|\boldsymbol{S};\hat{\boldsymbol{\theta}}) + |\hat{\boldsymbol{\theta}}| \ln(n) = \mbox{{\sc bic}}_f(\boldsymbol{S}). \nonumber
 \end{equation}
-\subsection{Probability associated to the discrete parameter $\boldsymbol{S}$}
+\subsection{Probability associated to the discrete structure $\boldsymbol{S}$}
 \paragraph{Defining $\mathbb{P}(\boldsymbol{S})$} The most standard choice consists of putting a uniform distribution on the model space $\mathcal{S}_d$, this choice being noted $\mathbb{P}_U(\boldsymbol{S}) = |\mathcal{S}_d|^{-1}$, with $|\mathcal{S}_d|$ the space dimension of $\mathcal{S}_d$ as defined in section \ref{sectiongraph}.
 		
 	%Thus if one have some hypothesis on the distribution of some variables (exponentially distributed for example) it is possible to use it without impacting the model in other ways. %compute corresponding $\psi$ according to it. %and then improve the walk (will keep a structure only if it is really relevant).%and give it as an input of \textsc{CorReg} and then improve the efficiency of the algorithm (it will find a structure only if it is really relevant).
@@ -1687,7 +1693,7 @@ In the following, we will denote by $\mbox{{\sc bic}}_*$ any of both $\mbox{{\sc
 %	
 			
 			
-	\section{Random walk to optimize the criterion}
+	\section{Random walk to optimize the new criterion}
 		We have to choose a model from a finite space of models ($\boldsymbol{S}$ is a discrete parameter), with a criterion to compare them. We choose to use a random walk (Markov Chain \cite{robert2005monte})with some properties:
 		\begin{itemize}
 			\item The walk has to be able to go from any structure to any other.
@@ -1884,9 +1890,35 @@ We give an example to better illustrate how it works in Figures \ref{ident1} to 
 	\caption{All this modifications are made in only one step in the MCMC, meaning an increased scope for the neighbourhoods.}\label{ident6}
 \end{figure}
 
-\FloatBarrier				
-	\section{Initialization}
-		\subsection{Correlation-based initialization}
+\FloatBarrier
+
+	
+	\subsection{Pruning}
+		If the complexity of $\boldsymbol{S}$ is too high (for example if the MCMC had a limited time to find a good model), pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same .
+\paragraph{Additional cleaning steps:}
+			Because the walk is not exhaustive in practice (does not run enough steps), it does make sense to let the walk continue a few steps with neighbourhood containing only suppressions in the structure. Every sub-graph of a bipartite graph is bipartite thus every sub-graph can be reached. It is just an heuristic change in the strategy with:
+			\begin{equation}
+				\mathcal{A}_{(q)}=\{(i,J_r^j), i \in J_f, j \in \{1,\dots,d_r \}: i \in J_p^j \}. \nonumber 
+			\end{equation}
+			It is not based on any arbitrary parameter and change the result only if it finds a better structure in terms of the criterion $\mbox{{\sc bic}}_*$ used in the walk. So the criterion is the same, only the neighbourhood is changed.
+			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE}.\\
+			
+			But if $n$ is small, then {\sc bic} might suffer from overfitting. ``Trust, but verify'' says a Russian proverb. So we propose some other pruning methods (once again, they only potentially reduce complexity of the structure).
+		
+		\paragraph{Variable selection}
+			We can use variable selection methods like the \textsc{lasso} on $\boldsymbol{X}^{J_p^j}$ to estimate the coefficients $\boldsymbol{\alpha}_j$ and obtain some supplementary zeros. Working on $\boldsymbol{X}^{J_p^j}$ protects the \textsc{lasso} against dimension and correlations issues.
+		\paragraph{$R^2$ thresholding }
+			We can also define a minimal value for the $R^2$ of the sub-regression to maintain them in the final structure. But this minimal value would be totally arbitrary and we know that it is frequent to use linear regression with real datasets that only show a $R^2$ between $0.1$ and $0.2$. It is particularly true in social sciences.
+		\paragraph{Test of hypotheses}
+			Another pruning method would be to delete sub-regressions that offer a F-statistic under a minimal value.
+		
+			
+
+
+
+			
+	\subsection{Initialization of the walk}
+		\subsubsection{Correlation-based initialization}
 		 If we have some knowledge about some sub-regressions (physical models for example) we can add them in the found and/or initial structure. So the model is really expert-friendly.
 The initial structure can be based on a first warming algorithm taking the correlations into account. Coefficients are randomly set to 1 into $\boldsymbol{G}$, according to a Bernoulli draw weighted by the absolute value of the correlations and with respect to the uncrossing constraint. Uncrossing constraint will not allow some strong correlation to be taken into account according to the ordering of the Bernoulli drawing so we can draw with a random order or by ordering by descending correlations.\\
 		
@@ -1909,7 +1941,7 @@ The initial structure can be based on a first warming algorithm taking the corre
 		\end{figure}
 	\end{center}
 	\FloatBarrier
-		\subsection{Multiple intialization}	
+		\subsubsection{Multiple intialization}	
 		Local extrema are a known issue for most of optimization methods, and one would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. 
 		We also compare the results obtained with several number of chains. Figure \ref{nbini} shows the evolution of the $\mbox{{\sc bic}}$ of the best chain with a number of chains varying from 1 to 10, so the model with 10 chains contain the others and is at least as good as they are (then curves get lower as the number of initializations does increase, by construction). We see that multiple initialization is efficient but the gain seems to be logarithmic in the number of tries so it is recommended to use multiple chains but not too much (time consuming). Important remark: multiple chains can be computed in parallel so it is not really time consuming.		
 			
@@ -1921,34 +1953,13 @@ The initial structure can be based on a first warming algorithm taking the corre
 	\end{figure}
 	\end{center}
 		In the following, the chain was launched with twenty initialisations each time, based on the correlation matrix.
-	\subsection{Graphical { \sc lasso}}\label{sectionGlasso}
+	\subsubsection{Graphical { \sc lasso}}\label{sectionGlasso}
 		Graphical \textsc{lasso} (\cite{friedman2008sparse}, \cite{witten2011new}, \cite{tibshiranilasso} and \cite{friedman2010applications}) is set to give undirected (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It cycles through the variables, fitting a modified \textsc{lasso} regression to each variable in turn. The individual \textsc{lasso} problems are solved by coordinate descent. It is a variant of another method (\cite{meinshausen2006high}) that computes $d$ \textsc{lasso} estimation (each covariate regressed by all the others) and put zeros in the precision matrix when covariates seem to be conditionally independent (zero as regression coefficient).
 		It does make sense for exponential family because in these cases, zeros in the precision matrix $\boldsymbol{\Sigma}^{-1}$ can be interpreted in terms of conditional independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ (not exponential family so the precision matrix cannot be interpreted as easily) and we search an oriented graph. So it is not adapted to find the structure of sub-regressions.\\
 		
 	However, we could still try use it for initialization, for example by a Hadamard product with $\boldsymbol{G}^{(0)}$ the adjacency matrix of the initial structure. Another idea would be to make the Hadamard product with the correlations matrix before computing the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum} because trees have no cycles. But it is time consuming (especially for an initialisation method) and has no theoretical properties relied to our problematic of minimizing $\mbox{{\sc bic}}_*$, so the idea was left behind after some tries.		
-	
-	\section{Pruning}
-		If the complexity of $\boldsymbol{S}$ is too high (for example if the MCMC had a limited time to find a good model), pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same .
-\subsubsection{Additional cleaning steps}
-			Because the walk is not exhaustive in practice (does not run enough steps), it does make sense to let the walk continue a few steps with neighbourhood containing only suppressions in the structure. Every sub-graph of a bipartite graph is bipartite thus every sub-graph can be reached. It is just an heuristic change in the strategy with:
-			\begin{equation}
-				\mathcal{A}_{(q)}=\{(i,J_r^j), i \in J_f, j \in \{1,\dots,d_r \}: i \in J_p^j \}. \nonumber 
-			\end{equation}
-			It is not based on any arbitrary parameter and change the result only if it finds a better structure in terms of the criterion $\mbox{{\sc bic}}_*$ used in the walk. So the criterion is the same, only the neighbourhood is changed.
-			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE}.\\
-			
-			But if $n$ is small, then {\sc bic} might suffer from overfitting. ``Trust, but verify'' says a Russian proverb. So we propose some other pruning methods (once again, they only potentially reduce complexity of the structure).
-		
-		\subsubsection{Variable selection}
-			We can use variable selection methods like the \textsc{lasso} on $\boldsymbol{X}^{J_p^j}$ to estimate the coefficients $\boldsymbol{\alpha}_j$ and obtain some supplementary zeros. Working on $\boldsymbol{X}^{J_p^j}$ protects the \textsc{lasso} against dimension and correlations issues.
-		\subsubsection{$R^2$ thresholding }
-			We can also define a minimal value for the $R^2$ of the sub-regression to maintain them in the final structure. But this minimal value would be totally arbitrary and we know that it is frequent to use linear regression with real datasets that only show a $R^2$ between $0.1$ and $0.2$. It is particularly true in social sciences.
-		\subsubsection{Test of hypotheses}
-			Another pruning method would be to delete sub-regressions that offer a F-statistic under a minimal value.
-		
-			
 
-\section{CorReg}	
+\subsection{Implementing and visualizing the walk by the {\tt CorReg} software}	
 	The {\tt CorReg} package is now on {\sc cran} and provides many parameters for the walk. If wanted it can return some curves associated to the walk to have an idea of what happens with distinct strategies. 		
 	
 We define the complexity of a structure $\boldsymbol{S}$ as the number of elements in the adjacency matrix, that is the number of links between covariates and is obtained by:
@@ -1978,7 +1989,7 @@ We define the complexity of a structure $\boldsymbol{S}$ as the number of elemen
 	
 \FloatBarrier
 
-		\subsection{Some indicators for proximity} \label{sectioncompZ}
+		\subsubsection{Some indicators of the structure estimation quality} \label{sectioncompZ}
 		The first criterion is $\mbox{{\sc bic}}_*$ which is maximized in the MCMC. But its value does not have any intrinsic meaning. To show how far the found structure is from the true one in terms of $\boldsymbol{S}$ we define some indicators to compare the true model $\boldsymbol{S}$ and the found one $\hat{\boldsymbol{S}}$.
 			Global indicators:
 			\begin{itemize}
@@ -2131,7 +2142,7 @@ For $d=1\ 000$ time raises up to 26 minutes. This time could be reduced by using
 \end{figure} 
   
 \clearpage
-\section{Results on the main regression}\label{compY}
+\section{Results on the main regression with specific designs}\label{compY}
 \subsection{Response variable depends on all the covariates}	 \label{explsimtout}	
 We try the method with a response variable depending on all covariates to compare the results with those from section \ref{thedatasets} (same $\boldsymbol{X}$ and $\boldsymbol{Y}$). ({\tt CorReg} reduces the dimension and cannot give the true model if there is a structure). %The datasets used here were those from table \ref{compZvrai}. \\
 
@@ -3413,7 +3424,7 @@ Equations (\ref{pluginorig}) and (\ref{eq:regplugin}) are linear regressions and
 	%	$299$ times on $1000$ tries, the predictive model using $\hat{S}$ is better than classical LASSO in terms of MSE \underline{and} consistent (classical LASSO is never consistent).
 		
 %\FloatBarrier
-	\section{Numerical results} \label{resnumpred}
+	\section{Numerical results with specific designs} \label{resnumpred}
 		We test the plug-in model with datasets generated the same way as for section \ref{compY}.		
 \subsection{Response variable depends on all the covariates}	
 We first try the method with a response depending on all covariates. (The marginal model reduces the dimension and cannot give the true model if there is a structure).
@@ -4392,7 +4403,7 @@ If each sub-regression is a distinct connected component then we can always use 
 %	
 
 	%\section{{\sc em} Algorithm to estimate $\boldsymbol{\alpha}$ with a given $\boldsymbol{S}$}
-	\section{Estimation of the coefficients of sub-regression and the observed likelihood}
+	\section{Maximum likelihood estimation of the coefficients of sub-regression}
 			If we do not have an estimate of $\boldsymbol{\alpha}$ we can just take the values that maximize the likelihood. Sometimes the maximization of a likelihood is too complex to be solved analytically. In such a case, we can use algorithms of Expectation-Maximization ({\sc em} \cite{mclachlan2007algorithm}) family \cite{mclachlan2007algorithm}. This kind of algorithm allows to manage missing values \cite{dempster1977maximum}  %that maximize a likelihood by the optimization of its parameters and estimation of latent variables $Z$. 	
 %			
 %{\sc em} is an alternate optimization of the researched parameters $\boldsymbol{\Theta}$ (that depends on $\boldsymbol{\alpha}$ only for a given $\boldsymbol{S}$ since the marginal distribution parameters are estimated once before the MCMC.) and the latent variables $Z$ with two steps at each iteration $(q)$:
@@ -4722,7 +4733,7 @@ We obtain on a validation sample of 1000 individuals a predictive \textsc{mse} s
 
 		One big advantage with our regression model is that it does not depend on the response variable $\boldsymbol{Y}$ so the structure can be learnt independently. Thus we can imagine to obtain big samples to learn the structure without being annoyed by the missing values. Then when a response variable is chosen, we can keep the same $\boldsymbol{S}$ and use previously computed values of $\boldsymbol{\alpha}$ as initial value for the Stochastic EM. 
 
-	\section{Missing values on real datasets}	
+	\section{Numerical results on real datasets}	
 		To be able to evaluate the results on a real dataset, we have deleted some values in the production dataset from section \ref{sectionBV} to obtain $10\%$ of missing values. Figure \ref{missingBV} shows the pattern of the missing values (MCAR). It confirms that $10\%$ of missing values is sufficient to have no complete line or column in the dataset. 
 	
 	\begin{figure}[h!]
