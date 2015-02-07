@@ -3120,7 +3120,7 @@ The plug-in estimator of $\boldsymbol{\beta}_r$ we propose in this chapter does 
 	\end{eqnarray}
 	that we can use by plug-in.%\\
 %	\fcolorbox{jaunefonce}{jauneclair}{\begin{minipage}{1\textwidth}
-	\paragraph{Estimation of $\boldsymbol{\beta}_r$:} We define a plug-in estimator for $\boldsymbol{\beta}_r$:
+	\paragraph{Estimation of $\boldsymbol{\beta}_r$:} We define a plug-in estimator for $\boldsymbol{\beta}_r$ (denoted by $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$):
 	%We can define $\boldsymbol{\varepsilon}_Y^*$ as the residual of the marginal model (for which we have an estimator) but also by its explicit form: $\boldsymbol{\varepsilon}_Y^*=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y$ (that depends on the noise of the sub-regressions for which we also have an estimator). So we make as an additional sequential step an asymptotic regression:% based on equation (\ref{eq:Trueexpl2}):
 %\begin{displaymath}
 %\left\{ \begin{array}{r c l}
@@ -3138,8 +3138,11 @@ The plug-in estimator of $\boldsymbol{\beta}_r$ we propose in this chapter does 
 		\hat{\boldsymbol{\beta}}_r^{\varepsilon}&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*  \nonumber \\
 	&=&\left((\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)\right)^{-1}(\boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^*)'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f)	\label{estimpluginlong}
 	\end{eqnarray}
-that depends on all covariates in $\boldsymbol{X}$ and relies on the estimated coefficients of sub-regressions $\hat{\boldsymbol{\alpha}}^*$ and on the estimate $\hat{\boldsymbol{\beta}}_f^*$ of the coefficients in the marginal model. It is the Ordinary Least squares estimator but we can use any other linear regression estimator, allowing then to make variable selection again, that is to decide which covariates will come back in the model. This second linear regression does not have any intercept (even if it was added in $\boldsymbol{X}$ it won't depend on any other covariate and then won't be part of $\boldsymbol{X}_r$).
+that depends on all covariates in $\boldsymbol{X}$ and relies on the estimated coefficients of sub-regressions $\hat{\boldsymbol{\alpha}}^*$ and on the estimate $\hat{\boldsymbol{\beta}}_f^*$ of the coefficients in the marginal model. It is the Ordinary Least squares estimator but we can use any other linear regression estimator, allowing then to make variable selection again, that is to decide which covariates will come back in the model. 
+
+\paragraph{Remark:} This second linear regression does not have any intercept. Even if a column of 1 was added in $\boldsymbol{X}$ for the global model (classical way to obtain an intercept), this virtual covariate won't depend on any other covariate (it is constant) and then won't be part of $\boldsymbol{X}_r$. Then we know that $\boldsymbol{X}_r$ does not contain any constant covariate, then this second linear regression has no intercept. It is good to remember that when using for coefficients estimation any software that automatically add intercepts in linear regressions (then user has to explicitly mention that this regression has no intercept). \\
 %\end{minipage}}
+\\
 Then we can estimate $\boldsymbol{Y}$ by:
 %		\begin{equation}
 %			\boldsymbol{Y}|\boldsymbol{X}_f,\hat{\boldsymbol{\varepsilon}},\boldsymbol{S};\hat{\boldsymbol{\beta}}^*_f,\boldsymbol{\beta}_r,\boldsymbol{\sigma}_Y^2= \boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\boldsymbol{\beta}_{r}+\boldsymbol{\varepsilon}_Y 
