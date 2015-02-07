@@ -1894,7 +1894,7 @@ We give an example to better illustrate how it works in Figures \ref{ident1} to 
 
 	
 	\subsection{Pruning}
-		If the complexity of $\boldsymbol{S}$ is too high (for example if the MCMC had a limited time to find a good model), pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same .
+		If the complexity of $\boldsymbol{S}$ is too high (for example if the MCMC had a limited time to find a good model), pruning methods can be used. We note that, for each of the following pruning methods, the final complexity may stay the same.
 \paragraph{Additional cleaning steps:}
 			Because the walk is not exhaustive in practice (does not run enough steps), it does make sense to let the walk continue a few steps with neighbourhood containing only suppressions in the structure. Every sub-graph of a bipartite graph is bipartite thus every sub-graph can be reached. It is just an heuristic change in the strategy with:
 			\begin{equation}
@@ -1903,7 +1903,8 @@ We give an example to better illustrate how it works in Figures \ref{ident1} to 
 			It is not based on any arbitrary parameter and change the result only if it finds a better structure in terms of the criterion $\mbox{{\sc bic}}_*$ used in the walk. So the criterion is the same, only the neighbourhood is changed.
 			For these reasons, it is our recommended pruning method. The package {\tt CorReg} allows to use this method automatically after the MCMC with the parameter {\tt clean=TRUE}.\\
 			
-			But if $n$ is small, then {\sc bic} might suffer from overfitting. ``Trust, but verify'' says a Russian proverb. So we propose some other pruning methods (once again, they only potentially reduce complexity of the structure).
+			But if $n$ is small, then $\mbox{{\sc bic}}_*$ might suffer from overfitting.% ``Trust, but verify'' says a Russian proverb.
+			 So we propose some other pruning methods (once again, they only potentially reduce complexity of the structure).
 		
 		\paragraph{Variable selection}
 			We can use variable selection methods like the \textsc{lasso} on $\boldsymbol{X}^{J_p^j}$ to estimate the coefficients $\boldsymbol{\alpha}_j$ and obtain some supplementary zeros. Working on $\boldsymbol{X}^{J_p^j}$ protects the \textsc{lasso} against dimension and correlations issues.
@@ -1990,7 +1991,7 @@ We define the complexity of a structure $\boldsymbol{S}$ as the number of elemen
 \FloatBarrier
 
 		\subsubsection{Some indicators of the structure estimation quality} \label{sectioncompZ}
-		The first criterion is $\mbox{{\sc bic}}_*$ which is maximized in the MCMC. But its value does not have any intrinsic meaning. To show how far the found structure is from the true one in terms of $\boldsymbol{S}$ we define some indicators to compare the true model $\boldsymbol{S}$ and the found one $\hat{\boldsymbol{S}}$.
+		The criterion $\mbox{{\sc bic}}_*$ is maximized in the MCMC. But its value does not have any intrinsic meaning. To show how far the found structure is from the true one in terms of $\boldsymbol{S}$ we define some indicators to compare the true model $\boldsymbol{S}$ and the found one $\hat{\boldsymbol{S}}$.
 			Global indicators:
 			\begin{itemize}
 				\item $T_r=|J_r \cap \hat{J}_r|$ (``True Responses''): it corresponds to the number of estimate response covariates in $\hat{\boldsymbol{S}}$ which are {\it truly} response covariates in the true model $\boldsymbol{S}$.
@@ -3023,7 +3024,7 @@ In this precise case, {\tt CorReg} found a structure that helped to decorrelate 
 \section{Conclusion}
 We have used the package {\tt CorReg} with real datasets and the results obtained by our model were better than those from classical methods in terms of prediction and parsimony. But more than that we have found structures between the covariates that did make sense for the metallurgists. The interpretation of both the sub-regressions structure and the main regression model have helped to improve the process so it does confirm that explicit modeling of the correlations and marginalization were good choices. However, we want to investigate other manners to take benefits from the sub-regression structures: sequential estimation and missing values management.
 
-\part{Two extensions: Re-injection of correlated covariates \\ and dealing with missing data}	
+\part{Two extensions: \mbox{Re-injection~of~correlated~covariates}~and \mbox{Dealing with missing data}}	
 			
 		
 \chapter{Re-injection of correlated covariates to improve prediction}\label{chapplugin}
@@ -3036,7 +3037,7 @@ We have used the package {\tt CorReg} with real datasets and the results obtaine
 		
 		The redundant covariates $\boldsymbol{X}_r$ were only used to estimate $\boldsymbol{S}$ and only the partition (given by $J_r$) was used to estimate $\boldsymbol{Y}$. With the marginalization we have not used the part of $\boldsymbol{X}_r$ that is independent of $\boldsymbol{X}_f$ (the noise of the sub-regressions). We will try to use it with a sequential approach relying on the coefficients of sub-regression $\hat{\boldsymbol{\alpha}}^*$ and on the estimate $\hat{\boldsymbol{\beta}}_f^*$ by profile likelihood.\\
 		
-		We know that using all the covariates simultaneously (classical \textsc{ols}) gives bad results due to correlations. But we can use them sequentially by using the explicit decomposition of the marginal model (equation \ref{eq:Trueexpl2}) that makes appear the coefficient $\boldsymbol{\beta}_r$ in both the noise and $\boldsymbol{\beta}_f^*$. Thus we are able to obtain by plug-in better estimates of $\boldsymbol{\beta}_r$ and $\boldsymbol{\beta}_f$ in terms of bias. Once again final result will depend on the bias-variance trade-off and numerical results will show what to expect.\\
+		We know that using all the covariates simultaneously (Maximum Likelihood Estimation \textsc{mle} by {\sc ols} for instance) gives bad results due to correlations. But we can use them sequentially by using the explicit decomposition of the marginal model (equation \ref{eq:Trueexpl2}) that makes appear the coefficient $\boldsymbol{\beta}_r$ in both the noise and $\boldsymbol{\beta}_f^*$. Thus we are able to obtain by plug-in new estimates of $\boldsymbol{\beta}_r$ and $\boldsymbol{\beta}_f$. We will prove that they are asymptotically unbiased and once again, final result will depend on the bias-variance trade-off and numerical results will show what to expect.\\
 		
 		In this chapter we note $\longrightarrow$ the convergence in probability when $n$ grows to $+\infty$.
 		\newpage
@@ -3107,7 +3108,7 @@ We get from equation (\ref{pluginorig}):%\\
 	=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:regplugin} 
 \end{equation}
 %\end{minipage}}
-Then the Best Linear Unbiased Estimator ({\sc BLUE}) for $\boldsymbol{\beta}_r$ is given ({\sc ols} estimator) by:
+Then the Best Linear Unbiased Estimator ({\sc BLUE}) for $\boldsymbol{\beta}_r$ is given ({\sc mle} estimator) by:
 \begin{equation}
   \hat{\boldsymbol{\beta}_r}=(\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}_Y^* . \label{olsplugin}
 \end{equation}
