@@ -148,6 +148,7 @@ Bold characters are used to distinguish multidimensional objects. Many objects a
 	\item $\boldsymbol{\beta}_r=\boldsymbol{\beta}_{J_r}$ is the $d_r\times 1$ vector of the regression coefficients associated  to the responses covariates.
 	\item $d$ is the number of covariates in the dataset $\boldsymbol{X}$.
 	\item $d_f$ is the number of free covariates in the dataset.
+	\item $\boldsymbol{d}_p=(d_p^1,\ldots,d_p^{d_{r}})$ the $d_r$-vector of the number of predictors in the sub-regressions.
 	\item $d_r$ is the number of response covariates in the dataset (and consequently the number of sub-regressions).
 	\item $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix of the $\boldsymbol{\varepsilon}^j$.
 	\item $J_f=\{1,\ldots,d\} \backslash J_{r}$ is the set of all {\it non} response covariates.
@@ -3201,7 +3202,7 @@ The variance of the estimator is given by:
 	%&=&(\sigma_Y^2(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1})(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}
 \nonumber
 \end{eqnarray}
-where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-\frac{1}{2}}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}$ is a $d_r\times d_r$ matrix.\\ It is clear that when the $\sigma_j^2$ tends to 0 then the plug-in estimator explodes. But in such cases the marginal model tends to be the true model without bias. So when a sub-regression is almost exact it is preferable to keep the redundant covariate out of the model. The plug-in model was defined only to use the residuals of the sub-regressions when they are not too small.
+where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-\frac{1}{2}}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}$ is a $d_r\times d_r$ matrix.\\ It is clear that when some of the $\sigma_j^2$ tends to 0 (especially if they all tend to 0) then the plug-in estimator explodes. But in such cases the marginal model tends to be the true model without bias. So when a sub-regression is almost exact it is preferable to keep the associated redundant covariate out of the model. The plug-in model was defined only to use the residuals of the sub-regressions when they are not too small.
 %		\begin{equation}
 %		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}
 %		\end{equation}
@@ -3236,7 +3237,7 @@ where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymb
 %	\hat{\boldsymbol{\varepsilon}}_Y=\boldsymbol{Y}-\hat{\boldsymbol{Y}}_{plug-in}.
 %\end{equation*}
 \paragraph{Remark:}
-		We can improve estimation of $\boldsymbol{\beta}_f$ (in terms of bias) by doing an additional identification step.	We have $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ so we define the following estimator:
+		We can improve estimation of $\boldsymbol{\beta}_f$ (in terms of bias) by doing an additional identification step.	We know that $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ from equation (\ref{pluginorig}), so we naturally define the following estimator:
 			\begin{equation}
 			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 			\end{equation}
@@ -3274,7 +3275,7 @@ Up to a permutation of the columns of $\boldsymbol{X}$ we have $\boldsymbol{X}=(
 	\end{array} 
 	\right).
 \end{eqnarray*}
-We have $\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}=(\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f}),\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r}))'$ so we obtain, using bloc inversion with Schur complement:
+We have $\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}=(\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f}),\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r}))'$ so we obtain, using block inversion with Schur complement:
 
 \begin{displaymath}\fontsize{10}{10}\selectfont{
 	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f})=\sigma_Y^2\big[ 
@@ -4090,7 +4091,7 @@ So when a value is missing, we know its distribution but in addition, we know it
 %\end{minipage}}
 %\paragraph{Remark:} Some components may be identical as seen in the running example, but it happens with probability $0$ so we assume it is not the case in the following. By any means, if it was, the number of parameters would be overestimated but the likelihood would not be affected. Then it would be easy to compare each component to obtain the true number of parameters.
 \subsection{Marginal (observed) likelihood}
-The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that rely on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihoods are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
+The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that relies on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihoods are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
 
 	 During the MCMC, for each candidate we have to compute the likelihood of the candidate, depending on $\boldsymbol{\alpha}$ the sub-regressions coefficients. Each sub-regression is supposed to be parsimonious and might be estimated by a Complete-Case method if the number of missing values is not too high, or any other estimator. We will see later how to use the generative model and maximum likelihood instead. The first challenge is to compute the observed likelihood and then the $\textsc{bic}_*$.  \\
 	 
@@ -4383,7 +4384,7 @@ If each sub-regression is a distinct connected component then we can always use 
 %\end{eqnarray}
 %
 %
-	\subsection{Weighted penalty for $\mbox{{\sc bic}}$}
+	\subsection{Weighted penalty for $\mbox{{\sc bic}}_*$}
 			Once defined a way to compute the likelihood (Section \ref{gibbsmiss}), other questions will remain: how to define the number of parameters in the structure? How to take into account missingness (structures relying on highly missing covariates should be penalized)?
 			For each parameter we have to estimate, the number of individuals that we can use is not the same according to the position of the missing values. Then penalization of the complexity of a model is not obvious.
 			%We have seen that for a same covariate $\boldsymbol{X}^j$ with $ j \in J_r$, the number of parameters is not the same for each individual depending whether or not $\boldsymbol{M}_{i,j}=0$. We can compute the likelihood of each individual separately but the penalty (for $\mbox{{\sc bic}}_*$) is global to the dataset. \\
@@ -4391,7 +4392,9 @@ If each sub-regression is a distinct connected component then we can always use 
 			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. We define
 			\begin{equation}
 			c_j=\frac{1}{n}\sum_{i=1}^nc_{i,j},  \nonumber 
-\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$. Then we have
+\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$. If all predictors $\boldsymbol{X}^{J_p^j}_i$ are observed then we have to estimate $d_p^j$ coefficients and an intercept and the variance of the residual so  $c_{i,j}=d_p^j+2$. But for each missing predictor, we have to estimate the parameters of its distribution (Gaussian mixture with proportion, mean and variance to estimate for each component) so we have $$c_{i,j}=d_p^j+2 + \sum_{\substack{l \in J_p^j \\ M_{i,l}=1}} (3 K_l-1)$$  (the proportions sums to 1 so one estimation is useless for each mixture).
+
+ Then we have
 			\begin{eqnarray}
 		-2\log \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})&\approx & \mbox{{\sc bic}}=-2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})\right)+|\boldsymbol{\Theta}|\ln(n) \nonumber  \\
 		&=& -2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})\right)+(\sum_{j=1}^dc_j)\ln(n). \nonumber 
@@ -4428,7 +4431,7 @@ If each sub-regression is a distinct connected component then we can always use 
 \subsection{Stochastic EM}\label{sectionSEMalgo}
 	The observed likelihood depicted above (equation (\ref{likmiss})) depends on the $\boldsymbol{\alpha}_j$'s which were formerly estimated by \textsc{ols} when there were no missing values. But when missing values occur in a sub-regression we need another solution.\\
 	
-	We use a  Stochastic Expectation Maximization (\textsc{sem} \cite{celeux1986algorithme}) algorithm  to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the Expectation-Maximization ({\sc em}) algorithm necessitates to first write the observed likelihood whose number of component can explode (as we have seen Section \ref{nbcomp}) so it would be difficult to compute.\\
+	We use a  Stochastic Expectation Maximization (\textsc{sem} \cite{celeux1986algorithme}) algorithm  to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the Expectation-Maximization ({\sc em}) algorithm necessitates to first write the observed likelihood whose number of components can explode (as we have seen Section \ref{nbcomp}) so it would be difficult to compute.\\
 	
 	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regressions have only few parameters and can be estimated even with only a small number of individuals.\\
 	
@@ -4696,7 +4699,7 @@ Then we are able to compute the Gibbs sampler.
 %Another (faster but not optimal) way would be to estimating missing values in $\boldsymbol{X}_r$only use the structure for $\boldsymbol{X}_r$ and use the distribution given by {\tt RMixmod} for $\boldsymbol{X}_f$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
 
 		
-		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use {\sc lasso} without imputation. But the choice of the penalty using the {\sc lar} algorithm need also to adapt the {\sc lar} that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective.
+		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use {\sc lasso} without imputation. But the choice of the penalty using the {\sc lar} algorithm needs also to adapt the {\sc lar} that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective.
 	\section{Numerical results on simulated datasets}
 		\subsection{Estimation of the sub-regression coefficients}
 			We take datasets from the experiments in part I and then we compare the \textsc{mse} obtained on $\boldsymbol{\alpha}$ with our Stochastic EM to those obtain by classical \textsc{ols} after imputation of the missing values by the marginal empirical means. Here $d=40$ and $n=30$, missing values position are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values each time. Thus we have 120 missing values and none of the datasets contain a full individual without missing values.
