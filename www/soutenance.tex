@@ -171,11 +171,7 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 		  The axis stands for the regression coefficients.
 		\end{frame}
 		
-\begin{frame}
-
-		Here again we have to choose a value for $\lambda$.
-	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole \textsc{lasso} path.  It can be used through the {\tt lars } package on {\sc cran} (\cite{packagelars}).
-\end{frame}		
+	
 
 \begin{frame}
  \begin{figure}
@@ -183,6 +179,7 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 	  \includegraphics[width=250px]{figures/MQEreel/larcompl.png}
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{lar}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQElarcompl}
 	\end{figure}	
+	{\tt lars } package on {\sc cran} (\cite{packagelars}).
 \end{frame}
 		
 		
@@ -195,17 +192,138 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 			Semble très bien mais n'aboutit pas vers la régression donc on le prolonge en CorReg
 		\end{frame}
 \section{Proposed Models}
-	\begin{frame}{•}
-	
+	\begin{frame}{Hypothesis 1}
+	There are $d_{r}\geq 0$ ``sub-regressions'', each sub-regression $j=1,\ldots,d_{r}$ having the covariate $\boldsymbol{X}^{J_{r}^j}$ as {\it response} variable ($J_{r}^j\in\{1,\ldots,p\}$ and $J_{r}^j\neq J_{r}^{j'}$ if $j\neq j'$) and having the $d_p^j>0$ covariates $\boldsymbol{X}^{J_{p}^j}$  as {\it predictor} variables ($J_{p}^j\subset\{1,\ldots,d\} \backslash J_{r}^j$ and $d_p^j=|J_{p}^j|$ the cardinal of $J_{p}^j$):
+\begin{equation}
+\boldsymbol{X}^{J_{r}^j}%|\boldsymbol{X}^{J_{p}^j};\boldsymbol{\alpha}_j,\sigma^2_j
+=\boldsymbol{X}^{J_{p}^j}\boldsymbol{\alpha}_j+\boldsymbol{\varepsilon}_j, \label{eq:SR}
+\end{equation}
+where $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ for all $j=1,\ldots,d_r$ and $h=1,\ldots,d_p^j$) and $\boldsymbol{\varepsilon}_j \sim\mathcal{N}_n(\boldsymbol{0},\sigma^2_j\boldsymbol{I})$.
+	\end{frame}
+	\begin{frame}{Hypothesis 2}
+	the response covariates and the predictor covariates are totally disjoint: for any sub-regression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ where $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ is set of all response covariates and $J_f=\{1,\ldots,d\} \backslash J_{r}$ is the set of all {\it non} response covariates of cardinal $d_f=d-d_r=|J_f|$. We call this hypothesis the \underline{uncrossing rule}. Then:
+	\begin{equation}
+			\boldsymbol{Y} %{|\boldsymbol{X},\boldsymbol{S}};\boldsymbol{\beta},\sigma_Y^2
+			=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:MainR}
+\end{equation}
+	\end{frame}
+	\begin{frame}{Hypotheses 3}
+	We assume that all errors $\boldsymbol{\varepsilon}_Y$ and $\boldsymbol{\varepsilon}_j$ ($j=1,\ldots,d_r$) are {\it mutually independent}. It implies in particular that conditional response covariates $\{\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j\}$ are {\it mutually independent}:
+\begin{equation}\label{eq:H3}
+\mathbb{P}(\boldsymbol{X}_r | \boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2) = \prod_{j=1}^{d_r} \mathbb{P}(\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j). 
+\end{equation}
 	\end{frame}
 	\subsection{Marginal model}
-		\begin{frame}{•}
-		
+		\begin{frame}{Marginal model}
+		 We obtain  for the distribution of $\{\boldsymbol{Y} |\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2\}$:
+\begin{eqnarray}
+	\boldsymbol{Y}%|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2
+	&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^*)+  \sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\varepsilon}_j+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl} \\
+	&=&\boldsymbol{X}_f\boldsymbol{\beta}_f^*+\boldsymbol{\varepsilon}_Y^*,\label{eq:modexpl}
+\end{eqnarray}
+where $\boldsymbol{\alpha}^*_j \in \mathbb{R}^{d_f}$ with $(\boldsymbol{\alpha}_j^*)_{J_p^j}=\boldsymbol{\alpha}_j $ and $(\boldsymbol{\alpha}_j^*)_{J_f\setminus J_p^j}=\bf 0 $. We define $\boldsymbol{\alpha}^* \in \mathbb{R}^{(d_f \times d_r)}$ to use more compact notations:
+\begin{eqnarray}
+	\boldsymbol{X}_r %|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\sigma}^2
+	&=&\boldsymbol{X}_f\boldsymbol{\alpha}^*+\boldsymbol{\varepsilon} \nonumber \\
+	\boldsymbol{Y}%|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\beta},\boldsymbol{\alpha},\sigma_Y^2,\boldsymbol{\sigma}^2
+	&=&\boldsymbol{X}_f (\boldsymbol{\beta}_f+ \boldsymbol{\alpha}^*\boldsymbol{\beta_{r}})+ \boldsymbol{\varepsilon}\boldsymbol{\beta_{r}}+\boldsymbol{\varepsilon}_Y \label{eq:Trueexpl2}
+\end{eqnarray} 
+Where $\boldsymbol{\varepsilon}$ is the $n\times d_r$ matrix whose columns are the $\boldsymbol{\varepsilon}_j$, the noises of the sub-regressions.
 		\end{frame}
 	\subsection{Plug-in model}
-		\begin{frame}{•}
-		
+		\begin{frame}{Plug-in model}
+%\fcolorbox{jaunefonce}{jauneclair}{\begin{minipage}{1\textwidth}
+\begin{equation}
+	\boldsymbol{\varepsilon}_Y^*%|\boldsymbol{\varepsilon};\boldsymbol{\beta}_r,\sigma_Y^2
+	=\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:regplugin} 
+\end{equation}
+%\end{minipage}}
+Then the Best Linear Unbiased Estimator ({\sc BLUE}) for $\boldsymbol{\beta}_r$ is given ({\sc mle} estimator) by:
+\begin{equation}
+  \hat{\boldsymbol{\beta}_r}=(\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}_Y^* . \label{olsplugin}
+\end{equation}
+    And we have the following estimators:
+	\begin{eqnarray}
+		\hat{\boldsymbol{\varepsilon}}&=& \boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \nonumber \textrm{ and} \\
+		\hat{\boldsymbol{\varepsilon}}_Y^*&=&\boldsymbol{Y}-\boldsymbol{X}_f\hat{\boldsymbol{\beta}}_f^* \nonumber
+	\end{eqnarray}
+	that we can use by plug-in.
+	\end{frame}
+	\begin{frame}{Plug-in model}
+	\begin{eqnarray}
+		\hat{\boldsymbol{\beta}}_r^{\varepsilon}&=&(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}_Y^*  \nonumber 
+	\end{eqnarray}
+that depends on all covariates in $\boldsymbol{X}$ and relies on the estimated coefficients of sub-regressions $\hat{\boldsymbol{\alpha}}^*$ and on the estimate $\hat{\boldsymbol{\beta}}_f^*$ of the coefficients in the marginal model.
+Then we can estimate $\boldsymbol{Y}$ by:
+\begin{eqnarray}
+	\hat{\boldsymbol{Y}}_{plug-in}&=&\boldsymbol{X}_f\hat{\boldsymbol{\beta}}^*_f + \hat{\boldsymbol{\varepsilon}}\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \label{hatYplugin} 
+\end{eqnarray}
+We can improve estimation of $\boldsymbol{\beta}_f$ (in terms of bias) by doing an additional identification step.	We know that $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ so we naturally define the following estimator:
+			\begin{equation}
+			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
+			\end{equation}
 		\end{frame}
+		
+		\begin{frame}{Marginal properties}
+		biased
+		\end{frame}
+		\begin{frame}{Plug-in properties}
+		asymptotically unbiased
+		\end{frame}
+		\begin{frame}
+		\begin{figure}[h!]
+\centering
+	\includegraphics[width=280px]{figures/MQE_toutOLSp5col.png}
+	\caption{\textsc{mse} on $\hat{\boldsymbol{\beta}}$ of \textsc{ols} (plain red) and {\tt CorReg} marginal (blue dashed) and {\tt CorReg} plug-in (green dotted) estimators for varying $R^2$ of the sub-regression, $n$ and $\sigma_Y$. Results obtained on the running example with $d=5$ covariates.}\label{MQE2}
+\end{figure}
+		\end{frame}
+		
+\begin{frame}{Lasso Consistency}
+Consistency issues of the {\sc lasso} are well known and Zhao \cite{Zhao2006MSC} gives a very simple example to illustrate it.
+		We have taken the same example to show how our method is better to find the true relevant covariates.
+		Here $d=3$ and $n=1\;000$.\\
+		We define $\boldsymbol{X}^1,\boldsymbol{X}^2, \boldsymbol{\varepsilon}_Y, \boldsymbol{\varepsilon}_{1} \quad i.i.d. \sim \mathcal{N}(\boldsymbol{0},\boldsymbol{I}_n)$ and then \\
+		\begin{eqnarray}
+		\boldsymbol{X}^3%|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_1^2
+		&=&\frac{2}{3}\boldsymbol{X}^1+\frac{2}{3}\boldsymbol{X}^2+\frac{1}{3}\boldsymbol{\varepsilon}_1 \textrm{ and}  \nonumber \\
+		\boldsymbol{Y}%|\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{S};\sigma_Y^2
+		&=&2\boldsymbol{X}^1+3\boldsymbol{X}^2+\boldsymbol{\varepsilon}_Y. \nonumber 
+		\end{eqnarray}
+\end{frame}		
+	\begin{frame}{Lasso Consistency}
+True $\boldsymbol{S}$ was found $991$ times on $1\;000$ tries.% (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
+		\begin{table}[h!]
+		\resizebox{\linewidth}{!}{%
+		 \begin{tabular}{|c|c|c|c|}
+		\hline 
+		 & Classical {\sc lasso} & {\tt CorReg} marginal + {\sc lasso}& {\tt CorReg} full plug-in + {\sc lasso}\\ 
+		\hline 
+		True $\boldsymbol{S}$ &  1.003303 (0.046) & \textbf{1.002273} (0.046)& \textbf{1.002812} (0.046)\\ 
+		\hline 
+		$\hat{\boldsymbol{S}}$ & 1.003303 (0.046)& 1.017622 (0.17)& \textbf{1.002812} (0.046)\\ 
+		\hline 
+		\end{tabular} 
+		}
+		\caption{\textsc{mse} observed on a validation sample (1 000 individuals) and their standard deviation (between brackets).}\label{MSEconsistlasso}
+		\end{table}
+
+We look at the consistency  that is the real stake:
+		\begin{table}[h!]	
+		\resizebox{\linewidth}{!}{%
+		\begin{tabular}{|c|c|c|c|}
+		\hline 
+		 & Classical {\sc lasso} & {\tt CorReg}  marginal + {\sc lasso}& {\tt CorReg}  full plug-in  + {\sc lasso} \\ 
+		\hline 
+		True $\boldsymbol{S}$ &  0 & \textbf{1000} & \textbf{835} \\ 
+		\hline 
+		$\hat{\boldsymbol{S}}$ & 0 & \textbf{991} & \textbf{829} \\ 
+		\hline 
+		\end{tabular} 
+		}
+		\caption{Number of consistent models found on $1\;000$ tries.}\label{testidentifiableG}
+		\end{table}	
+\end{frame}		
+		
 \section{Structure estimation}
 	\begin{frame}{•}
 	
