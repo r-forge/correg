@@ -81,7 +81,7 @@
 			\begin{equation}
 				\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\label{regressionsimple}
 			\end{equation}
-			where 	$\boldsymbol{\varepsilon}\sim \mathcal{N}(0,\sigma_Y^2)$	
+			where 	$\boldsymbol{\varepsilon}\sim \mathcal{N}(0,\sigma_Y^2\boldsymbol{I}_n)$	
 		\end{frame}
 		
 		\begin{frame}{OLS}
@@ -131,20 +131,62 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates (running example). } \label{MQEOLScompl}
 	\end{figure}	
 \end{frame}		
-		\begin{frame}{Ridge}
-		Alternative ridge : bien mais pas de sélection donc inacceptable
+		\begin{frame}{Ridge Regression}
+		\cite{hoerl1970ridge,marquardt1975ridge} proposes a possibly biased estimator for $\boldsymbol{\beta}$ that can be written in terms of a parametric $L_2$ penalty:
+	\begin{equation}
+		 \boldsymbol{\hat{\beta}}=\operatorname{argmin}_{\boldsymbol{\beta}} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel \boldsymbol{\beta} \parallel_2^2\leq \eta \textrm{ with } \eta>0
+	\end{equation}
+	But this penalty is not guided by correlations. 
+	The solution of the ridge regression is given by
+	\begin{equation}
+		 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} -\lambda\boldsymbol{I}_n\right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaridge}
+	\end{equation}
+ Methods do exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called {\tt ridge} is on {\sc cran} \cite{packageridge}.
 		\end{frame}
 		
-		\begin{frame}{Ridge}
-		Alternative ridge : bien mais pas de sélection donc inacceptable
-		\end{frame}
+		\begin{frame}{Ridge Regression}
+ \begin{figure}
+	 \centering
+	  \includegraphics[width=250px]{figures/MQEreel/ridgecompl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{ridge}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQEridgecompl}
+	\end{figure}
+			\end{frame}
 		
 		\begin{frame}{LASSO}
-		Alternative lasso (et autres) : bien mais problèmes en cas de corrélations
+		The Least Absolute Shrinkage and Selection Operator ({\sc lasso}, \cite{tibshirani1996regression} and \cite{tibshiranilasso}) consists in a shrinkage of the regression coefficients based on a $\lambda$ parametric $L_1$ penalty to obtain zeros in $\hat{\boldsymbol{\beta}}$ instead of the $L_2$ penalty of the ridge regression:
+		\begin{equation}
+		 \boldsymbol{\hat{\beta}}=\operatorname{argmin} \left\lbrace \parallel \boldsymbol{Y}-\boldsymbol{X\beta}\parallel_2^2 \right\rbrace \textrm{ subject to } \parallel\boldsymbol{\beta} \parallel_1\leq \lambda \textrm{ with } \lambda>0 . \nonumber 
+		\end{equation}	
+		
+		
+		
 		\end{frame}
 		\begin{frame}{LASSO}
-		Liste des alternatives
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[width=150px]{figures/lasso.png} 
+			\caption{Geometric view of the Penalty for the \textsc{lasso} (left) compared to ridge regression (right) as shown in the book from Hastie \cite{hastie2009elements}} \label{lassogeom}
+		\end{figure}
+		Figure shows the contour of error (red) and constraint function (blue).
+		  The axis stands for the regression coefficients.
 		\end{frame}
+		
+\begin{frame}
+
+		Here again we have to choose a value for $\lambda$.
+	 The Least Angle Regression (\textsc{LAR} \cite{efron2004least}) algorithm offers a very efficient way to obtain the whole \textsc{lasso} path.  It can be used through the {\tt lars } package on {\sc cran} (\cite{packagelars}).
+\end{frame}		
+
+\begin{frame}
+ \begin{figure}
+	 \centering
+	  \includegraphics[width=250px]{figures/MQEreel/larcompl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{lar}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates. } \label{MQElarcompl}
+	\end{figure}	
+\end{frame}
+		
+		
+		
 		\begin{frame}{ SEM }
 		 Modélisation de la structure mais à la main et aucun impact sur l'estimation
 		 \end{frame}
