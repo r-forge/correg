@@ -1,0 +1,154 @@
+\documentclass[11pt]{beamer}
+\usetheme{Malmoe}
+\usepackage[utf8]{inputenc}
+\usepackage[french]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+  \usepackage{color}
+\let\oldtabular=\tabular
+\def\tabular{\small\oldtabular}
+\setcounter{tocdepth}{1}
+%  \usetheme{Warsaw}
+ \graphicspath{{figures/}}
+  \author{Clément Théry, Christophe Biernacki, Gaétan Loridant}\institute{ArcelorMittal Dunkerque, Université de Lille 1,équipe M$\Theta$dal Inria}
+\title{CorReg}
+%\setbeamercovered{transparent} 
+%\setbeamertemplate{navigation symbols}{} 
+%\logo{} 
+%\institute{} 
+%\date{} 
+%\subject{} 
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}
+\tableofcontents
+\end{frame}
+
+\section{Context}
+	\subsection{Industrial context}
+		\begin{frame}
+				  \begin{enumerate}
+				\item Steel industry databases.
+				\item Goal: To understand and prevent quality problems on finished product, knowing the whole process, \underline{without a priori}.
+			\end{enumerate}
+	        \begin{center}
+	          \begin{tabular}{ccc}
+	         \includegraphics[width=70px,height=70px]{liquid.jpg} & \includegraphics[width=70px,height=70px]{Brame1.jpg} & \includegraphics[width=70px,height=70px]{Brame.jpg} \\
+	          	\includegraphics[width=70px,height=70px]{ecras_moy.jpg} & \includegraphics[width=70px,height=70px]{tcc2.jpg} & \includegraphics[width=70px,height=70px]{bobines.jpg}
+	          \end{tabular}
+	        \end{center}
+		\end{frame}
+	\subsection{Statistical context}
+		\begin{frame}{Regression}
+			\begin{equation}
+				\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\label{regressionsimple}
+			\end{equation}		
+		\end{frame}
+		
+		\begin{frame}{OLS}
+		\begin{figure}[h!]
+	\centering
+	\includegraphics[width=250px]{figures/OLS_geometric_interpretation.png}
+	\caption{Multiple linear regression with Ordinary Least Squares seen as a projection on the $d-$dimensional hyperplane spanned by the regressors $\boldsymbol{X}$. Public domain image.} \label{geomOLS}
+	\end{figure}
+		\end{frame}
+		
+		\begin{frame}{OLS}
+		$\boldsymbol{\beta}$ can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{ols}), that is the unbiased maximum likelihood estimator \cite{saporta2006probabilites,dodge2004analyse}: %As shown in section \ref{sectionOLS}, 
+	\begin{equation}
+		\boldsymbol{\hat{\beta}}_{OLS}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaOLS}
+	\end{equation}
+	with variance matrix
+	\begin{equation}
+		\operatorname{Var}(\hat{\boldsymbol{\beta}}_{OLS})=\sigma_Y^2\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}. \label{eq:varOLS}
+	\end{equation}
+	 In fact it is the Best Linear Unbiased Estimator (BLUE).
+	 The theoretical \textsc{mse} is given by
+	\begin{equation}
+	\textsc{mse}(\hat{\boldsymbol{\beta}}_{OLS})= \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}). \nonumber 
+	\end{equation}
+		\end{frame}
+		
+		\begin{frame}{Ridge}
+		Alternative ridge : bien mais pas de sélection donc inacceptable
+		\end{frame}
+		
+		\begin{frame}{Ridge}
+		Alternative ridge : bien mais pas de sélection donc inacceptable
+		\end{frame}
+		
+		\begin{frame}{LASSO}
+		Alternative lasso (et autres) : bien mais problèmes en cas de corrélations
+		\end{frame}
+		\begin{frame}{LASSO}
+		Liste des alternatives
+		\end{frame}
+		\begin{frame}{ SEM }
+		 Modélisation de la structure mais à la main et aucun impact sur l'estimation
+		 \end{frame}
+		 
+		\begin{frame}{ Selvarclust }
+			Semble très bien mais n'aboutit pas vers la régression donc on le prolonge en CorReg
+		\end{frame}
+\section{Proposed Models}
+	\begin{frame}{•}
+	
+	\end{frame}
+	\subsection{Marginal model}
+		\begin{frame}{•}
+		
+		\end{frame}
+	\subsection{Plug-in model}
+		\begin{frame}{•}
+		
+		\end{frame}
+\section{Structure estimation}
+	\begin{frame}{•}
+	
+	\end{frame}
+
+\section{Results}
+	\subsection{Simulation results}
+		\begin{frame}{•}
+		
+		\end{frame}
+	\subsection{Industrial results}
+		\begin{frame}{•}
+		
+		\end{frame}
+\section{Missing values}
+	\begin{frame}{•}
+	Modèle génératif complet avec dépendances
+	\end{frame}
+	\begin{frame}{•}
+	Explosion des mélanges 
+	\end{frame}
+	\begin{frame}{•}
+	SEM avec Gibbs 
+	\end{frame}
+	\begin{frame}{•}
+	Bic pondéré 
+	\end{frame}
+	\begin{frame}{•}
+	Résultats pourris 
+	\end{frame}
+\section{Tools}
+	\begin{frame}{•}
+		Excel, fonctions graphiques, arbres de décision
+	\end{frame}
+
+\begin{frame}
+\bibliographystyle{apalike}
+%\bibliographystyle{plain}
+%\nocite{*}
+\bibliography{biblio}
+\end{frame}
+
+\end{document}
