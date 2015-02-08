@@ -1,13 +1,30 @@
 \documentclass[11pt]{beamer}
 \usetheme{Malmoe}
 \usepackage[utf8]{inputenc}
-\usepackage[french]{babel}
 \usepackage[T1]{fontenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
-  \usepackage{color}
+  %\usepackage{color}
+  \usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc} 
+\usepackage[english]{babel}
+\usepackage{listings} 
+\usepackage[toc,page]{appendix}
+\usepackage{array}%,multirow,makecell}
+\usepackage{makecell}
+\usepackage{amssymb}
+\usepackage{subfigure}
+\usepackage{placeins}
+\usepackage{graphicx}
+%\usepackage{framed}
+%\usepackage[tikz]{bclogo}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{lmodern}
+ % \usepackage[usenames,dvipsnames,svgnames,table]{xcolor}%[usenames,dvipsnames,svgnames,table]
+
 \let\oldtabular=\tabular
 \def\tabular{\small\oldtabular}
 \setcounter{tocdepth}{1}
@@ -21,6 +38,20 @@
 %\institute{} 
 %\date{} 
 %\subject{} 
+
+%%%% debut macro %%%%
+\newenvironment{changemargin}[2]{\begin{list}{}{%
+\setlength{\topsep}{0pt}%
+\setlength{\leftmargin}{0pt}%
+\setlength{\rightmargin}{0pt}%
+\setlength{\listparindent}{\parindent}%
+\setlength{\itemindent}{\parindent}%
+\setlength{\parsep}{0pt plus 1pt}%
+\addtolength{\leftmargin}{#1}%
+\addtolength{\rightmargin}{#2}%
+}\item }{\end{list}}
+%%%% fin macro %%%%
+
 \begin{document}
 
 \begin{frame}
@@ -49,13 +80,14 @@
 		\begin{frame}{Regression}
 			\begin{equation}
 				\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\label{regressionsimple}
-			\end{equation}		
+			\end{equation}
+			where 	$\boldsymbol{\varepsilon}\sim \mathcal{N}(0,\sigma_Y^2)$	
 		\end{frame}
 		
 		\begin{frame}{OLS}
 		\begin{figure}[h!]
 	\centering
-	\includegraphics[width=250px]{figures/OLS_geometric_interpretation.png}
+	\includegraphics[width=220px]{figures/OLS_geometric_interpretation.png}
 	\caption{Multiple linear regression with Ordinary Least Squares seen as a projection on the $d-$dimensional hyperplane spanned by the regressors $\boldsymbol{X}$. Public domain image.} \label{geomOLS}
 	\end{figure}
 		\end{frame}
@@ -76,6 +108,29 @@
 	\end{equation}
 		\end{frame}
 		
+\begin{frame}{Running example}
+
+%$d=5$ with four independent scaled Gaussian 
+$\boldsymbol{X}^1,\boldsymbol{X}^2,\boldsymbol{X}^4,\boldsymbol{X}^5  \sim \mathcal{N}(0,1)$  and 
+$\boldsymbol{X}^3=\boldsymbol{X}^1+\boldsymbol{X}^2+\boldsymbol{\varepsilon}_1$ where 
+$\boldsymbol{\varepsilon}_1\sim{\mathcal{N}(\boldsymbol{0},\sigma_1^2\boldsymbol{I}_n)}$. \\
+Two {\it scenarii} for $\boldsymbol{Y}$:\\
+ $\boldsymbol{\beta}=(1,1,1,1,1)'$ and $\sigma_Y \in \{10,20\}$.
+ \\
+It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditioned as $\sigma_1$ gets smaller. $R^2$ stands for the coefficient of determination which is here:
+	\begin{equation}\label{defR2}
+	R^2=1-\frac{\operatorname{Var}(\boldsymbol{\varepsilon}_1)}{\operatorname{Var}(\boldsymbol{X}^3)}
+	\end{equation}
+
+\end{frame}	
+	
+	\begin{frame}
+	\begin{figure}
+	 \centering
+	  \includegraphics[width=250px]{figures/MQEreel/OLScompl.png}
+	  \caption{Evolution of observed Mean Squared error on $\hat{\boldsymbol{\beta}}_{OLS}$ with the strength of the correlations for various sample sizes and strength of regression. $d=5$ covariates (running example). } \label{MQEOLScompl}
+	\end{figure}	
+\end{frame}		
 		\begin{frame}{Ridge}
 		Alternative ridge : bien mais pas de sélection donc inacceptable
 		\end{frame}
