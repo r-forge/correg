@@ -77,22 +77,16 @@
 	        \end{center}
 		\end{frame}
 	\subsection{Statistical context}
-		\begin{frame}{Regression}
+		\begin{frame}{Linear Regression}
 			\begin{equation}
 				\boldsymbol{Y}=\boldsymbol{X}\boldsymbol{\beta} + \boldsymbol{\varepsilon}\label{regressionsimple}
 			\end{equation}
 			where 	$\boldsymbol{\varepsilon}\sim \mathcal{N}(0,\sigma_Y^2\boldsymbol{I}_n)$	
 		\end{frame}
 		
-		\begin{frame}{OLS}
-		\begin{figure}[h!]
-	\centering
-	\includegraphics[width=220px]{figures/OLS_geometric_interpretation.png}
-	\caption{Multiple linear regression with Ordinary Least Squares seen as a projection on the $d-$dimensional hyperplane spanned by the regressors $\boldsymbol{X}$. Public domain image.} \label{geomOLS}
-	\end{figure}
-		\end{frame}
 		
-		\begin{frame}{OLS}
+		
+		\begin{frame}{MLE}
 		$\boldsymbol{\beta}$ can be estimated by $\hat{\boldsymbol{\beta}}$ with Ordinary Least Squares (\textsc{ols}), that is the unbiased maximum likelihood estimator \cite{saporta2006probabilites,dodge2004analyse}: %As shown in section \ref{sectionOLS}, 
 	\begin{equation}
 		\boldsymbol{\hat{\beta}}_{OLS}=\left(\boldsymbol{X}'\boldsymbol{X} \right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaOLS}
@@ -107,7 +101,13 @@
 	\textsc{mse}(\hat{\boldsymbol{\beta}}_{OLS})= \sigma_Y^2 \operatorname{Tr}((\boldsymbol{X}'\boldsymbol{X})^{-1}). \nonumber 
 	\end{equation}
 		\end{frame}
-		
+		\begin{frame}{OLS}
+		\begin{figure}[h!]
+	\centering
+	\includegraphics[width=220px]{figures/OLS_geometric_interpretation.png}
+	\caption{Multiple linear regression with Ordinary Least Squares seen as a projection on the $d-$dimensional hyperplane spanned by the regressors $\boldsymbol{X}$. Public domain image.} \label{geomOLS}
+	\end{figure}
+		\end{frame}
 \begin{frame}{Running example}
 
 %$d=5$ with four independent scaled Gaussian 
@@ -184,12 +184,23 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 		
 		
 		
-		\begin{frame}{ SEM }
-		 Modélisation de la structure mais à la main et aucun impact sur l'estimation
+		\begin{frame}{Simultaneous Equation Modeling }
+		 \begin{eqnarray}
+		 	\boldsymbol{X}_{n,d}&=&\boldsymbol{X}_{n,d}\boldsymbol{\beta}_{d,d} + \boldsymbol{\varepsilon}_{n,d} \nonumber
+		 \end{eqnarray}
+		 No real "response variable", no real estimators for recursive {\sc sem}, no real variable selection (structure finder)
 		 \end{frame}
 		 
-		\begin{frame}{ Selvarclust }
-			Semble très bien mais n'aboutit pas vers la régression donc on le prolonge en CorReg
+		\begin{frame}{ {\tt Selvarclust} }
+			\begin{equation}
+	\boldsymbol{X}^{U}%|\boldsymbol{X}^{R};\boldsymbol{\alpha},\boldsymbol{\Omega}
+	=a+\boldsymbol{X}^R \boldsymbol{\alpha}+ \boldsymbol{\varepsilon}  \nonumber 
+\end{equation}
+	\begin{itemize}
+	\item Structure based on stepwise \cite{raftery2006variable,miller2002subset}
+	\item Made only for clustering purpose.
+\end{itemize}	  
+	 
 		\end{frame}
 \section{Proposed Models}
 	\begin{frame}{Hypothesis 1}
@@ -201,12 +212,13 @@ It is clear that $\boldsymbol{X}'\boldsymbol{X}$ will become more ill-conditione
 where $\boldsymbol{\alpha}_j\in{\mathbb{R}^{d_r^j}}$ (${\alpha}_j^h\neq 0$ for all $j=1,\ldots,d_r$ and $h=1,\ldots,d_p^j$) and $\boldsymbol{\varepsilon}_j \sim\mathcal{N}_n(\boldsymbol{0},\sigma^2_j\boldsymbol{I})$.
 	\end{frame}
 	\begin{frame}{Hypothesis 2}
-	the response covariates and the predictor covariates are totally disjoint: for any sub-regression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ where $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ is set of all response covariates and $J_f=\{1,\ldots,d\} \backslash J_{r}$ is the set of all {\it non} response covariates of cardinal $d_f=d-d_r=|J_f|$. We call this hypothesis the \underline{uncrossing rule}. Then:
+	The response covariates and the predictor covariates are totally disjoint: for any sub-regression $j=1,\ldots,d_{r}$, $J_{p}^j\subset J_f$ where $J_{r}=\{J_{r}^1,\ldots,J_{r}^{d_r}\}$ is set of all response covariates and $J_f=\{1,\ldots,d\} \backslash J_{r}$ is the set of all {\it non} response covariates of cardinal $d_f=d-d_r=|J_f|$. We call this hypothesis the \underline{uncrossing rule}. Then:
 	\begin{equation}
 			\boldsymbol{Y} %{|\boldsymbol{X},\boldsymbol{S}};\boldsymbol{\beta},\sigma_Y^2
 			=\boldsymbol{X}_f\boldsymbol{\beta}_f+\boldsymbol{X}_r\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y. \label{eq:MainR}
 \end{equation}
 	\end{frame}
+	
 	\begin{frame}{Hypotheses 3}
 	We assume that all errors $\boldsymbol{\varepsilon}_Y$ and $\boldsymbol{\varepsilon}_j$ ($j=1,\ldots,d_r$) are {\it mutually independent}. It implies in particular that conditional response covariates $\{\boldsymbol{X}^{J_{r}^j}|\boldsymbol{X}^{J_{p}^j},\boldsymbol{S};\boldsymbol{\alpha}_j,\sigma^2_j\}$ are {\it mutually independent}:
 \begin{equation}\label{eq:H3}
@@ -264,12 +276,58 @@ We can improve estimation of $\boldsymbol{\beta}_f$ (in terms of bias) by doing 
 			\end{equation}
 		\end{frame}
 		
-		\begin{frame}{Marginal properties}
-		biased
+		\begin{frame}{Marginal model's properties}
+				\begin{equation}
+			\mathbb{E}(\hat{\boldsymbol{\beta}}_{f}^*)=\boldsymbol{\beta}_{f}+\sum_{j =1}^{d_r}\beta_{J_r^j}\boldsymbol{\alpha}_j^* \textrm{ and }\mathbb{E}(\hat{\boldsymbol{\beta}}_{r}^*)=\boldsymbol{0}  \nonumber 
+		\end{equation}
+		
+		\begin{equation}
+			\operatorname{Var}(\hat{\boldsymbol{\beta}}_f^*)= (\sigma^2_Y+\sum_{j =1}^{d_r}\sigma^2_{j}\beta_{J_r^j}^2)(\boldsymbol{X}_f' \boldsymbol{X}_f)^{-1} \quad \textrm{and} \quad\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^*)= \boldsymbol{0}. \label{eq:varOLS*}
+		\end{equation}
 		\end{frame}
-		\begin{frame}{Plug-in properties}
-		asymptotically unbiased
-		\end{frame}
+		
+\begin{frame}{Plug-in model's properties}
+		Asymptotically unbiased (consistent estimators + continuous mapping theorem)
+\begin{eqnarray}
+	\operatorname{Var}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})
+	&=& \sigma^2_Y\big[\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-1}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}\big]^{-1} \nonumber \\
+	&=&\sigma^2_Y\big[(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\big]^{-1}
+\nonumber
+\end{eqnarray}
+
+\begin{eqnarray}
+		\operatorname{Var}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})
+		&=&\sigma_Y^2\big[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\hat{\boldsymbol{\alpha}}^*\big[(\boldsymbol{X}_r^{\varepsilon})'\boldsymbol{X}_r^{\varepsilon}\big]^{-1}(\hat{\boldsymbol{\alpha}}^*)'\big].\nonumber \label{varpluginf}
+	\end{eqnarray}		
+		
+\end{frame}
+
+
+
+\begin{frame}
+	\fontsize{8}{8}\selectfont{\begin{eqnarray}
+	&&\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f})= \nonumber \\ 
+	&& \sigma_Y^2\big[ 
+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r
+[\boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r]^{-1}
+\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\big] , \nonumber 
+%	\nonumber ,\\
+%	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})= 
+%	\nonumber .
+\end{eqnarray}}
+\begin{equation}
+\qquad = \sigma_Y^2\big[ 
+(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}+\underbrace{(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r}_{\hat{\boldsymbol{\alpha}}^*_{ols}}
+[ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r]^{-1}
+\underbrace{\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}}_{(\hat{\boldsymbol{\alpha}}^*_{ols})'}\big] \nonumber
+\end{equation}
+\begin{eqnarray}
+	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})&=&
+	\sigma_Y^2\big[ \boldsymbol{X}_r'\boldsymbol{X}_r-\boldsymbol{X}_r'\boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{X}_r\big]^{-1} \\ \nonumber
+	&=&\sigma_Y^2\big[ \boldsymbol{X}_r'(\boldsymbol{I}_n-\boldsymbol{H}_f)\boldsymbol{X}_r\big]^{-1}. \nonumber
+\end{eqnarray}
+\end{frame}		
+
 		\begin{frame}
 		\begin{figure}[h!]
 \centering
@@ -292,21 +350,6 @@ Consistency issues of the {\sc lasso} are well known and Zhao \cite{Zhao2006MSC}
 \end{frame}		
 	\begin{frame}{Lasso Consistency}
 True $\boldsymbol{S}$ was found $991$ times on $1\;000$ tries.% (model is not identifiable because $\boldsymbol{X}^j$ are all Gaussian).
-		\begin{table}[h!]
-		\resizebox{\linewidth}{!}{%
-		 \begin{tabular}{|c|c|c|c|}
-		\hline 
-		 & Classical {\sc lasso} & {\tt CorReg} marginal + {\sc lasso}& {\tt CorReg} full plug-in + {\sc lasso}\\ 
-		\hline 
-		True $\boldsymbol{S}$ &  1.003303 (0.046) & \textbf{1.002273} (0.046)& \textbf{1.002812} (0.046)\\ 
-		\hline 
-		$\hat{\boldsymbol{S}}$ & 1.003303 (0.046)& 1.017622 (0.17)& \textbf{1.002812} (0.046)\\ 
-		\hline 
-		\end{tabular} 
-		}
-		\caption{\textsc{mse} observed on a validation sample (1 000 individuals) and their standard deviation (between brackets).}\label{MSEconsistlasso}
-		\end{table}
-
 We look at the consistency  that is the real stake:
 		\begin{table}[h!]	
 		\resizebox{\linewidth}{!}{%
@@ -325,38 +368,382 @@ We look at the consistency  that is the real stake:
 \end{frame}		
 		
 \section{Structure estimation}
-	\begin{frame}{•}
-	
+	\begin{frame}
+	\fontsize{8}{8}\selectfont{
+	\begin{displaymath}G=\left(	\begin{array}{ccccc}
+	0 & 0 & 1 & 0 & 0 \\ 
+	0 & 0 & 1 & 0 & 0 \\ 
+	0 & 0 & 0 & 0 & 0 \\ 
+	0 & 0 & 0 & 0 & 0 \\ 
+	0 & 0 & 0 & 0 & 0
+	\end{array} \right)
+\end{displaymath}
+}
+	\begin{figure}[h!]
+	\centering
+	\includegraphics[width=200px]{figures/graphetoy.png} 
+	\caption{The bipartite graph associated to the running example. $\boldsymbol{X}_r$ is green and $\boldsymbol{X}_f$ is blue.}
+	\end{figure}
 	\end{frame}
+	
+\begin{frame}{Hypothesis 4: Full generative model}
+
+All covariates $\boldsymbol{X}^j$ with $j \in J_f$ are mutually independent and arise from the following Gaussian mixture of $K_j$ components
+\begin{equation}
+\forall 1\leq i \leq n, \mathbb{P}(x_{i,j}|\boldsymbol{S};\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j) = \sum_{h=1}^{K_j} \pi_{j,h} \Phi(x_{i,j};\mu_{j,h} ,\Sigma_{j,h}), \nonumber
+\end{equation}
+where $\boldsymbol{\pi}_{j}=(\pi_{j,1},\ldots,\pi_{j,K_j})$ is the vector of mixing proportions with $\forall 1\leq h\leq k_j , \pi_{j,h}>0$ and $\sum_{h=1}^{K_j}\pi_{j,h}=1$, $\boldsymbol{\mu}_j=(\mu_{j,1},\ldots,\mu_{j,K_j})$  is the vector of centres and $\boldsymbol{\Sigma}_j=(\Sigma_{j,1},\ldots,\Sigma_{j,K_j})$ is the vector of variances and $\Phi$ is the Gaussian density function. \\We stack together all these mixture parameters in $\boldsymbol{\theta}=(\boldsymbol{\pi}_{j},\boldsymbol{\mu}_j,\boldsymbol{\Sigma}_j ; j \in J_f)$. We now have a full generative model on $\boldsymbol{X}$.
+\end{frame}
+
+\begin{frame}{Penalized BIC}
+we propose to introduce some information in $\mathbb{P}(\boldsymbol{S})$ promoting simple models through the following {\it hierarchical} uniform distribution denoted by $\mathbb{P}_H(\boldsymbol{S})$:
+\fontsize{10}{10}\selectfont{\begin{eqnarray}
+\mathbb{P}_H(\boldsymbol{S}) & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p) \nonumber \\
+ & = & \mathbb{P}_H(\boldsymbol{J}_r,\boldsymbol{J}_p,d_r,\boldsymbol{d}_p)  \nonumber \\
+ & = & \mathbb{P}_U(\boldsymbol{J}_p|\boldsymbol{d}_p,\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{d}_p|\boldsymbol{J}_r,d_r) \times \mathbb{P}_U(\boldsymbol{J}_r|d_r)\times \mathbb{P}_U(d_r)  \nonumber \\
+ & = & \left[\prod_{j=1}^{d_r} \left(\begin{array}{c} d-d_r \\ d_p^j \end{array}\right) \right]^{-1} \times \left[d-d_r\right]^{-d_r} \times \left[\left(\begin{array}{c} d \\ d_r \end{array} \right)\right]^{-1} \times [d+1]^{-1} \nonumber 
+\end{eqnarray}
+}
+\end{frame}
+\subsection{Markov chain}
+\begin{frame}
+		At each step the Markov chain moves with probability:
+	\begin{eqnarray}
+			\forall \boldsymbol{S} \in \mathcal{S}_d, \forall \boldsymbol{S}^+\in \mathcal{V}(\boldsymbol{S}): %\mathcal{P}_{\boldsymbol{S},\boldsymbol{S}^+}=
+			\mathbb{P}(\boldsymbol{S}^+|\mathcal{V}(\boldsymbol{S}))&=&\frac{\exp{(-\mbox{{\sc bic}}_*(\boldsymbol{S}^+))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}} \nonumber
+	\end{eqnarray}
+	where $\mathcal{V}(\boldsymbol{S})$ is a neighbourhood and $\mathcal{S}_d$ is the set of feasible structures within $d$ variables.
+\end{frame}
+
+\begin{frame}
+	For each step $(q)$, starting from $\boldsymbol{S} \in \mathcal{S}_d$ we define a neighbourhood:
+		\begin{eqnarray}
+		\mathcal{V}(\boldsymbol{S})&=& \{\boldsymbol{S} \}\cup \{ \boldsymbol{S}^{(i,j)} \in \mathcal{S}_d|(i,j) \in \mathcal{A}_{(q)}\} \nonumber 
+	\end{eqnarray}	
+	where $\mathcal{A}_{(q)}$ is a set of couples $(i,j) \in \{1,\dots,d \}^2$ with $i\neq j$ drawn at the step $(q)$ according to a strategy defined below and corresponding to the directed edge of the graph to modify (add or remove).
+	And we have for  $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$:
+	\begin{eqnarray}
+		\forall (k,l)\neq (i,j), \quad	\tilde{\boldsymbol{G}}_{k,l}&=&\boldsymbol{G}_{k,l} \nonumber  \\
+		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j}  \nonumber 
+	\end{eqnarray}
+	where $\tilde{\boldsymbol{G}}$ is the adjacency matrix associated to $\tilde{\boldsymbol{S}}$. Any strategy can be chosen for $\mathcal{A}_{(q)}$, from uniform distribution to specific heuristics.
+\end{frame}
+\subsection{Constraint Relaxation}
+\begin{frame}
+New definition of $\tilde{\boldsymbol{G}}$:
+		Modification of the selected directed edge $(i,j)$ on the graph:
+	\begin{eqnarray}
+		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j} \textrm{ as usual and} \nonumber \\
+		\forall k \neq i, l\neq j, \quad	\tilde{\boldsymbol{G}}_{k,l}&=&\boldsymbol{G}_{k,l} \nonumber 
+\end{eqnarray}	
+Column-wise relaxation :		
+newly predictive covariate cannot be regressed anymore:
+		\begin{eqnarray}
+		\forall k \in \{1,\dots,d\}\setminus \{i\}, \tilde{\boldsymbol{G}}_{k,j}&=&\boldsymbol{G}_{i,j}\boldsymbol{G}_{k,j}  \nonumber  \\
+				\end{eqnarray}
+Row-wise relaxation: newly regressed covariate cannot be predictive anymore:
+		\begin{eqnarray}
+		\forall l \in \{1,\dots,d\}\setminus \{j\}, \tilde{\boldsymbol{G}}_{i,l}&=&\boldsymbol{G}_{i,j}\boldsymbol{G}_{i,l} \textrm{ (row-wise relaxation)} \nonumber 
+	\end{eqnarray} 
+\end{frame}
+
+\begin{frame}
+\begin{figure}
+	\begin{minipage}[l]{.45\linewidth}
+\includegraphics[width=.90\linewidth]{figures/identifiable/identifiabilite001.png} 
+	\end{minipage}
+	\begin{minipage}[c]{.45\linewidth}
+		$\boldsymbol{G}=\left( \begin{array}{ccccc}
+		0 & 0 & 0 & 1 & 0 \\ 
+		0 & 0 & 0 & 1 & 1 \\ 
+		0 & 0 & 0 & 0 & 1 \\ 
+		0 & 0 & 0 & 0 & 0 \\ 
+		0 & 0 & 0 & 0 & 0
+		\end{array} \right)$
+	\end{minipage}
+	\caption{We start from a structure $\boldsymbol{S}=((4,5),(\{1,2\},\{2,3\}))$ and its associated matrix $G$}\label{ident1}
+\end{figure}
+\end{frame}
+\begin{frame}		
+\begin{figure}
+	\begin{minipage}[c]{.45\linewidth}
+\includegraphics[width=.90\linewidth]{figures/identifiable/identifiabilite002.png} 
+	\end{minipage}
+	\begin{minipage}[c]{.45\linewidth}
+		$\left( \begin{array}{ccccc}
+		0 & 0 & 0 & 1 & 0 \\ 
+		0 & 0 & 0 & 1 & 1 \\ 
+		0 & 0 & 0 & 0 & 1 \\ 
+		0 & 0 & 0 & 0 & 0 \\ 
+		0 & \textcolor{red}{\textbf{1}}& 0 & 0 & 0
+		\end{array} \right)$
+	\end{minipage}
+	\caption{We want to define the candidate $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(5,2)}$ and its associated matrix but the structure obtained would not be feasible (breaking the uncrossing rule). }\label{ident2}
+\end{figure}
+\end{frame}
+\begin{frame}		
+\begin{figure}
+	\begin{minipage}[c]{.45\linewidth}
+\includegraphics[width=.90\linewidth]{figures/identifiable/identifiabilite003.png} 
+	\end{minipage}
+	\begin{minipage}[c]{.45\linewidth}
+		$\left( \begin{array}{ccccc}
+		0 & 0 & 0 & 1 & \textcolor{green}{\textbf{0}} \\ 
+		0 & 0 & 0 & 1 & \textcolor{green}{\textbf{0}} \\ 
+		0 & 0 & 0 & 0 & \textcolor{green}{\textbf{0}} \\ 
+		0 & 0 & 0 & 0 & \textcolor{green}{\textbf{0}} \\ 
+		0 & \textcolor{red}{\textbf{1}}& 0 & 0 & \textcolor{green}{\textbf{0}}
+		\end{array} \right)$
+	\end{minipage}
+	\caption{Column-wise relaxation: newly predictive covariate cannot be regressed anymore. }\label{ident3}
+\end{figure}
+\end{frame}
+\begin{frame}		
+\begin{figure}
+	\begin{minipage}[c]{.45\linewidth}
+\includegraphics[width=.90\linewidth]{figures/identifiable/identifiabilite004.png} 
+	\end{minipage}
+	\begin{minipage}[c]{.45\linewidth}
+		$\tilde{\boldsymbol{G}}=\left( \begin{array}{ccccc}
+		0 & 0 & 0 & 1 & 0 \\ 
+		\textcolor{green}{\textbf{0}} & \textcolor{green}{\textbf{0}} & \textcolor{green}{\textbf{0}} & \textcolor{green}{\textbf{0}} & \textcolor{green}{\textbf{0}} \\ 
+		0 & 0 & 0 & 0 & 0 \\ 
+		0 & 0 & 0 & 0 & 0 \\ 
+		0 & \textcolor{red}{\textbf{1}}& 0 & 0 & 0
+		\end{array} \right)$
+	\end{minipage}
+	\caption{Row-wise relaxation: newly predictive covariate cannot be regressed anymore. }\label{ident4}
+\end{figure}	
+\end{frame}
+\begin{frame}
+\begin{figure}
+	\begin{minipage}[c]{.45\linewidth}
+\includegraphics[width=.90\linewidth]{figures/identifiable/identifiabilite005.png} 
+	\end{minipage}
+	\begin{minipage}[c]{.45\linewidth}
+		$\tilde{\boldsymbol{G}}=\left( \begin{array}{ccccc}
+		0 & 0 & 0 & 1 & 0 \\ 
+		0 &0 & 0 & 0 & 0 \\ 
+		0 & 0 & 0 & 0 & 0 \\ 
+		0 & 0 & 0 & 0 & 0 \\ 
+		0 & 1& 0 & 0 & 0
+		\end{array} \right)$
+	\end{minipage}
+	\caption{We get a feasible candidate $\tilde{\boldsymbol{S}}=((2,4),(\{5\},\{1\}))$ that does differ from $\boldsymbol{S}$ in many points. }\label{ident5}
+\end{figure}
+\end{frame}
+\begin{frame}
+\begin{figure}
+\centering
+\includegraphics[width=250px]{figures/identifiable/identifiabilite006.png} 
+	\caption{All this modifications are made in only one step in the MCMC, meaning an increased scope for the neighbourhoods.}\label{ident6}
+\end{figure}
+\end{frame}
+
+\subsection{Pruning}
+\begin{frame}{Pruning}
+	Every sub-graph of a bipartite graph is bipartite thus every sub-graph can be reached. We propose an heuristic change in the strategy with:
+			\begin{equation}
+				\mathcal{A}_{(q)}=\{(i,J_r^j), i \in J_f, j \in \{1,\dots,d_r \}: i \in J_p^j \}. \nonumber 
+			\end{equation}
+\end{frame}
+\subsection{Initializations}
+\begin{frame}
+	\begin{center}
+		\begin{figure}[h!]
+		\centering
+		\includegraphics[width=250px]{figures/typeinit.png} %mars 2013 analyse plan ini marelax
+		\caption{Evolution of the $\mbox{{\sc bic}}$ (criterion to minimize in the MCMC) for each method.}\label{Bicini}
+		\end{figure}
+	\end{center}
+\end{frame}
+
+\begin{frame}
+	\begin{center}
+	\begin{figure}[h!]
+	\centering
+		\includegraphics[width=250px]{figures/courbes_BICmoyen_marelax_nbinibis.png} 
+		\caption{Comparison of distinct number of correlation-based initializations for the MCMC. Dark blue=1, red=10.}\label{nbini}
+	\end{figure}
+	\end{center}
+		In the following, the chain was launched with twenty initializations each time, based on the correlation matrix.
+\end{frame}
+
+\begin{frame}
+\begin{center}
+	\begin{figure}[h!]
+	\centering
+\includegraphics[width=300px]{figures/complexitycompareMCMC.png} 		
+\caption{Comparison of complexity evolution with or without constraint relaxation.}\label{comparecomplrelax}
+	\end{figure}
+	\end{center}
+	\end{frame}
+
+\begin{frame}	
+\begin{center}
+	\begin{figure}[h!]
+	\centering
+\includegraphics[width=300px]{figures/BICcompareMCMCrelax.png} 		
+\caption{Comparison of $\mbox{{\sc bic}}$ evolution with or without constraint relaxation.}\label{compareBICrelax}
+	\end{figure}
+	\end{center}
+\end{frame}
 
 \section{Results}
 	\subsection{Simulation results}
-		\begin{frame}{•}
 		
+		\begin{frame}
+			\begin{figure}[h!]
+	 \includegraphics[width=250px]{figures/predhatS/tout/MSEpredOLSbeta_zonetout.png}
+	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{\beta}}$, plain red=classical (complete) model, dashed blue=marginal model, dotted green=plug-in model. {\sc ols} estimators}
+\end{figure}
 		\end{frame}
+				\begin{frame}
+			\begin{figure}[h!]
+	 \includegraphics[width=250px]{figures/predhatS/tout/MSEpredlarbeta_zonetout.png}
+	\caption{Comparison of the \textsc{mse} on $\hat{\boldsymbol{\beta}}$, plain red=classical (complete) model, dashed blue=marginal model, dotted green=plug-in model. {\sc lasso} estimators}
+\end{figure}
+		\end{frame}
+		\subsection{Non-linear cases}
+		
+\begin{frame}
+We define $%\boldsymbol{X}_r|\boldsymbol{X}_f;\boldsymbol{\alpha},\boldsymbol{\sigma}^2=
+\boldsymbol{X}^7%|\boldsymbol{X}^{\{1,2,3\}};a,\sigma_1^2
+=a(\boldsymbol{X}^1)^2+\boldsymbol{X}^2+\boldsymbol{X}^3+ \boldsymbol{\varepsilon}_1$. The matrix $\boldsymbol{X}$ is then scaled before doing $$\boldsymbol{Y}%|\boldsymbol{X};\sigma_Y^2
+=\sum_{i=1}^7\boldsymbol{X}^i+\boldsymbol{\varepsilon}_Y.$$ We let $a$ vary between $0$ and $10$ to increase progressively the non-linear part of the sub-regression. Once again, simulations has been made 100 times and the \textsc{mse} were computed with 1 000 individuals validation samples.
+\end{frame}		
+		
+		\begin{frame}
+\begin{figure}[h!] 
+	\subfigure[Evolution of the quality of $\hat{\boldsymbol{S}}$ when the paramater $a$ increases]{
+			\includegraphics[height=180px,width=230px]{figures/robust_S.png} 
+			\label{resnonlin}
+	} 
+   \subfigure[\textsc{mse} on the main regression for \textsc{ols}(thick) and \textsc{lasso} (thin) used both with (plain) or without {\tt CorReg} (dotted).]{
+			\includegraphics[height=180px,width=230px]{figures/robustY.png} \label{MSEnonlin}
+   }
+   \caption{Non-linear case analysis.}
+\end{figure}		\end{frame}
+
+		\begin{frame}
+\begin{figure}[h!]  
+   \subfigure[\textsc{mse} on the main regression for \textsc{ols}(thick) and \textsc{lasso} (thin) used both with (plain) or without {\tt CorReg} (dotted).]{
+			\includegraphics[height=180px,width=230px]{figures/robustY.png} \label{MSEnonlin}
+   }
+\end{figure}		\end{frame}
+
 	\subsection{Industrial results}
-		\begin{frame}{•}
-		
+		\begin{frame}
+		We have :
+		\begin{itemize}
+			\item a quality parameter (confidential) as response variable,
+			\item $d=205$ variables from the whole process to explain it.
+		\end{itemize}
+We get a training set of $n=3\;000$ products described by these $205$ variables from the industrial process and also a validation sample of $847$ products.\\
+
+The objective here is not only to predict non-quality but to understand and then to avoid it.
 		\end{frame}
+		
+	\begin{frame}
+	\begin{figure}[h!]
+\begin{center}
+			\includegraphics[height=150px, width=150px]{figures/res_article/gaussianmixture_exfo.png}
+			\includegraphics[height=150px, width=150px]{figures/res_article/nb_comp_X_exfo.png}
+\end{center}		
+			\caption{Quality case study: (left) Example of a non-Gaussian real variable easily modeled by a Gaussian mixture, (right) distribution of the number of components found for each covariate.}\label{fig:graphMixmod.quality}
+\end{figure}  	
+	\end{frame}		
+		
+		\begin{frame}
+		\begin{figure}[h!]
+\begin{center}
+			\includegraphics[width=220px, height=80px]{figures/histR2exfos.png}
+\end{center}
+			\caption{Quality case study: histogram of the adjusted $R^2_{adj}$ for the $d_r=76$ sub-regressions.}
+\end{figure}
+		 The width and the weight of a steel slab gives $|\rho|=0.905$, the temperature before and after some tool gives $|\rho|=0.983$, the  roughness of both faces of the product gives $|\rho|= 0.919$ and a particular mean and a particular max gives $|\rho|=0.911$.
+		\end{frame}
+		
+		
+\begin{frame}
+		\begin{table}[h!]
+\centering
+\begin{tabular}{llcc}
+	\hline
+	Method& Indicator& {\tt CorReg}'s reduced model)& complete model \\ 
+	\hline \hline
+	{\sc ols} & {\sc mse} & 13.30 & 14.03 \\
+		& complexity& 130 & 206 \\
+	\hline
+	{\sc lasso} & {\sc mse} & 12.77 & 12.96 \\
+		& complexity& 24 & 21 \\
+	\hline
+	elasticnet & {\sc mse} & \textbf{12.15} & 13.52 \\
+		& complexity& 40 & 78 \\
+	\hline
+	ridge & {\sc mse} & 12.69 & 13.09 \\
+		& complexity& 130 & 206 \\
+	\hline
+\end{tabular} 
+\caption{Quality case study: Results obtained on a validation sample ($n=847$ individuals). In bold, the best {\sc mse} value.}\label{Res_exfos}
+\end{table}
+\end{frame}		
+		
+
+		
 \section{Missing values}
-	\begin{frame}{•}
-	Modèle génératif complet avec dépendances
+	\begin{frame}{Hope}
+		Full generative model + explicit dependencies = missing values management
 	\end{frame}
-	\begin{frame}{•}
-	Explosion des mélanges 
+	\begin{frame}
+	The number of component $k$ can be huge (combinations of all the components of the covariates in $\boldsymbol{X}_f$). In fact we have 
+	\begin{equation}
+		K=\prod_{j\in J_f}K_j  \nonumber 
+	\end{equation}
+	where $K_j$ is the number of components of the Gaussian mixture followed by $\boldsymbol{X}_j$ as defined in Hypothesis 4. It is clear that $K$ can really explode even if some components may be identical (but it happens with zero probability). For instance, if $\boldsymbol{X}$ contains only 10 independent Gaussian mixtures and with only 2 components each, then $\boldsymbol{X}$ will have up to $K=2^{10}=$ 1 024 components. And if these mixtures have 3 components each, then it rises up to $K=$ 59 049 components.
 	\end{frame}
-	\begin{frame}{•}
-	SEM avec Gibbs 
+	
+	\begin{frame}{Problem}
+	\begin{itemize}
+		\item Too much components
+		\item The likelihood may not be linear
+	\end{itemize}
+	EM is not possible in practice.
 	\end{frame}
-	\begin{frame}{•}
-	Bic pondéré 
+	\begin{frame}{Stochastic EM}
+		It is possible to simplify the problem by using Stochastic EM.\\
+		But the number of components stays a problem.
 	\end{frame}
-	\begin{frame}{•}
-	Résultats pourris 
+\begin{frame}{Solution}
+	Gibbs Sampling for stochastic imputation in the Stochastic EM
+\end{frame}	
+	
+	\begin{frame}
+ We define
+			\begin{equation}
+			c_j=\frac{1}{n}\sum_{i=1}^nc_{i,j},  \nonumber 
+\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$. If all predictors $\boldsymbol{X}^{J_p^j}_i$ are observed then we have to estimate $d_p^j$ coefficients and an intercept and the variance of the residual so  $c_{i,j}=d_p^j+2$. But for each missing predictor, we have to estimate the parameters of its distribution (Gaussian mixture with proportion, mean and variance to estimate for each component) so we have $$c_{i,j}=d_p^j+2 + \sum_{\substack{l \in J_p^j \\ M_{i,l}=1}} (3 K_l-1)$$  (the sum of the proportions is 1 so one estimation is useless for each mixture).
+	\end{frame}
+	\begin{frame}{Results}
+	Very slow and too much variability
 	\end{frame}
 \section{Tools}
-	\begin{frame}{•}
-		Excel, fonctions graphiques, arbres de décision
+\begin{frame}
+\begin{figure}
+\centering
+\includegraphics[width=280px]{figures/captureexcel.PNG} 
+	\caption{Screenshot of the Graphical User Interface of {\tt CorReg} in Excel.}\label{captureexcel}
+\end{figure}
+\end{frame}
+
+	\begin{frame}
+		\begin{figure}
+			\centering
+				\includegraphics[width=250px]{figures/arbretoy.png} 
+			\caption{Regression tree obtain with the package {\tt CorReg}
+			 (graphical layer on top of  the {\tt rpart} package) on the running example.}\label{arbretoy}
+		\end{figure}
+		arbres de décision, showdata, Conan, {\it etc.}
 	\end{frame}
 
 \begin{frame}
@@ -365,5 +752,9 @@ We look at the consistency  that is the real stake:
 %\nocite{*}
 \bibliography{biblio}
 \end{frame}
-
+\begin{frame}
+\begin{center}
+\huge Merci pour ce moment\dots
+\end{center} 
+\end{frame}
 \end{document}
