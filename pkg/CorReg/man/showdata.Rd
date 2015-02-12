@@ -4,12 +4,14 @@
 \alias{showdata}
 \title{show the missing values of a dataset}
 \usage{
-showdata(X = X, what = c("miss", "correl"))
+showdata(X = X, what = c("miss", "correl"), pch = 7)
 }
 \arguments{
 \item{X}{the dataset to analyse}
 
 \item{what}{indicates what to plot}
+
+\item{pch}{for missing, symbol to plot (can set pch="." for large datasets)}
 }
 \description{
 show the missing values of a dataset
