@@ -667,9 +667,9 @@ Ridge regression \cite{hoerl1970ridge,marquardt1975ridge} proposes a possibly bi
 	
 	The solution of the ridge regression is given by
 	\begin{equation}
-		 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} -\lambda\boldsymbol{I}_n\right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaridge}
+		 \hat{\boldsymbol{\beta}}=\left(\boldsymbol{X}'\boldsymbol{X} +\lambda\boldsymbol{I}_n\right) ^{-1}\boldsymbol{X}'\boldsymbol{Y}\label{betaridge}
 	\end{equation}
-	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ (on its diagonal) is done for a given $\lambda$ to improve its conditioning. Methods do exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called {\tt ridge} is on {\sc cran} \cite{packageridge}. 
+	and we see in this equation that a global modification of $\boldsymbol{X}'\boldsymbol{X}$ (on its diagonal) is done for a given $\lambda>0$ to improve its conditioning. Methods do exist to automatically choose a good value for $\lambda$ \cite{cule2013ridge,er2013systematic} and a R package called {\tt ridge} is on {\sc cran} \cite{packageridge}. 
 	We have computed the same experiment as in previous figure but with the {\tt ridge} package instead of \textsc{ols}. It is clear that the ridge regression is efficient in variance reduction (it is what it is built for). Moreover, ridge allows to have $n<d$.\\
 	
 	 \begin{figure}
@@ -1723,9 +1723,12 @@ Because the walk follows a regular and thus ergodic Markov chain with a finite s
 %		\pi (S) &=&\sum_{\tilde{S}\in \mathcal{S}} \pi(\tilde{S})\mathcal{P}(\tilde{S},S) \\%définition de la lois stationnaire
 %	\end{eqnarray}
 %	
-But the walk can also be seen as a Gibbs sampler \cite{casella1992explaining} that alternate draws of $\boldsymbol{S}$ and  $\mathcal{V}(\boldsymbol{S})$ with stationary distribution $\pi \propto \operatorname{exp}(-\mbox{{\sc bic}}_*(\cdot))$ on the space $\mathcal{S}_d$.
+But the walk can also be seen as a Gibbs sampler \cite{casella1992explaining} that alternate draws of $\boldsymbol{S}$ and  $\mathcal{V}(\boldsymbol{S})$ with stationary distribution $\pi \propto \operatorname{exp}(-\mbox{{\sc bic}}_*(\cdot))$ on the space $\mathcal{S}_d$. With more details, the stationary distribution is:
+\begin{equation}
+	\forall \boldsymbol{S} \in \mathcal{S}_d, \pi(\boldsymbol{S})=\frac{\exp{(-\mbox{{\sc bic}}_*(\boldsymbol{S}))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{S}_d}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}} \nonumber
+\end{equation}
 	
-The output of the algorithm will be the best structure in terms of $P(\boldsymbol{S}|\boldsymbol{X})$ which weights each candidate. 
+The output of the algorithm will be the best structure in terms of $P(\boldsymbol{S}|\boldsymbol{X})$ which weights each candidate, it is also the mode of the stationary distribution.
 	
 		\subsection{Deterministic neighbourhood}
 	
@@ -1762,7 +1765,7 @@ We define a {\it global} neighbourhood space $\mathcal{V}(\boldsymbol{S})$ of $\
 	  	
 For each step $(q)$, starting from $\boldsymbol{S} \in \mathcal{S}_d$ we define a neighbourhood:
 		\begin{eqnarray}
-		\mathcal{V}(\boldsymbol{S})&=& \{\boldsymbol{S} \}\cup \{ \boldsymbol{S}^{(i,j)} \in \mathcal{S}_d|(i,j) \in \mathcal{A}_{(q)}\} \nonumber 
+		\mathcal{V}(\boldsymbol{S}|\mathcal{A}_{(q)})&=& \{\boldsymbol{S} \}\cup \{ \boldsymbol{S}^{(i,j)} \in \mathcal{S}_d|(i,j) \in \mathcal{A}_{(q)}\} \nonumber 
 	\end{eqnarray}	
 	where $\mathcal{A}_{(q)}$ is a set of couples $(i,j) \in \{1,\dots,d \}^2$ with $i\neq j$ drawn at the step $(q)$ according to a strategy defined below and corresponding to the directed edge of the graph to modify (add or remove).
 	And we have for  $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$:
@@ -1773,7 +1776,13 @@ For each step $(q)$, starting from $\boldsymbol{S} \in \mathcal{S}_d$ we define 
 	where $\tilde{\boldsymbol{G}}$ is the adjacency matrix associated to $\tilde{\boldsymbol{S}}$. Any strategy can be chosen for $\mathcal{A}_{(q)}$, from uniform distribution to specific heuristics.\\
 	
 The main advantage of such a neighbourhood is that increasing and decreasing complexities are tested at each step without arbitrary ratio. If we just look at the sub-regression system, we have to choose for each sub-regression if we add, remove or keep covariates and we also have to choose if we had or delete some sub-regressions. Adjacency matrix makes the neighbourhood extremely natural with just the modification of a value in a binary matrix. \\
-Here the MCMC is not used for sampling or density estimation. We just want to find the structure with the best value of $\mbox{{\sc bic}}_*$ so it is not an evidence to allow or not stationarity. 
+Then the transition probability becomes, for step $(q)$:
+\begin{equation}
+	\forall \boldsymbol{S} \in \mathcal{S}_d, \forall \boldsymbol{S}^+\in \mathcal{V}(\boldsymbol{S}|\mathcal{A}_{(q)}): %\mathcal{P}_{\boldsymbol{S},\boldsymbol{S}^+}=
+			\mathbb{P}(\boldsymbol{S}^+|\mathcal{V}(\boldsymbol{S}|\mathcal{A}_{(q)}))=\frac{\exp{(-\mbox{{\sc bic}}_*(\boldsymbol{S}^+))}}{\sum_{\tilde{\boldsymbol{S}}\in \mathcal{V}(\boldsymbol{S}|\mathcal{A}_{(q)})}\exp{(-\mbox{{\sc bic}}_*(\tilde{\boldsymbol{S}}))}}\nonumber
+\end{equation}
+But the stationary distribution remains the same.
+
 		\subsubsection{Strategy to draw $\mathcal{A}_{(q)}$}
 			Many strategies can be imagined. 
 		The only constraint on $\mathcal{A}_{(q)}$ is that $\forall (i,j) \in \mathcal{A}_{(q)}, i\neq j$.				
@@ -1782,10 +1791,10 @@ Here the MCMC is not used for sampling or density estimation. We just want to fi
 			\mathcal{A}_{(q)}|j=\{ (i,j) \in  \{1,\dots,d\}^2 :i \neq j \}. \nonumber 
 		\end{equation}
 			Such a strategy can be interpreted as the uniform choice of a sub-regression to modify followed by the proposal of each possible unary change.
-			For large values of $d$, the number of candidate at each step can become critical. Each candidate requires to re-estimate the $\boldsymbol{\alpha}^j$'s for each modified sub-regression and it requires matricial inversion (estimation by \textsc{ols}) so computational cost can be high if $n$ is also large. In such cases one solution (almost as a warm-up phase) would be to only consider a random part of the neighbourhood to reduce the computational cost of each step.
-		\subsection{Active relaxation of constraints}
+			For large values of $d$, the number of candidate at each step can become critical. Each candidate requires to re-estimate the $\boldsymbol{\alpha}^j$'s for each modified sub-regression and it requires matricial inversion (estimation by \textsc{ols}) so computational cost can be high if $n$ is also large. In such cases one solution (almost as a warm-up phase) would be to only consider a randomly reduced neighbourhood to reduce the computational cost of each step.
+		\subsection{Enlarged neighbourhood by constraint relaxation}
 		In practice, for some of the $(i,j) \in \mathcal{A}_{(q)}$, we have $\boldsymbol{S}^{(i,j)}\notin \mathcal{S}_d$ because of the uncrossing rule. Such candidates are basically rejected so the number of candidates is not constant at each step. Moreover, complex structures reduce the size of the potential neighbourhood because of this uncrossing rule. Last but not least, even if the walk can reach any feasible structure from any other feasible structure, local extrema may significantly slow down the research of the optimal structure.
-		Thus we propose a constraints relaxation method by a new definition of $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$ relying on a new definition of $\tilde{\boldsymbol{G}}$:
+		Thus we propose a "constraints relaxation" method by a new definition of $\tilde{\boldsymbol{S}}=\boldsymbol{S}^{(i,j)}$ relying on a new definition of $\tilde{\boldsymbol{G}}$:
 		\paragraph{Modification of the selected directed edge $(i,j)$ on the graph:} (Figure \ref{ident2})
 	\begin{eqnarray}
 		\tilde{\boldsymbol{G}}_{i,j}&=&1-\boldsymbol{G}_{i,j} \textrm{ as usual and} \nonumber \\
@@ -1801,7 +1810,7 @@ newly predictive covariate cannot be regressed anymore (Figure \ref{ident3}):
 		\forall l \in \{1,\dots,d\}\setminus \{j\}, \tilde{\boldsymbol{G}}_{i,l}&=&\boldsymbol{G}_{i,j}\boldsymbol{G}_{i,l} \textrm{ (row-wise relaxation)} \nonumber 
 	\end{eqnarray} \\
 	
-	It can be seen as forcing the modification by removing what would have made the structure not feasible. So in one step we can test a model that remove completely a sub-regression, remove the explicative role of a covariate in all sub-regressions (that was not possible with the deterministic neighbourhood) and create a new pairwise sub-regression. It drastically increases the scope of the neighbourhood (Figure \ref{ident6}) and guarantee to always have the same number of candidates during the MCMC. It can be compared to simulated annealing that sometimes proposes exotic candidates to avoid local extrema, but here without any temperature to set. Here again, the neighbourhood remains natural, without arbitrary parameters to tune. \\
+	It can be seen as forcing the modification by removing what would have made the structure not feasible. So in one step we can test a model that remove completely a sub-regression, remove the explicative role of a covariate in all sub-regressions (that was not possible with the deterministic neighbourhood) and create a new pairwise sub-regression. It drastically increases the scope of the neighbourhood (Figure \ref{ident6}) and guarantee to always have the same number of candidates during the MCMC. It can be compared to simulated annealing that sometimes proposes exotic candidates to avoid local extrema, but here without any temperature to set. Here again, the neighbourhood remains natural, without arbitrary parameters to tune. This enlarged neighbourhood can also be randomly reduced, allowing to escape from local extremas but without increasing the number of candidates. \\
 	
 	Another advantage of the relaxation method is that it reduces complexity very quickly without having to deconstruct a sub-regression (Figure \ref{comparecomplrelax}), so it helps to have simpler models in a small amount of time (asymptotical results are the same because the chain is regular thus ergodic).\\
 			
@@ -1944,22 +1953,22 @@ The initial structure can be based on a first warming algorithm taking the corre
 	\end{center}
 	\FloatBarrier
 		\subsubsection{Multiple intialization}	
-		Local extrema are a known issue for most of optimization methods, and one would rather test multiple short chains than lose time in initialisation or long chains \cite{gilks1996markov}. 
+		Local extrema are a known issue for most of optimization methods, and one would rather test multiple short chains than lose time in initialization or long chains \cite{gilks1996markov}. 
 		We also compare the results obtained with several number of chains. Figure \ref{nbini} shows the evolution of the $\mbox{{\sc bic}}$ of the best chain with a number of chains varying from 1 to 10, so the model with 10 chains contain the others and is at least as good as they are (then curves get lower as the number of initializations does increase, by construction). We see that multiple initialization is efficient but the gain seems to be logarithmic in the number of tries so it is recommended to use multiple chains but not too much (time consuming). Important remark: multiple chains can be computed in parallel so it is not really time consuming.		
 			
 	\begin{center}
 	\begin{figure}[h!]
 	\centering
 		\includegraphics[width=400px]{figures/courbes_BICmoyen_marelax_nbinibis.png} 
-		\caption{Comparison of distinct number of correlation-based initialisations for the MCMC. Dark blue=1 intialization, red=10 initializations, the cyan curves represent all intermediate values for the number of initializations (from 2 to 9).}\label{nbini}
+		\caption{Comparison of distinct number of correlation-based initializations for the MCMC. Dark blue=1 initialization, red=10 initializations, the cyan curves represent all intermediate values for the number of initializations (from 2 to 9).}\label{nbini}
 	\end{figure}
 	\end{center}
-		In the following, the chain was launched with twenty initialisations each time, based on the correlation matrix.
+		In the following, the chain was launched with twenty initializations each time, based on the correlation matrix.
 	\subsubsection{Graphical { \sc lasso}}\label{sectionGlasso}
 		Graphical \textsc{lasso} (\cite{friedman2008sparse}, \cite{witten2011new}, \cite{tibshiranilasso} and \cite{friedman2010applications}) is set to give undirected (thus symmetric) graphs by selection in the precision matrix (the inverse of the variance-covariance matrix). It cycles through the variables, fitting a modified \textsc{lasso} regression to each variable in turn. The individual \textsc{lasso} problems are solved by coordinate descent. It is a variant of another method (\cite{meinshausen2006high}) that computes $d$ \textsc{lasso} estimation (each covariate regressed by all the others) and put zeros in the precision matrix when covariates seem to be conditionally independent (zero as regression coefficient).
 		It does make sense for exponential family because in these cases, zeros in the precision matrix $\boldsymbol{\Sigma}^{-1}$ can be interpreted in terms of conditional independence between covariates \cite{dempster1972covariance}. But we have supposed Gaussian mixture on $\boldsymbol{X}$ (not exponential family so the precision matrix cannot be interpreted as easily) and we search an oriented graph. So it is not adapted to find the structure of sub-regressions.\\
 		
-	However, we could still try use it for initialization, for example by a Hadamard product with $\boldsymbol{G}^{(0)}$ the adjacency matrix of the initial structure. Another idea would be to make the Hadamard product with the correlations matrix before computing the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum} because trees have no cycles. But it is time consuming (especially for an initialisation method) and has no theoretical properties relied to our problematic of minimizing $\mbox{{\sc bic}}_*$, so the idea was left behind after some tries.		
+	However, we could still try use it for initialization, for example by a Hadamard product with $\boldsymbol{G}^{(0)}$ the adjacency matrix of the initial structure. Another idea would be to make the Hadamard product with the correlations matrix before computing the initial structure. We can also try to give the graph a bipartite orientation. We first have to obtain a bipartite graph, that mean to have no even cycles. A particular case would be the minimum spanning tree \cite{graham1985history,moret1991empirical,gower1969minimum} because trees have no cycles. But it is time consuming (especially for an initialization method) and has no theoretical properties relied to our problematic of minimizing $\mbox{{\sc bic}}_*$, so the idea was left behind after some tries.		
 
 \subsection{Implementing and visualizing the walk by the {\tt CorReg} software}	
 	The {\tt CorReg} package is now on {\sc cran} and provides many parameters for the walk. If wanted it can return some curves associated to the walk to have an idea of what happens with distinct strategies. 		
@@ -3365,7 +3374,7 @@ Equations (\ref{pluginorig}) and (\ref{eq:regplugin}) are linear regressions and
 		\hline 
 		True $\boldsymbol{S}$ &  1.003303 (0.046) & \textbf{1.002273} (0.046)& \textbf{1.002812} (0.046)\\ 
 		\hline 
-		$\hat{\boldsymbol{S}}$ & 1.003303 (0.046)& 1.017622 (0.17)& \textbf{1.002812} (0.046)\\ 
+		$\hat{\boldsymbol{S}}$ & 1.003303 (0.046)& 1.017622 (0.17)& \textbf{1.002834} (0.046)\\ 
 		\hline 
 		\end{tabular} 
 		\caption{\textsc{mse} observed on a validation sample (1 000 individuals) and their standard deviation (between brackets).}\label{MSEconsistlasso}
@@ -4430,8 +4439,26 @@ If each sub-regression is a distinct connected component then we can always use 
 %	\end{equation}
 %\end{itemize}
 %	So it alternates between estimation of $Z$ and $\boldsymbol{\Theta}$ until convergence. This algorithm can be used to choose the best mixture model associated to the distribution of an observed variable for example.		
-	but faces local extrema problems so it is recommended to make multiple initializations and runs of the algorithm. Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic},\\
-			 \cite{celeux1986algorithme} or the Classification EM \cite{celeux1992classification}. In the following we use the Stochastic EM.
+	but faces local extrema problems so it is recommended to make multiple initializations and runs of the algorithm. 
+EM is an iterative algorithm with a succession of two steps	for each iteration $(q)$:
+\paragraph{E Step:} Expectation step. Computation of the Expectation of the log likelihood function, with respect to the conditional distribution of the missing values knowing the observed values, for fixed values of the parameters (first time with initial values of the parameters and then with values from the M step).
+	\begin{equation}
+	   Q(\boldsymbol{\alpha}|\boldsymbol{\alpha}^{(q)})= E\left[\ln L(\boldsymbol{\alpha},\boldsymbol{S},\boldsymbol{\Theta};\boldsymbol{X}_O,\boldsymbol{X}_M^{(h)}) \right]     \nonumber
+	\end{equation}
+	
+\paragraph{M Step:} Maximization step. Maximization of the completed likelihood with respect to $\boldsymbol{\alpha}$ and $\boldsymbol{\sigma}$ based on the completed variables from the E step.
+	\begin{equation}
+		\boldsymbol{\alpha}^{(q+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}=Q(\boldsymbol{\alpha}|\boldsymbol{\alpha}^{(q)})	\nonumber
+	\end{equation}
+	
+	
+	In our case, EM algorithm could be difficult to compute because:
+			 \begin{itemize}
+			 	\item Gaussian mixtures with some patterns of missing values could make the likelihood not linear and then hard to compute. 
+			 	\item The number of components of the global Gaussian mixture can explode so computation of the E step may be a real problem.
+			 \end{itemize}
+			 Then we search an alternative for the E step. Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic},\\
+			 \cite{celeux1986algorithme} or the Classification EM \cite{celeux1992classification}. 
 						
 \subsection{Stochastic EM}\label{sectionSEMalgo}
 	The observed likelihood depicted above (equation (\ref{likmiss})) depends on the $\boldsymbol{\alpha}_j$'s which were formerly estimated by \textsc{ols} when there were no missing values. But when missing values occur in a sub-regression we need another solution.\\
@@ -4445,25 +4472,26 @@ If each sub-regression is a distinct connected component then we can always use 
 	The Stochastic EM algorithm is an iterative procedure that starts with an initialization and then alternates SE steps (imputation of the missing values and $Z$) and the M step that maximizes the likelihood of the completed dataset on the parameter $\boldsymbol{\alpha}$.
 	
 	\paragraph{Initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC) to get $\boldsymbol{X}_M^{(0)}$. $\boldsymbol{\alpha}^{(0)}$ can be initialized by complete-case method	(sparse structure) or using imputed values in $\boldsymbol{X}$ and then \textsc{ols}.
-	And the at iteration $(h)$:
+	And the at iteration $(q)$:
 	\paragraph{SE step:}
-		We generate the missing values $\hat{\boldsymbol{X}}_M^{(h)}$ according to $\mathbb{P}(\boldsymbol{X}_M|\boldsymbol{X}_O; \boldsymbol{\alpha}^{(h)},\boldsymbol{\Theta}^{(h)},\boldsymbol{S})$, that is stochastic imputation. It can be done for example by Gibbs sampling, as we propose in Section \ref{gibbsmiss}.
+		We generate the missing values $\hat{\boldsymbol{X}}_M^{(q)}$ according to $\mathbb{P}(\boldsymbol{X}_M|\boldsymbol{X}_O; \boldsymbol{\alpha}^{(q)},\boldsymbol{\Theta}^{(q)},\boldsymbol{S})$, that is stochastic imputation. It can be done for example by Gibbs sampling, as we propose in Section \ref{gibbsmiss}.
 	\paragraph{M step:}
 		We estimate 
 		\begin{equation}
-	\boldsymbol{\alpha}^{(h+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\ln L(\boldsymbol{\alpha},\boldsymbol{S},\boldsymbol{\Theta};\boldsymbol{X}_O,\boldsymbol{X}_M^{(h)}) \right]  \nonumber 
+	\boldsymbol{\alpha}^{(q+1)}=\operatorname{argmax}_{\boldsymbol{\alpha}}E\left[\ln L(\boldsymbol{\alpha},\boldsymbol{S},\boldsymbol{\Theta};\boldsymbol{X}_O,\boldsymbol{X}_M^{(q)}) \right]  \nonumber 
 \end{equation}
-where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture parameters of the marginal distributions of $\boldsymbol{X}_f$ (estimated once by {\tt Rmixmod}). We can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}). Then we deduce $\boldsymbol{\Theta}^{(h+1)}$ \\
+where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture parameters of the marginal distributions of $\boldsymbol{X}_f$ (estimated once by {\tt Rmixmod}). We can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}). Then we deduce $\boldsymbol{\Theta}^{(q+1)}$ \\
 
 		We continue during $m_1$ iterations. Then we make $m_2$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m_2$ last iterations.\\
 		
-	The stochastic imputation made at the SE step is computed by Gibbs sampling in the following.
+	Stochastic EM the problem of non linearity but not the problem of the number of components.
+	Then, the stochastic imputation done at the SE step is computed by Gibbs sampling in the following, because of the potentially huge number of components that makes difficult to sample directly from the Gaussian mixture.
 
 	\subsection{Stochastic imputation by Gibbs sampling}\label{gibbsmiss}
 		Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $d-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $\mathbb{P}(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_d^{(q)})$ using the most recent drawn values each time. \\
 		
 		Gibbs sampling method can be used to generate the missing values at each $h^{th}$ SE step of the previous Stochastic EM algorithm. 
-		\paragraph{Initialisation:}  %For example to the first component (such an initialisation does not depend on $K$). 
+		\paragraph{Initialization:}  %For example to the first component (such an initialisation does not depend on $K$). 
 		$\boldsymbol{X}_M^{(0,h)}$ are imputed by the marginal means or drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example, following hypothesis \ref{H4} page \pageref{H4}). All the $Z_{i,j}^{(0,h)}$ are then randomly set based on the $t_{i,j,k}^{(0,h)}$ as explained below, replacing $(q+1)$ by $0$ (we just need those of $\boldsymbol{X}_f^{(0,h)}$). 
 		\paragraph{Iteration (q+1):} At each iteration of the Gibbs sampler we first make successive imputations on the missing values. We note $\boldsymbol{X}^{(q+1,h)}_{\bar{ij}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,j-1},x_{i,j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$ and $Z_{i}^{(q,h)}=\{Z_{i,j}^{(q,h)}|1\leq j \leq d, j\in J_f \}$. Then: 
 		\begin{itemize}
