@@ -3960,7 +3960,7 @@ So when a value is missing, we know its distribution but in addition, we know it
 	
 	
 
-\section{Estimation of the discrete structure of sub-regression despite missing values}\label{nbcomp}
+\section{Choice of the model of sub-regressions despite missing values}\label{nbcomp}
 
 \subsection{Marginal (observed) likelihood}
 The first thing we do with $\boldsymbol{X}$ in the \textsc{CorReg} process is to estimate $\boldsymbol{S}$. It is done by comparison of the \textsc{bic} that relies on the likelihood. Because covariates in $\boldsymbol{X}_f$ are orthogonal, complete-case estimation is equivalent to global estimation on the observed values, so we just use {\tt Rmixmod} for each covariate on the observed values to obtain the observed likelihood of each marginal covariate. These likelihoods are computed only once before the MCMC starts and are then used when needed to compute the \textsc{bic} of a given candidate.\\
@@ -4738,7 +4738,7 @@ Then we are able to compute the Gibbs sampler.
 %Another (faster but not optimal) way would be to estimating missing values in $\boldsymbol{X}_r$only use the structure for $\boldsymbol{X}_r$ and use the distribution given by {\tt RMixmod} for $\boldsymbol{X}_f$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
 
 		
-		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use {\sc lasso} without imputation. But the choice of the penalty using the {\sc lar} algorithm needs also to adapt the {\sc lar} that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective.
+		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use {\sc lasso} without imputation. But the choice of the penalty using the {\sc lar} algorithm needs also to adapt the {\sc lar} that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective. Another possibility would be to use our SEM/GIBBS algorithm with various regression models (kind of stepwise approach), optimizing $\mathbb{P}(\boldsymbol{Y},\boldsymbol{X}_O)$ instead of only  $\mathbb{P}(\boldsymbol{X}_O)$.
 	\section{Numerical results on simulated datasets}
 		\subsection{Estimation of the sub-regression coefficients}
 			We take datasets from the experiments in part I and then we compare the \textsc{mse} obtained on $\boldsymbol{\alpha}$ with our Stochastic EM to those obtain by classical \textsc{ols} after imputation of the missing values by the marginal empirical means. Here $d=40$ and $n=30$, missing values position are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values each time. Thus we have 120 missing values and none of the datasets contain a full individual without missing values.
