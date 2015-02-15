@@ -3958,7 +3958,7 @@ So when a value is missing, we know its distribution but in addition, we know it
 	
 	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$ and zeros where there is no sub-regression, not to be confused with the $\boldsymbol{\alpha}^*$ previously defined. $\bar{\boldsymbol{\alpha}}$ is  $\boldsymbol{\alpha}^*$ completed with rows and columns of zeros. As in previous part, we note $\Phi$ the Gaussian density function.\\  
 	
-	
+
 
 \section{Choice of the model of sub-regressions despite missing values}\label{nbcomp}
 
@@ -4458,11 +4458,8 @@ EM is an iterative algorithm with a succession of two steps	for each iteration $
 	\end{equation}
 	
 	
-	In our case, EM algorithm could be difficult to compute because:
-			 \begin{itemize}
-			 	\item Gaussian mixtures with some patterns of missing values could make the likelihood not linear and then hard to compute. 
-			 	\item The number of components of the global Gaussian mixture can explode so computation of the E step may be a real problem.
-			 \end{itemize}
+	In our case, EM algorithm could be difficult to compute because the number of components of the global Gaussian mixture can explode so computation of the E step may be a real problem.
+			
 			 Then we search an alternative for the E step. Some variants were developed like the Stochastic EM \cite{diebolt1996stochastic},
 			 \cite{celeux1986algorithme} or the Classification EM \cite{celeux1992classification}. 
 						
@@ -4589,7 +4586,7 @@ where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture 
 	\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\hat{\boldsymbol{\Theta}},\hat{\boldsymbol{\alpha}},\boldsymbol{S})}
 	{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\hat{\boldsymbol{\Theta}},\hat{\boldsymbol{\alpha}},\boldsymbol{S})} \textrm{ by the law of large numbers. } \ \ \ \nonumber
 	\end{eqnarray}	
-	Here $Q$ is the number of iterations of the Gibbs sampler and $\hat{\boldsymbol{\Theta}}$ is the global parameter associated to $\hat{\boldsymbol{\alpha}}$ .
+	Here $Q$ is the number of iterations of the Gibbs sampler.% and $\hat{\boldsymbol{\Theta}}$ is the global parameter associated to $\hat{\boldsymbol{\alpha}}$ .
 
 
 
@@ -4679,7 +4676,7 @@ where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture 
 			and for the variance:
 \begin{eqnarray}
 			(\sigma_{i,j}^{(q,h)})^2&=&\sigma_{j,Z_{i,j}^{(q,h)}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}(\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}})'. \nonumber 
-			\end{eqnarray}
+			\end{eqnarray} 
 			We have  $\mu_{j,Z_{i,j}^{(q,h)}}$ the mean of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}) and
 			$\sigma_{j,Z_{i,j}^{(q,h)}}^2$ the variance of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}).\\
 			$\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}$ is the vector of the covariances between $x_{i,j}^{(q+1,h)}$ and the other covariates ($\boldsymbol{X}_{\bar{ij}}^{(q+1,h)}$) knowing the components $Z_i^{(q,h)}$.\\
