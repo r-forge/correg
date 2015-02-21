@@ -4466,7 +4466,7 @@ EM is an iterative algorithm with a succession of two steps	for each iteration $
 \subsection{Stochastic EM}\label{sectionSEMalgo}
 	The observed likelihood depicted above (equation (\ref{likmiss})) depends on the $\boldsymbol{\alpha}_j$'s which were formerly estimated by \textsc{ols} when there were no missing values. But when missing values occur in a sub-regression we need another solution.\\
 	
-	We use a  Stochastic Expectation Maximization (\textsc{sem} \cite{celeux1986algorithme}) algorithm  to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the Expectation-Maximization ({\sc em}) algorithm necessitates to first write the observed likelihood whose number of components can explode (as we have seen Section \ref{nbcomp}) so it would be difficult to compute.\\
+	We use a Stochastic Expectation Maximization (\textsc{sem} \cite{celeux1986algorithme}) algorithm  to estimate $\boldsymbol{\alpha}$ because missing values do not allow to use \textsc{ols} and  the Expectation-Maximization ({\sc em}) algorithm necessitates to first write the observed likelihood whose number of components can explode (as we have seen Section \ref{nbcomp}) so it would be difficult to compute.\\
 	
 	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regressions have only few parameters and can be estimated even with only a small number of individuals.\\
 	
