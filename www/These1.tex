@@ -372,11 +372,12 @@ On va donc comparer
 		Ces deux équations illustrent bien le compromis biais-variance du modèle marginal.
 		La figure \ref{MSEOLSexpl} page \pageref{MSEOLSexpl} compare les erreurs d'estimation obtenues pour différentes valeurs des paramètres, montrant la nette amélioration rendue possible par la marginalisation. Quand $n$ tend vers l'infini les traces tendent vers 0 et donc le modèle complet devient meilleur (car sans biais). Mais pour $n$ fixé, quand les $\sigma_j^2$ tendent vers 0 la trace dans le MSE du modèle complet explose (les sous-régressions tendent à devenir exactes) et la variance du modèle marginal diminue donc l'explosion du {\sc mse} du modèle complet finit par dépasser le biais du modèle marginal et le {\sc mse} du modèle marginal devient le plus faible. On remarque enfin que quand $\boldsymbol{\beta}_r$ est nul, le modèle marginal est le vrai modèle et devient donc meilleur que le modèle complet (qui estime en vain $\boldsymbol{\beta}_r$, même s'il est sans biais).
 		\paragraph{Remarque}
-\begin{itemize}
+%\begin{itemize}
 %\item Les sous-régressions définies en (\ref{eq:SR_fr}) sont très simples à comprendre pour l'utilisateur et permettent donc d'avoir un aperçu net des corrélations présentes dans les données étudiées.
-\item Les hypothèses~\ref{H1fr}  à ~\ref{H3fr}, impliquent que les variables dans $\boldsymbol{X}_f$ {\it ne sont pas corrélées} (covariance nulle : voir Lemme en section \ref{suffcondident}).
+%\item 
+Les hypothèses~\ref{H1fr}  à ~\ref{H3fr}, impliquent que les variables dans $\boldsymbol{X}_f$ {\it ne sont pas corrélées} (covariance nulle : voir Lemme en section \ref{suffcondident}).
 %\item $\boldsymbol{S}$ ne dépend pas de $\boldsymbol{Y}$ et peut donc être estimé séparément.
-\end{itemize} 
+%\end{itemize} 
 	\section{Notion de prétraitement}
 	Le modèle marginal peut être vu comme un pari: on décide (pour s'affranchir des problèmes liés aux corrélations) de ne retenir que $\boldsymbol{X}_f$ pour la prédiction.
 	Il s'agit d'un prétraitement par sélection de variables puisqu'on se ramène à un modèle de régression linéaire classique pour lequel n'importe quel estimateur peut être utilisé. Cela fait de ce modèle un outil générique. La préselection permet de cibler des variables qui n'interviendront pas dans le modèle final sans pour autant être indépendantes de $\boldsymbol{Y}$. Le modèle final est donc parsimonieux mais ne fausse pas l'interprétation. L'estimation de $\boldsymbol{\beta}^*$ peut ensuite se faire en utilisant une quelconque méthode de sélection de variables pour éliminer les variables qui, elles, ne sont pas pertinentes pour expliquer $\boldsymbol{Y}$.\\
@@ -3246,7 +3247,7 @@ where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymb
 %	\hat{\boldsymbol{\varepsilon}}_Y=\boldsymbol{Y}-\hat{\boldsymbol{Y}}_{plug-in}.
 %\end{equation*}
 \paragraph{Remark:}
-		We can improve estimation of $\boldsymbol{\beta}_f$ (in terms of bias) by doing an additional identification step.	We know that $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ from equation (\ref{pluginorig}), so we naturally define the following estimator:
+		We can improve estimation of $\boldsymbol{\beta}_f$ (in terms of bias) by doing an additional identification step. Knowing how $\boldsymbol{\beta}^*_f$ is biased we can correct its expression. We know that $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ from equation (\ref{pluginorig}), so we naturally define the following estimator:
 			\begin{equation}
 			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 			\end{equation}
@@ -3284,7 +3285,8 @@ Up to a permutation of the columns of $\boldsymbol{X}$ we have $\boldsymbol{X}=(
 	\end{array} 
 	\right).
 \end{eqnarray*}
-We have $\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}=(\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f}),\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r}))'$ so we obtain, using block inversion with Schur complement:
+We have $\operatorname{Tr}[\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})]=\operatorname{Tr}[\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}]
+=\operatorname{Tr}[\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f})]+\operatorname{Tr}[\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})]$ so we obtain, using block inversion with Schur complement:
 
 \begin{displaymath}\fontsize{10}{10}\selectfont{
 	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f})=\sigma_Y^2\big[ 
@@ -3927,7 +3929,7 @@ Depending only on $\boldsymbol{X}_r$ implies sparsity and impossibility for the 
 	%To resume: we propose to manage missing values by multiple imputations based on the structure $\boldsymbol{S}$ and on the marginal Gaussian mixtures estimated independently on each covariate in $\boldsymbol{X}_f$.
 	
 	
-		 \section{State of the art}
+		 \section{State of the art on missing data}
 	Real datasets often have missing values and it is a very recurrent issue in industry. 
 			Here we suppose that missing values are Missing Completely At Random (MCAR) but other missing-data mechanisms do exist for missing values. For example, Missing values can depend on the observed values and then we say that they are Missing At Random (MAR), Missing value can also simply be not missing at random.
 	 Many methods do exist to manage such problems in a regression context \cite{little1992regression}:
