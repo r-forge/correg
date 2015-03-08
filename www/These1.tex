@@ -184,7 +184,7 @@ Bold characters are used to distinguish multidimensional objects. Many objects a
 	\item $\boldsymbol{X}_r$ is the matrix of the response covariates.
 	\item $\boldsymbol{X}_f$ is the matrix of the predictor covariates.
 	\item $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ is the $n-$uple of the $\boldsymbol{X}_{i,O}$.
-	%\item $X_{\bar{ij}}=(x_{i,1},\dots, x_{i,j-1},x_{i,j+1},\dots, x_{i,d})$.
+	\item $X_{\bar{ij}}=(x_{i,1},\dots, x_{i,j-1},x_{i,j+1},\dots, x_{i,d})$.
 	\item $\boldsymbol{X}_{i,O}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}$.
 	\item $\boldsymbol{X}_{i,O}^{J_f}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}_f$.
 	\item $\boldsymbol{X}_{i,O}^{J_r}$ is the vector of the observed values for the  $i^{th}$ individual of $\boldsymbol{X}_r$.
@@ -3958,7 +3958,7 @@ So when a value is missing, we know its distribution but in addition, we know it
 	We define $\boldsymbol{X}_M=(\boldsymbol{X}_{1,M},\dots,\boldsymbol{X}_{n,M})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,M}=(x_{i,j})_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=1}}$ of the missing values for individual $i$, $\boldsymbol{X}_O=(\boldsymbol{X}_{1,O},\dots,\boldsymbol{X}_{n,O})$ the $n$-uple of the vectors $\boldsymbol{X}_{i,O}=\left(x_{i,j}\right)_{\substack{j \in \{1,\dots,d \} \\ \boldsymbol{M}_{i,j}=0}}$ of the observed values for individual $i$. %, $\boldsymbol{d}_M=(d_{1,M},\dots,d_{n,M})$ where the $d_{i,M}=|\boldsymbol{X}_{i,M} |$ are  the number of missing values for individual $i$ and $d_M=\sum_{i=1}^nd_{i,M}$ the total number of missing values in $\boldsymbol{X}$. 
 	We also define the three vectors $\boldsymbol{X}_{i,O}^{J_r}=\left(x_{i,j}\right)_{\substack{j \in J_r \\ \boldsymbol{M}_{i,j}=0}} $, $\boldsymbol{X}_{i,O}^{J_f}=\left(x_{i,j}\right)_{\substack{j \in J_f \\ \boldsymbol{M}_{i,j}=0}} $, and $\boldsymbol{X}_{i,O}^{J_p^j}=\left(x_{i,l}\right)_{\substack{l \in J_p^j \\ \boldsymbol{M}_{i,l}=0}} $ to simplify the notations (that are a bit heavy) in the following.\\
 	
-	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$ and zeros where there is no sub-regression, not to be confused with the $\boldsymbol{\alpha}^*$ previously defined. $\bar{\boldsymbol{\alpha}}$ is  $\boldsymbol{\alpha}^*$ completed with rows and columns of zeros. As in previous part, we note $\Phi$ the Gaussian density function.\\  
+	$\bar{\boldsymbol{\alpha}}$ is the $d\times d$ matrix of the sub-regression coefficients with $\bar{\alpha}_{i,j}$ the coefficients associated to $\boldsymbol{X}^i$ in the sub-regression explaining $\boldsymbol{X}^j$ and zeros where there is no sub-regression, not to be confused with the $\boldsymbol{\alpha}^*$ previously defined. $\bar{\boldsymbol{\alpha}}$ is  $\boldsymbol{\alpha}^*$ completed with rows and columns of zeros. As in previous part, we note $\Phi$ the Gaussian density function. \\  
 	
 
 
@@ -4414,12 +4414,12 @@ If each sub-regression is a distinct connected component then we can always use 
 			To penalize models that suppose dependencies based only on a few individuals, we propose to use the mean of the complexities obtained for a given covariate. We define
 			\begin{equation}
 			c_j=\frac{1}{n}\sum_{i=1}^nc_{i,j},  \nonumber 
-\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus \boldsymbol{X}_i^j)$. If all predictors $\boldsymbol{X}^{J_p^j}_i$ are observed then we have to estimate $d_p^j$ coefficients and an intercept and the variance of the residual so  $c_{i,j}=d_p^j+2$. But for each missing predictor, we have to estimate the parameters of its distribution (Gaussian mixture with proportion, mean and variance to estimate for each component) so we have $$c_{i,j}=d_p^j+2 + \sum_{\substack{l \in J_p^j \\ M_{i,l}=1}} (3 K_l-1)$$  (the sum of the proportions is 1 so one estimation is useless for each mixture).
+\end{equation}						where $c_{i,j}$ is the number of parameters to estimate in $\mathbb{P}(x_{i,j}|\boldsymbol{X}_i\setminus x_{i,j})$. If all predictors $\boldsymbol{X}^{J_p^j}_i$ are observed then we have to estimate $d_p^j$ coefficients and an intercept and the variance of the residual so  $c_{i,j}=d_p^j+2$. But for each missing predictor, we have to estimate the parameters of its distribution (Gaussian mixture with proportion, mean and variance to estimate for each component) so we have $$c_{i,j}=d_p^j+2 + \sum_{\substack{l \in J_p^j \\ M_{i,l}=1}} (3 K_l-1)$$  (the sum of the proportions is 1 so one estimation is useless for each mixture).
 
  Then we have
 			\begin{eqnarray}
-		-2\log \mathbb{P}(\boldsymbol{X}|\boldsymbol{S})&\approx & \mbox{{\sc bic}}=-2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})\right)+|\boldsymbol{\Theta}|\ln(n) \nonumber  \\
-		&=& -2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X})\right)+(\sum_{j=1}^dc_j)\ln(n). \nonumber 
+		-2\log \mathbb{P}(\boldsymbol{X}_O|\boldsymbol{S})&\approx & \mbox{{\sc bic}}=-2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)\right)+|\boldsymbol{\Theta}|\ln(n) \nonumber  \\
+		&=& -2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)\right)+(\sum_{j=1}^dc_j)\ln(n). \nonumber 
 	\end{eqnarray}
 			 Thus if a structure is only touched by one missing value the penalty will be smaller than if the same structure had more missing values implied.
 			Another way would be to use {\sc ric} (see \cite{foster1994risk}) so the penalty does not depend on $n$ but is associated with $\log(d)$. %Or to make a compromise and penalize by $\frac{k_i\log(d)}{\log(n)}$.
@@ -4498,7 +4498,7 @@ where $\boldsymbol{\Theta}$ depends on $\boldsymbol{\alpha}$ and on the mixture 
 		Gibbs sampling method can be used to generate the missing values at each $h^{th}$ SE step of the previous Stochastic EM algorithm. 
 		\paragraph{Initialization:}  %For example to the first component (such an initialisation does not depend on $K$). 
 		$\boldsymbol{X}_M^{(0,h)}$ are imputed by the marginal means or drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example, following hypothesis \ref{H4} page \pageref{H4}). All the $Z_{i,j}^{(0,h)}$ are then randomly set based on the $t_{i,j,k}^{(0,h)}$ as explained below, replacing $(q+1)$ by $0$ (we just need those of $\boldsymbol{X}_f^{(0,h)}$). 
-		\paragraph{Iteration (q+1):} At each iteration of the Gibbs sampler we first make successive imputations on the missing values. We note $\boldsymbol{X}^{(q+1,h)}_{\bar{ij}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,j-1},x_{i,j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$ and $Z_{i}^{(q,h)}=\{Z_{i,j}^{(q,h)}|1\leq j \leq d, j\in J_f \}$. Then: 
+		\paragraph{Iteration (q+1):} At each iteration of the Gibbs sampler we first make successive imputations on the missing values. We note $\boldsymbol{X}^{(q+1,h)}_{\bar{ij}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,j-1},x_{i,j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$ and $Z_{i}^{(q,h)}=\{Z_{i,j}^{(q,h)}|1\leq j \leq d, j\in J_f \}$. So $\boldsymbol{X}^{(q+1,h)}_{\bar{iJ_r^j}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,J_r^j-1},x_{i,J_r^j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$  Then: 
 		\begin{itemize}
 			\item Regressed covariates: $\forall 1\leq i \leq n, \forall j \in \{1,\dots,d_r \}, \boldsymbol{M}_{i,J_r^j}=1  $:  $x_{i,J_r^j}^{(q+1,h)}$ is generated using the corresponding sub-regression, that gives the Gaussian
 			\begin{eqnarray}
