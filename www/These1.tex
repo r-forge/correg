@@ -4422,7 +4422,8 @@ If each sub-regression is a distinct connected component then we can always use 
 		-2\log \mathbb{P}(\boldsymbol{X}_O|\boldsymbol{S})&\approx & \mbox{{\sc bic}}=-2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)\right)+|\boldsymbol{\Theta}|\ln(n) \nonumber  \\
 		&=& -2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)\right)+(\sum_{j=1}^dc_j)\ln(n). \nonumber 
 	\end{eqnarray}
-			 Where $\boldsymbol{\Theta}=\{\boldsymbol{\theta},\boldsymbol{\alpha},\boldsymbol{\sigma}\}$ is the set of the parameters of the Gaussian mixture on $\boldsymbol{X}$.Thus if a structure is only touched by one missing value the penalty will be smaller than if the same structure had more missing values implied.
+			 Where $\boldsymbol{\Theta}=\{\boldsymbol{\theta},\boldsymbol{\alpha},\boldsymbol{\sigma}\}$ is the set of the parameters of the Gaussian mixture on $\boldsymbol{X}$. Thus if a structure is only touched by one missing value the penalty will be smaller than if the same structure had more missing values implied. It only changes the weight of the penalty but to detail its convergence it would require to define clearly the convergence context. For example, if we add individuals without missing values, then the weighted penalty will converge to the classical one and then we keep the convergence of the criterion. %If added individuals have the same patterns of missing values in the same proportions then it gives sub-populations, one for each pattern with classical ${\sc bic}_*$ each time.
+			 The software is not fast enough to allow this kind of tests yet.
 			Another way would be to use {\sc ric} (see \cite{foster1994risk}) so the penalty does not depend on $n$ but is associated with $\log(d)$. %Or to make a compromise and penalize by $\frac{k_i\log(d)}{\log(n)}$.
 		
 %	We can also imagine to use other criterions, like the $RIC$ (Risk Inflation Criterion \cite{foster1994risk}) that choose a penalty in $\log p$ instead of $\log n$ and thus gives more parsimonious models when $p$ is larger than $n$ (high dimension) or any other criterion \cite{george1993variable} thought to be better in a given context. 
@@ -4740,10 +4741,11 @@ Then we are able to compute the Gibbs sampler.
 %Another (faster but not optimal) way would be to estimating missing values in $\boldsymbol{X}_r$only use the structure for $\boldsymbol{X}_r$ and use the distribution given by {\tt RMixmod} for $\boldsymbol{X}_f$ along the MCMC. The full SEM would then be used only once with the final structure to make imputation in $\boldsymbol{X}$ before using variable selection methods like the LASSO.
 
 		
-		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use {\sc lasso} without imputation. But the choice of the penalty using the {\sc lar} algorithm needs also to adapt the {\sc lar} that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective. Another possibility would be to use our SEM/GIBBS algorithm with various regression models (kind of stepwise approach), optimizing $\mathbb{P}(\boldsymbol{Y},\boldsymbol{X}_O)$ instead of only  $\mathbb{P}(\boldsymbol{X}_O)$.
+		But another way would be to consider classical estimation methods as likelihood optimizer and then adapt them to the integrated likelihood of our model. Thus we can imagine to use {\sc lasso} without imputation. But the choice of the penalty using the {\sc lar} algorithm needs also to adapt the {\sc lar} that is based on correlations that are computed on vectors with distinct number of individuals (due to missing values). So it requires more work but could be a good perspective. Another possibility would be to use our SEM/GIBBS algorithm with various regression models (kind of stepwise approach), optimizing $\mathbb{P}(\boldsymbol{Y},\boldsymbol{X}_O)$ instead of only  $\mathbb{P}(\boldsymbol{X}_O)$. It would be like putting $\boldsymbol{Y}$ in the structure $\boldsymbol{S}$ but allowing $\boldsymbol{Y}$ to be explained by some covariates in $\boldsymbol{X}_r$. If we just focus on the marginal model, then it is simply to consider $\boldsymbol{Y}$ as one of the regressed covariates and then the main regression does not differ from any other sub-regression.
+		
 	\section{Numerical results on simulated datasets}
 		\subsection{Estimation of the sub-regression coefficients}
-			We take datasets from the experiments in part I and then we compare the \textsc{mse} obtained on $\boldsymbol{\alpha}$ with our Stochastic EM to those obtain by classical \textsc{ols} after imputation of the missing values by the marginal empirical means. Here $d=40$ and $n=30$, missing values position are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values each time. Thus we have 120 missing values and none of the datasets contain a full individual without missing values.
+			We take datasets from the experiments in section \ref{thedatasets} page \pageref{thedatasets} and then we compare the \textsc{mse} obtained on $\boldsymbol{\alpha}$ with our Stochastic EM to those obtain by classical \textsc{ols} after imputation of the missing values by the marginal empirical means. Here $d=40$ Gaussian mixtures with $d_r=16$ sub-regressions and $n=30$ individuals,  missing values positions are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values each time. Thus we have 120 missing values and none of the datasets contain a full individual without missing values.
 Both methods were tested with the true structure $\boldsymbol{S}$. Initial value of $\boldsymbol{\alpha}$ for the Stochastic EM was the result of the method using imputation by the empirical mean. Only 10 iterations for the Stochastic EM after 2 warming steps with only 1 iteration for the Gibbs at each step.
 
 \begin{figure}[h!]
@@ -4755,7 +4757,7 @@ Both methods were tested with the true structure $\boldsymbol{S}$. Initial value
 	We see (Figure \ref{MSEalphaSEM}) that our Stochastic EM is nearly 13 times more efficient in mean that estimation based on imputation by the mean. Our results are extremely good because each sub-regression is true and we have 30 individuals (even if missing values kind of reduce this number) to estimate 3 coefficients only each time. Although, using imputed values lead to learn a true regression with a factually incorrect dataset. Thus we should prefer to work without imputing the missing values but using the full generative model and the dependencies it implies. Imputation will always introduce some noise.
 
 		
-			\subsection{Multiple imputation}
+			\subsection{Multiple imputation}\label{multimput}
 			We have then imputed missing values in $\boldsymbol{X}_r$  by using the corresponding sub-regressions after $\boldsymbol{\alpha}$ has been estimated  by the Stochastic EM.
 			Missing values in $\boldsymbol{X}_f$ are estimated by the mean of 50 Gibbs iterations after the Stochastic EM and 2 warming steps of the Gibbs. Figure \ref{MSEXsubreg} shows the significant gain in \textsc{mse} produced by our method.
 			\begin{figure}[h!]
@@ -4765,7 +4767,7 @@ Both methods were tested with the true structure $\boldsymbol{S}$. Initial value
 \end{figure}  
 \FloatBarrier
 		\subsection{Results on the main regression}
-		We use the previously imputed $\hat{\boldsymbol{X}}$ to estimate $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,\dots,1)$ and $\sigma_Y=10$.
+		We use the previously (Section \ref{multimput}) imputed $\hat{\boldsymbol{X}}$ to estimate $\boldsymbol{Y}$ with $\boldsymbol{\beta}=(1,\dots,1)$ and $\sigma_Y=10$. So we have $d=40$ Gaussian mixtures with $d_r=16$ sub-regressions and $n=30$ individuals,  missing values positions are generated randomly for each of the 100 datasets to obtain $10 \%$ of missing values, then missing values are imputed as described above (Section \ref{multimput}) to obtain $\hat{\boldsymbol{X}}$ that will be used to estimate $\hat{\boldsymbol{\beta}}$.
 			\begin{figure}[h!]
 	\centering
 	\includegraphics[width=350px]{figures/MSESEMYtoymean.png} 
