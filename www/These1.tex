@@ -3123,7 +3123,7 @@ Then the Best Linear Unbiased Estimator ({\sc BLUE}) for $\boldsymbol{\beta}_r$ 
 \begin{equation}
   \hat{\boldsymbol{\beta}_r}=(\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon})^{-1}\boldsymbol{\varepsilon}'\boldsymbol{\varepsilon}_Y^* . \label{olsplugin}
 \end{equation}
-    But it depends on $\boldsymbol{\varepsilon}$ and $\boldsymbol{\varepsilon}_Y^*$ that are unknown.
+    But it is only a theoretical estimator because it depends on $\boldsymbol{\varepsilon}$ and $\boldsymbol{\varepsilon}_Y^*$ that are unknown (latent variables).
 The plug-in estimator of $\boldsymbol{\beta}_r$ we propose in this chapter does rely on the fact that we already have the following estimators (from equations (\ref{ssregplugin}) and (\ref{pluginorig})):
 	\begin{eqnarray}
 		\hat{\boldsymbol{\varepsilon}}&=& \boldsymbol{X}_r-\boldsymbol{X}_f\hat{\boldsymbol{\alpha}}^* \nonumber \textrm{ and} \\
@@ -3186,9 +3186,9 @@ We know that {\sc ols} estimators are consistent:
 \begin{equation}
 	\hat{\boldsymbol{\beta}}_r^{\varepsilon} \longrightarrow \boldsymbol{\beta}_r,  \nonumber 
 \end{equation}
-so the plug-in estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent. We deduce then
+so the plug-in estimator $\hat{\boldsymbol{\beta}}_r^{\varepsilon}$ is consistent (hence asymptotically unbiased). We have then
 \begin{equation}
-	\lim_{n\rightarrow + \infty}\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\boldsymbol{\beta}_r \textrm{ (asymptotically unbiased estimator)},\nonumber
+	\lim_{n\rightarrow + \infty}\mathbb{E}(\hat{\boldsymbol{\beta}}_r^{\varepsilon})=\boldsymbol{\beta}_r ,\nonumber
 \end{equation}
 and we have:
 \begin{eqnarray}
@@ -3212,7 +3212,7 @@ The variance of the estimator is given by:
 	%&=&(\sigma_Y^2(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1})(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}
 \nonumber
 \end{eqnarray}
-where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-\frac{1}{2}}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}$ is a $d_r\times d_r$ matrix.\\ It is clear that when some of the $\sigma_j^2$ tends to 0 (especially if they all tend to 0) then the plug-in estimator explodes. But in such cases the marginal model tends to be the true model without bias. So when a sub-regression is almost exact it is preferable to keep the associated redundant covariate out of the model. The plug-in model was defined only to use the residuals of the sub-regressions when they are not too small.
+where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{I}_n-\boldsymbol{H}_f)\hat{\boldsymbol{\varepsilon}}]^{-\frac{1}{2}}\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}}$ is a $d_r\times d_r$ matrix.\\ It is clear that when some of the $\sigma_j^2$ tends to 0 (especially if they all tend to 0) then the plug-in estimator explodes (columns of $\hat{\boldsymbol{\varepsilon}}$ tends to 0 in equation \ref{varpluginr}). But in such cases the marginal model tends to be the true model without bias. So when a sub-regression is almost exact it is preferable to keep the associated redundant covariate out of the model. The plug-in model was defined only to use the residuals of the sub-regressions when they are not too small.
 %		\begin{equation}
 %		\boldsymbol{Y}|\boldsymbol{X}_f,\boldsymbol{S};\boldsymbol{\alpha},\boldsymbol{\beta},\boldsymbol{\sigma}^2,\sigma_Y^2= \boldsymbol{X}_f\underbrace{(\boldsymbol{\beta}_f+\boldsymbol{\alpha}\boldsymbol{\beta}_r)}_{\boldsymbol{\beta}^*_f}+\underbrace{\boldsymbol{\varepsilon}\boldsymbol{\beta}_r+\boldsymbol{\varepsilon}_Y}
 %		\end{equation}
@@ -3247,7 +3247,7 @@ where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymb
 %	\hat{\boldsymbol{\varepsilon}}_Y=\boldsymbol{Y}-\hat{\boldsymbol{Y}}_{plug-in}.
 %\end{equation*}
 \paragraph{Remark:}
-		We can improve estimation of $\boldsymbol{\beta}_f$ (in terms of bias) by doing an additional identification step. Knowing how $\boldsymbol{\beta}^*_f$ is biased, we can correct its expression. We know that $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ from equation (\ref{pluginorig}), so we naturally define the following estimator:
+		We try to improve estimation of $\boldsymbol{\beta}_f$ (in terms of bias) by doing an additional identification step. Knowing how $\boldsymbol{\beta}^*_f$ is biased, we can correct its expression. We know that $\boldsymbol{\beta}^*_f=\boldsymbol{\beta}_f+\boldsymbol{\alpha}^*\boldsymbol{\beta}_r $ from equation (\ref{pluginorig}), so we naturally define the following estimator:
 			\begin{equation}
 			\hat{\boldsymbol{\beta}}_f^{\varepsilon}=\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}. \nonumber 
 			\end{equation}
@@ -3257,8 +3257,8 @@ where $\boldsymbol{X}_r^{\varepsilon}=[\hat{\boldsymbol{\varepsilon}}'(\boldsymb
 %	\end{equation}
 Properties of $\hat{\boldsymbol{\beta}}_f^{\varepsilon}$ are the following:
 	\begin{eqnarray}
-	\hat{\boldsymbol{\beta}}_f^{\varepsilon}& \longrightarrow & \boldsymbol{\beta}^*_f-\boldsymbol{\alpha}^*\boldsymbol{\beta}_{r} \textrm{ (consistent estimator),}\nonumber\\
-		\lim_{n \rightarrow +\infty}\mathbb{E}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})&=&\boldsymbol{\beta}_f^*-\boldsymbol{\alpha}^*\boldsymbol{\beta}_r = \boldsymbol{\beta}_f \textrm{ (asymptotically unbiased), and} \nonumber \\
+	\hat{\boldsymbol{\beta}}_f^{\varepsilon}& \longrightarrow & \boldsymbol{\beta}^*_f-\boldsymbol{\alpha}^*\boldsymbol{\beta}_{r} \textrm{ (consistent estimator hence asymptotically unbiased), then}\nonumber\\
+		\lim_{n \rightarrow +\infty}\mathbb{E}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})&=&\boldsymbol{\beta}_f^*-\boldsymbol{\alpha}^*\boldsymbol{\beta}_r = \boldsymbol{\beta}_f, \textrm{and} \nonumber \\
 		\mathbb{E}(\hat{\boldsymbol{\beta}}_f^{\varepsilon})&=&\mathbb{E}[\hat{\boldsymbol{\beta}}^*_f-\hat{\boldsymbol{\alpha}}^*\hat{\boldsymbol{\beta}}_{r}^{\varepsilon}] \nonumber \\
 		&=&\mathbb{E}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f\hat{\boldsymbol{\beta}^*_f})]  \nonumber \\
 		&=&\mathbb{E}[(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y}-\hat{\boldsymbol{\alpha}}^*(\hat{\boldsymbol{\varepsilon}}'\hat{\boldsymbol{\varepsilon}})^{-1}\hat{\boldsymbol{\varepsilon}}'(\boldsymbol{Y}- \boldsymbol{X}_f(\boldsymbol{X}_f'\boldsymbol{X}_f)^{-1}\boldsymbol{X}_f'\boldsymbol{Y})]  \nonumber \\
@@ -3285,8 +3285,9 @@ Up to a permutation of the columns of $\boldsymbol{X}$ we have $\boldsymbol{X}=(
 	\end{array} 
 	\right).
 \end{eqnarray*}
-We have $\operatorname{Tr}[\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})]=\operatorname{Tr}[\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}]
-=\operatorname{Tr}[\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f})]+\operatorname{Tr}[\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})]$ so we obtain, using block inversion with Schur complement:
+%We have $\operatorname{Tr}[\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})]=\operatorname{Tr}[\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}]=\operatorname{Tr}[\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f})]+\operatorname{Tr}[\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{r})]$ so 
+We have $\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$ and $\hat{\boldsymbol{\beta}}=(\hat{\boldsymbol{\beta}}_f,\hat{\boldsymbol{\beta}}_r) $
+so we obtain, using block inversion with Schur complement:
 
 \begin{displaymath}\fontsize{10}{10}\selectfont{
 	\operatorname{Var}_{ols}(\hat{\boldsymbol{\beta}}_{f})=\sigma_Y^2\big[ 
@@ -3312,7 +3313,7 @@ We also have
 \end{equation}
 %Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on the estimated residuals of the sub-regressions that may give better conditioned matrices ($\boldsymbol{\varepsilon}_j$'s are supposed to be independent) to invert than $\boldsymbol{X}_r$ that appears with \textsc{ols} applied on $\boldsymbol{X}$ (equations (\ref{olsr}) and (\ref{olsf})) because redundant covariate can have common predictors. %for which we have $\operatorname{Var}(\hat{\boldsymbol{\beta}}_{ols})=\sigma_Y^2(\boldsymbol{X}'\boldsymbol{X})^{-1}$ 
 
-Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on the estimated residuals of the sub-regressions $\hat{\boldsymbol{\varepsilon}}_j$ that may give better conditioned matrices to invert than $\boldsymbol{X}_r$ that appears with \textsc{ols} applied on $\boldsymbol{X}$ (equations (\ref{olsr}) and (\ref{olsf})). We have supposed that the predictors are mutually independent and that the noises of the sub-regressions are mutually independent (then we hope to have only small correlations between the $\hat{\boldsymbol{\varepsilon}}_j$) but sub-regressions can have common predictors and then the redundant covariates in $\boldsymbol{X}_r$ can be highly correlated, leading to an ill-conditioned matrix in equations (\ref{olsr}) and (\ref{olsf}). 
+Variances in equations (\ref{varpluginr}) and (\ref{varpluginf}) rely on the estimated residuals of the sub-regressions $\hat{\boldsymbol{\varepsilon}}_j$ that may give better conditioned matrices to invert than $\boldsymbol{X}_r$ that appears with \textsc{ols} applied on $\boldsymbol{X}$ (equations (\ref{olsr}) and (\ref{olsf})). We have supposed that the predictors $\boldsymbol{X}_f$ are mutually independent (Hypothesis \ref{H4} page \pageref{H4}) and that (Hypothesis \ref{H3} page \pageref{H3}) the noises of the sub-regressions are mutually independent (then we hope to have only small correlations between the $\hat{\boldsymbol{\varepsilon}}_j$) but sub-regressions can have common predictors and then the redundant covariates in $\boldsymbol{X}_r$ can be highly correlated, leading to an ill-conditioned matrix in equations (\ref{olsr}) and (\ref{olsf}). So we hope that the plug-in estimator relies on better-conditioned matrices than {\sc ols} estimator.
 
 When $n$ rises to $+\infty$ both models are consistent so convergence rates will make the difference.
 Compared to \textsc{ols} we have a new bias-variance trade-off to study with numerical results.\\
@@ -4419,10 +4420,11 @@ If each sub-regression is a distinct connected component then we can always use 
 
  Then we have
 			\begin{eqnarray}
-		-2\log \mathbb{P}(\boldsymbol{X}_O|\boldsymbol{S})&\approx & \mbox{{\sc bic}}=-2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)\right)+|\boldsymbol{\Theta}|\ln(n) \nonumber  \\
-		&=& -2\ln\left(L(\boldsymbol{\Theta},\boldsymbol{S};\boldsymbol{X}_O)\right)+(\sum_{j=1}^dc_j)\ln(n). \nonumber 
+		-2\log \mathbb{P}(\boldsymbol{X}_O|\boldsymbol{S})&\approx & \mbox{{\sc bic}}=-2\ln\left(L(\boldsymbol{\theta},\boldsymbol{\alpha},\boldsymbol{\sigma},\boldsymbol{S};\boldsymbol{X}_O)\right)+(|\boldsymbol{\theta}|+|\boldsymbol{\alpha}|+|\boldsymbol{\sigma}|)\ln(n) \nonumber  \\
+		&=& -2\ln\left(L(\boldsymbol{\theta},\boldsymbol{\alpha},\boldsymbol{\sigma},\boldsymbol{S};\boldsymbol{X}_O)\right)+(\sum_{j=1}^dc_j)\ln(n). \nonumber 
 	\end{eqnarray}
-			 Where $\boldsymbol{\Theta}=\{\boldsymbol{\theta},\boldsymbol{\alpha},\boldsymbol{\sigma}\}$ is the set of the parameters of the Gaussian mixture on $\boldsymbol{X}$. Thus if a structure is only touched by one missing value the penalty will be smaller than if the same structure had more missing values implied. It only changes the weight of the penalty but to detail its convergence it would require to define clearly the convergence context. For example, if we add individuals without missing values, then the weighted penalty will converge to the classical one and then we keep the convergence of the criterion. %If added individuals have the same patterns of missing values in the same proportions then it gives sub-populations, one for each pattern with classical ${\sc bic}_*$ each time.
+			 %Where $\boldsymbol{\Theta}=\{\boldsymbol{\theta},\boldsymbol{\alpha},\boldsymbol{\sigma}\}$ is the set of the parameters of the Gaussian mixture on $\boldsymbol{X}$. 
+			 Thus if a structure is only touched by one missing value the penalty will be smaller than if the same structure had more missing values implied. It only changes the weight of the penalty but to detail its convergence it would require to define clearly the convergence context. For example, if we add individuals without missing values, then the weighted penalty will converge to the classical one and then we keep the convergence of the criterion. %If added individuals have the same patterns of missing values in the same proportions then it gives sub-populations, one for each pattern with classical ${\sc bic}_*$ each time.
 			 The software is not fast enough to allow this kind of tests yet.
 			Another way would be to use {\sc ric} (see \cite{foster1994risk}) so the penalty does not depend on $n$ but is associated with $\log(d)$. %Or to make a compromise and penalize by $\frac{k_i\log(d)}{\log(n)}$.
 		
@@ -4474,7 +4476,7 @@ EM is an iterative algorithm with a succession of two steps	for each iteration $
 	
 	Another method would be to estimate the $\boldsymbol{\alpha}_j$ with \textsc{ols} applied on sub-matrix of $(\boldsymbol{X}^{J_r^j},\boldsymbol{X}^{J_p^j})$ without missing values (complete-case method). Small sub-regressions may increase the probability to find such sub-matrices. Moreover, small sub-regressions have only few parameters and can be estimated even with only a small number of individuals.\\
 		
-	The Stochastic EM algorithm is an iterative procedure that starts with an initialization and then alternates SE steps (imputation of the missing values and $Z$) and the M step that maximizes the likelihood of the completed dataset on the parameter $\boldsymbol{\alpha}$.
+	The Stochastic EM algorithm is an iterative procedure that starts with an initialization and then alternates SE steps (imputation of the missing values) and the M step that maximizes the likelihood of the completed dataset on the parameter $\boldsymbol{\alpha}$.
 	
 	\paragraph{Initialization:} We start with some imputation (for example by the mean) for each missing value (done only once for the MCMC) to get $\boldsymbol{X}_M^{(0)}$. $\boldsymbol{\alpha}^{(0)}$ and $\boldsymbol{\sigma}^{(0)}$ can be initialized by complete-case method	(sparse structure) or using imputed values in $\boldsymbol{X}$ and then \textsc{ols}. 
 	And then at iteration $(q)$:
