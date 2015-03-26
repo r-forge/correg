@@ -4489,7 +4489,7 @@ EM is an iterative algorithm with a succession of two steps	for each iteration $
 \end{equation}
 where $\boldsymbol{\theta}$ is the set of the mixture parameters of the marginal distributions of $\boldsymbol{X}_f$ (estimated once by {\tt Rmixmod}). We can use the same method as the one for classical case without missing values (\textsc{ols}, \textsc{sur}, {\it etc.}). %Then we deduce $\boldsymbol{\Theta}^{(q+1)}$ \\
 
-		We continue during $m_1$ iterations. Then we make $m_2$ iterations and take $\hat{\boldsymbol{\alpha}}$ as the mean of these $m_2$ last iterations.\\
+		We continue during $m_1$ iterations. Then we make $m_2$ iterations and take $\hat{\boldsymbol{\alpha}}$ and  $\hat{\boldsymbol{\sigma}}$ as the mean of these $m_2$ last iterations.\\
 		
 	Stochastic EM avoids the computation of the E step of the EM algorithm.
 	Then, the stochastic imputation done at the SE step is computed by Gibbs sampling in the following, because of the potentially huge number of components that makes difficult to sample directly from the Gaussian mixture.
@@ -4497,12 +4497,18 @@ where $\boldsymbol{\theta}$ is the set of the mixture parameters of the marginal
 	\subsection{Stochastic imputation by Gibbs sampling}\label{gibbsmiss}
 	\paragraph{General concept:}	Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $d-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $\mathbb{P}(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_d^{(q)})$ using the most recent drawn values each time. \\
 \paragraph{In our case:}		
-		Here we note $Z$ the set of the $Z_{i,j}$ indicating the component from which $x_{i,j}$ (the $i^{th}$ individual of the $j^{th}$ covariate of $\boldsymbol{X}$) is generated (component of the marginal Gaussian mixture followed by $x_{i,j}$ and defined by Hypothesis \ref{H4} page \pageref{H4}) with $1\leq i\leq n$ and $1\leq j\leq d$. \\
+		Here we note $Z$ the set of the $Z_{i,j}$, instrumental variables indicating the component from which $x_{i,j}$ (the $i^{th}$ individual of the $j^{th}$ covariate of $\boldsymbol{X}$) is generated (component of the marginal Gaussian mixture followed by $x_{i,j}$ and defined by Hypothesis \ref{H4} page \pageref{H4}) with $1\leq i\leq n$ and $j \in J_f$. These instrumental variables will help to draw the missing values as we will see in this section.  \\
 		
 		Gibbs sampling method can be used to generate the missing values at each $h^{th}$ SE step of the previous Stochastic EM algorithm. 
+\\
+		
+		
 		\paragraph{Initialization:}  %For example to the first component (such an initialisation does not depend on $K$). 
 		$\boldsymbol{X}_M^{(0,h)}$ are imputed by the marginal means or drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example, following hypothesis \ref{H4} page \pageref{H4}). All the $Z_{i,j}^{(0,h)}$ are then randomly set based on the $t_{i,j,k}^{(0,h)}$ as explained below, replacing $(q+1)$ by $0$ (we just need those of $\boldsymbol{X}_f^{(0,h)}$). 
-		\paragraph{Iteration (q+1):} At each iteration of the Gibbs sampler we first make successive imputations on the missing values. We note $\boldsymbol{X}^{(q+1,h)}_{\bar{ij}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,j-1},x_{i,j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$ and $Z_{i}^{(q,h)}=\{Z_{i,j}^{(q,h)}|1\leq j \leq d, j\in J_f \}$. So $\boldsymbol{X}^{(q+1,h)}_{\bar{iJ_r^j}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,J_r^j-1},x_{i,J_r^j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$  Then: 
+		\paragraph{Iteration (q+1):}  We note $\boldsymbol{X}^{(q+1,h)}_{\bar{ij}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,j-1},x_{i,j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$ and $Z_{i}^{(q,h)}=\{Z_{i,j}^{(q,h)}|1\leq j \leq d, j\in J_f \}$. So $\boldsymbol{X}^{(q+1,h)}_{\bar{iJ_r^j}}=(x_{i,1}^{(q+1,h)},\dots, x^{(q+1,h)}_{i,J_r^j-1},x_{i,J_r^j+1}^{(q,h)},\dots, x_{i,d}^{(q,h)})$.
+		At each iteration of the Gibbs sampler we make successive imputations on the missing values and instrumental variables as if instrumental variables were also missing values:
+		  \begin{enumerate}
+		  \item Imputation of the missing values:
 		\begin{itemize}
 			\item Regressed covariates: $\forall 1\leq i \leq n, \forall j \in \{1,\dots,d_r \}, \boldsymbol{M}_{i,J_r^j}=1  $:  $x_{i,J_r^j}^{(q+1,h)}$ is generated using the corresponding sub-regression, that gives the Gaussian
 			\begin{eqnarray}
@@ -4558,14 +4564,15 @@ where $\boldsymbol{\theta}$ is the set of the mixture parameters of the marginal
 %\end{equation}
 %We see that the $0$ in the variance-covariance matrix does not depend on $Z$ so the structure of sparsity of $\boldsymbol{\Sigma}$ can be stored and used back in each iteration for a given structure $S$ to reduce computing time.
 
-	Then, $\forall 1\leq i \leq n, \forall j \in J_f$ we draw the $Z_{i,j}^{(q+1,h)}$ according to the $K_j$-multinomial distribution whose parameters are the $(t_{i,j,1}^{(q+1,h)},\dots ,t_{i,j,K_j}^{(q+1,h)})$ defined by:
+	\item Imputation of the instrumental variables $Z_{i,j}^{(q+1,h)}$ knowing $\boldsymbol{X}^{(q+1,h)}_M$ :\\
+	 $\forall 1\leq i \leq n, \forall j \in J_f$ we draw the $Z_{i,j}^{(q+1,h)}$ according to the $K_j$-multinomial distribution whose parameters are the $(t_{i,j,1}^{(q+1,h)},\dots ,t_{i,j,K_j}^{(q+1,h)})$ defined by:
 	\begin{eqnarray}
 		%\mathbb{P}(Z_{i,j}|\boldsymbol{X};\Theta,\boldsymbol{\alpha},\boldsymbol{S})&=&\mathbb{P}(Z_{i,j}|\boldsymbol{X}_i;\Theta,\boldsymbol{\alpha},\boldsymbol{S})=\mathcal{M}(t_{i,j,1},\dots ,t_{i,j,K_j})\ \  \nonumber\\
 		%\textrm{where } 
 		t_{i,j,k}^{(q+1,h)}&=&\frac{\pi_{j,k}\Phi(x_{i,j}^{(q+1,h)};\mu_{j,k},\sigma_{j,k}^2)}{\sum_{l=1}^{K_j}\pi_{j,l}\Phi(x_{i,j}^{(q+1,h)};\mu_{j,l},\sigma_{j,l}^2) }. \nonumber 
 	\end{eqnarray}
 		
-	
+\end{enumerate}	
 	
 	We see that $Z_{i,j}$ are not used if there is no missing values in $\boldsymbol{X}_i$ and others are not all needed so we can also optimize computation time by  computing only the $Z_{i,j}$ that are needed in the Gibbs.
 	For the last iteration of the Gibbs, in the last iteration of the Stochastic EM, we do not need to draw $Z$.	\\
@@ -4579,7 +4586,7 @@ where $\boldsymbol{\theta}$ is the set of the mixture parameters of the marginal
 
 % partie foireuse	
 %	
-	Because the number of component to compute in the likelihood can be very large we search a fast way to estimate the likelihood.
+	Because the number of components to compute in the likelihood can be very large we search a fast way to estimate the likelihood.
 %	We can use a Gibbs algorithm to estimate the likelihood:
 %	\begin{eqnarray}
 %	\mathbb{P}(\boldsymbol{X}_O;\Theta, \boldsymbol{S}, \boldsymbol{\alpha})&=& 
@@ -4588,13 +4595,13 @@ where $\boldsymbol{\theta}$ is the set of the mixture parameters of the marginal
 %	\end{eqnarray}		
 %	
 %	 to be faster. 
-	 We use the previous Gibbs algorithm with:
+	 We use the previous Gibbs algorithm with $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}$ the estimates resulting from the Stochastic EM as if we made a final $l^{th}$ SE step:
 	\begin{eqnarray}
 	\mathbb{P}(\boldsymbol{X}_O;\hat{\boldsymbol{\theta}}, \boldsymbol{S}, \hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}})&\approx & \frac{1}{Q} \sum_{q=1}^Q
-	\frac{\mathbb{P}(\boldsymbol{X}_M^{(q)},\boldsymbol{X}_O,Z^{(q)};\hat{\boldsymbol{\theta}},\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}},\boldsymbol{S})}
-	{\mathbb{P}(\boldsymbol{X}_M^{(q)}|\boldsymbol{X}_O,Z^{(q)};\hat{\boldsymbol{\theta}},\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}},\boldsymbol{S})} \textrm{ by the law of large numbers. } \ \ \ \nonumber
+	\frac{\mathbb{P}(\boldsymbol{X}_M^{(q,l)},\boldsymbol{X}_O,Z^{(q,l)};\hat{\boldsymbol{\theta}},\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}},\boldsymbol{S})}
+	{\mathbb{P}(\boldsymbol{X}_M^{(q,l)}|\boldsymbol{X}_O,Z^{(q,l)};\hat{\boldsymbol{\theta}},\hat{\boldsymbol{\alpha}},\hat{\boldsymbol{\sigma}},\boldsymbol{S})} \textrm{ by the law of large numbers. } \ \ \ \nonumber
 	\end{eqnarray}	
-	Here $Q$ is the number of iterations of the Gibbs sampler.% and $\hat{\boldsymbol{\Theta}}$ is the global parameter associated to $\hat{\boldsymbol{\alpha}}$ .
+	Here $Q$ is the number of iterations of the Gibbs sampler.% $\hat{\boldsymbol{\alpha}}$ and $\hat{\boldsymbol{\sigma}}$ are the estimates resulting from the Stochastic EM .% and $\hat{\boldsymbol{\Theta}}$ is the global parameter associated to $\hat{\boldsymbol{\alpha}}$ .
 
 
 
@@ -4680,10 +4687,10 @@ where $\boldsymbol{\theta}$ is the set of the mixture parameters of the marginal
 					For the step $q$ of the Gibbs sampler at the iteration $h$ of the Stochastic EM, $\forall (i,j) \in \{1,\dots,n \}\times J_f,\boldsymbol{M}_{i,j}=1$
 			we have (Multivariate Gaussian conditional distribution \cite{eaton1983multivariate}) for the mean:
 			\begin{eqnarray}
-			\mu_{i,j}^{(q,h)}&=&  \mu_{j,Z_{i,j}^{(q,h)}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}(\boldsymbol{X}_{i\bar{j}}^{(q+1,h)}-\boldsymbol{\mu}_{X_{i\bar{j}}^{(q+1,h)},Z_i^{(q,h)}}) , \nonumber 			\end{eqnarray}
+			\mu_{i,j}^{(q,h)}&=&  \mu_{j,Z_{i,j}^{(q,h)}} + \boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}(\boldsymbol{X}_{i\bar{j}}^{(q+1,h)}-\boldsymbol{\mu}_{X_{i\bar{j}}^{(q+1,h)},Z_i^{(q,h)}}) , \label{meangibbs} 			\end{eqnarray}
 			and for the variance:
 \begin{eqnarray}
-			(\sigma_{i,j}^{(q,h)})^2&=&\sigma_{j,Z_{i,j}^{(q,h)}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}(\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}})'. \nonumber 
+			(\sigma_{i,j}^{(q,h)})^2&=&\sigma_{j,Z_{i,j}^{(q,h)}}^2-\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}\boldsymbol{\Sigma}^{-1}_{X_{\bar{ij}}^{(q+1,h)},X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}}(\boldsymbol{\Sigma}_{j,X_{\bar{ij}}^{(q+1,h)},Z_i^{(q,h)}})'. \label{vargibbs} 
 			\end{eqnarray} 
 			We have  $\mu_{j,Z_{i,j}^{(q,h)}}$ the mean of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}) and
 			$\sigma_{j,Z_{i,j}^{(q,h)}}^2$ the variance of the component $Z_{i,j}^{(q,h)}$ of $\boldsymbol{X}^j$ (estimated once by {\tt Rmixmod}).\\
@@ -4692,6 +4699,8 @@ where $\boldsymbol{\theta}$ is the set of the mixture parameters of the marginal
 			
 						
 				$\boldsymbol{\mu}_{X_{i\bar{j}}^{(q+1,h)},Z_i^{(q,h)}}$ is the vector of the means associated to $\boldsymbol{X}_{i\bar{j}}^{(q+1,h)}$ knowing the components $Z_i^{(q,h)}$. 
+				
+				In the following we use notations $\bar{alpha}_{j_1,j_2}$ to refer to the coefficient of sub-regression associated to the predictor $\boldsymbol{X}^{j_1}$ in the sub-regression that explains $\boldsymbol{X}^{j_2}$. It is the $(j_1,j_2)$ coefficient of the $d\times d$ matrix  $\bar{\boldsymbol{\alpha}}$ previously defined.
 				\paragraph{Means:}
 \begin{itemize}
 \item Means associated to $\boldsymbol{X}_f$ are estimated once (by {\tt Rmixmod}) following hypothesis \ref{H4} page \pageref{H4}. 
@@ -4709,7 +4718,7 @@ where $\boldsymbol{\theta}$ is the set of the mixture parameters of the marginal
 		\sigma^2_{i,J_r^j,Z_{i}^{(q,h)}}=\sigma_j^2+\sum_{l \in J_p^j}\bar{\alpha}_{l,J_r^j}^2\sigma^2_{l,Z_{i,l}^{(q,h)}}. \nonumber 
 	\end{equation}
 \end{itemize}
-\paragraph{Covariances:} We look then at the covariances between the covariates (that appear in the previous mean and variance expressions):
+\paragraph{Covariances:} We look then at the covariances between the covariates (that appear in the previous mean and variance expressions, equations (\ref{meangibbs}) and (\ref{vargibbs})):
 \begin{itemize}
 	\item The covariance between two regressors is always zero:
 	\begin{equation}
