@@ -4494,14 +4494,30 @@ where $\boldsymbol{\theta}$ is the set of the mixture parameters of the marginal
 	Stochastic EM avoids the computation of the E step of the EM algorithm.
 	Then, the stochastic imputation done at the SE step is computed by Gibbs sampling in the following, because of the potentially huge number of components that makes difficult to sample directly from the Gaussian mixture.
 
+\newpage
 	\subsection{Stochastic imputation by Gibbs sampling}\label{gibbsmiss}
-	\paragraph{General concept:}	Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm \cite{gilks1996markov,chib1995understanding,roberts2001optimal} that allows to sample from a complex $d-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $\mathbb{P}(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_d^{(q)})$ using the most recent drawn values each time. \\
-\paragraph{In our case:}		
-		Here we note $Z$ the set of the $Z_{i,j}$, instrumental variables indicating the component from which $x_{i,j}$ (the $i^{th}$ individual of the $j^{th}$ covariate of $\boldsymbol{X}$) is generated (component of the marginal Gaussian mixture followed by $x_{i,j}$ and defined by Hypothesis \ref{H4} page \pageref{H4}) with $1\leq i\leq n$ and $j \in J_f$. These instrumental variables will help to draw the missing values as we will see in this section.  \\
+	\paragraph{General concept:}	Gibbs sampling \cite{casella1992explaining} is a special case of Markov Chain Monte Carlo algorithm (see \cite{gilks1996markov,chib1995understanding} and also \cite{roberts2001optimal}) that allows to sample from a complex $d-$multivariate distribution when direct sampling is difficult. It is a randomized algorithm so each run may give distinct results. It generates a Markov Chain that follows the desired distribution with nearby draws. It starts from an initial value $\boldsymbol{X}^{(0)}$ and then for each iteration $(q)$ and successively each variable $x_j^{(q+1)}$ to draw, it draws from $\mathbb{P}(x_j|x_1^{(q+1)}, \dots,x_{j-1}^{(q+1)},x_{j+1}^{(q)},\dots,x_d^{(q)})$ using the most recent drawn values each time. \\
 		
-		Gibbs sampling method can be used to generate the missing values at each $h^{th}$ SE step of the previous Stochastic EM algorithm. 
+		Here we note $Z$ the set of the $Z_{i,j}$, instrumental variables indicating the component from which $x_{i,j}$ (the $i^{th}$ individual of the $j^{th}$ covariate of $\boldsymbol{X}$) is generated (component of the marginal Gaussian mixture followed by $x_{i,j}$ and defined by Hypothesis \ref{H4} page \pageref{H4}) with $1\leq i\leq n$ and $j \in J_f$ ($Z_{i,j}$ with $j \in J_r$ will not be used). These instrumental variables will help to draw the missing values as we will see in this section. \\
+		%So at step $h$ of the Stochastic EM we will draw successively at step $(q+1)$ of the Gibbs each missing and instrumental variables using the most recent drawn values each time. 
+	\paragraph{In our case:}	
+		Gibbs sampling method can be used to generate the missing values at each $h^{th}$ SE step of the previous Stochastic EM algorithm. Individuals are independent (can be computed separately) so for each individual $i$ having missing values we can start with random values for the missing values and instrumental variables and then for each step $(q+1)$:
 \\
+		\begin{itemize} 
+		\item To draw missing value $x_{i,j}^{(q+1,h)}$ with $M_{i,j}=1$ we use:
+			$$\mathbb{P}(x_{i,j}|x_{i,1}^{(q+1,h)},\dots,x_{i,j-1}^{(q+1,h)},x_{i,j+1}^{(q,h)},\dots,x_{i,d}^{(q,h)},Z_{i,1}^{(q,h)},\dots,Z_{i,d}^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\sigma}^{(h)},\boldsymbol{\theta},\boldsymbol{S})$$ 
+			$$ =\mathbb{P}(x_{i,j}|x_{i,1}^{(q+1,h)},\dots,x_{i,j-1}^{(q+1,h)},x_{i,j+1}^{(q,h)},\dots,x_{i,d}^{(q,h)},Z_{i,j}^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\sigma}^{(h)},\boldsymbol{\theta},\boldsymbol{S})$$ that will depend on if $x_{i,j}\in \boldsymbol{X}_r$ or not.
+		\item To draw instrumental variables $Z_{i,j}$ with $j \in J_f$ and $M_{i,j}=1$ we use:
+			\end{itemize}
+		\begin{displaymath}	
+	 \mathbb{P}(Z_{i,j}|x_{i,1}^{(q+1,h)},\dots,x_{i,d}^{(q+1,h)},Z_{i,1}^{(q+1,h)},\dots,Z_{i,j-1}^{(q,h)},Z_{i,j+1}^{(q,h)},\dots,Z_{i,d}^{(q,h)};\boldsymbol{\alpha}^{(h)},\boldsymbol{\sigma}^{(h)},\boldsymbol{\theta},\boldsymbol{S})\\
+	 =\mathbb{P}(Z_{i,j}|x_{i,j}^{(q+1,h)};\boldsymbol{\theta})
+	 \end{displaymath}	
+	
 		
+		
+	
+\paragraph{\underline{More detailed algorithm}:}		
 		
 		\paragraph{Initialization:}  %For example to the first component (such an initialisation does not depend on $K$). 
 		$\boldsymbol{X}_M^{(0,h)}$ are imputed by the marginal means or drawn independently from the univariate distribution estimated for the MCMC (by {\tt Rmixmod} for example, following hypothesis \ref{H4} page \pageref{H4}). All the $Z_{i,j}^{(0,h)}$ are then randomly set based on the $t_{i,j,k}^{(0,h)}$ as explained below, replacing $(q+1)$ by $0$ (we just need those of $\boldsymbol{X}_f^{(0,h)}$). 
