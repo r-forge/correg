@@ -19,8 +19,8 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
             if(loglik_bool){#on a fini la ligne donc on calcule sa vraisemblance 
                loglik[missrow_loc]=loglikcond(X=X,mui=mui,Sigma=as.matrix(Sigma),M=M,i=missrow_loc,Zc=Zc)
             }
-            missrow_loc=miss[1]#une fois la vraisemblance calculée on change de ligne
-            resmui=muiZ(p=ncol(Z),mixmod = mixmod,components=comp_vect[missrow_loc,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#mise à jour
+            missrow_loc=miss[1]#une fois la vraisemblance calculee on change de ligne
+            resmui=muiZ(p=ncol(Z),mixmod = mixmod,components=comp_vect[missrow_loc,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#mise a jour
             mui=resmui$mui
             sigmai=resmui$sigmai
             Sigma=as.matrix(resmui$Sigma)
@@ -36,7 +36,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
          loglik[missrow_loc]=loglikcond(X=X,mui=mui,Sigma=as.matrix(Sigma),M=M,i=missrow_loc,Zc=Zc)
          for (i in 1:n){
             if(sum(M[i,])==0){#on veut la vraisemblance des lignes restantes (pleines)
-               resmui=muiZ(p=ncol(Z),mixmod = mixmod,components=comp_vect[i,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#mise à jour
+               resmui=muiZ(p=ncol(Z),mixmod = mixmod,components=comp_vect[i,],Z=Z,Zc=Zc,alpha=alpha,Ir=Ir,sigma_IR=sigma_IR)#mise a jour
                mui=resmui$mui
                Sigma=as.matrix(resmui$Sigma)
                loglik[i]=loglikcond(X=X,mui=mui,Sigma=as.matrix(Sigma),M=M,i=i,Zc=Zc)
@@ -46,7 +46,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
       
       if(!last | (iter!=nbit)){
          #Imputation des classes####
-         for(j in (1:p)[-Ir]){#pas besoin de classe à gauche car dans Gibbs on connaît toujours tout le monde à droite (quitte à le supposer)
+         for(j in (1:p)[-Ir]){#pas besoin de classe a gauche car dans Gibbs on connait toujours tout le monde a droite (quitte a le supposer)
             #             print(paste("j",j))
             if(nbclust_vect[j]>1){
                for (i in 1:n){
@@ -72,7 +72,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
    #    print(X)
    #    print(comp_vect)
    if(loglik_bool){
-      loglikfin=-2*loglikfin+missing_penalty(nbclust_vect=nbclust_vect,Z=Z,M=M,n=nrow(X),p=ncol(Z),Zc=Zc)#BIC adapté
+      loglikfin=-2*loglikfin+missing_penalty(nbclust_vect=nbclust_vect,Z=Z,M=M,n=nrow(X),p=ncol(Z),Zc=Zc)#BIC adapte
    }
    result=list(X=X,comp_vect=comp_vect,loglik=loglikfin)    
    if(Xout){result$Xfin=Xfin
