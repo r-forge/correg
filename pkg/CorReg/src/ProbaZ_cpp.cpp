@@ -19,13 +19,13 @@ double ProbaZ_cpp(Eigen::MatrixXd Z){
    SumCol=Z.colwise().sum();//SumCol est un vecteur qui contient la somme de chaque colonne de Zcand
    
    for (int j = 0; j < p; j++){//pour chaque colonne de Z
-        if(SumCol(j)>0){// si variable à gauche
-            p2++;//on l'ajoute à p2
+        if(SumCol(j)>0){// si variable a gauche
+            p2++;//on l'ajoute a p2
         }
    }
    if(p2>0){
       for (int j = 0; j < p; j++){//pour chaque colonne de Z
-        if(SumCol(j)>0){// si variable à gauche
+        if(SumCol(j)>0){// si variable a gauche
             logproba=logproba-log(double(R::choose((p-p2),SumCol(j))));
         }
       }

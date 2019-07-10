@@ -1,4 +1,4 @@
-# x est le point étudié
+# x est le point etudie
 #nbclust le nombre de classes sur xj
 #mixmod le tableau mixmod pour xj
 tik<-function(x=x,nbclust=nbclust,mixmod=mixmod){

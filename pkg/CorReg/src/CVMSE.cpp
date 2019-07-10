@@ -48,7 +48,7 @@ SEXP CVMSE(SEXP RX,SEXP RY,SEXP RK,SEXP Rintercept,SEXP Rmethode,SEXP Rgroupe)
   int compt_appr=0;
   for(int j=0;j<K;j++){//pour chaque groupe on le prend comme test et on apprend sur le reste
     //declarations locales
-    MatrixXd Xappr(n-compteur[j],p);//ajoute la constante lui-même (si besoin)
+    MatrixXd Xappr(n-compteur[j],p);//ajoute la constante lui-meme (si besoin)
     MatrixXd Xtest(compteur[j],p+inter);//on ajoute la contaste (si besoin)
     MatrixXd Yappr(n-compteur[j],1);
     MatrixXd Ytest(compteur[j],1);

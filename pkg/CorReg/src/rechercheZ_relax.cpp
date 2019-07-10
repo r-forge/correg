@@ -31,11 +31,11 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
   Eigen::MatrixXd Zopt;//meilleur Z obtenu
   double Bicbest;//BIC associé au meilleur modèle
   Eigen::VectorXd bicvect;//vecteur BIC des matrices Z retenues
-  Eigen::MatrixXd newZ;//matrice Z modifié à chaque étapes
+  Eigen::MatrixXd newZ;//matrice Z modifie a chaque étapes
   Eigen::MatrixXd list_cand;//matrice qui contient les coordonnées des candidats
   int nbcand=0;//nombre de candidats
   int nb_opt;//nombre de fois ou on a retrouve bicbest
-  int step_opt=0;//�tape o� l'on d�couvre BIC_opt
+  int step_opt=0;//etape ou l'on decouvre BIC_opt
   int sumZ=0;
   int k;//nombre du tirage aleatoire (liste candidats)
   int compte;//permet de cree la matrice liste en désignant le numéro du candidat (liste candidats)
@@ -55,9 +55,9 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
   Eigen::VectorXd stock_BIC;//vecteur qui contient le BIC de tout les candidats (stock)
   double sumbic;//BIC de chaque etapes
   
-  Eigen::VectorXd bic_etape (imaxiter[0]);//vecteur qui stock le BIC de chaque etapes
-  Eigen::VectorXd complexite_etape (imaxiter[0]);//vecteur qui stock la compléxité de Z a chaque etapes
-  Eigen::VectorXd etape (imaxiter[0]);//vecteur qui stock le type de changement de chaque etapes
+  Eigen::VectorXd bic_etape ( static_cast<int>(imaxiter[0]) );//vecteur qui stock le BIC de chaque etapes
+  Eigen::VectorXd complexite_etape ( static_cast<int>(imaxiter[0]) );//vecteur qui stock la compléxité de Z a chaque etapes
+  Eigen::VectorXd etape ( static_cast<int>(imaxiter[0]) );//vecteur qui stock le type de changement de chaque etapes
   bool station;//permet de savoir si on est stationnaire ou non
     
   //initialisation
@@ -194,7 +194,7 @@ SEXP rechercheZ_relax(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_tirage,SEXP 
           }
         }
       }
-      if(nbcand==0)//aucun candidat donc on arr�te
+      if(nbcand==0)//aucun candidat donc on arrete
       {
         step=imaxiter[0]+10;
       }
