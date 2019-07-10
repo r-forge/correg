@@ -1,9 +1,9 @@
-#' Give the partition implied by a structure
+# ' Give the partition implied by a structure
 # ' 
-#' @param Z the structure (square matrix)
-#' @param I1,I2,I3 wanted outputs (I1= explicative covariates, I2=redundant covariates, I3=independent covariates)
+# ' @param Z the structure (square matrix)
+# ' @param I1,I2,I3 wanted outputs (I1= explicative covariates, I2=redundant covariates, I3=independent covariates)
 # ' 
-#'@export 
+# '@export 
 WhoIs<-function(Z=Z,I3=F,I2=T,I1=T){
   res=list()
   if(I2){

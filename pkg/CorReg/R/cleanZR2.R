@@ -1,10 +1,10 @@
-#' To clean Z based on R2
-#' @export
-#'@param Z binary adjacency matrix of the structure (size p)
-#' @param X the dataset
-#' @param R2min lower boundary for the structure (on R-squared value)
-#' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
-#' @param adj boolean. Adjusted R-squared or classical one (if FALSE).
+# ' To clean Z based on R2
+# ' @export
+# '@param Z binary adjacency matrix of the structure (size p)
+# ' @param X the dataset
+# ' @param R2min lower boundary for the structure (on R-squared value)
+# ' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
+# ' @param adj boolean. Adjusted R-squared or classical one (if FALSE).
 cleanZR2<-function(Z=Z,X=X,R2min=0.4,methode=1,adj=TRUE){
   p=ncol(Z)
   res=double(p)
