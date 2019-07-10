@@ -18,10 +18,10 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
       #          }
       #       }
       #Imputation des classes####
-      for(j in (1:p)[-Ir]){#pas besoin de classe à gauche car dans Gibbs on connaît toujours tout le monde à droite (quitte à le supposer)
-         if(nbclust_vect[j]>1){#si plusieurs classes (sinon reste à 1)
+      for(j in (1:p)[-Ir]){#pas besoin de classe a gauche car dans Gibbs on connait toujours tout le monde a droite (quitte a le supposer)
+         if(nbclust_vect[j]>1){#si plusieurs classes (sinon reste a 1)
             for (i in 1:n){
-               if(!is.na(X[i,j]) & !fill){#valeur observée (ou imputée, peu importe) on estime la classe
+               if(!is.na(X[i,j]) & !fill){#valeur observee (ou imputee, peu importe) on estime la classe
                   vect=rmultinom(1, 1, tik(x=X[i,j],nbclust=nbclust_vect[j],mixmod=mixmod[[j]]))
                   comp_vect[i,j]=match(1,vect)
                }else if(is.na(X[i,j]) | (fill & M[i,j]==1)){#manquant donc on impute la classe et la valeur 
@@ -37,7 +37,7 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
       alpha=hatB(Z = Z,X=X)
    }
    if(is.null(sigma_IR)){
-      sigma_IR=rep(0,times=p)#résidus des regressions (fixés avec alpha donc stables pour gibbs)
+      sigma_IR=rep(0,times=p)#residus des regressions (fixes avec alpha donc stables pour gibbs)
       for (j in Ir){
          sigma_IR[j]=sd(X[,j]-X%*%alpha[-1,j])
       }
@@ -48,7 +48,7 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
       if(i==(nbit_SEM+warm) & gibbsfin<=0){last=TRUE}
       if(i>warm & loglikout & gibbsfin<=0 ){
          loglik_bool=TRUE
-      }#on commence à calculer les vraisemblances
+      }#on commence a calculer les vraisemblances
       
       #SE step####
       resgibbs2=Gibbs(M=M,last=last,nbit=nbit_gibbs,mixmod=mixmod,X=X,warm=0,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
