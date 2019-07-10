@@ -1,16 +1,16 @@
-#' initialization based on a wheight matrix (correlation or other)
-#' @param W Weight matrix with values between 0 and 1 ( e.g. : abs(cor(X)) )
-#' @param X the dataset (if BIC=TRUE)
-#' @param Bic_null_vect the BIC of the null hypothesis (used for independent variables)
-#'@param relax TRUE: constraint relaxation, FALSE: reject mode
-#'@param p1max maximum complexity for a regression
-#' @param random if FALSE W is not used.
-#' @param mode candidates strategy
-#'@param p2max maximum number of regressions 
-#' @param sorted boolean to sort the candidates based on W (best first)
-#' @param BIC boolean to use BIC for probabilities.
-#' @param nbclustmax parameter for calcul_BIC_mixmod if needed
-#' @export
+# ' initialization based on a wheight matrix (correlation or other)
+# ' @param W Weight matrix with values between 0 and 1 ( e.g. : abs(cor(X)) )
+# ' @param X the dataset (if BIC=TRUE)
+# ' @param Bic_null_vect the BIC of the null hypothesis (used for independent variables)
+# '@param relax TRUE: constraint relaxation, FALSE: reject mode
+# '@param p1max maximum complexity for a regression
+# ' @param random if FALSE W is not used.
+# ' @param mode candidates strategy
+# '@param p2max maximum number of regressions 
+# ' @param sorted boolean to sort the candidates based on W (best first)
+# ' @param BIC boolean to use BIC for probabilities.
+# ' @param nbclustmax parameter for calcul_BIC_mixmod if needed
+# ' @export
 
 Winitial<-function(W=W,X=NULL,p1max=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=T,nbclustmax=5,sorted=T,mode=c("all","sorted","multinom"),p2max=NULL){
   #W est la matrice des poids (entre 0 et 1)
@@ -41,7 +41,7 @@ Winitial<-function(W=W,X=NULL,p1max=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random
   if(mode=="all"){#on teste tous les points
     for (j in 1:p){
       jloc=list_j[j]
-      list_i=sample(p)#mélange les entiers de 1 a p
+      list_i=sample(p)#melange les entiers de 1 a p
       for (i in 1:p){
         if(list_i[i]!=jloc){#si on n'est pas sur la diagonale
           iloc=list_i[i]
