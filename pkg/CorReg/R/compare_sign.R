@@ -1,6 +1,6 @@
-#' compare signs of the coefficients in two vectors
-#' @param trueA first vector
-#' @param Aalgo second vector
+# ' compare signs of the coefficients in two vectors
+# ' @param trueA first vector
+# ' @param Aalgo second vector
 compare_sign<-function(trueA=trueA,Aalgo=Aalgo){
       quivrai0=which(trueA==0)
       nbbon0=length(which(Aalgo[quivrai0]==0))

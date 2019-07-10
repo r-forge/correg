@@ -1,16 +1,27 @@
-#' plot and give confidence intervals on the coefficients estimated in a model or for proportions
-#' @param modele a model from lm on whoch to compute the confidence intervals
-#' @param n a vector of quantities associated to prop
-#' @param prop a vector of proportions (between 0 and 1)
-#' @param mean a mean value to plot
-#' @param alpha the risk (confidence 1-alpha)
-#' @param labels a vector of names to put below the bars.
-#' @param subtitle a subtitle to identify the graph
-#' @param lang if not "fr" then in english
-#' @param ylim if needed, a vector c(ymin,ymax).
-#' @export 
-confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=NULL,subtitle=NULL,lang="fr",ylim=NULL){  
-    if(!is.null(modele)){
+# ' plot and give confidence intervals on the coefficients estimated in a model or for proportions
+# ' @param modele a model from lm on which to compute the confidence intervals
+# ' @param n a vector of quantities associated to prop
+# '  @param prop a vector of proportions (between 0 and 1)
+# ' @param mean a mean value to plot
+# ' @param alpha the risk (confidence 1-alpha)
+# ' @param labels a vector of names to put below the bars.
+# ' @param subtitle a subtitle to identify the graph
+# ' @param lang if not "fr" then in english
+# ' @param ylim if needed, a vector c(ymin,ymax).
+# ' @export 
+# ' 
+# ' # '@examples
+# '    \dontrun{
+# '    require(CorReg)
+# ' n=c(3000,1500,45)
+# ' prop=c(0.12,0.15,0.11)
+# ' confint_coef( n = n, prop = prop, mean = mean(prop),alpha = 0.05)
+# '     }
+# ' 
+#confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=NULL,subtitle=NULL,ylim=NULL){  
+   confint_coef<-function(n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=NULL,subtitle=NULL,ylim=NULL){  
+      modele=NULL
+      if(!is.null(modele)){
       confint=confint.default(modele)
       coef=cbind(modele$coefficients,confint)
       colnames(coef)=c("values","borne inf IC", "borne sup IC")

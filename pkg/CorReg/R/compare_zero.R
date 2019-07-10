@@ -1,7 +1,7 @@
-#' compare 0 values in two vectors
-#' @param trueA first vector
-#' @param Aalgo second vector
-#' @param taux boolean. Computes the ratio of each statistic or not.
+# ' compare 0 values in two vectors
+# ' @param trueA first vector
+# ' @param Aalgo second vector
+# ' @param taux boolean. Computes the ratio of each statistic or not.
 compare_zero<-function(trueA=trueA,Aalgo=Aalgo,taux=FALSE){
   quivrai0=which(trueA==0)
   if(length(quivrai0)>0){
