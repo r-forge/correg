@@ -1,5 +1,5 @@
 # ' Gibbs sampler for INDEPENDENT Covariates
-# '  @param X est la ligne concernée (X[i,]) 
+# '  @param X est la ligne concernee (X[i,]) 
 # ' @param components est le vecteur des classes pour i (vecteur creux de taille p avec pr elements non nuls)
 # ' @param mixmod is mixmod$details
 Gibbs_X_ij_IF<-function(Z=Z,X=X,p=p,mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alpha,mixmod=mixmod,j=j,components=components,i=i){

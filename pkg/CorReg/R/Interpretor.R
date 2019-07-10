@@ -16,7 +16,7 @@ Interpretor<-function (Z = Z, names = NULL, X = NULL,R2=T,R2_vect=NULL,adj=T)
       names = names(X)
     }else {
       print("no names")
-      break
+      # break
     }
   }
   

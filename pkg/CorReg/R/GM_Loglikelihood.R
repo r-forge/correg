@@ -14,29 +14,6 @@ GM_Loglikelihood<-function(Y=Y,X=X,B=B,sigma=sigma,M=NULL,mixmod,log=T,intercept
     X[is.na(X)]=0
   }
   return(.Call( "GM_likelihood",Y,X,B,sigma,M,mixmod$nbclust,mixmod$details,log,intercept, PACKAGE = "CorReg"))
-#   res=0
-#   #on calcule d'abord la partie fixe qui sera commune (ajoutée) à toutes les classes
-#   quibon=which(!is.na(X))
-#   meanfix=B[1]+sum(X[quibon]*B[-1][quibon])#attention au passage en C++ quand quibon est vide (tester la taille)
-#   #si tout est bon, on est sur cette loi là :
-#   proptot=1
-#   meantot=meanfix
-#   vartot=sigma^2
-#   #calcul des paramètres####
-#   quimank=which(is.na(X))  
-#   for(i in quimank){#pour chaque variable manquante
-#     proptot=kronecker(proptot,mixmod$details[[i]][,1])
-#     meantot=kroneckersum_vect(meantot,mixmod$details[[i]][,2]*B[-1][i])
-#     vartot=kroneckersum_vect(vartot,mixmod$details[[i]][,3]*(B[-1][i])^2)    
-#   }
-#   #calcul de la vraisemblance
-#   for(i in 1:length(proptot)){
-#     res=res+proptot[i]*dnorm(Y,mean=meantot[i],sd=sqrt(vartot[i]))
-#   }
-#   if(log){
-#     res=log(res)
-#   }
-#   return(res)
 }
 
 

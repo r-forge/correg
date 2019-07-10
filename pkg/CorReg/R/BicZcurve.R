@@ -1,11 +1,11 @@
-#' Curve of the BIC for each possible p2 with a fixed Z and truncature of Z
-#' @param X matrix containing the dataset
-#' @param Z adjacency matrix (binary) describing the structure between the variables
-#' @param Bic_null_vect vector of the BIC for each variable. used when the variable is independant
-#' @param plot boolean to plot or not the curve
-#' @param star boolean to use BIC* (hierarchical uniform law on the structure)
-#' @param trunc number of sub-regression to keep (best R2). if NULL the min of BIC is kept
-#' @export
+# ' Curve of the BIC for each possible p2 with a fixed Z and truncature of Z
+# ' @param X matrix containing the dataset
+# ' @param Z adjacency matrix (binary) describing the structure between the variables
+# ' @param Bic_null_vect vector of the BIC for each variable. used when the variable is independant
+# ' @param plot boolean to plot or not the curve
+# ' @param star boolean to use BIC* (hierarchical uniform law on the structure)
+# ' @param trunc number of sub-regression to keep (best R2). if NULL the min of BIC is kept
+# ' @export
 BicZcurve<-function(X=X,Z=Z,Bic_null_vect=Bic_null_vect,plot=T,star=F,trunc=NULL){
    p2=sum(colSums(Z)!=0)
    if(is.null(Bic_null_vect)){
