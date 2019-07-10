@@ -4,7 +4,7 @@ MakeH<-function(X=X,Z=Z,B=B,Sigma=Sigma){
    X=cbind(1,X)
    I2=which(colSums(Z)!=0)
    Z=rbind(0,Z)
-   Z[1,I2]=1#on ajoute une constante à chaque ssreg
+   Z[1,I2]=1#on ajoute une constante a chaque ssreg
    Z=cbind(0,Z)
    I2=I2+1
    p2=length(I2)

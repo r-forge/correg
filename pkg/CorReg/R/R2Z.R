@@ -1,11 +1,11 @@
-#' Estimates R2 of each subregression
-#'@param Z binary adjacency matrix of the structure (size p)
-#' @param X the dataset
-#' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
-#' @param adj boolean to choose between adjusted R-squared and classical one
-#' @param crit to choose between the R-squared and the F statistic (p-value)
-#' @export 
-R2Z<-function(Z=Z,X=X,methode=1,adj=F,crit=c("R2","F","sigmaX")){
+# ' Estimates R2 of each subregression
+# '@param Z binary adjacency matrix of the structure (size p)
+# ' @param X the dataset
+# ' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
+# ' @param adj boolean to choose between adjusted R-squared and classical one
+# ' @param crit to choose between the R-squared and the F statistic (p-value)
+# ' @export 
+R2Z<-function(Z=Z,X=X,adj=F,crit=c("R2","F","sigmaX")){
   p=ncol(Z)
   res=rep(0,times=p)
   crit=crit[1]
