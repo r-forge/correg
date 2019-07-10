@@ -19,7 +19,7 @@ extern "C" SEXP GM_likelihood(SEXP RY,SEXP RX,SEXP RBeta,SEXP RSigma,SEXP RM,SEX
 //  const Map<VectorXd> Y(as<Map<VectorXd> >(RY));//scalaire valeur de la variable a gauche
   Rcpp::NumericVector Y(RY),matX(RX),beta(RBeta),nbclustmixmod(Rnbclustmixmod);// vecteurs Rcpp
   Rcpp::NumericMatrix detailsmixmod(Rdetailsmixmod);
-  double sigma = Rcpp::as<double>(RSigma);//ecart-type (estimé) du résidu (on l'adaptera eventuellement si trous mais une seule classe)
+  double sigma = Rcpp::as<double>(RSigma);//ecart-type (estime) du residu (on l'adaptera eventuellement si trous mais une seule classe)
   const bool loglik = Rcpp::as<bool>(RLog);     // 
   const bool intercept = Rcpp::as<bool>(Rintercept);// 
   int j=0;//on le met ici pour eviter un warning
@@ -49,7 +49,7 @@ extern "C" SEXP GM_likelihood(SEXP RY,SEXP RX,SEXP RBeta,SEXP RSigma,SEXP RM,SEX
     double nbclass=1;
     NumericVector quimank(nbmank);
     NumericVector nbclustcumsum(nbclustmixmod.size());
-    //on calcule la somme cumulée
+    //on calcule la somme cumulee
     std::partial_sum(nbclustmixmod.begin(), nbclustmixmod.end(), nbclustcumsum.begin());
     j=0;
     for(int i=0;i<p;i++){
@@ -59,9 +59,9 @@ extern "C" SEXP GM_likelihood(SEXP RY,SEXP RX,SEXP RBeta,SEXP RSigma,SEXP RM,SEX
         j++;
       }
     }
-    //on sait maintenant précisément qui manque et ou trouver les paramètres associés
-    if(nbclass==1){// la loi est normale quand-même
-      sigma=sigma*sigma;//on passe au carré car on va ajouter les variances
+    //on sait maintenant precisement qui manque et ou trouver les parametres associes
+    if(nbclass==1){// la loi est normale quand-meme
+      sigma=sigma*sigma;//on passe au carre car on va ajouter les variances
       for(int i=0;i<nbmank;i++){//pour chaque manquant
         meanfix=meanfix+detailsmixmod(nbclustcumsum(quimank(i))-1,1)*beta(quimank(i)+inter);//colonne 1 est la deuxieme colonne donc la moyenne
         sigma=sigma+detailsmixmod(nbclustcumsum(quimank(i))-1,2)*beta(quimank(i)+inter)*beta(quimank(i)+inter);
@@ -75,7 +75,7 @@ extern "C" SEXP GM_likelihood(SEXP RY,SEXP RX,SEXP RBeta,SEXP RSigma,SEXP RM,SEX
       proptot(0)=1;
       vartot(0)=sigma*sigma;      
       for(int i=0;i<nbmank;i++){//pour chaque manquant
-        //on cree les vecteurs des paramètres
+        //on cree les vecteurs des parametres
         NumericVector proploc(nbclustmixmod(quimank(i)));
         NumericVector meanloc(nbclustmixmod(quimank(i)));
         NumericVector varloc(nbclustmixmod(quimank(i)));

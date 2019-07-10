@@ -44,7 +44,7 @@ SEXP cleancolZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP 
   double BIC_min;
   bool minimum;
   int i;
-  int iret;
+  int iret=1;
   Eigen::VectorXd bic_etape;//vecteur qui stock le BIC de chaque etapes
   Eigen::VectorXd complexite_etape;//vecteur qui stock la complexite de Z a chaque etapes
   Eigen::VectorXd BIC_step;//vecteur qui stock le BIC de chaque etapes

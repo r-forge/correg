@@ -1,9 +1,9 @@
-#include "rechercheZ_sparse_relax.h"
-#include "BICZsparse_cpp.h"
-#include "BICZsparse2_cpp.h"
-#include <iostream>
-#include <string>
-#include <math.h>
+ #include "rechercheZ_sparse_relax.h"
+ #include "BICZsparse_cpp.h"
+ #include "BICZsparse2_cpp.h"
+ #include <iostream>
+ #include <string>
+ #include <math.h>
 //#include <Rmath.h>
 
 using namespace Rcpp ;
@@ -15,7 +15,7 @@ using Rcpp::as;
 
 SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vide_vect,SEXP methode_tirage,SEXP methode_BIC,SEXP Rmax,SEXP Maxiter,SEXP plot,SEXP best,SEXP better,SEXP random,SEXP bla,SEXP nb_opt_max)
 {
- 
+
   BEGIN_RCPP
   //déclaration des varibles
   NumericVector Z_zi(Zi);
@@ -24,7 +24,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
   const Map<VectorXd> Z_si(as<Map<VectorXd> >(Si));//bic_vide_vect
   const Map<MatrixXd> matX(as<Map<MatrixXd> >(X));//X
   const Map<VectorXd> Bic_vide_vect(as<Map<VectorXd> >(bic_vide_vect));//bic_vide_vect
-  
+
   Rcpp::NumericVector met_tirage(methode_tirage),met_BIC(methode_BIC),rmax(Rmax),maxiter(Maxiter),Plot(plot),Best(best),Better(better),Random(random),Bla(bla),Nb_opt_max(nb_opt_max);
   typedef Rcpp::NumericVector::iterator vec_iterator;
   vec_iterator imet_tirage = met_tirage.begin(),imet_BIC=met_BIC.begin(),irmax=rmax.begin(),imaxiter=maxiter.begin(),iplot=Plot.begin(),ibest=Best.begin(),ibetter=Better.begin(),irandom=Random.begin(),ibla=Bla.begin(),inb_opt_max=Nb_opt_max.begin();
@@ -41,7 +41,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
   NumericVector newZ_zi;//matrice Z modifié à chaque étapes
   NumericVector newZ_zj;//matrice Z modifié à chaque étapes
   Eigen::VectorXd newZ_si;//matrice Z modifié à chaque étapes
-  Eigen::VectorXd newZ_sj;//matrice Z modifié à chaque étapes  
+  Eigen::VectorXd newZ_sj;//matrice Z modifié à chaque étapes
   Eigen::MatrixXd list_cand;//matrice qui contient les coordonnées des candidats
   int nbcand;//nombre de candidats
   int nb_opt;//nombre de fois ou on a retrouve bicbest
@@ -62,11 +62,11 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
   Eigen::VectorXd stock_bool;//vecteur qui permet de savoir si un candidat peut etre choisi (stock)
   Eigen::VectorXd stock_BIC;//vecteur qui contient le BIC de tout les candidats (stock)
   double sumbic;//BIC de chaque etapes
-  
-  Eigen::VectorXd bic_etape (imaxiter[0]);//vecteur qui stock le BIC de chaque etapes
-  Eigen::VectorXd complexite_etape (imaxiter[0]);//vecteur qui stock la compléxité de Z a chaque etapes
-  Eigen::VectorXd etape (imaxiter[0]);//vecteur qui stock le type de changement de chaque etapes
-        
+
+  Eigen::VectorXd bic_etape ( static_cast<int>(imaxiter[0]) );//vecteur qui stock le BIC de chaque etapes
+  Eigen::VectorXd complexite_etape ( static_cast<int>(imaxiter[0]) );//vecteur qui stock la compléxité de Z a chaque etapes
+  Eigen::VectorXd etape ( static_cast<int>(imaxiter[0]) );//vecteur qui stock le type de changement de chaque etapes
+
   int value;
   bool mod;
   int debut_colj;
@@ -76,7 +76,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
   bool ajout;
   int v;//compteur pour les boucles
   int complexite=0;
-    
+
   //initialisation
   Zopt_si = VectorXd::Zero(p);
   Zopt_sj = VectorXd::Zero(p);
@@ -127,7 +127,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
   {
     throw std::range_error("methode de tirage incorrecte");
   }
-  
+
   if (irandom[0]==0)
   {
     ibetter[0]=1;
@@ -137,7 +137,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
   {
     ibest[0]=1;
   }
-  
+
   nb_opt=0;
   stock_bool.resize(nbcand);
   stock_BIC.resize(nbcand);
@@ -156,13 +156,13 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
 //  {
 //    Rcout<<newZ_zi(v)<<" ";
 //  }
-//          
+//
 //  Rcout<<"\n\n";
   while(step<imaxiter[0])
   // initialisation des variables
-  
+
   {
-    compte=0;//initialisation du vecteur liste désigne le numéro du candidat 
+    compte=0;//initialisation du vecteur liste désigne le numéro du candidat
   //liste candidats (couples [i,j])
     if (imet_tirage[0]==0)//methode de changement de la ligne et de la colonne
     {
@@ -178,7 +178,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           list_cand(compte,1)=i;
           compte=compte+1;
         }
-      }    
+      }
     }
     else if (imet_tirage[0]==-1)//seulement la colonne
     {
@@ -211,10 +211,10 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           }
         }
         list_cand(i,0)=rand1;
-        list_cand(i,1)=rand2;            
+        list_cand(i,1)=rand2;
       }
     }
-  
+
     //pour chaque candidat
     for (numcand=0;numcand<nbcand;numcand++)
     {
@@ -223,7 +223,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
       j_loc=list_cand(numcand,1);
       Zj_loc = NumericVector::create();
       Zi_loc = NumericVector::create();
-      
+
       value=-1;
       mod=true;
       debut_colj=0;
@@ -234,7 +234,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
       Zcand_zj=newZ_zj;
       Zcand_si=newZ_si;
       Zcand_sj=newZ_sj;
-      
+
       if(j_loc>0)//si on est pas en premiere colonne
       {
         for(v=0;v<j_loc-1;v++)//on regarde ou commence la colonne j
@@ -271,7 +271,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
             for(v=0;v<compl_loc ;v++)
             {
               if(ajout==false && (Zcand_zj(v)>(j_loc+1) ||(Zcand_zj(v)==(j_loc+1) && Zcand_zi(v)>(i_loc+1)) ))//on ajoute
-              { 
+              {
                 Zj_loc.push_back(j_loc+1);//on passe par zj_loc
                 Zi_loc.push_back(i_loc+1);
                 ajout=true;
@@ -293,7 +293,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
             for(v=0;v<compl_loc;v++)
             {
               if(ajout==false && (Zcand_zj(v)>(j_loc+1) ||(Zcand_zj(v)==(j_loc+1)&& Zcand_zi(v)>(i_loc+1)) ))//on ajoute
-              { 
+              {
                 Zj_loc.push_back(j_loc+1);//on passe par zj_loc
                 Zi_loc.push_back(i_loc+1);
                 ajout=true;
@@ -343,7 +343,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
 
       Zcand_zi=Zi_loc;
       Zcand_zj=Zj_loc;
-      
+
     //calcul du bic (du nouveau Z généré)      (bicZ)
       if (mod==false)
       {
@@ -360,8 +360,8 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
 //        if(Zcand_sj.sum()!=Zcand_zi.size())
 //        {
 //          cout<<"pas la meme taille 2\n\n";
-//          
-//          
+//
+//
 //          for(v=0;v<newZ_sj.size();v++)
 //          {
 //            cout<<newZ_sj(v)<<" ";
@@ -378,13 +378,13 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
 //          {
 //            cout<<newZ_zi(v)<<" ";
 //          }
-//          
+//
 //          cout<<"\n\n";
 //          cout<<"candidat : "<<j_loc<<" "<<i_loc;
-//          
+//
 //          cout<<"\n\n";
 //
-//          
+//
 //          for(v=0;v<Zcand_sj.size();v++)
 //          {
 //            cout<<Zcand_sj(v)<<" ";
@@ -415,7 +415,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
 //            qui=Zcand_zj(v);
 //          }
 //        }
-//        
+//
 //        cout<<"debut BIC 2\n";
 
         BIC_cand=BICZsparse_cpp(matX,Zcand_zi,Zcand_sj,Bic_vide_vect,bicvect,imet_BIC[0],newZ_sj,n);
@@ -427,7 +427,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
       stock_BIC(numcand)=Sum_BIC_cand;
     }
     //choix du candidat retenu (tirage au sort ou meilleur selon le cas)
-    
+
 
     int nb_cand_retenu=stock_bool.sum()+1;//nombre de candidats retenu (certain ne peuvent pas etre pri en compte)
 // à faire à la main
@@ -443,7 +443,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
     Eigen::VectorXd bicweight(nb_cand_retenu);
     double sumexp=0;
     double BIC_min=sumbic;
-    
+
     stockBIC1(0)=sumbic;
     for (i=0;i<stock_BIC.size();i++)//on garde que les individus retunus
     {
@@ -457,9 +457,9 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           bettercand=compteur+1;//+1 a cause de la stationarité
         }
         compteur=compteur+1;
-      }     
-    } 
-    
+      }
+    }
+
     //prise de décision
     if(BIC_min<Bicbest) //regarde s'il y'a un BIC meilleur que le meuilleur rencontré
     {
@@ -488,7 +488,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
         }
       }
       place=debut_colj;
-      
+
       if(Zopt_si(iret)!=0 && Zopt_sj(jret)!=0)
       {
         while(place<(debut_colj+Zopt_sj(jret)) )
@@ -515,7 +515,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           for(k=0;k<compl_opt;k++)
           {
             if(ajout==false && (Zopt_zj(k)>(jret+1) ||(Zopt_zj(k)==(jret+1) && Zopt_zi(k)>(iret+1)) ))//on ajoute
-            {            
+            {
               Zj_loc.push_back(jret+1);//on passe par zj_loc
               Zi_loc.push_back(iret+1);
               ajout=true;
@@ -537,7 +537,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           for(k=0;k<compl_opt;k++)
           {
             if(ajout==false && (Zopt_zj(k)>(jret+1) ||(Zopt_zj(k)==(jret+1) && Zopt_zi(k)>(iret+1)) ))//on ajoute
-            {            
+            {
               Zj_loc.push_back(jret+1);//on passe par zj_loc
               Zi_loc.push_back(iret+1);
               ajout=true;
@@ -578,13 +578,13 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
         Zopt_sj(jret)=Zopt_sj(jret)-1;
         complexite=complexite-1;
       }
-      
+
       Zopt_zi=Zi_loc;
       Zopt_zj=Zj_loc;
-      
+
 //      cout<<Zopt_zi<<"\n"<<Zopt_zj<<"\n";
       //fin de la modifidation zopt(i,j)=1-zopt(i,j)
-      
+
       if (ibla[0]>0)//commentaires
       {
         Rcout<<step<<" Bicbest: "<<Bicbest<<" complexite: "<<complexite<<"\n";
@@ -593,9 +593,9 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           Rcout<<"nb_cand "<<nb_cand_retenu<<"BIC min "<<BIC_min<<"\n";
         }
       }
-      
+
       if(ibest[0]==1)//on a vu le meilleur absolu donc si on veut y aller, on y va
-      { 
+      {
         bicvect=BICZsparse_cpp(matX,Zopt_zi,Zopt_sj,Bic_vide_vect,bicvect,imet_BIC[0],newZ_sj,n);
         newZ_zi=Zopt_zi;
         newZ_zj=Zopt_zj;
@@ -617,7 +617,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
         //ran=ran/32767;
         sumcum=0;
         while (ran>=sumcum)//choix du candidat
-        { 
+        {
           w++;
           bicweight(w)=bicweight(w)/sumexp;
           sumcum=sumcum+bicweight(w);
@@ -641,7 +641,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           ajout=false;
           complexite=newZ_zi.size();
           int compl_cand=complexite;
-          
+
           //debut de la modification Zcand(i,j)=1-Zcand(i,j)
           if(jret>0)//si on est pas en premiere colonne
           {
@@ -651,7 +651,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
             }
           }
           place=debut_colj;
-          
+
           if(Zcand_si(iret)!=0 && Zcand_sj(jret)!=0)
           {
             while(place<(debut_colj+Zcand_sj(jret)) )
@@ -678,7 +678,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
               for(k=0;k<compl_cand;k++)
               {
                 if(ajout==false && (Zcand_zj(k)>(jret+1) ||(Zcand_zj(k)==(jret+1) && Zcand_zi(k)>(iret+1)) ))//on ajoute
-                {            
+                {
                   Zj_loc.push_back(jret+1);//on passe par zj_loc
                   Zi_loc.push_back(iret+1);
                   ajout=true;
@@ -700,7 +700,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
               for(k=0;k<compl_cand;k++)
               {
                 if(ajout==false && (Zcand_zj(k)>(jret+1) ||(Zcand_zj(k)==(jret+1) && Zcand_zi(k)>(iret+1)) ))//on ajoute
-                {            
+                {
                   Zj_loc.push_back(jret+1);//on passe par zj_loc
                   Zi_loc.push_back(iret+1);
                   ajout=true;
@@ -741,11 +741,11 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
             Zcand_sj(jret)=Zcand_sj(jret)-1;
             complexite=complexite-1;
           }
-          
+
           Zcand_zi=Zi_loc;
           Zcand_zj=Zj_loc;
 //          cout<<Zcand_zi<<"\n"<<Zcand_zj<<"\n";
-          
+
           bicvect=BICZsparse_cpp(matX,Zcand_zi,Zcand_sj,Bic_vide_vect,bicvect,imet_BIC[0],newZ_sj,n);
           newZ_zi=Zcand_zi;
           newZ_zj=Zcand_zj;
@@ -754,7 +754,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           sumbic=stockBIC1(w);
         }
       }
-    } 
+    }
     else if(nb_cand_retenu==1) //si la stationarité est le seul candidat
     {
 //      cout<<"on reste au meme endroit";
@@ -784,7 +784,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
         }
       }
       place=debut_colj;
-          
+
       if(Zcand_si(iret)!=0 && Zcand_sj(jret)!=0)
       {
         while(place<(debut_colj+Zcand_sj(jret)) )
@@ -811,7 +811,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           for(k=0;k<compl_cand;k++)
           {
             if(ajout==false && (Zcand_zj(k)>(jret+1) ||(Zcand_zj(k)==(jret+1) && Zcand_zi(k)>(iret+1)) ))//on ajoute
-            {            
+            {
               Zj_loc.push_back(jret+1);//on passe par zj_loc
               Zi_loc.push_back(iret+1);
               ajout=true;
@@ -833,7 +833,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           for(k=0;k<compl_cand;k++)
           {
             if(ajout==false && (Zcand_zj(k)>(jret+1) ||(Zcand_zj(k)==(jret+1) && Zcand_zi(k)>(iret+1)) ))//on ajoute
-            {            
+            {
               Zj_loc.push_back(jret+1);//on passe par zj_loc
               Zi_loc.push_back(iret+1);
               ajout=true;
@@ -874,12 +874,12 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
         Zcand_sj(jret)=Zcand_sj(jret)-1;
         complexite=complexite-1;
       }
-          
+
       Zcand_zi=Zi_loc;
       Zcand_zj=Zj_loc;
-      
+
 //      cout<<Zcand_zi<<"\n"<<Zcand_zj<<"\n";
-          
+
       bicvect=BICZsparse_cpp(matX,Zcand_zi,Zcand_sj,Bic_vide_vect,bicvect,imet_BIC[0],newZ_sj,n);
       newZ_zi=Zcand_zi;
       newZ_zj=Zcand_zj;
@@ -900,13 +900,13 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
         bicweight(v)=exp(-bicweight(v)/2);
         sumexp=sumexp+bicweight(v);
       }
-      
+
       w=-1;//initialisation candidat choisi (il est a -1 car on va rajouter un "+1" avec le while)
           ran=runif(0,1)[0];
         //ran=ran/32767;
       sumcum=0;
       while (ran>=sumcum)//choix du candidat
-      { 
+      {
         w++;
         bicweight(w)=bicweight(w)/sumexp;
         sumcum=sumcum+bicweight(w);
@@ -940,7 +940,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           }
         }
         place=debut_colj;
-          
+
         if(Zcand_si(iret)!=0 && Zcand_sj(jret)!=0)
         {
           while(place<(debut_colj+Zcand_sj(jret)) )
@@ -967,7 +967,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
             for(k=0;k<compl_cand;k++)
             {
               if(ajout==false && (Zcand_zj(k)>(jret+1) ||(Zcand_zj(k)==(jret+1) && Zcand_zi(k)>(iret+1)) ))//on ajoute
-              {            
+              {
                 Zj_loc.push_back(jret+1);//on passe par zj_loc
                 Zi_loc.push_back(iret+1);
                 ajout=true;
@@ -989,7 +989,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
             for(k=0;k<compl_cand;k++)
             {
               if(ajout==false && (Zcand_zj(k)>(jret+1) ||(Zcand_zj(k)==(jret+1) && Zcand_zi(k)>(iret+1)) ))//on ajoute
-              {            
+              {
                 Zj_loc.push_back(jret+1);//on passe par zj_loc
                 Zi_loc.push_back(iret+1);
                 ajout=true;
@@ -1030,12 +1030,12 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
           Zcand_sj(jret)=Zcand_sj(jret)-1;
           complexite=complexite-1;
         }
-            
+
         Zcand_zi=Zi_loc;
         Zcand_zj=Zj_loc;
-        
+
 //        cout<<Zcand_zi<<"\n"<<Zcand_zj<<"\n";
-      
+
         bicvect=BICZsparse_cpp(matX,Zcand_zi,Zcand_sj,Bic_vide_vect,bicvect,imet_BIC[0],newZ_sj,n);
         newZ_zi=Zcand_zi;
         newZ_zj=Zcand_zj;
@@ -1044,7 +1044,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
         sumbic=stockBIC1(w);
       }
     }
-    
+
     if(sumbic==Bicbest)//on regarde si le le BIC est le meme que le BIC optimal
     {
       nb_opt=nb_opt+1;//si c'est le cas alors on a retrouve une fois de plus BICbest
@@ -1054,8 +1054,8 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
         Rcout<<"convergence reached";
       }
     }
-    
-    
+
+
     if(iplot[0]==1)//si on veut des graphiques on mets à jour les vecteurs
     {
       bic_etape (step)=sumbic;
@@ -1081,22 +1081,22 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
     {
       Rcout<<step<<" local BIC: "<<sumbic<<" local complexity: "<<complexite<<"\n";
     }
-    step=step+1; 
+    step=step+1;
   }//fin des étapes (while)
-  
+
   if(iplot[0]==1)
   {
     return List::create(
       Named("newZ_zi")=  newZ_zi,
       Named("newZ_zj")=  newZ_zj,
       Named("newZ_si")=  newZ_si,
-      Named("newZ_sj")=  newZ_sj,      
+      Named("newZ_sj")=  newZ_sj,
       Named("bic_loc")=  sumbic,
       Named("Zopt_zi")=  Zopt_zi,
       Named("Zopt_zj")=  Zopt_zj,
       Named("Zopt_si")=  Zopt_si,
       Named("Zopt_sj")=  Zopt_sj,
-      
+
       Named("bic_opt")=  Bicbest,
       Named("bic_step")=  bic_etape,
       Named("complexity_step")=  complexite_etape,
@@ -1109,7 +1109,7 @@ SEXP rechercheZ_sparse_relax(SEXP X,SEXP Zi,SEXP Zj,SEXP Si,SEXP Sj,SEXP bic_vid
       Named("newZ_zi")=  newZ_zi,
       Named("newZ_zj")=  newZ_zj,
       Named("newZ_si")=  newZ_si,
-      Named("newZ_sj")=  newZ_sj, 
+      Named("newZ_sj")=  newZ_sj,
       Named("bic_loc")=  sumbic,
       Named("Zopt_zi")=  Zopt_zi,
       Named("Zopt_zj")=  Zopt_zj,

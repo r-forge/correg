@@ -46,7 +46,7 @@ SEXP cleanZ(SEXP X,SEXP Z,SEXP bic_vide_vect,SEXP methode_BIC,SEXP plot,SEXP bla
   double BIC_min;
   bool minimum;
   int i;
-  int iret;
+  int iret=0;
   nbcand=matZ.sum();
   Eigen::VectorXd bic_etape(nbcand);//vecteur qui stock le BIC de chaque etapes
   Eigen::VectorXd complexite_etape(nbcand);//vecteur qui stock la complexite de Z a chaque etapes

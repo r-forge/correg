@@ -158,9 +158,9 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
         }
       }else{nbstat=nbstat+1}  
     } 
-    BIC_vect=BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit)#complètement sous-optimal
+    BIC_vect=BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit)#completement sous-optimal
 
-#     BIC_vect=calcul_BIC2.2(Zloc=Z,X_appr=X,BIC_ini=BIC_vide_vect)#voir si pas pr?f?rable de stocker l'?tape pr?c?dente pour l'utiliser ici
+#     BIC_vect=calcul_BIC2.2(Zloc=Z,X_appr=X,BIC_ini=BIC_vide_vect)#voir si pas pr?f?rable de stocker l'etape precedente pour l'utiliser ici
     if(plot){
       compare=compare_struct(trueZ=Z_vrai,Zalgo=Z)
       courbe_BIC[pas]=BIC
