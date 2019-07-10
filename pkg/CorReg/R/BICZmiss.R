@@ -30,10 +30,10 @@ BICZmiss<-function(X=X,Z=Z,M=NULL,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=
   }
   BIC_vect=BicOld
   for(j in 1:p){#pour chaque variable (colonne)
-    if(length(which(Z[,j]-Zold[,j]!=0))>0){#différences donc on recalcule Bicloc
+    if(length(which(Z[,j]-Zold[,j]!=0))>0){#differences donc on recalcule Bicloc
       if(sum(Z[,j])==0){#colonne devenue vide
         BIC_vect[j]=Bic_vide_vect[j]
-      }else{#Bic doit être recalculé
+      }else{#Bic doit etre recalcule
         quiloc=(Z[,j]!=0)
         Xloc=as.matrix(X[,quiloc])
         Yloc=X[,j]
@@ -49,10 +49,10 @@ BICZmiss<-function(X=X,Z=Z,M=NULL,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=
         l=1
         m=quiloc[1]
         for(i in 1:nrow(mixmod$details)){
-          if(Z[mixmod$details[i,4],j]!=0){#si la variable concernée est dans Xloc on recopie
+          if(Z[mixmod$details[i,4],j]!=0){#si la variable concernee est dans Xloc on recopie
             if(mixmod$details[i,4]==m){
-              #on est sur la même variable donc le numéro ne change pas
-            }else{#changement de variable donc il faut réindexer
+              #on est sur la meme variable donc le numero ne change pas
+            }else{#changement de variable donc il faut reindexer
               l=l+1
               m=mixmod$details[i,4]
             }
@@ -63,11 +63,11 @@ BICZmiss<-function(X=X,Z=Z,M=NULL,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=
 #         print(mixmodloc$details)
         res=OLS(X=Xloc,Y=Yloc,M=Mloc,intercept=intercept,methode=methode,miss=(sum(Mloc)>0),mixmod=mixmodloc,nbit=nbit,nbclustmax=nbclustmax,sigma=T)       
         BICLOC=c()  
-        k=0#complexité du modele
+        k=0#complexite du modele
         for (i in 1:nrow(Xloc)){#pour chaque point
           BICLOC=c(BICLOC,GM_Loglikelihood(Y=Yloc[i],X=Xloc[i,],M=Mloc[i,],B=res$beta,sigma=res$sigma,mixmod=mixmodloc,log=T,intercept=T))
           k=k+ncol(Xloc)+intercept+1#Beta+sigma dans tous les cas
-          if(sum(Mloc[i,])>0){#trous donc on ajoute des paramètres mixmod
+          if(sum(Mloc[i,])>0){#trous donc on ajoute des parametres mixmod
             classesmank=Z[,j]*mixmodloc$nbclust*Mloc[i,] 
             #k=k+3sum(classmank)-nbfois ou classmank=1
             if(mixmodpenalty){
