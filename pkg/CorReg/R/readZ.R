@@ -1,12 +1,28 @@
 #' read the structure and explain it
-#' 
+#' @description This function describes the structure of sub-regression given by an adjacency matrix. It computes the associated regression coefficients and R-squared for each sub-regression.
 #'@param Z binary adjacency matrix of the structure (size p)
-#' @param B is the complete structure (wheighted)
-#' @param crit define the criterion to use c("none","R2","F","sigmaX")
-#' @param varnames the names of the variables (same order)
-#' @param output indicates the content of the output output=c("index","names","all")
-#' @param X is a dataframe or matrix containing the dataset
-#' @param order Define the order used (0: none, -1: decreasing, 1: growing)
+#' @param B is the complete structure (Z with sub-regression coefficients instead of 1 and an additional first line for the intercepts)
+#' @param crit define the criterion to use: c("none","R2","F","sigmaX")
+#' @param varnames the names of the variables (size p)
+#' @param output indicates the content of the output: c("index","names","all")
+#' @param X is a data frame or matrix containing the dataset
+#' @param order define the order used (0: none, -1: decreasing, 1: growing) for printing
+#' @return a list containing the sub-regressions details. Each item of the list represents 
+#' a subregression. First element is the R-square.Second element is the variable that is regressed by others.
+#' Then comes the list of the explicative variables in the subgression and the associated coefficients (in the first column).
+#' @examples
+#' \dontrun{
+#' 
+#' data<-mtcars
+#' #we first search a sub-regression structure
+#' res=structureFinder(X = data,nbini = 30,verbose=0)
+#' #then we can try to interpret it
+#' readZ(Z = res$Z_opt,crit = "R2",output = "all",X = data)
+#' #each component is a sub-regression
+#' #First line : The adjusted R-squared is given
+#' #Second line : the name of the covariate that is regressed by others
+#' #other lines : Coefficients of sub-regression and name of the associated covariate
+#' }
 #' @export
 readZ<-function(Z=Z,B=NULL,crit=c("none","R2","F","sigmaX"),varnames=NULL,output=c("index","names","all"),X=NULL,order=1){
   p=ncol(Z)

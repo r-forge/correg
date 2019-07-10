@@ -1,15 +1,15 @@
-#' Fill the missing values in the dataset
-#' 
-#' @param X the dataset (matrix) with missing values
-#' @param Z the structure associated to X. Can be a matrix of zeros if non structure.
-#' @param res_mixmod the best results found by mixmod if already computed
-#' @param mixmod boolean to say if the function has to use mixture model hypothesis or just the observed mean.
-#' @param nbclustmax the max number of cluster for mixmod.
-#' @param X1 boolean to say if dependent variables on the right will be filled based on the structure
-#' @param Bt the matrix used for X1 if X1=TRUE
-#' @param B the matrix of the coefficients for sub-regressions
+# ' Fill the missing values in the dataset
+# ' 
+# ' @param X the dataset (matrix) with missing values
+# ' @param Z the structure associated to X. Can be a matrix of zeros if non structure.
+# ' @param res_mixmod the best results found by mixmod if already computed
+# ' @param mixmod boolean to say if the function has to use mixture model hypothesis or just the observed mean.
+# ' @param nbclustmax the max number of cluster for mixmod.
+# ' @param X1 boolean to say if dependent variables on the right will be filled based on the structure
+# ' @param Bt the matrix used for X1 if X1=TRUE
+# ' @param B the matrix of the coefficients for sub-regressions
 # ' @param package package to use (Rmixmod,mclust,rtkpp) to estimate the Gaussian mixtures if mixmod=TRUE. 
-#' @export
+# ' @export
 
 fillmiss<-function(X=X,Z=NULL,mixmod=FALSE,B=NULL,Bt=NULL,res_mixmod=NULL,nbclustmax=10,X1=FALSE){
    quimank=which(is.na(X),arr.ind=TRUE)
@@ -31,13 +31,13 @@ fillmiss<-function(X=X,Z=NULL,mixmod=FALSE,B=NULL,Bt=NULL,res_mixmod=NULL,nbclus
       print("trous multiples")
    }
    for(miss in 1:nrow(quimank)){#pour chaque valeur manquante
-      if(anyDuplicated(c(quimank[miss,2],quiou$I2))){#Si La valeur manquante est à gauche
+      if(anyDuplicated(c(quimank[miss,2],quiou$I2))){#Si La valeur manquante est a gauche
          X[quimank[miss,1],quimank[miss,2]]=B[1,quimank[miss,2]]+as.matrix(X[quimank[miss,1],-quimank[miss,2]])%*%as.matrix(B[-1,quimank[miss,2]][-quimank[miss,2]])
-      }else if(X1 & !anyDuplicated(c(quimank[miss,2],quiou$I3))){#si la variable est à droite et qu'on en tient compte
+      }else if(X1 & !anyDuplicated(c(quimank[miss,2],quiou$I3))){#si la variable est a droite et qu'on en tient compte
          beta=Bt[,quimank[miss,2]]
          X[quimank[miss,1],quimank[miss,2]]=beta[1]+as.matrix(X[quimank[miss,1],-quimank[miss,2]])%*%beta[-1][-quimank[miss,2]]
       }else if(mixmod==T){#mixmod
-         if(is.null(res_mixmod)){#si mixmod n'a pas tourné, on le fait tourner
+         if(is.null(res_mixmod)){#si mixmod n'a pas tourne, on le fait tourner
             n=nrow(X)
             nbclustmax=round(min(nbclustmax,1+n^(0.3)))
             Xloc=X[,quimank[miss,2]]

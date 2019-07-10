@@ -8,10 +8,33 @@
 #' @param detailed boolean to give the details of the mixtures found
 #' @param matshape boolean to give the detail in matricial shape
 #' @param max boolean. Use an heuristic to shrink nbclustmax according to the number of individuals in the dataset
-#' @param package package to use (Rmixmod,mclust,rtkpp)
+#' @param package package to use (Rmixmod,mclust)
 #' @param nbini number of initial points for Rmixmod
 #' @param ... additional parameters
-density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detailed=FALSE,max=TRUE,package=c("mclust","Rmixmod","rtkpp"),nbini=20,matshape=FALSE,...){
+#' 
+#' @return a list that contains:
+#' \item{BIC_vect}{vector of the BIC (one per variable)}
+#' \item{BIC}{global value of the BIC (\code{=sum(BIC_vect)})}
+#' \item{nbclust}{vector of the numbers of components}
+#' \item{details}{list of matrices that describe each Gaussian Mixture (proportions, means and variances)}
+#' @examples
+#' \dontrun{
+#'   rm(list=ls())#clean the workspace
+#'   
+#' require(CorReg)
+#'    #dataset generation
+#'    base=mixture_generator(n=150,p=10,valid=0,ratio=0.4,tp1=1,tp2=1,tp3=1,positive=0.5,
+#'                           R2Y=0.8,R2=0.9,scale=TRUE,max_compl=3,lambda=1)
+#'    X_appr=base$X_appr #learning sample
+#'  density=density_estimation(X = X_appr, detailed = TRUE)#estimation of the marginal densities
+#'density$BIC_vect #vector of the BIC (one per variable)
+#' density$BIC #global value of the BIC (sum of the BICs)
+#' density$nbclust #vector of the numbers of components.
+#' density$details #matrices that describe each Gaussian Mixture (proportions, means and variances)
+#' 
+#'    }
+
+density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detailed=FALSE,max=TRUE,package=c("mclust","Rmixmod"),nbini=20,matshape=FALSE,...){
   #X est la matrice sans constante
    X=1*as.matrix(X)
   n=nrow(X)
@@ -20,7 +43,7 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
      nbclustmax=round(min(nbclustmax,1+n^(0.3)))
      nbclustmin=round(min(nbclustmin,1+n^(0.3)))
   }
-  if(nbclustmin>=1 & package=="rtkpp"){package="Rmixmod"}
+  if( package=="rtkpp"){package="Rmixmod"}
   p=ncol(X)
   nbclust=c()
   BIC_vect=c()
@@ -49,7 +72,7 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
         }      
       }
     }
-  }else if(package=="mclust"){#on utilise mclust
+  }else {#if(package=="mclust"){#on utilise mclust
      #requireNamespace(mclust)
     options(warn=-1)
     for (i in 1:p){
@@ -91,31 +114,33 @@ density_estimation<-function(X=X,nbclustmax=10,nbclustmin=1,verbose=FALSE,detail
       }
     }
     options(warn=1)
-  }else{#on utilise rtkpp
-     requireNamespace("rtkpp")
-     for (i in 1:p){
-        vect=X[!is.na(X[,i]),i]#donnees observees seulement
-        nbclustmaxloc=nbclustmax
-        combien=length(unique(vect))
-        if(combien<=nbclustmaxloc){nbclustmaxloc=max(1,round(combien/2))}
-        res=rtkpp::clusterDiagGaussian(data = vect,nbCluster = c(nbclustmin:nbclustmaxloc),criterion = "BIC",modelNames ="gaussian_pk_sjk",... )
-        if(verbose){print(res)}
-        nbclust[i]=res@nbCluster
-        BIC_vect[i]=res@criterion
-        if(detailed){
-           prop=res@pk#proportions
-           meansvect=res@mean#means
-           varvect=res@sigma^2#variances
-           if(matshape){
-              detailsmat=rbind(detailsmat,cbind(prop,meansvect,varvect,i))
-           }else{
-              detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
-              detailsmat[[i]]=detailsmat[[i]][order(detailsmat[[i]][,1]),]
-           }      
-        }
-     }
-  }
-  if(detailed){#boucle à la main pour sortie utilisable
+  }#else{
+#      #on utilise rtkpp
+#      requireNamespace("rtkpp")
+#      require(rtkpp)
+#      for (i in 1:p){
+#         vect=X[!is.na(X[,i]),i]#donnees observees seulement
+#         nbclustmaxloc=nbclustmax
+#         combien=length(unique(vect))
+#         if(combien<=nbclustmaxloc){nbclustmaxloc=max(1,round(combien/2))}
+#         res=rtkpp::clusterDiagGaussian(data = vect,nbCluster = c(nbclustmin:nbclustmaxloc),criterion = "BIC",modelNames ="gaussian_pk_sjk",... )
+#         if(verbose){print(res)}
+#         nbclust[i]=res@nbCluster
+#         BIC_vect[i]=res@criterion
+#         if(detailed){
+#            prop=res@pk#proportions
+#            meansvect=res@mean#means
+#            varvect=res@sigma^2#variances
+#            if(matshape){
+#               detailsmat=rbind(detailsmat,cbind(prop,meansvect,varvect,i))
+#            }else{
+#               detailsmat[[i]]=cbind(prop,meansvect,varvect,i)
+#               detailsmat[[i]]=detailsmat[[i]][order(detailsmat[[i]][,1]),]
+#            }      
+#         }
+#      }
+ # }
+  if(detailed){#boucle a la main pour sortie utilisable
     return(list(BIC_vect=BIC_vect,nbclust=nbclust,BIC=sum(BIC_vect),details=detailsmat))
   }else{
     return(list(BIC_vect=BIC_vect,nbclust=nbclust,BIC=sum(BIC_vect)))

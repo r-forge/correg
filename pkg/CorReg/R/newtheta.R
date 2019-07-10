@@ -13,7 +13,7 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
    I2=which(colSums(Z)!=0)
    p2=length(I2)
    Z=rbind(0,Z)
-   Z[1,I2]=1#on ajoute une constante à chaque ssreg
+   Z[1,I2]=1#on ajoute une constante a chaque ssreg
    Z=cbind(0,Z)
    I2=I2+1
    pz=sum(Z!=0)
@@ -56,7 +56,7 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
       }else{
          print(it)
          print("numerically singular matrix J")
-        break
+        # break
       }    
    }  
    return(list(B=B,Sigma=Sigma,lambda=lambda))

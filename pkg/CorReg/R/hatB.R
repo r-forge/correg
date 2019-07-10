@@ -1,9 +1,9 @@
-#' Estimates B matrix
-#'@param Z binary adjacency matrix of the structure (size p)
-#' @param X the dataset
-#' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
-#' @param NA_heur boolean to estimate NA by the mean heuristic 
-#' @export 
+# ' Estimates B, matrix of the sub-regressions coefficients knowing the binary structure (adjacency matrix)
+# '@param Z binary adjacency matrix of the structure (size p)
+# ' @param X the dataset
+# ' @param methode parameter for OLS (matrix inversion) methode_BIC  parameter for OLS (matrix inversion) 1:householderQr, 2:colPivHouseholderQr
+# ' @param NA_heur boolean to estimate NA by the mean heuristic 
+# ' @export 
 hatB<-function(Z=Z,X=X,methode=1,NA_heur=FALSE){
   p=ncol(Z)
   B=matrix(0,ncol=p,nrow=p+1)
