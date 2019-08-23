@@ -6,6 +6,19 @@
 
 
 CorRegStartupMessage <- function(){
+   
+   sentences_list=c("You have successfully unleashed the Power of CorReg.",
+                          "CorReg: The Concept, the Method, the Power",
+                    "No scientists were harmed during the development of this package",
+                    "Whosoever loads this package, if he be worthy, shall possess the power of CorReg",
+                    "One package to rule them all, one package to find them; One package to bring them all and in the darkness decorrelate them.",
+                    "All those correlations will be lost in time, like... tears in rain",
+                    "The fisrt rule of CorReg is: You talk about CorReg"
+                    )
+   return(sentences_list[runif(1)%/% ( 1/length(sentences_list))])
+}
+
+CorRegStartupMessage1 <- function(){
   msg<-c(paste0("
                                                                                                                     
                                                                                                                     
@@ -36,7 +49,6 @@ CorRegStartupMessage <- function(){
   ),"\n The Concept, the Method, the Power")
   return(msg)
 }
-
 
 .onAttach <- function(lib, pkg)
 {
