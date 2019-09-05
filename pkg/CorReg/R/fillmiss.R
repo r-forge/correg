@@ -28,7 +28,7 @@ fillmiss<-function(X=X,Z=NULL,mixmod=FALSE,B=NULL,Bt=NULL,res_mixmod=NULL,nbclus
    if(!anyDuplicated(quimank[1,])){
       simple=T#maximum un trou par ligne
    }else{
-      print("trous multiples")
+      cat("multiple holes")
    }
    for(miss in 1:nrow(quimank)){#pour chaque valeur manquante
       if(anyDuplicated(c(quimank[miss,2],quiou$I2))){#Si La valeur manquante est a gauche
