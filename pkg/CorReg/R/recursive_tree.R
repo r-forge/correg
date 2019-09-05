@@ -24,7 +24,7 @@
 #'    #want to try without cylinder and disp
 #'   mytree2=recursive_tree(data = data,Y ="mpg" ,kill=c("cyl","disp"),modele=mytree$modele,main=main,verbose=FALSE)
 #'   
-recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=TRUE,plot=TRUE,main=NULL,sub=NULL,lang=c("en","fr"),all=FALSE,digits=getOption("digits")-3){
+recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,verbose=TRUE,plot=TRUE,main=NULL,sub=NULL,lang=c("en","fr"),all=FALSE,digits=getOption("digits")-3){
   if (is.null(modele)){
     modele=colnames(data)
     modele=modele[modele!=Y]   
