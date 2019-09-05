@@ -8,7 +8,7 @@
 
 
 #' @examples
-#'    \dontrun{
+#'    \donttest{
 #'   rm(list=ls())#clean the workspace
 #'   
 #'    data<-mtcars

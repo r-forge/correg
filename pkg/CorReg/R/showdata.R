@@ -5,7 +5,7 @@
 #'@param pch for missing, symbol to plot (can set pch="." for large datasets)
 #'@export
 #'@examples
-#'\dontrun{
+#'\donttest{
 #'    data<-mtcars
 #'    require(CorReg)
 #'   datamiss=Terminator(target = data,wrath=0.05)#5% of missing values
