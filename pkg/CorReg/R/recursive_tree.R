@@ -57,7 +57,12 @@ recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=
           sub=paste("True left, False right. Response spread (",paste(names(res),res, sep=":",collapse = " , " ),") and effectives (global ", arbre$frame$n[1],") ")
           vertical=" heights indicates significativity"         
         }
-      }else{
+      }else{#regression tree, numerical response with additionnal descriptors on leaves
+         arbre$functions$text<-function (yval, dev, wt, ylevel, digits, n, use.n)  {
+            if (use.n) 
+               paste0("\n",round(yval,digits), "\nn=", n,"\nrMSE=", round(sqrt(dev/wt),digits))
+            # else formatg(yval, digits)
+         }
         lang=lang[1]
         if(lang=="fr"){
           sub=paste("oui a gauche, non a droite. Moyenne (global", round(arbre$frame$yval[1],digits=3),") et effectif (global ", arbre$frame$n[1],") ")
@@ -69,11 +74,7 @@ recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=
       }
     }
     
-    arbre$functions$text<-function (yval, dev, wt, ylevel, digits, n, use.n)  {
-      if (use.n) 
-        paste0("\n",round(yval,digits), "\nn=", n,"\nrMSE=", round(sqrt(dev/wt),digits))
-      # else formatg(yval, digits)
-    }
+
     plot(arbre)
     text(arbre, use.n=TRUE,all=all)
     title(main = main,ylab=vertical,xlab = sub, col.main = "red", col.lab = gray(.5),cex.main = 1.2, cex.lab = 1.0, font.main = 4, font.lab = 3)
