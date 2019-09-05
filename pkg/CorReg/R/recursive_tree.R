@@ -16,7 +16,6 @@
 #'\item{modele}{ vector of the names of the covariates the tree could have used} 
 #'\item{tree}{ the regression tree as an "rpart" object} 
 #' @examples
-#'    \dontrun{
 
 #'    data<-mtcars
 #'    require(CorReg)
@@ -25,7 +24,6 @@
 #'    #want to try without cylinder and disp
 #'   mytree2=recursive_tree(data = data,Y ="mpg" ,kill=c("cyl","disp"),modele=mytree$modele,main=main)
 #'   
-#'     }
 recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=TRUE,plot=TRUE,main=NULL,sub=NULL,lang=c("en","fr"),all=FALSE,digits=getOption("digits")-3){
   if (is.null(modele)){
     modele=colnames(data)

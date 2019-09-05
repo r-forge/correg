@@ -11,7 +11,7 @@
 #' a subregression. First element is the R-square.Second element is the variable that is regressed by others.
 #' Then comes the list of the explicative variables in the subgression and the associated coefficients (in the first column).
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' 
 #' data<-mtcars
 #' #we first search a sub-regression structure
