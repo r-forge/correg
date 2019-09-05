@@ -5,7 +5,7 @@
 #'@param modele (optional) vector of names of covariates allowed in the tree
 #'@param kill vector of the names to kill (variables won't be used in the tree)
 #'@param index to give a number to the plot
-#'@param print boolean to print the tree parameters
+#'@param verbose boolean to print the tree parameters
 #'@param plot boolean to plot the tree
 #'@param main the main title if plot=TRUE
 #'@param sub the subtitle (if NULL it is automatically added)
@@ -20,9 +20,9 @@
 #'    data<-mtcars
 #'    require(CorReg)
 #' main="Regression tree of cars consumption (in mpg)"
-#'   mytree=recursive_tree(data = data,Y ="mpg" ,main=main)
+#'   mytree=recursive_tree(data = data,Y ="mpg" ,main=main,verbose=FALSE)
 #'    #want to try without cylinder and disp
-#'   mytree2=recursive_tree(data = data,Y ="mpg" ,kill=c("cyl","disp"),modele=mytree$modele,main=main)
+#'   mytree2=recursive_tree(data = data,Y ="mpg" ,kill=c("cyl","disp"),modele=mytree$modele,main=main,verbose=FALSE)
 #'   
 recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=TRUE,plot=TRUE,main=NULL,sub=NULL,lang=c("en","fr"),all=FALSE,digits=getOption("digits")-3){
   if (is.null(modele)){
@@ -33,7 +33,7 @@ recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=
     if(is.character(kill)){
       modele=modele[!modele%in%kill]
     }else{
-      print("Warning : kill must be a character vector. So kill parameter won't be used here")
+      warning("kill must be a character vector. So kill parameter won't be used here")
     }
     
   }
@@ -78,7 +78,7 @@ recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,print=
     title(main = main,ylab=vertical,xlab = sub, col.main = "red", col.lab = gray(.5),cex.main = 1.2, cex.lab = 1.0, font.main = 4, font.lab = 3)
     par( xpd=opar$xpd)
   }
-  if(print){
+  if(verbose){
     print(arbre)
   }
   return(list(modele=modele,tree=arbre))

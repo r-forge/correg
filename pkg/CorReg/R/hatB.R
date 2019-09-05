@@ -22,7 +22,7 @@ hatB<-function(Z=Z,X=X,methode=1,NA_heur=FALSE){
        beta=OLS(X=matrix(as.double(Xloc),ncol=ncol(Xloc)),Y=as.double(Yloc),intercept=T,methode=methode)$beta
        B[c(1,qui+1),i]=beta
        if(any(is.infinite(beta)) | any(is.nan(beta))){
-          print(paste("hatB singularity col=",i,"set to 0"))
+          cat(paste("hatB singularity col=",i,"set to 0"))
           B[c(1,qui+1),i][which(is.infinite(beta))]=0
           B[c(1,qui+1),i][which(is.nan(beta))]=0
        }

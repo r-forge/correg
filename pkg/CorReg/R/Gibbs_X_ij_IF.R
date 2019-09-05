@@ -10,14 +10,14 @@ Gibbs_X_ij_IF<-function(Z=Z,X=X,p=p,mui=mui,sigmai=sigmai,Sigma=Sigma,alpha=alph
    sigma=sigmai[j]-prodmat%*%Sigma_j_reste;
    sigmai[j]-Sigma_j_reste%*%solve(Sigma_reste_reste)%*%Sigma_j_reste
    sigma=as.numeric(sigma)
-#    print(paste("sigma",sigma))
+#    cat(paste("sigma",sigma))
    if(as.numeric(sigma)<=0){
-      print(paste("sigmas<0",sigma,i, j,"try to scale the dataset"));
+      cat(paste("sigmas<0",sigma,i, j,"try to scale the dataset"));
       sigma=-as.numeric(sigma)
 #       stop("bullshit")
    }
    res=rnorm(1,mean=as.numeric(mu),sd=as.numeric(sqrt(sigma)))
-#    print(paste("res",res))
-   if(is.na(res)){print(sigma);print('NA');res=X[j]}
+#    cat(paste("res",res))
+   if(is.na(res)){cat(sigma);cat('NA');res=X[j]}
    return(res)
 }

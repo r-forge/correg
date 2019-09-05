@@ -27,7 +27,7 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
    barZ=which(Z!=0,arr.ind=T)   
    Fvect=rep(0,times=(p1+p2+pz))   
    for (it in 1:nbit){   
-#       print(it)
+#       cat(it)
       for(j in 1:p2){
          I1j=barZ[barZ[,2]==I2[j],1]
          debcolj=nrow(barZ[barZ[,2]<I2[j],])
@@ -54,8 +54,8 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
          Sigma=Sigma-matint[-c(1:(pz+p1))]
          lambda=lambda-matint[c((pz+1):(pz+p1))]
       }else{
-         print(it)
-         print("numerically singular matrix J")
+         cat(it)
+         cat("numerically singular matrix J")
         # break
       }    
    }  
