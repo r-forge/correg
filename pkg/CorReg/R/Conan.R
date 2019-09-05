@@ -54,7 +54,7 @@ Conan<-function(X=X,nbstep=Inf,std=FALSE,verbose=FALSE,coercing=NULL,Xout=TRUE){
    if(nbstep==Inf){
       nbstep=max(c(nloc,ploc))
    }
-   if(verbose){print(dim(X))}
+   if(verbose){cat(dim(X))}
    if(std){#nettoyage des constantes si demande
       sd_loc<-function(vect){
          return(sd(vect[!is.na(vect)]))
@@ -65,13 +65,13 @@ Conan<-function(X=X,nbstep=Inf,std=FALSE,verbose=FALSE,coercing=NULL,Xout=TRUE){
          variables_restantes=variables_restantes[-quiconst]      
       }   
    }
-   if(verbose){print(dim(X))}
+   if(verbose){cat(dim(X))}
    quimank=which(is.na(X),arr.ind = TRUE)
    nbmank=dim(quimank)[1]
    M=Matrix::Matrix(0,nrow = nrow(X),ncol=ncol(X))
    M[quimank]=1 
    while (steploc<=nbstep & nbmank>0 & nloc>0 & ploc>0){
-      if(verbose){print(steploc)}     
+      if(verbose){cat(steploc)}     
       nbmank_var=colSums(M)/nloc#taux=nbmank colonne/ nombre de ligne
       nbmank_ind=rowSums(M)/ploc
       if(max(nbmank_var)>max(nbmank_ind)){#on supprime variable
@@ -80,13 +80,13 @@ Conan<-function(X=X,nbstep=Inf,std=FALSE,verbose=FALSE,coercing=NULL,Xout=TRUE){
          M=M[,-quisuppr]
          variables_restantes=variables_restantes[-quisuppr]
       }else{#on supprime ligne
-         if(verbose){print("lign")}
+         if(verbose){cat("lign")}
          quisuppr=which(nbmank_ind==max(nbmank_ind))
          if(length(quisuppr)>0){#si il y a quelque chose a supprimer
             X=X[-quisuppr,]
             M=M[-quisuppr,]
             individus_restants=individus_restants[-quisuppr]
-            if(verbose){print(dim(X))}
+            if(verbose){cat(dim(X))}
             if(std){#nettoyage des constantes si demande
                quiconst=which(apply(X,2,sd_loc)==0)
                if(length(quiconst)>0){
@@ -96,7 +96,7 @@ Conan<-function(X=X,nbstep=Inf,std=FALSE,verbose=FALSE,coercing=NULL,Xout=TRUE){
             }
          }
       }
-      if(verbose){print(dim(X)) }
+      if(verbose){cat(dim(X)) }
       nloc=nrow(X)
       ploc=ncol(X)
       quimank=which(is.na(X),arr.ind = TRUE)
@@ -104,7 +104,7 @@ Conan<-function(X=X,nbstep=Inf,std=FALSE,verbose=FALSE,coercing=NULL,Xout=TRUE){
       steploc=steploc+1
    }
    if(verbose){
-      print(paste("I've killed ",n-nloc,"individuals and ",p-ploc," covariates."))
+      cat(paste("I've killed ",n-nloc,"individuals and ",p-ploc," covariates."))
    }
    if(Xout){
       return(list(X=X,individus_restants=individus_restants,variables_restantes=variables_restantes))
