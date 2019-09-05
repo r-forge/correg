@@ -27,7 +27,7 @@ Terminator<-function(target=NULL, wrath=0.1,diag=0,Z=NULL){
    }
    if(is.null(dim(target))){
       if(target[1]=="Sarah Connor" ){
-      print("I'll be back !")}
+      cat("I'll be back !")}
    }else if (is.null(dim(target))){
       if( target[1]=="bender"){
       Bender(a=wrath,b=diag,c=Z)}

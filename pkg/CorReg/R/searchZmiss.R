@@ -80,7 +80,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
 #         BIC_loc=sum(calcul_BIC2.2(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z))
         BIC_loc=sum(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z))
         BIC_loc_mat[candidat+1,]=c(BIC_loc,i,j)
-#         if(is.na(BIC_loc)){print(paste("Sous-reg parfaite pour la variable",which(is.na(calcul_BIC2.2(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z)))))}
+#         if(is.na(BIC_loc)){cat(paste("Perfect sub-regression for variable",which(is.na(calcul_BIC2.2(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z)))))}
       }
     }else if(mode=="relax"){
       for (candidat in 1:nb_cand_loc){  
@@ -97,7 +97,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
 #         BIC_loc=sum(calcul_BIC2.2(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z))
         BIC_loc=sum(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z))
         BIC_loc_mat[candidat+1,]=c(BIC_loc,i,j)
-        if(is.na(BIC_loc)){print(paste("Sous-reg parfaite pour la variable",which(is.na(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z)))))}
+        if(is.na(BIC_loc)){cat(paste("Perfect sub-regression for variable",which(is.na(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z)))))}
       }
     }         
     #on termine l'?tape
@@ -126,7 +126,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
         meilleur_strict=F
         Z=Z_opt
         BIC=BIC_opt
-        #print(paste("meilleur BIC",BIC))
+        #cat(paste("Best BIC",BIC))
       }
     }else{#si pas de meilleur, on tire au sort
       meilleur_strict=F#normalement inutile
@@ -140,7 +140,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
       loc2[loc2!=Inf]=1:length(loc)
       station=which(loc2==station)#on va cherche l'indice correspondant      
       if(length(station)==0){
-        print("aucun candidat r?alisable")
+        cat("No feasible candidate")
         station=1
       }
       if(station!=1){#alors pas de stationnarit?
