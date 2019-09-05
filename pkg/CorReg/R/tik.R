@@ -6,7 +6,7 @@ tik<-function(x=x,nbclust=nbclust,mixmod=mixmod){
    for(i in 1:nbclust){
       prob[i]=mixmod[i,1]*dnorm(x,mean = mixmod[i,2],sd=sqrt(mixmod[i,3]))
       if(is.na(prob[i])){
-         print("NA in tik")
+         cat("NA in tik")
          prob[i]=0
       }
    }

@@ -66,7 +66,7 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
             loglik=resgibbs2$loglik#scalaire
          }
          if(i==warm+1){
-            if(verbose){print("warm finished")}
+            if(verbose){cat("warm-up finished")}
             if(alphaout){result$alpha=alpha/nbit_SEM}
          }else{
             if(alphaout){result$alpha=result$alpha+alpha/nbit_SEM}#optimiser au format creux
@@ -77,7 +77,7 @@ SEM<-function(M=M,nbit_gibbs=1,n=n,nbit_SEM=50,warm=10,mixmod=mixmod,X=X,comp_ve
    if(compout){result$comp=comp_vect}
    
    if(gibbsfin>0){
-      if(verbose){print("final Gibbs")}      
+      if(verbose){cat("final Gibbs")}      
       resgibbs2=Gibbs(M=M,last=last,warm=gibbsfinwarm,nbit=gibbsfin,mixmod=mixmod,X=X,comp_vect=comp_vect,missrow=missrow,quimiss=quimiss,
                       Z=Z,Zc=Zc,alpha=result$alpha,GibbsIR=GibbsIR,sigma_IR=sigma_IR,nbclust_vect=nbclust_vect,Ir=Ir,loglik_bool=loglik_bool,Xout=Xout)
       if(Xout){result$Xfin=resgibbs2$Xfin}

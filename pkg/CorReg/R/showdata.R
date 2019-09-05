@@ -32,7 +32,7 @@ showdata<-function(X=X,what=c("miss","correl"),pch=7){
          plot(M[,c(2,1)],pch=pch)
          title("Missing values in the dataset")  
       }else{
-         print("No missing values")
+         cat("No missing values")
       }
    }else if (what=="correl"){
       corrplot(corr=X,addrect=NULL,is.corr=T,method="color",tl.pos="n",diag=F,outline=F)
