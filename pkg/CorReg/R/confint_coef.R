@@ -11,12 +11,11 @@
 # ' @export 
 # ' 
 # ' # '@examples
-# '    \dontrun{
 # '    require(CorReg)
 # ' n=c(3000,1500,45)
 # ' prop=c(0.12,0.15,0.11)
 # ' confint_coef( n = n, prop = prop, mean = mean(prop),alpha = 0.05)
-# '     }
+# '     
 # ' 
 #confint_coef<-function(modele=NULL,n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=NULL,subtitle=NULL,ylim=NULL){  
    confint_coef<-function(n=NULL,prop=NULL,mean=NULL,alpha=0.05,labels=NULL,subtitle=NULL,ylim=NULL){  

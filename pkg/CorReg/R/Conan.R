@@ -13,7 +13,6 @@
 #' \item{X}{If Xout=TRUE, the reduced dataset without missing values}
 
 #' @examples
-#'    \dontrun{
 
 #'    data<-mtcars
 #'    require(CorReg)
@@ -22,7 +21,6 @@
 #'   showdata(datamiss)#plot positions of the missing values
 #'   reduced=Conan(X=datamiss)
 #'   reduced
-#'     }
 
 
 Conan<-function(X=X,nbstep=Inf,std=FALSE,verbose=FALSE,coercing=NULL,Xout=TRUE){
