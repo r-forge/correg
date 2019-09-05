@@ -15,8 +15,9 @@
 
 
 #' @examples
-#'    \dontrun{
+#'    \donttest{
 #' require(CorReg)
+#' set.seed(1)
 #'    #dataset generation
 #'    base=mixture_generator(n=15,p=10,ratio=0.4,tp1=1,tp2=1,tp3=1,positive=0.5,
 #'                           R2Y=0.8,R2=0.9,scale=TRUE,max_compl=3,lambda=1)
@@ -30,7 +31,7 @@
 #'    #Z_i,j=1 means that Xj linearly depends on Xi
 #'    
 #'    #density estimation for the MCMC (with Gaussian Mixtures)
-#'    density=density_estimation(X=X_appr,nbclustmax=10,detailed=TRUE)
+#'    density=density_estimation(X=X_appr,nbclustmax=8,detailed=TRUE)
 #'    Bic_null_vect=density$BIC_vect# vector of the BIC found (1 value per covariate)
 #'    
 #'    #MCMC to find the structure
@@ -41,8 +42,8 @@
 #'    
 #'    #BIC comparison between true and found structure
 #'    bicopt_vect=BicZ(X=X_appr,Z=hatZ,Bic_null_vect=Bic_null_vect)
-#'    bicopt_vrai=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=Bic_null_vect)
-#'    sum(bicopt_vect);sum(bicopt_vrai)
+#'    bicopt_true=BicZ(X=X_appr,Z=TrueZ,Bic_null_vect=Bic_null_vect)
+#'    sum(bicopt_vect);sum(bicopt_true)
 #'    
 #'    #Structure comparison
 #'    compZ=compare_struct(trueZ=TrueZ,Zalgo=hatZ)#qualitative comparison
@@ -68,7 +69,7 @@
 #'    MSE#estimated structure
 #'    compZ$true_left;compZ$false_left
 
-#'   barplot(as.matrix(MSE),main="MSE on validation dataset", sub=paste("select=",select))
+#'     barplot(as.matrix(MSE),main="MSE on validation dataset", sub=paste("Results obtained without selection method (lasso and other are avalaible)"))
 #'   abline(h=MSE_complete,col="red")
 #'    }
 NULL
