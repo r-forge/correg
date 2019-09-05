@@ -1,8 +1,8 @@
 Package: CorReg
 Type: Package
 Title: Linear Regression Based on Linear Structure Between Variables
-Version: 1.2.13
-Date: 2019-08-23
+Version: 1.2.14
+Date: 2019-09-05
 Authors@R: c(person("Clement", "THERY", role = c("aut", "cre"),
     email = "corregeous@correg.org"),
     person("Christophe", "BIERNACKI", role = "ctb"),
@@ -14,13 +14,13 @@ Authors@R: c(person("Clement", "THERY", role = c("aut", "cre"),
     person("Jeremie","KELLNER",role="ctb")
     )
 Description: Linear regression based on a recursive structural equation model
-    (explicit multiples correlations) found by a M.C.M.C. algorithm. It permits to face
+    (explicit multiples correlations) found by a M.C.M.C.(Markov Chain Monte Carlo) algorithm. It permits to face
     highly correlated variables. Variable selection is included (by lasso,
     elastic net, etc.). It also provides some graphical tools for basic
-    statistics.
+    statistics. For more information on the method, read the PhD thesis in the link below.
 License: CeCILL
 Copyright: ArcelorMittal
-URL: http://www.correg.org
+URL: http://www.correg.org, http://www.theses.fr/2015LIL10060
 Depends: R(>= 3.0)
 Imports: Rcpp(>= 0.11.0), lars(>= 1.2), Rmixmod(>= 2.0.1),
         elasticnet(>= 1.1), corrplot(>= 0.73), Matrix(>= 1.1), rpart(>=
