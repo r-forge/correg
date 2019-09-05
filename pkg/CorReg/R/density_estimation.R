@@ -18,7 +18,7 @@
 #' \item{nbclust}{vector of the numbers of components}
 #' \item{details}{list of matrices that describe each Gaussian Mixture (proportions, means and variances)}
 #' @examples
-#' \dontrun{
+#' \donttest{
 #'   rm(list=ls())#clean the workspace
 #'   
 #' require(CorReg)
