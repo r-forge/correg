@@ -9,7 +9,6 @@
 # ' @export
 # ' 
 # '@examples
-# '    \dontrun{
 
 # '    require(CorReg)
 # ' data=mixture_generator(n=15,p=5,valid=0,ratio=0,Amax=3)#dataset generation
@@ -17,7 +16,7 @@
 # ' Y=as.matrix(data$Y_appr)
 # ' TrueA=data$A
 # ' res=cleanYtest(Y = Y, X = X, pvalmin = 0.5)
-# '     }
+# '     
 # ' 
 cleanYtest<-function (Y = Y, X = X, pvalmin = 0.05, bonferroni=F,A=NULL) 
 {

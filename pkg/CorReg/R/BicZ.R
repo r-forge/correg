@@ -10,7 +10,6 @@
 #' @return The vector of the BICs associated to each covariate (conditionnal distribution) according to the sub-regression structure.
 #' 
 #' @examples
-#'    \dontrun{
 
 #'    require(CorReg)
 #' data=mixture_generator(n=15,p=5,valid=0)#dataset generation
@@ -20,7 +19,6 @@
 #'#Computes the BIC associated to each covariate (optional, BicZ can do it if not given as an input)
 #'#computes the BIC associated to the structure
 #'res=BicZ(X = X,Z = Z,Bic_null_vect=Bic_null_vect)
-#'     }
 
 BicZ<-function(X=X,Z=Z,Bic_null_vect=NULL,Bic_old=NULL,methode=1,Zold=NULL,star=FALSE){
    if(is.null(Bic_null_vect)){
