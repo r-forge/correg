@@ -26,7 +26,7 @@ Estep<-function(X=X,alpha=alpha,M=NULL,Z=NULL,mixmod=NULL,Zc=Zc,X1=FALSE){
    Zc=Matrix(colSums(Z))
    X=fillmiss(X=X,X1=FALSE,mixmod=FALSE)
    
-   if(is.null(mixmod)){print("ok")
+   if(is.null(mixmod)){cat("ok")
       mixmod=density_estimation(X=X,detailed=TRUE,matshape=TRUE)$details
    }
    #peut-etre entrer quimank et ecrire uniquement dans le Cpp M au format Eigen creux (sans contact avec R)

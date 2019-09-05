@@ -30,16 +30,16 @@ OLS<- function(X=X,Y=Y,M=NULL,intercept=FALSE,sigma=FALSE,Bic=FALSE,methode=1,mi
       for (i in 1:nbit){
          for (j in 1:nrow(quimank)){#optimisable en calculant probas une fois seulement par variable
             probas=mixmod$details[mixmod$details[,4]==quimank[j,2],1]#proportions de chaque classe
-            #         print(probas);print("ok");print(j);print(quimank[j,2])
+            #         cat(probas);cat("ok");cat(j);cat(quimank[j,2])
             quelclasse=sample(length(probas),size=1,prob=probas)#on tire une classe
             #on impute selon la classe choisie
-            #         print(quelclasse)
-            #         print((mixmod$details[,4]==quimank[j,2]))
-            #         print((mixmod$details[,4]==quimank[j,2])[quelclasse])
+            #         cat(quelclasse)
+            #         cat((mixmod$details[,4]==quimank[j,2]))
+            #         cat((mixmod$details[,4]==quimank[j,2])[quelclasse])
             meanloc=mixmod$details[(mixmod$details[,4]==quimank[j,2]),2][quelclasse]
             sdloc=sqrt(mixmod$details[(mixmod$details[,4]==quimank[j,2]),3][quelclasse])
             val=rnorm(1,mean=meanloc,sd=sdloc)
-            #         print(val)
+            #         cat(val)
             X[quimank[j,1],quimank[j,2]]=val
          }
          res=.Call( "OLS",X, as.double(Y),intercept,sigma,F,methode, PACKAGE = "CorReg")

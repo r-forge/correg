@@ -25,7 +25,7 @@ MakeH<-function(X=X,Z=Z,B=B,Sigma=Sigma){
    }
    
 #    require(matrixcalc)
-#    print(is.negative.definite(H))
-#    print(is.positive.definite(H))
+#    cat(is.negative.definite(H))
+#    cat(is.positive.definite(H))
    return(H)
 }

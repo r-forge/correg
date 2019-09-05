@@ -4,10 +4,10 @@
 # ' @param X the dataset (named) if labels is null
 # ' @param intercept boolean defining wether A contains an intercept or not
 # ' @param ANOVA boolean to add Anova test for each coefficient
-# ' @param print boolean to print ANOVA if computed
+# ' @param verbose boolean to print ANOVA if computed
 # ' @param Y the response variable if ANOVA is computed
 # '@export
-readY<-function(A=A,labels=NULL,X=NULL,intercept=TRUE,ANOVA=FALSE,print=FALSE,Y=NULL){
+readY<-function(A=A,labels=NULL,X=NULL,intercept=TRUE,ANOVA=FALSE,verbose=FALSE,Y=NULL){
    if(is.null(labels)){
       labels=names(X)
    }
@@ -18,6 +18,6 @@ readY<-function(A=A,labels=NULL,X=NULL,intercept=TRUE,ANOVA=FALSE,print=FALSE,Y=
       reslm=lm(Y~.,data=data.frame(Xred))
       interp=summary(reslm) 
    }
-   if(print){print(interp)}
+   if(verbose){print(interp)}
    return(interp)
 }
