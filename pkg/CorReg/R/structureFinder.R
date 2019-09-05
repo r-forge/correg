@@ -38,7 +38,7 @@
 #'
 #'
 #' @examples
-#'\dontrun{
+#'\donttest{
 #'   rm(list=ls())#clean the workspace
 #'   
 #' require(CorReg)
