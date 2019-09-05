@@ -1,3 +1,4 @@
+#1.2.14 : print root MSE for regression trees and classical print for decision trees
 #1.2.7 : Purge values to clean the dataset (including blank separators for thousands)
 #1.2.0 : some CPP corrections to fit RcppEigen + add a first vignette
 #1.1.6 : Kruskal-Wallis test to manage non-normal distributions in the BoxPlot function
