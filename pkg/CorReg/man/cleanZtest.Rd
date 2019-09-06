@@ -4,7 +4,8 @@
 \alias{cleanZtest}
 \title{Clean Z's columns based on p-values (coefficients or global)}
 \usage{
-cleanZtest(Z = Z, X = X, pvalmin = 0.05, global = F, bonferroni = F)
+cleanZtest(Z = Z, X = X, pvalmin = 0.05, global = F,
+  bonferroni = F)
 }
 \arguments{
 \item{Z}{the binary matrix describing the sub-regression structure (as given by the "structureFinder" function).}

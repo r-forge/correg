@@ -17,7 +17,7 @@ showdata(X = X, what = c("miss", "correl"), pch = 7)
 Plot the dataset with marks where there are missing value. It allows to have a quick idea of the structure of missing values (Missing at Random or not for example).
 }
 \examples{
-\dontrun{
+\donttest{
    data<-mtcars
    require(CorReg)
   datamiss=Terminator(target = data,wrath=0.05)#5\% of missing values

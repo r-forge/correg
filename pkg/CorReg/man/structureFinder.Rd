@@ -4,11 +4,11 @@
 \alias{structureFinder}
 \title{MCMC algorithm to find a structure between the covariates}
 \usage{
-structureFinder(X = X, Z = NULL, Bic_null_vect = NULL, candidates = -1,
-  reject = 0, methode = 1, p1max = 5, p2max = NULL, Maxiter = 1,
-  plot = FALSE, best = TRUE, better = FALSE, random = TRUE,
-  verbose = 1, nb_opt_max = NULL, exact = TRUE, nbini = NULL,
-  star = TRUE, clean = TRUE, ...)
+structureFinder(X = X, Z = NULL, Bic_null_vect = NULL,
+  candidates = -1, reject = 0, methode = 1, p1max = 5,
+  p2max = NULL, Maxiter = 1, plot = FALSE, best = TRUE,
+  better = FALSE, random = TRUE, verbose = 1, nb_opt_max = NULL,
+  exact = TRUE, nbini = NULL, star = TRUE, clean = TRUE, ...)
 }
 \arguments{
 \item{X}{the matrix of the dataset containing p correlated covariates (with n individuals)}
@@ -71,7 +71,7 @@ At each step we compare several candidates that are the local structure modified
 To avoid local extrema we allow constraints relaxation. If a modification is not feasible (it generates cycles for example) then the candidate is not rejected but modified. In fact, if we want to modify \code{Z[i,j]} then we modify Z at each position that makes the modification of \code{Z[i,j]} not feasible. It is like allowing several steps in one, a kind of simulated anhealing but without parameter to tune.
 }
 \examples{
-\dontrun{
+\donttest{
   rm(list=ls())#clean the workspace
   
 require(CorReg)

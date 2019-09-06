@@ -32,7 +32,7 @@ Then comes the list of the explicative variables in the subgression and the asso
 This function describes the structure of sub-regression given by an adjacency matrix. It computes the associated regression coefficients and R-squared for each sub-regression.
 }
 \examples{
-\dontrun{
+\donttest{
 
 data<-mtcars
 #we first search a sub-regression structure
