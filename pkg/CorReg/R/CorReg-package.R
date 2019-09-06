@@ -69,7 +69,8 @@
 #'    MSE#estimated structure
 #'    compZ$true_left;compZ$false_left
 
-#'     barplot(as.matrix(MSE),main="MSE on validation dataset", sub=paste("Results obtained without selection method (lasso and other are avalaible)"))
+#'     barplot(as.matrix(MSE),main="MSE on validation dataset", 
+#'     sub=paste("Results obtained without selection method (lasso and other are avalaible)"))
 #'   abline(h=MSE_complete,col="red")
 #'    }
 NULL

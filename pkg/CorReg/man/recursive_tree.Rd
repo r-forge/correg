@@ -48,6 +48,7 @@ decision tree in a recursive way
 main="Regression tree of cars consumption (in mpg)"
   mytree=recursive_tree(data = data,Y ="mpg" ,main=main,verbose=FALSE)
    #want to try without cylinder and disp
-  mytree2=recursive_tree(data = data,Y ="mpg" ,kill=c("cyl","disp"),modele=mytree$modele,main=main,verbose=FALSE)
+  mytree2=recursive_tree(data = data,Y ="mpg" ,kill=c("cyl","disp"),
+  modele=mytree$modele,main=main,verbose=FALSE)
   
 }
