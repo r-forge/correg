@@ -5,8 +5,9 @@
 \title{BIC of estimated  marginal gaussian mixture densities}
 \usage{
 density_estimation(X = X, nbclustmax = 10, nbclustmin = 1,
-  verbose = FALSE, detailed = FALSE, max = TRUE, package = c("mclust",
-  "Rmixmod"), nbini = 20, matshape = FALSE, ...)
+  verbose = FALSE, detailed = FALSE, max = TRUE,
+  package = c("mclust", "Rmixmod"), nbini = 20, matshape = FALSE,
+  ...)
 }
 \arguments{
 \item{X}{the dataset (matrix)}
@@ -40,7 +41,7 @@ a list that contains:
 Estimates the density of each covariates with gaussian mixture models and then gives the associated BIC.
 }
 \examples{
-\dontrun{
+\donttest{
   rm(list=ls())#clean the workspace
   
 require(CorReg)

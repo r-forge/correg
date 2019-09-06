@@ -29,7 +29,6 @@ Conan(X = X, nbstep = Inf, std = FALSE, verbose = FALSE,
 Removes missing values (rows and column alternatively) to obtain a large full matrix
 }
 \examples{
-   \dontrun{
    data<-mtcars
    require(CorReg)
   datamiss=Terminator(target = data,wrath=0.05)#5\% of missing values
@@ -37,5 +36,4 @@ Removes missing values (rows and column alternatively) to obtain a large full ma
   showdata(datamiss)#plot positions of the missing values
   reduced=Conan(X=datamiss)
   reduced
-    }
 }

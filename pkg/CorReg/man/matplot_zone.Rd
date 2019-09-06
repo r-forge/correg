@@ -4,8 +4,9 @@
 \alias{matplot_zone}
 \title{Matplot with curves comparison by background colors.}
 \usage{
-matplot_zone(x = x, y = y, col = 1:6, alpha = 0.2, what = which.min,
-  ylim = NULL, xlim = NULL, type = "p", xlab = NULL, ylab = NULL, ...)
+matplot_zone(x = x, y = y, col = 1:6, alpha = 0.2,
+  what = which.min, ylim = NULL, xlim = NULL, type = "p",
+  xlab = NULL, ylab = NULL, ...)
 }
 \arguments{
 \item{x}{the abscisses}

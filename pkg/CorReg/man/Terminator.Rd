@@ -22,7 +22,7 @@ the matrix with missing values.
 Destructing values to have missing ones
 }
 \examples{
-   \dontrun{
+   \donttest{
   rm(list=ls())#clean the workspace
   
    data<-mtcars

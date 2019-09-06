@@ -5,8 +5,9 @@
 \title{decision tree in a recursive way}
 \usage{
 recursive_tree(data = data, Y = "Y", modele = NULL, kill = NULL,
-  index = NULL, print = TRUE, plot = TRUE, main = NULL, sub = NULL,
-  lang = c("en", "fr"), all = FALSE, digits = getOption("digits") - 3)
+  index = NULL, verbose = TRUE, plot = TRUE, main = NULL,
+  sub = NULL, lang = c("en", "fr"), all = FALSE,
+  digits = getOption("digits") - 3)
 }
 \arguments{
 \item{data}{the dataset including the response}
@@ -19,7 +20,7 @@ recursive_tree(data = data, Y = "Y", modele = NULL, kill = NULL,
 
 \item{index}{to give a number to the plot}
 
-\item{print}{boolean to print the tree parameters}
+\item{verbose}{boolean to print the tree parameters}
 
 \item{plot}{boolean to plot the tree}
 
@@ -42,13 +43,11 @@ returns the tree as an "rpart" object and the modele as a vector of the names of
 decision tree in a recursive way
 }
 \examples{
-   \dontrun{
    data<-mtcars
    require(CorReg)
 main="Regression tree of cars consumption (in mpg)"
-  mytree=recursive_tree(data = data,Y ="mpg" ,main=main)
+  mytree=recursive_tree(data = data,Y ="mpg" ,main=main,verbose=FALSE)
    #want to try without cylinder and disp
-  mytree2=recursive_tree(data = data,Y ="mpg" ,kill=c("cyl","disp"),modele=mytree$modele,main=main)
+  mytree2=recursive_tree(data = data,Y ="mpg" ,kill=c("cyl","disp"),modele=mytree$modele,main=main,verbose=FALSE)
   
-    }
 }

@@ -4,8 +4,8 @@
 \alias{Hist}
 \title{Histograms with clusters}
 \usage{
-Hist(x, classes = NULL, plot = TRUE, col = 2:10, mode = c("classical",
-  "cumsum", "density"), breaks = "Sturges", ...)
+Hist(x, classes = NULL, plot = TRUE, col = 2:10,
+  mode = c("classical", "cumsum", "density"), breaks = "Sturges", ...)
 }
 \arguments{
 \item{x}{a vector, matrix or data.frame on which the histogram will be computed and ploted.}
@@ -26,10 +26,8 @@ Hist(x, classes = NULL, plot = TRUE, col = 2:10, mode = c("classical",
 Histograms with clusters
 }
 \examples{
-   \dontrun{
 require(CorReg)
 x<-c(rnorm(50,0,1),rnorm(50,1,1))
 classes<-rep(1:2,each=50)
 Hist(x,classes)
-}
 }

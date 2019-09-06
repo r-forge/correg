@@ -28,7 +28,6 @@ BoxPlot(num, grp = NULL, data = NULL, AnoVa = TRUE, risk = 0.05,
 classical boxplot function improved with integrated confidence level on the mean for each group ploted on the graph and also ANOVA with p-value and its interpretation given in the legend.
 }
 \examples{
-    \dontrun{
 require(CorReg)
 repart=c(20,40,40)
 X=data.frame(num=c(rnorm(repart[1],10,1),rnorm(repart[2],11,1),rnorm(repart[3],10,1)),
@@ -38,5 +37,5 @@ grp=c(rep("A",times=repart[1]),rep("B",times=repart[2]),rep("C",times=repart[3])
 BoxPlot(X$num,X$grp,data=X,ylab="num",main="boxplot with confidence intervals")
 #Confidence interval in red with mean in blue.
 
-}
+
 }
