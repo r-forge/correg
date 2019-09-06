@@ -31,7 +31,7 @@ import(corrplot)
 import(elasticnet)
 import(glmnet)
 import(lars)
-import(mclust)
+import(mclust, except = "dmvnorm")#manually added to avoid a warning with mvtnorm package
 import(methods)
 import(mvtnorm)
 import(rpart)
