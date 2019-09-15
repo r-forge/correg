@@ -2,22 +2,22 @@ Package: CorReg
 Type: Package
 Title: Linear Regression Based on Linear Structure Between Variables
 Version: 1.2.14
-Date: 2019-09-05
-Authors@R: c(person("Clement", "THERY", role = c("aut", "cre"),
+Date: 2019-09-15
+Authors@R: c(person("Clément", "Théry", role = c("aut", "cre"),
     email = "corregeous@correg.org"),
-    person("Christophe", "BIERNACKI", role = "ctb"),
-    person("Gaetan", "LORIDANT", role = "ctb"),
-    person("Florian", "WATRIN", role = "ctb"),
-    person("Quentin", "GRIMONPREZ", role = "ctb"),
-    person("Vincent", "KUBICKI", role = "ctb"),
-    person("Samuel", "BLANCK", role = "ctb"),
-    person("Jeremie","KELLNER",role="ctb")
+    person("Christophe", "Biernacki", role = "ctb"),
+    person("Gaetan", "Loridant", role = "ctb"),
+    person("Florian", "Watrin", role = "ctb"),
+    person("Quentin", "Grimonprez", role = "ctb"),
+    person("Vincent", "Kubicki", role = "ctb"),
+    person("Samuel", "Blanck", role = "ctb"),
+    person("Jeremie","Kellner",role="ctb")
     )
 Description: Linear regression based on a recursive structural equation model
     (explicit multiples correlations) found by a M.C.M.C.(Markov Chain Monte Carlo) algorithm. It permits to face
     highly correlated variables. Variable selection is included (by lasso,
     elastic net, etc.). It also provides some graphical tools for basic
-    statistics. For more information on the method, read the PhD thesis in the link below.
+    statistics. For more information on the method, read the PhD thesis of Clément Théry (2015) in the link below.
 License: CeCILL
 Copyright: ArcelorMittal
 URL: http://www.correg.org, http://www.theses.fr/2015LIL10060
