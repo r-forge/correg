@@ -12,7 +12,7 @@
 # ' @param nbclustmax parameter for calcul_BIC_mixmod if needed
 # ' @export
 
-Winitial<-function(W=W,X=NULL,p1max=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random=T,nbclustmax=5,sorted=T,mode=c("all","sorted","multinom"),p2max=NULL){
+Winitial<-function(W=W,X=NULL,p1max=NULL,BIC=FALSE,Bic_null_vect=NULL,relax=TRUE,random=TRUE,nbclustmax=5,sorted=TRUE,mode=c("all","sorted","multinom"),p2max=NULL){
   #W est la matrice des poids (entre 0 et 1)
   #X est la matrice des donnees (ne sert que si BIC=T)
   #Bic_null_vect est le vecteur bic vide (issu de mixmod par exemple)
@@ -26,7 +26,7 @@ Winitial<-function(W=W,X=NULL,p1max=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random
   mode=mode[1]
   Z=matrix(0,ncol=p,nrow=p)
   list_j=sample(p)#melange les entiers de 1 a p
-  if(BIC==T &  !is.null(X)){
+  if(BIC==TRUE &  !is.null(X)){
      if(is.null(Bic_null_vect)){
         Bic_null_vect=density_estimation(X=X)$BIC_vect 
      }
@@ -51,12 +51,12 @@ Winitial<-function(W=W,X=NULL,p1max=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random
             if(sum(Z[,jloc])<p1max){#si on respecte la contrainte de complexite
               croisement=F
               if(sum(Z[jloc,])!=0 | sum(Z[,iloc])!=0){
-                croisement=T
+                croisement=TRUE
               }
-              if(croisement==F | relax==T){#si pas croisement ou relax
+              if(croisement==FALSE | relax==TRUE){#si pas croisement ou relax
                 Zloc=Z
                 Zloc[iloc,jloc]=1
-                if(croisement==T){#donc croisement et relax
+                if(croisement==TRUE){#donc croisement et relax
                   #faire la relax
                   Zloc[jloc,]=0
                   Zloc[,iloc]=0
@@ -94,18 +94,18 @@ Winitial<-function(W=W,X=NULL,p1max=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random
         i=1
         list_i=1:p
         list_i=list_i[-jloc]#on enleve la diagonale
-        list_i=list_i[order(W[-jloc,jloc],decreasing=T)]#on ordonne selon les poids
+        list_i=list_i[order(W[-jloc,jloc],decreasing=TRUE)]#on ordonne selon les poids
         while(go & length(list_i)>0){
           iloc=list_i[1]#on choisit le meilleur
           if(sum(Z[,jloc])<p1max){#si on respecte la contrainte de complexite
-            croisement=F
+            croisement=FALSE
             if(sum(Z[jloc,])!=0 | sum(Z[,iloc])!=0){
-              croisement=T
+              croisement=TRUE
             }
-            if(croisement==F | relax==T){#si pas croisement ou relax
+            if(croisement==FALSE | relax==TRUE){#si pas croisement ou relax
               Zloc=Z
               Zloc[iloc,jloc]=1
-              if(croisement==T){#donc croisement et relax
+              if(croisement==TRUE){#donc croisement et relax
                 #faire la relax
                 Zloc[jloc,]=0
                 Zloc[,iloc]=0
@@ -161,14 +161,14 @@ Winitial<-function(W=W,X=NULL,p1max=NULL,BIC=F,Bic_null_vect=NULL,relax=T,random
           qui=which(rmultinom(1,1,wloc)==1)
           iloc=list_i[qui]#on choisit selon une multinomiale ponderee par les poids normalises
           if(sum(Z[,jloc])<p1max){#si on respecte la contrainte de complexite
-            croisement=F
+            croisement=FALSE
             if(sum(Z[jloc,])!=0 | sum(Z[,iloc])!=0){
-              croisement=T
+              croisement=TRUE
             }
-            if(croisement==F | relax==T){#si pas croisement ou relax
+            if(croisement==FALSE | relax==TRUE){#si pas croisement ou relax
               Zloc=Z
               Zloc[iloc,jloc]=1
-              if(croisement==T){#donc croisement et relax
+              if(croisement==TRUE){#donc croisement et relax
                 #faire la relax
                 Zloc[jloc,]=0
                 Zloc[,iloc]=0
