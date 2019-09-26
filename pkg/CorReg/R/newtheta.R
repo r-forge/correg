@@ -24,10 +24,10 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
    }
    n=nrow(X)
    J=matrix(0,ncol=(p1+p2+pz),nrow=(p1+p2+pz))
-   barZ=which(Z!=0,arr.ind=T)   
+   barZ=which(Z!=0,arr.ind=TRUE)   
    Fvect=rep(0,times=(p1+p2+pz))   
    for (it in 1:nbit){   
-#       cat(it)
+#       message(it)
       for(j in 1:p2){
          I1j=barZ[barZ[,2]==I2[j],1]
          debcolj=nrow(barZ[barZ[,2]<I2[j],])
@@ -54,8 +54,8 @@ newtheta<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A,lambda=NULL,Atilde=Atilde,nbit=1)
          Sigma=Sigma-matint[-c(1:(pz+p1))]
          lambda=lambda-matint[c((pz+1):(pz+p1))]
       }else{
-         cat(it)
-         cat("numerically singular matrix J")
+         message(it)
+         message("numerically singular matrix J")
         # break
       }    
    }  

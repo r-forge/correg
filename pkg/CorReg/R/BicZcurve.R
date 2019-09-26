@@ -6,7 +6,7 @@
 # ' @param star boolean to use BIC* (hierarchical uniform law on the structure)
 # ' @param trunc number of sub-regression to keep (best R2). if NULL the min of BIC is kept
 # ' @export
-BicZcurve<-function(X=X,Z=Z,Bic_null_vect=Bic_null_vect,plot=T,star=F,trunc=NULL){
+BicZcurve<-function(X=X,Z=Z,Bic_null_vect=Bic_null_vect,plot=TRUE,star=FALSE,trunc=NULL){
    p2=sum(colSums(Z)!=0)
    if(is.null(Bic_null_vect)){
       Bic_null_vect=density_estimation(X=X)$BIC_vect 
@@ -15,8 +15,8 @@ BicZcurve<-function(X=X,Z=Z,Bic_null_vect=Bic_null_vect,plot=T,star=F,trunc=NULL
    
    if(p2>0){
       I2=which(colSums(Z)!=0)
-      sigmavect=R2Z(Z=Z,X=X,crit="R2",adj=T)
-      ordre=order(sigmavect[I2],decreasing=T)
+      sigmavect=R2Z(Z=Z,X=X,crit="R2",adj=TRUE)
+      ordre=order(sigmavect[I2],decreasing=TRUE)
       for (i in 1:p2){
          Zloc=Z;Zloc[,-I2[ordre[1:i]]]=0
          curve=c(curve,sum(BicZ(X=X,Z=Zloc,Bic_null_vect=Bic_null_vect,star=star)))

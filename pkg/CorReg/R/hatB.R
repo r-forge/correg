@@ -12,14 +12,14 @@ hatB<-function(Z=Z,X=X,methode=1,NA_heur=FALSE){
     qui=which(Z[,i]!=0)
     Xloc=as.matrix(X[,qui])
     Yloc=as.matrix(X[,i])
-    quimank=which(is.na(Xloc),arr.ind=T)[,1]
-    quimank=c(quimank,which(is.na(Yloc),arr.ind=T))
+    quimank=which(is.na(Xloc),arr.ind=TRUE)[,1]
+    quimank=c(quimank,which(is.na(Yloc),arr.ind=TRUE))
     quimank=unique(quimank)
     if(length(quimank)>0){
       Xloc=matrix(Xloc[-quimank,],ncol=length(qui)) #si des valeurs sont manquantes,on supprimes les lignes localement
       Yloc=Yloc[-quimank]
     }
-       beta=OLS(X=matrix(as.double(Xloc),ncol=ncol(Xloc)),Y=as.double(Yloc),intercept=T,methode=methode)$beta
+       beta=OLS(X=matrix(as.double(Xloc),ncol=ncol(Xloc)),Y=as.double(Yloc),intercept=TRUE,methode=methode)$beta
        B[c(1,qui+1),i]=beta
        if(any(is.infinite(beta)) | any(is.nan(beta))){
           message(paste("hatB singularity col=",i,"set to 0"))

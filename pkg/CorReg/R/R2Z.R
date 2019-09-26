@@ -13,8 +13,8 @@ R2Z<-function(Z=Z,X=X,adj=F,crit=c("R2","F","sigmaX")){
   for(i in quicol){
     qui=which(Z[,i]!=0)
 #     ploc=length(qui)
-#     beta=OLS(X=X[,qui],Y=X[,i],intercept=T,methode=methode)$beta
-#     MSE=MSE_loc(Y=X[,i],X=as.matrix(X[,qui]),intercept=T,A=beta) #on met as.matrix pour les cas avec une seule colonne
+#     beta=OLS(X=X[,qui],Y=X[,i],intercept=TRUE,methode=methode)$beta
+#     MSE=MSE_loc(Y=X[,i],X=as.matrix(X[,qui]),intercept=TRUE,A=beta) #on met as.matrix pour les cas avec une seule colonne
 #     res[i]=1-(MSE)/(var((X[,i])))  
     Xloc = X[, qui]
     Yloc = X[, i]

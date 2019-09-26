@@ -17,7 +17,7 @@ MakeJ<-function(X=X,Z=Z,B=B,Sigma=Sigma,A=A){
    p1=length(which(rowSums(Z[-I2,])!=0))#I3 ne doit pas intervenir
    n=nrow(X)
    J=matrix(0,ncol=(p1+p2+pz),nrow=(p1+p2+pz))
-   barZ=which(Z!=0,arr.ind=T)
+   barZ=which(Z!=0,arr.ind=TRUE)
    for(j in 1:p2){
       I1j=barZ[barZ[,2]==I2[j],1]
       J[pz+p1+j,pz+p1+j]=2*Sigma[j]#bloc J9

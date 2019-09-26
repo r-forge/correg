@@ -1,6 +1,6 @@
 # 'coucou
 
-MSE2.0<-function(X_appr=X_appr,B=B,Z=Z,X_test=X_test,Y_appr=Y_appr,Y_test=Y_test,A=A,type="lar",moyenne=T,compl_lars=T,expl_lars=T,pred_lars=T){
+MSE2.0<-function(X_appr=X_appr,B=B,Z=Z,X_test=X_test,Y_appr=Y_appr,Y_test=Y_test,A=A,type="lar",moyenne=TRUE,compl_lars=TRUE,expl_lars=TRUE,pred_lars=TRUE){
   #mod?le complet####
   res_lars_compl=lars(X_appr,Y_appr,type=type)
   mod_complBIC=meilleur_lars(res_lars_compl,X=X_appr,Y=Y_appr)

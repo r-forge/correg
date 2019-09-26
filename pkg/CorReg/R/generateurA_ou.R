@@ -29,7 +29,7 @@ generateurA_ou<-function (Z = Z, tp1 = 1, tp2 = 1, tp3 = 1, positive = 0.6, lamb
   if(pb<2){
       A[-1][quip1]=A[-1][quip1]*rbinom(length(quip1),1,tp1)#on considere le taux comme une proba
   }else{#on force le probleme 
-    quip1order=unique(which(Z!=0,arr.ind=T)[,1])#dans l'ordre d'apparition
+    quip1order=unique(which(Z!=0,arr.ind=TRUE)[,1])#dans l'ordre d'apparition
     nb0p1=round((1 - tp1) * length(quip1))
     if(nb0p1>0){#si on doit supprimer des points
       A[-1][quip1order][1:nb0p1] = 0

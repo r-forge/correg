@@ -3,7 +3,7 @@
 # ' 
 
 
-BICZmiss<-function(X=X,Z=Z,M=NULL,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=NULL,intercept=T,mixmod=NULL,nbit=100,nbclustmax=10,mixmodpenalty=T){
+BICZmiss<-function(X=X,Z=Z,M=NULL,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=NULL,intercept=TRUE,mixmod=NULL,nbit=100,nbclustmax=10,mixmodpenalty=TRUE){
  
 #   res=.Call( "BicZmissRcpp", X, Z, M, Bic_vide_vect, BicOld, methode, Zold, intercept, mixmod, nbit, nbclustmax, PACKAGE = "CorReg")
 #   return(res)
@@ -61,11 +61,11 @@ BICZmiss<-function(X=X,Z=Z,M=NULL,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=
           }
         }   
 #         message(mixmodloc$details)
-        res=OLS(X=Xloc,Y=Yloc,M=Mloc,intercept=intercept,methode=methode,miss=(sum(Mloc)>0),mixmod=mixmodloc,nbit=nbit,nbclustmax=nbclustmax,sigma=T)       
+        res=OLS(X=Xloc,Y=Yloc,M=Mloc,intercept=intercept,methode=methode,miss=(sum(Mloc)>0),mixmod=mixmodloc,nbit=nbit,nbclustmax=nbclustmax,sigma=TRUE)       
         BICLOC=c()  
         k=0#complexite du modele
         for (i in 1:nrow(Xloc)){#pour chaque point
-          BICLOC=c(BICLOC,GM_Loglikelihood(Y=Yloc[i],X=Xloc[i,],M=Mloc[i,],B=res$beta,sigma=res$sigma,mixmod=mixmodloc,log=T,intercept=T))
+          BICLOC=c(BICLOC,GM_Loglikelihood(Y=Yloc[i],X=Xloc[i,],M=Mloc[i,],B=res$beta,sigma=res$sigma,mixmod=mixmodloc,log=TRUE,intercept=TRUE))
           k=k+ncol(Xloc)+intercept+1#Beta+sigma dans tous les cas
           if(sum(Mloc[i,])>0){#trous donc on ajoute des parametres mixmod
             classesmank=Z[,j]*mixmodloc$nbclust*Mloc[i,] 
