@@ -77,7 +77,7 @@ recursive_tree<-function(data=data,Y="Y",modele=NULL,kill=NULL,index=NULL,verbos
     plot(arbre)
     text(arbre, use.n=TRUE,all=all)
     title(main = main,ylab=vertical,xlab = sub, col.main = "red", col.lab = gray(.5),cex.main = 1.2, cex.lab = 1.0, font.main = 4, font.lab = 3)
-    par( xpd=opar$xpd)
+    par(opar)
   }
   if(verbose){
     print(arbre)

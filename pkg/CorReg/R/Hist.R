@@ -33,8 +33,8 @@ Hist<-function(x,classes=NULL,plot=TRUE,col=2:10,mode=c("classical","cumsum","de
       # 3) subset your vectors to be inside xrange
       vi = subset(vi,vi<=max(xrange) & vi>=min(xrange))
       # 4) Now, use hist to compute the counts per interval
-      hvi = hist(vi,breaks=xrange,plot=F)$counts
-      #hv3 = hist(v3,breaks=xrange,plot=F)$counts
+      hvi = hist(vi,breaks=xrange,plot=FALSE)$counts
+      #hv3 = hist(v3,breaks=xrange,plot=FALSE)$counts
       hvtots=rbind(hvtots,hvi)
     } 
 
