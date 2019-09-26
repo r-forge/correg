@@ -33,14 +33,14 @@ VignetteBuilder: knitr
 RoxygenNote: 6.1.1
 NeedsCompilation: yes
 Packaged: 2018-04-23 16:57:05 UTC; U038226
-Author: Clement THERY [aut, cre],
-  Christophe BIERNACKI [ctb],
-  Gaetan LORIDANT [ctb],
-  Florian WATRIN [ctb],
-  Quentin GRIMONPREZ [ctb],
-  Vincent KUBICKI [ctb],
-  Samuel BLANCK [ctb],
-  Jeremie KELLNER [ctb]
+Author: Clement Théry [aut, cre],
+  Christophe Biernacki [ctb],
+  Gaetan Loridant [ctb],
+  Florian Watrin [ctb],
+  Quentin Grimonprez [ctb],
+  Vincent Kubicki [ctb],
+  Samuel Blanck [ctb],
+  Jeremie Kellner [ctb]
 Maintainer: Clement THERY <corregeous@correg.org>
 Repository: CRAN
 Date/Publication: 2018-04-23 18:09:06 UTC
