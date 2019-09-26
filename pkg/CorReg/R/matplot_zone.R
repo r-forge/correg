@@ -14,7 +14,7 @@
 # ' @param main the main title (like in matplot)
 #' @export
 #' @examples
-#'     \dontrun{
+#'     \donttest{
 
 #' require(CorReg)
 #' n=15
