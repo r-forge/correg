@@ -19,7 +19,7 @@
 #' \item{details}{list of matrices that describe each Gaussian Mixture (proportions, means and variances)}
 #' @examples
 #' \donttest{
-#'   rm(list=ls())#clean the workspace
+#'   #rm(list=ls())#clean the workspace
 #'   
 #' require(CorReg)
 #'    #dataset generation

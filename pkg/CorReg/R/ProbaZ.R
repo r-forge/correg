@@ -26,7 +26,7 @@ ProbaZ<-function(Z=NULL,p=NULL,proba=FALSE,star=TRUE){
          if(!is.null(Z)){
             p=ncol(Z)       
          }else{
-            print("missing parameters")
+            warning("missing parameters")
          }
       }
       nb=1#modele vide

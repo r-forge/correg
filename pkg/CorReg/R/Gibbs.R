@@ -13,7 +13,7 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
       nbmiss=sum(M)
       if(Xout){Xfin=X}
       for(i in 1:nbmiss){
-         #          cat(paste("i",i))
+         #          message(paste("i",i))
          miss=quimiss[i,]
          if(miss[1]!=missrow_loc){
             if(loglik_bool){#on a fini la ligne donc on calcule sa vraisemblance 
@@ -47,13 +47,13 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
       if(!last | (iter!=nbit)){
          #Imputation des classes####
          for(j in (1:p)[-Ir]){#pas besoin de classe a gauche car dans Gibbs on connait toujours tout le monde a droite (quitte a le supposer)
-            #             cat(paste("j",j))
+            #             message(paste("j",j))
             if(nbclust_vect[j]>1){
                for (i in 1:n){
-                  #                   cat("a")
+                  #                   message("a")
                   vect=rmultinom(1, 1, tik(x=X[i,j],nbclust=nbclust_vect[j],mixmod=mixmod[[j]]))
-                  #                   cat("b")
-                  #                   cat(paste("vect",vect))
+                  #                   message("b")
+                  #                   message(paste("vect",vect))
                   comp_vect[i,j]=match(1,vect)
                }
             }
@@ -68,9 +68,9 @@ Gibbs<-function(last=FALSE,M=M,nbit=1,warm=0,mixmod=mixmod,X=X,comp_vect=comp_ve
          }#sinon warm donc on ne fait rien
       }#optimiser en ne modifiant que les manquants  
    }
-   #    cat("c")
-   #    cat(X)
-   #    cat(comp_vect)
+   #    message("c")
+   #    message(X)
+   #    message(comp_vect)
    if(loglik_bool){
       loglikfin=-2*loglikfin+missing_penalty(nbclust_vect=nbclust_vect,Z=Z,M=M,n=nrow(X),p=ncol(Z),Zc=Zc)#BIC adapte
    }

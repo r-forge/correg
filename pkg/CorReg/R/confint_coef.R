@@ -33,7 +33,7 @@
       y1=coef[,3]
       arrows(x0=x0,y0=y0,x1=x1,y1=y1,angle=90,code=3,lwd=2)
       abline(h=0,col="red")
-      cat(paste("AIC : ",AIC(modele)))
+      message(paste("AIC : ",AIC(modele)))
    }else if(!is.null(prop)){
       coef=list()
       if(length(prop)>1 & !is.null(labels)){
