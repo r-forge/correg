@@ -13,8 +13,8 @@ cleanZR2<-function(Z=Z,X=X,R2min=0.4,methode=1,adj=TRUE){
   for(i in quicol){
     qui=which(Z[,i]!=0)
     ploc=length(qui)
-    beta=OLS(X=X[,qui],Y=X[,i],intercept=T,methode=methode)$beta
-    MSE=MSE_loc(Y=X[,i],X=as.matrix(X[,qui]),intercept=T,A=beta) #on met as.matrix pour les cas avec une seule colonne
+    beta=OLS(X=X[,qui],Y=X[,i],intercept=TRUE,methode=methode)$beta
+    MSE=MSE_loc(Y=X[,i],X=as.matrix(X[,qui]),intercept=TRUE,A=beta) #on met as.matrix pour les cas avec une seule colonne
     res[i]=1-(MSE)/(var((X[,i]))) 
     if(adj){
       res[i]=res[i]-(1-res[i])*ploc/(ncol(X)-ploc-1)

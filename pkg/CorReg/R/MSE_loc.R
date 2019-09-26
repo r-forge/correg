@@ -19,7 +19,7 @@
 #'    A=lm(Y_appr~X_appr)$coefficients
 #' MSE_loc(Y=Y_appr,X=X_appr,A=A)#MSE on the learning dataset
 #' MSE_loc(Y=Y_test,X=X_test,A=A)#MSE on the validation sample
-MSE_loc<-function(Y=Y,X=X,A=A,intercept=T){
+MSE_loc<-function(Y=Y,X=X,A=A,intercept=TRUE){
   if(intercept){
     X=as.matrix(cbind(1,X))
   }

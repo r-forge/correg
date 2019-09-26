@@ -79,7 +79,7 @@ while ((k < max.steps) & (length(active) < maxvars)) {
             ignores <- c(ignores, inew)
             action <- c(action, -inew)
             if (trace) 
-               cat("LARS-EN Step", k, ":\t Variable", inew, 
+               message("LARS-EN Step", k, ":\t Variable", inew, 
                    "\tcollinear; dropped for good\n")
          }else {
             if (first.in[inew] == 0) 
@@ -88,7 +88,7 @@ while ((k < max.steps) & (length(active) < maxvars)) {
             Sign <- c(Sign, sign(Cvec[inew]))
             action <- c(action, inew)
             if (trace) 
-               cat("LARS-EN Step", k, ":\t Variable", inew, 
+               message("LARS-EN Step", k, ":\t Variable", inew, 
                    "\tadded\n")
          }
       }
@@ -136,7 +136,7 @@ while ((k < max.steps) & (length(active) < maxvars)) {
       dropid <- seq(drops)[drops]
       for (id in rev(dropid)) {
          if (trace) 
-            cat("LARS-EN Step", k, ":\t Variable", active[id], 
+            message("LARS-EN Step", k, ":\t Variable", active[id], 
                 "\tdropped\n")
          R <- downdateR(R, id)
       }

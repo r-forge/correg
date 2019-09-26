@@ -36,7 +36,7 @@ fillmiss<-function(X=X,Z=NULL,mixmod=FALSE,B=NULL,Bt=NULL,res_mixmod=NULL,nbclus
       }else if(X1 & !anyDuplicated(c(quimank[miss,2],quiou$I3))){#si la variable est a droite et qu'on en tient compte
          beta=Bt[,quimank[miss,2]]
          X[quimank[miss,1],quimank[miss,2]]=beta[1]+as.matrix(X[quimank[miss,1],-quimank[miss,2]])%*%beta[-1][-quimank[miss,2]]
-      }else if(mixmod==T){#mixmod
+      }else if(mixmod==TRUE){#mixmod
          if(is.null(res_mixmod)){#si mixmod n'a pas tourne, on le fait tourner
             n=nrow(X)
             nbclustmax=round(min(nbclustmax,1+n^(0.3)))

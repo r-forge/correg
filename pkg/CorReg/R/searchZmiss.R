@@ -1,5 +1,5 @@
 # ' MCMC
-searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai=NULL,mixmod=mixmod,nbclustmax=10,BIC_vide_vect=NULL, nett=T,mode=c("relax","rejet"),MH=T,p2max=Inf,rmax=5,nbit=1){
+searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=FALSE,BIC_vrai=NULL,Z_vrai=NULL,mixmod=mixmod,nbclustmax=10,BIC_vide_vect=NULL, nett=TRUE,mode=c("relax","rejet"),MH=TRUE,p2max=Inf,rmax=5,nbit=1){
   #X est la matrice X sans la constante
   #Z est la matrice Z du formalisme priv?e de sa premi?re ligne (constante sur 1) et de sa premi?re colonne (identit?)
   #MH dit si on fait le saut vers le meilleur strict ou si on se contente de l'enregistrer
@@ -21,12 +21,12 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
   }
   Z_opt=Z
   if(is.null(mixmod)){
-    mixmod=density_estimation(X=X,nbclustmax=nbclustmax,detailed=T)
+    mixmod=density_estimation(X=X,nbclustmax=nbclustmax,detailed=TRUE)
     mixmod=mixmod_adapter(mixmod)
     BIC_vide_vect=mixmod$BIC_vect  
   }
   BIC_vide=sum(BIC_vide_vect)
-  BIC_vect=BICZmiss(X=X,Z=Z_opt,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit)
+  BIC_vect=BICZmiss(X=X,Z=Z_opt,Bic_vide_vect=BIC_vide_vect,intercept=TRUE,mixmod=mixmod,nbit=nbit)
   BIC_opt=sum(BIC_vect)
   message(paste("BIC ini :",BIC_opt))
   
@@ -59,8 +59,8 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
   
   nb_cand_loc=2*p-2
   BIC_loc_mat=matrix(0,ncol=3,nrow=(nb_cand_loc+1))
-  meilleur_strict=F
-  consecutif=T
+  meilleur_strict=FALSE
+  consecutif=TRUE
   nbstat=0
   courbes=matrix()
   while(etape<maxit){
@@ -78,9 +78,9 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
         Zloc[i,j]=1-Zloc[i,j] #on fait la modif
         if((Zloc[i,j] & sum(Zloc%*%Zloc)!=0)|(length(which(colSums(Zloc)!=0))>p2max)| (colSums(Zloc)[j]>rmax)){next}#croisement ou trop de ssreg ou ssreg trop compl, on passe                     
 #         BIC_loc=sum(calcul_BIC2.2(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z))
-        BIC_loc=sum(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z))
+        BIC_loc=sum(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=TRUE,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z))
         BIC_loc_mat[candidat+1,]=c(BIC_loc,i,j)
-#         if(is.na(BIC_loc)){cat(paste("Perfect sub-regression for variable",which(is.na(calcul_BIC2.2(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z)))))}
+#         if(is.na(BIC_loc)){message(paste("Perfect sub-regression for variable",which(is.na(calcul_BIC2.2(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z)))))}
       }
     }else if(mode=="relax"){
       for (candidat in 1:nb_cand_loc){  
@@ -95,9 +95,9 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
         }  
         if((length(which(colSums(Zloc)!=0))>p2max)| (colSums(Zloc)[j]>rmax)){next}#si apr?s relax on est trop complexe, on passe
 #         BIC_loc=sum(calcul_BIC2.2(Zloc=Zloc,X_appr=X,BIC_ini=BIC_vide_vect,BIC_Z=BIC_vect,Z=Z))
-        BIC_loc=sum(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z))
+        BIC_loc=sum(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=TRUE,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z))
         BIC_loc_mat[candidat+1,]=c(BIC_loc,i,j)
-        if(is.na(BIC_loc)){cat(paste("Perfect sub-regression for variable",which(is.na(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z)))))}
+        if(is.na(BIC_loc)){message(paste("Perfect sub-regression for variable",which(is.na(BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=TRUE,mixmod=mixmod,nbit=nbit,BicOld=BIC_vect,Zold=Z)))))}
       }
     }         
     #on termine l'?tape
@@ -106,7 +106,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
     loc=BIC_loc_mat[,1]
     if(min(loc[loc!=0])<BIC_opt){#on stocke, on pr?vient, et on y va
       #qui=which(BIC_loc_mat[1:length(loc),1]==min(BIC_loc_mat[1:length(loc),1]))[1]
-      meilleur_strict=T
+      meilleur_strict=TRUE
       Zloc=Z
       qui=which.min(loc)
       BIC_opt=BIC_loc_mat[qui,1]
@@ -140,7 +140,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
       loc2[loc2!=Inf]=1:length(loc)
       station=which(loc2==station)#on va cherche l'indice correspondant      
       if(length(station)==0){
-        cat("No feasible candidate")
+        message("No feasible candidate")
         station=1
       }
       if(station!=1){#alors pas de stationnarit?
@@ -158,7 +158,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
         }
       }else{nbstat=nbstat+1}  
     } 
-    BIC_vect=BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit)#completement sous-optimal
+    BIC_vect=BICZmiss(X=X,Z=Zloc,Bic_vide_vect=BIC_vide_vect,intercept=TRUE,mixmod=mixmod,nbit=nbit)#completement sous-optimal
 
 #     BIC_vect=calcul_BIC2.2(Zloc=Z,X_appr=X,BIC_ini=BIC_vide_vect)#voir si pas pr?f?rable de stocker l'etape precedente pour l'utiliser ici
     if(plot){

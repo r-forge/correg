@@ -28,7 +28,7 @@ cleanYtest<-function (Y = Y, X = X, pvalmin = 0.05, bonferroni=F,A=NULL)
   }
   #on regarde chaque coef donc on boucle jusqu'a stabilite
   pvalminini=pvalmin
-  change=T#changement potentiel
+  change=TRUE#changement potentiel
   quinonzero=1:(ncol(X))
   loc=length(quinonzero)
   A=rep.int(0, times=ncol(X)+1)

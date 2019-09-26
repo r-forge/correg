@@ -15,7 +15,7 @@ meilleur_lars<-function(lars=lars,X=X,Y=Y,mode=c("MSE","BIC"),intercept=TRUE,K=N
     if(!is.null(nrow(coef))){
       for(i in 1:nrow(coef)){
         qui=which(coef[i,]!=0)
-        vrais_vect[i]=OLS(X=X[,qui],Y=Y,intercept=intercept,Bic=T)$BIC
+        vrais_vect[i]=OLS(X=X[,qui],Y=Y,intercept=intercept,Bic=TRUE)$BIC
       }
       qui=which.min(vrais_vect)
       BIC=vrais_vect[qui]

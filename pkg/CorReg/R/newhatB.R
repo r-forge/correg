@@ -6,7 +6,7 @@
 # ' @param intercept boolean to define an intercept
 # ' @export
 newhatB<-function(Z=Z,A=A,Atilde=Atilde,Bold=B,intercept=TRUE){
-   qui=WhoIs(Z=Z,I3=F,I2=T,I1=T)
+   qui=WhoIs(Z=Z,I3=FALSE,I2=TRUE,I1=TRUE)
    I2=qui$I2
    B=Bold
    Atilde=matrix(Atilde,ncol=1);A=matrix(A,ncol=1)

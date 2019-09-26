@@ -12,7 +12,7 @@ MakeH<-function(X=X,Z=Z,B=B,Sigma=Sigma){
    p1=ncol(X)-p2#prendre donc en compte la constante
    n=nrow(X)
    H=matrix(0,ncol=(p1+p2+pz),nrow=(p1+p2+pz))
-   barZ=which(Z!=0,arr.ind=T)
+   barZ=which(Z!=0,arr.ind=TRUE)
    for(j in 1:p2){
       I1j=barZ[barZ[,2]==I2[j],1]
       H[j,j]=-n/(Sigma[j]^2)+(1/(Sigma[j]^4)) * t(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])%*%(X[,I2[j]]-X[,I1j]%*%B[I1j,I2[j]])   

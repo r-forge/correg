@@ -10,13 +10,13 @@
 # ' @param nbit number of iteration for SEM
 # ' @param nbclustmax max number of cluster for mixmod (ignored if miss=0)
 # ' @param M binary matrix (size of X) with 1 where X is missing
-# ' @param mixmod Gaussian Mixture hypothesis if needed. Or result of calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,bla=F,details=T)
+# ' @param mixmod Gaussian Mixture hypothesis if needed. Or result of calcul_BIC_mixmod(X=X,nbclustmax=nbclustmax,bla=F,details=TRUE)
 # ' @export
 OLS<- function(X=X,Y=Y,M=NULL,intercept=FALSE,sigma=FALSE,Bic=FALSE,methode=1,miss=0,mixmod=NULL,nbit=100,nbclustmax=10){
    p=ncol(X)
    if(miss & nbit>0){
       if(is.null(mixmod)){
-         mixmod=density_estimation(X=X,nbclustmax=nbclustmax,verbose=F,detailed=T)
+         mixmod=density_estimation(X=X,nbclustmax=nbclustmax,verbose=FALSE,detailed=TRUE)
          mixmod=mixmod_adapter(mixmod=mixmod)
       }
       if(is.null(M)){
@@ -24,7 +24,7 @@ OLS<- function(X=X,Y=Y,M=NULL,intercept=FALSE,sigma=FALSE,Bic=FALSE,methode=1,mi
          M[is.na(M)]=1
          X[is.na(X)]=0
       }
-      quimank=which(M==1,arr.ind=T)#sparse version of M
+      quimank=which(M==1,arr.ind=TRUE)#sparse version of M
       
       resmat=matrix(ncol=ncol(X)+intercept+sigma,nrow=nbit)
       for (i in 1:nbit){
@@ -60,7 +60,7 @@ OLS<- function(X=X,Y=Y,M=NULL,intercept=FALSE,sigma=FALSE,Bic=FALSE,methode=1,mi
       
    }else{
       if(any(is.na(X))){
-         ou=unique(which(is.na(X),arr.ind=T)[,1])
+         ou=unique(which(is.na(X),arr.ind=TRUE)[,1])
          X=X[-ou,]
          Y=Y[-ou]
       }

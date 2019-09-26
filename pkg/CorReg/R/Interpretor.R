@@ -1,5 +1,5 @@
 # 'another way to interprete the structure
-Interpretor<-function (Z = Z, names = NULL, X = NULL,R2=T,R2_vect=NULL,adj=T) 
+Interpretor<-function (Z = Z, names = NULL, X = NULL,R2=TRUE,R2_vect=NULL,adj=TRUE) 
 {
   if(R2){
     if(is.null(R2_vect)){
