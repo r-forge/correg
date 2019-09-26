@@ -4,7 +4,7 @@
 # ' @param I1,I2,I3 wanted outputs (I1= explicative covariates, I2=redundant covariates, I3=independent covariates)
 # ' 
 # '@export 
-WhoIs<-function(Z=Z,I3=F,I2=T,I1=T){
+WhoIs<-function(Z=Z,I3=FALSE,I2=TRUE,I1=TRUE){
   res=list()
   if(I2){
     res$I2=which(colSums(Z)!=0)# Qui est ? gauche
