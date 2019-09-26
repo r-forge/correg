@@ -61,7 +61,7 @@
 #                 K = 10, groupe = NULL, Amax = NULL, lambda = 1,returning=FALSE,
 #                 alpha=NULL,g=5,compl2=FALSE,explnew=FALSE) 
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' require(CorReg)
 #'    #dataset generation
 #'    base=mixture_generator(n=15,p=10,ratio=0.4,tp1=1,tp2=1,tp3=1,positive=0.5,

@@ -8,7 +8,7 @@
 #' @param intercept (boolean) to add a column of 1 to \code{X} if \code{A} contains an intercept and \code{X} doesn't.
 #' @return the Mean Squared Error observed on \code{X} when using \code{A} coefficients to predict \code{Y}.
 #' 
-#'  @examples
+#' @examples
 #'  require(CorReg)
 #'    #dataset generation
 #'    base=mixture_generator(n=15,p=5,valid=100,scale=TRUE)

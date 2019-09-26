@@ -3,6 +3,7 @@
 #' Beware of the factors. The variables stays as factors and the level is still in memory.
 #' @param base the dataframe to clean
 #' @param value the value or vector of value to find and remove. if "space" it removes the blank thousands separator.
+#' @return a list with "base" as the cleaned dataset and "list_var" as the list of indexes of variables that have been changed.
 #' @export
 
 purge_values<-function(base,value){
