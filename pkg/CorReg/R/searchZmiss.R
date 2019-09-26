@@ -28,7 +28,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
   BIC_vide=sum(BIC_vide_vect)
   BIC_vect=BICZmiss(X=X,Z=Z_opt,Bic_vide_vect=BIC_vide_vect,intercept=T,mixmod=mixmod,nbit=nbit)
   BIC_opt=sum(BIC_vect)
-  print(paste("BIC ini :",BIC_opt))
+  message(paste("BIC ini :",BIC_opt))
   
   #on initialise
   BIC=BIC_opt
@@ -173,7 +173,7 @@ searchZmiss<-function(X=X,ini=NULL,maxit=10^5,M=NULL,plot=F,BIC_vrai=NULL,Z_vrai
       courbe_faux_gauche[pas]=compare$faux_gauche
     }
   } 
-  print(proc.time()-ptm)
+  message(proc.time()-ptm)
   if(nett){
        
   }

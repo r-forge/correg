@@ -60,7 +60,7 @@ BICZmiss<-function(X=X,Z=Z,M=NULL,Bic_vide_vect=NULL,BicOld=NULL,methode=1,Zold=
             k=k+1
           }
         }   
-#         print(mixmodloc$details)
+#         message(mixmodloc$details)
         res=OLS(X=Xloc,Y=Yloc,M=Mloc,intercept=intercept,methode=methode,miss=(sum(Mloc)>0),mixmod=mixmodloc,nbit=nbit,nbclustmax=nbclustmax,sigma=T)       
         BICLOC=c()  
         k=0#complexite du modele

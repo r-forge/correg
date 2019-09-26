@@ -39,7 +39,7 @@
 #'
 #' @examples
 #'\donttest{
-#'   rm(list=ls())#clean the workspace
+#'   #rm(list=ls())#clean the workspace
 #'   
 #' require(CorReg)
 #'    #dataset generation
@@ -64,7 +64,7 @@
 #'    hatBic=res$bic_opt #associated BIC
 #'    
 #'    #looking inside the walk
-#'   
+#'old_par<-par()
 #'par(mar=c(5,4,4,5)+.1)
 #'plot(res$bic_step,type="l",col="red",ylab="BIC",
 #'     sub="blue: complexity, red: BIC", main="Evolution of BIC and complexity during the walk")
@@ -87,7 +87,7 @@
 #'    readZ(Z=TrueZ,crit="R2",X=X_appr,output="all",order=1)# <NA>line : name of subregressed covariate
 #'   } 
 #'
-#'
+#'par(old_par)
 #'@export
 structureFinder<-function(X=X,Z=NULL,Bic_null_vect=NULL,candidates=-1,reject=0,methode=1,p1max=5,p2max=NULL,Maxiter=1,plot=FALSE,best=TRUE,better=FALSE,random=TRUE,verbose=1,nb_opt_max=NULL,exact=TRUE,nbini=NULL,star=TRUE,clean=TRUE,...){
   params=match.call()

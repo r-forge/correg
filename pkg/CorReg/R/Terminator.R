@@ -9,7 +9,7 @@
 
 #' @examples
 #'    \donttest{
-#'   rm(list=ls())#clean the workspace
+#'   #rm(list=ls())#clean the workspace
 #'   
 #'    data<-mtcars
 #'    require(CorReg)
@@ -27,7 +27,7 @@ Terminator<-function(target=NULL, wrath=0.1,diag=0,Z=NULL){
    }
    if(is.null(dim(target))){
       if(target[1]=="Sarah Connor" ){
-      cat("I'll be back !")}
+      message("I'll be back !")}
    }else if (is.null(dim(target))){
       if( target[1]=="bender"){
       Bender(a=wrath,b=diag,c=Z)}
