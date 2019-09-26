@@ -1,5 +1,5 @@
 # 'modify Z in sparse format for position (i,j)
-modsparse_cpp<-function(Zsparse=Zsparse,i=i,j=j,relax=F,rmax=NULL){
+modsparse_cpp<-function(Zsparse=Zsparse,i=i,j=j,relax=FALSE,rmax=NULL){
   if(is.null(rmax)){
     rmax=Zsparse$p
   }

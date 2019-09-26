@@ -18,7 +18,7 @@
 # ' res=cleanYtest(Y = Y, X = X, pvalmin = 0.5)
 # '     
 # ' 
-cleanYtest<-function (Y = Y, X = X, pvalmin = 0.05, bonferroni=F,A=NULL) 
+cleanYtest<-function (Y = Y, X = X, pvalmin = 0.05, bonferroni=FALSE,A=NULL) 
 {
   p=ncol(X)
   qui=NULL
@@ -43,7 +43,7 @@ cleanYtest<-function (Y = Y, X = X, pvalmin = 0.05, bonferroni=F,A=NULL)
       X=as.matrix(X[,quinonzero])
       loc=length(quinonzero)
     }else{#on n'a rien change
-      change=F
+      change=FALSE
     }
   }
   #on regarde la constante et on l'enleve si besoin

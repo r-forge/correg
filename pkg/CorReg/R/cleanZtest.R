@@ -6,7 +6,7 @@
 #' @param global boolean. If TRUE the threshold is only on the F statistic for each sub-regression, not on each coefficients. So it will only remove entire sub-regressions.
 #' @param bonferroni boolean to use bonferroni correction on the pvalmin parameter to avoid multiple testing issues.
 #' @export
-cleanZtest<-function (Z = Z, X = X, pvalmin = 0.05, global=F,bonferroni=F) 
+cleanZtest<-function (Z = Z, X = X, pvalmin = 0.05, global=FALSE,bonferroni=FALSE) 
 {
   if(global){
     if(bonferroni){
@@ -41,7 +41,7 @@ cleanZtest<-function (Z = Z, X = X, pvalmin = 0.05, global=F,bonferroni=F)
         if(length(Z[qui,i][coefs_pval[-1]>pvalmin])>0){#on a des choses a changer
           Z[qui,i][coefs_pval[-1]>pvalmin]=0#on supprime
         }else{#rien n'a change donc on marque la colonne
-          change[i]=F
+          change[i]=FALSE
         }         
       }
       quicol=which(change & (colSums(Z) != 0))#on doit reverifier les colonnes modifiees encore non nulles

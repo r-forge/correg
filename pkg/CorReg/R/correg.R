@@ -296,7 +296,7 @@
          A_inj=c(resada$coefficients.adalasso)
          if(length(A_inj[A_inj!=0])>0){
             Xloc=Xtilde[,A_inj!=0]
-            A_inj[A_inj!=0]=c(OLS(X=Xloc,Y=Ytilde,intercept=F)$beta)
+            A_inj[A_inj!=0]=c(OLS(X=Xloc,Y=Ytilde,intercept=FALSE)$beta)
          }
       }else if(select=="clere"){
          A_inj=A_clere(y=as.numeric(Ytilde),x=Xtilde,g=g)
